@@ -1,0 +1,21 @@
+{
+  "review_type": "subagent self-review, not independent review",
+  "evidence_sha256": "324b4d436d28b041963d5cb27db0a3496350c292a0e9b026bc885dc3bfc34650",
+  "recheck_identical": true,
+  "replay_source_sha256": "0e93fdfcde3077d8e7f75464e1c24d3377a951baa236256d39a2a494d1ec8220",
+  "rows_checked": 2968,
+  "unique_instruction_addresses": 2896,
+  "physical_S_count": 40,
+  "physical_S_pairwise_overlaps": 0,
+  "record_20_position_store": "D+8D538..D+8D540 (end-exclusive)",
+  "synthetic_out_of_bounds_counter_result": {
+    "first_float": 1.0,
+    "second_float": 2.0,
+    "count_after_qword_and_increment": "0x3f800001",
+    "actual_gameplay_reachability": false
+  },
+  "limitations": [
+    "Only supplied evidence and pinned saved capture are checked. No process access or native execution.",
+    "Counterexample is invalid-state arithmetic, not an observed game bug."
+  ]
+}

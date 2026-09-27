@@ -1,0 +1,94 @@
+{
+  "capture_identity_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "root": "0x1088f00",
+  "fragments": [
+    {
+      "range": [
+        "0x1088f00",
+        "0x1088f2e"
+      ],
+      "sha256": "5f41a9675b34dad1dd4b4fddbfeb703b3c3b0771da13d54ba00e6c1a29083d23",
+      "instructions": [
+        {
+          "rva": "0x1088f00",
+          "bytes": "4053",
+          "sha256": "609777c21118747ee9511a13231c87cad62e7c9c8747f9b07c59bd892278f65b",
+          "asm": "push rbx"
+        },
+        {
+          "rva": "0x1088f02",
+          "bytes": "4883ec20",
+          "sha256": "e746e80a9e90a0ad65f07af5a6fa7ce141762b96cb08c37888d41c4a7155b8eb",
+          "asm": "sub rsp, 0x20"
+        },
+        {
+          "rva": "0x1088f06",
+          "bytes": "83791800",
+          "sha256": "16f6119e7bd5f7c1c33e59b97319ef2a81494cc25dbb9ed540ebfe763dc3ffd7",
+          "asm": "cmp dword ptr [rcx + 0x18], 0"
+        },
+        {
+          "rva": "0x1088f0a",
+          "bytes": "488bd9",
+          "sha256": "d4ed4cfc264b5da25bc0a40c02f9818c48ff0ac8fd85318f45a886a82fe74e31",
+          "asm": "mov rbx, rcx"
+        },
+        {
+          "rva": "0x1088f0d",
+          "bytes": "7419",
+          "sha256": "bbce1ead5416b4b00c3ee5adbf1a9a7f4d1659c4e53b2c709bafcf3311cab1d2",
+          "asm": "je 0x1088f28"
+        },
+        {
+          "rva": "0x1088f0f",
+          "bytes": "488d15a2a51d01",
+          "sha256": "e9f30a992b4c5f8178f8e0e90de332a98cde9bd9af71e267a1e1046a4ded3b49",
+          "asm": "lea rdx, [rip + 0x11da5a2]"
+        },
+        {
+          "rva": "0x1088f16",
+          "bytes": "488d0d5ba51d01",
+          "sha256": "7fe1fe34b1fc879f1bfca5e342c8c62ed8aaa6ce99fde32b8b06fc96b6cac494",
+          "asm": "lea rcx, [rip + 0x11da55b]"
+        },
+        {
+          "rva": "0x1088f1d",
+          "bytes": "e8def36a00",
+          "sha256": "f4319805cc73214ef5c44c43b0525a56bb9112fd8fb76e2f810c9f79b85045f1",
+          "asm": "call 0x1738300"
+        },
+        {
+          "rva": "0x1088f22",
+          "bytes": "33c0",
+          "sha256": "72fb562c9d90dfcc008e5b0a391395fd2a244bb6bc231e2621a8ec6860d21fa3",
+          "asm": "xor eax, eax"
+        },
+        {
+          "rva": "0x1088f24",
+          "bytes": "48894318",
+          "sha256": "29f5ab8ab545932ea45b92a1e67e0482ae9c0fecd19b9c000912f43a2b83c195",
+          "asm": "mov qword ptr [rbx + 0x18], rax"
+        },
+        {
+          "rva": "0x1088f28",
+          "bytes": "4883c420",
+          "sha256": "bfe972cfee329e83af922087be9b4c73a39a3e04adac3bb8ff9d1cf1046e361f",
+          "asm": "add rsp, 0x20"
+        },
+        {
+          "rva": "0x1088f2c",
+          "bytes": "5b",
+          "sha256": "245843abef9e72e7efac30138a994bf6301e7e1d7d7042a33d42e863d2638811",
+          "asm": "pop rbx"
+        },
+        {
+          "rva": "0x1088f2d",
+          "bytes": "c3",
+          "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+          "asm": "ret "
+        }
+      ]
+    }
+  ],
+  "limits": "Unwind-derived fragment bounds only; semantics require register/base provenance review."
+}

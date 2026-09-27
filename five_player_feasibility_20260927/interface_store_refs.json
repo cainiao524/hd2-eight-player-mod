@@ -1,0 +1,205 @@
+{
+  "source_sha256": {
+    "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+  },
+  "targets": [
+    "0x3326300",
+    "0x3326308",
+    "0x3326310",
+    "0x3326318",
+    "0x3326320",
+    "0x3326328",
+    "0x3326330",
+    "0x3326338",
+    "0x3326340",
+    "0x3326348"
+  ],
+  "scope": "Only REX/non-REX MOV register stores, LEA address-taking, XCHG, and C6/C7 immediate stores with RIP-relative disp32 are searched; decoded instruction boundaries are verified against captured unwind fragments.",
+  "hits": [
+    {
+      "rva": "0x4edaba",
+      "bytes": "4889054788e302",
+      "sha256": "043ec732668689fe5cebdd1c2c9cb47964734138208903b853b06022a32a6ba7",
+      "asm": "mov qword ptr [rip + 0x2e38847], rax",
+      "kind": "store",
+      "target": "0x3326308",
+      "fragment": [
+        "0x4eda90",
+        "0x4edd85",
+        "0x2404f5c"
+      ],
+      "root": [
+        "0x4eda90",
+        "0x4edd85",
+        "0x2404f5c"
+      ]
+    },
+    {
+      "rva": "0x4edb36",
+      "bytes": "488905db87e302",
+      "sha256": "e0218eb373ed98b673b29c3f37d4b6a1e52cedf71d3d59d650113cc1c59e021f",
+      "asm": "mov qword ptr [rip + 0x2e387db], rax",
+      "kind": "store",
+      "target": "0x3326318",
+      "fragment": [
+        "0x4eda90",
+        "0x4edd85",
+        "0x2404f5c"
+      ],
+      "root": [
+        "0x4eda90",
+        "0x4edd85",
+        "0x2404f5c"
+      ]
+    },
+    {
+      "rva": "0x4edb47",
+      "bytes": "488905ca87e302",
+      "sha256": "2b2667597945811a5974ef3f9259f0140366a181d865a69b5a44e9f26f08e51b",
+      "asm": "mov qword ptr [rip + 0x2e387ca], rax",
+      "kind": "store",
+      "target": "0x3326318",
+      "fragment": [
+        "0x4eda90",
+        "0x4edd85",
+        "0x2404f5c"
+      ],
+      "root": [
+        "0x4eda90",
+        "0x4edd85",
+        "0x2404f5c"
+      ]
+    },
+    {
+      "rva": "0x4edbd6",
+      "bytes": "4889054b87e302",
+      "sha256": "3923f81813895ade506813bdec25095f04754c51ddc1fb9c092d185ee85f2ead",
+      "asm": "mov qword ptr [rip + 0x2e3874b], rax",
+      "kind": "store",
+      "target": "0x3326328",
+      "fragment": [
+        "0x4eda90",
+        "0x4edd85",
+        "0x2404f5c"
+      ],
+      "root": [
+        "0x4eda90",
+        "0x4edd85",
+        "0x2404f5c"
+      ]
+    },
+    {
+      "rva": "0x4edc12",
+      "bytes": "4889051f87e302",
+      "sha256": "8d49b5f5af1693fde64da1c44367460476d0da12f1d69849dfea9e91fc84ce6b",
+      "asm": "mov qword ptr [rip + 0x2e3871f], rax",
+      "kind": "store",
+      "target": "0x3326338",
+      "fragment": [
+        "0x4eda90",
+        "0x4edd85",
+        "0x2404f5c"
+      ],
+      "root": [
+        "0x4eda90",
+        "0x4edd85",
+        "0x2404f5c"
+      ]
+    },
+    {
+      "rva": "0x4edcd0",
+      "bytes": "4889055986e302",
+      "sha256": "94ee65f918757839d5906fc9fe347959b6fe925b587276881a4c36c3c41aab87",
+      "asm": "mov qword ptr [rip + 0x2e38659], rax",
+      "kind": "store",
+      "target": "0x3326330",
+      "fragment": [
+        "0x4eda90",
+        "0x4edd85",
+        "0x2404f5c"
+      ],
+      "root": [
+        "0x4eda90",
+        "0x4edd85",
+        "0x2404f5c"
+      ]
+    },
+    {
+      "rva": "0x4edd20",
+      "bytes": "488905e985e302",
+      "sha256": "f2b6456a3ef91d2ae139c7686334da311c4a0c5e1f5ea907e45dcc4c1e382c77",
+      "asm": "mov qword ptr [rip + 0x2e385e9], rax",
+      "kind": "store",
+      "target": "0x3326310",
+      "fragment": [
+        "0x4eda90",
+        "0x4edd85",
+        "0x2404f5c"
+      ],
+      "root": [
+        "0x4eda90",
+        "0x4edd85",
+        "0x2404f5c"
+      ]
+    },
+    {
+      "rva": "0x4edd34",
+      "bytes": "488905e585e302",
+      "sha256": "144f260e27101f7c9f0c769040779ab34bb1a396505e6e4eba6822e475f3b44f",
+      "asm": "mov qword ptr [rip + 0x2e385e5], rax",
+      "kind": "store",
+      "target": "0x3326320",
+      "fragment": [
+        "0x4eda90",
+        "0x4edd85",
+        "0x2404f5c"
+      ],
+      "root": [
+        "0x4eda90",
+        "0x4edd85",
+        "0x2404f5c"
+      ]
+    },
+    {
+      "rva": "0x4ee558",
+      "bytes": "488915e97de302",
+      "sha256": "c5540ebb4a4b1e29a33f4ceeabb3086a77a53d64b6bb8f27f0b89820ffc35881",
+      "asm": "mov qword ptr [rip + 0x2e37de9], rdx",
+      "kind": "store",
+      "target": "0x3326348",
+      "fragment": [
+        "0x4ee160",
+        "0x4ee689",
+        "0x2404f8c"
+      ],
+      "root": [
+        "0x4ee160",
+        "0x4ee689",
+        "0x2404f8c"
+      ]
+    },
+    {
+      "rva": "0x4ee564",
+      "bytes": "48891dd57de302",
+      "sha256": "718d37467708c5af7a6689709c6d2ae1f781cc0c5185fad6d52bcd714309dfac",
+      "asm": "mov qword ptr [rip + 0x2e37dd5], rbx",
+      "kind": "store",
+      "target": "0x3326340",
+      "fragment": [
+        "0x4ee160",
+        "0x4ee689",
+        "0x2404f8c"
+      ],
+      "root": [
+        "0x4ee160",
+        "0x4ee689",
+        "0x2404f8c"
+      ]
+    }
+  ],
+  "limits": [
+    "Computed-address stores, arbitrary instruction forms, uncaptured code, import callbacks, and EXE writes are not excluded by no hit.",
+    "The writable global data section is absent from this capture."
+  ]
+}

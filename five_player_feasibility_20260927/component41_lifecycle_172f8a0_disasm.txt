@@ -1,0 +1,78 @@
+0x172f8a0 mov qword ptr [rsp + 0x18], rbx
+0x172f8a5 mov qword ptr [rsp + 0x20], rsi
+0x172f8aa push rdi
+0x172f8ab mov r11d, dword ptr [rcx + 8]
+0x172f8af mov ebx, edx
+0x172f8b1 imul ebx, dword ptr [rcx + 0x10]
+0x172f8b5 xor r8d, r8d
+0x172f8b8 mov r10d, edx
+0x172f8bb lea esi, [r11 - 1]
+0x172f8bf test r11d, r11d
+0x172f8c2 je 0x172f8eb
+0x172f8c4 mov rdi, qword ptr [rcx]
+0x172f8c7 nop word ptr [rax + rax]
+0x172f8d0 lea edx, [r8 + rbx]
+0x172f8d4 mov eax, esi
+0x172f8d6 and rdx, rax
+0x172f8d9 cmp dword ptr [rdi + rdx*8], r10d
+0x172f8dd lea r9, [rdi + rdx*8]
+0x172f8e1 je 0x172f8f9
+0x172f8e3 inc r8d
+0x172f8e6 cmp r8d, r11d
+0x172f8e9 jb 0x172f8d0
+0x172f8eb xor eax, eax
+0x172f8ed mov rbx, qword ptr [rsp + 0x20]
+0x172f8f2 mov rsi, qword ptr [rsp + 0x28]
+0x172f8f7 pop rdi
+0x172f8f8 ret 
+0x172f8f9 mov eax, dword ptr [rcx + 0xc]
+0x172f8fc mov dword ptr [r9], eax
+0x172f8ff imul r10d, dword ptr [rcx + 0x10]
+0x172f904 mov edx, dword ptr [rcx + 8]
+0x172f907 mov qword ptr [rsp + 0x10], rbp
+0x172f90c mov ebp, dword ptr [r9 + 4]
+0x172f910 mov qword ptr [rsp + 0x18], r14
+0x172f915 lea esi, [rdx - 1]
+0x172f918 lea r14d, [r10 + r8]
+0x172f91c mov r10d, 1
+0x172f922 mov edi, r14d
+0x172f925 and edi, esi
+0x172f927 cmp edx, r10d
+0x172f92a jbe 0x172f98b
+0x172f92c nop dword ptr [rax]
+0x172f930 mov r11, qword ptr [rcx]
+0x172f933 lea r9d, [r14 + r10]
+0x172f937 and r9d, esi
+0x172f93a lea rbx, [r9*8]
+0x172f942 mov r8d, dword ptr [rbx + r11]
+0x172f946 cmp r8d, dword ptr [rcx + 0xc]
+0x172f94a je 0x172f98b
+0x172f94c imul r8d, dword ptr [rcx + 0x10]
+0x172f951 mov eax, edx
+0x172f953 sub edx, edi
+0x172f955 add edx, r9d
+0x172f958 and edx, esi
+0x172f95a and r8d, esi
+0x172f95d sub eax, r8d
+0x172f960 add eax, r9d
+0x172f963 and eax, esi
+0x172f965 cmp edx, eax
+0x172f967 ja 0x172f980
+0x172f969 mov rax, qword ptr [rbx + r11]
+0x172f96d mov edx, edi
+0x172f96f mov edi, r9d
+0x172f972 mov qword ptr [r11 + rdx*8], rax
+0x172f976 mov r8, qword ptr [rcx]
+0x172f979 mov edx, dword ptr [rcx + 0xc]
+0x172f97c mov dword ptr [rbx + r8], edx
+0x172f980 mov edx, dword ptr [rcx + 8]
+0x172f983 inc r10d
+0x172f986 cmp r10d, edx
+0x172f989 jb 0x172f930
+0x172f98b mov r14, qword ptr [rsp + 0x18]
+0x172f990 mov eax, ebp
+0x172f992 mov rbp, qword ptr [rsp + 0x10]
+0x172f997 mov rbx, qword ptr [rsp + 0x20]
+0x172f99c mov rsi, qword ptr [rsp + 0x28]
+0x172f9a1 pop rdi
+0x172f9a2 ret 

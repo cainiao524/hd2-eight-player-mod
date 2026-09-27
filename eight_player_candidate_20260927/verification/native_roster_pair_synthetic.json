@@ -1,0 +1,256 @@
+{
+  "status": "offline_native_pair_candidate",
+  "installable": false,
+  "game_execution": false,
+  "multiplayer_verified": false,
+  "target_profile": {
+    "build": 25480438,
+    "exe_sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+    "game_dll_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e"
+  },
+  "shared_binding": {
+    "game_base": 140703128616960,
+    "roster_address": 536870912,
+    "property_address": 805306368
+  },
+  "property_size_bytes": 256,
+  "record_capacity": 8,
+  "record_stride": 32,
+  "producer": {
+    "status": "offline_native_candidate",
+    "installable": false,
+    "game_execution": false,
+    "multiplayer_verified": false,
+    "target_profile": {
+      "build": 25480438,
+      "exe_sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+      "game_dll_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e"
+    },
+    "source_sha256": "8b9a20e5207ae395e99e45f153cba1994ff50c10cb258101fd16a74285824c34",
+    "evidence_sha256": "f73ec903d06f2304f4f944c25e011a7ef86d78737cb1b197101a1c96daaabacb",
+    "code_sha256": "d2bd3c45f5800bd263748fb8263bbe18a92df03f6e76dfea07a951e39ced7a87",
+    "code_hex": "48895c240848896c2410488974241857415641574883ec208b42084533ff3b05fc3b48fe4d8bf1488b2d3a6432fe7454448b8dd8000000418bd7448b95e0000000440fafd0418d79ff4585c974364c8b9dd00000008b9ddc0000000f1f4400008bcf468d04124c23c1438b0cc33bcb0f84bb0100003bc80f84bb010000ffc2413bd172dcbbffffffffe9c2010000ba20000000488b09448d42e4e831b873fc488b7c2460488bf04883c604448bdb48c1e305c7842ba8030000ff7f0000c700ff7f00008b0f4803c941c704ce8ec6270f41c744ce0401000000498944ce08ff074489bc2bac03000044893e8b074803c041c704c6bc9d88cd41c744c60401000000498974c6084883c604ff074489bc2bb003000044893e8b074803c041c704c622376c0841c744c60401000000498974c6084883c604ff07e853f034fc89842bb403000089068b074803c041c704c6ce8b3bb041c744c60401000000498974c6084883c604ff074489bc2bb803000044893e8b074803c041c704c69c94d67e41c744c60402000000498974c6084883c604ff074489bc2bbc03000044893e8b074803c041c704c68f09eeeb41c744c60402000000498974c6084883c604ff07498d431e48c1e00544893c2844893e8b074803c041c704c692fb74bd41c744c60402000000498974c6084883c604ff074489bc2bc403000044893e8b074803c041c704c604f8c88341c744c60402000000498974c608ff07488b5c2440488b6c2448488b7424504883c420415f415e5fc33bc80f854cfeffff438b5cc304e947feffffcccccccccccccccccccccccccccc83fb080f832700000048b800000020000000004839c50f851f00000048bd58fcff2f00000000488b4c2468e90efeffff41ba01000000e975fd000041ba02000000e96afd0000",
+    "code_address": 140703212503040,
+    "entry_address": 140703212503040,
+    "size_bytes": 662,
+    "game_base": 140703128616960,
+    "roster_address": 536870912,
+    "property_address": 805306368,
+    "property_size_bytes": 256,
+    "record_capacity": 8,
+    "record_stride": 32,
+    "trampoline_address": 140703212503632,
+    "resume_address": 140703212503182,
+    "splice": {
+      "offset": 137,
+      "expected_hex": "488b4c2468",
+      "replacement_hex": "e9c2010000"
+    },
+    "external_relocations": [
+      {
+        "rva": 6342238,
+        "kind": "rip_memory",
+        "displacement_offset": 32,
+        "target": 140703183682592
+      },
+      {
+        "rva": 6342247,
+        "kind": "rip_memory",
+        "displacement_offset": 42,
+        "target": 140703182251112
+      },
+      {
+        "rva": 6342362,
+        "kind": "call_rel32",
+        "displacement_offset": 155,
+        "target": 140703152978128
+      },
+      {
+        "rva": 6342520,
+        "kind": "call_rel32",
+        "displacement_offset": 313,
+        "target": 140703148863888
+      }
+    ],
+    "reject_address": 140703212568576,
+    "reject_reasons": {
+      "1": "ordinal_outside_0_to_7",
+      "2": "roster_global_binding_mismatch"
+    },
+    "reject_state": {
+      "rsp": "entry_rsp-38h; [rsp+20h] R15, +28h R14, +30h RDI, +40h RBX, +48h RBP, +50h RSI",
+      "rbx": "zero-extended uint32 roster ordinal, or FFFFFFFF on map miss",
+      "rbp": "original roster loaded from game_base+3326468; not yet sidecar-biased",
+      "r14": "descriptor output array",
+      "r15d": "zero",
+      "rax": "reason 1: entity ID; reason 2: expected roster binding address",
+      "r10d": "rejection reason",
+      "memory": "prologue stack writes and entity/global/map reads only; no allocator, descriptor, count, output buffer or property write"
+    },
+    "entry_or_callsite_patch": null,
+    "required_integration": [
+      "Validate actual image and source bytes; allocate executable clone and sidecar storage",
+      "Bind the current global-loaded roster incarnation to the same property sidecar as the receiver",
+      "Validate entity/map pointers and capacity before this late guard, plus allocator and index-helper contracts",
+      "Redirect every other producer, move/remove path and property consumer to the same sidecar",
+      "Supply rejection continuation to restore this interior frame and abort the whole property stage",
+      "Register valid Windows unwind metadata for the clone and trampoline",
+      "Install/remove entry or callsite redirection under engine-safe execution control",
+      "Verify original four-player and fifth-through-eighth-player mission lifecycle"
+    ],
+    "limits": [
+      "Fixed saved bytes and supplied addresses only; no current allocation or lifetime proof",
+      "Guard occurs after entity ID and map reads; invalid pointers may fault before rejection",
+      "No default reject return or caller recovery is supplied",
+      "Only this producer is redirected; it cannot be enabled separately from receiver and other consumers",
+      "Offline instruction execution cannot prove Windows unwind, concurrent callbacks or gameplay"
+    ]
+  },
+  "receiver": {
+    "status": "offline_native_candidate",
+    "installable": false,
+    "game_execution": false,
+    "multiplayer_verified": false,
+    "target_profile": {
+      "build": 25480438,
+      "exe_sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+      "game_dll_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e"
+    },
+    "source_sha256": "23d53b4f2f46ec26d23d79b958ee31d469910217ea843fb92bd98cf24c017411",
+    "evidence_sha256": "bad5661771df280dd5e982b765d2f4ab1c73de9ae7e86e974751af6c3c383c10",
+    "code_sha256": "9e07b0e6fbd132e9638604529dccc8eeeeaf77a89552d276d53e133a7b503e25",
+    "code_hex": "48896c242041563b15132c48fe4d8bf1498be84c8bd97507b8ffffffffeb79448b89d8000000448b91e000000033c948895c24104889742418440fafd2418d71ff48897c24204585c97439498b9bd0000000418bbbdc0000000f1f80000000008bc6468d04114c23c0428b04c33bc70f84a80000003bc20f84a8000000ffc1413bc972dcb8ffffffff488b742418488b5c2410488b7c2420418b0e448bc049c1e005e9890000009043898418a80300008b0c2a83c20443898c18ac0300008b0c2a83c20443898c18b00300008b0c2a83c20443898c18b40300008b0c2a83c20443898c18b80300008b0c2a83c20443898c18bc0300008b0c2a83c20443898c18c00300008b0c2a8d4204488b6c242841890643898c18c4030000415ec33bc20f855fffffff428b44c304e95affffffcc83f8080f832800000048b800000020000000004939c30f852000000049bb58fcff2f000000008b04298d5104e947ffffff41ba01000000e994fe000041ba02000000e989fe0000",
+    "code_address": 140703212507136,
+    "entry_address": 140703212507136,
+    "size_bytes": 375,
+    "game_base": 140703128616960,
+    "roster_address": 536870912,
+    "property_address": 805306368,
+    "property_size_bytes": 256,
+    "record_capacity": 8,
+    "record_stride": 32,
+    "trampoline_address": 140703212507440,
+    "resume_address": 140703212507304,
+    "splice": {
+      "offset": 162,
+      "expected_hex": "8b04298d5104",
+      "replacement_hex": "e98900000090"
+    },
+    "rip_relocation": {
+      "displacement_offset": 9,
+      "target": 140703183682592
+    },
+    "reject_address": 140703212572672,
+    "reject_reasons": {
+      "1": "ordinal_outside_0_to_7",
+      "2": "roster_binding_mismatch"
+    },
+    "reject_state": {
+      "rsp": "entry_rsp-8; [rsp] saved R14; [rsp+28h] saved RBP",
+      "r14": "cursor pointer",
+      "rbp": "payload base",
+      "r11": "input roster",
+      "r8": "zero-extended uint32 ordinal * 32",
+      "rcx": "uint32 entry cursor",
+      "rax": "reason 1: uint32 ordinal; reason 2: expected roster binding address",
+      "r10d": "rejection reason; original RBX/RSI/RDI already restored",
+      "memory": "no payload read or record/cursor write by this receiver before rejection"
+    },
+    "entry_or_callsite_patch": null,
+    "required_integration": [
+      "Actual image fingerprint and source validation; allocate live code and sidecar storage",
+      "Bind the current roster incarnation and redirect all other parallel-array consumers",
+      "Valid map/header/payload/cursor and non-overlapping source/storage; shared lifetime and synchronization",
+      "Provide rejection continuation that restores the interior frame and aborts this whole property dispatch",
+      "Register valid Windows unwind metadata for clone and trampoline; original chained entries cannot be reused blindly",
+      "Install/remove entry or callsite redirection under engine-safe execution control",
+      "Verify original four-player behavior and fifth-through-eighth-player mission lifecycle"
+    ],
+    "limits": [
+      "Fixed supplied bytes and supplied addresses only; no runtime origin/allocation/lifetime proof",
+      "Only this receiver is redirected; it must not be enabled while producers and other consumers use old storage",
+      "No safe continuation or return is supplied for rejection; caller cursor recovery is an unresolved integration requirement",
+      "Emulator execution does not verify Windows unwinding, concurrent callbacks, native ABI callers or gameplay"
+    ]
+  },
+  "known_regions": [
+    {
+      "name": "producer code",
+      "address": 140703212503040,
+      "size_bytes": 662
+    },
+    {
+      "name": "receiver code",
+      "address": 140703212507136,
+      "size_bytes": 375
+    },
+    {
+      "name": "producer rejection entry",
+      "address": 140703212568576,
+      "size_bytes": 1
+    },
+    {
+      "name": "receiver rejection entry",
+      "address": 140703212572672,
+      "size_bytes": 1
+    },
+    {
+      "name": "roster",
+      "address": 536870912,
+      "size_bytes": 1064
+    },
+    {
+      "name": "property storage",
+      "address": 805306368,
+      "size_bytes": 256
+    },
+    {
+      "name": "original producer",
+      "address": 140703134959168,
+      "size_bytes": 578
+    },
+    {
+      "name": "original receiver",
+      "address": 140703134959760,
+      "size_bytes": 303
+    },
+    {
+      "name": "sentinel",
+      "address": 140703183682592,
+      "size_bytes": 4
+    },
+    {
+      "name": "roster global",
+      "address": 140703182251112,
+      "size_bytes": 8
+    },
+    {
+      "name": "index helper global",
+      "address": 140703183654640,
+      "size_bytes": 8
+    },
+    {
+      "name": "allocator entry",
+      "address": 140703152978128,
+      "size_bytes": 1
+    },
+    {
+      "name": "index helper",
+      "address": 140703148863888,
+      "size_bytes": 92
+    }
+  ],
+  "required_integration": [
+    "Both routines are only a subset; redirect remaining roster initialization, move/remove, classification and readers",
+    "Provide distinct verified rejection continuations for the two different interior frames and abort the enclosing operation",
+    "Establish allocation origin, full code/handler/storage extents, permissions, binding incarnation, lifetime and engine synchronization",
+    "Validate runtime image and all helper contracts; implement Windows unwind and reversible hook installation",
+    "Verify original four-player behavior and fifth-through-eighth-player mission lifecycle"
+  ],
+  "limits": [
+    "Known finite ranges only, not a whole-process allocation or full-image non-overlap check",
+    "Index-helper global range is protected but its live pointer, target owner and peer records are not inspected",
+    "No allocation, copying of existing records, initialization, hooks, rejection handlers or executable memory operations",
+    "No serialization, transport, real peer joining, game execution or multiplayer acceptance"
+  ]
+}

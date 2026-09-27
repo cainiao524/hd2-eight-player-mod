@@ -1,0 +1,2593 @@
+{
+  "schema_version": 3,
+  "research_version": "generation-research-v1",
+  "status": "證據不足",
+  "common_solution_found": false,
+  "next_phase_mod_implementation_authorized_by_evidence": false,
+  "gameplay_verified": false,
+  "runtime_compatibility_promoted": false,
+  "source": {
+    "filediver_commit": "bf0ce329db3cf0043994eb717ea86433c303cb36",
+    "game_build_of_code_capture": "25480438",
+    "game_sha256_of_code_capture": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+    "fingerprints": {
+      "filediver_analysis": "a1c7d72ba38d91f3526af7d8a58f2eee0ec235198d9a28d454abf2bc84eca1b3",
+      "filediver_bundle": "44a3acc0e56685768544b0adcc14e8e47b58845e362258d089fd9bef56b190cd",
+      "code_capture": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8"
+    },
+    "code_evidence_files": {
+      "spawn-analysis.json": "b70d68a78dcbbef3cc4692e851dfe4a86cd3220f253ee221ff9bc0d0bd1492d4",
+      "collision-analysis.json": "fad914daedfd3d245d71cc2ed06106180867c62d392e029c1ed3cf7ac3c199ca",
+      "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+      "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+    },
+    "private_field_instruction_sha256": {
+      "0x616573": {
+        "size": 7,
+        "sha256": "99232804613f48241f48b11ad4c99d06ab2d0e316b4cbec0bbfb0f5615c302ba"
+      },
+      "0x61657a": {
+        "size": 3,
+        "sha256": "3cdf0c972af17218160193483b9a201069afa386670bf31d5649094d3763eb10"
+      },
+      "0x6165f1": {
+        "size": 7,
+        "sha256": "a542be9c4dd54c343f6b8f439847cb0b3ce10f14df80c80cbbce0f0baf56e8c0"
+      },
+      "0x616600": {
+        "size": 3,
+        "sha256": "dbd91baafccee9f861a1118f742d9a11a448a9476a161127d88641a4bbdb27b9"
+      },
+      "0x13a8c1f": {
+        "size": 4,
+        "sha256": "ff60bba166072b80d7fd4318ec5cd40dfca48149c7f4f93993f9342250cc2340"
+      },
+      "0x13a8cf7": {
+        "size": 3,
+        "sha256": "663e06b7c3d471dcc00cb1eb1d31e5df25a7fb30768a55397a90e4db8a0c0920"
+      },
+      "0x13a8d01": {
+        "size": 5,
+        "sha256": "57c617c15e7605a179597b745165cb3fdf510e1cb5291ebb1fd599be4ca67a71"
+      },
+      "0x13a8d20": {
+        "size": 3,
+        "sha256": "918122e66d5ce2e05153dab63fb3449f4eee02bd4dc73ddea65997fcf2b2fbd8"
+      },
+      "0x13a8f09": {
+        "size": 9,
+        "sha256": "e51037d9902a5115504d91848303c3a9bb708d8430a59370d6d45d2d39f347ce"
+      },
+      "0x13aaa2b": {
+        "size": 4,
+        "sha256": "4903aed833d75d9669cf6ecd6c93a6fa588821b4040c82751d943b9937f0c6e4"
+      },
+      "0x13aaa2f": {
+        "size": 3,
+        "sha256": "106feaf2dc56877c943822b7f37794ec8859beb2b6e2e394c9b97b84a71aa5d5"
+      },
+      "0x13aaac4": {
+        "size": 3,
+        "sha256": "d1cec937644f07a89d51ef43851887f8d618b91a81fbde6b50627199f92c2916"
+      },
+      "0x13aaaf3": {
+        "size": 4,
+        "sha256": "a400f9872a8268ba3b93bfdec8ad11a073d3e4cdada402592355e6acdb134ed3"
+      },
+      "0x13aaaf7": {
+        "size": 3,
+        "sha256": "148e1ed6de1f6fc2c7931230d6fba1891c1fe58ed270682e57f7f196e9a01b01"
+      },
+      "0x13ac68f": {
+        "size": 8,
+        "sha256": "ff6c83805d016bb75c6ea065e1ce7818ac5504045eaad638d020bce758240b97"
+      },
+      "0x13ac6a1": {
+        "size": 9,
+        "sha256": "aabe2ef4a180085c9b7e00ae80bb79486890c5b342b3c2dc68f04251245a2c7d"
+      },
+      "0x13acfa1": {
+        "size": 4,
+        "sha256": "e3e374f7502f4404a4c3647632f1070d3af95de6e76031684f06a19809dfa897"
+      },
+      "0x13acfb9": {
+        "size": 9,
+        "sha256": "4d86b3e60f06b68fa51eb63cc9900b4dbece800c36f847a3214c2cff41a05953"
+      },
+      "0x13acff0": {
+        "size": 5,
+        "sha256": "6f5a488b6af402a5ad305a98bf5a4e161d02fd9d64f41296eb9d63c6767b929a"
+      }
+    },
+    "reference_file_sha256": {
+      "generated_entities.dl_bin": "21377252b81fdbc670eba1e59a8ab64b170323df208f175e708992e4c1fb515e",
+      "generated_entity_deltas.dl_bin": "3fadc7c2475558000f9e8ad30e01d52caea481e1633e35674ed2864572694f4e",
+      "dl_library.dl_typelib": "4d04870d0a0d4dc1284998c72cdfa6f8ff6d21aba0e36b6f758c6f73dd0417a4",
+      "generated_weapon_customization_settings.dl_bin": "0321d3a4297e4b980a809227c63cd38ad5e5e903168f3634c1a75a9f25847760",
+      "generated_projectile_settings.dl_bin": "50af7cccf03697a0ef96b7f9ddeb19279adc3b887bd95e0f972996844b7221ea",
+      "generated_explosion_settings.dl_bin": "1f7c53253250e89cd17a1381bd5a2feb48aeb336e4a3c97e74311c6fb67d7af6",
+      "explosion_settings.go": "c00024cc1de988866d151f5b7c58a1c96b670afed6706e8973987569f9577a97",
+      "projectile_settings.go": "f050037bea742407ba9c60dbf89ccb5f32da14db3414999c076d8387f928eb38",
+      "projectile_weapon_component.go": "8c8474e75a3c8fe8c0de86abddf65015a838810d9ebeef3c05e1add08a17a3e9",
+      "explosive_component.go": "b00e045726f1dfe37d882e394ddb41701c4949ad86f597bfcf85d61ae0bbd646",
+      "explosiontype.go": "3ad55fc782bfaf91978bfb9b604da21f31ccccd8e842a5a48061536277051715",
+      "explosionverificationmode.go": "3b71d8b811f36c9b7de07833294f7516b105c6dc7e4ab95f3b040e567b3a5431",
+      "raycasttemplate.go": "d96a31ee574d8472e2828ab6a85954a72edb784b3005e5c3149ca88efc9bf769",
+      "projectiletype.go": "f936a4f9f01c24329af70441eadb995c568f0631966de431777d98596fa9a1fe",
+      "weaponcustomizationslot.go": "3687d3224b309b5676a48c5eff2d1429b08bb0b56e859bf07be6649726ad5768",
+      "dl_type_names.txt": "01eff67f430fa5df2d0677c07f72b229b61718face13cc2398f26f1f860ff750"
+    }
+  },
+  "direct_calls": [
+    {
+      "rva": "0x5f5e3d",
+      "constructor_rva": "0x13a9830",
+      "options_plus_0x18": 1,
+      "options_source": "stack-local literal at 0x5f5e15",
+      "definition_source": "global default or indexed projectile table at 0x5f574e..0x5f5775; R13 carried to descriptor",
+      "definition_binding_rva": "0x5f5dba",
+      "definition_flag_read_rva": "0x13a9bde",
+      "ownership_source": "both IDs selected-object+8",
+      "weapon_mechanism": "mechanism unclassified",
+      "source_fingerprint": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+      "coverage_limit": "identified direct CALL only; indirect calls and runtime dispatch unenumerated"
+    },
+    {
+      "rva": "0x616612",
+      "constructor_rva": "0x13a9830",
+      "options_plus_0x18": 1,
+      "options_source": "stack-local literal at 0x6165c2",
+      "definition_source": "indexed projectile table or default at 0x616515..0x61652a",
+      "definition_binding_rva": "0x6165b7",
+      "definition_flag_read_rva": "0x13a9bde",
+      "ownership_source": "entity-like weaponObject+8; unit-like caller EBX",
+      "weapon_mechanism": "ordinary native gun",
+      "source_fingerprint": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+      "coverage_limit": "identified direct CALL only; indirect calls and runtime dispatch unenumerated"
+    },
+    {
+      "rva": "0x64625c",
+      "constructor_rva": "0x13a9830",
+      "options_plus_0x18": 1,
+      "options_source": "stack-local literal at 0x6461b8",
+      "definition_source": "indexed projectile table at 0x64617c..0x6461a1",
+      "definition_binding_rva": "0x6461a1",
+      "definition_flag_read_rva": "0x13a9bde",
+      "ownership_source": "entity-like input EDX; unit-like input [RBP+0x77]",
+      "weapon_mechanism": "component 196 related; runtime participation unproved",
+      "source_fingerprint": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+      "coverage_limit": "identified direct CALL only; indirect calls and runtime dispatch unenumerated"
+    },
+    {
+      "rva": "0x681816",
+      "constructor_rva": "0x13a9830",
+      "options_plus_0x18": 1,
+      "options_source": "stack-local literal at 0x6817aa",
+      "definition_source": "stack definition [RBP+0xB0]",
+      "definition_binding_rva": "0x681776",
+      "definition_flag_read_rva": "0x13a9bde",
+      "ownership_source": "entity-like [RDI+8]; unit-like EBX",
+      "weapon_mechanism": "mechanism unclassified",
+      "source_fingerprint": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+      "coverage_limit": "identified direct CALL only; indirect calls and runtime dispatch unenumerated"
+    },
+    {
+      "rva": "0x681835",
+      "constructor_rva": "0x13a9830",
+      "options_plus_0x18": 1,
+      "options_source": "stack-local literal at 0x6817aa",
+      "definition_source": "stack definition [RBP+0xB0]",
+      "definition_binding_rva": "0x681776",
+      "definition_flag_read_rva": "0x13a9bde",
+      "ownership_source": "entity-like [RDI+8]; unit-like EBX",
+      "weapon_mechanism": "mechanism unclassified",
+      "source_fingerprint": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+      "coverage_limit": "identified direct CALL only; indirect calls and runtime dispatch unenumerated"
+    },
+    {
+      "rva": "0x6cb742",
+      "constructor_rva": "0x13a9830",
+      "options_plus_0x18": 1,
+      "options_source": "stack-local literal at 0x6cb6d4",
+      "definition_source": "definition returned by 0x11ec7c0",
+      "definition_binding_rva": "0x6cb65d",
+      "definition_flag_read_rva": "0x13a9bde",
+      "ownership_source": "both IDs [R15+8]",
+      "weapon_mechanism": "mechanism unclassified",
+      "source_fingerprint": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+      "coverage_limit": "identified direct CALL only; indirect calls and runtime dispatch unenumerated"
+    },
+    {
+      "rva": "0x852e14",
+      "constructor_rva": "0x13a9830",
+      "options_plus_0x18": 1,
+      "options_source": "stack-local literal at 0x852d12",
+      "definition_source": "state-selected type via global default or projectile table at 0x852591..0x8525ba",
+      "definition_binding_rva": "0x852c64",
+      "definition_flag_read_rva": "0x13a9bde",
+      "ownership_source": "entity-like selected-object+8; unit-like via 0x9ef080",
+      "weapon_mechanism": "mechanism unclassified",
+      "source_fingerprint": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+      "coverage_limit": "identified direct CALL only; indirect calls and runtime dispatch unenumerated"
+    },
+    {
+      "rva": "0x8a4d83",
+      "constructor_rva": "0x13a9830",
+      "options_plus_0x18": 1,
+      "options_source": "stack-local literal at 0x8a4d54",
+      "definition_source": "stack definition [RBP+0x220]",
+      "definition_binding_rva": "0x8a4cfa",
+      "definition_flag_read_rva": "0x13a9bde",
+      "ownership_source": "entity-like [R13+8]; unit-like via 0x9ef080",
+      "weapon_mechanism": "mechanism unclassified",
+      "source_fingerprint": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+      "coverage_limit": "identified direct CALL only; indirect calls and runtime dispatch unenumerated"
+    },
+    {
+      "rva": "0x8a57eb",
+      "constructor_rva": "0x13a9830",
+      "options_plus_0x18": 1,
+      "options_source": "stack-local literal at 0x8a57be",
+      "definition_source": "stack definition [RBP+0x330]",
+      "definition_binding_rva": "0x8a5767",
+      "definition_flag_read_rva": "0x13a9bde",
+      "ownership_source": "entity-like [R13+8]; unit-like via 0x9ef080",
+      "weapon_mechanism": "mechanism unclassified",
+      "source_fingerprint": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+      "coverage_limit": "identified direct CALL only; indirect calls and runtime dispatch unenumerated"
+    },
+    {
+      "rva": "0xb871be",
+      "constructor_rva": "0x13a9830",
+      "options_plus_0x18": 1,
+      "options_source": "stack-local literal at 0xb87102",
+      "definition_source": "global default or indexed projectile table at 0xb87085..0xb870bc",
+      "definition_binding_rva": "0xb870bc",
+      "definition_flag_read_rva": "0x13a9bde",
+      "ownership_source": "IDs EBX/R14D",
+      "weapon_mechanism": "mechanism unclassified",
+      "source_fingerprint": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+      "coverage_limit": "identified direct CALL only; indirect calls and runtime dispatch unenumerated"
+    },
+    {
+      "rva": "0x12a9e80",
+      "constructor_rva": "0x13a9830",
+      "options_plus_0x18": 1,
+      "options_source": "stack-local literal at 0x12a9e27",
+      "definition_source": "global definition pointer loaded to R14 at 0x12a9ccb",
+      "definition_binding_rva": "0x12a9e07",
+      "definition_flag_read_rva": "0x13a9bde",
+      "ownership_source": "entity-like global dword; unit-like [R12]",
+      "weapon_mechanism": "mechanism unclassified",
+      "source_fingerprint": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+      "coverage_limit": "identified direct CALL only; indirect calls and runtime dispatch unenumerated"
+    },
+    {
+      "rva": "0x13a9796",
+      "constructor_rva": "0x13a9830",
+      "options_plus_0x18": 1,
+      "options_source": "stack-local literal at 0x13a977a",
+      "definition_source": "global default or indexed projectile table",
+      "definition_binding_rva": "0x13a9722",
+      "definition_flag_read_rva": "0x13a9bde",
+      "ownership_source": "both IDs EBX",
+      "weapon_mechanism": "mechanism unclassified",
+      "source_fingerprint": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+      "coverage_limit": "identified direct CALL only; indirect calls and runtime dispatch unenumerated"
+    },
+    {
+      "rva": "0x13c2314",
+      "constructor_rva": "0x13a9830",
+      "options_plus_0x18": 0,
+      "options_source": "stack-local literal at 0x13c2306",
+      "definition_source": "explosion settings+0x54 via projectile table/default",
+      "definition_binding_rva": "0x13c2130",
+      "definition_flag_read_rva": "0x13a9bde",
+      "ownership_source": "IDs input [RSI+0x10/+0x14]",
+      "weapon_mechanism": "secondary-projectile/shrapnel loop",
+      "source_fingerprint": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+      "coverage_limit": "identified direct CALL only; indirect calls and runtime dispatch unenumerated"
+    }
+  ],
+  "direct_call_coverage": "only 13 identified direct CALLs; indirect calls and all runtime routes are not enumerated",
+  "generation_graph": {
+    "fingerprint": "badd4c9dfcb96e5ef36db1028ba4263e09320f8ee83c47a463a60ca2340cb98b",
+    "path_count": 2594,
+    "projectile_count": 350,
+    "explosion_count": 422,
+    "selected_p11_and_secondary_paths": [
+      {
+        "weapon": {
+          "entity": "03271411d3d0bab9",
+          "unit": "d6b1fb05b9109353",
+          "sidearm": false,
+          "is_p11": true
+        },
+        "firing": {
+          "source": "base_component",
+          "ammo_mode": "base_ammunition",
+          "attachment": null,
+          "component": "ProjectileWeaponComponent",
+          "field": {
+            "structure_id": "2290c42e",
+            "member": "ProjType",
+            "name_token": "000ae301",
+            "type_id": "a2b5f333",
+            "offset": 0
+          },
+          "component_evidence": {
+            "record": {
+              "hashmap_index": 451,
+              "data_index": 180,
+              "file_offset": 46524420,
+              "size": 616,
+              "delta_count": 0
+            },
+            "entity_deltas": []
+          }
+        },
+        "original": {
+          "role": "original_shot",
+          "kind": "native_projectile",
+          "mechanism": "native_projectile_unverified",
+          "projectile_type": 318,
+          "projectile_key": "name:00000000:00000000:f1cd5269:unit:4431931242cbcd54",
+          "entity": "0000000000000000",
+          "status": "static_reference_only"
+        },
+        "collision": {
+          "raycast_template_field": {
+            "structure_id": "a2afbafd",
+            "structure_name": "ProjectileInfo",
+            "member": "RaycastTemplate",
+            "name_token": "000214e8",
+            "type_id": "d7658573",
+            "offset": 244,
+            "value": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "native_consumer": "unproven"
+        },
+        "explosions": [
+          {
+            "trigger": "impact",
+            "status": "none_by_pinned_enum",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeOnImpact",
+              "name_token": "000211ac",
+              "type_id": "11beee03",
+              "offset": 144,
+              "value": 0,
+              "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+            },
+            "explosion_key": null,
+            "secondary": null
+          },
+          {
+            "trigger": "expiry",
+            "status": "none_by_pinned_enum",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeExpire",
+              "name_token": "000211e9",
+              "type_id": "11beee03",
+              "offset": 156,
+              "value": 0,
+              "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+            },
+            "explosion_key": null,
+            "secondary": null
+          }
+        ],
+        "scope_policy": {
+          "p11": "included",
+          "pistols": "included",
+          "native_no_shotguns": "included",
+          "native_weapons": "included"
+        },
+        "source_fingerprints": {
+          "generated_entities.dl_bin": "21377252b81fdbc670eba1e59a8ab64b170323df208f175e708992e4c1fb515e",
+          "generated_entity_deltas.dl_bin": "3fadc7c2475558000f9e8ad30e01d52caea481e1633e35674ed2864572694f4e",
+          "generated_weapon_customization_settings.dl_bin": "0321d3a4297e4b980a809227c63cd38ad5e5e903168f3634c1a75a9f25847760",
+          "generated_projectile_settings.dl_bin": "50af7cccf03697a0ef96b7f9ddeb19279adc3b887bd95e0f972996844b7221ea",
+          "generated_explosion_settings.dl_bin": "1f7c53253250e89cd17a1381bd5a2feb48aeb336e4a3c97e74311c6fb67d7af6"
+        }
+      },
+      {
+        "weapon": {
+          "entity": "03271411d3d0bab9",
+          "unit": "d6b1fb05b9109353",
+          "sidearm": false,
+          "is_p11": true
+        },
+        "firing": {
+          "source": "entity_delta_effective",
+          "ammo_mode": "base_ammunition",
+          "attachment": null,
+          "component": "ProjectileWeaponComponent",
+          "field": {
+            "structure_id": "2290c42e",
+            "member": "ProjType",
+            "name_token": "000ae301",
+            "type_id": "a2b5f333",
+            "offset": 0
+          },
+          "component_evidence": {
+            "record": {
+              "hashmap_index": 451,
+              "data_index": 180,
+              "file_offset": 46524420,
+              "size": 616,
+              "delta_count": 0
+            },
+            "entity_deltas": []
+          }
+        },
+        "original": {
+          "role": "original_shot",
+          "kind": "native_projectile",
+          "mechanism": "native_projectile_unverified",
+          "projectile_type": 318,
+          "projectile_key": "name:00000000:00000000:f1cd5269:unit:4431931242cbcd54",
+          "entity": "0000000000000000",
+          "status": "static_reference_only"
+        },
+        "collision": {
+          "raycast_template_field": {
+            "structure_id": "a2afbafd",
+            "structure_name": "ProjectileInfo",
+            "member": "RaycastTemplate",
+            "name_token": "000214e8",
+            "type_id": "d7658573",
+            "offset": 244,
+            "value": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "native_consumer": "unproven"
+        },
+        "explosions": [
+          {
+            "trigger": "impact",
+            "status": "none_by_pinned_enum",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeOnImpact",
+              "name_token": "000211ac",
+              "type_id": "11beee03",
+              "offset": 144,
+              "value": 0,
+              "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+            },
+            "explosion_key": null,
+            "secondary": null
+          },
+          {
+            "trigger": "expiry",
+            "status": "none_by_pinned_enum",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeExpire",
+              "name_token": "000211e9",
+              "type_id": "11beee03",
+              "offset": 156,
+              "value": 0,
+              "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+            },
+            "explosion_key": null,
+            "secondary": null
+          }
+        ],
+        "scope_policy": {
+          "p11": "included",
+          "pistols": "included",
+          "native_no_shotguns": "included",
+          "native_weapons": "included"
+        },
+        "source_fingerprints": {
+          "generated_entities.dl_bin": "21377252b81fdbc670eba1e59a8ab64b170323df208f175e708992e4c1fb515e",
+          "generated_entity_deltas.dl_bin": "3fadc7c2475558000f9e8ad30e01d52caea481e1633e35674ed2864572694f4e",
+          "generated_weapon_customization_settings.dl_bin": "0321d3a4297e4b980a809227c63cd38ad5e5e903168f3634c1a75a9f25847760",
+          "generated_projectile_settings.dl_bin": "50af7cccf03697a0ef96b7f9ddeb19279adc3b887bd95e0f972996844b7221ea",
+          "generated_explosion_settings.dl_bin": "1f7c53253250e89cd17a1381bd5a2feb48aeb336e4a3c97e74311c6fb67d7af6"
+        }
+      },
+      {
+        "weapon": {
+          "entity": "26e40437ea275296",
+          "unit": "26e40437ea275296",
+          "sidearm": false,
+          "is_p11": false
+        },
+        "firing": {
+          "source": "base_component",
+          "ammo_mode": "base_ammunition",
+          "attachment": null,
+          "component": "ProjectileWeaponComponent",
+          "field": {
+            "structure_id": "2290c42e",
+            "member": "ProjType",
+            "name_token": "000ae301",
+            "type_id": "a2b5f333",
+            "offset": 0
+          },
+          "component_evidence": {
+            "record": {
+              "hashmap_index": 396,
+              "data_index": 241,
+              "file_offset": 46561996,
+              "size": 616,
+              "delta_count": 0
+            },
+            "entity_deltas": []
+          }
+        },
+        "original": {
+          "role": "original_shot",
+          "kind": "native_projectile",
+          "mechanism": "native_projectile_unverified",
+          "projectile_type": 312,
+          "projectile_key": "name:d41d8f1a:74ad0033:54a8332e:unit:36ab9a3dcae3d562",
+          "entity": "0000000000000000",
+          "status": "static_reference_only"
+        },
+        "collision": {
+          "raycast_template_field": {
+            "structure_id": "a2afbafd",
+            "structure_name": "ProjectileInfo",
+            "member": "RaycastTemplate",
+            "name_token": "000214e8",
+            "type_id": "d7658573",
+            "offset": 244,
+            "value": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "native_consumer": "unproven"
+        },
+        "explosions": [
+          {
+            "trigger": "impact",
+            "status": "static_reference_only",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeOnImpact",
+              "name_token": "000211ac",
+              "type_id": "11beee03",
+              "offset": 144,
+              "value": 325,
+              "sha256": "39a74af739962774bf1070f8562892396a2f34e4e5b8ee57091dd142131fbd91"
+            },
+            "explosion_key": "content:8011157dd7e8bfe316cdfbf855e76a66d87780cfbb8ec477bcda482100f6e5e9",
+            "secondary": {
+              "role": "secondary_fragment",
+              "original_shot": false,
+              "count": 25,
+              "projectile_type": 78,
+              "projectile_key": "name:844732b0:72edb2f8:f1cd5269:unit:a6cd8a90185b6567",
+              "status": "static_reference_only"
+            }
+          },
+          {
+            "trigger": "expiry",
+            "status": "static_reference_only",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeExpire",
+              "name_token": "000211e9",
+              "type_id": "11beee03",
+              "offset": 156,
+              "value": 325,
+              "sha256": "39a74af739962774bf1070f8562892396a2f34e4e5b8ee57091dd142131fbd91"
+            },
+            "explosion_key": "content:8011157dd7e8bfe316cdfbf855e76a66d87780cfbb8ec477bcda482100f6e5e9",
+            "secondary": {
+              "role": "secondary_fragment",
+              "original_shot": false,
+              "count": 25,
+              "projectile_type": 78,
+              "projectile_key": "name:844732b0:72edb2f8:f1cd5269:unit:a6cd8a90185b6567",
+              "status": "static_reference_only"
+            }
+          }
+        ],
+        "scope_policy": {
+          "p11": "outside_scope",
+          "pistols": "outside_scope",
+          "native_no_shotguns": "included",
+          "native_weapons": "included"
+        },
+        "source_fingerprints": {
+          "generated_entities.dl_bin": "21377252b81fdbc670eba1e59a8ab64b170323df208f175e708992e4c1fb515e",
+          "generated_entity_deltas.dl_bin": "3fadc7c2475558000f9e8ad30e01d52caea481e1633e35674ed2864572694f4e",
+          "generated_weapon_customization_settings.dl_bin": "0321d3a4297e4b980a809227c63cd38ad5e5e903168f3634c1a75a9f25847760",
+          "generated_projectile_settings.dl_bin": "50af7cccf03697a0ef96b7f9ddeb19279adc3b887bd95e0f972996844b7221ea",
+          "generated_explosion_settings.dl_bin": "1f7c53253250e89cd17a1381bd5a2feb48aeb336e4a3c97e74311c6fb67d7af6"
+        }
+      },
+      {
+        "weapon": {
+          "entity": "26e40437ea275296",
+          "unit": "26e40437ea275296",
+          "sidearm": false,
+          "is_p11": false
+        },
+        "firing": {
+          "source": "base_component",
+          "ammo_mode": "programmable_ammunition",
+          "attachment": null,
+          "component": "ProjectileWeaponComponent",
+          "field": {
+            "structure_id": "2290c42e",
+            "member": "WeaponFunctionProjectileType",
+            "name_token": "000af7cf",
+            "type_id": "a2b5f333",
+            "offset": 576
+          },
+          "component_evidence": {
+            "record": {
+              "hashmap_index": 396,
+              "data_index": 241,
+              "file_offset": 46561996,
+              "size": 616,
+              "delta_count": 0
+            },
+            "entity_deltas": []
+          }
+        },
+        "original": {
+          "role": "original_shot",
+          "kind": "native_projectile",
+          "mechanism": "native_projectile_unverified",
+          "projectile_type": 96,
+          "projectile_key": "name:844732b0:844732b0:844732b0:unit:36ab9a3dcae3d562",
+          "entity": "0000000000000000",
+          "status": "static_reference_only"
+        },
+        "collision": {
+          "raycast_template_field": {
+            "structure_id": "a2afbafd",
+            "structure_name": "ProjectileInfo",
+            "member": "RaycastTemplate",
+            "name_token": "000214e8",
+            "type_id": "d7658573",
+            "offset": 244,
+            "value": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "native_consumer": "unproven"
+        },
+        "explosions": [
+          {
+            "trigger": "impact",
+            "status": "static_reference_only",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeOnImpact",
+              "name_token": "000211ac",
+              "type_id": "11beee03",
+              "offset": 144,
+              "value": 300,
+              "sha256": "f2dadabeae2223ad5a889fd86b220e112bad5cc37be496a1308e2c13f21d2bf4"
+            },
+            "explosion_key": "content:344634fd7ec92a4a022ade63fefcfc340376f7f2e6691448861bd228bf5f9071",
+            "secondary": {
+              "role": "secondary_fragment",
+              "original_shot": false,
+              "count": 25,
+              "projectile_type": 233,
+              "projectile_key": "name:844732b0:72edb2f8:f1cd5269:unit:a6cd8a90185b6567",
+              "status": "static_reference_only"
+            }
+          },
+          {
+            "trigger": "expiry",
+            "status": "static_reference_only",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeExpire",
+              "name_token": "000211e9",
+              "type_id": "11beee03",
+              "offset": 156,
+              "value": 300,
+              "sha256": "f2dadabeae2223ad5a889fd86b220e112bad5cc37be496a1308e2c13f21d2bf4"
+            },
+            "explosion_key": "content:344634fd7ec92a4a022ade63fefcfc340376f7f2e6691448861bd228bf5f9071",
+            "secondary": {
+              "role": "secondary_fragment",
+              "original_shot": false,
+              "count": 25,
+              "projectile_type": 233,
+              "projectile_key": "name:844732b0:72edb2f8:f1cd5269:unit:a6cd8a90185b6567",
+              "status": "static_reference_only"
+            }
+          }
+        ],
+        "scope_policy": {
+          "p11": "outside_scope",
+          "pistols": "outside_scope",
+          "native_no_shotguns": "included",
+          "native_weapons": "included"
+        },
+        "source_fingerprints": {
+          "generated_entities.dl_bin": "21377252b81fdbc670eba1e59a8ab64b170323df208f175e708992e4c1fb515e",
+          "generated_entity_deltas.dl_bin": "3fadc7c2475558000f9e8ad30e01d52caea481e1633e35674ed2864572694f4e",
+          "generated_weapon_customization_settings.dl_bin": "0321d3a4297e4b980a809227c63cd38ad5e5e903168f3634c1a75a9f25847760",
+          "generated_projectile_settings.dl_bin": "50af7cccf03697a0ef96b7f9ddeb19279adc3b887bd95e0f972996844b7221ea",
+          "generated_explosion_settings.dl_bin": "1f7c53253250e89cd17a1381bd5a2feb48aeb336e4a3c97e74311c6fb67d7af6"
+        }
+      },
+      {
+        "weapon": {
+          "entity": "26e40437ea275296",
+          "unit": "26e40437ea275296",
+          "sidearm": false,
+          "is_p11": false
+        },
+        "firing": {
+          "source": "entity_delta_effective",
+          "ammo_mode": "base_ammunition",
+          "attachment": null,
+          "component": "ProjectileWeaponComponent",
+          "field": {
+            "structure_id": "2290c42e",
+            "member": "ProjType",
+            "name_token": "000ae301",
+            "type_id": "a2b5f333",
+            "offset": 0
+          },
+          "component_evidence": {
+            "record": {
+              "hashmap_index": 396,
+              "data_index": 241,
+              "file_offset": 46561996,
+              "size": 616,
+              "delta_count": 0
+            },
+            "entity_deltas": []
+          }
+        },
+        "original": {
+          "role": "original_shot",
+          "kind": "native_projectile",
+          "mechanism": "native_projectile_unverified",
+          "projectile_type": 312,
+          "projectile_key": "name:d41d8f1a:74ad0033:54a8332e:unit:36ab9a3dcae3d562",
+          "entity": "0000000000000000",
+          "status": "static_reference_only"
+        },
+        "collision": {
+          "raycast_template_field": {
+            "structure_id": "a2afbafd",
+            "structure_name": "ProjectileInfo",
+            "member": "RaycastTemplate",
+            "name_token": "000214e8",
+            "type_id": "d7658573",
+            "offset": 244,
+            "value": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "native_consumer": "unproven"
+        },
+        "explosions": [
+          {
+            "trigger": "impact",
+            "status": "static_reference_only",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeOnImpact",
+              "name_token": "000211ac",
+              "type_id": "11beee03",
+              "offset": 144,
+              "value": 325,
+              "sha256": "39a74af739962774bf1070f8562892396a2f34e4e5b8ee57091dd142131fbd91"
+            },
+            "explosion_key": "content:8011157dd7e8bfe316cdfbf855e76a66d87780cfbb8ec477bcda482100f6e5e9",
+            "secondary": {
+              "role": "secondary_fragment",
+              "original_shot": false,
+              "count": 25,
+              "projectile_type": 78,
+              "projectile_key": "name:844732b0:72edb2f8:f1cd5269:unit:a6cd8a90185b6567",
+              "status": "static_reference_only"
+            }
+          },
+          {
+            "trigger": "expiry",
+            "status": "static_reference_only",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeExpire",
+              "name_token": "000211e9",
+              "type_id": "11beee03",
+              "offset": 156,
+              "value": 325,
+              "sha256": "39a74af739962774bf1070f8562892396a2f34e4e5b8ee57091dd142131fbd91"
+            },
+            "explosion_key": "content:8011157dd7e8bfe316cdfbf855e76a66d87780cfbb8ec477bcda482100f6e5e9",
+            "secondary": {
+              "role": "secondary_fragment",
+              "original_shot": false,
+              "count": 25,
+              "projectile_type": 78,
+              "projectile_key": "name:844732b0:72edb2f8:f1cd5269:unit:a6cd8a90185b6567",
+              "status": "static_reference_only"
+            }
+          }
+        ],
+        "scope_policy": {
+          "p11": "outside_scope",
+          "pistols": "outside_scope",
+          "native_no_shotguns": "included",
+          "native_weapons": "included"
+        },
+        "source_fingerprints": {
+          "generated_entities.dl_bin": "21377252b81fdbc670eba1e59a8ab64b170323df208f175e708992e4c1fb515e",
+          "generated_entity_deltas.dl_bin": "3fadc7c2475558000f9e8ad30e01d52caea481e1633e35674ed2864572694f4e",
+          "generated_weapon_customization_settings.dl_bin": "0321d3a4297e4b980a809227c63cd38ad5e5e903168f3634c1a75a9f25847760",
+          "generated_projectile_settings.dl_bin": "50af7cccf03697a0ef96b7f9ddeb19279adc3b887bd95e0f972996844b7221ea",
+          "generated_explosion_settings.dl_bin": "1f7c53253250e89cd17a1381bd5a2feb48aeb336e4a3c97e74311c6fb67d7af6"
+        }
+      },
+      {
+        "weapon": {
+          "entity": "26e40437ea275296",
+          "unit": "26e40437ea275296",
+          "sidearm": false,
+          "is_p11": false
+        },
+        "firing": {
+          "source": "entity_delta_effective",
+          "ammo_mode": "programmable_ammunition",
+          "attachment": null,
+          "component": "ProjectileWeaponComponent",
+          "field": {
+            "structure_id": "2290c42e",
+            "member": "WeaponFunctionProjectileType",
+            "name_token": "000af7cf",
+            "type_id": "a2b5f333",
+            "offset": 576
+          },
+          "component_evidence": {
+            "record": {
+              "hashmap_index": 396,
+              "data_index": 241,
+              "file_offset": 46561996,
+              "size": 616,
+              "delta_count": 0
+            },
+            "entity_deltas": []
+          }
+        },
+        "original": {
+          "role": "original_shot",
+          "kind": "native_projectile",
+          "mechanism": "native_projectile_unverified",
+          "projectile_type": 96,
+          "projectile_key": "name:844732b0:844732b0:844732b0:unit:36ab9a3dcae3d562",
+          "entity": "0000000000000000",
+          "status": "static_reference_only"
+        },
+        "collision": {
+          "raycast_template_field": {
+            "structure_id": "a2afbafd",
+            "structure_name": "ProjectileInfo",
+            "member": "RaycastTemplate",
+            "name_token": "000214e8",
+            "type_id": "d7658573",
+            "offset": 244,
+            "value": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "native_consumer": "unproven"
+        },
+        "explosions": [
+          {
+            "trigger": "impact",
+            "status": "static_reference_only",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeOnImpact",
+              "name_token": "000211ac",
+              "type_id": "11beee03",
+              "offset": 144,
+              "value": 300,
+              "sha256": "f2dadabeae2223ad5a889fd86b220e112bad5cc37be496a1308e2c13f21d2bf4"
+            },
+            "explosion_key": "content:344634fd7ec92a4a022ade63fefcfc340376f7f2e6691448861bd228bf5f9071",
+            "secondary": {
+              "role": "secondary_fragment",
+              "original_shot": false,
+              "count": 25,
+              "projectile_type": 233,
+              "projectile_key": "name:844732b0:72edb2f8:f1cd5269:unit:a6cd8a90185b6567",
+              "status": "static_reference_only"
+            }
+          },
+          {
+            "trigger": "expiry",
+            "status": "static_reference_only",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeExpire",
+              "name_token": "000211e9",
+              "type_id": "11beee03",
+              "offset": 156,
+              "value": 300,
+              "sha256": "f2dadabeae2223ad5a889fd86b220e112bad5cc37be496a1308e2c13f21d2bf4"
+            },
+            "explosion_key": "content:344634fd7ec92a4a022ade63fefcfc340376f7f2e6691448861bd228bf5f9071",
+            "secondary": {
+              "role": "secondary_fragment",
+              "original_shot": false,
+              "count": 25,
+              "projectile_type": 233,
+              "projectile_key": "name:844732b0:72edb2f8:f1cd5269:unit:a6cd8a90185b6567",
+              "status": "static_reference_only"
+            }
+          }
+        ],
+        "scope_policy": {
+          "p11": "outside_scope",
+          "pistols": "outside_scope",
+          "native_no_shotguns": "included",
+          "native_weapons": "included"
+        },
+        "source_fingerprints": {
+          "generated_entities.dl_bin": "21377252b81fdbc670eba1e59a8ab64b170323df208f175e708992e4c1fb515e",
+          "generated_entity_deltas.dl_bin": "3fadc7c2475558000f9e8ad30e01d52caea481e1633e35674ed2864572694f4e",
+          "generated_weapon_customization_settings.dl_bin": "0321d3a4297e4b980a809227c63cd38ad5e5e903168f3634c1a75a9f25847760",
+          "generated_projectile_settings.dl_bin": "50af7cccf03697a0ef96b7f9ddeb19279adc3b887bd95e0f972996844b7221ea",
+          "generated_explosion_settings.dl_bin": "1f7c53253250e89cd17a1381bd5a2feb48aeb336e4a3c97e74311c6fb67d7af6"
+        }
+      },
+      {
+        "weapon": {
+          "entity": "a8cffb316f0b5c5f",
+          "unit": "a8cffb316f0b5c5f",
+          "sidearm": false,
+          "is_p11": false
+        },
+        "firing": {
+          "source": "base_component",
+          "ammo_mode": "programmable_ammunition",
+          "attachment": null,
+          "component": "ProjectileWeaponComponent",
+          "field": {
+            "structure_id": "2290c42e",
+            "member": "WeaponFunctionProjectileType",
+            "name_token": "000af7cf",
+            "type_id": "a2b5f333",
+            "offset": 576
+          },
+          "component_evidence": {
+            "record": {
+              "hashmap_index": 323,
+              "data_index": 242,
+              "file_offset": 46562612,
+              "size": 616,
+              "delta_count": 0
+            },
+            "entity_deltas": []
+          }
+        },
+        "original": {
+          "role": "original_shot",
+          "kind": "native_projectile",
+          "mechanism": "native_projectile_unverified",
+          "projectile_type": 284,
+          "projectile_key": "name:d41d8f1a:74ad0033:54a8332e:unit:a6cd8a90185b6567",
+          "entity": "0000000000000000",
+          "status": "static_reference_only"
+        },
+        "collision": {
+          "raycast_template_field": {
+            "structure_id": "a2afbafd",
+            "structure_name": "ProjectileInfo",
+            "member": "RaycastTemplate",
+            "name_token": "000214e8",
+            "type_id": "d7658573",
+            "offset": 244,
+            "value": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "native_consumer": "unproven"
+        },
+        "explosions": [
+          {
+            "trigger": "impact",
+            "status": "static_reference_only",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeOnImpact",
+              "name_token": "000211ac",
+              "type_id": "11beee03",
+              "offset": 144,
+              "value": 380,
+              "sha256": "65510680c19c1eeccca0056e33f7f4207e05423551188a6b17b367f09998d131"
+            },
+            "explosion_key": "content:95ee90d667687f7f5804cee4736b9bb2a3f326ef93efb3b46496deaf76720db5",
+            "secondary": {
+              "role": "secondary_fragment",
+              "original_shot": false,
+              "count": 30,
+              "projectile_type": 201,
+              "projectile_key": "name:672a9b2e:6b55e559:f1cd5269:unit:0000000000000000",
+              "status": "static_reference_only"
+            }
+          },
+          {
+            "trigger": "expiry",
+            "status": "none_by_pinned_enum",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeExpire",
+              "name_token": "000211e9",
+              "type_id": "11beee03",
+              "offset": 156,
+              "value": 0,
+              "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+            },
+            "explosion_key": null,
+            "secondary": null
+          }
+        ],
+        "scope_policy": {
+          "p11": "outside_scope",
+          "pistols": "outside_scope",
+          "native_no_shotguns": "included",
+          "native_weapons": "included"
+        },
+        "source_fingerprints": {
+          "generated_entities.dl_bin": "21377252b81fdbc670eba1e59a8ab64b170323df208f175e708992e4c1fb515e",
+          "generated_entity_deltas.dl_bin": "3fadc7c2475558000f9e8ad30e01d52caea481e1633e35674ed2864572694f4e",
+          "generated_weapon_customization_settings.dl_bin": "0321d3a4297e4b980a809227c63cd38ad5e5e903168f3634c1a75a9f25847760",
+          "generated_projectile_settings.dl_bin": "50af7cccf03697a0ef96b7f9ddeb19279adc3b887bd95e0f972996844b7221ea",
+          "generated_explosion_settings.dl_bin": "1f7c53253250e89cd17a1381bd5a2feb48aeb336e4a3c97e74311c6fb67d7af6"
+        }
+      },
+      {
+        "weapon": {
+          "entity": "a8cffb316f0b5c5f",
+          "unit": "a8cffb316f0b5c5f",
+          "sidearm": false,
+          "is_p11": false
+        },
+        "firing": {
+          "source": "entity_delta_effective",
+          "ammo_mode": "programmable_ammunition",
+          "attachment": null,
+          "component": "ProjectileWeaponComponent",
+          "field": {
+            "structure_id": "2290c42e",
+            "member": "WeaponFunctionProjectileType",
+            "name_token": "000af7cf",
+            "type_id": "a2b5f333",
+            "offset": 576
+          },
+          "component_evidence": {
+            "record": {
+              "hashmap_index": 323,
+              "data_index": 242,
+              "file_offset": 46562612,
+              "size": 616,
+              "delta_count": 0
+            },
+            "entity_deltas": []
+          }
+        },
+        "original": {
+          "role": "original_shot",
+          "kind": "native_projectile",
+          "mechanism": "native_projectile_unverified",
+          "projectile_type": 284,
+          "projectile_key": "name:d41d8f1a:74ad0033:54a8332e:unit:a6cd8a90185b6567",
+          "entity": "0000000000000000",
+          "status": "static_reference_only"
+        },
+        "collision": {
+          "raycast_template_field": {
+            "structure_id": "a2afbafd",
+            "structure_name": "ProjectileInfo",
+            "member": "RaycastTemplate",
+            "name_token": "000214e8",
+            "type_id": "d7658573",
+            "offset": 244,
+            "value": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "native_consumer": "unproven"
+        },
+        "explosions": [
+          {
+            "trigger": "impact",
+            "status": "static_reference_only",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeOnImpact",
+              "name_token": "000211ac",
+              "type_id": "11beee03",
+              "offset": 144,
+              "value": 380,
+              "sha256": "65510680c19c1eeccca0056e33f7f4207e05423551188a6b17b367f09998d131"
+            },
+            "explosion_key": "content:95ee90d667687f7f5804cee4736b9bb2a3f326ef93efb3b46496deaf76720db5",
+            "secondary": {
+              "role": "secondary_fragment",
+              "original_shot": false,
+              "count": 30,
+              "projectile_type": 201,
+              "projectile_key": "name:672a9b2e:6b55e559:f1cd5269:unit:0000000000000000",
+              "status": "static_reference_only"
+            }
+          },
+          {
+            "trigger": "expiry",
+            "status": "none_by_pinned_enum",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeExpire",
+              "name_token": "000211e9",
+              "type_id": "11beee03",
+              "offset": 156,
+              "value": 0,
+              "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+            },
+            "explosion_key": null,
+            "secondary": null
+          }
+        ],
+        "scope_policy": {
+          "p11": "outside_scope",
+          "pistols": "outside_scope",
+          "native_no_shotguns": "included",
+          "native_weapons": "included"
+        },
+        "source_fingerprints": {
+          "generated_entities.dl_bin": "21377252b81fdbc670eba1e59a8ab64b170323df208f175e708992e4c1fb515e",
+          "generated_entity_deltas.dl_bin": "3fadc7c2475558000f9e8ad30e01d52caea481e1633e35674ed2864572694f4e",
+          "generated_weapon_customization_settings.dl_bin": "0321d3a4297e4b980a809227c63cd38ad5e5e903168f3634c1a75a9f25847760",
+          "generated_projectile_settings.dl_bin": "50af7cccf03697a0ef96b7f9ddeb19279adc3b887bd95e0f972996844b7221ea",
+          "generated_explosion_settings.dl_bin": "1f7c53253250e89cd17a1381bd5a2feb48aeb336e4a3c97e74311c6fb67d7af6"
+        }
+      },
+      {
+        "weapon": {
+          "entity": "b2b5e0d185605f9e",
+          "unit": "b2b5e0d185605f9e",
+          "sidearm": false,
+          "is_p11": false
+        },
+        "firing": {
+          "source": "base_component",
+          "ammo_mode": "base_ammunition",
+          "attachment": null,
+          "component": "ProjectileWeaponComponent",
+          "field": {
+            "structure_id": "2290c42e",
+            "member": "ProjType",
+            "name_token": "000ae301",
+            "type_id": "a2b5f333",
+            "offset": 0
+          },
+          "component_evidence": {
+            "record": {
+              "hashmap_index": 530,
+              "data_index": 246,
+              "file_offset": 46565076,
+              "size": 616,
+              "delta_count": 0
+            },
+            "entity_deltas": []
+          }
+        },
+        "original": {
+          "role": "original_shot",
+          "kind": "native_projectile",
+          "mechanism": "native_projectile_unverified",
+          "projectile_type": 259,
+          "projectile_key": "name:c0e48428:2297c30d:f1cd5269:unit:92b70eddfa065a49",
+          "entity": "0000000000000000",
+          "status": "static_reference_only"
+        },
+        "collision": {
+          "raycast_template_field": {
+            "structure_id": "a2afbafd",
+            "structure_name": "ProjectileInfo",
+            "member": "RaycastTemplate",
+            "name_token": "000214e8",
+            "type_id": "d7658573",
+            "offset": 244,
+            "value": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "native_consumer": "unproven"
+        },
+        "explosions": [
+          {
+            "trigger": "impact",
+            "status": "static_reference_only",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeOnImpact",
+              "name_token": "000211ac",
+              "type_id": "11beee03",
+              "offset": 144,
+              "value": 316,
+              "sha256": "19e7f449445644f91189c6c932f70d49e14ba38f47d90b3854c32f216111ee47"
+            },
+            "explosion_key": "content:a14974adb8862b360fe4b180534b9e0376830956932b47eb3b934b3904c6ff41",
+            "secondary": {
+              "role": "secondary_fragment",
+              "original_shot": false,
+              "count": 20,
+              "projectile_type": 224,
+              "projectile_key": "name:d41d8f1a:74ad0033:54a8332e:unit:a6cd8a90185b6567",
+              "status": "static_reference_only"
+            }
+          },
+          {
+            "trigger": "expiry",
+            "status": "none_by_pinned_enum",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeExpire",
+              "name_token": "000211e9",
+              "type_id": "11beee03",
+              "offset": 156,
+              "value": 0,
+              "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+            },
+            "explosion_key": null,
+            "secondary": null
+          }
+        ],
+        "scope_policy": {
+          "p11": "outside_scope",
+          "pistols": "outside_scope",
+          "native_no_shotguns": "included",
+          "native_weapons": "included"
+        },
+        "source_fingerprints": {
+          "generated_entities.dl_bin": "21377252b81fdbc670eba1e59a8ab64b170323df208f175e708992e4c1fb515e",
+          "generated_entity_deltas.dl_bin": "3fadc7c2475558000f9e8ad30e01d52caea481e1633e35674ed2864572694f4e",
+          "generated_weapon_customization_settings.dl_bin": "0321d3a4297e4b980a809227c63cd38ad5e5e903168f3634c1a75a9f25847760",
+          "generated_projectile_settings.dl_bin": "50af7cccf03697a0ef96b7f9ddeb19279adc3b887bd95e0f972996844b7221ea",
+          "generated_explosion_settings.dl_bin": "1f7c53253250e89cd17a1381bd5a2feb48aeb336e4a3c97e74311c6fb67d7af6"
+        }
+      },
+      {
+        "weapon": {
+          "entity": "b2b5e0d185605f9e",
+          "unit": "b2b5e0d185605f9e",
+          "sidearm": false,
+          "is_p11": false
+        },
+        "firing": {
+          "source": "entity_delta_effective",
+          "ammo_mode": "base_ammunition",
+          "attachment": null,
+          "component": "ProjectileWeaponComponent",
+          "field": {
+            "structure_id": "2290c42e",
+            "member": "ProjType",
+            "name_token": "000ae301",
+            "type_id": "a2b5f333",
+            "offset": 0
+          },
+          "component_evidence": {
+            "record": {
+              "hashmap_index": 530,
+              "data_index": 246,
+              "file_offset": 46565076,
+              "size": 616,
+              "delta_count": 0
+            },
+            "entity_deltas": []
+          }
+        },
+        "original": {
+          "role": "original_shot",
+          "kind": "native_projectile",
+          "mechanism": "native_projectile_unverified",
+          "projectile_type": 259,
+          "projectile_key": "name:c0e48428:2297c30d:f1cd5269:unit:92b70eddfa065a49",
+          "entity": "0000000000000000",
+          "status": "static_reference_only"
+        },
+        "collision": {
+          "raycast_template_field": {
+            "structure_id": "a2afbafd",
+            "structure_name": "ProjectileInfo",
+            "member": "RaycastTemplate",
+            "name_token": "000214e8",
+            "type_id": "d7658573",
+            "offset": 244,
+            "value": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "native_consumer": "unproven"
+        },
+        "explosions": [
+          {
+            "trigger": "impact",
+            "status": "static_reference_only",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeOnImpact",
+              "name_token": "000211ac",
+              "type_id": "11beee03",
+              "offset": 144,
+              "value": 316,
+              "sha256": "19e7f449445644f91189c6c932f70d49e14ba38f47d90b3854c32f216111ee47"
+            },
+            "explosion_key": "content:a14974adb8862b360fe4b180534b9e0376830956932b47eb3b934b3904c6ff41",
+            "secondary": {
+              "role": "secondary_fragment",
+              "original_shot": false,
+              "count": 20,
+              "projectile_type": 224,
+              "projectile_key": "name:d41d8f1a:74ad0033:54a8332e:unit:a6cd8a90185b6567",
+              "status": "static_reference_only"
+            }
+          },
+          {
+            "trigger": "expiry",
+            "status": "none_by_pinned_enum",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeExpire",
+              "name_token": "000211e9",
+              "type_id": "11beee03",
+              "offset": 156,
+              "value": 0,
+              "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+            },
+            "explosion_key": null,
+            "secondary": null
+          }
+        ],
+        "scope_policy": {
+          "p11": "outside_scope",
+          "pistols": "outside_scope",
+          "native_no_shotguns": "included",
+          "native_weapons": "included"
+        },
+        "source_fingerprints": {
+          "generated_entities.dl_bin": "21377252b81fdbc670eba1e59a8ab64b170323df208f175e708992e4c1fb515e",
+          "generated_entity_deltas.dl_bin": "3fadc7c2475558000f9e8ad30e01d52caea481e1633e35674ed2864572694f4e",
+          "generated_weapon_customization_settings.dl_bin": "0321d3a4297e4b980a809227c63cd38ad5e5e903168f3634c1a75a9f25847760",
+          "generated_projectile_settings.dl_bin": "50af7cccf03697a0ef96b7f9ddeb19279adc3b887bd95e0f972996844b7221ea",
+          "generated_explosion_settings.dl_bin": "1f7c53253250e89cd17a1381bd5a2feb48aeb336e4a3c97e74311c6fb67d7af6"
+        }
+      },
+      {
+        "weapon": {
+          "entity": "b6aff2195568767f",
+          "unit": "8dc91f277c6096ee",
+          "sidearm": false,
+          "is_p11": false
+        },
+        "firing": {
+          "source": "base_component",
+          "ammo_mode": "base_ammunition",
+          "attachment": null,
+          "component": "ProjectileWeaponComponent",
+          "field": {
+            "structure_id": "2290c42e",
+            "member": "ProjType",
+            "name_token": "000ae301",
+            "type_id": "a2b5f333",
+            "offset": 0
+          },
+          "component_evidence": {
+            "record": {
+              "hashmap_index": 151,
+              "data_index": 212,
+              "file_offset": 46544132,
+              "size": 616,
+              "delta_count": 0
+            },
+            "entity_deltas": []
+          }
+        },
+        "original": {
+          "role": "original_shot",
+          "kind": "native_projectile",
+          "mechanism": "native_projectile_unverified",
+          "projectile_type": 40,
+          "projectile_key": "name:095d6c88:8800f269:f1cd5269:unit:0000000000000000",
+          "entity": "0000000000000000",
+          "status": "static_reference_only"
+        },
+        "collision": {
+          "raycast_template_field": {
+            "structure_id": "a2afbafd",
+            "structure_name": "ProjectileInfo",
+            "member": "RaycastTemplate",
+            "name_token": "000214e8",
+            "type_id": "d7658573",
+            "offset": 244,
+            "value": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "native_consumer": "unproven"
+        },
+        "explosions": [
+          {
+            "trigger": "impact",
+            "status": "static_reference_only",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeOnImpact",
+              "name_token": "000211ac",
+              "type_id": "11beee03",
+              "offset": 144,
+              "value": 158,
+              "sha256": "96416924980729fa177ccaa0cea21bf2a641986f5759324e73e9e60502e61cfd"
+            },
+            "explosion_key": "content:78937741315139fdaff6d4a8dea93e70f6f9a47f2acd2d270854e0696ed27a53",
+            "secondary": {
+              "role": "secondary_fragment",
+              "original_shot": false,
+              "count": 30,
+              "projectile_type": 201,
+              "projectile_key": "name:672a9b2e:6b55e559:f1cd5269:unit:0000000000000000",
+              "status": "static_reference_only"
+            }
+          },
+          {
+            "trigger": "expiry",
+            "status": "static_reference_only",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeExpire",
+              "name_token": "000211e9",
+              "type_id": "11beee03",
+              "offset": 156,
+              "value": 158,
+              "sha256": "96416924980729fa177ccaa0cea21bf2a641986f5759324e73e9e60502e61cfd"
+            },
+            "explosion_key": "content:78937741315139fdaff6d4a8dea93e70f6f9a47f2acd2d270854e0696ed27a53",
+            "secondary": {
+              "role": "secondary_fragment",
+              "original_shot": false,
+              "count": 30,
+              "projectile_type": 201,
+              "projectile_key": "name:672a9b2e:6b55e559:f1cd5269:unit:0000000000000000",
+              "status": "static_reference_only"
+            }
+          }
+        ],
+        "scope_policy": {
+          "p11": "outside_scope",
+          "pistols": "outside_scope",
+          "native_no_shotguns": "included",
+          "native_weapons": "included"
+        },
+        "source_fingerprints": {
+          "generated_entities.dl_bin": "21377252b81fdbc670eba1e59a8ab64b170323df208f175e708992e4c1fb515e",
+          "generated_entity_deltas.dl_bin": "3fadc7c2475558000f9e8ad30e01d52caea481e1633e35674ed2864572694f4e",
+          "generated_weapon_customization_settings.dl_bin": "0321d3a4297e4b980a809227c63cd38ad5e5e903168f3634c1a75a9f25847760",
+          "generated_projectile_settings.dl_bin": "50af7cccf03697a0ef96b7f9ddeb19279adc3b887bd95e0f972996844b7221ea",
+          "generated_explosion_settings.dl_bin": "1f7c53253250e89cd17a1381bd5a2feb48aeb336e4a3c97e74311c6fb67d7af6"
+        }
+      },
+      {
+        "weapon": {
+          "entity": "b6aff2195568767f",
+          "unit": "8dc91f277c6096ee",
+          "sidearm": false,
+          "is_p11": false
+        },
+        "firing": {
+          "source": "entity_delta_effective",
+          "ammo_mode": "base_ammunition",
+          "attachment": null,
+          "component": "ProjectileWeaponComponent",
+          "field": {
+            "structure_id": "2290c42e",
+            "member": "ProjType",
+            "name_token": "000ae301",
+            "type_id": "a2b5f333",
+            "offset": 0
+          },
+          "component_evidence": {
+            "record": {
+              "hashmap_index": 151,
+              "data_index": 212,
+              "file_offset": 46544132,
+              "size": 616,
+              "delta_count": 0
+            },
+            "entity_deltas": []
+          }
+        },
+        "original": {
+          "role": "original_shot",
+          "kind": "native_projectile",
+          "mechanism": "native_projectile_unverified",
+          "projectile_type": 40,
+          "projectile_key": "name:095d6c88:8800f269:f1cd5269:unit:0000000000000000",
+          "entity": "0000000000000000",
+          "status": "static_reference_only"
+        },
+        "collision": {
+          "raycast_template_field": {
+            "structure_id": "a2afbafd",
+            "structure_name": "ProjectileInfo",
+            "member": "RaycastTemplate",
+            "name_token": "000214e8",
+            "type_id": "d7658573",
+            "offset": 244,
+            "value": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "native_consumer": "unproven"
+        },
+        "explosions": [
+          {
+            "trigger": "impact",
+            "status": "static_reference_only",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeOnImpact",
+              "name_token": "000211ac",
+              "type_id": "11beee03",
+              "offset": 144,
+              "value": 158,
+              "sha256": "96416924980729fa177ccaa0cea21bf2a641986f5759324e73e9e60502e61cfd"
+            },
+            "explosion_key": "content:78937741315139fdaff6d4a8dea93e70f6f9a47f2acd2d270854e0696ed27a53",
+            "secondary": {
+              "role": "secondary_fragment",
+              "original_shot": false,
+              "count": 30,
+              "projectile_type": 201,
+              "projectile_key": "name:672a9b2e:6b55e559:f1cd5269:unit:0000000000000000",
+              "status": "static_reference_only"
+            }
+          },
+          {
+            "trigger": "expiry",
+            "status": "static_reference_only",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeExpire",
+              "name_token": "000211e9",
+              "type_id": "11beee03",
+              "offset": 156,
+              "value": 158,
+              "sha256": "96416924980729fa177ccaa0cea21bf2a641986f5759324e73e9e60502e61cfd"
+            },
+            "explosion_key": "content:78937741315139fdaff6d4a8dea93e70f6f9a47f2acd2d270854e0696ed27a53",
+            "secondary": {
+              "role": "secondary_fragment",
+              "original_shot": false,
+              "count": 30,
+              "projectile_type": 201,
+              "projectile_key": "name:672a9b2e:6b55e559:f1cd5269:unit:0000000000000000",
+              "status": "static_reference_only"
+            }
+          }
+        ],
+        "scope_policy": {
+          "p11": "outside_scope",
+          "pistols": "outside_scope",
+          "native_no_shotguns": "included",
+          "native_weapons": "included"
+        },
+        "source_fingerprints": {
+          "generated_entities.dl_bin": "21377252b81fdbc670eba1e59a8ab64b170323df208f175e708992e4c1fb515e",
+          "generated_entity_deltas.dl_bin": "3fadc7c2475558000f9e8ad30e01d52caea481e1633e35674ed2864572694f4e",
+          "generated_weapon_customization_settings.dl_bin": "0321d3a4297e4b980a809227c63cd38ad5e5e903168f3634c1a75a9f25847760",
+          "generated_projectile_settings.dl_bin": "50af7cccf03697a0ef96b7f9ddeb19279adc3b887bd95e0f972996844b7221ea",
+          "generated_explosion_settings.dl_bin": "1f7c53253250e89cd17a1381bd5a2feb48aeb336e4a3c97e74311c6fb67d7af6"
+        }
+      },
+      {
+        "weapon": {
+          "entity": "bc29613666df696b",
+          "unit": "bc29613666df696b",
+          "sidearm": false,
+          "is_p11": false
+        },
+        "firing": {
+          "source": "optional_attachment:c30c3e10",
+          "ammo_mode": "base_ammunition",
+          "attachment": {
+            "kind": "optional_attachment",
+            "customization_id": "c30c3e10",
+            "association": {
+              "customization_id": "c30c3e10",
+              "add_path": "65df7479ba273925",
+              "association": "slot_compatible_candidate_not_equipability_proof",
+              "firing_delta_count": 1
+            },
+            "status": "individual_delta_candidate_not_composed"
+          },
+          "component": "ProjectileWeaponComponent",
+          "field": {
+            "structure_id": "2290c42e",
+            "member": "ProjType",
+            "name_token": "000ae301",
+            "type_id": "a2b5f333",
+            "offset": 0
+          },
+          "component_evidence": {
+            "record": {
+              "hashmap_index": 333,
+              "data_index": 197,
+              "file_offset": 46534892,
+              "size": 616,
+              "delta_count": 0
+            },
+            "entity_deltas": []
+          }
+        },
+        "original": {
+          "role": "original_shot",
+          "kind": "native_projectile",
+          "mechanism": "native_projectile_unverified",
+          "projectile_type": 118,
+          "projectile_key": "name:925f21ba:c5c01bae:f1cd5269:unit:0000000000000000",
+          "entity": "0000000000000000",
+          "status": "static_reference_only"
+        },
+        "collision": {
+          "raycast_template_field": {
+            "structure_id": "a2afbafd",
+            "structure_name": "ProjectileInfo",
+            "member": "RaycastTemplate",
+            "name_token": "000214e8",
+            "type_id": "d7658573",
+            "offset": 244,
+            "value": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "native_consumer": "unproven"
+        },
+        "explosions": [
+          {
+            "trigger": "impact",
+            "status": "none_by_pinned_enum",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeOnImpact",
+              "name_token": "000211ac",
+              "type_id": "11beee03",
+              "offset": 144,
+              "value": 0,
+              "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+            },
+            "explosion_key": null,
+            "secondary": null
+          },
+          {
+            "trigger": "expiry",
+            "status": "static_reference_only",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeExpire",
+              "name_token": "000211e9",
+              "type_id": "11beee03",
+              "offset": 156,
+              "value": 339,
+              "sha256": "e1257865800a82a0d0717ef76604806a25744f0840844b71380e248f03430709"
+            },
+            "explosion_key": "content:90a763fd1cf88e6dd9069a513769e03a9b176c53e086dc2e83bdb21f3dd4db96",
+            "secondary": {
+              "role": "secondary_fragment",
+              "original_shot": false,
+              "count": 20,
+              "projectile_type": 0,
+              "projectile_key": null,
+              "status": "unknown_target"
+            }
+          }
+        ],
+        "scope_policy": {
+          "p11": "outside_scope",
+          "pistols": "outside_scope",
+          "native_no_shotguns": "excluded",
+          "native_weapons": "included"
+        },
+        "source_fingerprints": {
+          "generated_entities.dl_bin": "21377252b81fdbc670eba1e59a8ab64b170323df208f175e708992e4c1fb515e",
+          "generated_entity_deltas.dl_bin": "3fadc7c2475558000f9e8ad30e01d52caea481e1633e35674ed2864572694f4e",
+          "generated_weapon_customization_settings.dl_bin": "0321d3a4297e4b980a809227c63cd38ad5e5e903168f3634c1a75a9f25847760",
+          "generated_projectile_settings.dl_bin": "50af7cccf03697a0ef96b7f9ddeb19279adc3b887bd95e0f972996844b7221ea",
+          "generated_explosion_settings.dl_bin": "1f7c53253250e89cd17a1381bd5a2feb48aeb336e4a3c97e74311c6fb67d7af6"
+        }
+      },
+      {
+        "weapon": {
+          "entity": "bc29613666df696b",
+          "unit": "bc29613666df696b",
+          "sidearm": false,
+          "is_p11": false
+        },
+        "firing": {
+          "source": "optional_attachment:0fa0aae4",
+          "ammo_mode": "base_ammunition",
+          "attachment": {
+            "kind": "optional_attachment",
+            "customization_id": "0fa0aae4",
+            "association": {
+              "customization_id": "0fa0aae4",
+              "add_path": "ae8d7adbfb86b2e2",
+              "association": "slot_compatible_candidate_not_equipability_proof",
+              "firing_delta_count": 1
+            },
+            "status": "individual_delta_candidate_not_composed"
+          },
+          "component": "ProjectileWeaponComponent",
+          "field": {
+            "structure_id": "2290c42e",
+            "member": "ProjType",
+            "name_token": "000ae301",
+            "type_id": "a2b5f333",
+            "offset": 0
+          },
+          "component_evidence": {
+            "record": {
+              "hashmap_index": 333,
+              "data_index": 197,
+              "file_offset": 46534892,
+              "size": 616,
+              "delta_count": 0
+            },
+            "entity_deltas": []
+          }
+        },
+        "original": {
+          "role": "original_shot",
+          "kind": "native_projectile",
+          "mechanism": "native_projectile_unverified",
+          "projectile_type": 206,
+          "projectile_key": "name:095d6c88:8800f269:f1cd5269:unit:0000000000000000",
+          "entity": "0000000000000000",
+          "status": "static_reference_only"
+        },
+        "collision": {
+          "raycast_template_field": {
+            "structure_id": "a2afbafd",
+            "structure_name": "ProjectileInfo",
+            "member": "RaycastTemplate",
+            "name_token": "000214e8",
+            "type_id": "d7658573",
+            "offset": 244,
+            "value": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "native_consumer": "unproven"
+        },
+        "explosions": [
+          {
+            "trigger": "impact",
+            "status": "static_reference_only",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeOnImpact",
+              "name_token": "000211ac",
+              "type_id": "11beee03",
+              "offset": 144,
+              "value": 380,
+              "sha256": "65510680c19c1eeccca0056e33f7f4207e05423551188a6b17b367f09998d131"
+            },
+            "explosion_key": "content:95ee90d667687f7f5804cee4736b9bb2a3f326ef93efb3b46496deaf76720db5",
+            "secondary": {
+              "role": "secondary_fragment",
+              "original_shot": false,
+              "count": 30,
+              "projectile_type": 201,
+              "projectile_key": "name:672a9b2e:6b55e559:f1cd5269:unit:0000000000000000",
+              "status": "static_reference_only"
+            }
+          },
+          {
+            "trigger": "expiry",
+            "status": "static_reference_only",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeExpire",
+              "name_token": "000211e9",
+              "type_id": "11beee03",
+              "offset": 156,
+              "value": 380,
+              "sha256": "65510680c19c1eeccca0056e33f7f4207e05423551188a6b17b367f09998d131"
+            },
+            "explosion_key": "content:95ee90d667687f7f5804cee4736b9bb2a3f326ef93efb3b46496deaf76720db5",
+            "secondary": {
+              "role": "secondary_fragment",
+              "original_shot": false,
+              "count": 30,
+              "projectile_type": 201,
+              "projectile_key": "name:672a9b2e:6b55e559:f1cd5269:unit:0000000000000000",
+              "status": "static_reference_only"
+            }
+          }
+        ],
+        "scope_policy": {
+          "p11": "outside_scope",
+          "pistols": "outside_scope",
+          "native_no_shotguns": "excluded",
+          "native_weapons": "included"
+        },
+        "source_fingerprints": {
+          "generated_entities.dl_bin": "21377252b81fdbc670eba1e59a8ab64b170323df208f175e708992e4c1fb515e",
+          "generated_entity_deltas.dl_bin": "3fadc7c2475558000f9e8ad30e01d52caea481e1633e35674ed2864572694f4e",
+          "generated_weapon_customization_settings.dl_bin": "0321d3a4297e4b980a809227c63cd38ad5e5e903168f3634c1a75a9f25847760",
+          "generated_projectile_settings.dl_bin": "50af7cccf03697a0ef96b7f9ddeb19279adc3b887bd95e0f972996844b7221ea",
+          "generated_explosion_settings.dl_bin": "1f7c53253250e89cd17a1381bd5a2feb48aeb336e4a3c97e74311c6fb67d7af6"
+        }
+      },
+      {
+        "weapon": {
+          "entity": "bc29613666df696b",
+          "unit": "bc29613666df696b",
+          "sidearm": false,
+          "is_p11": false
+        },
+        "firing": {
+          "source": "optional_attachment:44116c5e",
+          "ammo_mode": "base_ammunition",
+          "attachment": {
+            "kind": "optional_attachment",
+            "customization_id": "44116c5e",
+            "association": {
+              "customization_id": "44116c5e",
+              "add_path": "3272701407d4fdd6",
+              "association": "slot_compatible_candidate_not_equipability_proof",
+              "firing_delta_count": 1
+            },
+            "status": "individual_delta_candidate_not_composed"
+          },
+          "component": "ProjectileWeaponComponent",
+          "field": {
+            "structure_id": "2290c42e",
+            "member": "ProjType",
+            "name_token": "000ae301",
+            "type_id": "a2b5f333",
+            "offset": 0
+          },
+          "component_evidence": {
+            "record": {
+              "hashmap_index": 333,
+              "data_index": 197,
+              "file_offset": 46534892,
+              "size": 616,
+              "delta_count": 0
+            },
+            "entity_deltas": []
+          }
+        },
+        "original": {
+          "role": "original_shot",
+          "kind": "native_projectile",
+          "mechanism": "native_projectile_unverified",
+          "projectile_type": 252,
+          "projectile_key": "name:1105e45c:fa6a7da3:f1cd5269:unit:0000000000000000",
+          "entity": "0000000000000000",
+          "status": "static_reference_only"
+        },
+        "collision": {
+          "raycast_template_field": {
+            "structure_id": "a2afbafd",
+            "structure_name": "ProjectileInfo",
+            "member": "RaycastTemplate",
+            "name_token": "000214e8",
+            "type_id": "d7658573",
+            "offset": 244,
+            "value": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "native_consumer": "unproven"
+        },
+        "explosions": [
+          {
+            "trigger": "impact",
+            "status": "none_by_pinned_enum",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeOnImpact",
+              "name_token": "000211ac",
+              "type_id": "11beee03",
+              "offset": 144,
+              "value": 0,
+              "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+            },
+            "explosion_key": null,
+            "secondary": null
+          },
+          {
+            "trigger": "expiry",
+            "status": "static_reference_only",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeExpire",
+              "name_token": "000211e9",
+              "type_id": "11beee03",
+              "offset": 156,
+              "value": 171,
+              "sha256": "56f4b974ba239e38eb2669007fbd528499b53274297937bd7beecceb326a27f6"
+            },
+            "explosion_key": "content:071a9f54aaa040dfc18d9c8cc9f6250356a57213c5cc91ebdb7eaaca4ceafc5b",
+            "secondary": {
+              "role": "secondary_fragment",
+              "original_shot": false,
+              "count": 12,
+              "projectile_type": 117,
+              "projectile_key": "name:672a9b2e:6b55e559:f1cd5269:unit:0000000000000000",
+              "status": "static_reference_only"
+            }
+          }
+        ],
+        "scope_policy": {
+          "p11": "outside_scope",
+          "pistols": "outside_scope",
+          "native_no_shotguns": "excluded",
+          "native_weapons": "included"
+        },
+        "source_fingerprints": {
+          "generated_entities.dl_bin": "21377252b81fdbc670eba1e59a8ab64b170323df208f175e708992e4c1fb515e",
+          "generated_entity_deltas.dl_bin": "3fadc7c2475558000f9e8ad30e01d52caea481e1633e35674ed2864572694f4e",
+          "generated_weapon_customization_settings.dl_bin": "0321d3a4297e4b980a809227c63cd38ad5e5e903168f3634c1a75a9f25847760",
+          "generated_projectile_settings.dl_bin": "50af7cccf03697a0ef96b7f9ddeb19279adc3b887bd95e0f972996844b7221ea",
+          "generated_explosion_settings.dl_bin": "1f7c53253250e89cd17a1381bd5a2feb48aeb336e4a3c97e74311c6fb67d7af6"
+        }
+      },
+      {
+        "weapon": {
+          "entity": "d6b1fb05b9109353",
+          "unit": "d6b1fb05b9109353",
+          "sidearm": true,
+          "is_p11": true
+        },
+        "firing": {
+          "source": "base_component",
+          "ammo_mode": "base_ammunition",
+          "attachment": null,
+          "component": "ProjectileWeaponComponent",
+          "field": {
+            "structure_id": "2290c42e",
+            "member": "ProjType",
+            "name_token": "000ae301",
+            "type_id": "a2b5f333",
+            "offset": 0
+          },
+          "component_evidence": {
+            "record": {
+              "hashmap_index": 537,
+              "data_index": 141,
+              "file_offset": 46500396,
+              "size": 616,
+              "delta_count": 0
+            },
+            "entity_deltas": []
+          }
+        },
+        "original": {
+          "role": "original_shot",
+          "kind": "native_projectile",
+          "mechanism": "native_projectile_unverified",
+          "projectile_type": 318,
+          "projectile_key": "name:00000000:00000000:f1cd5269:unit:4431931242cbcd54",
+          "entity": "0000000000000000",
+          "status": "static_reference_only"
+        },
+        "collision": {
+          "raycast_template_field": {
+            "structure_id": "a2afbafd",
+            "structure_name": "ProjectileInfo",
+            "member": "RaycastTemplate",
+            "name_token": "000214e8",
+            "type_id": "d7658573",
+            "offset": 244,
+            "value": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "native_consumer": "unproven"
+        },
+        "explosions": [
+          {
+            "trigger": "impact",
+            "status": "none_by_pinned_enum",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeOnImpact",
+              "name_token": "000211ac",
+              "type_id": "11beee03",
+              "offset": 144,
+              "value": 0,
+              "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+            },
+            "explosion_key": null,
+            "secondary": null
+          },
+          {
+            "trigger": "expiry",
+            "status": "none_by_pinned_enum",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeExpire",
+              "name_token": "000211e9",
+              "type_id": "11beee03",
+              "offset": 156,
+              "value": 0,
+              "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+            },
+            "explosion_key": null,
+            "secondary": null
+          }
+        ],
+        "scope_policy": {
+          "p11": "included",
+          "pistols": "included",
+          "native_no_shotguns": "included",
+          "native_weapons": "included"
+        },
+        "source_fingerprints": {
+          "generated_entities.dl_bin": "21377252b81fdbc670eba1e59a8ab64b170323df208f175e708992e4c1fb515e",
+          "generated_entity_deltas.dl_bin": "3fadc7c2475558000f9e8ad30e01d52caea481e1633e35674ed2864572694f4e",
+          "generated_weapon_customization_settings.dl_bin": "0321d3a4297e4b980a809227c63cd38ad5e5e903168f3634c1a75a9f25847760",
+          "generated_projectile_settings.dl_bin": "50af7cccf03697a0ef96b7f9ddeb19279adc3b887bd95e0f972996844b7221ea",
+          "generated_explosion_settings.dl_bin": "1f7c53253250e89cd17a1381bd5a2feb48aeb336e4a3c97e74311c6fb67d7af6"
+        }
+      },
+      {
+        "weapon": {
+          "entity": "d6b1fb05b9109353",
+          "unit": "d6b1fb05b9109353",
+          "sidearm": true,
+          "is_p11": true
+        },
+        "firing": {
+          "source": "entity_delta_effective",
+          "ammo_mode": "base_ammunition",
+          "attachment": null,
+          "component": "ProjectileWeaponComponent",
+          "field": {
+            "structure_id": "2290c42e",
+            "member": "ProjType",
+            "name_token": "000ae301",
+            "type_id": "a2b5f333",
+            "offset": 0
+          },
+          "component_evidence": {
+            "record": {
+              "hashmap_index": 537,
+              "data_index": 141,
+              "file_offset": 46500396,
+              "size": 616,
+              "delta_count": 0
+            },
+            "entity_deltas": []
+          }
+        },
+        "original": {
+          "role": "original_shot",
+          "kind": "native_projectile",
+          "mechanism": "native_projectile_unverified",
+          "projectile_type": 318,
+          "projectile_key": "name:00000000:00000000:f1cd5269:unit:4431931242cbcd54",
+          "entity": "0000000000000000",
+          "status": "static_reference_only"
+        },
+        "collision": {
+          "raycast_template_field": {
+            "structure_id": "a2afbafd",
+            "structure_name": "ProjectileInfo",
+            "member": "RaycastTemplate",
+            "name_token": "000214e8",
+            "type_id": "d7658573",
+            "offset": 244,
+            "value": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "native_consumer": "unproven"
+        },
+        "explosions": [
+          {
+            "trigger": "impact",
+            "status": "none_by_pinned_enum",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeOnImpact",
+              "name_token": "000211ac",
+              "type_id": "11beee03",
+              "offset": 144,
+              "value": 0,
+              "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+            },
+            "explosion_key": null,
+            "secondary": null
+          },
+          {
+            "trigger": "expiry",
+            "status": "none_by_pinned_enum",
+            "type_field": {
+              "structure_id": "a2afbafd",
+              "structure_name": "ProjectileInfo",
+              "member": "ExplosionTypeExpire",
+              "name_token": "000211e9",
+              "type_id": "11beee03",
+              "offset": 156,
+              "value": 0,
+              "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+            },
+            "explosion_key": null,
+            "secondary": null
+          }
+        ],
+        "scope_policy": {
+          "p11": "included",
+          "pistols": "included",
+          "native_no_shotguns": "included",
+          "native_weapons": "included"
+        },
+        "source_fingerprints": {
+          "generated_entities.dl_bin": "21377252b81fdbc670eba1e59a8ab64b170323df208f175e708992e4c1fb515e",
+          "generated_entity_deltas.dl_bin": "3fadc7c2475558000f9e8ad30e01d52caea481e1633e35674ed2864572694f4e",
+          "generated_weapon_customization_settings.dl_bin": "0321d3a4297e4b980a809227c63cd38ad5e5e903168f3634c1a75a9f25847760",
+          "generated_projectile_settings.dl_bin": "50af7cccf03697a0ef96b7f9ddeb19279adc3b887bd95e0f972996844b7221ea",
+          "generated_explosion_settings.dl_bin": "1f7c53253250e89cd17a1381bd5a2feb48aeb336e4a3c97e74311c6fb67d7af6"
+        }
+      }
+    ],
+    "gaps": [
+      {
+        "code": "entity_followup_unresolved",
+        "message": "Entity projectile collision and embedded projectile chain are unverified.",
+        "weapon": "1312b769f47256d9",
+        "entity": "5fc0c53098b1b220"
+      },
+      {
+        "code": "entity_followup_unresolved",
+        "message": "Entity projectile collision and embedded projectile chain are unverified.",
+        "weapon": "14d5d4506056c7a4",
+        "entity": "a1470a4dab237264"
+      },
+      {
+        "code": "entity_followup_unresolved",
+        "message": "Entity projectile collision and embedded projectile chain are unverified.",
+        "weapon": "25aa2fd4643cf4ee",
+        "entity": "1a4323835b84cea7"
+      },
+      {
+        "code": "entity_followup_unresolved",
+        "message": "Entity projectile collision and embedded projectile chain are unverified.",
+        "weapon": "5990123d142b16cb",
+        "entity": "527470c9d5f2b3c7"
+      },
+      {
+        "code": "entity_followup_unresolved",
+        "message": "Entity projectile collision and embedded projectile chain are unverified.",
+        "weapon": "821d035aa47e3e75",
+        "entity": "87d6654dadf3c41d"
+      },
+      {
+        "code": "entity_followup_unresolved",
+        "message": "Entity projectile collision and embedded projectile chain are unverified.",
+        "weapon": "824b7e0c4c879eb5",
+        "entity": "a526dc7d89ff696d"
+      },
+      {
+        "code": "entity_followup_unresolved",
+        "message": "Entity projectile collision and embedded projectile chain are unverified.",
+        "weapon": "8aff7f0793a5bced",
+        "entity": "d24156bd98fff3fe"
+      },
+      {
+        "code": "entity_followup_unresolved",
+        "message": "Entity projectile collision and embedded projectile chain are unverified.",
+        "weapon": "a1bdb3a13e3633dd",
+        "entity": "5fc0c53098b1b220"
+      },
+      {
+        "code": "entity_followup_unresolved",
+        "message": "Entity projectile collision and embedded projectile chain are unverified.",
+        "weapon": "bc242702fb46b7e7",
+        "entity": "30fbc4fd513c35e9"
+      },
+      {
+        "code": "secondary_projectile_unresolved",
+        "message": "Shrapnel references no projectile definition.",
+        "explosion": "content:90a763fd1cf88e6dd9069a513769e03a9b176c53e086dc2e83bdb21f3dd4db96",
+        "numeric_type": 0
+      },
+      {
+        "code": "entity_followup_unresolved",
+        "message": "Entity projectile collision and embedded projectile chain are unverified.",
+        "weapon": "cc786f6491fe7e65",
+        "entity": "14cc0db942f6d7f2"
+      },
+      {
+        "code": "entity_followup_unresolved",
+        "message": "Entity projectile collision and embedded projectile chain are unverified.",
+        "weapon": "cf8934ff6567a42d",
+        "entity": "8053da4358971392"
+      },
+      {
+        "code": "entity_followup_unresolved",
+        "message": "Entity projectile collision and embedded projectile chain are unverified.",
+        "weapon": "e91f569c2ad8af01",
+        "entity": "87a8a187b6fd68fd"
+      }
+    ],
+    "runtime_consumption_verified": false,
+    "gameplay_verified": false
+  },
+  "claims": [
+    {
+      "id": "ordinary_gun_fixed_option",
+      "status": "已排除",
+      "field": "spawn options+0x18",
+      "native_consumer_rva": [
+        "0x6165c2",
+        "0x13a9bbf",
+        "0x13a9bcb"
+      ],
+      "applicable_scopes": [
+        "p11",
+        "pistols",
+        "native_no_shotguns",
+        "native_weapons"
+      ],
+      "exclusion_reason": "普通原生槍械入口以常數 1 建立選項，無本機設定讀取邊；本結論只限此已識別路徑。",
+      "missing_evidence": [
+        "其他直接／間接入口的完整資料來源和本機武器身份鏈"
+      ],
+      "source_fingerprints": {
+        "filediver_analysis": "a1c7d72ba38d91f3526af7d8a58f2eee0ec235198d9a28d454abf2bc84eca1b3",
+        "filediver_bundle": "44a3acc0e56685768544b0adcc14e8e47b58845e362258d089fd9bef56b190cd",
+        "code_capture": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8"
+      }
+    },
+    {
+      "id": "private_settings_other_fields",
+      "status": "證據不足",
+      "field": "weapon-specific settings+0x28/+0x240/+0x248/+0x254/+0x108",
+      "native_consumer_rva": [
+        "0x515100",
+        "0x615b15",
+        "0x615b23",
+        "0x615b30",
+        "0x616573",
+        "0x6165f1",
+        "0x13aaa2b",
+        "0x13aaaf3"
+      ],
+      "applicable_scopes": [
+        "p11",
+        "pistols",
+        "native_no_shotguns",
+        "native_weapons"
+      ],
+      "exclusion_reason": "已見按武器 ID 取設定（無登記時回退資源）：+0x28 及模式覆寫選擇彈種或 entity；+0x254 與 +0x108 進入其他描述／選項欄位。這些已見讀取沒有流入 options+0x18；其餘碰撞語義尚未證明。",
+      "missing_evidence": [
+        "本機玩家對該設定記錄的獨占所有權和重用世代",
+        "+0x254 與 +0x108 的完整碰撞語義及附件／切換彈藥優先序"
+      ],
+      "source_fingerprints": {
+        "filediver_analysis": "a1c7d72ba38d91f3526af7d8a58f2eee0ec235198d9a28d454abf2bc84eca1b3",
+        "filediver_bundle": "44a3acc0e56685768544b0adcc14e8e47b58845e362258d089fd9bef56b190cd",
+        "code_capture": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8"
+      }
+    },
+    {
+      "id": "private_setting_254_first_exclusion",
+      "status": "已排除",
+      "field": "private settings+0x254 → spawn descriptor+0x28 → projectile state+0x14",
+      "native_consumer_rva": [
+        "0x616573",
+        "0x61657a",
+        "0x13aaa2b",
+        "0x13aaa2f",
+        "0x13ac68f",
+        "0x13ac6a1",
+        "0x13acfa1",
+        "0x13acfb9",
+        "0x13acff0"
+      ],
+      "applicable_scopes": [
+        "p11",
+        "pistols",
+        "native_no_shotguns",
+        "native_weapons"
+      ],
+      "exclusion_reason": "此已見欄位流入 state+0x14；來源 entity/unit 排除在 0x13ac68f 與 0x13ac6a1..0x13ac710 先發生，0x13acfa1 才讀 state+0x14 並進入浮點表查詢及 0x6489d0 呼叫。因此它不能在已見路徑改變首次來源排除。0x13aaac4 寫的是另一個 aux+0x14，不能混同。",
+      "missing_evidence": [
+        "晚期浮點表與 0x6489d0 的確切玩法語義",
+        "其他未識別入口是否另讀此欄及本機設定的獨占身份"
+      ],
+      "source_fingerprints": {
+        "filediver_analysis": "a1c7d72ba38d91f3526af7d8a58f2eee0ec235198d9a28d454abf2bc84eca1b3",
+        "filediver_bundle": "44a3acc0e56685768544b0adcc14e8e47b58845e362258d089fd9bef56b190cd",
+        "code_capture": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8"
+      }
+    },
+    {
+      "id": "private_setting_108_first_exclusion",
+      "status": "已排除",
+      "field": "private settings+0x108 → spawn options+0x44 → projectile aux+0x30",
+      "native_consumer_rva": [
+        "0x6165f1",
+        "0x616600",
+        "0x13aaaf3",
+        "0x13aaaf7",
+        "0x13a8c1f",
+        "0x13a8cf7",
+        "0x13a8d01",
+        "0x13a8d20",
+        "0x13a8f09"
+      ],
+      "applicable_scopes": [
+        "p11",
+        "pistols",
+        "native_no_shotguns",
+        "native_weapons"
+      ],
+      "exclusion_reason": "此已見欄位流入 aux+0x30；原生消費位於清理路徑，先測非零，再作資源索引與間接呼叫，最後清理旗標。它不是已見生成或首次碰撞前的來源排除讀取。",
+      "missing_evidence": [
+        "清理路徑資源索引與間接呼叫的確切副作用",
+        "其他未識別入口是否另讀此欄及本機設定的獨占身份"
+      ],
+      "source_fingerprints": {
+        "filediver_analysis": "a1c7d72ba38d91f3526af7d8a58f2eee0ec235198d9a28d454abf2bc84eca1b3",
+        "filediver_bundle": "44a3acc0e56685768544b0adcc14e8e47b58845e362258d089fd9bef56b190cd",
+        "code_capture": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8"
+      }
+    },
+    {
+      "id": "projectile_definition_f0_only",
+      "status": "已排除",
+      "field": "ProjectileInfo+0xF0",
+      "native_consumer_rva": [
+        "0x13a9bde",
+        "0x13a9c45"
+      ],
+      "applicable_scopes": [
+        "p11",
+        "pistols",
+        "native_no_shotguns",
+        "native_weapons"
+      ],
+      "exclusion_reason": "65,536 個定義旗標重放均無法清除由非零／缺席選項加入的初始 0x20。",
+      "missing_evidence": [
+        "其他不同於 +0xF0 的可持久本機欄位讀取證據"
+      ],
+      "source_fingerprints": {
+        "filediver_analysis": "a1c7d72ba38d91f3526af7d8a58f2eee0ec235198d9a28d454abf2bc84eca1b3",
+        "filediver_bundle": "44a3acc0e56685768544b0adcc14e8e47b58845e362258d089fd9bef56b190cd",
+        "code_capture": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8"
+      }
+    },
+    {
+      "id": "secondary_zero_option",
+      "status": "已排除",
+      "field": "FileDiver ExplosionInfo.NumShrapnelProjectiles / ShrapnelProjectileType shape matches secondary settings+0x50/+0x54; exact table identity unproven",
+      "native_consumer_rva": [
+        "0x13c1c18",
+        "0x13c1ef7",
+        "0x13c2306",
+        "0x13c2314"
+      ],
+      "applicable_scopes": [
+        "p11",
+        "pistols",
+        "native_no_shotguns",
+        "native_weapons"
+      ],
+      "exclusion_reason": "選項為零的生成發生在次級迴圈，另增投射物並計算方向，無法保持原射擊數量、時點與方向。",
+      "missing_evidence": [
+        "爆炸設定到本機武器的獨占控制鏈；此缺口即使補齊也不能消除額外生成語義",
+        "固定表 Type 1..422、typelib 列舉 0..423 與原生 <0x1A7 數值對齊；同提交 Go enum Count=356，仍缺原生指標表身份與安裝版本對應"
+      ],
+      "source_fingerprints": {
+        "filediver_analysis": "a1c7d72ba38d91f3526af7d8a58f2eee0ec235198d9a28d454abf2bc84eca1b3",
+        "filediver_bundle": "44a3acc0e56685768544b0adcc14e8e47b58845e362258d089fd9bef56b190cd",
+        "code_capture": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8"
+      }
+    },
+    {
+      "id": "raycast_template_global_lookup",
+      "status": "已排除",
+      "field": "ProjectileInfo+0xF4 (RaycastTemplate in pinned FileDiver schema; build correspondence unestablished)",
+      "native_consumer_rva": [
+        "0x13abcb1",
+        "0x13abcc5",
+        "0x13abccc",
+        "0x13abd6d",
+        "0x13abdad",
+        "0x13abdb4"
+      ],
+      "applicable_scopes": [
+        "p11",
+        "pistols",
+        "native_no_shotguns",
+        "native_weapons"
+      ],
+      "exclusion_reason": "碰撞查詢依槽位類型重新取全域彈頭定義；runtime 0x800 未設時讀其 +0xF4 作查詢範本。僅向生成器提供本機定義副本不能改變這次全域讀取；來源 unit 排除另由 0x20 控制。此判定只排除該本機副本路線，不否定範本的其他碰撞效果。",
+      "missing_evidence": [
+        "其他查詢分支及模板語義；固定參考與安裝版本的對應",
+        "四範圍本機實例到查詢定義的獨占身份鏈"
+      ],
+      "source_fingerprints": {
+        "filediver_analysis": "a1c7d72ba38d91f3526af7d8a58f2eee0ec235198d9a28d454abf2bc84eca1b3",
+        "filediver_bundle": "44a3acc0e56685768544b0adcc14e8e47b58845e362258d089fd9bef56b190cd",
+        "code_capture": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8"
+      }
+    },
+    {
+      "id": "ricochet_flag_clear",
+      "status": "已排除",
+      "field": "ProjectileInfo+0xB0..+0xC4",
+      "native_consumer_rva": [
+        "0x13ae395",
+        "0x13ae580",
+        "0x13ae71a"
+      ],
+      "applicable_scopes": [
+        "p11",
+        "pistols",
+        "native_no_shotguns",
+        "native_weapons"
+      ],
+      "exclusion_reason": "清除 0x20 發生於已接受碰撞及反射運動之後，改變軌跡和首次碰撞時點。",
+      "missing_evidence": [
+        "本機 P-11 原生路徑身份與實際碰撞證據"
+      ],
+      "source_fingerprints": {
+        "filediver_analysis": "a1c7d72ba38d91f3526af7d8a58f2eee0ec235198d9a28d454abf2bc84eca1b3",
+        "filediver_bundle": "44a3acc0e56685768544b0adcc14e8e47b58845e362258d089fd9bef56b190cd",
+        "code_capture": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8"
+      }
+    },
+    {
+      "id": "entity_branch",
+      "status": "證據不足",
+      "field": "private weapon settings+0x28",
+      "native_consumer_rva": [
+        "0x615b15",
+        "0x615b30",
+        "0x615bbf",
+        "0x6164d4",
+        "0x581377",
+        "0x581421",
+        "0x64625c"
+      ],
+      "applicable_scopes": [
+        "p11",
+        "pistols",
+        "native_no_shotguns",
+        "native_weapons"
+      ],
+      "exclusion_reason": "非零值轉入 entity 生成，模式欄位 +0x248 可覆寫資源；元件 metadata 經間接派發。component-196 相關支線可到原生生成器，但未證 P-11 GUID 實際派發到它，也未建立後續碰撞／治療鏈。",
+      "missing_evidence": [
+        "P-11 GUID 的 heap metadata 與實際元件派發結果",
+        "entity 實例到原生彈頭、來源 ID、首次碰撞和本機所有權的資料流"
+      ],
+      "source_fingerprints": {
+        "filediver_analysis": "a1c7d72ba38d91f3526af7d8a58f2eee0ec235198d9a28d454abf2bc84eca1b3",
+        "filediver_bundle": "44a3acc0e56685768544b0adcc14e8e47b58845e362258d089fd9bef56b190cd",
+        "code_capture": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8"
+      }
+    },
+    {
+      "id": "local_weapon_lifecycle",
+      "status": "證據不足",
+      "field": "private weapon/firing settings identity",
+      "native_consumer_rva": [],
+      "applicable_scopes": [
+        "p11",
+        "pistols",
+        "native_no_shotguns",
+        "native_weapons"
+      ],
+      "exclusion_reason": "已見按武器 ID 解析的設定記錄；尚無四範圍共用的可持久排除覆寫欄位與生命週期身份證據。",
+      "missing_evidence": [
+        "建立、切換、重生、離開任務、重用時的獨占性和安全還原證據",
+        "附件與切換彈藥的原生讀取及覆寫優先序"
+      ],
+      "source_fingerprints": {
+        "filediver_analysis": "a1c7d72ba38d91f3526af7d8a58f2eee0ec235198d9a28d454abf2bc84eca1b3",
+        "filediver_bundle": "44a3acc0e56685768544b0adcc14e8e47b58845e362258d089fd9bef56b190cd",
+        "code_capture": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8"
+      }
+    }
+  ],
+  "scope_matrix": [
+    {
+      "scope": "p11",
+      "includes_p11": true,
+      "shotgun_multishot_policy": "excluded",
+      "performance_warning_required": false,
+      "ordinary_native_spawn": "普通槍械入口已定位；原追蹤 P-11 飛鏢是否走此路徑未知",
+      "entity_route": "未知",
+      "secondary_route": "已排除：不是原發彈丸",
+      "initial_collision_exclusion": "已確認：原生槽位 0x20 控制來源 unit 排除；另有 entity 比對",
+      "local_instance_pre_spawn_override": "未知",
+      "attachment_and_ammo_modes": "未知",
+      "gameplay_verified": false
+    },
+    {
+      "scope": "pistols",
+      "includes_p11": true,
+      "shotgun_multishot_policy": "excluded",
+      "performance_warning_required": false,
+      "ordinary_native_spawn": "固定 options+0x18=1 的普通槍械路徑已確認；該 scope 的完整武器覆蓋未知",
+      "entity_route": "未知",
+      "secondary_route": "已排除：不是原發彈丸",
+      "initial_collision_exclusion": "已確認：原生槽位 0x20 控制來源 unit 排除；另有 entity 比對",
+      "local_instance_pre_spawn_override": "未知",
+      "attachment_and_ammo_modes": "未知",
+      "gameplay_verified": false
+    },
+    {
+      "scope": "native_no_shotguns",
+      "includes_p11": true,
+      "shotgun_multishot_policy": "excluded",
+      "performance_warning_required": false,
+      "ordinary_native_spawn": "固定 options+0x18=1 的普通槍械路徑已確認；該 scope 的完整武器覆蓋未知",
+      "entity_route": "未知",
+      "secondary_route": "已排除：不是原發彈丸",
+      "initial_collision_exclusion": "已確認：原生槽位 0x20 控制來源 unit 排除；另有 entity 比對",
+      "local_instance_pre_spawn_override": "未知",
+      "attachment_and_ammo_modes": "未知",
+      "gameplay_verified": false
+    },
+    {
+      "scope": "native_weapons",
+      "includes_p11": true,
+      "shotgun_multishot_policy": "included",
+      "performance_warning_required": true,
+      "ordinary_native_spawn": "固定 options+0x18=1 的普通槍械路徑已確認；該 scope 的完整武器覆蓋未知",
+      "entity_route": "未知",
+      "secondary_route": "已排除：不是原發彈丸",
+      "initial_collision_exclusion": "已確認：原生槽位 0x20 控制來源 unit 排除；另有 entity 比對",
+      "local_instance_pre_spawn_override": "未知",
+      "attachment_and_ammo_modes": "未知",
+      "gameplay_verified": false
+    }
+  ],
+  "missing_for_common_candidate": [
+    "四範圍共用且本機武器實例獨占的可持久排除欄位，以及其到生成選項／首次碰撞的原生讀取邊",
+    "私有武器設定、附件、切換彈藥到實際發射設定的優先序與生命週期身份",
+    "原彈數、起點、方向、速度、彈藥、射速、傷害、治療等價證據",
+    "切槍、重生、離開任務及物件重用時安全停止或還原的證據"
+  ],
+  "evidence_fingerprint": "91a2468bb745b6f266ca7aa3f537e7dba35569fd937c0a8ee4a39a0b46d65ac2"
+}

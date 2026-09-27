@@ -1,0 +1,185 @@
+{
+  "exe": {
+    "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\helldivers2.exe",
+    "size": 14957160,
+    "sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06"
+  },
+  "target": "0x1ae380",
+  "callee_disk": {
+    "rva": "0x1ae380",
+    "size": 256,
+    "section": {
+      "index": 0,
+      "name_hex": "2020202020202020",
+      "virtual_address": "0x1000",
+      "virtual_size": "0x13f364c",
+      "virtual_end": "0x13f464c",
+      "raw_size": "0x663400",
+      "raw_pointer": "0x600",
+      "raw_backed_rva_end": "0x664400",
+      "characteristics": "0x60000020"
+    },
+    "section_offset": "0x1ad380",
+    "fully_raw_backed": true,
+    "file_offset": "0x1ad980",
+    "first32_hex": "6983b2bfbca2e067be9d1fb52841fded9237d9a1e07f3f75def53906e6db3ab3",
+    "sha256": "7d39cb972d3a254d57d0b78e277aa191bd7c27e98efdc8bc7e24a69bed31e071"
+  },
+  "wrapper_disk": {
+    "rva": "0x30ff50",
+    "size": 4096,
+    "section": {
+      "index": 0,
+      "name_hex": "2020202020202020",
+      "virtual_address": "0x1000",
+      "virtual_size": "0x13f364c",
+      "virtual_end": "0x13f464c",
+      "raw_size": "0x663400",
+      "raw_pointer": "0x600",
+      "raw_backed_rva_end": "0x664400",
+      "characteristics": "0x60000020"
+    },
+    "section_offset": "0x30ef50",
+    "fully_raw_backed": true,
+    "file_offset": "0x30f550",
+    "first32_hex": "8b04456a61cb9620d34b699ffdd90f8c1fa2834bc5564790b961237ed24e9421",
+    "sha256": "98e961dd21dac396e1a74c525cb43f6dbb359a49e3f4446daed5f9e845bb49e3"
+  },
+  "loaded_wrapper": {
+    "source": "spawn_interface_live_20260927_1.json",
+    "sha256": "484f5437b325ff273041e496b4f609d393ed24a4af38b63cce5c6f63d706b04a",
+    "instructions": [
+      {
+        "rva": "0x30ff50",
+        "bytes": "4883ec28",
+        "asm": "sub rsp, 0x28"
+      },
+      {
+        "rva": "0x30ff54",
+        "bytes": "4889542438",
+        "asm": "mov qword ptr [rsp + 0x38], rdx"
+      },
+      {
+        "rva": "0x30ff59",
+        "bytes": "4d8bc8",
+        "asm": "mov r9, r8"
+      },
+      {
+        "rva": "0x30ff5c",
+        "bytes": "4c8d442438",
+        "asm": "lea r8, [rsp + 0x38]"
+      },
+      {
+        "rva": "0x30ff61",
+        "bytes": "488d542430",
+        "asm": "lea rdx, [rsp + 0x30]"
+      },
+      {
+        "rva": "0x30ff66",
+        "bytes": "e815e4e9ff",
+        "asm": "call 0x1ae380"
+      },
+      {
+        "rva": "0x30ff6b",
+        "bytes": "8b00",
+        "asm": "mov eax, dword ptr [rax]"
+      },
+      {
+        "rva": "0x30ff6d",
+        "bytes": "4883c428",
+        "asm": "add rsp, 0x28"
+      },
+      {
+        "rva": "0x30ff71",
+        "bytes": "c3",
+        "asm": "ret "
+      }
+    ],
+    "first32_hex": "4883ec2848895424384d8bc84c8d442438488d542430e815e4e9ff8b004883c4"
+  },
+  "same_section_disk_loaded_comparison": {
+    "first_differing_offset": 0,
+    "complete_4096_equal": false
+  },
+  "saved_exe_ranges": [
+    {
+      "file": "interface_probe_live_20260927_1.json",
+      "file_sha256": "a45e5f5b1647d808b8b7716fd750e4a894ab39a3021b52a0b10c404403a8b85f",
+      "module": "helldivers2.exe",
+      "rva": "0x3494b0",
+      "size": 256,
+      "end_exclusive": "0x3495b0",
+      "sha256": "d52d364307cb57a442cc6295a48d840458caf81de9da0ac9e40cb72083d9b144",
+      "covers_callee_entry": false
+    },
+    {
+      "file": "interface_probe_live_20260927_1.json",
+      "file_sha256": "a45e5f5b1647d808b8b7716fd750e4a894ab39a3021b52a0b10c404403a8b85f",
+      "module": "helldivers2.exe",
+      "rva": "0x8c6730",
+      "size": 256,
+      "end_exclusive": "0x8c6830",
+      "sha256": "14e69e3aaea1ffc9bc04ed88cbf0ac1be6887485f65b5330006c0c06e6520720",
+      "covers_callee_entry": false
+    },
+    {
+      "file": "engine_callee_live_20260927_1.json",
+      "file_sha256": "157ddf9f9f9c04265dbc80109441af7090fcf78316e8642781857668348f129a",
+      "module": "helldivers2.exe",
+      "rva": "0x4acde0",
+      "size": 4096,
+      "end_exclusive": "0x4adde0",
+      "sha256": "451b47888fe187337304a3d3e8ed89e403d6d276482bc2da99e0c5de36cc30e3",
+      "covers_callee_entry": false
+    },
+    {
+      "file": "engine_callee_live_20260927_1.json",
+      "file_sha256": "157ddf9f9f9c04265dbc80109441af7090fcf78316e8642781857668348f129a",
+      "module": "helldivers2.exe",
+      "rva": "0x349110",
+      "size": 4096,
+      "end_exclusive": "0x34a110",
+      "sha256": "cba966ada23e1530c507977df120448ef4d0f81be87cb8fa4f2a5072280f577b",
+      "covers_callee_entry": false
+    },
+    {
+      "file": "engine_callee_live_20260927_1.json",
+      "file_sha256": "157ddf9f9f9c04265dbc80109441af7090fcf78316e8642781857668348f129a",
+      "module": "helldivers2.exe",
+      "rva": "0x8ccfa0",
+      "size": 4096,
+      "end_exclusive": "0x8cdfa0",
+      "sha256": "1037567f291f256b22eab4d927b2f4f6d454d9eb5e36b0753b64219705b010e2",
+      "covers_callee_entry": false
+    },
+    {
+      "file": "engine_callee_live_20260927_1.json",
+      "file_sha256": "157ddf9f9f9c04265dbc80109441af7090fcf78316e8642781857668348f129a",
+      "module": "helldivers2.exe",
+      "rva": "0x8e1370",
+      "size": 4096,
+      "end_exclusive": "0x8e2370",
+      "sha256": "0e6e20315ee6e64b80c48b78197feb4b968e68e2995c659496d3c3fe049a5fb2",
+      "covers_callee_entry": false
+    },
+    {
+      "file": "spawn_interface_live_20260927_1.json",
+      "file_sha256": "44773c271226df2df3a93991421287cee71ea7971cbad877ed5a70275dff798a",
+      "module": "helldivers2.exe",
+      "rva": "0x30ff50",
+      "size": 4096,
+      "end_exclusive": "0x310f50",
+      "sha256": "484f5437b325ff273041e496b4f609d393ed24a4af38b63cce5c6f63d706b04a",
+      "covers_callee_entry": false
+    }
+  ],
+  "covered_by_identified_saved_exe_capture": false,
+  "conclusion": "Disk raw bytes exist, but no validated loaded implementation for EXE RVA 1AE380 is available in the identified saved captures.",
+  "limits": [
+    "Disk bytes at the called RVA were not interpreted as loaded code.",
+    "The wrapper disk mismatch establishes that raw mapping alone is insufficient; it does not directly compare the unobserved loaded callee.",
+    "Inventory covers the three identified EXE captures in this workspace, not every file on the computer.",
+    "The older pinned large capture is game.dll; identical numeric RVAs there are a different module.",
+    "No live process read, new capture, game-file change, or new authorization request."
+  ]
+}

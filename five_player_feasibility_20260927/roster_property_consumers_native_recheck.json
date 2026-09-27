@@ -1,0 +1,2559 @@
+{
+  "schema_version": 1,
+  "source_sha256": {
+    "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+  },
+  "prior_sha256": {
+    "roster_lifecycle_evidence.json": "969042e4d22464c96f510b4c06ed2af742985f96f9881fda338210368cf09ed5",
+    "roster_dispatch_evidence_v2.json": "e83d0bc3ace27f26b7e77511cd01c09b9ed3b26996abe8661a21b77ae2d47f03",
+    "roster_index_usage_evidence_v2.json": "d7098a7d698aa7daaf53e89c08b19cb01e243860f70fbba518690837baf121ee",
+    "roster_property_apply_evidence_v3.json": "d0dd9c02db933c20801a366d9668131734a29106e46f8a8a0d0de43981a27d22",
+    "player_roster_evidence.json": "606e6cb31fc55a1abfbc82224359fc1fc776f7a3f36838779a558700380e81a6",
+    "roster_property_receive_evidence.json": "bad5661771df280dd5e982b765d2f4ab1c73de9ae7e86e974751af6c3c383c10",
+    "roster_component_binding_evidence_v3.json": "274833c418bfa7dec4e4097dda5031f3a11e8c69689ae4ed758e75a40481c2e2"
+  },
+  "runtime_verified": false,
+  "executable": false,
+  "scope": "Only explicitly listed roots and already-proven global/owner/registry lineages. No full-capture rescan, no new callee tree.",
+  "prior_unique_instruction_rows_rechecked": 1600,
+  "layout": {
+    "S": "owner+EA0818",
+    "property_base": "S+3A8",
+    "record_bytes": 32,
+    "original_records": 4,
+    "sidecar_records": 8,
+    "sidecar_bytes": 256,
+    "next_owner_member": "S+428",
+    "ordinal_not_network_index": true
+  },
+  "identity_anchors": [
+    {
+      "rva": "0x5565ef",
+      "bytes": "488d8e1808ea00",
+      "sha256": "7fdb9c81df2ee0706828cb19a2aeafd7c14ed0af35a8cf7c310dcb101a118893",
+      "asm": "lea rcx, [rsi + 0xea0818]",
+      "root": "0x551b60",
+      "prior_artifacts": [
+        "player_roster_evidence.json",
+        "roster_lifecycle_evidence.json"
+      ]
+    },
+    {
+      "rva": "0x5565f9",
+      "bytes": "e8c2630b00",
+      "sha256": "4001a1eaf25912878a0f1bcf54b43674773b13b1df4b3418ba9231d494977297",
+      "asm": "call 0x60c9c0",
+      "root": "0x551b60",
+      "prior_artifacts": [
+        "player_roster_evidence.json",
+        "roster_lifecycle_evidence.json"
+      ]
+    },
+    {
+      "rva": "0x556605",
+      "bytes": "e8560f5d00",
+      "sha256": "b5706d794e48a5d0d7a778413ad7e5da0c72dd126157e13966ce26617f7f68f8",
+      "asm": "call 0xb27560",
+      "root": "0x551b60",
+      "prior_artifacts": [
+        "player_roster_evidence.json",
+        "roster_lifecycle_evidence.json"
+      ]
+    },
+    {
+      "rva": "0x568ec8",
+      "bytes": "488d831808ea00",
+      "sha256": "21ee1dd711f2b10e4e88288bce01dfd9fc2d175fad6c12b947b818330e29f197",
+      "asm": "lea rax, [rbx + 0xea0818]",
+      "root": "0x568230",
+      "prior_artifacts": [
+        "player_roster_evidence.json",
+        "roster_lifecycle_evidence.json",
+        "roster_property_receive_evidence.json"
+      ]
+    },
+    {
+      "rva": "0x568ecf",
+      "bytes": "48890592d5db02",
+      "sha256": "26edae102807b031a22cae5f5594ddddeaae28d6b8ce0e045340d9353b562a35",
+      "asm": "mov qword ptr [rip + 0x2dbd592], rax",
+      "root": "0x568230",
+      "prior_artifacts": [
+        "player_roster_evidence.json",
+        "roster_lifecycle_evidence.json",
+        "roster_property_receive_evidence.json"
+      ]
+    },
+    {
+      "rva": "0xb27564",
+      "bytes": "48890c24",
+      "sha256": "eb0ec521aa8d7ea4ffe0cea7f5e95d36d8b98d2e8eb63befc17adf962be5af66",
+      "asm": "mov qword ptr [rsp], rcx",
+      "root": "0xb27560",
+      "prior_artifacts": [
+        "roster_dispatch_evidence_v2.json",
+        "roster_lifecycle_evidence.json"
+      ]
+    },
+    {
+      "rva": "0xb2756f",
+      "bytes": "c744240869000000",
+      "sha256": "ed7844783cb8bfc9bffcba6a0696e613d8232fda7e1ea845b88677f64fbe68ca",
+      "asm": "mov dword ptr [rsp + 8], 0x69",
+      "root": "0xb27560",
+      "prior_artifacts": [
+        "roster_dispatch_evidence_v2.json",
+        "roster_lifecycle_evidence.json"
+      ]
+    },
+    {
+      "rva": "0xb54e58",
+      "bytes": "83f869",
+      "sha256": "2306f5cefcc51a6a43370ba074009017d59148af1485bbb9e939caccb93b0e3d",
+      "asm": "cmp eax, 0x69",
+      "root": "0xb54e00",
+      "prior_artifacts": [
+        "roster_dispatch_evidence_v2.json"
+      ]
+    },
+    {
+      "rva": "0xb54e5b",
+      "bytes": "0f84a2010000",
+      "sha256": "a78cb52e6a28c08669430c73005db15fab22dba01571da937383099aa8eac68b",
+      "asm": "je 0xb55003",
+      "root": "0xb54e00",
+      "prior_artifacts": [
+        "roster_dispatch_evidence_v2.json"
+      ]
+    },
+    {
+      "rva": "0xb55003",
+      "bytes": "4d8bb4cdf8100000",
+      "sha256": "79c54e21d9dfa79cce065a2e7b2fdda8101c6a17c7858e10bbb2817d4e0c95d2",
+      "asm": "mov r14, qword ptr [r13 + rcx*8 + 0x10f8]",
+      "root": "0xb54e00",
+      "prior_artifacts": [
+        "roster_dispatch_evidence_v2.json"
+      ]
+    },
+    {
+      "rva": "0x57e00f",
+      "bytes": "488d8b1808ea00",
+      "sha256": "7bd3c63c3f77cc505df99f521ea802315df7c7982b6bf36f34b747943dd16f55",
+      "asm": "lea rcx, [rbx + 0xea0818]",
+      "root": "0x576cf0",
+      "prior_artifacts": [
+        "roster_lifecycle_evidence.json"
+      ]
+    },
+    {
+      "rva": "0x57e01c",
+      "bytes": "e84fec0800",
+      "sha256": "c157628ce1ade9c36a05ead60c20e579818319920c971f0dd8cf333330fb4e36",
+      "asm": "call 0x60cc70",
+      "root": "0x576cf0",
+      "prior_artifacts": [
+        "roster_lifecycle_evidence.json"
+      ]
+    }
+  ],
+  "entries": [
+    {
+      "id": "producer",
+      "kind": "producer",
+      "identity": "RBP loads roster global3326468 at60C667; entity ID maps to ordinal; binding evidence connects component239 wrapper540AE0.",
+      "site_note": "Eight DWORD writes. Seventh field uses60C7FF lea rax,[r11+1Eh],60C803 shl rax,5, then60C807 stores through RAX+RBP.",
+      "aliases": [
+        "RBP=S",
+        "RBX=ordinal*20h",
+        "R11=unscaled ordinal retained across actual134F190 leaf;60C7FF/803 form field offset",
+        "allocated output buffer RSI/RAX is distinct from property storage"
+      ],
+      "changes": "Redirect all eight property writes to B+ordinal*20h+[0..1C]; preserve descriptor/value output and original S for map lookup.",
+      "effects": "Original allocator173B8D0 for20h payload before first property write; appends eight descriptors/count updates; network-index leaf134F190. Guard rejection must precede allocation.",
+      "closure": "Existing full receiver/binding proof plus selected producer anchors; producer emitter has its own independent full-root contract.",
+      "root": "0x60c640",
+      "complete_saved_unwind_fragments": [
+        {
+          "start": "0x60c640",
+          "end_exclusive": "0x60c882",
+          "unwind": "0x2425708",
+          "sha256": "8b9a20e5207ae395e99e45f153cba1994ff50c10cb258101fd16a74285824c34",
+          "sequential_decode_covers_span": true
+        }
+      ],
+      "edit_sites": [
+        {
+          "rva": "0x60c6f2",
+          "bytes": "c7842ba8030000ff7f0000",
+          "sha256": "bd8d405cffbf2bff46b5593e7ae4a9f60b52d71f4cab49fba3cae6584331716d",
+          "asm": "mov dword ptr [rbx + rbp + 0x3a8], 0x7fff",
+          "root": "0x60c640",
+          "prior_artifacts": [
+            "roster_component_binding_evidence_v3.json",
+            "roster_property_receive_evidence.json"
+          ]
+        },
+        {
+          "rva": "0x60c720",
+          "bytes": "4489bc2bac030000",
+          "sha256": "45b51d7ca6b81c46b2adec1b55caed2df4aef8aa99675e2b616d1076dbb83f37",
+          "asm": "mov dword ptr [rbx + rbp + 0x3ac], r15d",
+          "root": "0x60c640",
+          "prior_artifacts": [
+            "roster_component_binding_evidence_v3.json"
+          ]
+        },
+        {
+          "rva": "0x60c74c",
+          "bytes": "4489bc2bb0030000",
+          "sha256": "801add3bcdcabfa802239ad1d407d833e303222c3d89bfcb661fd3093c7752ef",
+          "asm": "mov dword ptr [rbx + rbp + 0x3b0], r15d",
+          "root": "0x60c640",
+          "prior_artifacts": [
+            "roster_component_binding_evidence_v3.json"
+          ]
+        },
+        {
+          "rva": "0x60c77d",
+          "bytes": "89842bb4030000",
+          "sha256": "9fbb0d6b8b2b5ba0587d2bcac0a5b03b5392cc0d5a7c6b25d751b7674ed01e3b",
+          "asm": "mov dword ptr [rbx + rbp + 0x3b4], eax",
+          "root": "0x60c640",
+          "prior_artifacts": [
+            "roster_component_binding_evidence_v3.json",
+            "roster_property_receive_evidence.json"
+          ]
+        },
+        {
+          "rva": "0x60c7a7",
+          "bytes": "4489bc2bb8030000",
+          "sha256": "bd003d901e694d01e1bb8a7ceede2710822681708b893704225f3a263a585638",
+          "asm": "mov dword ptr [rbx + rbp + 0x3b8], r15d",
+          "root": "0x60c640",
+          "prior_artifacts": [
+            "roster_component_binding_evidence_v3.json"
+          ]
+        },
+        {
+          "rva": "0x60c7d3",
+          "bytes": "4489bc2bbc030000",
+          "sha256": "9bb2cd45746169eb70a0d3deb8440ff22744badf2e35efb3d233a99894644b32",
+          "asm": "mov dword ptr [rbx + rbp + 0x3bc], r15d",
+          "root": "0x60c640",
+          "prior_artifacts": [
+            "roster_component_binding_evidence_v3.json"
+          ]
+        },
+        {
+          "rva": "0x60c7ff",
+          "bytes": "498d431e",
+          "sha256": "99db39a18a0f21a586e0fe83c362e9e7cbca899a41148eceb09e5021dbc92689",
+          "asm": "lea rax, [r11 + 0x1e]",
+          "root": "0x60c640",
+          "prior_artifacts": [
+            "roster_component_binding_evidence_v3.json"
+          ]
+        },
+        {
+          "rva": "0x60c803",
+          "bytes": "48c1e005",
+          "sha256": "d542a7a083a7811bed359570427a3aa47f35397c79b144d4b4b4088a84f2097f",
+          "asm": "shl rax, 5",
+          "root": "0x60c640",
+          "prior_artifacts": [
+            "roster_component_binding_evidence_v3.json"
+          ]
+        },
+        {
+          "rva": "0x60c807",
+          "bytes": "44893c28",
+          "sha256": "7ce0779e3c602b2a23d1b86991c904629c8fd5f8d0c8ae2b8af1fb37fb244bf8",
+          "asm": "mov dword ptr [rax + rbp], r15d",
+          "root": "0x60c640",
+          "prior_artifacts": [
+            "roster_component_binding_evidence_v3.json"
+          ]
+        },
+        {
+          "rva": "0x60c82f",
+          "bytes": "4489bc2bc4030000",
+          "sha256": "cfdb2d86183e857eea644e97f3edc5653f36e29569c13ebbe61803965b0e0538",
+          "asm": "mov dword ptr [rbx + rbp + 0x3c4], r15d",
+          "root": "0x60c640",
+          "prior_artifacts": [
+            "roster_component_binding_evidence_v3.json"
+          ]
+        }
+      ],
+      "whole_root_semantic_closure": false,
+      "all_external_aliases_closed": false
+    },
+    {
+      "id": "receiver",
+      "kind": "receiver",
+      "identity": "Direct callerBD13B3 supplies same S inRCX; receiver copies S toR11, retains original map lookup.",
+      "aliases": [
+        "R11=S until property cutpoint",
+        "R8=ordinal*20h",
+        "RBP=payload; R14=cursor pointer"
+      ],
+      "changes": "Redirect all eight stores together; keep payload DWORD order, original map, cursor+20h; reject invalid binding/ordinal before first store.",
+      "effects": "No callee in complete receiver; writes eight fields and cursor. Map miss/payload bounds need integration contract.",
+      "closure": "Complete303-byte72-instruction body already verified; aliases outside this body remain open.",
+      "root": "0x60c890",
+      "complete_saved_unwind_fragments": [
+        {
+          "start": "0x60c890",
+          "end_exclusive": "0x60c8bf",
+          "unwind": "0x2425720",
+          "sha256": "4f3137159566c5d8fdec7406fa24f1463b10290541c58177aed1b9d46e031879",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x60c8bf",
+          "end_exclusive": "0x60c928",
+          "unwind": "0x242572c",
+          "sha256": "88831a5a3106a1e4e09511cc5be1976dc8233bd02448bd9e8f862b2e0cca2b0d",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x60c928",
+          "end_exclusive": "0x60c9ad",
+          "unwind": "0x2425748",
+          "sha256": "855383c5cbf6150b58c5f1b7ffdccfc6eba78362508b666b5a1201c405c7f2ee",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x60c9ad",
+          "end_exclusive": "0x60c9bf",
+          "unwind": "0x2425758",
+          "sha256": "1d1d5f017f5c08b5673cdf7fb537521962c90fc131d9f15bcca2fc1fc3c3cf94",
+          "sequential_decode_covers_span": true
+        }
+      ],
+      "edit_sites": [
+        {
+          "rva": "0x60c938",
+          "bytes": "43898418a8030000",
+          "sha256": "c695309a9cee86387b52e78af0456dc8ffe72a87ca9a9e1bdc921f85e0e593cb",
+          "asm": "mov dword ptr [r8 + r11 + 0x3a8], eax",
+          "root": "0x60c890",
+          "prior_artifacts": [
+            "roster_property_receive_evidence.json"
+          ]
+        },
+        {
+          "rva": "0x60c946",
+          "bytes": "43898c18ac030000",
+          "sha256": "009c295790e3bd46faf2af28afacd2df6df089ea04324350d8fbca5ac17338c2",
+          "asm": "mov dword ptr [r8 + r11 + 0x3ac], ecx",
+          "root": "0x60c890",
+          "prior_artifacts": [
+            "roster_property_receive_evidence.json"
+          ]
+        },
+        {
+          "rva": "0x60c954",
+          "bytes": "43898c18b0030000",
+          "sha256": "842b913a1c649f93039f288ae570a2ae2e0bc9716aa7355f46c1aa62639b24c7",
+          "asm": "mov dword ptr [r8 + r11 + 0x3b0], ecx",
+          "root": "0x60c890",
+          "prior_artifacts": [
+            "roster_property_receive_evidence.json"
+          ]
+        },
+        {
+          "rva": "0x60c962",
+          "bytes": "43898c18b4030000",
+          "sha256": "bf0fa0d64c348976e8731fc04c739c7c6a4ba8b87b6c6b5bf6728b66515872b8",
+          "asm": "mov dword ptr [r8 + r11 + 0x3b4], ecx",
+          "root": "0x60c890",
+          "prior_artifacts": [
+            "roster_property_receive_evidence.json"
+          ]
+        },
+        {
+          "rva": "0x60c970",
+          "bytes": "43898c18b8030000",
+          "sha256": "33f040cfda43834ebca7d5e5dc20af24f83819727846dcd144d3d37d9469d8fb",
+          "asm": "mov dword ptr [r8 + r11 + 0x3b8], ecx",
+          "root": "0x60c890",
+          "prior_artifacts": [
+            "roster_property_receive_evidence.json"
+          ]
+        },
+        {
+          "rva": "0x60c97e",
+          "bytes": "43898c18bc030000",
+          "sha256": "b0753863ee1fdb68dd7748407d0538d75ab0b43fe1118a5ee820aefbe1232f12",
+          "asm": "mov dword ptr [r8 + r11 + 0x3bc], ecx",
+          "root": "0x60c890",
+          "prior_artifacts": [
+            "roster_property_receive_evidence.json"
+          ]
+        },
+        {
+          "rva": "0x60c98c",
+          "bytes": "43898c18c0030000",
+          "sha256": "9026a0e84891a23714ebb4a600420d178cbab088364ee2b30161a46d4ff7da4b",
+          "asm": "mov dword ptr [r8 + r11 + 0x3c0], ecx",
+          "root": "0x60c890",
+          "prior_artifacts": [
+            "roster_property_receive_evidence.json"
+          ]
+        },
+        {
+          "rva": "0x60c9a2",
+          "bytes": "43898c18c4030000",
+          "sha256": "47bc14e0657c60b6c8ee0b8e68fe41c9a88662c41693d51aaa14543cd33c2d2f",
+          "asm": "mov dword ptr [r8 + r11 + 0x3c4], ecx",
+          "root": "0x60c890",
+          "prior_artifacts": [
+            "roster_property_receive_evidence.json"
+          ]
+        }
+      ],
+      "whole_root_semantic_closure": false,
+      "all_external_aliases_closed": false
+    },
+    {
+      "id": "move",
+      "kind": "move",
+      "identity": "EntryRCX=S; same-S callers in lifecycle pins pass global or owner+EA0818. RBX=RCX at60C420.",
+      "aliases": [
+        "R10=source ordinal*20h",
+        "R9=destination ordinal*20h",
+        "RBX=S remains live for map",
+        "R11=S+destination*8 for entity pointer"
+      ],
+      "changes": "Redirect only four property loads/stores to B while preserving entity pointer,70h/38h copies and map destination ordinal.",
+      "effects": "No calls in full root; original writes to three other arrays and map. Same ordinal returns before copies; invalid map result is not safe.",
+      "closure": "Complete local body and normal CFG checked here; entry index/binding and all parallel storage validity are integration preconditions.",
+      "root": "0x60c410",
+      "complete_saved_unwind_fragments": [
+        {
+          "start": "0x60c410",
+          "end_exclusive": "0x60c454",
+          "unwind": "0x2425680",
+          "sha256": "579485ccf865fcab32ff0f8e35725396ee5fa24e64c2b3c15a33ac7dc5967f7e",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x60c454",
+          "end_exclusive": "0x60c5bd",
+          "unwind": "0x242568c",
+          "sha256": "8b343fc3ad4ed8f6787aef297e9b880cfc666ac9e76501a579caaa5091b1a041",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x60c5bd",
+          "end_exclusive": "0x60c5be",
+          "unwind": "0x24256a8",
+          "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+          "sequential_decode_covers_span": true
+        }
+      ],
+      "edit_sites": [
+        {
+          "rva": "0x60c51f",
+          "bytes": "410f10841aa8030000",
+          "sha256": "2602fef643f0a9b9aaa322242318bf9dd01bef70cee3ba19147c6f1a210985e5",
+          "asm": "movups xmm0, xmmword ptr [r10 + rbx + 0x3a8]",
+          "root": "0x60c410",
+          "prior_artifacts": [
+            "roster_lifecycle_evidence.json"
+          ]
+        },
+        {
+          "rva": "0x60c528",
+          "bytes": "410f118419a8030000",
+          "sha256": "b138cc5d3c5fc7842fbe36539fa0d4e0e9923f261a590617955f52674a5954fc",
+          "asm": "movups xmmword ptr [r9 + rbx + 0x3a8], xmm0",
+          "root": "0x60c410",
+          "prior_artifacts": [
+            "roster_lifecycle_evidence.json"
+          ]
+        },
+        {
+          "rva": "0x60c531",
+          "bytes": "410f108c1ab8030000",
+          "sha256": "2c490bfbe10aa12ec37a86547608b026c478cf82d8a871c8b126d0aeca30f742",
+          "asm": "movups xmm1, xmmword ptr [r10 + rbx + 0x3b8]",
+          "root": "0x60c410",
+          "prior_artifacts": [
+            "roster_lifecycle_evidence.json"
+          ]
+        },
+        {
+          "rva": "0x60c53a",
+          "bytes": "410f118c19b8030000",
+          "sha256": "0a56dd6b7fa60b0da5b7f25b353b65b4bda33ffbcd67198d7080b1f87f67bd2f",
+          "asm": "movups xmmword ptr [r9 + rbx + 0x3b8], xmm1",
+          "root": "0x60c410",
+          "prior_artifacts": [
+            "roster_lifecycle_evidence.json"
+          ]
+        }
+      ],
+      "whole_root_semantic_closure": false,
+      "all_external_aliases_closed": false
+    },
+    {
+      "id": "compact",
+      "kind": "move",
+      "identity": "EntryRCX=S; proven owner caller57E00F/57E01C supplies owner+EA0818; RBX=RCX.",
+      "aliases": [
+        "RBX=S",
+        "R8=source*20h",
+        "RDX=destination*20h",
+        "R9 points into entity pointer array"
+      ],
+      "changes": "Redirect inline property copy and its60CE24 call to patched60C410; preserve dense/tracked/prefix counts and map.",
+      "effects": "Calls60C410; copies all parallel arrays, updates map and eventually dense count+84.",
+      "closure": "Finite full-root direct property access set; no global alias closure.",
+      "root": "0x60cc70",
+      "complete_saved_unwind_fragments": [
+        {
+          "start": "0x60cc70",
+          "end_exclusive": "0x60cc97",
+          "unwind": "0x2425788",
+          "sha256": "89c51f53a1a693eaf3048842da571fcfa57aac1d8e4f7724e0e5b21aad42fd6e",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x60cc97",
+          "end_exclusive": "0x60ce65",
+          "unwind": "0x2425794",
+          "sha256": "777d66667eb4e467d075f468781c021d636db7a7dd9a3f766a3d9d9634b68779",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x60ce65",
+          "end_exclusive": "0x60ce76",
+          "unwind": "0x24257b0",
+          "sha256": "08273783d17791c318b35b10a17fddaeb90ecbca1f49ac1aa538d033ce980143",
+          "sequential_decode_covers_span": true
+        }
+      ],
+      "edit_sites": [
+        {
+          "rva": "0x60cd90",
+          "bytes": "410f108418a8030000",
+          "sha256": "cd0a4109faee3d68f4fe5ade9424903af235e0c2842fb6bef2802dc7f7c722dd",
+          "asm": "movups xmm0, xmmword ptr [r8 + rbx + 0x3a8]",
+          "root": "0x60cc70",
+          "prior_artifacts": [
+            "roster_lifecycle_evidence.json"
+          ]
+        },
+        {
+          "rva": "0x60cd99",
+          "bytes": "0f11841aa8030000",
+          "sha256": "c878b845cceda558cedd6e9b920dcb7b101e014d476c63060912e03849205167",
+          "asm": "movups xmmword ptr [rdx + rbx + 0x3a8], xmm0",
+          "root": "0x60cc70",
+          "prior_artifacts": [
+            "roster_lifecycle_evidence.json"
+          ]
+        },
+        {
+          "rva": "0x60cda1",
+          "bytes": "410f108c18b8030000",
+          "sha256": "5a343cc3ae991ae2973f37c261ac299ebb01dbf30774f672e8a82711ed3e2e5f",
+          "asm": "movups xmm1, xmmword ptr [r8 + rbx + 0x3b8]",
+          "root": "0x60cc70",
+          "prior_artifacts": [
+            "roster_lifecycle_evidence.json"
+          ]
+        },
+        {
+          "rva": "0x60cdaa",
+          "bytes": "0f118c1ab8030000",
+          "sha256": "f72d118a7b1c8398ff55567aa6c52ae99dc0f243de78b7c6e7f1892abc73a2a0",
+          "asm": "movups xmmword ptr [rdx + rbx + 0x3b8], xmm1",
+          "root": "0x60cc70",
+          "prior_artifacts": [
+            "roster_lifecycle_evidence.json"
+          ]
+        }
+      ],
+      "whole_root_semantic_closure": false,
+      "all_external_aliases_closed": false
+    },
+    {
+      "id": "promote",
+      "kind": "classify",
+      "identity": "Global3326468 is saved inRBP; entity ID lookup obtains ordinal, prefix boundary comes fromS+88.",
+      "aliases": [
+        "RBP=S",
+        "RDI/R15=two ordinals*20h",
+        "RAX=temporary20h record buffer, not S alias"
+      ],
+      "changes": "Redirect all eight property accesses; retain temporary-copy order, map fixes and+88 increment;70h destination is initialized, not symmetrically swapped.",
+      "effects": "Property path calls173B6F0 at60D17A, allocates20h via173B8D0 at60D18D, calls173BC20 at60D1F1/1FB. Do not remove/reorder resource protocol.",
+      "closure": "Complete selected classification root; static callback order from apply evidence, runtime table values not checked.",
+      "root": "0x60cf50",
+      "complete_saved_unwind_fragments": [
+        {
+          "start": "0x60cf50",
+          "end_exclusive": "0x60d044",
+          "unwind": "0x24257cc",
+          "sha256": "94ab331c1d9b101362471cf0eff1bbb7e2257fafb189cad977b56d5044b62781",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x60d044",
+          "end_exclusive": "0x60d296",
+          "unwind": "0x24257e4",
+          "sha256": "b4115b099060fd6471e0bc94a53b31929af01da6b7f4433351cdcd056d2062d9",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x60d296",
+          "end_exclusive": "0x60d2f6",
+          "unwind": "0x24257f8",
+          "sha256": "7c6a580aa0dc2593613a29487c1c85f3ed22811432cb40dc92d5c2ec1a20001b",
+          "sequential_decode_covers_span": true
+        }
+      ],
+      "edit_sites": [
+        {
+          "rva": "0x60d19f",
+          "bytes": "0f10842fa8030000",
+          "sha256": "bb0c0866cfd1ee0f3e120659e7950e3bf0fcff2c863825c3d0e20e0316164119",
+          "asm": "movups xmm0, xmmword ptr [rdi + rbp + 0x3a8]",
+          "root": "0x60cf50",
+          "prior_artifacts": [
+            "roster_property_apply_evidence_v3.json"
+          ]
+        },
+        {
+          "rva": "0x60d1aa",
+          "bytes": "0f108c2fb8030000",
+          "sha256": "68e11bd784eec54ac463298d663ca8a3aeae78e70ffd4cee279816f6673a0515",
+          "asm": "movups xmm1, xmmword ptr [rdi + rbp + 0x3b8]",
+          "root": "0x60cf50",
+          "prior_artifacts": [
+            "roster_property_apply_evidence_v3.json"
+          ]
+        },
+        {
+          "rva": "0x60d1b6",
+          "bytes": "410f10842fa8030000",
+          "sha256": "e350b9edc4aa46e6e72b4c2ad7208234cc575acaa684e3f43d042db0808787d7",
+          "asm": "movups xmm0, xmmword ptr [r15 + rbp + 0x3a8]",
+          "root": "0x60cf50",
+          "prior_artifacts": [
+            "roster_property_apply_evidence_v3.json"
+          ]
+        },
+        {
+          "rva": "0x60d1bf",
+          "bytes": "0f11842fa8030000",
+          "sha256": "a34af14c15f025d38a8e6e58bcabba38a7933b0915cffc56961e7206abe472f3",
+          "asm": "movups xmmword ptr [rdi + rbp + 0x3a8], xmm0",
+          "root": "0x60cf50",
+          "prior_artifacts": [
+            "roster_property_apply_evidence_v3.json"
+          ]
+        },
+        {
+          "rva": "0x60d1c7",
+          "bytes": "410f108c2fb8030000",
+          "sha256": "492c54ad32528acf7f7939f043f17d868a78246ce572c9a7d3e7d083bd8a7430",
+          "asm": "movups xmm1, xmmword ptr [r15 + rbp + 0x3b8]",
+          "root": "0x60cf50",
+          "prior_artifacts": [
+            "roster_property_apply_evidence_v3.json"
+          ]
+        },
+        {
+          "rva": "0x60d1d0",
+          "bytes": "0f118c2fb8030000",
+          "sha256": "84a45d14b1463c603110fa2b3f52e93387feae50875568de636f4f43f8e70d97",
+          "asm": "movups xmmword ptr [rdi + rbp + 0x3b8], xmm1",
+          "root": "0x60cf50",
+          "prior_artifacts": [
+            "roster_property_apply_evidence_v3.json"
+          ]
+        },
+        {
+          "rva": "0x60d1db",
+          "bytes": "410f11842fa8030000",
+          "sha256": "f2193063a545cf97e5a22bb68a6d637b9b5760b2f6a53e654662dbd6d8c6f934",
+          "asm": "movups xmmword ptr [r15 + rbp + 0x3a8], xmm0",
+          "root": "0x60cf50",
+          "prior_artifacts": [
+            "roster_property_apply_evidence_v3.json"
+          ]
+        },
+        {
+          "rva": "0x60d1e8",
+          "bytes": "410f118c2fb8030000",
+          "sha256": "c22e5de8bbd7894be95a6f8516873aa4a649e7ebb865d39c0f8ddb66de49d14d",
+          "asm": "movups xmmword ptr [r15 + rbp + 0x3b8], xmm1",
+          "root": "0x60cf50",
+          "prior_artifacts": [
+            "roster_property_apply_evidence_v3.json"
+          ]
+        }
+      ],
+      "whole_root_semantic_closure": false,
+      "all_external_aliases_closed": false
+    },
+    {
+      "id": "demote",
+      "kind": "classify",
+      "identity": "Global3326468 saved inRBP; entity ID lookup; second ordinal=S+88-1.",
+      "aliases": [
+        "RBP=S",
+        "RDI/RSI=two ordinals*20h",
+        "RAX=temporary20h record buffer, not S alias"
+      ],
+      "changes": "Redirect all eight property accesses; preserve full70h/38h swaps, temporary protocol, two map repairs, and+88 decrement.",
+      "effects": "Property path calls173B6F0 at60D5F5, allocates20h via173B8D0 at60D608, calls173BC20 at60D668/672; notification occurs before this callback and bit0 clears afterward.",
+      "closure": "Complete selected classification root; other lifetime/alias sources remain open.",
+      "root": "0x60d300",
+      "complete_saved_unwind_fragments": [
+        {
+          "start": "0x60d300",
+          "end_exclusive": "0x60d39a",
+          "unwind": "0x2425808",
+          "sha256": "18f0da1cf885b083b8547d8d3c7de419016d71e2a2fad5697868609bdd1eb0c0",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x60d39a",
+          "end_exclusive": "0x60d70b",
+          "unwind": "0x242581c",
+          "sha256": "89012add7bde527111adc6489fe2496a3e77024e76ff2f71a1d0eaecea6731fd",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x60d70b",
+          "end_exclusive": "0x60d760",
+          "unwind": "0x2425834",
+          "sha256": "5ac0091797b889b3cf9f76712ba3d104e37b513ab05395af2d3dcfc923781c76",
+          "sequential_decode_covers_span": true
+        }
+      ],
+      "edit_sites": [
+        {
+          "rva": "0x60d61a",
+          "bytes": "0f10842fa8030000",
+          "sha256": "bb0c0866cfd1ee0f3e120659e7950e3bf0fcff2c863825c3d0e20e0316164119",
+          "asm": "movups xmm0, xmmword ptr [rdi + rbp + 0x3a8]",
+          "root": "0x60d300",
+          "prior_artifacts": [
+            "roster_property_apply_evidence_v3.json"
+          ]
+        },
+        {
+          "rva": "0x60d625",
+          "bytes": "0f108c2fb8030000",
+          "sha256": "68e11bd784eec54ac463298d663ca8a3aeae78e70ffd4cee279816f6673a0515",
+          "asm": "movups xmm1, xmmword ptr [rdi + rbp + 0x3b8]",
+          "root": "0x60d300",
+          "prior_artifacts": [
+            "roster_property_apply_evidence_v3.json"
+          ]
+        },
+        {
+          "rva": "0x60d631",
+          "bytes": "0f10842ea8030000",
+          "sha256": "bf8ed86b09e89d9191177d0146d9ad167a0c5b700ab6f72333572d79bf354596",
+          "asm": "movups xmm0, xmmword ptr [rsi + rbp + 0x3a8]",
+          "root": "0x60d300",
+          "prior_artifacts": [
+            "roster_property_apply_evidence_v3.json"
+          ]
+        },
+        {
+          "rva": "0x60d639",
+          "bytes": "0f11842fa8030000",
+          "sha256": "a34af14c15f025d38a8e6e58bcabba38a7933b0915cffc56961e7206abe472f3",
+          "asm": "movups xmmword ptr [rdi + rbp + 0x3a8], xmm0",
+          "root": "0x60d300",
+          "prior_artifacts": [
+            "roster_property_apply_evidence_v3.json"
+          ]
+        },
+        {
+          "rva": "0x60d641",
+          "bytes": "0f108c2eb8030000",
+          "sha256": "8b92bcde406e33adaa37239f4f85d3dc705e813c2dfa931f99a809ff988e2d5c",
+          "asm": "movups xmm1, xmmword ptr [rsi + rbp + 0x3b8]",
+          "root": "0x60d300",
+          "prior_artifacts": [
+            "roster_property_apply_evidence_v3.json"
+          ]
+        },
+        {
+          "rva": "0x60d649",
+          "bytes": "0f118c2fb8030000",
+          "sha256": "84a45d14b1463c603110fa2b3f52e93387feae50875568de636f4f43f8e70d97",
+          "asm": "movups xmmword ptr [rdi + rbp + 0x3b8], xmm1",
+          "root": "0x60d300",
+          "prior_artifacts": [
+            "roster_property_apply_evidence_v3.json"
+          ]
+        },
+        {
+          "rva": "0x60d654",
+          "bytes": "0f11842ea8030000",
+          "sha256": "6de500ecc9247b4dd08d92c0040e0b953976e198c24e93e77dec825393574367",
+          "asm": "movups xmmword ptr [rsi + rbp + 0x3a8], xmm0",
+          "root": "0x60d300",
+          "prior_artifacts": [
+            "roster_property_apply_evidence_v3.json"
+          ]
+        },
+        {
+          "rva": "0x60d660",
+          "bytes": "0f118c2eb8030000",
+          "sha256": "a93061412a9e7fbadc6fd218e6a03c470a9948d46769491106089bbe9b1efbeb",
+          "asm": "movups xmmword ptr [rsi + rbp + 0x3b8], xmm1",
+          "root": "0x60d300",
+          "prior_artifacts": [
+            "roster_property_apply_evidence_v3.json"
+          ]
+        }
+      ],
+      "whole_root_semantic_closure": false,
+      "all_external_aliases_closed": false
+    },
+    {
+      "id": "pre_remove_reader",
+      "kind": "reader-with-effects",
+      "identity": "605962 loads global3326468; R13=S; entity map yields ordinal with byte offset inRSI.",
+      "aliases": [
+        "R13=S",
+        "RSI=ordinal*20h; first DWORD is related entity ID, not network index"
+      ],
+      "changes": "Read related entity ID fromB+ordinal*20h; preserve earlier70h state handling and notifications before roster removal.",
+      "effects": "Resolves entity viaFD9C80; conditional disconnected notification/FDC310 actions; player_count notification. Property base change must not bypass these.",
+      "closure": "Selected same-S reader and ordering proven; whole callee resource effects not expanded.",
+      "root": "0x605950",
+      "complete_saved_unwind_fragments": [
+        {
+          "start": "0x605950",
+          "end_exclusive": "0x605969",
+          "unwind": "0x2424974",
+          "sha256": "b1c99b45ebc2eb4d64b806a33ab1acdfbe8179f76dc15d02950d3ce07c822746",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x605969",
+          "end_exclusive": "0x60596d",
+          "unwind": "0x2424980",
+          "sha256": "6e79aa3ae4a0e8bccfa68fe9a1cd174954b08cdfa6b696817360ce24cced8a97",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x60596d",
+          "end_exclusive": "0x605a63",
+          "unwind": "0x2424994",
+          "sha256": "e5dfa9d2132fba7abe81e5413b988dd1977770150d5bf59b16eaffd8a9a76d96",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x605a63",
+          "end_exclusive": "0x605b7c",
+          "unwind": "0x24249ac",
+          "sha256": "3eb6f8351c2ce540653957ab9b0d5266ed3e9437a00d785e695c8bf63ed2336a",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x605b7c",
+          "end_exclusive": "0x605bd3",
+          "unwind": "0x24249c4",
+          "sha256": "41d97af4e764b55265fa44d40103f7693d9969a06643beea3b90f235b3c0bee4",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x605bd3",
+          "end_exclusive": "0x605bf9",
+          "unwind": "0x24249d4",
+          "sha256": "9df83c9a68bbafa69d0f4b885972b4417fec611cffaa729b75418ee02b880de0",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x605bf9",
+          "end_exclusive": "0x605c50",
+          "unwind": "0x24249ec",
+          "sha256": "0e5ab38b839b492c3c3d5a7f2741647129b217408fb2d3224dc17667c76d6a35",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x605c50",
+          "end_exclusive": "0x605ccf",
+          "unwind": "0x2424a00",
+          "sha256": "031e78dfb8c8efbfa3db8802f448b33305bff553d79bb550e85bb83f2b61334c",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x605ccf",
+          "end_exclusive": "0x605ce1",
+          "unwind": "0x2424a10",
+          "sha256": "749207688c5c9fd551cd85001cb033594cbf153af4c00a510fe61ad26118a889",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x605ce1",
+          "end_exclusive": "0x605d18",
+          "unwind": "0x2424a24",
+          "sha256": "b05a2dc42356c63fccd820436d7d0aafbf40ec951b4d674e1aa60816400556a0",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x605d18",
+          "end_exclusive": "0x605de1",
+          "unwind": "0x2424a34",
+          "sha256": "4471939007ce1706fc074c1bac571309ce388bf07d4d669633dbef7f94a763da",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x605de1",
+          "end_exclusive": "0x605e4c",
+          "unwind": "0x2424a48",
+          "sha256": "7e4f3b84495fe9855302d34ec904ded967904825799868a46229127d89b1e856",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x605e4c",
+          "end_exclusive": "0x605f2f",
+          "unwind": "0x2424a60",
+          "sha256": "dcfa6f42a3b5151da8a426c63cb1cce76bac75000cb63d9353674977f9b03bda",
+          "sequential_decode_covers_span": true
+        }
+      ],
+      "edit_sites": [
+        {
+          "rva": "0x605a5b",
+          "bytes": "428b8c2ea8030000",
+          "sha256": "153fb916a3991ca840c149bbc4b9a695a57e884220eb70dc39814e618d37cf84",
+          "asm": "mov ecx, dword ptr [rsi + r13 + 0x3a8]",
+          "root": "0x605950",
+          "prior_artifacts": [
+            "roster_property_apply_evidence_v3.json"
+          ]
+        }
+      ],
+      "whole_root_semantic_closure": false,
+      "all_external_aliases_closed": false
+    },
+    {
+      "id": "registry_property_reader_writer",
+      "kind": "reader-writer",
+      "identity": "Same registry3326E68 table+10F8; tag69 branch loads S intoR14 atB55003.",
+      "aliases": [
+        "RDI=S+3A8 then advances20h, dereference atB55030",
+        "R14=S remains used for pointers",
+        "R9=ordinal*20h for direct+3AC write"
+      ],
+      "changes": "Replace derived loop start withB and redirect direct+3AC bit clear toB+ordinal*20h+4; keep R14 asS and pointer/map consumers intact.",
+      "effects": "CallsFD9BA0 while finding related entity; other roster38h state writes and property flag bit clear.",
+      "closure": "Known tag69 branch only; other tags/branches and heap aliases not covered.",
+      "root": "0xb54e00",
+      "complete_saved_unwind_fragments": [
+        {
+          "start": "0xb54e00",
+          "end_exclusive": "0xb54e28",
+          "unwind": "0x24ad4c8",
+          "sha256": "73b5b98498ae49c1ec6cf1270a4a74fe6be011795803c216389e541af67297fb",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0xb54e28",
+          "end_exclusive": "0xb5515f",
+          "unwind": "0x24ad4d4",
+          "sha256": "dbcb0cc62ac4fbdfe7d7b49db73630a549fab108f4f2c935dcf975d8bbbb2f2a",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0xb5515f",
+          "end_exclusive": "0xb55169",
+          "unwind": "0x24ad4f8",
+          "sha256": "217ec2994cd9258a1bc52685bba27b170e55211e4a77469fd209b7fd5a42c126",
+          "sequential_decode_covers_span": true
+        }
+      ],
+      "edit_sites": [
+        {
+          "rva": "0xb5501c",
+          "bytes": "498dbea8030000",
+          "sha256": "77547cca62e554efa4385aa3aa2ea841fdb3f679df8dfeb3f34cd2f7e7e37793",
+          "asm": "lea rdi, [r14 + 0x3a8]",
+          "root": "0xb54e00",
+          "prior_artifacts": [
+            "roster_dispatch_evidence_v2.json"
+          ]
+        },
+        {
+          "rva": "0xb55030",
+          "bytes": "8b17",
+          "sha256": "a80ee1996fc3b8384f99a710d0ac66d463e3701d7ef6b81903e676a804ec23c7",
+          "asm": "mov edx, dword ptr [rdi]",
+          "root": "0xb54e00",
+          "prior_artifacts": []
+        },
+        {
+          "rva": "0xb5504a",
+          "bytes": "4883c720",
+          "sha256": "4db6a95c951289abc4e4bffe8245feea5d1d1425affa70f05a18dab29685dece",
+          "asm": "add rdi, 0x20",
+          "root": "0xb54e00",
+          "prior_artifacts": [
+            "roster_dispatch_evidence_v2.json"
+          ]
+        },
+        {
+          "rva": "0xb550fb",
+          "bytes": "4383a431ac030000fe",
+          "sha256": "97ec64130982c0b7ed2a45acffe64e8d0c01f6ebaa3efff39310c32f697af6fe",
+          "asm": "and dword ptr [r9 + r14 + 0x3ac], 0xfffffffe",
+          "root": "0xb54e00",
+          "prior_artifacts": [
+            "roster_dispatch_evidence_v2.json"
+          ]
+        }
+      ],
+      "whole_root_semantic_closure": false,
+      "all_external_aliases_closed": false
+    },
+    {
+      "id": "tag_da_network_index",
+      "kind": "reader",
+      "identity": "FFE3D6 explicitly loads global3326468 intoR9; loop bounded byS+84.",
+      "aliases": [
+        "R9=S",
+        "RAX=ordinal*20h"
+      ],
+      "changes": "Read B+ordinal*20h+Ch; independently retain requirement to expand downstream tagDA90h records before using indices4..7.",
+      "effects": "Original downstream unchecked network-index writer hits separate four-record storage; property relocation alone does not fix it.",
+      "closure": "Selected roster loop proven; downstream capacity defect has independent evidence.",
+      "root": "0xffd8c0",
+      "complete_saved_unwind_fragments": [
+        {
+          "start": "0xffd8c0",
+          "end_exclusive": "0xffe579",
+          "unwind": "0x24d04cc",
+          "sha256": "f305f2d67ba5ee3b4708b9c3eaf4949ac6f4cde734999d5039f7cff260c01757",
+          "sequential_decode_covers_span": true
+        }
+      ],
+      "edit_sites": [
+        {
+          "rva": "0xffe3ff",
+          "bytes": "428b8c08b4030000",
+          "sha256": "9d8509146f6b85c1857163629bc25bf7d9b306a5fd8657958d2866490610d5e2",
+          "asm": "mov ecx, dword ptr [rax + r9 + 0x3b4]",
+          "root": "0xffd8c0",
+          "prior_artifacts": [
+            "roster_index_usage_evidence_v2.json"
+          ]
+        }
+      ],
+      "whole_root_semantic_closure": false,
+      "all_external_aliases_closed": false
+    },
+    {
+      "id": "first_record_vector_index",
+      "kind": "reader",
+      "identity": "ACA57B loads global3326468; ACA58B reads first property record index.",
+      "aliases": [
+        "RAX=S; fixed ordinal0"
+      ],
+      "changes": "Read B+Ch while keeping first-record semantics; do not replace network index with ordinal.",
+      "effects": "Passes index toACF1F0; >=4 has bounded default path, not a join rejection.",
+      "closure": "Selected same-S reader; exact desired extra-player vector behavior remains separate.",
+      "root": "0xaca400",
+      "complete_saved_unwind_fragments": [
+        {
+          "start": "0xaca400",
+          "end_exclusive": "0xaca446",
+          "unwind": "0x24a7e70",
+          "sha256": "52afcceb14ec99c67744a6d859a98c12c21807c5571dc93affcaa2d4c369e377",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0xaca446",
+          "end_exclusive": "0xaca468",
+          "unwind": "0x24a7e88",
+          "sha256": "e753a08eda3c92874ed2ba7d831588c393fb1391e546f2cb57a024da2efe77bd",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0xaca468",
+          "end_exclusive": "0xaca500",
+          "unwind": "0x24a7ea4",
+          "sha256": "85345a92d23b28194125de915c01fe75b81a7bb9da407b006431a6c6fee7cf7c",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0xaca500",
+          "end_exclusive": "0xacaa98",
+          "unwind": "0x24a7ec4",
+          "sha256": "7d60112531375f45d5b20b77f323e96063f99b65388804cee05470248c0ca548",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0xacaa98",
+          "end_exclusive": "0xacab40",
+          "unwind": "0x24a7ef4",
+          "sha256": "e88e19629734f7eddb97c9d6bd943a8e36f25aa0720318695f326f654e7ed3c4",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0xacab40",
+          "end_exclusive": "0xacabb6",
+          "unwind": "0x24a7f04",
+          "sha256": "dff6340e0a3446d0dc93c34a4335dd361ac16785ae924afbd551b6d6eb59edf6",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0xacabb6",
+          "end_exclusive": "0xacabce",
+          "unwind": "0x24a7f20",
+          "sha256": "b1eef80113d1164481fe240df31cb0531454c702fe338539d0e17c5acd1d5c3a",
+          "sequential_decode_covers_span": true
+        }
+      ],
+      "edit_sites": [
+        {
+          "rva": "0xaca58b",
+          "bytes": "448b80b4030000",
+          "sha256": "4d0f67868c9a111fa902194775085fa84faedb2f1e8543fdcb1c7d9cf0ae23b5",
+          "asm": "mov r8d, dword ptr [rax + 0x3b4]",
+          "root": "0xaca400",
+          "prior_artifacts": [
+            "roster_index_usage_evidence_v2.json"
+          ]
+        }
+      ],
+      "whole_root_semantic_closure": false,
+      "all_external_aliases_closed": false
+    },
+    {
+      "id": "state_operation_index",
+      "kind": "reader",
+      "identity": "Global3326468 inR10; entity map lookup obtains ordinal then reads property index.",
+      "aliases": [
+        "R10=S",
+        "RCX=ordinal*20h"
+      ],
+      "changes": "Read B+ordinal*20h+Ch; preserve entity map and downstream index meaning.",
+      "effects": "Passes index toACF420, whose>=4 path returns false; not evidence of account join refusal.",
+      "closure": "Selected call chain proven; downstream storage/operation extension separate.",
+      "root": "0x12a98d0",
+      "complete_saved_unwind_fragments": [
+        {
+          "start": "0x12a98d0",
+          "end_exclusive": "0x12a991b",
+          "unwind": "0x24fccec",
+          "sha256": "3f1b3426fbf2aa6183e4cb1b912a30314dc8be433e936b3edfb476cbcd9da4d2",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x12a991b",
+          "end_exclusive": "0x12aa165",
+          "unwind": "0x24fcd08",
+          "sha256": "b7b33e6c98a7a908e7108d58f9ef97d4406602e82c62f6efbfda0471c41d3859",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x12aa165",
+          "end_exclusive": "0x12aa189",
+          "unwind": "0x24fcd48",
+          "sha256": "02ba426729362414840a963ad1993e531016e492f0a9c2ea012ce4fe3d35f64b",
+          "sequential_decode_covers_span": true
+        }
+      ],
+      "edit_sites": [
+        {
+          "rva": "0x12a9c80",
+          "bytes": "428bbc11b4030000",
+          "sha256": "834ca1885c8a2b5e00ec7d89e3d1e4e53513851d7a358c051456816539b6b71a",
+          "asm": "mov edi, dword ptr [rcx + r10 + 0x3b4]",
+          "root": "0x12a98d0",
+          "prior_artifacts": [
+            "roster_index_usage_evidence_v2.json"
+          ]
+        }
+      ],
+      "whole_root_semantic_closure": false,
+      "all_external_aliases_closed": false
+    },
+    {
+      "id": "mask_index",
+      "kind": "reader",
+      "identity": "Global3326468 and same entity map supply ordinal; R11=S.",
+      "aliases": [
+        "R11=S",
+        "RCX=ordinal*20h"
+      ],
+      "changes": "Redirect field read toB+ordinal*20h+Ch; preserve sentinel handling and32-bit mask operation.",
+      "effects": "Tests masks in a different system; bits4..7 fit32-bit width, mask production remains unresolved.",
+      "closure": "Selected same-S lookup/read proven; not a proof of complete mask producer.",
+      "root": "0x1277920",
+      "complete_saved_unwind_fragments": [
+        {
+          "start": "0x1277920",
+          "end_exclusive": "0x12779de",
+          "unwind": "0x24f9ca0",
+          "sha256": "5c3b509dd8d9559181957d4e6c11a05c28294e7a765cddd37209d6db1b0877dd",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x12779de",
+          "end_exclusive": "0x1277f54",
+          "unwind": "0x24f9cc0",
+          "sha256": "b30d7180cde2fec38066dd4d828a77922a68a55e4ebd9b46011e8f6a5fb6d84b",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x1277f54",
+          "end_exclusive": "0x1277f7b",
+          "unwind": "0x24f9cd8",
+          "sha256": "505e4e80ac368b7eda29ad0f947e3339dce06e0676b3c9acd7354c7746e24fb9",
+          "sequential_decode_covers_span": true
+        }
+      ],
+      "edit_sites": [
+        {
+          "rva": "0x1277a06",
+          "bytes": "468b8419b4030000",
+          "sha256": "c3988b72d1a70c5dad9fe52e723f5deb8a96d97f07234cdaa71eac9e65e7484d",
+          "asm": "mov r8d, dword ptr [rcx + r11 + 0x3b4]",
+          "root": "0x1277920",
+          "prior_artifacts": [
+            "roster_index_usage_evidence_v2.json"
+          ]
+        }
+      ],
+      "whole_root_semantic_closure": false,
+      "all_external_aliases_closed": false
+    },
+    {
+      "id": "index_getter",
+      "kind": "reader",
+      "identity": "606AE4 loads same roster global; map yields ordinal; R10=S.",
+      "aliases": [
+        "R10=S",
+        "RAX=ordinal*20h"
+      ],
+      "changes": "Read B+ordinal*20h+Ch; preserve map-miss returnFFFFFFFF and raw DWORD value.",
+      "effects": "Getter has no four clamp; only address changes needed for this field.",
+      "closure": "Existing selected getter proof; no global callers closure claimed.",
+      "root": "0x606ad0",
+      "complete_saved_unwind_fragments": [
+        {
+          "start": "0x606ad0",
+          "end_exclusive": "0x606b75",
+          "unwind": "0x2424c2c",
+          "sha256": "96ce6884140adb9ae93688e042a2b5db7ffc1e59ffb45eb03188e6bab79abcfb",
+          "sequential_decode_covers_span": true
+        }
+      ],
+      "edit_sites": [
+        {
+          "rva": "0x606b6b",
+          "bytes": "428b8410b4030000",
+          "sha256": "8fdb68d8ac868414b9b36ed2f9be0409b783c6149ce9db5c4b3d3eef519c36f5",
+          "asm": "mov eax, dword ptr [rax + r10 + 0x3b4]",
+          "root": "0x606ad0",
+          "prior_artifacts": [
+            "roster_index_usage_evidence_v2.json"
+          ]
+        }
+      ],
+      "whole_root_semantic_closure": false,
+      "all_external_aliases_closed": false
+    },
+    {
+      "id": "float_pair_reader",
+      "kind": "reader",
+      "identity": "72757E/7275B1 load same global3326468; dense roster loop uses S+84.",
+      "aliases": [
+        "RCX=S",
+        "RAX=ordinal*20h"
+      ],
+      "changes": "Redirect network index+Ch and float fields+1Ch/+18h together, preserving EDX/XMM3/XMM2 arguments to14335F0.",
+      "effects": "14335F0 writes indexed player component298h records; its storage expansion is independently required.",
+      "closure": "Selected same-S caller block; entire giant manager root is not re-proved.",
+      "root": "0x725160",
+      "complete_saved_unwind_fragments": [
+        {
+          "start": "0x725160",
+          "end_exclusive": "0x7251ba",
+          "unwind": "0x244236c",
+          "sha256": "e1e969b8c8e232dd86916e9c76958ff47267d0d7d29bebec8dba61a34f390407",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x7251ba",
+          "end_exclusive": "0x7252e9",
+          "unwind": "0x2442384",
+          "sha256": "5c32d57fa89f32d23663dd19a85076d346e2ed9b3a80fbd1cf740dfc8c2dc900",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x7252e9",
+          "end_exclusive": "0x72b8bd",
+          "unwind": "0x24423bc",
+          "sha256": "229c8079ac8df33012e1395c5bb6a6bab54189139eb94df80173d19658768fdc",
+          "sequential_decode_covers_span": true
+        },
+        {
+          "start": "0x72b8bd",
+          "end_exclusive": "0x72b8e0",
+          "unwind": "0x24423e0",
+          "sha256": "e6683074c06cec9f3765a9442a62284d91c1376127ccbb57d92a07437189d432",
+          "sequential_decode_covers_span": true
+        }
+      ],
+      "edit_sites": [
+        {
+          "rva": "0x7275d6",
+          "bytes": "8b9408b4030000",
+          "sha256": "99fef035c935ba83a67815c4d26c7dc3be5b8f121e7cb059c6d13954a080b808",
+          "asm": "mov edx, dword ptr [rax + rcx + 0x3b4]",
+          "root": "0x725160",
+          "prior_artifacts": [
+            "roster_index_usage_evidence_v2.json"
+          ]
+        },
+        {
+          "rva": "0x7275e1",
+          "bytes": "f30f109c08c4030000",
+          "sha256": "5eb5a2f79450742256a5732e1391f00f376f5bf411b0ca2e6c11204c9aef9a0f",
+          "asm": "movss xmm3, dword ptr [rax + rcx + 0x3c4]",
+          "root": "0x725160",
+          "prior_artifacts": [
+            "roster_index_usage_evidence_v2.json"
+          ]
+        },
+        {
+          "rva": "0x7275ea",
+          "bytes": "f30f109408c0030000",
+          "sha256": "673aa86a5ac760e595af271a79bbaf182358e5ce2583eda3d39fafa42b7dfb08",
+          "asm": "movss xmm2, dword ptr [rax + rcx + 0x3c0]",
+          "root": "0x725160",
+          "prior_artifacts": [
+            "roster_index_usage_evidence_v2.json"
+          ]
+        }
+      ],
+      "whole_root_semantic_closure": false,
+      "all_external_aliases_closed": false
+    },
+    {
+      "id": "palette_index",
+      "kind": "reader-with-effects",
+      "identity": "Binding evidence same global and entity map; RBP=S, RDI=ordinal*20h.",
+      "aliases": [
+        "RBP=S",
+        "RDI=ordinal*20h"
+      ],
+      "changes": "Redirect index read toB+ordinal*20h+Ch; preserve bounded palette fallback and independent player_count notification.",
+      "effects": "Conditional indirect palette endpoint; count notification. >=4 returns fallback components, not index clamp.",
+      "closure": "Selected same-S field read and palette paths proven; external API target not identified.",
+      "root": "0x6054f0",
+      "complete_saved_unwind_fragments": [
+        {
+          "start": "0x6054f0",
+          "end_exclusive": "0x605947",
+          "unwind": "0x2424950",
+          "sha256": "6ad21683150fa35285c490fb75b00d8f0af68ab36dad70cbced0bccfc745288a",
+          "sequential_decode_covers_span": true
+        }
+      ],
+      "edit_sites": [
+        {
+          "rva": "0x605760",
+          "bytes": "8b842fb4030000",
+          "sha256": "23d637bcd00800566ae23d2802e7371aa078502af5f18b5e2d9e73d81fa6feb5",
+          "asm": "mov eax, dword ptr [rdi + rbp + 0x3b4]",
+          "root": "0x6054f0",
+          "prior_artifacts": [
+            "roster_component_binding_evidence_v3.json"
+          ]
+        }
+      ],
+      "whole_root_semantic_closure": false,
+      "all_external_aliases_closed": false
+    },
+    {
+      "id": "0x60ca80",
+      "root": "0x60ca80",
+      "kind": "insert",
+      "identity": "Same roster global3326468 in existing lifecycle/player/dispatch evidence; component registration only where explicitly noted.",
+      "complete_saved_unwind_fragments": [
+        {
+          "start": "0x60ca80",
+          "end_exclusive": "0x60cb9f",
+          "unwind": "0x2425774",
+          "sha256": "974935cec813b3ce3f8d62cff1c7f46b17bb306f5bce020e8dde6fdccfc01e4f",
+          "sequential_decode_covers_span": true
+        }
+      ],
+      "anchor_instructions": [
+        {
+          "rva": "0x60cae9",
+          "bytes": "0f11841908010000",
+          "sha256": "677143863bd45508e1dc0368527e457c163e4f80c547cb4697e25b4af164bafd",
+          "asm": "movups xmmword ptr [rcx + rbx + 0x108], xmm0",
+          "root": "0x60ca80",
+          "prior_artifacts": [
+            "player_roster_evidence.json",
+            "roster_dispatch_evidence_v2.json"
+          ]
+        },
+        {
+          "rva": "0x60cb2b",
+          "bytes": "486bc238",
+          "sha256": "625573be8f354b1d57a3f44803e0f3488e87a78bb6a26addc543c05a33943256",
+          "asm": "imul rax, rdx, 0x38",
+          "root": "0x60ca80",
+          "prior_artifacts": [
+            "player_roster_evidence.json",
+            "roster_dispatch_evidence_v2.json"
+          ]
+        }
+      ],
+      "move_edges": [
+        {
+          "rva": "0x60cac9",
+          "bytes": "e842f9ffff",
+          "sha256": "00280c63c51d96eb524935db408305aa6639334d3219003e8d3b92e3b97c6b95",
+          "asm": "call 0x60c410",
+          "root": "0x60ca80",
+          "prior_artifacts": [
+            "roster_dispatch_evidence_v2.json"
+          ]
+        }
+      ],
+      "changes": "ABI RDX entity/R8 flags; four guard; initializes70h/38h; no direct property write; optional move via60C410.",
+      "property_edit": "No direct3A8..3C7 property operand in this finite complete root; shared move must be redirected where called.",
+      "whole_root_semantic_closure": false,
+      "all_external_aliases_closed": false
+    },
+    {
+      "id": "0x60cba0",
+      "root": "0x60cba0",
+      "kind": "insert",
+      "identity": "Same roster global3326468 in existing lifecycle/player/dispatch evidence; component registration only where explicitly noted.",
+      "complete_saved_unwind_fragments": [
+        {
+          "start": "0x60cba0",
+          "end_exclusive": "0x60cc6b",
+          "unwind": "0x2425780",
+          "sha256": "57a8d7f5d1dbb83f3a9a80918f740ce2065dfc1ac09b10952189b3693a7132c8",
+          "sequential_decode_covers_span": true
+        }
+      ],
+      "anchor_instructions": [
+        {
+          "rva": "0x60cbdc",
+          "bytes": "0f11841808010000",
+          "sha256": "06675619b1f1cdb14ccd96188869de3fcf0845b57d4b1fb6e7716b0372a074c9",
+          "asm": "movups xmmword ptr [rax + rbx + 0x108], xmm0",
+          "root": "0x60cba0",
+          "prior_artifacts": [
+            "player_roster_evidence.json",
+            "roster_dispatch_evidence_v2.json"
+          ]
+        },
+        {
+          "rva": "0x60cc14",
+          "bytes": "486bc138",
+          "sha256": "efa3a1aa9f3b592163181348f990be1a22cfd757744b12f9cfe0da6f8cdc2617",
+          "asm": "imul rax, rcx, 0x38",
+          "root": "0x60cba0",
+          "prior_artifacts": [
+            "player_roster_evidence.json",
+            "roster_dispatch_evidence_v2.json"
+          ]
+        }
+      ],
+      "move_edges": [],
+      "changes": "ABI RDX entity; four guard; initializes70h/38h; property producer is a later stage.",
+      "property_edit": "No direct3A8..3C7 property operand in this finite complete root; shared move must be redirected where called.",
+      "whole_root_semantic_closure": false,
+      "all_external_aliases_closed": false
+    },
+    {
+      "id": "0x540850",
+      "root": "0x540850",
+      "kind": "insert",
+      "identity": "Same roster global3326468 in existing lifecycle/player/dispatch evidence; component registration only where explicitly noted.",
+      "complete_saved_unwind_fragments": [
+        {
+          "start": "0x540850",
+          "end_exclusive": "0x54091e",
+          "unwind": "0x2410a70",
+          "sha256": "1264c1c0bf558d390f7dd2bdf075e3f6b3b2465fbfbac5575d6eea8a6ea6d6c0",
+          "sequential_decode_covers_span": true
+        }
+      ],
+      "anchor_instructions": [
+        {
+          "rva": "0x54088f",
+          "bytes": "0f11841808010000",
+          "sha256": "06675619b1f1cdb14ccd96188869de3fcf0845b57d4b1fb6e7716b0372a074c9",
+          "asm": "movups xmmword ptr [rax + rbx + 0x108], xmm0",
+          "root": "0x540850",
+          "prior_artifacts": [
+            "roster_dispatch_evidence_v2.json",
+            "roster_lifecycle_evidence.json"
+          ]
+        },
+        {
+          "rva": "0x5408cb",
+          "bytes": "0f118418c8020000",
+          "sha256": "673f75c819034791f46981425ef42647e8ffff61a2f757f0c10f29a17344bffe",
+          "asm": "movups xmmword ptr [rax + rbx + 0x2c8], xmm0",
+          "root": "0x540850",
+          "prior_artifacts": [
+            "roster_dispatch_evidence_v2.json",
+            "roster_lifecycle_evidence.json"
+          ]
+        }
+      ],
+      "move_edges": [],
+      "changes": "ABI RCX entity; four guard;70h/38h initialization; later property producer.",
+      "property_edit": "No direct3A8..3C7 property operand in this finite complete root; shared move must be redirected where called.",
+      "whole_root_semantic_closure": false,
+      "all_external_aliases_closed": false
+    },
+    {
+      "id": "0x540920",
+      "root": "0x540920",
+      "kind": "insert",
+      "identity": "Same roster global3326468 in existing lifecycle/player/dispatch evidence; component registration only where explicitly noted.",
+      "complete_saved_unwind_fragments": [
+        {
+          "start": "0x540920",
+          "end_exclusive": "0x540a3e",
+          "unwind": "0x2410a78",
+          "sha256": "197e6d093ec081d304e0642ffee3e7fc3a71b2eadb36f3a0805d4927af7a5196",
+          "sequential_decode_covers_span": true
+        }
+      ],
+      "anchor_instructions": [
+        {
+          "rva": "0x540984",
+          "bytes": "486bc870",
+          "sha256": "ac80a3b3fa2213b3a7b9340f4ce2edd7a763af80e412f73a04da5c4464803d82",
+          "asm": "imul rcx, rax, 0x70",
+          "root": "0x540920",
+          "prior_artifacts": [
+            "roster_dispatch_evidence_v2.json",
+            "roster_lifecycle_evidence.json"
+          ]
+        },
+        {
+          "rva": "0x5409ca",
+          "bytes": "486bc238",
+          "sha256": "625573be8f354b1d57a3f44803e0f3488e87a78bb6a26addc543c05a33943256",
+          "asm": "imul rax, rdx, 0x38",
+          "root": "0x540920",
+          "prior_artifacts": [
+            "roster_dispatch_evidence_v2.json",
+            "roster_lifecycle_evidence.json"
+          ]
+        }
+      ],
+      "move_edges": [
+        {
+          "rva": "0x540968",
+          "bytes": "e8a3ba0c00",
+          "sha256": "8a534c85abb0d77f9a3cc962a7721c148fc35c7fbbf2a2e50805ec71ab87dc69",
+          "asm": "call 0x60c410",
+          "root": "0x540920",
+          "prior_artifacts": [
+            "roster_component_binding_evidence_v3.json",
+            "roster_dispatch_evidence_v2.json",
+            "roster_lifecycle_evidence.json"
+          ]
+        }
+      ],
+      "changes": "Component239 registered insert; ABI RCX entity/RDX flags; four guard; optional shared move.",
+      "property_edit": "No direct3A8..3C7 property operand in this finite complete root; shared move must be redirected where called.",
+      "whole_root_semantic_closure": false,
+      "all_external_aliases_closed": false
+    },
+    {
+      "id": "0x60cea0",
+      "root": "0x60cea0",
+      "kind": "remove",
+      "identity": "Same roster global3326468 in existing lifecycle/player/dispatch evidence; component registration only where explicitly noted.",
+      "complete_saved_unwind_fragments": [
+        {
+          "start": "0x60cea0",
+          "end_exclusive": "0x60cf4c",
+          "unwind": "0x24257c0",
+          "sha256": "0c6e7607bf93a1e9fba1b8eeba998053b316670295e7d8db432352b3ce49cc7d",
+          "sequential_decode_covers_span": true
+        }
+      ],
+      "anchor_instructions": [],
+      "move_edges": [
+        {
+          "rva": "0x60cf0e",
+          "bytes": "e8fdf4ffff",
+          "sha256": "3f43d1b3b0fb0e78849bbce7805b1e9a53365c60ba1eb6616e8389a64732de6b",
+          "asm": "call 0x60c410",
+          "root": "0x60cea0",
+          "prior_artifacts": [
+            "roster_dispatch_evidence_v2.json",
+            "roster_lifecycle_evidence.json"
+          ]
+        },
+        {
+          "rva": "0x60cf3a",
+          "bytes": "e8d1f4ffff",
+          "sha256": "6dd34c6b9b13875f57bc9c0b6e27fbf1c9d3a4d6ef40a28d20df8c76c6e8db7d",
+          "asm": "call 0x60c410",
+          "root": "0x60cea0",
+          "prior_artifacts": [
+            "roster_dispatch_evidence_v2.json",
+            "roster_lifecycle_evidence.json"
+          ]
+        }
+      ],
+      "changes": "Removes map item, decreases tracked/dense counts and invokes60C410; no independent property clear inferred.",
+      "property_edit": "No direct3A8..3C7 property operand in this finite complete root; shared move must be redirected where called.",
+      "whole_root_semantic_closure": false,
+      "all_external_aliases_closed": false
+    },
+    {
+      "id": "0x540a40",
+      "root": "0x540a40",
+      "kind": "remove",
+      "identity": "Same roster global3326468 in existing lifecycle/player/dispatch evidence; component registration only where explicitly noted.",
+      "complete_saved_unwind_fragments": [
+        {
+          "start": "0x540a40",
+          "end_exclusive": "0x540ae0",
+          "unwind": "0x2410a84",
+          "sha256": "35e4c996bb1466c41df455f8e5f9df1174c8c2bb958ee127a3b7ecc59f6abcf8",
+          "sequential_decode_covers_span": true
+        }
+      ],
+      "anchor_instructions": [],
+      "move_edges": [
+        {
+          "rva": "0x540aa4",
+          "bytes": "e867b90c00",
+          "sha256": "4382852f65e5b0cf5493a190c9c25cb4db2a479ec78233afb8779f87ef870f74",
+          "asm": "call 0x60c410",
+          "root": "0x540a40",
+          "prior_artifacts": [
+            "roster_dispatch_evidence_v2.json",
+            "roster_lifecycle_evidence.json"
+          ]
+        },
+        {
+          "rva": "0x540ad5",
+          "bytes": "e936b90c00",
+          "sha256": "9b4278fe59e41a237d8ba798dff554ad2a53ab63445849e311b25b452f1cddfc",
+          "asm": "jmp 0x60c410",
+          "root": "0x540a40",
+          "prior_artifacts": [
+            "roster_dispatch_evidence_v2.json",
+            "roster_lifecycle_evidence.json"
+          ]
+        }
+      ],
+      "changes": "Registered actual-removal wrapper; call/tail-jump60C410; keep map/count ordering after pre-removal notifications.",
+      "property_edit": "No direct3A8..3C7 property operand in this finite complete root; shared move must be redirected where called.",
+      "whole_root_semantic_closure": false,
+      "all_external_aliases_closed": false
+    }
+  ],
+  "classification_resource_protocol": [
+    {
+      "rva": "0x60d17a",
+      "bytes": "e871e51201",
+      "sha256": "4bede6e12cacc9335e2acb3c759427ee3c526a5fbbecc36d545ca4698f7bd378",
+      "asm": "call 0x173b6f0",
+      "root": "0x60cf50",
+      "prior_artifacts": []
+    },
+    {
+      "rva": "0x60d17f",
+      "bytes": "488b4c2420",
+      "sha256": "b27987f8eb788b80fce058bf8d1025b969a70fbfd904fc7bba373475f2e8a278",
+      "asm": "mov rcx, qword ptr [rsp + 0x20]",
+      "root": "0x60cf50",
+      "prior_artifacts": []
+    },
+    {
+      "rva": "0x60d184",
+      "bytes": "ba20000000",
+      "sha256": "ca079f834997f17f23a724a45f4bcbe549a7c9a31aa8a3efcf6c6c5adefbe34d",
+      "asm": "mov edx, 0x20",
+      "root": "0x60cf50",
+      "prior_artifacts": []
+    },
+    {
+      "rva": "0x60d189",
+      "bytes": "448d42e4",
+      "sha256": "840405d42e18844a2cd60598adb756b7dbf33456fa972fb716ed4bb625a5037f",
+      "asm": "lea r8d, [rdx - 0x1c]",
+      "root": "0x60cf50",
+      "prior_artifacts": []
+    },
+    {
+      "rva": "0x60d18d",
+      "bytes": "e83ee71201",
+      "sha256": "7c776942cb5818db5a255f68d099b1a23b2e79aba17f3eeea20f8f8f903ff2c7",
+      "asm": "call 0x173b8d0",
+      "root": "0x60cf50",
+      "prior_artifacts": []
+    },
+    {
+      "rva": "0x60d1f1",
+      "bytes": "e82aea1201",
+      "sha256": "693f35c12b29a2be998799667bd8237f98013015edf97593c050e5a341c0fd50",
+      "asm": "call 0x173bc20",
+      "root": "0x60cf50",
+      "prior_artifacts": []
+    },
+    {
+      "rva": "0x60d1fb",
+      "bytes": "e820ea1201",
+      "sha256": "8091d97712a79b9de2f6a0dbfaec0ad245038728bb14d681b45b66ce6a1bd735",
+      "asm": "call 0x173bc20",
+      "root": "0x60cf50",
+      "prior_artifacts": []
+    },
+    {
+      "rva": "0x60d5f5",
+      "bytes": "e8f6e01201",
+      "sha256": "0ba696bc071aab0a751d5e83df76e9f7093d68c76730391c23a2aab5881e9a7f",
+      "asm": "call 0x173b6f0",
+      "root": "0x60d300",
+      "prior_artifacts": []
+    },
+    {
+      "rva": "0x60d5fa",
+      "bytes": "488b4c2420",
+      "sha256": "b27987f8eb788b80fce058bf8d1025b969a70fbfd904fc7bba373475f2e8a278",
+      "asm": "mov rcx, qword ptr [rsp + 0x20]",
+      "root": "0x60d300",
+      "prior_artifacts": []
+    },
+    {
+      "rva": "0x60d5ff",
+      "bytes": "ba20000000",
+      "sha256": "ca079f834997f17f23a724a45f4bcbe549a7c9a31aa8a3efcf6c6c5adefbe34d",
+      "asm": "mov edx, 0x20",
+      "root": "0x60d300",
+      "prior_artifacts": []
+    },
+    {
+      "rva": "0x60d604",
+      "bytes": "448d42e4",
+      "sha256": "840405d42e18844a2cd60598adb756b7dbf33456fa972fb716ed4bb625a5037f",
+      "asm": "lea r8d, [rdx - 0x1c]",
+      "root": "0x60d300",
+      "prior_artifacts": []
+    },
+    {
+      "rva": "0x60d608",
+      "bytes": "e8c3e21201",
+      "sha256": "4d1497616814bf5ab13a666688bd772d6c1b453565368c284f0fc4de0b172b70",
+      "asm": "call 0x173b8d0",
+      "root": "0x60d300",
+      "prior_artifacts": []
+    },
+    {
+      "rva": "0x60d668",
+      "bytes": "e8b3e51201",
+      "sha256": "f2a89c6b5fc8e2e3f686e8a87cd215d2dd4d3bd6c0f1828b60bb09cdc50710e7",
+      "asm": "call 0x173bc20",
+      "root": "0x60d300",
+      "prior_artifacts": []
+    },
+    {
+      "rva": "0x60d672",
+      "bytes": "e8a9e51201",
+      "sha256": "0cf6e6deb22643736466be4a9a5bde537ab4971bec29df794abd38ab917970ee",
+      "asm": "call 0x173bc20",
+      "root": "0x60d300",
+      "prior_artifacts": []
+    }
+  ],
+  "next_cutpoint": {
+    "root": "0x60c410",
+    "start": "0x60c51f",
+    "end_exclusive": "0x60c543",
+    "property_instructions": [
+      {
+        "rva": "0x60c51f",
+        "bytes": "410f10841aa8030000",
+        "sha256": "2602fef643f0a9b9aaa322242318bf9dd01bef70cee3ba19147c6f1a210985e5",
+        "asm": "movups xmm0, xmmword ptr [r10 + rbx + 0x3a8]"
+      },
+      {
+        "rva": "0x60c528",
+        "bytes": "410f118419a8030000",
+        "sha256": "b138cc5d3c5fc7842fbe36539fa0d4e0e9923f261a590617955f52674a5954fc",
+        "asm": "movups xmmword ptr [r9 + rbx + 0x3a8], xmm0"
+      },
+      {
+        "rva": "0x60c531",
+        "bytes": "410f108c1ab8030000",
+        "sha256": "2c490bfbe10aa12ec37a86547608b026c478cf82d8a871c8b126d0aeca30f742",
+        "asm": "movups xmm1, xmmword ptr [r10 + rbx + 0x3b8]"
+      },
+      {
+        "rva": "0x60c53a",
+        "bytes": "410f118c19b8030000",
+        "sha256": "0a56dd6b7fa60b0da5b7f25b353b65b4bda33ffbcd67198d7080b1f87f67bd2f",
+        "asm": "movups xmmword ptr [r9 + rbx + 0x3b8], xmm1"
+      }
+    ],
+    "body_sha256": "b977816b8863034f0c247d0ee58779ab0f7d87cdb54eaa49ebfcdd5cab95434b",
+    "body_bytes": 430,
+    "body_instructions": [
+      {
+        "rva": "0x60c410",
+        "bytes": "443bc2",
+        "sha256": "93129984bce4ca4e26fdb8dcbdf043c9d2f8e7e1d31dd68ee4ea8f6cc858fc3b",
+        "asm": "cmp r8d, edx"
+      },
+      {
+        "rva": "0x60c413",
+        "bytes": "0f84a4010000",
+        "sha256": "2cf55b0cf1f7a1752c497869bf0f41442f1ee0f0df643f31dc969384ec38eae2",
+        "asm": "je 0x60c5bd"
+      },
+      {
+        "rva": "0x60c419",
+        "bytes": "48895c2420",
+        "sha256": "3e669f46c2d0f482b720e4371786b487f56b6c565b43521a5f65e899cfc78795",
+        "asm": "mov qword ptr [rsp + 0x20], rbx"
+      },
+      {
+        "rva": "0x60c41e",
+        "bytes": "4156",
+        "sha256": "10203ae4fc14a963f9d30ab2a1d0e52f2d824b30911118a9cc5089e1e0e6c969",
+        "asm": "push r14"
+      },
+      {
+        "rva": "0x60c420",
+        "bytes": "488bd9",
+        "sha256": "d4ed4cfc264b5da25bc0a40c02f9818c48ff0ac8fd85318f45a886a82fe74e31",
+        "asm": "mov rbx, rcx"
+      },
+      {
+        "rva": "0x60c423",
+        "bytes": "448bf2",
+        "sha256": "166eb4eb3deb5c8bb2a4c478d6229244c6f4ddd20a72663f3b8ff484ca7aee97",
+        "asm": "mov r14d, edx"
+      },
+      {
+        "rva": "0x60c426",
+        "bytes": "458bd0",
+        "sha256": "c8b1bb154f8c280d524417af42a46e602c4cf1633320d06971db2e26bcb5d801",
+        "asm": "mov r10d, r8d"
+      },
+      {
+        "rva": "0x60c429",
+        "bytes": "458bce",
+        "sha256": "387ffa99cb90d8e0ce95d63f72b0ad4eb879426e90c98366a4c94d657ec2a8a4",
+        "asm": "mov r9d, r14d"
+      },
+      {
+        "rva": "0x60c42c",
+        "bytes": "4d6bc270",
+        "sha256": "868759696f8c27b146921b3f5e13fafa2763145c37851659c1d2f52c85bc19bc",
+        "asm": "imul r8, r10, 0x70"
+      },
+      {
+        "rva": "0x60c430",
+        "bytes": "4e8d1cf1",
+        "sha256": "6e7d8dea3a6bc16f1ef12ec42aab863bd0d81d0f26d4ba8aa4b46c09dda888c7",
+        "asm": "lea r11, [rcx + r14*8]"
+      },
+      {
+        "rva": "0x60c434",
+        "bytes": "49c1e105",
+        "sha256": "92bb4fbf2d2b3363f895cca899ad52c425b3028e2e4cfe2bce72b66ca85152df",
+        "asm": "shl r9, 5"
+      },
+      {
+        "rva": "0x60c438",
+        "bytes": "4a8b84d1e8000000",
+        "sha256": "dd3fa76d8307cc37feb17c631e922832b06abbbe89bae0c93b1d4f65947b3315",
+        "asm": "mov rax, qword ptr [rcx + r10*8 + 0xe8]"
+      },
+      {
+        "rva": "0x60c440",
+        "bytes": "498983e8000000",
+        "sha256": "85ac25ad108d02bf00a3befbb947e50718ab43b4ef3a1758c25655f7e839cf9d",
+        "asm": "mov qword ptr [r11 + 0xe8], rax"
+      },
+      {
+        "rva": "0x60c447",
+        "bytes": "496bc670",
+        "sha256": "ec3331bc22397f7a680a50138a94a5fefdffbf5be090ba0851278e8ea0981b07",
+        "asm": "imul rax, r14, 0x70"
+      },
+      {
+        "rva": "0x60c44b",
+        "bytes": "410f10840808010000",
+        "sha256": "605b7515220603f2601da40a4462cfcecb307b2e4504d86db73330834db776a4",
+        "asm": "movups xmm0, xmmword ptr [r8 + rcx + 0x108]"
+      },
+      {
+        "rva": "0x60c454",
+        "bytes": "48896c2410",
+        "sha256": "a397c36bd07c707505b5b64affc8ba0d8c1bbf7a5992ffa8d2cbcc287b5860be",
+        "asm": "mov qword ptr [rsp + 0x10], rbp"
+      },
+      {
+        "rva": "0x60c459",
+        "bytes": "4889742418",
+        "sha256": "3f3cd94f874d3e7da94952e20f1f701b9adf0f0e17346b26da2c80431cfca999",
+        "asm": "mov qword ptr [rsp + 0x18], rsi"
+      },
+      {
+        "rva": "0x60c45e",
+        "bytes": "48897c2420",
+        "sha256": "57663bc094be67725608e1b2760babad17124516e3182f736240c05c2599126c",
+        "asm": "mov qword ptr [rsp + 0x20], rdi"
+      },
+      {
+        "rva": "0x60c463",
+        "bytes": "0f11840808010000",
+        "sha256": "dbd582e6e6272cc65562050b36fe19ed29676689b751b2812763f4c6f9cc15b0",
+        "asm": "movups xmmword ptr [rax + rcx + 0x108], xmm0"
+      },
+      {
+        "rva": "0x60c46b",
+        "bytes": "410f108c0818010000",
+        "sha256": "4b2a1a23f76b04f8493349f2afc0bfd3832b14ec7ae5cab677e6f9b1a756aa8b",
+        "asm": "movups xmm1, xmmword ptr [r8 + rcx + 0x118]"
+      },
+      {
+        "rva": "0x60c474",
+        "bytes": "0f118c0818010000",
+        "sha256": "33ed0282fb3b0d97dc4c96922af811aad9d3361b52ca20c66ddc028c60be0c1a",
+        "asm": "movups xmmword ptr [rax + rcx + 0x118], xmm1"
+      },
+      {
+        "rva": "0x60c47c",
+        "bytes": "410f10840828010000",
+        "sha256": "f303ee625768e82a5d1c093054a88ad76297bae6b614f76f0ab290f96ec9ad49",
+        "asm": "movups xmm0, xmmword ptr [r8 + rcx + 0x128]"
+      },
+      {
+        "rva": "0x60c485",
+        "bytes": "0f11840828010000",
+        "sha256": "d0bc2feb4a937b784276b2b2042a371afbcecd4cfe27cff60fff57a9f233fe15",
+        "asm": "movups xmmword ptr [rax + rcx + 0x128], xmm0"
+      },
+      {
+        "rva": "0x60c48d",
+        "bytes": "410f108c0838010000",
+        "sha256": "81526dba63850be9b07fb1bdfc4d590a315499983e84c017b36159cd4b121d43",
+        "asm": "movups xmm1, xmmword ptr [r8 + rcx + 0x138]"
+      },
+      {
+        "rva": "0x60c496",
+        "bytes": "0f118c0838010000",
+        "sha256": "207875a133935ea625f12b756a7c2a8f1c504d5930c033db7f5987584c8dd15d",
+        "asm": "movups xmmword ptr [rax + rcx + 0x138], xmm1"
+      },
+      {
+        "rva": "0x60c49e",
+        "bytes": "410f10840848010000",
+        "sha256": "e99848616e4f608691e55aba7cbdbb1ba08863fac56639d0fd8cad39202c2a88",
+        "asm": "movups xmm0, xmmword ptr [r8 + rcx + 0x148]"
+      },
+      {
+        "rva": "0x60c4a7",
+        "bytes": "0f11840848010000",
+        "sha256": "bee227899afb9ea6407ca7cbb0359213bc291fad0dbfaf041d408344bbbb43db",
+        "asm": "movups xmmword ptr [rax + rcx + 0x148], xmm0"
+      },
+      {
+        "rva": "0x60c4af",
+        "bytes": "410f108c0858010000",
+        "sha256": "498271e081256908106552d55be892ac34255795b01c8a5daba3ddc2860c4d6b",
+        "asm": "movups xmm1, xmmword ptr [r8 + rcx + 0x158]"
+      },
+      {
+        "rva": "0x60c4b8",
+        "bytes": "0f118c0858010000",
+        "sha256": "754509d72935be39a94668ec5018c94835882be0ab6314d0ae3654ba89b84396",
+        "asm": "movups xmmword ptr [rax + rcx + 0x158], xmm1"
+      },
+      {
+        "rva": "0x60c4c0",
+        "bytes": "410f10840868010000",
+        "sha256": "a6fa34ab2562d62d783afee941434a18d7ecfd5c7d4315c445d4f37ea82e81ae",
+        "asm": "movups xmm0, xmmword ptr [r8 + rcx + 0x168]"
+      },
+      {
+        "rva": "0x60c4c9",
+        "bytes": "0f11840868010000",
+        "sha256": "24e4023f661da3db46ad1f14ac68ed748dbc8fdea0c8d584c31819cdefe55405",
+        "asm": "movups xmmword ptr [rax + rcx + 0x168], xmm0"
+      },
+      {
+        "rva": "0x60c4d1",
+        "bytes": "496bca38",
+        "sha256": "e1ef833a83750b263e30ff48dd45a6c4dcb18ad5047f8e9c89094fc857c82b24",
+        "asm": "imul rcx, r10, 0x38"
+      },
+      {
+        "rva": "0x60c4d5",
+        "bytes": "496bc638",
+        "sha256": "96ca475fa8b99358ae484660641069dd26fe90a6d70c5310fd88ec4a9bebccc1",
+        "asm": "imul rax, r14, 0x38"
+      },
+      {
+        "rva": "0x60c4d9",
+        "bytes": "0f108419c8020000",
+        "sha256": "09f9d55e2e84b2903b3c6b669c36f234f0d2a8b3cf00a3961fbce2bec170707e",
+        "asm": "movups xmm0, xmmword ptr [rcx + rbx + 0x2c8]"
+      },
+      {
+        "rva": "0x60c4e1",
+        "bytes": "49c1e205",
+        "sha256": "ca9f25f0f66da3506fecc7389bfd7cc18e705ed8cb6d542348882378a7e361ba",
+        "asm": "shl r10, 5"
+      },
+      {
+        "rva": "0x60c4e5",
+        "bytes": "0f118418c8020000",
+        "sha256": "673f75c819034791f46981425ef42647e8ffff61a2f757f0c10f29a17344bffe",
+        "asm": "movups xmmword ptr [rax + rbx + 0x2c8], xmm0"
+      },
+      {
+        "rva": "0x60c4ed",
+        "bytes": "0f108c19d8020000",
+        "sha256": "3ecdf959efbc06ada9f2cba998c80ca8356a64fb8697365162bcaaef60a14fa6",
+        "asm": "movups xmm1, xmmword ptr [rcx + rbx + 0x2d8]"
+      },
+      {
+        "rva": "0x60c4f5",
+        "bytes": "0f118c18d8020000",
+        "sha256": "7b14b4723cfa31d56a618526cb2fe494a797ace8184b1c513468611d7161717c",
+        "asm": "movups xmmword ptr [rax + rbx + 0x2d8], xmm1"
+      },
+      {
+        "rva": "0x60c4fd",
+        "bytes": "0f108419e8020000",
+        "sha256": "e7030a73ddbc658c5f25683af534988a498c93960f41ef90cd60329c3e9d0ab2",
+        "asm": "movups xmm0, xmmword ptr [rcx + rbx + 0x2e8]"
+      },
+      {
+        "rva": "0x60c505",
+        "bytes": "0f118418e8020000",
+        "sha256": "316825e4f36eb0a3bae51fdb697a596f42edec04d67f93988fcc1b33e29ecd27",
+        "asm": "movups xmmword ptr [rax + rbx + 0x2e8], xmm0"
+      },
+      {
+        "rva": "0x60c50d",
+        "bytes": "f20f108c19f8020000",
+        "sha256": "c682621966de0b0b3a8599b415d697cb4d5e78e50a69062c3a960d3d43914694",
+        "asm": "movsd xmm1, qword ptr [rcx + rbx + 0x2f8]"
+      },
+      {
+        "rva": "0x60c516",
+        "bytes": "f20f118c18f8020000",
+        "sha256": "d61d510656efeb961d20b88236ee7ffd33feffbee5c3cbb6430edc8ee72158e0",
+        "asm": "movsd qword ptr [rax + rbx + 0x2f8], xmm1"
+      },
+      {
+        "rva": "0x60c51f",
+        "bytes": "410f10841aa8030000",
+        "sha256": "2602fef643f0a9b9aaa322242318bf9dd01bef70cee3ba19147c6f1a210985e5",
+        "asm": "movups xmm0, xmmword ptr [r10 + rbx + 0x3a8]"
+      },
+      {
+        "rva": "0x60c528",
+        "bytes": "410f118419a8030000",
+        "sha256": "b138cc5d3c5fc7842fbe36539fa0d4e0e9923f261a590617955f52674a5954fc",
+        "asm": "movups xmmword ptr [r9 + rbx + 0x3a8], xmm0"
+      },
+      {
+        "rva": "0x60c531",
+        "bytes": "410f108c1ab8030000",
+        "sha256": "2c490bfbe10aa12ec37a86547608b026c478cf82d8a871c8b126d0aeca30f742",
+        "asm": "movups xmm1, xmmword ptr [r10 + rbx + 0x3b8]"
+      },
+      {
+        "rva": "0x60c53a",
+        "bytes": "410f118c19b8030000",
+        "sha256": "0a56dd6b7fa60b0da5b7f25b353b65b4bda33ffbcd67198d7080b1f87f67bd2f",
+        "asm": "movups xmmword ptr [r9 + rbx + 0x3b8], xmm1"
+      },
+      {
+        "rva": "0x60c543",
+        "bytes": "498b83e8000000",
+        "sha256": "9215f86e4eae65970d27e2deef131808dc485386546dae61603a9fd384fdf1bf",
+        "asm": "mov rax, qword ptr [r11 + 0xe8]"
+      },
+      {
+        "rva": "0x60c54a",
+        "bytes": "448b9bd8000000",
+        "sha256": "c03a2099ee9f6c02164228221fd99f6e26a657ada07738d3d59c438062da47b5",
+        "asm": "mov r11d, dword ptr [rbx + 0xd8]"
+      },
+      {
+        "rva": "0x60c551",
+        "bytes": "8bb3e0000000",
+        "sha256": "7f233c6c120b7e23f51f7fd2b047992147b94f0599f0066dbbd80649e1c5f1ec",
+        "asm": "mov esi, dword ptr [rbx + 0xe0]"
+      },
+      {
+        "rva": "0x60c557",
+        "bytes": "8b7808",
+        "sha256": "db1861a0647feca1321ea615f21bab303b177838591f39a802652b0990d99043",
+        "asm": "mov edi, dword ptr [rax + 8]"
+      },
+      {
+        "rva": "0x60c55a",
+        "bytes": "33c0",
+        "sha256": "72fb562c9d90dfcc008e5b0a391395fd2a244bb6bc231e2621a8ec6860d21fa3",
+        "asm": "xor eax, eax"
+      },
+      {
+        "rva": "0x60c55c",
+        "bytes": "0faff7",
+        "sha256": "e9958cb02171b3a84613796f2c7f2d7771a6b248e4fa206ebe116e71554c38fa",
+        "asm": "imul esi, edi"
+      },
+      {
+        "rva": "0x60c55f",
+        "bytes": "418d6bff",
+        "sha256": "0a4f0d27f3b53b577c61e118e7b7d7358d36b6176c57df873c5ee911384fb635",
+        "asm": "lea ebp, [r11 - 1]"
+      },
+      {
+        "rva": "0x60c563",
+        "bytes": "4585db",
+        "sha256": "d588bc3fd1784e61244a4ac2da4a1e4d96ecbc952966b4ad6d5e7813c9a54e7a",
+        "asm": "test r11d, r11d"
+      },
+      {
+        "rva": "0x60c566",
+        "bytes": "7438",
+        "sha256": "d5fa38a1f8a14002509297c163336a28806979e6195592f4df64060dda39a9be",
+        "asm": "je 0x60c5a0"
+      },
+      {
+        "rva": "0x60c568",
+        "bytes": "4c8b8bd0000000",
+        "sha256": "6fc426fc38e04d8163eedcd281bfb255653b428a2e70b7bd0c8dfbb54a51376d",
+        "asm": "mov r9, qword ptr [rbx + 0xd0]"
+      },
+      {
+        "rva": "0x60c56f",
+        "bytes": "448b93dc000000",
+        "sha256": "e393b87c346290b82d2d2f20f5d23581f39601c3637a809caaec5401ca888bd2",
+        "asm": "mov r10d, dword ptr [rbx + 0xdc]"
+      },
+      {
+        "rva": "0x60c576",
+        "bytes": "66660f1f840000000000",
+        "sha256": "11e14ca968293a1ac9e9652637cb36fe956b44fa075e7e879c910ada52b28a50",
+        "asm": "nop word ptr [rax + rax]"
+      },
+      {
+        "rva": "0x60c580",
+        "bytes": "8bcd",
+        "sha256": "2c9e934b88528234bbb2f24b2d8ecd5b2df0705e435b83aa85df18d824688a27",
+        "asm": "mov ecx, ebp"
+      },
+      {
+        "rva": "0x60c582",
+        "bytes": "8d1430",
+        "sha256": "2420292d86ef85f291aed0693ca237a2996ed707218c111c60fa25ae2ec36ceb",
+        "asm": "lea edx, [rax + rsi]"
+      },
+      {
+        "rva": "0x60c585",
+        "bytes": "4823d1",
+        "sha256": "7d9172aebaeb9dfcb43cb3321fb3cadd76050cee383c4048bdba8d5434fd26e6",
+        "asm": "and rdx, rcx"
+      },
+      {
+        "rva": "0x60c588",
+        "bytes": "418b0cd1",
+        "sha256": "558f44201daad2361d9d4328240ff13e6d3eab9582568877776f3b968aede3c0",
+        "asm": "mov ecx, dword ptr [r9 + rdx*8]"
+      },
+      {
+        "rva": "0x60c58c",
+        "bytes": "4d8d04d1",
+        "sha256": "cbcd7c149ee3747798c706225b12269e7b63e2845a24c1a97d4d43a923762b45",
+        "asm": "lea r8, [r9 + rdx*8]"
+      },
+      {
+        "rva": "0x60c590",
+        "bytes": "413bca",
+        "sha256": "fdf102853ba0e2713116fd3ff49865a0d2f59a71a068b24d5d50e781e9ba4350",
+        "asm": "cmp ecx, r10d"
+      },
+      {
+        "rva": "0x60c593",
+        "bytes": "740e",
+        "sha256": "fb7c8be8bb5995b455e3d29f688a490379ad77976a537abc277b17703fa57dec",
+        "asm": "je 0x60c5a3"
+      },
+      {
+        "rva": "0x60c595",
+        "bytes": "3bcf",
+        "sha256": "7f888b1ccfbf05af467a4f222f477091b546d25417a540c5f747d795d1c7a7b1",
+        "asm": "cmp ecx, edi"
+      },
+      {
+        "rva": "0x60c597",
+        "bytes": "740a",
+        "sha256": "fe8edeeb98cc6d3b93cf2d57000254b84bd9eba34b4df7ce4b87db8b937b7703",
+        "asm": "je 0x60c5a3"
+      },
+      {
+        "rva": "0x60c599",
+        "bytes": "ffc0",
+        "sha256": "36cf7346f0d0c76f16dd999870c6db6c7dd76557592e00b519bcefb73f0a80f6",
+        "asm": "inc eax"
+      },
+      {
+        "rva": "0x60c59b",
+        "bytes": "413bc3",
+        "sha256": "b2b106d435194332d0d7abf30a8fc4e2134884c02d35758ca889951270021f09",
+        "asm": "cmp eax, r11d"
+      },
+      {
+        "rva": "0x60c59e",
+        "bytes": "72e0",
+        "sha256": "88fcb7a143229d98afbcdaac0eee2036e0ce17332d87ce761f3a13197993d7f8",
+        "asm": "jb 0x60c580"
+      },
+      {
+        "rva": "0x60c5a0",
+        "bytes": "4533c0",
+        "sha256": "02f503f7679e5aae1c0dd02847b1fccddfd8dd3637fe5fc8840a6411bd3c3316",
+        "asm": "xor r8d, r8d"
+      },
+      {
+        "rva": "0x60c5a3",
+        "bytes": "488b7c2420",
+        "sha256": "2aa9ebb741516d93d30599187d583d1cefa39d553af4a00e79e64a6800515792",
+        "asm": "mov rdi, qword ptr [rsp + 0x20]"
+      },
+      {
+        "rva": "0x60c5a8",
+        "bytes": "488b742418",
+        "sha256": "2dceb997232b1da608c95701343ebc1a9aaf37b0869d8f2e9b90afffa67f18cf",
+        "asm": "mov rsi, qword ptr [rsp + 0x18]"
+      },
+      {
+        "rva": "0x60c5ad",
+        "bytes": "488b6c2410",
+        "sha256": "42e62c5ecf8bcd64751ba45e6c053cd8e9f7bcf63e06ee30f972b164433f5f37",
+        "asm": "mov rbp, qword ptr [rsp + 0x10]"
+      },
+      {
+        "rva": "0x60c5b2",
+        "bytes": "488b5c2428",
+        "sha256": "2b8a3acd4985872bf58394754234f19bfda2c0fca7ecf9362fb9d03cf606a8d0",
+        "asm": "mov rbx, qword ptr [rsp + 0x28]"
+      },
+      {
+        "rva": "0x60c5b7",
+        "bytes": "45897004",
+        "sha256": "bc9b062e071b1ed3813213f02953ebf499868a820beb16f6d9fbe258eef9e3c9",
+        "asm": "mov dword ptr [r8 + 4], r14d"
+      },
+      {
+        "rva": "0x60c5bb",
+        "bytes": "415e",
+        "sha256": "7f06d4d3432a8d7057cb82b15809c95282c0953cf03c442872bebcb81cf43bc6",
+        "asm": "pop r14"
+      },
+      {
+        "rva": "0x60c5bd",
+        "bytes": "c3",
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "asm": "ret "
+      }
+    ],
+    "cfg": {
+      "0x60c410": [
+        "0x60c413"
+      ],
+      "0x60c413": [
+        "0x60c5bd",
+        "0x60c419"
+      ],
+      "0x60c419": [
+        "0x60c41e"
+      ],
+      "0x60c41e": [
+        "0x60c420"
+      ],
+      "0x60c420": [
+        "0x60c423"
+      ],
+      "0x60c423": [
+        "0x60c426"
+      ],
+      "0x60c426": [
+        "0x60c429"
+      ],
+      "0x60c429": [
+        "0x60c42c"
+      ],
+      "0x60c42c": [
+        "0x60c430"
+      ],
+      "0x60c430": [
+        "0x60c434"
+      ],
+      "0x60c434": [
+        "0x60c438"
+      ],
+      "0x60c438": [
+        "0x60c440"
+      ],
+      "0x60c440": [
+        "0x60c447"
+      ],
+      "0x60c447": [
+        "0x60c44b"
+      ],
+      "0x60c44b": [
+        "0x60c454"
+      ],
+      "0x60c454": [
+        "0x60c459"
+      ],
+      "0x60c459": [
+        "0x60c45e"
+      ],
+      "0x60c45e": [
+        "0x60c463"
+      ],
+      "0x60c463": [
+        "0x60c46b"
+      ],
+      "0x60c46b": [
+        "0x60c474"
+      ],
+      "0x60c474": [
+        "0x60c47c"
+      ],
+      "0x60c47c": [
+        "0x60c485"
+      ],
+      "0x60c485": [
+        "0x60c48d"
+      ],
+      "0x60c48d": [
+        "0x60c496"
+      ],
+      "0x60c496": [
+        "0x60c49e"
+      ],
+      "0x60c49e": [
+        "0x60c4a7"
+      ],
+      "0x60c4a7": [
+        "0x60c4af"
+      ],
+      "0x60c4af": [
+        "0x60c4b8"
+      ],
+      "0x60c4b8": [
+        "0x60c4c0"
+      ],
+      "0x60c4c0": [
+        "0x60c4c9"
+      ],
+      "0x60c4c9": [
+        "0x60c4d1"
+      ],
+      "0x60c4d1": [
+        "0x60c4d5"
+      ],
+      "0x60c4d5": [
+        "0x60c4d9"
+      ],
+      "0x60c4d9": [
+        "0x60c4e1"
+      ],
+      "0x60c4e1": [
+        "0x60c4e5"
+      ],
+      "0x60c4e5": [
+        "0x60c4ed"
+      ],
+      "0x60c4ed": [
+        "0x60c4f5"
+      ],
+      "0x60c4f5": [
+        "0x60c4fd"
+      ],
+      "0x60c4fd": [
+        "0x60c505"
+      ],
+      "0x60c505": [
+        "0x60c50d"
+      ],
+      "0x60c50d": [
+        "0x60c516"
+      ],
+      "0x60c516": [
+        "0x60c51f"
+      ],
+      "0x60c51f": [
+        "0x60c528"
+      ],
+      "0x60c528": [
+        "0x60c531"
+      ],
+      "0x60c531": [
+        "0x60c53a"
+      ],
+      "0x60c53a": [
+        "0x60c543"
+      ],
+      "0x60c543": [
+        "0x60c54a"
+      ],
+      "0x60c54a": [
+        "0x60c551"
+      ],
+      "0x60c551": [
+        "0x60c557"
+      ],
+      "0x60c557": [
+        "0x60c55a"
+      ],
+      "0x60c55a": [
+        "0x60c55c"
+      ],
+      "0x60c55c": [
+        "0x60c55f"
+      ],
+      "0x60c55f": [
+        "0x60c563"
+      ],
+      "0x60c563": [
+        "0x60c566"
+      ],
+      "0x60c566": [
+        "0x60c5a0",
+        "0x60c568"
+      ],
+      "0x60c568": [
+        "0x60c56f"
+      ],
+      "0x60c56f": [
+        "0x60c576"
+      ],
+      "0x60c576": [
+        "0x60c580"
+      ],
+      "0x60c580": [
+        "0x60c582"
+      ],
+      "0x60c582": [
+        "0x60c585"
+      ],
+      "0x60c585": [
+        "0x60c588"
+      ],
+      "0x60c588": [
+        "0x60c58c"
+      ],
+      "0x60c58c": [
+        "0x60c590"
+      ],
+      "0x60c590": [
+        "0x60c593"
+      ],
+      "0x60c593": [
+        "0x60c5a3",
+        "0x60c595"
+      ],
+      "0x60c595": [
+        "0x60c597"
+      ],
+      "0x60c597": [
+        "0x60c5a3",
+        "0x60c599"
+      ],
+      "0x60c599": [
+        "0x60c59b"
+      ],
+      "0x60c59b": [
+        "0x60c59e"
+      ],
+      "0x60c59e": [
+        "0x60c580",
+        "0x60c5a0"
+      ],
+      "0x60c5a0": [
+        "0x60c5a3"
+      ],
+      "0x60c5a3": [
+        "0x60c5a8"
+      ],
+      "0x60c5a8": [
+        "0x60c5ad"
+      ],
+      "0x60c5ad": [
+        "0x60c5b2"
+      ],
+      "0x60c5b2": [
+        "0x60c5b7"
+      ],
+      "0x60c5b7": [
+        "0x60c5bb"
+      ],
+      "0x60c5bb": [
+        "0x60c5bd"
+      ],
+      "0x60c5bd": []
+    },
+    "entry_contract": "RCX=S, EDX=destination ordinal, R8D=source ordinal; equal ordinals return before writes.",
+    "at_property_block": "RBX=S; R10=source*20h; R9=destination*20h; two16-byte loads/stores.",
+    "resource_calls": [],
+    "side_effects": "Before property block: copies pointer,70h and38h records. After block: repairs entityID->destination ordinal. This is not an atomic transaction.",
+    "implementation": "A pure offline local emitter can rewrite these four operands using a dedicated property-base scratch; never permanently bias RBX because map and pointer accesses still use S.",
+    "fail_before": "Validate binding and both ordinals before first mutation60C440, preferably at entry. Rejecting only at60C51F leaves earlier parallel copies applied.",
+    "integration_gates": [
+      "Valid original entity map; full parallel arrays extended for indices4..7 before whole clone is executable.",
+      "Binding lifetime/concurrency; guard/no-op semantics; failure continuation before original writes.",
+      "Clone/unwind/relocation/hook installation and teardown; no executable output from this inventory."
+    ]
+  },
+  "completeness": {
+    "finite_inventory_complete": true,
+    "global_alias_closure": false,
+    "full_root_extent_is_not_full_semantics": true,
+    "sidecar_allocation_lifetime_proved": false
+  },
+  "decision": "Patch only property operands/derived pointers; preserve S for maps,counts,other parallel arrays and original resource protocols. Do not enable receiver/producer alone.",
+  "stop_condition": "Every selected producer/move/remove/classify/reader has fixed sites, source identity, effects and closure limits; stop before global/recursive expansion.",
+  "next_action": "Implement and emulate smallest60C410 local property-copy redirect with entry validation and preserved other-array/map behavior, after current producer work.",
+  "limitations": [
+    "Writable runtime tables and heap state are absent; static callback registration is not runtime dispatch validation.",
+    "Imported narrow scans are not exhaustive. Same-S aliases outside listed blocks remain open.",
+    "Full saved unwind fragment hashes identify available code extents; large-root tables/other branches are not claimed semantically audited.",
+    "No live process query/read/write, capture, installation or multiplayer result."
+  ]
+}

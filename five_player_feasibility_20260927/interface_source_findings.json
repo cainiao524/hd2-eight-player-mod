@@ -1,0 +1,67 @@
+{
+  "scope": "Pinned build 25480438, offline static provenance of the game.dll global interface pointer at RVA 0x3326308",
+  "source_fingerprints": {
+    "game_dll_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+    "capture_report_sha256": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured_data_sha256": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d",
+    "capture_identity_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8"
+  },
+  "files": {
+    "store_scan": "interface_store_scan.py",
+    "store_scan_hits": "interface_store_refs.json",
+    "initializer_disassembly": "interface_initializer_4eda90.json",
+    "initializer_direct_xrefs": "interface_initializer_xrefs.json",
+    "setup_disassembly": "interface_setup_4ee160.json",
+    "setup_xrefs": "interface_setup_xrefs.json",
+    "export_code_disassembly": "interface_plugin_api_full.json"
+  },
+  "capture_coverage": {
+    "target_rva": "0x3326308",
+    "writable_section_virtual_rva": "0x263c000",
+    "writable_section_virtual_size": "0x119b5fc",
+    "writable_section_raw_size": "0x21c00",
+    "writable_section_characteristics": "0xc0000040",
+    "target_disk_raw_status": "The target RVA lies beyond the section's raw data extent, so the disk file has no initialized pointer bytes there.",
+    "capture_status": "The selected capture omits this writable section; Image.read(0x3326308, 8) raises uncaptured RVA. It also omits runtime heap/object values."
+  },
+  "disk_loaded_code_difference": "The installed disk game.dll's 0x4eead0..0x4eeb7d bytes differ from the loaded capture at all 173 compared byte positions (disk slice SHA-256 4f9956c6942cc3fa630e6b55f37fc7b0115bb23cecaf109d7abba23d7eb2d176; captured slice SHA-256 18750bcfda4e353f62433d20b3de2eae7fbc1216215860825a5f92c813e78a3d). Use disk PE for export metadata and capture for decoded code; the cause of byte transformation is not established here.",
+  "validated_code": [
+    {
+      "root": "0x4eda90",
+      "fragment_end": "0x4edd85",
+      "fragment_sha256": "a0da94ec3550578975fcd14e9065d91f8d695432bd736e473d279bf32152b5bd",
+      "critical_range_start": "0x4edaa4",
+      "critical_range_end": "0x4edac8",
+      "critical_range_sha256": "3647ce88ba32769a28256de285303692863403e763ee6bffcdca69a3f0320562",
+      "dataflow": "0x4edaa4 moves incoming rcx to rbx. After an earlier callback call with ecx=0x28, 0x4edaae sets ecx=0x1f, 0x4edab3 calls rbx, and 0x4edaba stores returned rax to game.dll+0x3326308 (bytes 4889054788e302). Thus this global pointer comes from a runtime callback lookup with numeric ID 31, not a static read-only pointer table."
+    },
+    {
+      "root": "0x4ee160",
+      "fragment_end": "0x4ee689",
+      "fragment_sha256": "2f42bbbb520447e70c769173375a2c8ca94946fae3a22f37a8db1b46eb038a76",
+      "critical_range_start": "0x4ee190",
+      "critical_range_end": "0x4ee19f",
+      "critical_range_sha256": "256d959a25f0ab9a50aa3f06a71da7fd5341939f61124e090407f0ac635ecd1b",
+      "dataflow": "0x4ee190 directly calls 0x4eda90 without changing rcx since entry. The callback is supplied to 0x4ee160 by its caller; no direct caller is present in the captured code/xref patterns."
+    },
+    {
+      "entry": "0x4eead0",
+      "boundary_basis": "Disk PE export directory maps the sole named export get_plugin_api to RVA 0x4eead0. This is a leaf function absent from the captured unwind table; the export RVA is its independently established decode start.",
+      "range_end": "0x4eeb7d",
+      "range_sha256": "18750bcfda4e353f62433d20b3de2eae7fbc1216215860825a5f92c813e78a3d",
+      "dataflow": "For ecx=0, 0x4eead8 forms code address 0x4ee160 and 0x4eeadf stores it at writable RVA 0x37ceb68. 0x4eeb72 forms and returns writable table address 0x37ceb10; the setup function is at returned table+0x58. Nonzero ecx returns zero at 0x4eeb7a."
+    }
+  ],
+  "direct_writes": {
+    "target_global": "Validated store at 0x4edaba only within the scan's supported direct RIP-relative store/address patterns. Other nearby slots 0x3326310, 0x3326318, 0x3326320, 0x3326328, 0x3326330, 0x3326338 are populated by the same initializer, and 0x3326340/0x3326348 by root 0x4ee160.",
+    "candidate_scan_limits": "The scan covered REX/non-REX RIP-relative MOV register stores, LEA, XCHG, C6/C7 immediate stores at 8-byte-aligned globals 0x3326300..0x3326348, validated at unwind instruction boundaries. It does not exclude computed-address stores, uncaptured code, external-module writes, or leaf functions without unwind entries."
+  },
+  "relation_to_lobby_create": "The captured lobby-create path reads [game.dll+0x3326308], then a +0xf8 table pointer, then an indirect +0xa0 function pointer. Because the global is filled by a callback and writable/heap values are not captured, the concrete +0xa0 target cannot be resolved from the pinned static capture. The export/callback chain establishes a runtime plugin API handoff; it does not identify which external module supplies callback ID 31 or prove the target is in helldivers2.exe specifically.",
+  "external_image_check": "The installed helldivers2.exe SHA-256 is f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06. Its static import list does not include game.dll, and its raw bytes do not contain literal get_plugin_api or game.dll. These negatives do not rule out dynamic loading or another host module.",
+  "remaining_missing_data": [
+    "The runtime callback implementation passed into game.dll's API setup at 0x4ee160.",
+    "The callback return pointer for numeric ID 31 and the object/table values at offsets +0xf8 and +0xa0.",
+    "The function body/owner of the indirect +0xa0 target and any service-side lobby response.",
+    "A static call site in an external image for game.dll's exported get_plugin_api and table+0x58 setup function, if one exists."
+  ]
+}

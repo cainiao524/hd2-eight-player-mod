@@ -1,0 +1,81 @@
+{
+  "source_sha256": {
+    "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+  },
+  "capture_identity_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "requested_ranges": [],
+  "offsets": {
+    "0xf0c110": {
+      "references": [
+        {
+          "rva": "0x58140e",
+          "bytes": "498b84cc10c1f000",
+          "sha256": "62598ab2bcdbae2de0d0db72d3a82d1c27deca959481060fe859d71c87e4104b",
+          "asm": "mov rax, qword ptr [r12 + rcx*8 + 0xf0c110]",
+          "fragment": [
+            "0x581344",
+            "0x581442",
+            "0x24139ec"
+          ],
+          "root": "0x581320",
+          "base": "r12",
+          "index": "rcx",
+          "scale": 8,
+          "operand_size": 8,
+          "access": 1
+        }
+      ],
+      "raw_matches_outside_unwind": 1
+    },
+    "0xf0cb30": {
+      "references": [
+        {
+          "rva": "0x581509",
+          "bytes": "498b84cc30cbf000",
+          "sha256": "8b58468c61fbd030b5c67d8fb7f730e3787b02504a5865d782be50fd33d839c7",
+          "asm": "mov rax, qword ptr [r12 + rcx*8 + 0xf0cb30]",
+          "fragment": [
+            "0x581442",
+            "0x5815ab",
+            "0x2413a10"
+          ],
+          "root": "0x581320",
+          "base": "r12",
+          "index": "rcx",
+          "scale": 8,
+          "operand_size": 8,
+          "access": 1
+        }
+      ],
+      "raw_matches_outside_unwind": 0
+    },
+    "0xf0d550": {
+      "references": [
+        {
+          "rva": "0x581a3b",
+          "bytes": "488b84cf50d5f000",
+          "sha256": "85a2b2edf2f2d8ec3f716f9ac4a3311f39122821b523a39a0e4df5fa14f37434",
+          "asm": "mov rax, qword ptr [rdi + rcx*8 + 0xf0d550]",
+          "fragment": [
+            "0x581a1e",
+            "0x581a78",
+            "0x2413ac4"
+          ],
+          "root": "0x581780",
+          "base": "rdi",
+          "index": "rcx",
+          "scale": 8,
+          "operand_size": 8,
+          "access": 1
+        }
+      ],
+      "raw_matches_outside_unwind": 1
+    }
+  },
+  "limits": [
+    "Only encoded disp32 memory references in captured unwind-covered code are included.",
+    "RIP-relative references are excluded; base-register identity is unproven.",
+    "Computed addresses, indexed layout changes, leaf functions without unwind, and uncaptured code can be omitted."
+  ]
+}

@@ -1,0 +1,72 @@
+0x60c890 mov qword ptr [rsp + 0x20], rbp
+0x60c895 push r14
+0x60c897 cmp edx, dword ptr [rip + 0x2e77383]
+0x60c89d mov r14, r9
+0x60c8a0 mov rbp, r8
+0x60c8a3 mov r11, rcx
+0x60c8a6 jne 0x60c8af
+0x60c8a8 mov eax, 0xffffffff
+0x60c8ad jmp 0x60c928
+0x60c8af mov r9d, dword ptr [rcx + 0xd8]
+0x60c8b6 mov r10d, dword ptr [rcx + 0xe0]
+0x60c8bd xor ecx, ecx
+0x60c8bf mov qword ptr [rsp + 0x10], rbx
+0x60c8c4 mov qword ptr [rsp + 0x18], rsi
+0x60c8c9 imul r10d, edx
+0x60c8cd lea esi, [r9 - 1]
+0x60c8d1 mov qword ptr [rsp + 0x20], rdi
+0x60c8d6 test r9d, r9d
+0x60c8d9 je 0x60c914
+0x60c8db mov rbx, qword ptr [r11 + 0xd0]
+0x60c8e2 mov edi, dword ptr [r11 + 0xdc]
+0x60c8e9 nop dword ptr [rax]
+0x60c8f0 mov eax, esi
+0x60c8f2 lea r8d, [rcx + r10]
+0x60c8f6 and r8, rax
+0x60c8f9 mov eax, dword ptr [rbx + r8*8]
+0x60c8fd cmp eax, edi
+0x60c8ff je 0x60c9ad
+0x60c905 cmp eax, edx
+0x60c907 je 0x60c9b5
+0x60c90d inc ecx
+0x60c90f cmp ecx, r9d
+0x60c912 jb 0x60c8f0
+0x60c914 mov eax, 0xffffffff
+0x60c919 mov rsi, qword ptr [rsp + 0x18]
+0x60c91e mov rbx, qword ptr [rsp + 0x10]
+0x60c923 mov rdi, qword ptr [rsp + 0x20]
+0x60c928 mov ecx, dword ptr [r14]
+0x60c92b mov r8d, eax
+0x60c92e shl r8, 5
+0x60c932 mov eax, dword ptr [rcx + rbp]
+0x60c935 lea edx, [rcx + 4]
+0x60c938 mov dword ptr [r8 + r11 + 0x3a8], eax
+0x60c940 mov ecx, dword ptr [rdx + rbp]
+0x60c943 add edx, 4
+0x60c946 mov dword ptr [r8 + r11 + 0x3ac], ecx
+0x60c94e mov ecx, dword ptr [rdx + rbp]
+0x60c951 add edx, 4
+0x60c954 mov dword ptr [r8 + r11 + 0x3b0], ecx
+0x60c95c mov ecx, dword ptr [rdx + rbp]
+0x60c95f add edx, 4
+0x60c962 mov dword ptr [r8 + r11 + 0x3b4], ecx
+0x60c96a mov ecx, dword ptr [rdx + rbp]
+0x60c96d add edx, 4
+0x60c970 mov dword ptr [r8 + r11 + 0x3b8], ecx
+0x60c978 mov ecx, dword ptr [rdx + rbp]
+0x60c97b add edx, 4
+0x60c97e mov dword ptr [r8 + r11 + 0x3bc], ecx
+0x60c986 mov ecx, dword ptr [rdx + rbp]
+0x60c989 add edx, 4
+0x60c98c mov dword ptr [r8 + r11 + 0x3c0], ecx
+0x60c994 mov ecx, dword ptr [rdx + rbp]
+0x60c997 lea eax, [rdx + 4]
+0x60c99a mov rbp, qword ptr [rsp + 0x28]
+0x60c99f mov dword ptr [r14], eax
+0x60c9a2 mov dword ptr [r8 + r11 + 0x3c4], ecx
+0x60c9aa pop r14
+0x60c9ac ret 
+0x60c9ad cmp eax, edx
+0x60c9af jne 0x60c914
+0x60c9b5 mov eax, dword ptr [rbx + r8*8 + 4]
+0x60c9ba jmp 0x60c919

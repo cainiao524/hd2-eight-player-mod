@@ -1,0 +1,3051 @@
+{
+  "status": "passed",
+  "test_methods_run": 5,
+  "failure_count": 0,
+  "error_count": 0,
+  "failures": [],
+  "errors": [],
+  "source_sha256": {
+    "Native/roster_arrival.py": "2744e367accb26d022807984b8a573d95cc6e9ec15c011c5b403ee187e030771",
+    "Native/roster_registry_update.py": "1e97c7e52c6d723fe43824c599cfc27871650dea3fe4357f9fcf14dfaa2edd01",
+    "Native/roster_departure.py": "a0d9a350254955a840a6039795eb42b89ea8f48e86c3ce00b921e3b1c6f165ba",
+    "Native/roster_getter.py": "3de7432a9c1218ab98f2e92679583cb299c93d4ba8bcb739fea8aa980520ef5d",
+    "Native/roster_classify.py": "bc4508fadf17726b773ed9c4237f7693405856ccc0b57ddcac4d06e073f46153",
+    "Native/roster_remove.py": "097e34c1087f3b311ecf6c9ed85de9165fa739b416e9c99ff7a834aa021c9716",
+    "Native/roster_insert.py": "b7bfcd2184382925b4abade40c5e81f21fcdd689f1aea47a2546c055f0bbf551",
+    "Native/roster_move.py": "cc6df86a567fda45fcac9a258372df52aad085fff67a620b5f4a2d46c100c23f",
+    "Native/roster_bundle.py": "7041074e818277f45476b91611bf8a37a0a94a9244c48c321148341dac824fbf",
+    "Native/roster_property_pair.py": "5828d6a03bfce89ea63e3c8e8c49bca60825aa8b11533dd7e545570f183dba63",
+    "Native/roster_producer.py": "015b2240847019bfb62fa62a72ce8af93894f2d61b0369d5079aa40d40697a4b",
+    "Native/roster_receiver.py": "38b163fe9a0fda32db609ee94f96ab257105221e60e28ad14c4bd14676e61a27",
+    "Native/player_count.py": "d89b5cb7d8c6a574dbb4d1ef24346524c3a9d2cfeae36357a9bf8fd94967d8ab"
+  },
+  "test_sha256": "b865db68403103fc23509de9c36fda9db06c50095740ac7244006d8f3c8fd90f",
+  "test_dependency_sha256": {
+    "verification\\native_roster_arrival_addresses_synthetic.json": "e2ca74722a5d6eed3d2ede6eebd1b7130a2a931e9316a92333f170559fc552a6",
+    "verification\\native_roster_arrival_bundle_synthetic.json": "a9268253612ad82778491308acec824e83a27afb1f9d19313994657f3dc248e0"
+  },
+  "evidence_sha256": {
+    "roster_arrival_native_evidence.json": "c3073ba7658599bc662d980397f21bf7a003f56a2b821cdcf4c2341fe05a2e64",
+    "roster_registry_update_native_evidence.json": "7a8f289ea8ddf85d1b2010a39d9cedc4599e9846db8936b9e215cbd4a96740e1",
+    "roster_departure_native_evidence.json": "0280267b6f32d4a24f15c69da317d1c2c7a93adb136d4252ff93e09a8d67e609",
+    "roster_getter_native_evidence.json": "1360863bfe1f1f6ce640ef049776d3b31703a1cbfe2bea3f90bf20555f69e0fd",
+    "roster_classify_native_evidence.json": "f20165dad6823edc40fbcdf0434123139f1c80d9222a2b20d3f4c067768e9e33",
+    "roster_remove_native_evidence.json": "67563b2d12860c814096b1d45338dd271ad13975c3ba4f96169a92473ab061af",
+    "roster_insert_native_evidence.json": "794c357a56b2aa28cfd1061374afe27c1a3a2c06d31ce4ca736e4b783e41b497",
+    "roster_move_native_evidence.json": "115802c09eb15f840932667717731150aa347e7ae8a72245dd92e05a5e86a242",
+    "roster_property_producer_native_evidence.json": "f73ec903d06f2304f4f944c25e011a7ef86d78737cb1b197101a1c96daaabacb",
+    "roster_property_receive_evidence.json": "bad5661771df280dd5e982b765d2f4ab1c73de9ae7e86e974751af6c3c383c10",
+    "roster_player_count_native_evidence.json": "8f0fad49d9f5bc7e95ffe8735007b59c302034704707602c8d8093ad795676e3",
+    "roster_departure_callee_evidence.json": "04e16b4b9a301ba2fbd796528df6e53f9d3d8a25626cd459cc9f1329edd5d0d0"
+  },
+  "evidence_scopes": {
+    "executed_saved_bodies_and_fixed_readonly_data": "roster_arrival_native_evidence.json",
+    "build_bundle_only": [
+      "roster_registry_update_native_evidence.json",
+      "roster_departure_native_evidence.json",
+      "roster_getter_native_evidence.json",
+      "roster_classify_native_evidence.json",
+      "roster_remove_native_evidence.json",
+      "roster_insert_native_evidence.json",
+      "roster_move_native_evidence.json",
+      "roster_property_producer_native_evidence.json",
+      "roster_property_receive_evidence.json",
+      "roster_player_count_native_evidence.json",
+      "roster_departure_callee_evidence.json"
+    ]
+  },
+  "saved_body_sha256": {
+    "0x6054f0": "6ad21683150fa35285c490fb75b00d8f0af68ab36dad70cbced0bccfc745288a",
+    "0xfd9af0": "7fa3870d13305c77997147167ccca1f07b199c5011883b9d8442f31e831393fc"
+  },
+  "captured_literals": {
+    "0x213f4e0": {
+      "bytes_hex": "0000803f0000803f9e9d1d3f8584843e0000803f8281013fadac2c3ffffe7e3f0000803ff7f6763f8b8a0a3f0000803f0000803fdddcdc3ed8d7573fa9a8a83e",
+      "sha256": "100fab4b4513b242012b69af448eab3a532fcbb49865c74bdaed4b4ee9b287a8"
+    },
+    "0x23c6d70": {
+      "bytes_hex": "0000803f",
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+    },
+    "0x23c79ac": {
+      "bytes_hex": "00007f43",
+      "sha256": "270696d298cc689d8e5bd75897918aa617a25a5030ccae98017053dddd974995"
+    },
+    "0x22473c8": {
+      "bytes_hex": "706c617965725f636f756e7400",
+      "sha256": "2d1f7bb5ed667b71641e114124b84958b97b41db1140c1f721dba595fff5edc4"
+    }
+  },
+  "python_version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "unicorn_version": "2.1.4",
+  "capstone_version": "5.0.7",
+  "fixture_synthetic": true,
+  "game_process_accessed": false,
+  "host_native_code_executed": false,
+  "installable": false,
+  "emulator_runs": [
+    {
+      "name": "eight_slots_four_palette_four_fallback",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 0,
+      "context_flag": true,
+      "network": 0,
+      "outcome": "return",
+      "instructions": 483,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 11
+        },
+        {
+          "role": "virtual_context",
+          "args": {
+            "rcx": 1658008371200,
+            "rdx": 11,
+            "r8": 0,
+            "r9": 4
+          }
+        },
+        {
+          "role": "virtual_object",
+          "args": {
+            "rcx": 1658008387584,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "color",
+          "args": {
+            "rcx": 1658025156608,
+            "rdx": 1661883940816,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "rgb_float32_hex": "00007f4300001d4300008442"
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658092257280,
+            "rdx": 1658092496184,
+            "r8": 8,
+            "r9": 7
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658094354432,
+            "rdx": 1658094593336,
+            "r8": 8,
+            "r9": 9
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 8,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 8,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": [
+        "0x6055bb",
+        "0x6055cd",
+        "0x60561f",
+        "0x605626",
+        "0x605665",
+        "0x6056a6",
+        "0x6056b8",
+        "0x6056e6",
+        "0x6056f3",
+        "0x605700",
+        "0x605709",
+        "0x605758",
+        "0x605760",
+        "0x605801",
+        "0x60583c"
+      ]
+    },
+    {
+      "name": "eight_slots_four_palette_four_fallback",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 1,
+      "context_flag": true,
+      "network": 1,
+      "outcome": "return",
+      "instructions": 501,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 19
+        },
+        {
+          "role": "virtual_context",
+          "args": {
+            "rcx": 1658008371200,
+            "rdx": 19,
+            "r8": 0,
+            "r9": 4
+          }
+        },
+        {
+          "role": "virtual_object",
+          "args": {
+            "rcx": 1658008387584,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "color",
+          "args": {
+            "rcx": 1658025156608,
+            "rdx": 1661883940816,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "rgb_float32_hex": "0000014300002c4300007e43"
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658092257280,
+            "rdx": 1658092496184,
+            "r8": 8,
+            "r9": 7
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658094354432,
+            "rdx": 1658094593336,
+            "r8": 8,
+            "r9": 9
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 8,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 8,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": [
+        "0x6055bb",
+        "0x6055cd",
+        "0x60561f",
+        "0x605626",
+        "0x605665",
+        "0x6056a6",
+        "0x6056b8",
+        "0x6056e6",
+        "0x6056f3",
+        "0x605700",
+        "0x605709",
+        "0x605758",
+        "0x605760",
+        "0x605801",
+        "0x60583c"
+      ]
+    },
+    {
+      "name": "eight_slots_four_palette_four_fallback",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 2,
+      "context_flag": true,
+      "network": 2,
+      "outcome": "return",
+      "instructions": 525,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 27
+        },
+        {
+          "role": "virtual_context",
+          "args": {
+            "rcx": 1658008371200,
+            "rdx": 27,
+            "r8": 0,
+            "r9": 4
+          }
+        },
+        {
+          "role": "virtual_object",
+          "args": {
+            "rcx": 1658008387584,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "color",
+          "args": {
+            "rcx": 1658025156608,
+            "rdx": 1661883940816,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "rgb_float32_hex": "0000764300000a4300007f43"
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658092257280,
+            "rdx": 1658092496184,
+            "r8": 8,
+            "r9": 7
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658094354432,
+            "rdx": 1658094593336,
+            "r8": 8,
+            "r9": 9
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 8,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 8,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": [
+        "0x6055bb",
+        "0x6055cd",
+        "0x60561f",
+        "0x605626",
+        "0x605665",
+        "0x6056a6",
+        "0x6056b8",
+        "0x6056e6",
+        "0x6056f3",
+        "0x605700",
+        "0x605709",
+        "0x605758",
+        "0x605760",
+        "0x605801",
+        "0x60583c"
+      ]
+    },
+    {
+      "name": "eight_slots_four_palette_four_fallback",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 3,
+      "context_flag": true,
+      "network": 3,
+      "outcome": "return",
+      "instructions": 543,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 35
+        },
+        {
+          "role": "virtual_context",
+          "args": {
+            "rcx": 1658008371200,
+            "rdx": 35,
+            "r8": 0,
+            "r9": 4
+          }
+        },
+        {
+          "role": "virtual_object",
+          "args": {
+            "rcx": 1658008387584,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "color",
+          "args": {
+            "rcx": 1658025156608,
+            "rdx": 1661883940816,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "rgb_float32_hex": "0000dc42000057430000a842"
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658092257280,
+            "rdx": 1658092496184,
+            "r8": 8,
+            "r9": 7
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658094354432,
+            "rdx": 1658094593336,
+            "r8": 8,
+            "r9": 9
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 8,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 8,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": [
+        "0x6055bb",
+        "0x6055cd",
+        "0x60561f",
+        "0x605626",
+        "0x605665",
+        "0x6056a6",
+        "0x6056b8",
+        "0x6056e6",
+        "0x6056f3",
+        "0x605700",
+        "0x605709",
+        "0x605758",
+        "0x605760",
+        "0x605801",
+        "0x60583c"
+      ]
+    },
+    {
+      "name": "eight_slots_four_palette_four_fallback",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 4,
+      "context_flag": true,
+      "network": 4,
+      "outcome": "return",
+      "instructions": 561,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 43
+        },
+        {
+          "role": "virtual_context",
+          "args": {
+            "rcx": 1658008371200,
+            "rdx": 43,
+            "r8": 0,
+            "r9": 4
+          }
+        },
+        {
+          "role": "virtual_object",
+          "args": {
+            "rcx": 1658008387584,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "color",
+          "args": {
+            "rcx": 1658025156608,
+            "rdx": 1661883940816,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "rgb_float32_hex": "00007f4300007f4300007f43"
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658092257280,
+            "rdx": 1658092496184,
+            "r8": 8,
+            "r9": 7
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658094354432,
+            "rdx": 1658094593336,
+            "r8": 8,
+            "r9": 9
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 8,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 8,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": [
+        "0x6055bb",
+        "0x6055cd",
+        "0x60561f",
+        "0x605626",
+        "0x605665",
+        "0x6056a6",
+        "0x6056b8",
+        "0x6056e6",
+        "0x6056f3",
+        "0x605700",
+        "0x605709",
+        "0x605758",
+        "0x605760",
+        "0x605801",
+        "0x60583c"
+      ]
+    },
+    {
+      "name": "eight_slots_four_palette_four_fallback",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 5,
+      "context_flag": true,
+      "network": 5,
+      "outcome": "return",
+      "instructions": 579,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 51
+        },
+        {
+          "role": "virtual_context",
+          "args": {
+            "rcx": 1658008371200,
+            "rdx": 51,
+            "r8": 0,
+            "r9": 4
+          }
+        },
+        {
+          "role": "virtual_object",
+          "args": {
+            "rcx": 1658008387584,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "color",
+          "args": {
+            "rcx": 1658025156608,
+            "rdx": 1661883940816,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "rgb_float32_hex": "00007f4300007f4300007f43"
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658092257280,
+            "rdx": 1658092496184,
+            "r8": 8,
+            "r9": 7
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658094354432,
+            "rdx": 1658094593336,
+            "r8": 8,
+            "r9": 9
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 8,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 8,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": [
+        "0x6055bb",
+        "0x6055cd",
+        "0x60561f",
+        "0x605626",
+        "0x605665",
+        "0x6056a6",
+        "0x6056b8",
+        "0x6056e6",
+        "0x6056f3",
+        "0x605700",
+        "0x605709",
+        "0x605758",
+        "0x605760",
+        "0x605801",
+        "0x60583c"
+      ]
+    },
+    {
+      "name": "eight_slots_four_palette_four_fallback",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 6,
+      "context_flag": true,
+      "network": 6,
+      "outcome": "return",
+      "instructions": 603,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 59
+        },
+        {
+          "role": "virtual_context",
+          "args": {
+            "rcx": 1658008371200,
+            "rdx": 59,
+            "r8": 0,
+            "r9": 4
+          }
+        },
+        {
+          "role": "virtual_object",
+          "args": {
+            "rcx": 1658008387584,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "color",
+          "args": {
+            "rcx": 1658025156608,
+            "rdx": 1661883940816,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "rgb_float32_hex": "00007f4300007f4300007f43"
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658092257280,
+            "rdx": 1658092496184,
+            "r8": 8,
+            "r9": 7
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658094354432,
+            "rdx": 1658094593336,
+            "r8": 8,
+            "r9": 9
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 8,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 8,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": [
+        "0x6055bb",
+        "0x6055cd",
+        "0x60561f",
+        "0x605626",
+        "0x605665",
+        "0x6056a6",
+        "0x6056b8",
+        "0x6056e6",
+        "0x6056f3",
+        "0x605700",
+        "0x605709",
+        "0x605758",
+        "0x605760",
+        "0x605801",
+        "0x60583c"
+      ]
+    },
+    {
+      "name": "eight_slots_four_palette_four_fallback",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 7,
+      "context_flag": true,
+      "network": 7,
+      "outcome": "return",
+      "instructions": 621,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 67
+        },
+        {
+          "role": "virtual_context",
+          "args": {
+            "rcx": 1658008371200,
+            "rdx": 67,
+            "r8": 0,
+            "r9": 4
+          }
+        },
+        {
+          "role": "virtual_object",
+          "args": {
+            "rcx": 1658008387584,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "color",
+          "args": {
+            "rcx": 1658025156608,
+            "rdx": 1661883940816,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "rgb_float32_hex": "00007f4300007f4300007f43"
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658092257280,
+            "rdx": 1658092496184,
+            "r8": 8,
+            "r9": 7
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658094354432,
+            "rdx": 1658094593336,
+            "r8": 8,
+            "r9": 9
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 8,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 8,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": [
+        "0x6055bb",
+        "0x6055cd",
+        "0x60561f",
+        "0x605626",
+        "0x605665",
+        "0x6056a6",
+        "0x6056b8",
+        "0x6056e6",
+        "0x6056f3",
+        "0x605700",
+        "0x605709",
+        "0x605758",
+        "0x605760",
+        "0x605801",
+        "0x60583c"
+      ]
+    },
+    {
+      "name": "original_four_slot_baseline",
+      "original": true,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "ordinal": 0,
+      "context_flag": false,
+      "network": 0,
+      "outcome": "return",
+      "instructions": 259,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 11
+        },
+        {
+          "role": "virtual_context",
+          "args": {
+            "rcx": 1658008371200,
+            "rdx": 11,
+            "r8": 0,
+            "r9": 4
+          }
+        },
+        {
+          "role": "virtual_object",
+          "args": {
+            "rcx": 1658008387584,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "color",
+          "args": {
+            "rcx": 1658025156608,
+            "rdx": 1661883940816,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "rgb_float32_hex": "00007f4300001d4300008442"
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658092257280,
+            "rdx": 1658092496184,
+            "r8": 4,
+            "r9": 7
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658094354432,
+            "rdx": 1658094593336,
+            "r8": 4,
+            "r9": 9
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 4,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 4,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": []
+    },
+    {
+      "name": "candidate_four_slot_pair",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "ordinal": 0,
+      "context_flag": false,
+      "network": 0,
+      "outcome": "return",
+      "instructions": 324,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 11
+        },
+        {
+          "role": "virtual_context",
+          "args": {
+            "rcx": 1658008371200,
+            "rdx": 11,
+            "r8": 0,
+            "r9": 4
+          }
+        },
+        {
+          "role": "virtual_object",
+          "args": {
+            "rcx": 1658008387584,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "color",
+          "args": {
+            "rcx": 1658025156608,
+            "rdx": 1661883940816,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "rgb_float32_hex": "00007f4300001d4300008442"
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658092257280,
+            "rdx": 1658092496184,
+            "r8": 4,
+            "r9": 7
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658094354432,
+            "rdx": 1658094593336,
+            "r8": 4,
+            "r9": 9
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 4,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 4,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": [
+        "0x6056b8",
+        "0x6056e6",
+        "0x6056f3",
+        "0x605700",
+        "0x605758",
+        "0x605760",
+        "0x605801"
+      ]
+    },
+    {
+      "name": "original_four_slot_baseline",
+      "original": true,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "ordinal": 1,
+      "context_flag": true,
+      "network": 1,
+      "outcome": "return",
+      "instructions": 287,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 19
+        },
+        {
+          "role": "virtual_context",
+          "args": {
+            "rcx": 1658008371200,
+            "rdx": 19,
+            "r8": 0,
+            "r9": 4
+          }
+        },
+        {
+          "role": "virtual_object",
+          "args": {
+            "rcx": 1658008387584,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "color",
+          "args": {
+            "rcx": 1658025156608,
+            "rdx": 1661883940816,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "rgb_float32_hex": "0000014300002c4300007e43"
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658092257280,
+            "rdx": 1658092496184,
+            "r8": 4,
+            "r9": 7
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658094354432,
+            "rdx": 1658094593336,
+            "r8": 4,
+            "r9": 9
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 4,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 4,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": []
+    },
+    {
+      "name": "candidate_four_slot_pair",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "ordinal": 1,
+      "context_flag": true,
+      "network": 1,
+      "outcome": "return",
+      "instructions": 368,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 19
+        },
+        {
+          "role": "virtual_context",
+          "args": {
+            "rcx": 1658008371200,
+            "rdx": 19,
+            "r8": 0,
+            "r9": 4
+          }
+        },
+        {
+          "role": "virtual_object",
+          "args": {
+            "rcx": 1658008387584,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "color",
+          "args": {
+            "rcx": 1658025156608,
+            "rdx": 1661883940816,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "rgb_float32_hex": "0000014300002c4300007e43"
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658092257280,
+            "rdx": 1658092496184,
+            "r8": 4,
+            "r9": 7
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658094354432,
+            "rdx": 1658094593336,
+            "r8": 4,
+            "r9": 9
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 4,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 4,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": [
+        "0x6055bb",
+        "0x6055cd",
+        "0x605691",
+        "0x6056a6",
+        "0x6056b8",
+        "0x6056e6",
+        "0x6056f3",
+        "0x605700",
+        "0x605709",
+        "0x605758",
+        "0x605760",
+        "0x605801",
+        "0x60583c"
+      ]
+    },
+    {
+      "name": "original_four_slot_baseline",
+      "original": true,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "ordinal": 2,
+      "context_flag": true,
+      "network": 2,
+      "outcome": "return",
+      "instructions": 361,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 27
+        },
+        {
+          "role": "virtual_context",
+          "args": {
+            "rcx": 1658008371200,
+            "rdx": 27,
+            "r8": 0,
+            "r9": 4
+          }
+        },
+        {
+          "role": "virtual_object",
+          "args": {
+            "rcx": 1658008387584,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "color",
+          "args": {
+            "rcx": 1658025156608,
+            "rdx": 1661883940816,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "rgb_float32_hex": "0000764300000a4300007f43"
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658092257280,
+            "rdx": 1658092496184,
+            "r8": 4,
+            "r9": 7
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658094354432,
+            "rdx": 1658094593336,
+            "r8": 4,
+            "r9": 9
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 4,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 4,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": []
+    },
+    {
+      "name": "candidate_four_slot_pair",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "ordinal": 2,
+      "context_flag": true,
+      "network": 2,
+      "outcome": "return",
+      "instructions": 451,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 27
+        },
+        {
+          "role": "virtual_context",
+          "args": {
+            "rcx": 1658008371200,
+            "rdx": 27,
+            "r8": 0,
+            "r9": 4
+          }
+        },
+        {
+          "role": "virtual_object",
+          "args": {
+            "rcx": 1658008387584,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "color",
+          "args": {
+            "rcx": 1658025156608,
+            "rdx": 1661883940816,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "rgb_float32_hex": "0000764300000a4300007f43"
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658092257280,
+            "rdx": 1658092496184,
+            "r8": 4,
+            "r9": 7
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658094354432,
+            "rdx": 1658094593336,
+            "r8": 4,
+            "r9": 9
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 4,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 4,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": [
+        "0x6055bb",
+        "0x60561f",
+        "0x605626",
+        "0x605684",
+        "0x6056a6",
+        "0x6056b8",
+        "0x6056e6",
+        "0x6056f3",
+        "0x605700",
+        "0x605709",
+        "0x605758",
+        "0x605760",
+        "0x605801",
+        "0x60583c"
+      ]
+    },
+    {
+      "name": "original_four_slot_baseline",
+      "original": true,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "ordinal": 3,
+      "context_flag": true,
+      "network": 3,
+      "outcome": "return",
+      "instructions": 375,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 35
+        },
+        {
+          "role": "virtual_context",
+          "args": {
+            "rcx": 1658008371200,
+            "rdx": 35,
+            "r8": 0,
+            "r9": 4
+          }
+        },
+        {
+          "role": "virtual_object",
+          "args": {
+            "rcx": 1658008387584,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "color",
+          "args": {
+            "rcx": 1658025156608,
+            "rdx": 1661883940816,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "rgb_float32_hex": "0000dc42000057430000a842"
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658092257280,
+            "rdx": 1658092496184,
+            "r8": 4,
+            "r9": 7
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658094354432,
+            "rdx": 1658094593336,
+            "r8": 4,
+            "r9": 9
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 4,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 4,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": []
+    },
+    {
+      "name": "candidate_four_slot_pair",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "ordinal": 3,
+      "context_flag": true,
+      "network": 3,
+      "outcome": "return",
+      "instructions": 475,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 35
+        },
+        {
+          "role": "virtual_context",
+          "args": {
+            "rcx": 1658008371200,
+            "rdx": 35,
+            "r8": 0,
+            "r9": 4
+          }
+        },
+        {
+          "role": "virtual_object",
+          "args": {
+            "rcx": 1658008387584,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "color",
+          "args": {
+            "rcx": 1658025156608,
+            "rdx": 1661883940816,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "rgb_float32_hex": "0000dc42000057430000a842"
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658092257280,
+            "rdx": 1658092496184,
+            "r8": 4,
+            "r9": 7
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658094354432,
+            "rdx": 1658094593336,
+            "r8": 4,
+            "r9": 9
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 4,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 4,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 4
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": [
+        "0x6055bb",
+        "0x6055cd",
+        "0x60561f",
+        "0x605626",
+        "0x605665",
+        "0x6056a6",
+        "0x6056b8",
+        "0x6056e6",
+        "0x6056f3",
+        "0x605700",
+        "0x605709",
+        "0x605758",
+        "0x605760",
+        "0x605801"
+      ]
+    },
+    {
+      "name": "finite_state_branch_contracts",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 0,
+      "context_flag": true,
+      "network": 0,
+      "outcome": "return",
+      "instructions": 478,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 11
+        },
+        {
+          "role": "virtual_context",
+          "args": {
+            "rcx": 1658008371200,
+            "rdx": 11,
+            "r8": 0,
+            "r9": 4
+          }
+        },
+        {
+          "role": "virtual_object",
+          "args": {
+            "rcx": 1658008387584,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "color",
+          "args": {
+            "rcx": 1658025156608,
+            "rdx": 1661883940816,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "rgb_float32_hex": "00007f4300001d4300008442"
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658092257280,
+            "rdx": 1658092496184,
+            "r8": 8,
+            "r9": 7
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658094354432,
+            "rdx": 1658094593336,
+            "r8": 8,
+            "r9": 9
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 8,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 8,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": [
+        "0x6055bb",
+        "0x6055cd",
+        "0x60561f",
+        "0x605626",
+        "0x605684",
+        "0x6056a6",
+        "0x6056b8",
+        "0x6056e6",
+        "0x6056f3",
+        "0x605700",
+        "0x605709",
+        "0x605758",
+        "0x605760",
+        "0x605801",
+        "0x60583c"
+      ]
+    },
+    {
+      "name": "finite_state_branch_contracts",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 7,
+      "context_flag": false,
+      "network": 7,
+      "outcome": "return",
+      "instructions": 402,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 67
+        },
+        {
+          "role": "virtual_context",
+          "args": {
+            "rcx": 1658008371200,
+            "rdx": 67,
+            "r8": 0,
+            "r9": 4
+          }
+        },
+        {
+          "role": "virtual_object",
+          "args": {
+            "rcx": 1658008387584,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "color",
+          "args": {
+            "rcx": 1658025156608,
+            "rdx": 1661883940816,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "rgb_float32_hex": "00007f4300007f4300007f43"
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 1658094354432,
+            "rdx": 8,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 8,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": [
+        "0x6056b8",
+        "0x6056e6",
+        "0x6056f3",
+        "0x605700",
+        "0x605758",
+        "0x605760"
+      ]
+    },
+    {
+      "name": "finite_state_branch_contracts",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 7,
+      "context_flag": true,
+      "network": 7,
+      "outcome": "return",
+      "instructions": 610,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 67
+        },
+        {
+          "role": "virtual_context",
+          "args": {
+            "rcx": 1658008371200,
+            "rdx": 67,
+            "r8": 0,
+            "r9": 4
+          }
+        },
+        {
+          "role": "virtual_object",
+          "args": {
+            "rcx": 1658008387584,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "color",
+          "args": {
+            "rcx": 1658025156608,
+            "rdx": 1661883940816,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "rgb_float32_hex": "00007f4300007f4300007f43"
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658092257280,
+            "rdx": 1658092496184,
+            "r8": 8,
+            "r9": 7
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658094354432,
+            "rdx": 1658094593336,
+            "r8": 8,
+            "r9": 9
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 8,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 8,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": [
+        "0x60561f",
+        "0x605626",
+        "0x605665",
+        "0x6056a6",
+        "0x6056b8",
+        "0x6056e6",
+        "0x6056f3",
+        "0x605700",
+        "0x605709",
+        "0x605758",
+        "0x605760",
+        "0x605801"
+      ]
+    },
+    {
+      "name": "finite_state_branch_contracts",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 7,
+      "context_flag": true,
+      "network": 7,
+      "outcome": "return",
+      "instructions": 622,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 67
+        },
+        {
+          "role": "virtual_context",
+          "args": {
+            "rcx": 1658008371200,
+            "rdx": 67,
+            "r8": 0,
+            "r9": 4
+          }
+        },
+        {
+          "role": "virtual_object",
+          "args": {
+            "rcx": 1658008387584,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "color",
+          "args": {
+            "rcx": 1658025156608,
+            "rdx": 1661883940816,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "rgb_float32_hex": "00007f4300007f4300007f43"
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658092257280,
+            "rdx": 1658092496184,
+            "r8": 8,
+            "r9": 7
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658094354432,
+            "rdx": 1658094593336,
+            "r8": 8,
+            "r9": 9
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 8,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 8,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": [
+        "0x6055bb",
+        "0x60561f",
+        "0x605626",
+        "0x605665",
+        "0x6056a6",
+        "0x6056b8",
+        "0x6056e6",
+        "0x6056f3",
+        "0x605700",
+        "0x605758",
+        "0x605760",
+        "0x605801"
+      ]
+    },
+    {
+      "name": "finite_state_branch_contracts",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 7,
+      "context_flag": true,
+      "network": 7,
+      "outcome": "return",
+      "instructions": 488,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 67
+        },
+        {
+          "role": "color",
+          "args": {
+            "rcx": 1658025156608,
+            "rdx": 1661883940816,
+            "r8": 0,
+            "r9": 4
+          },
+          "rgb_float32_hex": "00007f4300007f4300007f43"
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658092257280,
+            "rdx": 1658092496184,
+            "r8": 8,
+            "r9": 7
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658094354432,
+            "rdx": 1658094593336,
+            "r8": 8,
+            "r9": 9
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 8,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 8,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": [
+        "0x6055bb",
+        "0x6055cd",
+        "0x605691",
+        "0x6056a6",
+        "0x6056b8",
+        "0x6056e6",
+        "0x6056f3",
+        "0x605700",
+        "0x605709",
+        "0x605758",
+        "0x605760",
+        "0x605801"
+      ]
+    },
+    {
+      "name": "finite_state_branch_contracts",
+      "original": false,
+      "t": 8,
+      "d": 3,
+      "p": 1,
+      "ordinal": 7,
+      "context_flag": true,
+      "network": 7,
+      "outcome": "return",
+      "instructions": 545,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 67
+        },
+        {
+          "role": "virtual_context",
+          "args": {
+            "rcx": 1658008371200,
+            "rdx": 67,
+            "r8": 0,
+            "r9": 4
+          }
+        },
+        {
+          "role": "virtual_object",
+          "args": {
+            "rcx": 1658008387584,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "color",
+          "args": {
+            "rcx": 1658025156608,
+            "rdx": 1661883940816,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "rgb_float32_hex": "00007f4300007f4300007f43"
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658092257280,
+            "rdx": 1658092496184,
+            "r8": 3,
+            "r9": 7
+          },
+          "current_dense": 3
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658094354432,
+            "rdx": 1658094593336,
+            "r8": 3,
+            "r9": 9
+          },
+          "current_dense": 3
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 3,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 3
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 3,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 3
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": [
+        "0x6055bb",
+        "0x6055cd",
+        "0x60561f",
+        "0x605626",
+        "0x605665",
+        "0x6056a6",
+        "0x6056b8",
+        "0x6056e6",
+        "0x6056f3",
+        "0x605700",
+        "0x605709",
+        "0x605758",
+        "0x605760",
+        "0x605801",
+        "0x60583c"
+      ]
+    },
+    {
+      "name": "finite_state_branch_contracts",
+      "original": false,
+      "t": 1,
+      "d": 0,
+      "p": 0,
+      "ordinal": 0,
+      "context_flag": true,
+      "network": 0,
+      "outcome": "return",
+      "instructions": 345,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 11
+        },
+        {
+          "role": "color",
+          "args": {
+            "rcx": 1658025156608,
+            "rdx": 1661883940816,
+            "r8": 0,
+            "r9": 4
+          },
+          "rgb_float32_hex": "00007f4300001d4300008442"
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658092257280,
+            "rdx": 1658092496184,
+            "r8": 0,
+            "r9": 7
+          },
+          "current_dense": 0
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658094354432,
+            "rdx": 1658094593336,
+            "r8": 0,
+            "r9": 9
+          },
+          "current_dense": 0
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 0,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 0
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 0,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 0
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": [
+        "0x6055bb",
+        "0x6055cd",
+        "0x605665",
+        "0x6056a6",
+        "0x6056b8",
+        "0x6056e6",
+        "0x6056f3",
+        "0x605700",
+        "0x605709",
+        "0x605758",
+        "0x605760",
+        "0x605801"
+      ]
+    },
+    {
+      "name": "finite_state_branch_contracts",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 7,
+      "context_flag": true,
+      "network": 4294967295,
+      "outcome": "return",
+      "instructions": 621,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 67
+        },
+        {
+          "role": "virtual_context",
+          "args": {
+            "rcx": 1658008371200,
+            "rdx": 67,
+            "r8": 0,
+            "r9": 4
+          }
+        },
+        {
+          "role": "virtual_object",
+          "args": {
+            "rcx": 1658008387584,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "color",
+          "args": {
+            "rcx": 1658025156608,
+            "rdx": 1661883940816,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "rgb_float32_hex": "00007f4300007f4300007f43"
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658092257280,
+            "rdx": 1658092496184,
+            "r8": 8,
+            "r9": 7
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "ui",
+          "args": {
+            "rcx": 1658094354432,
+            "rdx": 1658094593336,
+            "r8": 8,
+            "r9": 9
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 8,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140703164560328,
+            "rdx": 8,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": [
+        "0x6055bb",
+        "0x6055cd",
+        "0x60561f",
+        "0x605626",
+        "0x605665",
+        "0x6056a6",
+        "0x6056b8",
+        "0x6056e6",
+        "0x6056f3",
+        "0x605700",
+        "0x605709",
+        "0x605758",
+        "0x605760",
+        "0x605801",
+        "0x60583c"
+      ]
+    },
+    {
+      "name": "finite_state_branch_contracts",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 7,
+      "context_flag": true,
+      "network": 7,
+      "outcome": "return",
+      "instructions": 526,
+      "events": [
+        {
+          "role": "actual_fd9af0",
+          "entity_id": 67
+        },
+        {
+          "role": "virtual_context",
+          "args": {
+            "rcx": 1658008371200,
+            "rdx": 67,
+            "r8": 0,
+            "r9": 4
+          }
+        },
+        {
+          "role": "virtual_object",
+          "args": {
+            "rcx": 1658008387584,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 8,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "player_count_event",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 8,
+            "r8": 1658008383488,
+            "r9": 14829509148000911364
+          },
+          "current_dense": 8
+        },
+        {
+          "role": "cookie",
+          "args": {
+            "rcx": 1311768467750121216,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "synthetic_cookie_checked": true
+        }
+      ],
+      "array_sites_executed": [
+        "0x6055bb",
+        "0x6055cd",
+        "0x60561f",
+        "0x605626",
+        "0x605665",
+        "0x6056a6",
+        "0x6056b8",
+        "0x6056e6",
+        "0x6056f3",
+        "0x605700",
+        "0x605709",
+        "0x605758",
+        "0x605760"
+      ]
+    },
+    {
+      "name": "guard_binding",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 1,
+      "context_flag": true,
+      "network": 1,
+      "outcome": "reject",
+      "instructions": 23,
+      "events": [],
+      "array_sites_executed": []
+    },
+    {
+      "name": "guard_null_target",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 1,
+      "context_flag": true,
+      "network": 1,
+      "outcome": "reject",
+      "instructions": 25,
+      "events": [],
+      "array_sites_executed": []
+    },
+    {
+      "name": "guard_null_context",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 1,
+      "context_flag": true,
+      "network": 1,
+      "outcome": "reject",
+      "instructions": 27,
+      "events": [],
+      "array_sites_executed": []
+    },
+    {
+      "name": "guard_tracked_zero",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 1,
+      "context_flag": true,
+      "network": 1,
+      "outcome": "reject",
+      "instructions": 30,
+      "events": [],
+      "array_sites_executed": []
+    },
+    {
+      "name": "guard_tracked_nine",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 1,
+      "context_flag": true,
+      "network": 1,
+      "outcome": "reject",
+      "instructions": 32,
+      "events": [],
+      "array_sites_executed": []
+    },
+    {
+      "name": "guard_dense_order",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 1,
+      "context_flag": true,
+      "network": 1,
+      "outcome": "reject",
+      "instructions": 35,
+      "events": [],
+      "array_sites_executed": []
+    },
+    {
+      "name": "guard_prefix_order",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 1,
+      "context_flag": true,
+      "network": 1,
+      "outcome": "reject",
+      "instructions": 38,
+      "events": [],
+      "array_sites_executed": []
+    },
+    {
+      "name": "guard_map_capacity",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 1,
+      "context_flag": true,
+      "network": 1,
+      "outcome": "reject",
+      "instructions": 40,
+      "events": [],
+      "array_sites_executed": []
+    },
+    {
+      "name": "guard_empty_id",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 1,
+      "context_flag": true,
+      "network": 1,
+      "outcome": "reject",
+      "instructions": 43,
+      "events": [],
+      "array_sites_executed": []
+    },
+    {
+      "name": "guard_invalid_id",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 1,
+      "context_flag": true,
+      "network": 1,
+      "outcome": "reject",
+      "instructions": 46,
+      "events": [],
+      "array_sites_executed": []
+    },
+    {
+      "name": "guard_missing_full",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 1,
+      "context_flag": true,
+      "network": 1,
+      "outcome": "reject",
+      "instructions": 132,
+      "events": [],
+      "array_sites_executed": []
+    },
+    {
+      "name": "guard_missing_empty",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 2,
+      "ordinal": 1,
+      "context_flag": true,
+      "network": 1,
+      "outcome": "reject",
+      "instructions": 86,
+      "events": [],
+      "array_sites_executed": []
+    },
+    {
+      "name": "guard_ordinal_eight",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 1,
+      "context_flag": true,
+      "network": 1,
+      "outcome": "reject",
+      "instructions": 66,
+      "events": [],
+      "array_sites_executed": []
+    },
+    {
+      "name": "guard_ordinal_untracked",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 2,
+      "ordinal": 1,
+      "context_flag": true,
+      "network": 1,
+      "outcome": "reject",
+      "instructions": 66,
+      "events": [],
+      "array_sites_executed": []
+    },
+    {
+      "name": "guard_pointer_binding",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 1,
+      "context_flag": true,
+      "network": 1,
+      "outcome": "reject",
+      "instructions": 70,
+      "events": [],
+      "array_sites_executed": []
+    },
+    {
+      "name": "reject_rel32_boundary",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 0,
+      "context_flag": true,
+      "network": 0,
+      "outcome": "reject",
+      "instructions": 23,
+      "events": [],
+      "array_sites_executed": []
+    },
+    {
+      "name": "reject_rel32_boundary",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "ordinal": 0,
+      "context_flag": true,
+      "network": 0,
+      "outcome": "reject",
+      "instructions": 23,
+      "events": [],
+      "array_sites_executed": []
+    }
+  ],
+  "execution_counts": {
+    "total": 42,
+    "original_complete_return": 4,
+    "candidate": 38,
+    "candidate_complete_return": 21,
+    "candidate_preflight_rejection": 17
+  },
+  "nested_saved_fd9af0_entries_not_added_to_total": 25,
+  "array_site_coverage": {
+    "statically_verified_all19": [
+      "0x6055bb",
+      "0x6055cd",
+      "0x60561f",
+      "0x605626",
+      "0x605665",
+      "0x605684",
+      "0x605691",
+      "0x6056a6",
+      "0x6056b8",
+      "0x6056c8",
+      "0x6056d6",
+      "0x6056e6",
+      "0x6056f3",
+      "0x605700",
+      "0x605709",
+      "0x605758",
+      "0x605760",
+      "0x605801",
+      "0x60583c"
+    ],
+    "executed_candidate_valid_domain17": [
+      "0x6055bb",
+      "0x6055cd",
+      "0x60561f",
+      "0x605626",
+      "0x605665",
+      "0x605684",
+      "0x605691",
+      "0x6056a6",
+      "0x6056b8",
+      "0x6056e6",
+      "0x6056f3",
+      "0x605700",
+      "0x605709",
+      "0x605758",
+      "0x605760",
+      "0x605801",
+      "0x60583c"
+    ],
+    "invalid_ordinal_only_static": [
+      "0x6056c8",
+      "0x6056d6"
+    ]
+  },
+  "oracle_scope": {
+    "whole_memory": "All nonstack pages are compared with independent expected changes: target primary/property/aux fields, published original S+8 owner and dirty marker only; counts, maps, pointers, other records and canaries remain unchanged",
+    "array_sites": "All19 patched locations are pinned independently from saved disassembly. Valid-domain17 are checked by emitted RIP, exact read/write address/width and conditional presence; two invalid-ordinal-only branches are static-only. D traversal pointer reads and both LEA executions are separately checked",
+    "primary_state": "Context flag0 leaves primary/property/global-owner effects absent; flag1 retains original states1(null/equal active),5(all D entries qualified including D0),8(unqualified non-target dense record including slot7), plus target primary trailingQWORD reset",
+    "aux_state": "Association marker7FFF, inverse property bit0 byte, nondefault global missing DWORD and resolved object pointer retain exact widths; state3 conditional on propertybit0 then optional mode4 matching-record state1 are checked in write order",
+    "palette": "Fixed four64B-table rows are used only for network0..3 with exact16-byte read coverage; network4..7 andFFFFFFFF use original [1,1,1]*255 fallback with no palette access. Callback observes three float32 components, not fabricated eight-entry colors",
+    "counts": "Both UI callbacks, count helper and final player_count event receive unchanged current D, including zero and pending targets; no prediction/increment/clamp is added to this function",
+    "baseline_and_abi": "Four complete original four-slot cases pair with candidate outputs; other finite branches cover second ASLR, flags independent of P, pending n>=D, null conversion, absent matching mode record and disabled callbacks. Win64 nonvolatile GPR/XMM including XMM6, RSP and guard arguments are checked",
+    "bundle": "Sixteen roster functions plus existing count plan build to the pinned saved sample with62 regions/common S/B; other unchanged function suites are not rerun"
+  },
+  "contract_stubs": {
+    "FD9AF0": "Not a stub: captured174-byte body executes a valid supplied context-map hit at ordinal2; its record DWORD returns1234 or7FFF. Entry-sentinel/default and malformed/missing context-map branches are not executed",
+    "interface38+8": "Check RCX global engine context; return synthetic context pointer for next indirect call",
+    "interface40+160": "Check RCX prior context and EDX1234; return synthetic associated object pointer stored by real body in target aux",
+    "color_interface": "Check RCX color context and12-byte stack RGB vector computed by real palette/fallback/SSE operations; record bytes and preserve nonstack memory",
+    "94C9C0": "Check two tag3E listeners in order, UI object/derived record pointer, XMM2/XMM3 inputs and four stack arguments including unchanged D/float1/config; do not execute actual context or resources",
+    "60C2A0": "Check EDX current D; preserve nonstack memory; actual named resources/count helper not executed",
+    "interface10+480": "Check exact player_count literal, EDX current D and R8 interface pointer; normal CALL returns before cookie check, not a tail jump",
+    "2088770": "Check RCX equals supplied synthetic cookie after real prologue XOR/save and epilogue reload/XOR; security-check implementation is not executed",
+    "all_stubs": "Validate RSP%16=8 and shadow space, clobber all volatile GPR/XMM0..5, preserve nonvolatiles and fixture globals/roster; no actual game callback mutation/reentrancy"
+  },
+  "limits": [
+    "The arrival filename is an artifact identifier; this body is not proved to append, create or initially admit a player",
+    "Binding/map/counts/target/context/sidecar readability and lifetime are supplied stable preconditions, not runtime ownership or synchronization validation",
+    "Original invalid-ordinal branches6056C8/6056D6 are statically relocated but unreachable after successful candidate guard; they are not counted as dynamic coverage",
+    "FD9AF0 uses valid found context-map records only; zero-capacity/full-table-miss/null-dereference hazards and entry-sentinel fallback are outside this execution scope",
+    "Opaque interface, palette callback, UI/count/final event and cookie routines are explicit contracts, not real resources, side effects or security implementation",
+    "Palette indices above3 intentionally preserve original fallback, not distinct per-player colors; UI/count consumers remain separate unverified integration requirements",
+    "No caller/hook, allocation/migration/cleanup, reentrant callback, rollback, unwind, installation, game process or multiplayer mission acceptance is performed"
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "registrations": [
+    {
+      "table": "0xf0b6f0",
+      "write_rva": "0x55799f",
+      "offset": "0xf0b848",
+      "target_rva": "0x51c080",
+      "lea": {
+        "rva": "0x557998",
+        "bytes": "488d05e146fcff",
+        "sha256": "d20b50279e1d97827c9716551b8c7c753a03612bd7e360ed0c2da6aa4aeb7c17",
+        "asm": "lea rax, [rip - 0x3b91f]"
+      },
+      "store": {
+        "rva": "0x55799f",
+        "bytes": "48898148b8f000",
+        "sha256": "5c6bd4b139e7941f5a39126a6d300f821cfeb370be30c2ec92c3380ee018e133",
+        "asm": "mov qword ptr [rcx + 0xf0b848], rax"
+      }
+    },
+    {
+      "table": "0xf0c110",
+      "write_rva": "0x5579ad",
+      "offset": "0xf0c268",
+      "target_rva": "0x51c110",
+      "lea": {
+        "rva": "0x5579a6",
+        "bytes": "488d056347fcff",
+        "sha256": "fe91c0db3f193df0c5ee16d54ed5c6bfd1998e0de3b2dd10ee241b5c9cea2788",
+        "asm": "lea rax, [rip - 0x3b89d]"
+      },
+      "store": {
+        "rva": "0x5579ad",
+        "bytes": "48898168c2f000",
+        "sha256": "d238314e3e21488d81d29edeadf85b01dc53bc8937f24ab2d62e3e68bafa7e99",
+        "asm": "mov qword ptr [rcx + 0xf0c268], rax"
+      }
+    },
+    {
+      "table": "0xf0e990",
+      "write_rva": "0x5579bb",
+      "offset": "0xf0eae8",
+      "target_rva": "0x51c1a0",
+      "lea": {
+        "rva": "0x5579b4",
+        "bytes": "488d05e547fcff",
+        "sha256": "6c48d2e802807ea84666cb51611cbd57239f87ed470b47c650adcd7763399384",
+        "asm": "lea rax, [rip - 0x3b81b]"
+      },
+      "store": {
+        "rva": "0x5579bb",
+        "bytes": "488981e8eaf000",
+        "sha256": "b7556df65acb4e02027fe1e9f5af421f428276dcf2c9471a0207427aee019143",
+        "asm": "mov qword ptr [rcx + 0xf0eae8], rax"
+      }
+    }
+  ],
+  "global_xrefs": [
+    {
+      "rva": "0x51c094",
+      "bytes": "488b3d55aae002",
+      "sha256": "073dd3449c887b0e02f763c93611f879d767aa75d85f1d3d734477018e170fd9",
+      "asm": "mov rdi, qword ptr [rip + 0x2e0aa55]",
+      "root": "0x51c080"
+    },
+    {
+      "rva": "0x51c124",
+      "bytes": "488b35c5a9e002",
+      "sha256": "c2fe9244db5facc842f19e3cf544b8e18334153ff7089d22c500c4139f002461",
+      "asm": "mov rsi, qword ptr [rip + 0x2e0a9c5]",
+      "root": "0x51c110"
+    },
+    {
+      "rva": "0x51c1a9",
+      "bytes": "488b1d40a9e002",
+      "sha256": "2862fc13a1175ec6fa12e57051b3abbde38a58ca9a20a03b31962c1f11698d3a",
+      "asm": "mov rbx, qword ptr [rip + 0x2e0a940]",
+      "root": "0x51c1a0"
+    },
+    {
+      "rva": "0x56846b",
+      "bytes": "4889057ee6db02",
+      "sha256": "b8195f768aa49e3bceebe38cf29f490dff24208308330086fb33945220644bf8",
+      "asm": "mov qword ptr [rip + 0x2dbe67e], rax",
+      "root": "0x568230"
+    },
+    {
+      "rva": "0x9ba43f",
+      "bytes": "488b3daac69602",
+      "sha256": "ca5977af10d4d7487085f7386b73efc27f71bfb34787aef5978cc987ce80a0ab",
+      "asm": "mov rdi, qword ptr [rip + 0x296c6aa]",
+      "root": "0x9ba430"
+    },
+    {
+      "rva": "0x9ba9fc",
+      "bytes": "488b0dedc09602",
+      "sha256": "2e03e9d0ce99bf2e0a313b63ddbb002198226b74f8f99eeeec75078e20efd920",
+      "asm": "mov rcx, qword ptr [rip + 0x296c0ed]",
+      "root": "0x9ba9f0"
+    },
+    {
+      "rva": "0x9baae4",
+      "bytes": "488b3505c09602",
+      "sha256": "9e21436023c283d5c3e2b08a7196dc98bffc40c3efff7726925c5afc17c106e3",
+      "asm": "mov rsi, qword ptr [rip + 0x296c005]",
+      "root": "0x9baad0"
+    },
+    {
+      "rva": "0x9bab74",
+      "bytes": "488b3d75bf9602",
+      "sha256": "74eb97a3ba4b50fe57a88bc727a074a909e665acf4f1dc78f6b1209da4899321",
+      "asm": "mov rdi, qword ptr [rip + 0x296bf75]",
+      "root": "0x9bab60"
+    },
+    {
+      "rva": "0x9bac2a",
+      "bytes": "488b3dbfbe9602",
+      "sha256": "687c111d46792f436251e06fe6e3dcda04c3fcd6e694d431759c31696356c0a4",
+      "asm": "mov rdi, qword ptr [rip + 0x296bebf]",
+      "root": "0x9bac20"
+    },
+    {
+      "rva": "0x12a02bb",
+      "bytes": "488b3d2e680802",
+      "sha256": "cf33c130de20d1da3259c63e6455207834840e271cbc962ff4741718f576260d",
+      "asm": "mov rdi, qword ptr [rip + 0x208682e]",
+      "root": "0x129fd00"
+    }
+  ]
+}

@@ -1,0 +1,700 @@
+{
+  "method": "offline disassembly and CFG traversal of saved process-code windows; disk PE import metadata",
+  "runtime_invocation": false,
+  "capture_file_sha256": "157ddf9f9f9c04265dbc80109441af7090fcf78316e8642781857668348f129a",
+  "window_rva": "0x8e1370",
+  "window_sha256": "0e6e20315ee6e64b80c48b78197feb4b968e68e2995c659496d3c3fe049a5fb2",
+  "window_size": 4096,
+  "caller_capture_sha256": "a45e5f5b1647d808b8b7716fd750e4a894ab39a3021b52a0b10c404403a8b85f",
+  "disk_exe_sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+  "cfg": {
+    "reachable_instruction_count": 170,
+    "first_and_only_reachable_ret": "0x8e1682",
+    "all_reachable_direct_branches_in_window": true,
+    "unresolved_branches": [],
+    "edges": [
+      {
+        "from": "0x8e13a5",
+        "kind": "call",
+        "target": "0x12672e0",
+        "rip_slot": null
+      },
+      {
+        "from": "0x8e141b",
+        "kind": "conditional",
+        "target": "0x8e13c2"
+      },
+      {
+        "from": "0x8e1466",
+        "kind": "call",
+        "target": null,
+        "rip_slot": "0x13f7ba8"
+      },
+      {
+        "from": "0x8e1521",
+        "kind": "call",
+        "target": "0x721b0",
+        "rip_slot": null
+      },
+      {
+        "from": "0x8e158d",
+        "kind": "call",
+        "target": "0x8e25b0",
+        "rip_slot": null
+      },
+      {
+        "from": "0x8e15cb",
+        "kind": "call",
+        "target": null,
+        "rip_slot": "0x13f6db8"
+      },
+      {
+        "from": "0x8e15d5",
+        "kind": "conditional",
+        "target": "0x8e1637"
+      },
+      {
+        "from": "0x8e15dd",
+        "kind": "conditional",
+        "target": "0x8e161b"
+      },
+      {
+        "from": "0x8e15f1",
+        "kind": "call",
+        "target": null,
+        "rip_slot": "0x13f6ef8"
+      },
+      {
+        "from": "0x8e1616",
+        "kind": "call",
+        "target": "0x5c16e0",
+        "rip_slot": null
+      },
+      {
+        "from": "0x8e1625",
+        "kind": "call",
+        "target": "0x5c16e0",
+        "rip_slot": null
+      },
+      {
+        "from": "0x8e1635",
+        "kind": "jump",
+        "target": "0x8e1662"
+      },
+      {
+        "from": "0x8e1682",
+        "kind": "return"
+      },
+      {
+        "from": "0x8e1644",
+        "kind": "call",
+        "target": "0x5c16e0",
+        "rip_slot": null
+      },
+      {
+        "from": "0x8e1652",
+        "kind": "call",
+        "target": "0x8e1970",
+        "rip_slot": null
+      }
+    ],
+    "scope": "Normal static control flow in the saved 4096-byte window; called functions and exceptions not traversed."
+  },
+  "code_evidence": [
+    {
+      "rva": "0x8e138f",
+      "bytes": "448bea",
+      "asm": "mov r13d, edx"
+    },
+    {
+      "rva": "0x8e1392",
+      "bytes": "4c8bf9",
+      "asm": "mov r15, rcx"
+    },
+    {
+      "rva": "0x8e13aa",
+      "bytes": "4d8da7a0000000",
+      "asm": "lea r12, [r15 + 0xa0]"
+    },
+    {
+      "rva": "0x8e1526",
+      "bytes": "498b9f88000000",
+      "asm": "mov rbx, qword ptr [r15 + 0x88]"
+    },
+    {
+      "rva": "0x8e152f",
+      "bytes": "4889b424a4000000",
+      "asm": "mov qword ptr [rsp + 0xa4], rsi"
+    },
+    {
+      "rva": "0x8e1537",
+      "bytes": "89b424ac000000",
+      "asm": "mov dword ptr [rsp + 0xac], esi"
+    },
+    {
+      "rva": "0x8e153e",
+      "bytes": "4c89a42498000000",
+      "asm": "mov qword ptr [rsp + 0x98], r12"
+    },
+    {
+      "rva": "0x8e1546",
+      "bytes": "c78424a000000001000000",
+      "asm": "mov dword ptr [rsp + 0xa0], 1"
+    },
+    {
+      "rva": "0x8e1551",
+      "bytes": "4489ac2480000000",
+      "asm": "mov dword ptr [rsp + 0x80], r13d"
+    },
+    {
+      "rva": "0x8e1559",
+      "bytes": "4489ac2484000000",
+      "asm": "mov dword ptr [rsp + 0x84], r13d"
+    },
+    {
+      "rva": "0x8e1561",
+      "bytes": "c784248800000001000000",
+      "asm": "mov dword ptr [rsp + 0x88], 1"
+    },
+    {
+      "rva": "0x8e156c",
+      "bytes": "c784248c00000001000000",
+      "asm": "mov dword ptr [rsp + 0x8c], 1"
+    },
+    {
+      "rva": "0x8e1577",
+      "bytes": "c784249000000001000000",
+      "asm": "mov dword ptr [rsp + 0x90], 1"
+    },
+    {
+      "rva": "0x8e1582",
+      "bytes": "c78424940000000f000000",
+      "asm": "mov dword ptr [rsp + 0x94], 0xf"
+    },
+    {
+      "rva": "0x8e158d",
+      "bytes": "e81e100000",
+      "asm": "call 0x8e25b0"
+    },
+    {
+      "rva": "0x8e1592",
+      "bytes": "498dbf89020000",
+      "asm": "lea rdi, [r15 + 0x289]"
+    },
+    {
+      "rva": "0x8e1599",
+      "bytes": "4889742440",
+      "asm": "mov qword ptr [rsp + 0x40], rsi"
+    },
+    {
+      "rva": "0x8e159e",
+      "bytes": "48897c2438",
+      "asm": "mov qword ptr [rsp + 0x38], rdi"
+    },
+    {
+      "rva": "0x8e15a3",
+      "bytes": "488d8c2498000000",
+      "asm": "lea rcx, [rsp + 0x98]"
+    },
+    {
+      "rva": "0x8e15ab",
+      "bytes": "4c897c2430",
+      "asm": "mov qword ptr [rsp + 0x30], r15"
+    },
+    {
+      "rva": "0x8e15b0",
+      "bytes": "48894c2428",
+      "asm": "mov qword ptr [rsp + 0x28], rcx"
+    },
+    {
+      "rva": "0x8e15b5",
+      "bytes": "4c8d842480000000",
+      "asm": "lea r8, [rsp + 0x80]"
+    },
+    {
+      "rva": "0x8e15bd",
+      "bytes": "488b08",
+      "asm": "mov rcx, qword ptr [rax]"
+    },
+    {
+      "rva": "0x8e15c0",
+      "bytes": "4533c9",
+      "asm": "xor r9d, r9d"
+    },
+    {
+      "rva": "0x8e15c3",
+      "bytes": "488bd3",
+      "asm": "mov rdx, rbx"
+    },
+    {
+      "rva": "0x8e15c6",
+      "bytes": "4889742420",
+      "asm": "mov qword ptr [rsp + 0x20], rsi"
+    },
+    {
+      "rva": "0x8e15cb",
+      "bytes": "ff15e757b100",
+      "asm": "call qword ptr [rip + 0xb157e7]"
+    },
+    {
+      "rva": "0x8e15d1",
+      "bytes": "8bd8",
+      "asm": "mov ebx, eax"
+    },
+    {
+      "rva": "0x8e15d3",
+      "bytes": "85c0",
+      "asm": "test eax, eax"
+    },
+    {
+      "rva": "0x8e15d5",
+      "bytes": "7460",
+      "asm": "je 0x8e1637"
+    },
+    {
+      "rva": "0x8e162a",
+      "bytes": "41c787f003000004000000",
+      "asm": "mov dword ptr [r15 + 0x3f0], 4"
+    },
+    {
+      "rva": "0x8e1637",
+      "bytes": "4c8bc7",
+      "asm": "mov r8, rdi"
+    },
+    {
+      "rva": "0x8e1652",
+      "bytes": "e819030000",
+      "asm": "call 0x8e1970"
+    },
+    {
+      "rva": "0x8e1657",
+      "bytes": "41c787f003000001000000",
+      "asm": "mov dword ptr [r15 + 0x3f0], 1"
+    },
+    {
+      "rva": "0x8e1682",
+      "bytes": "c3",
+      "asm": "ret"
+    }
+  ],
+  "constructor_code_evidence": [
+    {
+      "rva": "0x8ccfbf",
+      "bytes": "4c8bf9",
+      "asm": "mov r15, rcx"
+    },
+    {
+      "rva": "0x8ccff0",
+      "bytes": "498b7f58",
+      "asm": "mov rdi, qword ptr [r15 + 0x58]"
+    },
+    {
+      "rva": "0x8cd064",
+      "bytes": "488b18",
+      "asm": "mov rbx, qword ptr [rax]"
+    },
+    {
+      "rva": "0x8cd07e",
+      "bytes": "4889bb88000000",
+      "asm": "mov qword ptr [rbx + 0x88], rdi"
+    },
+    {
+      "rva": "0x8cd214",
+      "bytes": "49895e18",
+      "asm": "mov qword ptr [r14 + 0x18], rbx"
+    },
+    {
+      "rva": "0x8cd27d",
+      "bytes": "41ff4710",
+      "asm": "inc dword ptr [r15 + 0x10]"
+    },
+    {
+      "rva": "0x8cd28d",
+      "bytes": "c3",
+      "asm": "ret"
+    }
+  ],
+  "follow_on_function": {
+    "entry_rva": "0x8e1970",
+    "reachable_instruction_count": 109,
+    "unresolved_branches": [],
+    "code_evidence": [
+      {
+        "rva": "0x8e1982",
+        "bytes": "488bf9",
+        "asm": "mov rdi, rcx"
+      },
+      {
+        "rva": "0x8e1985",
+        "bytes": "498bd8",
+        "asm": "mov rbx, r8"
+      },
+      {
+        "rva": "0x8e198f",
+        "bytes": "488bf2",
+        "asm": "mov rsi, rdx"
+      },
+      {
+        "rva": "0x8e1997",
+        "bytes": "e8140c0000",
+        "asm": "call 0x8e25b0"
+      },
+      {
+        "rva": "0x8e199c",
+        "bytes": "4c8d8f80000000",
+        "asm": "lea r9, [rdi + 0x80]"
+      },
+      {
+        "rva": "0x8e19a3",
+        "bytes": "4c8bc7",
+        "asm": "mov r8, rdi"
+      },
+      {
+        "rva": "0x8e19a6",
+        "bytes": "488bd3",
+        "asm": "mov rdx, rbx"
+      },
+      {
+        "rva": "0x8e19a9",
+        "bytes": "488b08",
+        "asm": "mov rcx, qword ptr [rax]"
+      },
+      {
+        "rva": "0x8e19ac",
+        "bytes": "ff15be55b100",
+        "asm": "call qword ptr [rip + 0xb155be]"
+      },
+      {
+        "rva": "0x8e19b4",
+        "bytes": "85c0",
+        "asm": "test eax, eax"
+      },
+      {
+        "rva": "0x8e19b6",
+        "bytes": "7442",
+        "asm": "je 0x8e19fa"
+      },
+      {
+        "rva": "0x8e19fa",
+        "bytes": "488b9788000000",
+        "asm": "mov rdx, qword ptr [rdi + 0x88]"
+      },
+      {
+        "rva": "0x8e1a01",
+        "bytes": "4533c9",
+        "asm": "xor r9d, r9d"
+      },
+      {
+        "rva": "0x8e1a04",
+        "bytes": "488b8f80000000",
+        "asm": "mov rcx, qword ptr [rdi + 0x80]"
+      },
+      {
+        "rva": "0x8e1a0b",
+        "bytes": "4c8bc6",
+        "asm": "mov r8, rsi"
+      },
+      {
+        "rva": "0x8e1a0e",
+        "bytes": "ff151c56b100",
+        "asm": "call qword ptr [rip + 0xb1561c]"
+      },
+      {
+        "rva": "0x8e1a5a",
+        "bytes": "488b9798000000",
+        "asm": "mov rdx, qword ptr [rdi + 0x98]"
+      },
+      {
+        "rva": "0x8e1a61",
+        "bytes": "4c8bc7",
+        "asm": "mov r8, rdi"
+      },
+      {
+        "rva": "0x8e1a64",
+        "bytes": "488b8f80000000",
+        "asm": "mov rcx, qword ptr [rdi + 0x80]"
+      },
+      {
+        "rva": "0x8e1a6b",
+        "bytes": "ff157f53b100",
+        "asm": "call qword ptr [rip + 0xb1537f]"
+      },
+      {
+        "rva": "0x8e1aae",
+        "bytes": "488b9788000000",
+        "asm": "mov rdx, qword ptr [rdi + 0x88]"
+      },
+      {
+        "rva": "0x8e1ab5",
+        "bytes": "488d8790000000",
+        "asm": "lea rax, [rdi + 0x90]"
+      },
+      {
+        "rva": "0x8e1abc",
+        "bytes": "488b8f80000000",
+        "asm": "mov rcx, qword ptr [rdi + 0x80]"
+      },
+      {
+        "rva": "0x8e1ac3",
+        "bytes": "4533c9",
+        "asm": "xor r9d, r9d"
+      },
+      {
+        "rva": "0x8e1ac6",
+        "bytes": "4889442430",
+        "asm": "mov qword ptr [rsp + 0x30], rax"
+      },
+      {
+        "rva": "0x8e1acb",
+        "bytes": "4533c0",
+        "asm": "xor r8d, r8d"
+      },
+      {
+        "rva": "0x8e1ace",
+        "bytes": "48897c2428",
+        "asm": "mov qword ptr [rsp + 0x28], rdi"
+      },
+      {
+        "rva": "0x8e1ad3",
+        "bytes": "4889742420",
+        "asm": "mov qword ptr [rsp + 0x20], rsi"
+      },
+      {
+        "rva": "0x8e1ad8",
+        "bytes": "ff155251b100",
+        "asm": "call qword ptr [rip + 0xb15152]"
+      }
+    ],
+    "edges": [
+      {
+        "from": "0x8e1992",
+        "kind": "call",
+        "target": "0x5c16e0",
+        "rip_slot": null
+      },
+      {
+        "from": "0x8e1997",
+        "kind": "call",
+        "target": "0x8e25b0",
+        "rip_slot": null
+      },
+      {
+        "from": "0x8e19ac",
+        "kind": "call",
+        "target": null,
+        "rip_slot": "0x13f6f70"
+      },
+      {
+        "from": "0x8e19d3",
+        "kind": "call",
+        "target": null,
+        "rip_slot": "0x13f6ef8"
+      },
+      {
+        "from": "0x8e1b16",
+        "kind": "call",
+        "target": "0x5c16e0",
+        "rip_slot": null
+      },
+      {
+        "from": "0x8e1a0e",
+        "kind": "call",
+        "target": null,
+        "rip_slot": "0x13f7030"
+      },
+      {
+        "from": "0x8e1a37",
+        "kind": "call",
+        "target": null,
+        "rip_slot": "0x13f6ef8"
+      },
+      {
+        "from": "0x8e1a55",
+        "kind": "call",
+        "target": "0x5c16e0",
+        "rip_slot": null
+      },
+      {
+        "from": "0x8e1a6b",
+        "kind": "call",
+        "target": null,
+        "rip_slot": "0x13f6df0"
+      },
+      {
+        "from": "0x8e1a8b",
+        "kind": "call",
+        "target": null,
+        "rip_slot": "0x13f6ef8"
+      },
+      {
+        "from": "0x8e1aa9",
+        "kind": "call",
+        "target": "0x5c16e0",
+        "rip_slot": null
+      },
+      {
+        "from": "0x8e1ad8",
+        "kind": "call",
+        "target": null,
+        "rip_slot": "0x13f6c30"
+      },
+      {
+        "from": "0x8e1af8",
+        "kind": "call",
+        "target": null,
+        "rip_slot": "0x13f6ef8"
+      }
+    ]
+  },
+  "argument_flow": {
+    "entry_edx": "0x8e138f: EDX -> R13D",
+    "config_first_two_u32": [
+      "0x8e1551: R13D -> [RSP+0x80]",
+      "0x8e1559: R13D -> [RSP+0x84]"
+    ],
+    "remaining_config_u32": [
+      "[RSP+0x88]=1",
+      "[RSP+0x8C]=1",
+      "[RSP+0x90]=1",
+      "[RSP+0x94]=0xF"
+    ],
+    "invitation_layout": [
+      "[RSP+0x98]=R12=object+0xA0 (identifier)",
+      "[RSP+0xA0]=1 (revocability)",
+      "[RSP+0xA4..0xAF]=0 (entityIdCount and entityIds)"
+    ],
+    "indirect_call": {
+      "call_rva": "0x8e15cb",
+      "rip_slot_rva": "0x13f6db8",
+      "config_pointer_register": "R8=&[RSP+0x80]"
+    },
+    "r13_usages": [
+      {
+        "rva": "0x8e1382",
+        "bytes": "4155",
+        "asm": "push r13"
+      },
+      {
+        "rva": "0x8e138f",
+        "bytes": "448bea",
+        "asm": "mov r13d, edx"
+      },
+      {
+        "rva": "0x8e1551",
+        "bytes": "4489ac2480000000",
+        "asm": "mov dword ptr [rsp + 0x80], r13d"
+      },
+      {
+        "rva": "0x8e1559",
+        "bytes": "4489ac2484000000",
+        "asm": "mov dword ptr [rsp + 0x84], r13d"
+      },
+      {
+        "rva": "0x8e167d",
+        "bytes": "415d",
+        "asm": "pop r13"
+      }
+    ],
+    "count_clamp_or_comparison_in_reachable_caller": false
+  },
+  "disk_import_metadata": {
+    "slot_rva": "0x13f6db8",
+    "slot_has_named_disk_import": false,
+    "slot_in_virtual_only_part_of_section": false,
+    "disk_slot_bytes": "cbb329e16cb29b45",
+    "slot_section": {
+      "name": "        ",
+      "virtual_start": "0x13f6000",
+      "virtual_end": "0x18919aa",
+      "raw_rva_end": "0x14e3600"
+    },
+    "partywin_imports": [
+      {
+        "dll": "PartyWin.dll",
+        "name": "PartyNetworkSetCustomContext",
+        "thunk_rva": "0x29617d8"
+      }
+    ]
+  },
+  "official_signature_match": {
+    "classification": "high-confidence inference, not a direct import-symbol identification",
+    "configuration_type": "PartyNetworkConfiguration",
+    "candidate_method": "PartyManager::CreateNewNetwork",
+    "configuration_fields_in_order": [
+      "maxUserCount",
+      "maxDeviceCount",
+      "maxUsersPerDeviceCount",
+      "maxDevicesPerUserCount",
+      "maxEndpointsPerDeviceCount",
+      "directPeerConnectivityOptions"
+    ],
+    "observed_values": [
+      "EDX",
+      "EDX",
+      1,
+      1,
+      1,
+      "0xF"
+    ],
+    "call_abi_arguments": [
+      "RCX=[return of 0x8e25b0] (candidate PartyManager this)",
+      "RDX=[object+0x88] (candidate localUser)",
+      "R8=&[RSP+0x80] (candidate networkConfiguration)",
+      "R9=0 (regionCount)",
+      "[RSP+0x20]=0 (regions)",
+      "[RSP+0x28]=&[RSP+0x98] (initialInvitationConfiguration)",
+      "[RSP+0x30]=object (asyncIdentifier)",
+      "[RSP+0x38]=object+0x289 (networkDescriptor)",
+      "[RSP+0x40]=0 (appliedInitialInvitationIdentifier)"
+    ],
+    "docs": [
+      "https://learn.microsoft.com/en-us/xbox/playfab/multiplayer/networking/reference/structs/partynetworkconfiguration",
+      "https://learn.microsoft.com/en-us/xbox/playfab/multiplayer/networking/reference/structs/partyinvitationconfiguration",
+      "https://learn.microsoft.com/en-us/xbox/playfab/multiplayer/networking/reference/enums/partyinvitationrevocability",
+      "https://learn.microsoft.com/en-us/xbox/playfab/multiplayer/networking/reference/classes/partymanager/methods/partymanager_createnewnetwork"
+    ]
+  },
+  "follow_on_official_signature_matches": [
+    {
+      "call_rva": "0x8e19ac",
+      "candidate": "PartyManager::ConnectToNetwork",
+      "arguments": [
+        "RCX=manager",
+        "RDX=object+0x289 descriptor",
+        "R8=object asyncIdentifier",
+        "R9=&object+0x80 network output"
+      ],
+      "doc": "https://learn.microsoft.com/en-us/xbox/playfab/multiplayer/networking/reference/classes/partymanager/methods/partymanager_connecttonetwork"
+    },
+    {
+      "call_rva": "0x8e1a0e",
+      "candidate": "PartyNetwork::AuthenticateLocalUser",
+      "arguments": [
+        "RCX=[object+0x80] network",
+        "RDX=[object+0x88] localUser",
+        "R8=object+0xA0 identifier",
+        "R9=0 asyncIdentifier"
+      ],
+      "doc": "https://learn.microsoft.com/en-us/xbox/playfab/multiplayer/networking/reference/classes/partynetwork/methods/partynetwork_authenticatelocaluser"
+    },
+    {
+      "call_rva": "0x8e1ad8",
+      "candidate": "PartyNetwork::CreateEndpoint",
+      "arguments": [
+        "RCX=[object+0x80] network",
+        "RDX=[object+0x88] localUser",
+        "R8=0 propertyCount",
+        "R9=0 keys",
+        "[RSP+0x20]=0 values",
+        "[RSP+0x28]=object asyncIdentifier",
+        "[RSP+0x30]=&object+0x90 localEndpoint output"
+      ],
+      "doc": "https://learn.microsoft.com/en-us/xbox/playfab/multiplayer/networking/reference/classes/partynetwork/methods/partynetwork_createendpoint"
+    }
+  ],
+  "limits": [
+    "The indirect function pointer value at RVA 0x13f6db8 was not captured. The raw disk bytes at this RVA are not a named import thunk and cannot by themselves identify the loaded pointer.",
+    "A zero immediate return from the indirect call would only indicate queuing of asynchronous network creation under the SDK signature.",
+    "Neither server acceptance nor five-player same-mission gameplay was invoked or observed."
+  ]
+}

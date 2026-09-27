@@ -1,0 +1,102 @@
+0x7992d0 push r14
+0x7992d2 mov r14d, edx
+0x7992d5 mov r9, rcx
+0x7992d8 cmp r8d, edx
+0x7992db je 0x79946a
+0x7992e1 mov r10d, r8d
+0x7992e4 mov r8, qword ptr [rcx + 0x38]
+0x7992e8 mov qword ptr [rsp + 0x10], rbx
+0x7992ed mov qword ptr [rsp + 0x18], rbp
+0x7992f2 mov qword ptr [rsp + 0x20], rsi
+0x7992f7 mov rax, qword ptr [r8 + r10*8]
+0x7992fb mov qword ptr [r8 + r14*8], rax
+0x7992ff mov r8, qword ptr [rcx + 0x40]
+0x799303 mov qword ptr [rsp + 0x28], rdi
+0x799308 mov rax, qword ptr [r8 + r10*8]
+0x79930c mov qword ptr [r8 + r14*8], rax
+0x799310 imul r8, r14, 0x178
+0x799317 imul rax, r10, 0x178
+0x79931e add r8, qword ptr [rcx + 0x48]
+0x799322 add rax, qword ptr [rcx + 0x48]
+0x799326 mov ecx, 2
+0x79932b nop dword ptr [rax + rax]
+0x799330 lea r8, [r8 + 0x80]
+0x799337 movups xmm0, xmmword ptr [rax]
+0x79933a lea rax, [rax + 0x80]
+0x799341 movups xmmword ptr [r8 - 0x80], xmm0
+0x799346 movups xmm1, xmmword ptr [rax - 0x70]
+0x79934a movups xmmword ptr [r8 - 0x70], xmm1
+0x79934f movups xmm0, xmmword ptr [rax - 0x60]
+0x799353 movups xmmword ptr [r8 - 0x60], xmm0
+0x799358 movups xmm1, xmmword ptr [rax - 0x50]
+0x79935c movups xmmword ptr [r8 - 0x50], xmm1
+0x799361 movups xmm0, xmmword ptr [rax - 0x40]
+0x799365 movups xmmword ptr [r8 - 0x40], xmm0
+0x79936a movups xmm1, xmmword ptr [rax - 0x30]
+0x79936e movups xmmword ptr [r8 - 0x30], xmm1
+0x799373 movups xmm0, xmmword ptr [rax - 0x20]
+0x799377 movups xmmword ptr [r8 - 0x20], xmm0
+0x79937c movups xmm1, xmmword ptr [rax - 0x10]
+0x799380 movups xmmword ptr [r8 - 0x10], xmm1
+0x799385 sub rcx, 1
+0x799389 jne 0x799330
+0x79938b movups xmm0, xmmword ptr [rax]
+0x79938e movups xmmword ptr [r8], xmm0
+0x799392 movups xmm1, xmmword ptr [rax + 0x10]
+0x799396 movups xmmword ptr [r8 + 0x10], xmm1
+0x79939b movups xmm0, xmmword ptr [rax + 0x20]
+0x79939f movups xmmword ptr [r8 + 0x20], xmm0
+0x7993a4 movups xmm1, xmmword ptr [rax + 0x30]
+0x7993a8 movups xmmword ptr [r8 + 0x30], xmm1
+0x7993ad movups xmm0, xmmword ptr [rax + 0x40]
+0x7993b1 movups xmmword ptr [r8 + 0x40], xmm0
+0x7993b6 movups xmm1, xmmword ptr [rax + 0x50]
+0x7993ba movups xmmword ptr [r8 + 0x50], xmm1
+0x7993bf movups xmm0, xmmword ptr [rax + 0x60]
+0x7993c3 movups xmmword ptr [r8 + 0x60], xmm0
+0x7993c8 mov rcx, qword ptr [rax + 0x70]
+0x7993cc lea rax, [r14 + r14*8]
+0x7993d0 mov qword ptr [r8 + 0x70], rcx
+0x7993d4 lea rcx, [r10 + r10*8]
+0x7993d8 mov rdx, qword ptr [r9 + 0x50]
+0x7993dc movups xmm0, xmmword ptr [rdx + rcx*4]
+0x7993e0 lea r8, [rdx + rax*4]
+0x7993e4 movups xmmword ptr [r8], xmm0
+0x7993e8 movups xmm1, xmmword ptr [rdx + rcx*4 + 0x10]
+0x7993ed movups xmmword ptr [r8 + 0x10], xmm1
+0x7993f2 mov eax, dword ptr [rdx + rcx*4 + 0x20]
+0x7993f6 xor edx, edx
+0x7993f8 mov dword ptr [r8 + 0x20], eax
+0x7993fc mov ebx, dword ptr [r9 + 0x28]
+0x799400 mov rax, qword ptr [r9 + 0x38]
+0x799404 mov esi, dword ptr [r9 + 0x30]
+0x799408 lea ebp, [rbx - 1]
+0x79940b mov rcx, qword ptr [rax + r14*8]
+0x79940f mov edi, dword ptr [rcx + 8]
+0x799412 imul esi, edi
+0x799415 test ebx, ebx
+0x799417 je 0x79944f
+0x799419 mov r10, qword ptr [r9 + 0x20]
+0x79941d mov r11d, dword ptr [r9 + 0x2c]
+0x799421 nop dword ptr [rax]
+0x799425 nop word ptr [rax + rax]
+0x799430 mov eax, ebp
+0x799432 lea ecx, [rdx + rsi]
+0x799435 and rcx, rax
+0x799438 mov eax, dword ptr [r10 + rcx*8]
+0x79943c lea r8, [r10 + rcx*8]
+0x799440 cmp eax, r11d
+0x799443 je 0x799452
+0x799445 cmp eax, edi
+0x799447 je 0x799452
+0x799449 inc edx
+0x79944b cmp edx, ebx
+0x79944d jb 0x799430
+0x79944f xor r8d, r8d
+0x799452 mov rdi, qword ptr [rsp + 0x28]
+0x799457 mov rsi, qword ptr [rsp + 0x20]
+0x79945c mov rbp, qword ptr [rsp + 0x18]
+0x799461 mov rbx, qword ptr [rsp + 0x10]
+0x799466 mov dword ptr [r8 + 4], r14d
+0x79946a pop r14
+0x79946c ret 

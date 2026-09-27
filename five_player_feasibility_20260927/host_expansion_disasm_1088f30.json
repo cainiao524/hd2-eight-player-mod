@@ -1,0 +1,124 @@
+{
+  "capture_identity_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "root": "0x1088f30",
+  "fragments": [
+    {
+      "range": [
+        "0x1088f30",
+        "0x1088f75"
+      ],
+      "sha256": "e8fa02c6a19385564918802dae736e1b9f880f28c3d77ef299171a90caa1cbdc",
+      "instructions": [
+        {
+          "rva": "0x1088f30",
+          "bytes": "4053",
+          "sha256": "609777c21118747ee9511a13231c87cad62e7c9c8747f9b07c59bd892278f65b",
+          "asm": "push rbx"
+        },
+        {
+          "rva": "0x1088f32",
+          "bytes": "4883ec20",
+          "sha256": "e746e80a9e90a0ad65f07af5a6fa7ce141762b96cb08c37888d41c4a7155b8eb",
+          "asm": "sub rsp, 0x20"
+        },
+        {
+          "rva": "0x1088f36",
+          "bytes": "83791801",
+          "sha256": "4bfd359f2f29309313bae54be24694bbbc7713b9f2a72489086401f31ff9cfca",
+          "asm": "cmp dword ptr [rcx + 0x18], 1"
+        },
+        {
+          "rva": "0x1088f3a",
+          "bytes": "488bd9",
+          "sha256": "d4ed4cfc264b5da25bc0a40c02f9818c48ff0ac8fd85318f45a886a82fe74e31",
+          "asm": "mov rbx, rcx"
+        },
+        {
+          "rva": "0x1088f3d",
+          "bytes": "7530",
+          "sha256": "9dc02223da426384268a0b489b28b008464099491967f6f0597853e939953ea0",
+          "asm": "jne 0x1088f6f"
+        },
+        {
+          "rva": "0x1088f3f",
+          "bytes": "488d1582a51d01",
+          "sha256": "6673d7a9961de39081d674ca3d34065a94b82439b60df2c7f4dfbfcab2b52d06",
+          "asm": "lea rdx, [rip + 0x11da582]"
+        },
+        {
+          "rva": "0x1088f46",
+          "bytes": "488d0d2ba51d01",
+          "sha256": "bb763dfe9234736b1647f413cbe984be0939ba0b92732b9eec0b173654c98b47",
+          "asm": "lea rcx, [rip + 0x11da52b]"
+        },
+        {
+          "rva": "0x1088f4d",
+          "bytes": "e8aef36a00",
+          "sha256": "0d45128ab8ddc53db9120c06fb0e2d64c821b519d7be4cf41348379901263229",
+          "asm": "call 0x1738300"
+        },
+        {
+          "rva": "0x1088f52",
+          "bytes": "488b0b",
+          "sha256": "79085203ce3f0b2a2291609446461ab76a0f22d55377b48984412703c5f672c3",
+          "asm": "mov rcx, qword ptr [rbx]"
+        },
+        {
+          "rva": "0x1088f55",
+          "bytes": "33d2",
+          "sha256": "a843932057795ea71b924ac1dbe4196f846aa6e914088874b991473831eeb65b",
+          "asm": "xor edx, edx"
+        },
+        {
+          "rva": "0x1088f57",
+          "bytes": "4881c170d40100",
+          "sha256": "6d85c12e39b06a9d3f06c3b36f8c59a1da255481ea05e3bbe68b3baa47fd43af",
+          "asm": "add rcx, 0x1d470"
+        },
+        {
+          "rva": "0x1088f5e",
+          "bytes": "c7431802000000",
+          "sha256": "58e906bf24813c61a61cd7af6a267a938e8493ce9e51ff4db7cc39965a95cbc5",
+          "asm": "mov dword ptr [rbx + 0x18], 2"
+        },
+        {
+          "rva": "0x1088f65",
+          "bytes": "4883c420",
+          "sha256": "bfe972cfee329e83af922087be9b4c73a39a3e04adac3bb8ff9d1cf1046e361f",
+          "asm": "add rsp, 0x20"
+        },
+        {
+          "rva": "0x1088f69",
+          "bytes": "5b",
+          "sha256": "245843abef9e72e7efac30138a994bf6301e7e1d7d7042a33d42e863d2638811",
+          "asm": "pop rbx"
+        },
+        {
+          "rva": "0x1088f6a",
+          "bytes": "e9b1920000",
+          "sha256": "40c6485b71fa4bda929aff7f1a9b078d85c6becf687deb71293cc438a11438da",
+          "asm": "jmp 0x1092220"
+        },
+        {
+          "rva": "0x1088f6f",
+          "bytes": "4883c420",
+          "sha256": "bfe972cfee329e83af922087be9b4c73a39a3e04adac3bb8ff9d1cf1046e361f",
+          "asm": "add rsp, 0x20"
+        },
+        {
+          "rva": "0x1088f73",
+          "bytes": "5b",
+          "sha256": "245843abef9e72e7efac30138a994bf6301e7e1d7d7042a33d42e863d2638811",
+          "asm": "pop rbx"
+        },
+        {
+          "rva": "0x1088f74",
+          "bytes": "c3",
+          "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+          "asm": "ret "
+        }
+      ]
+    }
+  ],
+  "limits": "Unwind-derived fragment bounds only; semantics require register/base provenance review."
+}

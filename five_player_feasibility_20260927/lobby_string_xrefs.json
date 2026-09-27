@@ -1,0 +1,210 @@
+{
+  "capture_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "source_sha256": {
+    "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+  },
+  "code_range": {
+    "rva": 4096,
+    "size": 34667155,
+    "label": "code",
+    "copied_bytes": 34667155,
+    "skipped_bytes": 0
+  },
+  "captured_unwind_table": {
+    "rva": "0x37d8000",
+    "size": 1832304,
+    "fragments": 152692
+  },
+  "header_exception_directory_uncaptured": {
+    "rva": "0x3fd340c",
+    "size": 1832316
+  },
+  "targets": {
+    "0x22c1d60": {
+      "branches": [],
+      "rip_references": [
+        {
+          "rva": "0x12cbd31",
+          "bytes": "4c8d052860ff00",
+          "sha256": "79a28805953e58feae6c4735b6aa958d1de847423cc2fb4d7e5a199a8263e39e",
+          "asm": "lea r8, [rip + 0xff6028]",
+          "fragment": [
+            "0x12cbc10",
+            "0x12cbd81",
+            "0x24ff058"
+          ],
+          "root": [
+            "0x12cbc10",
+            "0x12cbd81",
+            "0x24ff058"
+          ]
+        },
+        {
+          "rva": "0x12cbeb2",
+          "bytes": "4c8d05a75eff00",
+          "sha256": "84f1fc422156153d95defa274d8c8a5ec50e658ed45e53843a06cacc07f3983a",
+          "asm": "lea r8, [rip + 0xff5ea7]",
+          "fragment": [
+            "0x12cbdd1",
+            "0x12cbee9",
+            "0x24ff098"
+          ],
+          "root": [
+            "0x12cbd90",
+            "0x12cbdd1",
+            "0x24ff07c"
+          ]
+        }
+      ],
+      "absolute_pointers": [],
+      "rva_literals": []
+    },
+    "0x22c1d78": {
+      "branches": [],
+      "rip_references": [
+        {
+          "rva": "0x12cbb9a",
+          "bytes": "4c8d05d761ff00",
+          "sha256": "1d0a68a3d90b9ab02fc41c7f8d51a1c66a2c1d570048385df4aec2462440142a",
+          "asm": "lea r8, [rip + 0xff61d7]",
+          "fragment": [
+            "0x12cbb39",
+            "0x12cbbec",
+            "0x24ff034"
+          ],
+          "root": [
+            "0x12cb190",
+            "0x12cb1e5",
+            "0x24fefd8"
+          ]
+        }
+      ],
+      "absolute_pointers": [],
+      "rva_literals": []
+    },
+    "0x2260d90": {
+      "branches": [],
+      "rip_references": [
+        {
+          "rva": "0x10544b3",
+          "bytes": "488d1dd6c82001",
+          "sha256": "89c80ad1ed81be3a9649c03cf42a783dc0712a99d7a927d1959b41ae7a7a08c5",
+          "asm": "lea rbx, [rip + 0x120c8d6]",
+          "fragment": [
+            "0x1053f60",
+            "0x10550b8",
+            "0x24d62a8"
+          ],
+          "root": [
+            "0x1053f60",
+            "0x10550b8",
+            "0x24d62a8"
+          ]
+        },
+        {
+          "rva": "0x12cb372",
+          "bytes": "488d15175af900",
+          "sha256": "f46328058d96436175c54edc28c8dff12bb53f8b21bc26801eece0dd6ab21273",
+          "asm": "lea rdx, [rip + 0xf95a17]",
+          "fragment": [
+            "0x12cb1e5",
+            "0x12cb640",
+            "0x24fefec"
+          ],
+          "root": [
+            "0x12cb190",
+            "0x12cb1e5",
+            "0x24fefd8"
+          ]
+        },
+        {
+          "rva": "0x12cb9c3",
+          "bytes": "488d15c653f900",
+          "sha256": "21f89f33d58b8a887ac3d0eca62b33b48ce15e1d4713c15ff1427228be984a1f",
+          "asm": "lea rdx, [rip + 0xf953c6]",
+          "fragment": [
+            "0x12cb9bc",
+            "0x12cbb39",
+            "0x24ff024"
+          ],
+          "root": [
+            "0x12cb190",
+            "0x12cb1e5",
+            "0x24fefd8"
+          ]
+        }
+      ],
+      "absolute_pointers": [],
+      "rva_literals": []
+    },
+    "0x22c9b38": {
+      "branches": [],
+      "rip_references": [
+        {
+          "rva": "0x1094dce",
+          "bytes": "488d15634d2301",
+          "sha256": "060ab81bea77650ee68e2f6d8b62842ec68c94b8d82eca3e4244a29f349b0c1e",
+          "asm": "lea rdx, [rip + 0x1234d63]",
+          "fragment": [
+            "0x1094d90",
+            "0x1094de8",
+            "0x24db18c"
+          ],
+          "root": [
+            "0x1094d90",
+            "0x1094de8",
+            "0x24db18c"
+          ]
+        },
+        {
+          "rva": "0x133b2c9",
+          "bytes": "488d1568e8f800",
+          "sha256": "3af3d625644451c795952891236175ba50aaec9a84c80382da2bc475b2925d8c",
+          "asm": "lea rdx, [rip + 0xf8e868]",
+          "fragment": [
+            "0x133b294",
+            "0x133b3bd",
+            "0x2508740"
+          ],
+          "root": [
+            "0x133ac30",
+            "0x133ac6e",
+            "0x25086e4"
+          ]
+        },
+        {
+          "rva": "0x13f1581",
+          "bytes": "488d15b085ed00",
+          "sha256": "7589774e356bfd58547c6377992630cb7058661eadf060c88a49df3880cd50e8",
+          "asm": "lea rdx, [rip + 0xed85b0]",
+          "fragment": [
+            "0x13f1550",
+            "0x13f15a0",
+            "0x2515e50"
+          ],
+          "root": [
+            "0x13f1550",
+            "0x13f15a0",
+            "0x2515e50"
+          ]
+        }
+      ],
+      "absolute_pointers": [],
+      "rva_literals": []
+    },
+    "0x22c9b18": {
+      "branches": [],
+      "rip_references": [],
+      "absolute_pointers": [],
+      "rva_literals": []
+    }
+  },
+  "limits": [
+    "No heap or writable-data capture.",
+    "RIP reference scan recognizes REX/non-REX MOV/LEA with disp32; it does not solve arbitrary address arithmetic.",
+    "Exception-table boundary validation omits leaf or uncovered code.",
+    "Pointer/RVA literal matches alone are data occurrences, not execution edges.",
+    "No gameplay, ownership, or lifecycle inference."
+  ]
+}

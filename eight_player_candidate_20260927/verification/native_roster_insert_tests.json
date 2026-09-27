@@ -1,0 +1,10030 @@
+{
+  "status": "passed",
+  "test_methods_run": 9,
+  "failure_count": 0,
+  "error_count": 0,
+  "failures": [],
+  "errors": [],
+  "source_sha256": {
+    "Native/roster_insert.py": "b7bfcd2184382925b4abade40c5e81f21fcdd689f1aea47a2546c055f0bbf551",
+    "Native/roster_bundle.py": "7041074e818277f45476b91611bf8a37a0a94a9244c48c321148341dac824fbf",
+    "Native/roster_property_pair.py": "5828d6a03bfce89ea63e3c8e8c49bca60825aa8b11533dd7e545570f183dba63",
+    "Native/roster_producer.py": "015b2240847019bfb62fa62a72ce8af93894f2d61b0369d5079aa40d40697a4b",
+    "Native/roster_receiver.py": "38b163fe9a0fda32db609ee94f96ab257105221e60e28ad14c4bd14676e61a27",
+    "Native/roster_move.py": "cc6df86a567fda45fcac9a258372df52aad085fff67a620b5f4a2d46c100c23f"
+  },
+  "test_sha256": "7763f5d6664d653816f2b9ec411ec8a8ff942bf45ca1795448f1a130549e7a64",
+  "test_dependency_sha256": {
+    "tests/test_native_roster_producer.py": "68b6d7573c219a977903e345e67fa24792e852ef234392da12c4f4ad312e7fe7"
+  },
+  "evidence_sha256": {
+    "five_player_feasibility_20260927\\roster_insert_native_evidence.json": "794c357a56b2aa28cfd1061374afe27c1a3a2c06d31ce4ca736e4b783e41b497",
+    "five_player_feasibility_20260927\\roster_move_native_evidence.json": "115802c09eb15f840932667717731150aa347e7ae8a72245dd92e05a5e86a242",
+    "five_player_feasibility_20260927\\roster_property_producer_native_evidence.json": "f73ec903d06f2304f4f944c25e011a7ef86d78737cb1b197101a1c96daaabacb",
+    "five_player_feasibility_20260927\\roster_property_receive_evidence.json": "bad5661771df280dd5e982b765d2f4ab1c73de9ae7e86e974751af6c3c383c10",
+    "five_player_feasibility_20260927\\roster_component_binding_evidence_v3.json": "274833c418bfa7dec4e4097dda5031f3a11e8c69689ae4ed758e75a40481c2e2"
+  },
+  "python_version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "unicorn_version": "2.1.4",
+  "capstone_version": "5.0.7",
+  "fixture_synthetic": true,
+  "game_process_accessed": false,
+  "host_native_code_executed": false,
+  "installable": false,
+  "emulator_runs": [
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 0,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 92,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 0,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 1,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 104,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 1,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 1,
+      "d": 1,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 104,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 1,
+          "d": 1,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 1,
+      "d": 1,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 104,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 1,
+          "d": 1,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 2,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 116,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 2,
+      "d": 1,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 116,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 1,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 2,
+      "d": 1,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 116,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 1,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 2,
+      "d": 2,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 116,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 2,
+      "d": 2,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 116,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 2,
+      "d": 2,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 116,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 3,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 128,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 3,
+      "d": 1,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 128,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 1,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 3,
+      "d": 1,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 128,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 1,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 3,
+      "d": 2,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 128,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 2,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 3,
+      "d": 2,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 128,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 2,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 3,
+      "d": 2,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 128,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 2,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 128,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 128,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 128,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 128,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 4,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 140,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 4,
+      "d": 1,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 140,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 1,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 4,
+      "d": 1,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 140,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 1,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 4,
+      "d": 2,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 140,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 2,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 4,
+      "d": 2,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 140,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 2,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 4,
+      "d": 2,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 140,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 2,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 4,
+      "d": 3,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 140,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 3,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 4,
+      "d": 3,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 140,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 3,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 4,
+      "d": 3,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 140,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 3,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 4,
+      "d": 3,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 140,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 3,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 140,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 140,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 140,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 140,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 140,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 5,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 152,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 5,
+      "d": 1,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 152,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 1,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 5,
+      "d": 1,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 152,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 1,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 5,
+      "d": 2,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 152,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 2,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 5,
+      "d": 2,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 152,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 2,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 5,
+      "d": 2,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 152,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 2,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 5,
+      "d": 3,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 152,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 3,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 5,
+      "d": 3,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 152,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 3,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 5,
+      "d": 3,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 152,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 3,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 5,
+      "d": 3,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 152,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 3,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 5,
+      "d": 4,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 152,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 4,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 5,
+      "d": 4,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 152,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 4,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 5,
+      "d": 4,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 152,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 4,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 5,
+      "d": 4,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 152,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 4,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 5,
+      "d": 4,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 152,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 4,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 152,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 152,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 152,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 152,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 152,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 5,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 152,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 1,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 1,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 1,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 1,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 2,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 2,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 2,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 2,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 2,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 2,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 3,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 3,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 3,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 3,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 3,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 3,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 3,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 3,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 4,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 4,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 4,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 4,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 4,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 4,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 4,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 4,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 4,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 4,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 5,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 5,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 5,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 5,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 5,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 5,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 5,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 5,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 5,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 5,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 5,
+      "p": 5,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 5,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 5,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 6,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 6
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 1,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 1,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 1,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 1,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 2,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 2,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 2,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 2,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 2,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 2,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 3,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 3,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 3,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 3,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 3,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 3,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 3,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 3,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 4,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 4,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 4,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 4,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 4,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 4,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 4,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 4,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 4,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 4,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 5,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 5,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 5,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 5,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 5,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 5,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 5,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 5,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 5,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 5,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 5,
+      "p": 5,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 5,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 6,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 6,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 6,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 6,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 6,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 6,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 6,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 6,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 6,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 6,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 6,
+      "p": 5,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 6,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 6,
+      "p": 6,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 6,
+          "p": 6
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 5,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 6,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 6
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 7,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 7
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": true,
+      "t": 0,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 63,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 0,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": true,
+      "t": 1,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 75,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 1,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": true,
+      "t": 1,
+      "d": 1,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 75,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 1,
+          "d": 1,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": true,
+      "t": 1,
+      "d": 1,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 75,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 1,
+          "d": 1,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": true,
+      "t": 2,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 87,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": true,
+      "t": 2,
+      "d": 1,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 87,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 1,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": true,
+      "t": 2,
+      "d": 1,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 87,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 1,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": true,
+      "t": 2,
+      "d": 2,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 87,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": true,
+      "t": 2,
+      "d": 2,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 87,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": true,
+      "t": 2,
+      "d": 2,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 87,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": true,
+      "t": 3,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 99,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": true,
+      "t": 3,
+      "d": 1,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 99,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 1,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": true,
+      "t": 3,
+      "d": 1,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 99,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 1,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": true,
+      "t": 3,
+      "d": 2,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 99,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 2,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": true,
+      "t": 3,
+      "d": 2,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 99,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 2,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": true,
+      "t": 3,
+      "d": 2,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 99,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 2,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": true,
+      "t": 3,
+      "d": 3,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 99,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": true,
+      "t": 3,
+      "d": 3,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 99,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": true,
+      "t": 3,
+      "d": 3,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 99,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_legacy",
+      "original": true,
+      "t": 3,
+      "d": 3,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 99,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 0,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 93,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 0,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 1,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 105,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 1,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 1,
+      "d": 1,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 105,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 1,
+          "d": 1,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 1,
+      "d": 1,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 105,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 1,
+          "d": 1,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 2,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 117,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 2,
+      "d": 1,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 117,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 1,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 2,
+      "d": 1,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 117,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 1,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 2,
+      "d": 2,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 117,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 2,
+      "d": 2,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 117,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 2,
+      "d": 2,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 117,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 3,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 129,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 3,
+      "d": 1,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 129,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 1,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 3,
+      "d": 1,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 129,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 1,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 3,
+      "d": 2,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 129,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 2,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 3,
+      "d": 2,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 129,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 2,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 3,
+      "d": 2,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 129,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 2,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 129,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 129,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 129,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 129,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 4,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 141,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 4,
+      "d": 1,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 141,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 1,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 4,
+      "d": 1,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 141,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 1,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 4,
+      "d": 2,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 141,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 2,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 4,
+      "d": 2,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 141,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 2,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 4,
+      "d": 2,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 141,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 2,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 4,
+      "d": 3,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 141,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 3,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 4,
+      "d": 3,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 141,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 3,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 4,
+      "d": 3,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 141,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 3,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 4,
+      "d": 3,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 141,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 3,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 141,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 141,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 141,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 141,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 141,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 5,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 153,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 5,
+      "d": 1,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 153,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 1,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 5,
+      "d": 1,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 153,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 1,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 5,
+      "d": 2,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 153,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 2,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 5,
+      "d": 2,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 153,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 2,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 5,
+      "d": 2,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 153,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 2,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 5,
+      "d": 3,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 153,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 3,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 5,
+      "d": 3,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 153,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 3,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 5,
+      "d": 3,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 153,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 3,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 5,
+      "d": 3,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 153,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 3,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 5,
+      "d": 4,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 153,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 4,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 5,
+      "d": 4,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 153,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 4,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 5,
+      "d": 4,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 153,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 4,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 5,
+      "d": 4,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 153,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 4,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 5,
+      "d": 4,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 153,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 4,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 153,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 153,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 153,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 153,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 153,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 5,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 153,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 1,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 1,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 1,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 1,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 2,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 2,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 2,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 2,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 2,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 2,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 3,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 3,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 3,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 3,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 3,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 3,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 3,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 3,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 4,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 4,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 4,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 4,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 4,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 4,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 4,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 4,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 4,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 4,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 5,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 5,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 5,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 5,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 5,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 5,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 5,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 5,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 5,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 5,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 5,
+      "p": 5,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 5,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 5,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 6,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 6
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 1,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 1,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 1,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 1,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 2,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 2,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 2,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 2,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 2,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 2,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 3,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 3,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 3,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 3,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 3,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 3,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 3,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 3,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 4,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 4,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 4,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 4,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 4,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 4,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 4,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 4,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 4,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 4,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 5,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 5,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 5,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 5,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 5,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 5,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 5,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 5,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 5,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 5,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 5,
+      "p": 5,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 5,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 6,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 6,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 6,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 6,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 6,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 6,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 6,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 6,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 6,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 6,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 6,
+      "p": 5,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 6,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 6,
+      "p": 6,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 6,
+          "p": 6
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 5,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 6,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 6
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 7,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 7
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": true,
+      "t": 0,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 64,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 0,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": true,
+      "t": 1,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 76,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 1,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": true,
+      "t": 1,
+      "d": 1,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 76,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 1,
+          "d": 1,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": true,
+      "t": 1,
+      "d": 1,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 76,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 1,
+          "d": 1,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": true,
+      "t": 2,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 88,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": true,
+      "t": 2,
+      "d": 1,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 88,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 1,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": true,
+      "t": 2,
+      "d": 1,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 88,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 1,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": true,
+      "t": 2,
+      "d": 2,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 88,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": true,
+      "t": 2,
+      "d": 2,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 88,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": true,
+      "t": 2,
+      "d": 2,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 88,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": true,
+      "t": 3,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 100,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": true,
+      "t": 3,
+      "d": 1,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 100,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 1,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": true,
+      "t": 3,
+      "d": 1,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 100,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 1,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": true,
+      "t": 3,
+      "d": 2,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 100,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 2,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": true,
+      "t": 3,
+      "d": 2,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 100,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 2,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": true,
+      "t": 3,
+      "d": 2,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 100,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 2,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": true,
+      "t": 3,
+      "d": 3,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 100,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": true,
+      "t": 3,
+      "d": 3,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 100,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": true,
+      "t": 3,
+      "d": 3,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 100,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "append_partition",
+      "kind": "append_registered",
+      "original": true,
+      "t": 3,
+      "d": 3,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 100,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 0,
+      "d": 0,
+      "p": 0,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 88,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 1,
+          "d": 1,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 0,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 110,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 1,
+          "d": 1,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 1,
+      "d": 1,
+      "p": 0,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 100,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 1,
+      "d": 1,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 213,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 1,
+          "d": 1,
+          "p": 0
+        },
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 1,
+      "d": 1,
+      "p": 1,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 100,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 1,
+      "d": 1,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 122,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 2,
+      "d": 2,
+      "p": 0,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 112,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 2,
+      "d": 2,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 225,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 2,
+          "d": 2,
+          "p": 0
+        },
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 2,
+      "d": 2,
+      "p": 1,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 112,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 2,
+      "d": 2,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 237,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 2,
+          "d": 2,
+          "p": 1
+        },
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 2,
+      "d": 2,
+      "p": 2,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 112,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 2,
+      "d": 2,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 134,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 0,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 124,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 237,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 3,
+          "d": 3,
+          "p": 0
+        },
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 1,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 124,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 249,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 3,
+          "d": 3,
+          "p": 1
+        },
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 2,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 124,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 261,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 3,
+          "d": 3,
+          "p": 2
+        },
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 3,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 124,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 146,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 0,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 136,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 249,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 4,
+          "d": 4,
+          "p": 0
+        },
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 1,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 136,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 261,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 4,
+          "d": 4,
+          "p": 1
+        },
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 136,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 273,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 4,
+          "d": 4,
+          "p": 2
+        },
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 3,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 136,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 285,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 4,
+          "d": 4,
+          "p": 3
+        },
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 4,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 136,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 158,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 0,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 148,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 261,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 5,
+          "d": 5,
+          "p": 0
+        },
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 1,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 148,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 273,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 5,
+          "d": 5,
+          "p": 1
+        },
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 2,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 148,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 285,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 5,
+          "d": 5,
+          "p": 2
+        },
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 3,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 148,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 297,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 5,
+          "d": 5,
+          "p": 3
+        },
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 4,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 148,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 309,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 5,
+          "d": 5,
+          "p": 4
+        },
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 5,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 148,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 5,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 170,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 6
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 0,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 160,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 273,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 6,
+          "d": 6,
+          "p": 0
+        },
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 1,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 160,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 285,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 6,
+          "d": 6,
+          "p": 1
+        },
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 2,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 160,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 297,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 6,
+          "d": 6,
+          "p": 2
+        },
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 3,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 160,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 309,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 6,
+          "d": 6,
+          "p": 3
+        },
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 4,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 160,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 321,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 6,
+          "d": 6,
+          "p": 4
+        },
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 5,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 160,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 5,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 333,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 6,
+          "d": 6,
+          "p": 5
+        },
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 6
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 6,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 160,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 6
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 6,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 182,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 7
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 0,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 172,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 285,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 7,
+          "d": 7,
+          "p": 0
+        },
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 1,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 172,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 297,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 7,
+          "d": 7,
+          "p": 1
+        },
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 2,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 172,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 309,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 7,
+          "d": 7,
+          "p": 2
+        },
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 3,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 172,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 321,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 7,
+          "d": 7,
+          "p": 3
+        },
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 4,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 172,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 333,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 7,
+          "d": 7,
+          "p": 4
+        },
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 5,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 172,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 5,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 345,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 7,
+          "d": 7,
+          "p": 5
+        },
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 6
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 6,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 172,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 6
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 6,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 357,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 7,
+          "d": 7,
+          "p": 6
+        },
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 7
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 7,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 172,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 7
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 7,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 194,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 8
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": true,
+      "t": 0,
+      "d": 0,
+      "p": 0,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 65,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 1,
+          "d": 1,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": true,
+      "t": 0,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 80,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 1,
+          "d": 1,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": true,
+      "t": 1,
+      "d": 1,
+      "p": 0,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 77,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": true,
+      "t": 1,
+      "d": 1,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 170,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 1,
+          "d": 1,
+          "p": 0
+        },
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": true,
+      "t": 1,
+      "d": 1,
+      "p": 1,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 77,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": true,
+      "t": 1,
+      "d": 1,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 92,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": true,
+      "t": 2,
+      "d": 2,
+      "p": 0,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 89,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": true,
+      "t": 2,
+      "d": 2,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 182,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 2,
+          "d": 2,
+          "p": 0
+        },
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": true,
+      "t": 2,
+      "d": 2,
+      "p": 1,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 89,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": true,
+      "t": 2,
+      "d": 2,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 194,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 2,
+          "d": 2,
+          "p": 1
+        },
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": true,
+      "t": 2,
+      "d": 2,
+      "p": 2,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 89,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": true,
+      "t": 2,
+      "d": 2,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 104,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": true,
+      "t": 3,
+      "d": 3,
+      "p": 0,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 101,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": true,
+      "t": 3,
+      "d": 3,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 194,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 3,
+          "d": 3,
+          "p": 0
+        },
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": true,
+      "t": 3,
+      "d": 3,
+      "p": 1,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 101,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": true,
+      "t": 3,
+      "d": 3,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 206,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 3,
+          "d": 3,
+          "p": 1
+        },
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": true,
+      "t": 3,
+      "d": 3,
+      "p": 2,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 101,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": true,
+      "t": 3,
+      "d": 3,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 218,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 3,
+          "d": 3,
+          "p": 2
+        },
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": true,
+      "t": 3,
+      "d": 3,
+      "p": 3,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 101,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_legacy",
+      "original": true,
+      "t": 3,
+      "d": 3,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 116,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 0,
+      "d": 0,
+      "p": 0,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 88,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 1,
+          "d": 1,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 0,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 110,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 1,
+          "d": 1,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 1,
+      "d": 1,
+      "p": 0,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 100,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 1,
+      "d": 1,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 213,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 1,
+          "d": 1,
+          "p": 0
+        },
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 1,
+      "d": 1,
+      "p": 1,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 100,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 1,
+      "d": 1,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 122,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 2,
+      "d": 2,
+      "p": 0,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 112,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 2,
+      "d": 2,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 225,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 2,
+          "d": 2,
+          "p": 0
+        },
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 2,
+      "d": 2,
+      "p": 1,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 112,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 2,
+      "d": 2,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 237,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 2,
+          "d": 2,
+          "p": 1
+        },
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 2,
+      "d": 2,
+      "p": 2,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 112,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 2,
+      "d": 2,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 134,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 0,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 124,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 237,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 3,
+          "d": 3,
+          "p": 0
+        },
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 1,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 124,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 249,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 3,
+          "d": 3,
+          "p": 1
+        },
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 2,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 124,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 261,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 3,
+          "d": 3,
+          "p": 2
+        },
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 3,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 124,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 3,
+      "d": 3,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 146,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 0,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 136,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 249,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 4,
+          "d": 4,
+          "p": 0
+        },
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 1,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 136,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 261,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 4,
+          "d": 4,
+          "p": 1
+        },
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 136,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 273,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 4,
+          "d": 4,
+          "p": 2
+        },
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 3,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 136,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 285,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 4,
+          "d": 4,
+          "p": 3
+        },
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 4,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 136,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 158,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 5,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 0,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 148,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 261,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 5,
+          "d": 5,
+          "p": 0
+        },
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 1,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 148,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 273,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 5,
+          "d": 5,
+          "p": 1
+        },
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 2,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 148,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 285,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 5,
+          "d": 5,
+          "p": 2
+        },
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 3,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 148,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 297,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 5,
+          "d": 5,
+          "p": 3
+        },
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 4,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 148,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 309,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 5,
+          "d": 5,
+          "p": 4
+        },
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 5,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 148,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 5,
+      "d": 5,
+      "p": 5,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 170,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 6,
+          "p": 6
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 0,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 160,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 273,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 6,
+          "d": 6,
+          "p": 0
+        },
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 1,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 160,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 285,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 6,
+          "d": 6,
+          "p": 1
+        },
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 2,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 160,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 297,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 6,
+          "d": 6,
+          "p": 2
+        },
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 3,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 160,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 309,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 6,
+          "d": 6,
+          "p": 3
+        },
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 4,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 160,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 321,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 6,
+          "d": 6,
+          "p": 4
+        },
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 5,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 160,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 5,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 333,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 6,
+          "d": 6,
+          "p": 5
+        },
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 6
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 6,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 160,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 6
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 6,
+      "d": 6,
+      "p": 6,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 182,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 7
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 0,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 172,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 285,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 7,
+          "d": 7,
+          "p": 0
+        },
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 1,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 172,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 297,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 7,
+          "d": 7,
+          "p": 1
+        },
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 2,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 172,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 309,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 7,
+          "d": 7,
+          "p": 2
+        },
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 3,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 172,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 321,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 7,
+          "d": 7,
+          "p": 3
+        },
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 4,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 172,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 4,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 333,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 7,
+          "d": 7,
+          "p": 4
+        },
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 5,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 172,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 5
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 5,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 345,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 7,
+          "d": 7,
+          "p": 5
+        },
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 6
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 6,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 172,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 6
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 6,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 357,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 7,
+          "d": 7,
+          "p": 6
+        },
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 7
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 7,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 172,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 7
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 7,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 194,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 8
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": true,
+      "t": 0,
+      "d": 0,
+      "p": 0,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 65,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 1,
+          "d": 1,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": true,
+      "t": 0,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 80,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 1,
+          "d": 1,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": true,
+      "t": 1,
+      "d": 1,
+      "p": 0,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 77,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": true,
+      "t": 1,
+      "d": 1,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 170,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 1,
+          "d": 1,
+          "p": 0
+        },
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": true,
+      "t": 1,
+      "d": 1,
+      "p": 1,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 77,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": true,
+      "t": 1,
+      "d": 1,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 92,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 2,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": true,
+      "t": 2,
+      "d": 2,
+      "p": 0,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 89,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": true,
+      "t": 2,
+      "d": 2,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 182,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 2,
+          "d": 2,
+          "p": 0
+        },
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": true,
+      "t": 2,
+      "d": 2,
+      "p": 1,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 89,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": true,
+      "t": 2,
+      "d": 2,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 194,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 2,
+          "d": 2,
+          "p": 1
+        },
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": true,
+      "t": 2,
+      "d": 2,
+      "p": 2,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 89,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": true,
+      "t": 2,
+      "d": 2,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 104,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 3,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": true,
+      "t": 3,
+      "d": 3,
+      "p": 0,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 101,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": true,
+      "t": 3,
+      "d": 3,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 194,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 3,
+          "d": 3,
+          "p": 0
+        },
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": true,
+      "t": 3,
+      "d": 3,
+      "p": 1,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 101,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 1
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": true,
+      "t": 3,
+      "d": 3,
+      "p": 1,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 206,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 3,
+          "d": 3,
+          "p": 1
+        },
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": true,
+      "t": 3,
+      "d": 3,
+      "p": 2,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 101,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": true,
+      "t": 3,
+      "d": 3,
+      "p": 2,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 218,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 3,
+          "d": 3,
+          "p": 2
+        },
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": true,
+      "t": 3,
+      "d": 3,
+      "p": 3,
+      "flag": 0,
+      "outcome": "return",
+      "instructions": 101,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "dense_prefix",
+      "kind": "dense_registered",
+      "original": true,
+      "t": 3,
+      "d": 3,
+      "p": 3,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 116,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 4,
+          "p": 4
+        }
+      ]
+    },
+    {
+      "name": "second_aslr_nonzero_flag",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 2,
+      "flag": 255,
+      "outcome": "return",
+      "instructions": 309,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 7,
+          "d": 7,
+          "p": 2
+        },
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "second_aslr_nonzero_flag",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 2,
+      "flag": 255,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "second_aslr_nonzero_flag",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 2,
+      "flag": 255,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 7,
+          "p": 2
+        }
+      ]
+    },
+    {
+      "name": "second_aslr_nonzero_flag",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 2,
+      "flag": 255,
+      "outcome": "return",
+      "instructions": 309,
+      "helper_calls": [
+        {
+          "kind": "move",
+          "t": 7,
+          "d": 7,
+          "p": 2
+        },
+        {
+          "kind": "map",
+          "t": 8,
+          "d": 8,
+          "p": 3
+        }
+      ]
+    },
+    {
+      "name": "invalid_count",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 4,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 11,
+      "helper_calls": []
+    },
+    {
+      "name": "invalid_count",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 4294967295,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 11,
+      "helper_calls": []
+    },
+    {
+      "name": "invalid_count",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 7,
+      "d": 8,
+      "p": 1,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 14,
+      "helper_calls": []
+    },
+    {
+      "name": "invalid_count",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 8,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 18,
+      "helper_calls": []
+    },
+    {
+      "name": "unmapped_wrong_binding",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 3,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 8,
+      "helper_calls": []
+    },
+    {
+      "name": "pending_tail",
+      "kind": "dense_legacy",
+      "original": false,
+      "t": 7,
+      "d": 6,
+      "p": 3,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 15,
+      "helper_calls": []
+    },
+    {
+      "name": "invalid_count",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 4,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 11,
+      "helper_calls": []
+    },
+    {
+      "name": "invalid_count",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 4294967295,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 11,
+      "helper_calls": []
+    },
+    {
+      "name": "invalid_count",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 8,
+      "p": 1,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 14,
+      "helper_calls": []
+    },
+    {
+      "name": "invalid_count",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 8,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 17,
+      "helper_calls": []
+    },
+    {
+      "name": "unmapped_wrong_binding",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 3,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 8,
+      "helper_calls": []
+    },
+    {
+      "name": "invalid_count",
+      "kind": "append_registered",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 4,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 11,
+      "helper_calls": []
+    },
+    {
+      "name": "invalid_count",
+      "kind": "append_registered",
+      "original": false,
+      "t": 4294967295,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 11,
+      "helper_calls": []
+    },
+    {
+      "name": "invalid_count",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 8,
+      "p": 1,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 14,
+      "helper_calls": []
+    },
+    {
+      "name": "invalid_count",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 8,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 17,
+      "helper_calls": []
+    },
+    {
+      "name": "unmapped_wrong_binding",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 3,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 8,
+      "helper_calls": []
+    },
+    {
+      "name": "invalid_count",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 4,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 11,
+      "helper_calls": []
+    },
+    {
+      "name": "invalid_count",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 4294967295,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 11,
+      "helper_calls": []
+    },
+    {
+      "name": "invalid_count",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 7,
+      "d": 8,
+      "p": 1,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 14,
+      "helper_calls": []
+    },
+    {
+      "name": "invalid_count",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 8,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 18,
+      "helper_calls": []
+    },
+    {
+      "name": "unmapped_wrong_binding",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 7,
+      "d": 7,
+      "p": 3,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 8,
+      "helper_calls": []
+    },
+    {
+      "name": "pending_tail",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 7,
+      "d": 6,
+      "p": 3,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 15,
+      "helper_calls": []
+    },
+    {
+      "name": "reject_rel32_edge",
+      "kind": "append_registered",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 4,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 11,
+      "helper_calls": []
+    },
+    {
+      "name": "reject_rel32_edge",
+      "kind": "append_registered",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 4,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 11,
+      "helper_calls": []
+    },
+    {
+      "name": "reject_rel32_edge",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 4,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 11,
+      "helper_calls": []
+    },
+    {
+      "name": "reject_rel32_edge",
+      "kind": "dense_registered",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 4,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 11,
+      "helper_calls": []
+    },
+    {
+      "name": "successive_append_0",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 0,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 92,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 0,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "successive_append_1",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 1,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 104,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 1,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "successive_append_2",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 2,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 116,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "successive_append_3",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 3,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 128,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "successive_append_4",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 4,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 140,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "successive_append_5",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 5,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 152,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "successive_append_6",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 6,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 164,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "successive_append_7",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 7,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 176,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "ninth_append_rejected",
+      "kind": "append_legacy",
+      "original": false,
+      "t": 8,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 11,
+      "helper_calls": []
+    },
+    {
+      "name": "successive_append_0",
+      "kind": "append_registered",
+      "original": false,
+      "t": 0,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 93,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 0,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "successive_append_1",
+      "kind": "append_registered",
+      "original": false,
+      "t": 1,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 105,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 1,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "successive_append_2",
+      "kind": "append_registered",
+      "original": false,
+      "t": 2,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 117,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 2,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "successive_append_3",
+      "kind": "append_registered",
+      "original": false,
+      "t": 3,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 129,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 3,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "successive_append_4",
+      "kind": "append_registered",
+      "original": false,
+      "t": 4,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 141,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 4,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "successive_append_5",
+      "kind": "append_registered",
+      "original": false,
+      "t": 5,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 153,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 5,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "successive_append_6",
+      "kind": "append_registered",
+      "original": false,
+      "t": 6,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 165,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 6,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "successive_append_7",
+      "kind": "append_registered",
+      "original": false,
+      "t": 7,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "return",
+      "instructions": 177,
+      "helper_calls": [
+        {
+          "kind": "map",
+          "t": 7,
+          "d": 0,
+          "p": 0
+        }
+      ]
+    },
+    {
+      "name": "ninth_append_rejected",
+      "kind": "append_registered",
+      "original": false,
+      "t": 8,
+      "d": 0,
+      "p": 0,
+      "flag": 1,
+      "outcome": "reject",
+      "instructions": 11,
+      "helper_calls": []
+    },
+    {
+      "name": "chain_insert",
+      "original": false,
+      "outcome": "return",
+      "ordinal": 7,
+      "network_dword": 4,
+      "game_base": "0x7ff600000000",
+      "instructions": 129,
+      "allocator_contract_calls": 0,
+      "actual_index_leaf_calls": 0,
+      "role": "insert"
+    },
+    {
+      "name": "chain_producer",
+      "original": false,
+      "outcome": "return",
+      "ordinal": 7,
+      "network_dword": 4,
+      "game_base": "0x7ff600000000",
+      "instructions": 224,
+      "allocator_contract_calls": 1,
+      "actual_index_leaf_calls": 1,
+      "role": "producer"
+    },
+    {
+      "name": "chain_receiver",
+      "original": false,
+      "outcome": "return",
+      "ordinal": 7,
+      "network_dword": 4,
+      "game_base": "0x7ff600000000",
+      "instructions": 106,
+      "allocator_contract_calls": 0,
+      "actual_index_leaf_calls": 0,
+      "role": "receiver"
+    }
+  ],
+  "limits": [
+    "Valid map/new key/empty slot and actual caller lifetime/synchronization are assumed",
+    "Dense candidates reject pending tails D<T; actual game caller contract remains unproven",
+    "Producer/receiver chain uses allocator contract and synthetic incoming bytes, not real serializer or transport",
+    "No entry hooks, Windows unwind, rejection handler, game or multiplayer validation"
+  ]
+}

@@ -1,0 +1,409 @@
+{
+  "source": {
+    "capture_json_sha256": "a45e5f5b1647d808b8b7716fd750e4a894ab39a3021b52a0b10c404403a8b85f",
+    "saved_live_prefix_sha256": "d52d364307cb57a442cc6295a48d840458caf81de9da0ac9e40cb72083d9b144",
+    "disk_exe_sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+    "capture_atomic_snapshot": false,
+    "observed_fields_unchanged_on_reread": true
+  },
+  "target": {
+    "path": "+0x30/+0x18",
+    "module": "helldivers2.exe",
+    "rva": "0x3494b0",
+    "saved_live_prefix_size": 256,
+    "saved_live_prefix_sha256": "d52d364307cb57a442cc6295a48d840458caf81de9da0ac9e40cb72083d9b144",
+    "disk_file_offset": "0x348ab0",
+    "disk_section": "        ",
+    "disk_prefix_sha256": "fbee52badb3e99fdce736b7e14276f95047d9e1c629bfad3a3554a1b09f5845b",
+    "disk_prefix_first_32_bytes": "73d2472100bc625344676aa6d809a649fdf4fedfb8ab00425bd7d691ffac9ba0",
+    "disk_equals_saved_live_prefix": false,
+    "first_mismatch_offset": 0
+  },
+  "saved_live_prefix_disassembly": [
+    {
+      "rva": "0x3494b0",
+      "bytes": "48895c2408",
+      "asm": "mov qword ptr [rsp + 8], rbx"
+    },
+    {
+      "rva": "0x3494b5",
+      "bytes": "48896c2410",
+      "asm": "mov qword ptr [rsp + 0x10], rbp"
+    },
+    {
+      "rva": "0x3494ba",
+      "bytes": "4889742418",
+      "asm": "mov qword ptr [rsp + 0x18], rsi"
+    },
+    {
+      "rva": "0x3494bf",
+      "bytes": "57",
+      "asm": "push rdi"
+    },
+    {
+      "rva": "0x3494c0",
+      "bytes": "4883ec50",
+      "asm": "sub rsp, 0x50"
+    },
+    {
+      "rva": "0x3494c4",
+      "bytes": "488b058d6d6c01",
+      "asm": "mov rax, qword ptr [rip + 0x16c6d8d]"
+    },
+    {
+      "rva": "0x3494cb",
+      "bytes": "8be9",
+      "asm": "mov ebp, ecx"
+    },
+    {
+      "rva": "0x3494cd",
+      "bytes": "8bf2",
+      "asm": "mov esi, edx"
+    },
+    {
+      "rva": "0x3494cf",
+      "bytes": "41b908000000",
+      "asm": "mov r9d, 8"
+    },
+    {
+      "rva": "0x3494d5",
+      "bytes": "41b8e0050000",
+      "asm": "mov r8d, 0x5e0"
+    },
+    {
+      "rva": "0x3494db",
+      "bytes": "488d542440",
+      "asm": "lea rdx, [rsp + 0x40]"
+    },
+    {
+      "rva": "0x3494e0",
+      "bytes": "488bb890000000",
+      "asm": "mov rdi, qword ptr [rax + 0x90]"
+    },
+    {
+      "rva": "0x3494e7",
+      "bytes": "488d4808",
+      "asm": "lea rcx, [rax + 8]"
+    },
+    {
+      "rva": "0x3494eb",
+      "bytes": "488b4008",
+      "asm": "mov rax, qword ptr [rax + 8]"
+    },
+    {
+      "rva": "0x3494ef",
+      "bytes": "ff5030",
+      "asm": "call qword ptr [rax + 0x30]"
+    },
+    {
+      "rva": "0x3494f2",
+      "bytes": "488b18",
+      "asm": "mov rbx, qword ptr [rax]"
+    },
+    {
+      "rva": "0x3494f5",
+      "bytes": "488b055c6d6c01",
+      "asm": "mov rax, qword ptr [rip + 0x16c6d5c]"
+    },
+    {
+      "rva": "0x3494fc",
+      "bytes": "488b8888000000",
+      "asm": "mov rcx, qword ptr [rax + 0x88]"
+    },
+    {
+      "rva": "0x349503",
+      "bytes": "488b01",
+      "asm": "mov rax, qword ptr [rcx]"
+    },
+    {
+      "rva": "0x349506",
+      "bytes": "ff5010",
+      "asm": "call qword ptr [rax + 0x10]"
+    },
+    {
+      "rva": "0x349509",
+      "bytes": "4c8b05486d6c01",
+      "asm": "mov r8, qword ptr [rip + 0x16c6d48]"
+    },
+    {
+      "rva": "0x349510",
+      "bytes": "4c8bcf",
+      "asm": "mov r9, rdi"
+    },
+    {
+      "rva": "0x349513",
+      "bytes": "89742430",
+      "asm": "mov dword ptr [rsp + 0x30], esi"
+    },
+    {
+      "rva": "0x349517",
+      "bytes": "488bcb",
+      "asm": "mov rcx, rbx"
+    },
+    {
+      "rva": "0x34951a",
+      "bytes": "896c2428",
+      "asm": "mov dword ptr [rsp + 0x28], ebp"
+    },
+    {
+      "rva": "0x34951e",
+      "bytes": "4889442420",
+      "asm": "mov qword ptr [rsp + 0x20], rax"
+    },
+    {
+      "rva": "0x349523",
+      "bytes": "4d8b8098000000",
+      "asm": "mov r8, qword ptr [r8 + 0x98]"
+    },
+    {
+      "rva": "0x34952a",
+      "bytes": "e8b1381600",
+      "asm": "call 0x4acde0"
+    },
+    {
+      "rva": "0x34952f",
+      "bytes": "488b0d226d6c01",
+      "asm": "mov rcx, qword ptr [rip + 0x16c6d22]"
+    },
+    {
+      "rva": "0x349536",
+      "bytes": "488bd0",
+      "asm": "mov rdx, rax"
+    },
+    {
+      "rva": "0x349539",
+      "bytes": "488bd8",
+      "asm": "mov rbx, rax"
+    },
+    {
+      "rva": "0x34953c",
+      "bytes": "e8cffbffff",
+      "asm": "call 0x349110"
+    },
+    {
+      "rva": "0x349541",
+      "bytes": "488b6c2468",
+      "asm": "mov rbp, qword ptr [rsp + 0x68]"
+    },
+    {
+      "rva": "0x349546",
+      "bytes": "488bc3",
+      "asm": "mov rax, rbx"
+    },
+    {
+      "rva": "0x349549",
+      "bytes": "488b5c2460",
+      "asm": "mov rbx, qword ptr [rsp + 0x60]"
+    },
+    {
+      "rva": "0x34954e",
+      "bytes": "488b742470",
+      "asm": "mov rsi, qword ptr [rsp + 0x70]"
+    },
+    {
+      "rva": "0x349553",
+      "bytes": "4883c450",
+      "asm": "add rsp, 0x50"
+    },
+    {
+      "rva": "0x349557",
+      "bytes": "5f",
+      "asm": "pop rdi"
+    },
+    {
+      "rva": "0x349558",
+      "bytes": "c3",
+      "asm": "ret "
+    },
+    {
+      "rva": "0x349559",
+      "bytes": "cc",
+      "asm": "int3 "
+    },
+    {
+      "rva": "0x34955a",
+      "bytes": "cc",
+      "asm": "int3 "
+    },
+    {
+      "rva": "0x34955b",
+      "bytes": "cc",
+      "asm": "int3 "
+    },
+    {
+      "rva": "0x34955c",
+      "bytes": "cc",
+      "asm": "int3 "
+    },
+    {
+      "rva": "0x34955d",
+      "bytes": "cc",
+      "asm": "int3 "
+    },
+    {
+      "rva": "0x34955e",
+      "bytes": "cc",
+      "asm": "int3 "
+    },
+    {
+      "rva": "0x34955f",
+      "bytes": "cc",
+      "asm": "int3 "
+    },
+    {
+      "rva": "0x349560",
+      "bytes": "48895c2408",
+      "asm": "mov qword ptr [rsp + 8], rbx"
+    },
+    {
+      "rva": "0x349565",
+      "bytes": "48896c2410",
+      "asm": "mov qword ptr [rsp + 0x10], rbp"
+    },
+    {
+      "rva": "0x34956a",
+      "bytes": "56",
+      "asm": "push rsi"
+    },
+    {
+      "rva": "0x34956b",
+      "bytes": "57",
+      "asm": "push rdi"
+    },
+    {
+      "rva": "0x34956c",
+      "bytes": "4156",
+      "asm": "push r14"
+    },
+    {
+      "rva": "0x34956e",
+      "bytes": "4883ec50",
+      "asm": "sub rsp, 0x50"
+    },
+    {
+      "rva": "0x349572",
+      "bytes": "488b05df6c6c01",
+      "asm": "mov rax, qword ptr [rip + 0x16c6cdf]"
+    },
+    {
+      "rva": "0x349579",
+      "bytes": "488bf1",
+      "asm": "mov rsi, rcx"
+    },
+    {
+      "rva": "0x34957c",
+      "bytes": "448bf2",
+      "asm": "mov r14d, edx"
+    },
+    {
+      "rva": "0x34957f",
+      "bytes": "41b908000000",
+      "asm": "mov r9d, 8"
+    },
+    {
+      "rva": "0x349585",
+      "bytes": "41b8e0050000",
+      "asm": "mov r8d, 0x5e0"
+    },
+    {
+      "rva": "0x34958b",
+      "bytes": "488d542440",
+      "asm": "lea rdx, [rsp + 0x40]"
+    },
+    {
+      "rva": "0x349590",
+      "bytes": "488ba890000000",
+      "asm": "mov rbp, qword ptr [rax + 0x90]"
+    },
+    {
+      "rva": "0x349597",
+      "bytes": "488d4808",
+      "asm": "lea rcx, [rax + 8]"
+    },
+    {
+      "rva": "0x34959b",
+      "bytes": "488b4008",
+      "asm": "mov rax, qword ptr [rax + 8]"
+    },
+    {
+      "rva": "0x34959f",
+      "bytes": "ff5030",
+      "asm": "call qword ptr [rax + 0x30]"
+    },
+    {
+      "rva": "0x3495a2",
+      "bytes": "488b38",
+      "asm": "mov rdi, qword ptr [rax]"
+    },
+    {
+      "rva": "0x3495a5",
+      "bytes": "488b05ac6c6c01",
+      "asm": "mov rax, qword ptr [rip + 0x16c6cac]"
+    }
+  ],
+  "rip_global_uses": [
+    {
+      "instruction_rva": "0x3494c4",
+      "target_rva": "0x1a10258"
+    },
+    {
+      "instruction_rva": "0x3494f5",
+      "target_rva": "0x1a10258"
+    },
+    {
+      "instruction_rva": "0x349509",
+      "target_rva": "0x1a10258"
+    },
+    {
+      "instruction_rva": "0x34952f",
+      "target_rva": "0x1a10258"
+    }
+  ],
+  "entry_integer_argument_flow": {
+    "win_x64_entry": "first integer argument ECX; second integer argument EDX",
+    "first": "ECX -> EBP at 0x3494cb; low 32 bits stored at [RSP+0x28] at 0x34951a for direct call 0x4acde0",
+    "second": "EDX -> ESI at 0x3494cd; low 32 bits stored at [RSP+0x30] at 0x349513 for direct call 0x4acde0",
+    "callee_stack_positions": "At the pre-call RSP, +0x20 is Windows x64 argument 5, +0x28 is argument 6, +0x30 is argument 7. The low 32 bits of both entry integers are forwarded unchanged in arguments 6 and 7; the upper 32 bits of those stack slots are not initialized by these stores, so callee formal types remain unknown.",
+    "static_game_dll_caller": "Captured game.dll root 0x1091800 loads EDX from owner+0x1b90 at 0x1091845 and ECX from owner+0x1b94 at 0x1091874 before call at 0x109187a; retry at 0x10918d4/0x10918e2/0x10918e8. The code's default branch sets owner+0x1b90=4 and owner+0x1b94=0x2710; the latter value may be overridden, and no platform meaning is established."
+  },
+  "direct_callees_one_layer": [
+    {
+      "call_site": "0x34952a",
+      "callee_rva": "0x4acde0",
+      "arguments": "RCX=RBX from first indirect result, RDX not established after earlier indirect calls (volatile), R8=[global+0x98], R9=RDI from [global+0x90], stack 5=RAX from second indirect result, stack 6=entry ECX low32, stack 7=entry EDX low32",
+      "return": "RAX retained in RBX and eventually returned by 0x3494b0"
+    },
+    {
+      "call_site": "0x34953c",
+      "callee_rva": "0x349110",
+      "arguments": "RCX=[RIP-relative global RVA 0x1a10258]; RDX=RAX returned by 0x4acde0",
+      "return": "ignored by 0x3494b0"
+    }
+  ],
+  "disk_only_callee_bytes": [
+    {
+      "rva": "0x4acde0",
+      "disk_file_offset": "0x4ac3e0",
+      "disk_section": "        ",
+      "disk_256_sha256": "84f41b66f060004a5b7b42cdc6f3d4e93efb3ba5d08894599b4d39d7d2232a30",
+      "disk_first_32_bytes": "523339ec86e4afba0f6e201e686b696fd5c3f3efe40208aaf9b091d7d1a835c5",
+      "loaded_bytes_available": false,
+      "interpretation": "Only a direct call destination is proven by the saved live caller prefix. The callee's loaded code was not captured; disk bytes are opaque and are not disassembled for semantics."
+    },
+    {
+      "rva": "0x349110",
+      "disk_file_offset": "0x348710",
+      "disk_section": "        ",
+      "disk_256_sha256": "fc073723b8ab1f2c283fe316e1b01d85219f21d8c7ccae3ae98a6724fcc0b284",
+      "disk_first_32_bytes": "6b1f25e9ebe38f6f4719e7fad84e3fa952cf2e05e8f0ee2d12a6a5a999a2d224",
+      "loaded_bytes_available": false,
+      "interpretation": "Only a direct call destination is proven by the saved live caller prefix. The callee's loaded code was not captured; disk bytes are opaque and are not disassembled for semantics."
+    }
+  ],
+  "limits": [
+    "The exact target disk prefix differs from the saved loaded prefix at byte zero. The disk code for each direct callee has no saved loaded counterpart; treating it as runtime code would be unsupported.",
+    "The 256-byte saved live prefix covers a return at 0x349558 and padding through 0x34955f, then starts another entry at 0x349560; this does not provide loaded bytes for any direct callee.",
+    "No callee implementation, platform service behavior, multiplayer capacity, or eight-player success follows from this argument forwarding.",
+    "The saved capture is not an atomic snapshot, even though watched fields matched on reread."
+  ]
+}

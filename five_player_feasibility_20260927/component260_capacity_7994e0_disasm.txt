@@ -1,0 +1,162 @@
+0x7994e0 mov qword ptr [rsp + 0x10], rbx
+0x7994e5 mov qword ptr [rsp + 0x18], rbp
+0x7994ea mov qword ptr [rsp + 0x20], rdi
+0x7994ef push r14
+0x7994f1 sub rsp, 0x20
+0x7994f5 mov eax, dword ptr [rdx + 8]
+0x7994f8 xor r14d, r14d
+0x7994fb cmp eax, dword ptr [rip + 0x2cea733]
+0x799501 mov rbp, r9
+0x799504 mov rdi, qword ptr [rip + 0x2b8d545]
+0x79950b jne 0x799514
+0x79950d mov ebx, 0xffffffff
+0x799512 jmp 0x79956e
+0x799514 mov r9d, dword ptr [rdi + 0x28]
+0x799518 mov edx, r14d
+0x79951b mov r10d, dword ptr [rdi + 0x30]
+0x79951f imul r10d, eax
+0x799523 mov qword ptr [rsp + 0x30], rsi
+0x799528 lea esi, [r9 - 1]
+0x79952c test r9d, r9d
+0x79952f je 0x799564
+0x799531 mov r11, qword ptr [rdi + 0x20]
+0x799535 mov ebx, dword ptr [rdi + 0x2c]
+0x799538 nop dword ptr [rax + rax]
+0x799540 mov ecx, esi
+0x799542 lea r8d, [rdx + r10]
+0x799546 and r8, rcx
+0x799549 mov ecx, dword ptr [r11 + r8*8]
+0x79954d cmp ecx, ebx
+0x79954f je 0x799779
+0x799555 cmp ecx, eax
+0x799557 je 0x799781
+0x79955d inc edx
+0x79955f cmp edx, r9d
+0x799562 jb 0x799540
+0x799564 mov ebx, 0xffffffff
+0x799569 mov rsi, qword ptr [rsp + 0x30]
+0x79956e mov rcx, qword ptr [rsp + 0x58]
+0x799573 mov edx, 0x24
+0x799578 mov rcx, qword ptr [rcx]
+0x79957b lea r8d, [rdx - 0x20]
+0x79957f call 0x173b8d0
+0x799584 mov r9, rax
+0x799587 mov ecx, ebx
+0x799589 add r9, 4
+0x79958d lea r8, [rcx + rcx*8]
+0x799591 mov rcx, qword ptr [rdi + 0x50]
+0x799595 mov dword ptr [rcx + r8*4], r14d
+0x799599 mov rcx, qword ptr [rdi + 0x50]
+0x79959d mov edx, dword ptr [rcx + r8*4]
+0x7995a1 mov dword ptr [rax], edx
+0x7995a3 mov rdx, qword ptr [rsp + 0x50]
+0x7995a8 mov ecx, dword ptr [rdx]
+0x7995aa add rcx, rcx
+0x7995ad mov dword ptr [rbp + rcx*8], 0xdba62235
+0x7995b5 mov dword ptr [rbp + rcx*8 + 4], 2
+0x7995bd mov qword ptr [rbp + rcx*8 + 8], rax
+0x7995c2 inc dword ptr [rdx]
+0x7995c4 mov rax, qword ptr [rdi + 0x50]
+0x7995c8 mov dword ptr [rax + r8*4 + 4], r14d
+0x7995cd mov rax, qword ptr [rdi + 0x50]
+0x7995d1 mov ecx, dword ptr [rax + r8*4 + 4]
+0x7995d6 mov dword ptr [r9], ecx
+0x7995d9 mov eax, dword ptr [rdx]
+0x7995db add rax, rax
+0x7995de mov dword ptr [rbp + rax*8], 0xda68ae40
+0x7995e6 mov dword ptr [rbp + rax*8 + 4], 2
+0x7995ee mov qword ptr [rbp + rax*8 + 8], r9
+0x7995f3 add r9, 4
+0x7995f7 inc dword ptr [rdx]
+0x7995f9 mov rax, qword ptr [rdi + 0x50]
+0x7995fd mov dword ptr [rax + r8*4 + 8], r14d
+0x799602 mov rax, qword ptr [rdi + 0x50]
+0x799606 mov ecx, dword ptr [rax + r8*4 + 8]
+0x79960b mov dword ptr [r9], ecx
+0x79960e mov eax, dword ptr [rdx]
+0x799610 add rax, rax
+0x799613 mov dword ptr [rbp + rax*8], 0x42f493f9
+0x79961b mov dword ptr [rbp + rax*8 + 4], 2
+0x799623 mov qword ptr [rbp + rax*8 + 8], r9
+0x799628 add r9, 4
+0x79962c inc dword ptr [rdx]
+0x79962e mov rax, qword ptr [rdi + 0x50]
+0x799632 mov dword ptr [rax + r8*4 + 0xc], r14d
+0x799637 mov rax, qword ptr [rdi + 0x50]
+0x79963b mov ecx, dword ptr [rax + r8*4 + 0xc]
+0x799640 mov dword ptr [r9], ecx
+0x799643 mov eax, dword ptr [rdx]
+0x799645 add rax, rax
+0x799648 mov dword ptr [rbp + rax*8], 0x69a28ffa
+0x799650 mov dword ptr [rbp + rax*8 + 4], 2
+0x799658 mov qword ptr [rbp + rax*8 + 8], r9
+0x79965d add r9, 4
+0x799661 inc dword ptr [rdx]
+0x799663 mov rax, qword ptr [rdi + 0x50]
+0x799667 mov dword ptr [rax + r8*4 + 0x10], r14d
+0x79966c mov rax, qword ptr [rdi + 0x50]
+0x799670 mov ecx, dword ptr [rax + r8*4 + 0x10]
+0x799675 mov dword ptr [r9], ecx
+0x799678 mov eax, dword ptr [rdx]
+0x79967a add rax, rax
+0x79967d mov dword ptr [rbp + rax*8], 0x93699a9f
+0x799685 mov dword ptr [rbp + rax*8 + 4], 2
+0x79968d mov qword ptr [rbp + rax*8 + 8], r9
+0x799692 add r9, 4
+0x799696 inc dword ptr [rdx]
+0x799698 mov rax, qword ptr [rdi + 0x50]
+0x79969c mov dword ptr [rax + r8*4 + 0x14], r14d
+0x7996a1 mov rax, qword ptr [rdi + 0x50]
+0x7996a5 mov ecx, dword ptr [rax + r8*4 + 0x14]
+0x7996aa mov dword ptr [r9], ecx
+0x7996ad mov eax, dword ptr [rdx]
+0x7996af add rax, rax
+0x7996b2 mov dword ptr [rbp + rax*8], 0xf4b46247
+0x7996ba mov dword ptr [rbp + rax*8 + 4], 2
+0x7996c2 mov qword ptr [rbp + rax*8 + 8], r9
+0x7996c7 inc dword ptr [rdx]
+0x7996c9 add r9, 4
+0x7996cd mov rax, qword ptr [rdi + 0x50]
+0x7996d1 mov dword ptr [rax + r8*4 + 0x18], r14d
+0x7996d6 mov rax, qword ptr [rdi + 0x50]
+0x7996da mov ecx, dword ptr [rax + r8*4 + 0x18]
+0x7996df mov dword ptr [r9], ecx
+0x7996e2 mov eax, dword ptr [rdx]
+0x7996e4 add rax, rax
+0x7996e7 mov dword ptr [rbp + rax*8], 0xf299681b
+0x7996ef mov dword ptr [rbp + rax*8 + 4], 2
+0x7996f7 mov qword ptr [rbp + rax*8 + 8], r9
+0x7996fc add r9, 4
+0x799700 inc dword ptr [rdx]
+0x799702 mov rax, qword ptr [rdi + 0x50]
+0x799706 mov byte ptr [rax + r8*4 + 0x1c], 1
+0x79970c mov rax, qword ptr [rdi + 0x50]
+0x799710 movzx ecx, byte ptr [rax + r8*4 + 0x1c]
+0x799716 mov byte ptr [r9], cl
+0x799719 mov eax, dword ptr [rdx]
+0x79971b add rax, rax
+0x79971e mov qword ptr [rbp + rax*8], 0x6ed6cc5a
+0x799727 mov qword ptr [rbp + rax*8 + 8], r9
+0x79972c add r9, 4
+0x799730 inc dword ptr [rdx]
+0x799732 mov rax, qword ptr [rdi + 0x50]
+0x799736 mov dword ptr [rax + r8*4 + 0x20], r14d
+0x79973b mov rax, qword ptr [rdi + 0x50]
+0x79973f mov ecx, dword ptr [rax + r8*4 + 0x20]
+0x799744 mov dword ptr [r9], ecx
+0x799747 mov eax, dword ptr [rdx]
+0x799749 add rax, rax
+0x79974c mov dword ptr [rbp + rax*8], 0xbd5b4583
+0x799754 mov dword ptr [rbp + rax*8 + 4], 1
+0x79975c mov qword ptr [rbp + rax*8 + 8], r9
+0x799761 inc dword ptr [rdx]
+0x799763 mov rbx, qword ptr [rsp + 0x38]
+0x799768 mov rbp, qword ptr [rsp + 0x40]
+0x79976d mov rdi, qword ptr [rsp + 0x48]
+0x799772 add rsp, 0x20
+0x799776 pop r14
+0x799778 ret 
+0x799779 cmp ecx, eax
+0x79977b jne 0x799564
+0x799781 mov ebx, dword ptr [r11 + r8*8 + 4]
+0x799786 jmp 0x799569

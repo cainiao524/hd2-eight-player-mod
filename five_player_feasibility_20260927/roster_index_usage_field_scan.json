@@ -1,0 +1,5190 @@
+{
+  "source_sha256": {
+    "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+  },
+  "capture_identity_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "requested_ranges": [],
+  "offsets": {
+    "0x3b4": {
+      "references": [
+        {
+          "rva": "0x49b7d4",
+          "bytes": "c785b40300006e1a1e31",
+          "sha256": "a255f40aba79f726c5d8bf758bd571356c940114f89aafed0ef49dd92ff24f7e",
+          "asm": "mov dword ptr [rbp + 0x3b4], 0x311e1a6e",
+          "fragment": [
+            "0x496700",
+            "0x49cdc1",
+            "0x23f6754"
+          ],
+          "root": "0x4966d0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x52504c",
+          "bytes": "8bb9b4030000",
+          "sha256": "97cef0b0350d17e18972602f05647256c7a33db9531fa92c16a4807a82af8039",
+          "asm": "mov edi, dword ptr [rcx + 0x3b4]",
+          "fragment": [
+            "0x52503c",
+            "0x525054",
+            "0x240c114"
+          ],
+          "root": "0x524f70",
+          "base": "rcx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x5a7c67",
+          "bytes": "0f1185b4030000",
+          "sha256": "8e17a11db1b3bf00026063f0f24e920f2c8a409e7c79398fac3cd710268b6761",
+          "asm": "movups xmmword ptr [rbp + 0x3b4], xmm0",
+          "fragment": [
+            "0x5a7b60",
+            "0x5a80d7",
+            "0x241a100"
+          ],
+          "root": "0x5a7b60",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0x605760",
+          "bytes": "8b842fb4030000",
+          "sha256": "23d637bcd00800566ae23d2802e7371aa078502af5f18b5e2d9e73d81fa6feb5",
+          "asm": "mov eax, dword ptr [rdi + rbp + 0x3b4]",
+          "fragment": [
+            "0x6054f0",
+            "0x605947",
+            "0x2424950"
+          ],
+          "root": "0x6054f0",
+          "base": "rdi",
+          "index": "rbp",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x60683a",
+          "bytes": "428b8411b4030000",
+          "sha256": "ed9c31889b8537b14b84101a61d8d81d6830ad31dc6e8cf28a29331b48c8225d",
+          "asm": "mov eax, dword ptr [rcx + r10 + 0x3b4]",
+          "fragment": [
+            "0x606820",
+            "0x606851",
+            "0x2424bd4"
+          ],
+          "root": "0x606820",
+          "base": "rcx",
+          "index": "r10",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x6068ce",
+          "bytes": "428b8411b4030000",
+          "sha256": "ed9c31889b8537b14b84101a61d8d81d6830ad31dc6e8cf28a29331b48c8225d",
+          "asm": "mov eax, dword ptr [rcx + r10 + 0x3b4]",
+          "fragment": [
+            "0x606851",
+            "0x6068db",
+            "0x2424bdc"
+          ],
+          "root": "0x606820",
+          "base": "rcx",
+          "index": "r10",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x606b6b",
+          "bytes": "428b8410b4030000",
+          "sha256": "8fdb68d8ac868414b9b36ed2f9be0409b783c6149ce9db5c4b3d3eef519c36f5",
+          "asm": "mov eax, dword ptr [rax + r10 + 0x3b4]",
+          "fragment": [
+            "0x606ad0",
+            "0x606b75",
+            "0x2424c2c"
+          ],
+          "root": "0x606ad0",
+          "base": "rax",
+          "index": "r10",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x606ba7",
+          "bytes": "4c8db1b4030000",
+          "sha256": "ff7cec451cb21eb92e961a14fdd8a9e9e6f2753d36859832801c878c0ab55cd6",
+          "asm": "lea r14, [rcx + 0x3b4]",
+          "fragment": [
+            "0x606b98",
+            "0x606bcc",
+            "0x2424c48"
+          ],
+          "root": "0x606b80",
+          "base": "rcx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x6070f0",
+          "bytes": "8b8418b4030000",
+          "sha256": "38bbb54e53907862075b331443306610d333b42d3123bf1a8937558827e2d0b5",
+          "asm": "mov eax, dword ptr [rax + rbx + 0x3b4]",
+          "fragment": [
+            "0x6070a0",
+            "0x6070fd",
+            "0x2424d4c"
+          ],
+          "root": "0x6070a0",
+          "base": "rax",
+          "index": "rbx",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x609425",
+          "bytes": "468b8423b4030000",
+          "sha256": "7396a4c1b226bfdb4cc3f34faebeaf77dcc4f09580272230a82788c1e1f81e5e",
+          "asm": "mov r8d, dword ptr [rbx + r12 + 0x3b4]",
+          "fragment": [
+            "0x609288",
+            "0x60aada",
+            "0x2425238"
+          ],
+          "root": "0x609210",
+          "base": "rbx",
+          "index": "r12",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x60c77d",
+          "bytes": "89842bb4030000",
+          "sha256": "9fbb0d6b8b2b5ba0587d2bcac0a5b03b5392cc0d5a7c6b25d751b7674ed01e3b",
+          "asm": "mov dword ptr [rbx + rbp + 0x3b4], eax",
+          "fragment": [
+            "0x60c640",
+            "0x60c882",
+            "0x2425708"
+          ],
+          "root": "0x60c640",
+          "base": "rbx",
+          "index": "rbp",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x60c962",
+          "bytes": "43898c18b4030000",
+          "sha256": "bf0fa0d64c348976e8731fc04c739c7c6a4ba8b87b6c6b5bf6728b66515872b8",
+          "asm": "mov dword ptr [r8 + r11 + 0x3b4], ecx",
+          "fragment": [
+            "0x60c928",
+            "0x60c9ad",
+            "0x2425748"
+          ],
+          "root": "0x60c890",
+          "base": "r8",
+          "index": "r11",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x614155",
+          "bytes": "448b85b4030000",
+          "sha256": "23d42e1c3439258b37cf755d0b568386ac1578edee4f4e0628111df491bcc2dd",
+          "asm": "mov r8d, dword ptr [rbp + 0x3b4]",
+          "fragment": [
+            "0x612f96",
+            "0x615776",
+            "0x2426368"
+          ],
+          "root": "0x6128b0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x621411",
+          "bytes": "f30f1185b4030000",
+          "sha256": "b4812ce93ce23a7c741ef2bb0f5779837855c8a86f33cc808cfc586d8aed9a95",
+          "asm": "movss dword ptr [rbp + 0x3b4], xmm0",
+          "fragment": [
+            "0x620bb6",
+            "0x62470b",
+            "0x2427b28"
+          ],
+          "root": "0x620b60",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x66e943",
+          "bytes": "418b85b4030000",
+          "sha256": "8e880787a556c07b42ffb2e9be2d537fdd14d2f35c37b77f813f0769133a865f",
+          "asm": "mov eax, dword ptr [r13 + 0x3b4]",
+          "fragment": [
+            "0x66e75d",
+            "0x66ed9b",
+            "0x243044c"
+          ],
+          "root": "0x66e6d0",
+          "base": "r13",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x6a8b34",
+          "bytes": "418b8424b4030000",
+          "sha256": "39867a793b4b24ee7c8f0d19ba1492e3921e6da2265ee50473ad1d727b887d47",
+          "asm": "mov eax, dword ptr [r12 + 0x3b4]",
+          "fragment": [
+            "0x6a88b7",
+            "0x6a8cad",
+            "0x2436aa4"
+          ],
+          "root": "0x6a80c0",
+          "base": "r12",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x6a8bdf",
+          "bytes": "4139bc24b4030000",
+          "sha256": "6a3bb3ea3ca1b48b5b43a976fbf27add0360143cd242d8df8b83cafa7c6fc8f8",
+          "asm": "cmp dword ptr [r12 + 0x3b4], edi",
+          "fragment": [
+            "0x6a88b7",
+            "0x6a8cad",
+            "0x2436aa4"
+          ],
+          "root": "0x6a80c0",
+          "base": "r12",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x6a8bed",
+          "bytes": "418b9424b4030000",
+          "sha256": "049306bf436c33a53731fce06b8d8d1bff44c03d498f42177e6a9f00e936f218",
+          "asm": "mov edx, dword ptr [r12 + 0x3b4]",
+          "fragment": [
+            "0x6a88b7",
+            "0x6a8cad",
+            "0x2436aa4"
+          ],
+          "root": "0x6a80c0",
+          "base": "r12",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x6a8c2a",
+          "bytes": "418b8c24b4030000",
+          "sha256": "55e890800c5d0901714797794afdc55b6d1a9ef6b481488336086a0eadc07cab",
+          "asm": "mov ecx, dword ptr [r12 + 0x3b4]",
+          "fragment": [
+            "0x6a88b7",
+            "0x6a8cad",
+            "0x2436aa4"
+          ],
+          "root": "0x6a80c0",
+          "base": "r12",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x6ac1aa",
+          "bytes": "8b86b4030000",
+          "sha256": "495eecb4597816e79f48e6d571db02b2d1064b52894e604b21386edb6076bd54",
+          "asm": "mov eax, dword ptr [rsi + 0x3b4]",
+          "fragment": [
+            "0x6abdb0",
+            "0x6ac32f",
+            "0x2436da0"
+          ],
+          "root": "0x6abdb0",
+          "base": "rsi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x7275d6",
+          "bytes": "8b9408b4030000",
+          "sha256": "99fef035c935ba83a67815c4d26c7dc3be5b8f121e7cb059c6d13954a080b808",
+          "asm": "mov edx, dword ptr [rax + rcx + 0x3b4]",
+          "fragment": [
+            "0x7252e9",
+            "0x72b8bd",
+            "0x24423bc"
+          ],
+          "root": "0x725160",
+          "base": "rax",
+          "index": "rcx",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x72f614",
+          "bytes": "4c8d81b4030000",
+          "sha256": "64b2616bfae6109751d018054f4a82f4c0d7d8890d2d161f39f4336afd4845f4",
+          "asm": "lea r8, [rcx + 0x3b4]",
+          "fragment": [
+            "0x72f5f0",
+            "0x72f6f7",
+            "0x2442960"
+          ],
+          "root": "0x72f5f0",
+          "base": "rcx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x7300a5",
+          "bytes": "488d91b4030000",
+          "sha256": "7117920397e6958976977f872a067490ce5e3d4aa6a2c7580c4f5b8c6ee17b13",
+          "asm": "lea rdx, [rcx + 0x3b4]",
+          "fragment": [
+            "0x730080",
+            "0x730186",
+            "0x2442ad8"
+          ],
+          "root": "0x730080",
+          "base": "rcx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x753787",
+          "bytes": "418b8db4030000",
+          "sha256": "a9dc692f44e82772c2840ef2f09867dcccd8ce9fb5dccdf0f865f232c7ca8292",
+          "asm": "mov ecx, dword ptr [r13 + 0x3b4]",
+          "fragment": [
+            "0x75350c",
+            "0x7537d7",
+            "0x24475ac"
+          ],
+          "root": "0x7533c0",
+          "base": "r13",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x77aa41",
+          "bytes": "f30f109bb4030000",
+          "sha256": "23452b88f9c371f132564e509e3ae7d09c42c410bcfe14ae5557bcdce42c77c1",
+          "asm": "movss xmm3, dword ptr [rbx + 0x3b4]",
+          "fragment": [
+            "0x77aa08",
+            "0x77ab66",
+            "0x244bec0"
+          ],
+          "root": "0x77a8d0",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x79edec",
+          "bytes": "0f1185b4030000",
+          "sha256": "8e17a11db1b3bf00026063f0f24e920f2c8a409e7c79398fac3cd710268b6761",
+          "asm": "movups xmmword ptr [rbp + 0x3b4], xmm0",
+          "fragment": [
+            "0x79eb70",
+            "0x79f252",
+            "0x244f748"
+          ],
+          "root": "0x79eb70",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0x7bf4d2",
+          "bytes": "488d8bb4030000",
+          "sha256": "d8f960f6e678a343ee803405c4a9229dd3671cf0379f93e688683593cee92e2e",
+          "asm": "lea rcx, [rbx + 0x3b4]",
+          "fragment": [
+            "0x7bf3a0",
+            "0x7bfaed",
+            "0x2452c18"
+          ],
+          "root": "0x7bf3a0",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x7bf4e2",
+          "bytes": "488d8bb4030000",
+          "sha256": "d8f960f6e678a343ee803405c4a9229dd3671cf0379f93e688683593cee92e2e",
+          "asm": "lea rcx, [rbx + 0x3b4]",
+          "fragment": [
+            "0x7bf3a0",
+            "0x7bfaed",
+            "0x2452c18"
+          ],
+          "root": "0x7bf3a0",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x7f89a8",
+          "bytes": "0f1185b4030000",
+          "sha256": "8e17a11db1b3bf00026063f0f24e920f2c8a409e7c79398fac3cd710268b6761",
+          "asm": "movups xmmword ptr [rbp + 0x3b4], xmm0",
+          "fragment": [
+            "0x7f8740",
+            "0x7f9039",
+            "0x245a3dc"
+          ],
+          "root": "0x7f8740",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0x803c72",
+          "bytes": "488985b4030000",
+          "sha256": "da98580bbf901237ff9ee18be64180d833023c0dc4cd0ca572d9fe118f1a024b",
+          "asm": "mov qword ptr [rbp + 0x3b4], rax",
+          "fragment": [
+            "0x803937",
+            "0x80478b",
+            "0x245be84"
+          ],
+          "root": "0x8038d0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 2
+        },
+        {
+          "rva": "0x84d96d",
+          "bytes": "f30f1185b4030000",
+          "sha256": "b4812ce93ce23a7c741ef2bb0f5779837855c8a86f33cc808cfc586d8aed9a95",
+          "asm": "movss dword ptr [rbp + 0x3b4], xmm0",
+          "fragment": [
+            "0x84b0f0",
+            "0x84ed22",
+            "0x2463320"
+          ],
+          "root": "0x84b0f0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x84da3b",
+          "bytes": "f30f1185b4030000",
+          "sha256": "b4812ce93ce23a7c741ef2bb0f5779837855c8a86f33cc808cfc586d8aed9a95",
+          "asm": "movss dword ptr [rbp + 0x3b4], xmm0",
+          "fragment": [
+            "0x84b0f0",
+            "0x84ed22",
+            "0x2463320"
+          ],
+          "root": "0x84b0f0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x84da6a",
+          "bytes": "f30f1085b4030000",
+          "sha256": "8b08a53d248dcf88379608dda55bf22e72cabef79422abfb91c2e1bf788482a5",
+          "asm": "movss xmm0, dword ptr [rbp + 0x3b4]",
+          "fragment": [
+            "0x84b0f0",
+            "0x84ed22",
+            "0x2463320"
+          ],
+          "root": "0x84b0f0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x84e534",
+          "bytes": "f30f119db4030000",
+          "sha256": "401f72c4efcf91347fd5e20e812dfe492cc097780e28cc5e7a7891de22b522c2",
+          "asm": "movss dword ptr [rbp + 0x3b4], xmm3",
+          "fragment": [
+            "0x84b0f0",
+            "0x84ed22",
+            "0x2463320"
+          ],
+          "root": "0x84b0f0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x875b2c",
+          "bytes": "458b8bb4030000",
+          "sha256": "0ffc2e9c5a45facc417debb5eea436b21dda115ca1bb4c992508a8922c422c84",
+          "asm": "mov r9d, dword ptr [r11 + 0x3b4]",
+          "fragment": [
+            "0x8758d0",
+            "0x875bbf",
+            "0x2467450"
+          ],
+          "root": "0x8758d0",
+          "base": "r11",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x8b6337",
+          "bytes": "488985b4030000",
+          "sha256": "da98580bbf901237ff9ee18be64180d833023c0dc4cd0ca572d9fe118f1a024b",
+          "asm": "mov qword ptr [rbp + 0x3b4], rax",
+          "fragment": [
+            "0x8b626d",
+            "0x8b6803",
+            "0x246e430"
+          ],
+          "root": "0x8b61f0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 2
+        },
+        {
+          "rva": "0x8f73c4",
+          "bytes": "f30f108db4030000",
+          "sha256": "c6d4b50145293756856a3e53022a9706ea3d15054d84dbf33999d720e8f48b75",
+          "asm": "movss xmm1, dword ptr [rbp + 0x3b4]",
+          "fragment": [
+            "0x8f6edc",
+            "0x8f7796",
+            "0x2475c88"
+          ],
+          "root": "0x8f6990",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x8f7411",
+          "bytes": "f30f118db4030000",
+          "sha256": "74f52b8d04c9d9bb2c039a427fa8fbe72b2df789dd68acf76e18f781c8593588",
+          "asm": "movss dword ptr [rbp + 0x3b4], xmm1",
+          "fragment": [
+            "0x8f6edc",
+            "0x8f7796",
+            "0x2475c88"
+          ],
+          "root": "0x8f6990",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x8f76d2",
+          "bytes": "f30f1085b4030000",
+          "sha256": "8b08a53d248dcf88379608dda55bf22e72cabef79422abfb91c2e1bf788482a5",
+          "asm": "movss xmm0, dword ptr [rbp + 0x3b4]",
+          "fragment": [
+            "0x8f6edc",
+            "0x8f7796",
+            "0x2475c88"
+          ],
+          "root": "0x8f6990",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x8f76f0",
+          "bytes": "f30f1185b4030000",
+          "sha256": "b4812ce93ce23a7c741ef2bb0f5779837855c8a86f33cc808cfc586d8aed9a95",
+          "asm": "movss dword ptr [rbp + 0x3b4], xmm0",
+          "fragment": [
+            "0x8f6edc",
+            "0x8f7796",
+            "0x2475c88"
+          ],
+          "root": "0x8f6990",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x90c719",
+          "bytes": "0f1185b4030000",
+          "sha256": "8e17a11db1b3bf00026063f0f24e920f2c8a409e7c79398fac3cd710268b6761",
+          "asm": "movups xmmword ptr [rbp + 0x3b4], xmm0",
+          "fragment": [
+            "0x90c5a7",
+            "0x90ca8a",
+            "0x2478354"
+          ],
+          "root": "0x90c3c0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0x92ad8a",
+          "bytes": "8b88b4030000",
+          "sha256": "ec209fca2e61b83e505bed9752cc58934f4f658bec9979cca1f2e33ff7abdd36",
+          "asm": "mov ecx, dword ptr [rax + 0x3b4]",
+          "fragment": [
+            "0x92aa70",
+            "0x92b300",
+            "0x247b5b0"
+          ],
+          "root": "0x92aa70",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x954673",
+          "bytes": "488985b4030000",
+          "sha256": "da98580bbf901237ff9ee18be64180d833023c0dc4cd0ca572d9fe118f1a024b",
+          "asm": "mov qword ptr [rbp + 0x3b4], rax",
+          "fragment": [
+            "0x954560",
+            "0x95491a",
+            "0x247edbc"
+          ],
+          "root": "0x954560",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 2
+        },
+        {
+          "rva": "0x9bbd27",
+          "bytes": "8985b4030000",
+          "sha256": "281175bc490997b2a94a31c0bde4cd6e6e42832841eb1157c3ce4febc709a14d",
+          "asm": "mov dword ptr [rbp + 0x3b4], eax",
+          "fragment": [
+            "0x9bb937",
+            "0x9bbe49",
+            "0x2489ea0"
+          ],
+          "root": "0x9bb830",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xa0a916",
+          "bytes": "8b80b4030000",
+          "sha256": "61d1416354a811376c80430d108e896839458dc5b0097f0684405bd550ff8133",
+          "asm": "mov eax, dword ptr [rax + 0x3b4]",
+          "fragment": [
+            "0xa0a8f0",
+            "0xa0a93d",
+            "0x2494668"
+          ],
+          "root": "0xa0a8f0",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xa0b2bc",
+          "bytes": "8bb9b4030000",
+          "sha256": "97cef0b0350d17e18972602f05647256c7a33db9531fa92c16a4807a82af8039",
+          "asm": "mov edi, dword ptr [rcx + 0x3b4]",
+          "fragment": [
+            "0xa0b2ac",
+            "0xa0b2c4",
+            "0x24948e4"
+          ],
+          "root": "0xa0b1f0",
+          "base": "rcx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xa3e735",
+          "bytes": "488d8eb4030000",
+          "sha256": "9335f71d37ee0c75f0b53ba8819f6c58f0438b7916a45e0df0f1ed03e0a564fc",
+          "asm": "lea rcx, [rsi + 0x3b4]",
+          "fragment": [
+            "0xa3e634",
+            "0xa3eaef",
+            "0x249ac04"
+          ],
+          "root": "0xa3e620",
+          "base": "rsi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0xa3f4e4",
+          "bytes": "488d8eb4030000",
+          "sha256": "9335f71d37ee0c75f0b53ba8819f6c58f0438b7916a45e0df0f1ed03e0a564fc",
+          "asm": "lea rcx, [rsi + 0x3b4]",
+          "fragment": [
+            "0xa3f220",
+            "0xa40062",
+            "0x249acf4"
+          ],
+          "root": "0xa3f220",
+          "base": "rsi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0xa3f507",
+          "bytes": "488d8eb4030000",
+          "sha256": "9335f71d37ee0c75f0b53ba8819f6c58f0438b7916a45e0df0f1ed03e0a564fc",
+          "asm": "lea rcx, [rsi + 0x3b4]",
+          "fragment": [
+            "0xa3f220",
+            "0xa40062",
+            "0x249acf4"
+          ],
+          "root": "0xa3f220",
+          "base": "rsi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0xa669ba",
+          "bytes": "8b98b4030000",
+          "sha256": "b628ed551d756b2baa04f4b146d146cea09a9dd4d0168045fb2f0eb37562e7fa",
+          "asm": "mov ebx, dword ptr [rax + 0x3b4]",
+          "fragment": [
+            "0xa6690b",
+            "0xa66a06",
+            "0x249f6e8"
+          ],
+          "root": "0xa66740",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xa94a5b",
+          "bytes": "8985b4030000",
+          "sha256": "281175bc490997b2a94a31c0bde4cd6e6e42832841eb1157c3ce4febc709a14d",
+          "asm": "mov dword ptr [rbp + 0x3b4], eax",
+          "fragment": [
+            "0xa94562",
+            "0xa94d03",
+            "0x24a3680"
+          ],
+          "root": "0xa94340",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xac8501",
+          "bytes": "8b8432b4030000",
+          "sha256": "7df9848c79388ab27506904061e3ada684f9d1aecc2275990f8af7818e62523d",
+          "asm": "mov eax, dword ptr [rdx + rsi + 0x3b4]",
+          "fragment": [
+            "0xac840d",
+            "0xac87b5",
+            "0x24a7d88"
+          ],
+          "root": "0xac83f0",
+          "base": "rdx",
+          "index": "rsi",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xaca58b",
+          "bytes": "448b80b4030000",
+          "sha256": "4d0f67868c9a111fa902194775085fa84faedb2f1e8543fdcb1c7d9cf0ae23b5",
+          "asm": "mov r8d, dword ptr [rax + 0x3b4]",
+          "fragment": [
+            "0xaca500",
+            "0xacaa98",
+            "0x24a7ec4"
+          ],
+          "root": "0xaca400",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xaebc07",
+          "bytes": "41c786b40300000a000000",
+          "sha256": "51f081b349684dc82541f789d79b8d04a31e891811ffb08c56dad0606e1f83df",
+          "asm": "mov dword ptr [r14 + 0x3b4], 0xa",
+          "fragment": [
+            "0xae6373",
+            "0xaf17ee",
+            "0x24a9920"
+          ],
+          "root": "0xae6360",
+          "base": "r14",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xaf76fc",
+          "bytes": "c786b40300000a000000",
+          "sha256": "5f326070046c926c37e927dc0db95352ae51bd3f129f13fcad68b1454da159a0",
+          "asm": "mov dword ptr [rsi + 0x3b4], 0xa",
+          "fragment": [
+            "0xaf26de",
+            "0xafc949",
+            "0x24a9a28"
+          ],
+          "root": "0xaf26d0",
+          "base": "rsi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xb72aa1",
+          "bytes": "8b8bb4030000",
+          "sha256": "722d73d8cbe199582010fa30c33d1634250133329b69abac001957c1f9fb4a69",
+          "asm": "mov ecx, dword ptr [rbx + 0x3b4]",
+          "fragment": [
+            "0xb72803",
+            "0xb72b67",
+            "0x24b1d00"
+          ],
+          "root": "0xb727d0",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xb8cb2c",
+          "bytes": "498d88b4030000",
+          "sha256": "cfbbc67ea600536e8e007464ed46234fe4ad1884cf94f69fd642ddf53fccb85e",
+          "asm": "lea rcx, [r8 + 0x3b4]",
+          "fragment": [
+            "0xb8caf0",
+            "0xb8cc50",
+            "0x24b6080"
+          ],
+          "root": "0xb8cac0",
+          "base": "r8",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0xbacf24",
+          "bytes": "498d88b4030000",
+          "sha256": "cfbbc67ea600536e8e007464ed46234fe4ad1884cf94f69fd642ddf53fccb85e",
+          "asm": "lea rcx, [r8 + 0x3b4]",
+          "fragment": [
+            "0xbacede",
+            "0xbad04d",
+            "0x24ba984"
+          ],
+          "root": "0xbaceb0",
+          "base": "r8",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0xf7eaab",
+          "bytes": "f30f1085b4030000",
+          "sha256": "8b08a53d248dcf88379608dda55bf22e72cabef79422abfb91c2e1bf788482a5",
+          "asm": "movss xmm0, dword ptr [rbp + 0x3b4]",
+          "fragment": [
+            "0xf7e250",
+            "0xf7ed44",
+            "0x24c8454"
+          ],
+          "root": "0xf7e250",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xf7eac7",
+          "bytes": "f30f1185b4030000",
+          "sha256": "b4812ce93ce23a7c741ef2bb0f5779837855c8a86f33cc808cfc586d8aed9a95",
+          "asm": "movss dword ptr [rbp + 0x3b4], xmm0",
+          "fragment": [
+            "0xf7e250",
+            "0xf7ed44",
+            "0x24c8454"
+          ],
+          "root": "0xf7e250",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xf85122",
+          "bytes": "f30f1085b4030000",
+          "sha256": "8b08a53d248dcf88379608dda55bf22e72cabef79422abfb91c2e1bf788482a5",
+          "asm": "movss xmm0, dword ptr [rbp + 0x3b4]",
+          "fragment": [
+            "0xf845fd",
+            "0xf85b52",
+            "0x24c87c0"
+          ],
+          "root": "0xf84380",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xf8513e",
+          "bytes": "f30f1185b4030000",
+          "sha256": "b4812ce93ce23a7c741ef2bb0f5779837855c8a86f33cc808cfc586d8aed9a95",
+          "asm": "movss dword ptr [rbp + 0x3b4], xmm0",
+          "fragment": [
+            "0xf845fd",
+            "0xf85b52",
+            "0x24c87c0"
+          ],
+          "root": "0xf84380",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xfda7b7",
+          "bytes": "0f1185b4030000",
+          "sha256": "8e17a11db1b3bf00026063f0f24e920f2c8a409e7c79398fac3cd710268b6761",
+          "asm": "movups xmmword ptr [rbp + 0x3b4], xmm0",
+          "fragment": [
+            "0xfda650",
+            "0xfdaafc",
+            "0x24cdab8"
+          ],
+          "root": "0xfda650",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0xffe3ff",
+          "bytes": "428b8c08b4030000",
+          "sha256": "9d8509146f6b85c1857163629bc25bf7d9b306a5fd8657958d2866490610d5e2",
+          "asm": "mov ecx, dword ptr [rax + r9 + 0x3b4]",
+          "fragment": [
+            "0xffd8c0",
+            "0xffe579",
+            "0x24d04cc"
+          ],
+          "root": "0xffd8c0",
+          "base": "rax",
+          "index": "r9",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xfff304",
+          "bytes": "4c8d9ab4030000",
+          "sha256": "71c743ab05440fbc0d52c51be5b4f2ec4a2a86b08daca814d45e79008aaa02fd",
+          "asm": "lea r11, [rdx + 0x3b4]",
+          "fragment": [
+            "0xfff19d",
+            "0x1000049",
+            "0x24d0664"
+          ],
+          "root": "0xfff150",
+          "base": "rdx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0xfff40a",
+          "bytes": "498d91b4030000",
+          "sha256": "2ce093ae92126ada5cd8c992925ec7be9567d4abd8d22c943225b7d4a9928890",
+          "asm": "lea rdx, [r9 + 0x3b4]",
+          "fragment": [
+            "0xfff19d",
+            "0x1000049",
+            "0x24d0664"
+          ],
+          "root": "0xfff150",
+          "base": "r9",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x10008c8",
+          "bytes": "498d88b4030000",
+          "sha256": "cfbbc67ea600536e8e007464ed46234fe4ad1884cf94f69fd642ddf53fccb85e",
+          "asm": "lea rcx, [r8 + 0x3b4]",
+          "fragment": [
+            "0x1000850",
+            "0x1000911",
+            "0x24d07bc"
+          ],
+          "root": "0x1000850",
+          "base": "r8",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x1001356",
+          "bytes": "498d8ab4030000",
+          "sha256": "94fbac4ed4f9d1e78bb3f9c753059aac653958174a2ee47a7c253d635e5324a7",
+          "asm": "lea rcx, [r10 + 0x3b4]",
+          "fragment": [
+            "0x1001330",
+            "0x10013b8",
+            "0x24d08b8"
+          ],
+          "root": "0x1001330",
+          "base": "r10",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x1002aee",
+          "bytes": "498d88b4030000",
+          "sha256": "cfbbc67ea600536e8e007464ed46234fe4ad1884cf94f69fd642ddf53fccb85e",
+          "asm": "lea rcx, [r8 + 0x3b4]",
+          "fragment": [
+            "0x1002a60",
+            "0x10030f6",
+            "0x24d0afc"
+          ],
+          "root": "0x1002a60",
+          "base": "r8",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x10980c0",
+          "bytes": "488d99b4030000",
+          "sha256": "154f98aa443f6c3866f3c75f741a4438c493fc3eb165769805635f4f8a56f54d",
+          "asm": "lea rbx, [rcx + 0x3b4]",
+          "fragment": [
+            "0x1097ef2",
+            "0x10981c3",
+            "0x24db684"
+          ],
+          "root": "0x1097ee0",
+          "base": "rcx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x1277a06",
+          "bytes": "468b8419b4030000",
+          "sha256": "c3988b72d1a70c5dad9fe52e723f5deb8a96d97f07234cdaa71eac9e65e7484d",
+          "asm": "mov r8d, dword ptr [rcx + r11 + 0x3b4]",
+          "fragment": [
+            "0x12779de",
+            "0x1277f54",
+            "0x24f9cc0"
+          ],
+          "root": "0x1277920",
+          "base": "rcx",
+          "index": "r11",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x1290737",
+          "bytes": "498d83b4030000",
+          "sha256": "73f93f19f4d00023ab127031986bb332e0ea95511a39bff7699fe9c7127fd353",
+          "asm": "lea rax, [r11 + 0x3b4]",
+          "fragment": [
+            "0x1290710",
+            "0x129088e",
+            "0x24fb520"
+          ],
+          "root": "0x1290710",
+          "base": "r11",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x1290784",
+          "bytes": "498d83b4030000",
+          "sha256": "73f93f19f4d00023ab127031986bb332e0ea95511a39bff7699fe9c7127fd353",
+          "asm": "lea rax, [r11 + 0x3b4]",
+          "fragment": [
+            "0x1290710",
+            "0x129088e",
+            "0x24fb520"
+          ],
+          "root": "0x1290710",
+          "base": "r11",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x12907d1",
+          "bytes": "498d83b4030000",
+          "sha256": "73f93f19f4d00023ab127031986bb332e0ea95511a39bff7699fe9c7127fd353",
+          "asm": "lea rax, [r11 + 0x3b4]",
+          "fragment": [
+            "0x1290710",
+            "0x129088e",
+            "0x24fb520"
+          ],
+          "root": "0x1290710",
+          "base": "r11",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x1290815",
+          "bytes": "498d83b4030000",
+          "sha256": "73f93f19f4d00023ab127031986bb332e0ea95511a39bff7699fe9c7127fd353",
+          "asm": "lea rax, [r11 + 0x3b4]",
+          "fragment": [
+            "0x1290710",
+            "0x129088e",
+            "0x24fb520"
+          ],
+          "root": "0x1290710",
+          "base": "r11",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x12908b5",
+          "bytes": "4d8d82b4030000",
+          "sha256": "0b888f3b884b8f75f192381f3665f4c4a31e342925a9a3183449055dfd4688e2",
+          "asm": "lea r8, [r10 + 0x3b4]",
+          "fragment": [
+            "0x1290890",
+            "0x1290a0d",
+            "0x24fb528"
+          ],
+          "root": "0x1290890",
+          "base": "r10",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x1290906",
+          "bytes": "498d82b4030000",
+          "sha256": "215428f8229e31507f3d0db97c7915401f3520be990e41f5c6778e83e4a1c2ec",
+          "asm": "lea rax, [r10 + 0x3b4]",
+          "fragment": [
+            "0x1290890",
+            "0x1290a0d",
+            "0x24fb528"
+          ],
+          "root": "0x1290890",
+          "base": "r10",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x1290952",
+          "bytes": "498d82b4030000",
+          "sha256": "215428f8229e31507f3d0db97c7915401f3520be990e41f5c6778e83e4a1c2ec",
+          "asm": "lea rax, [r10 + 0x3b4]",
+          "fragment": [
+            "0x1290890",
+            "0x1290a0d",
+            "0x24fb528"
+          ],
+          "root": "0x1290890",
+          "base": "r10",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x129099d",
+          "bytes": "4d8d82b4030000",
+          "sha256": "0b888f3b884b8f75f192381f3665f4c4a31e342925a9a3183449055dfd4688e2",
+          "asm": "lea r8, [r10 + 0x3b4]",
+          "fragment": [
+            "0x1290890",
+            "0x1290a0d",
+            "0x24fb528"
+          ],
+          "root": "0x1290890",
+          "base": "r10",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x129ab5d",
+          "bytes": "899db4030000",
+          "sha256": "3a58481eafa9ab1cd17ccfffeb02c77565347e4e5469854b55659e671438b2f2",
+          "asm": "mov dword ptr [rbp + 0x3b4], ebx",
+          "fragment": [
+            "0x129aabf",
+            "0x129af43",
+            "0x24fc144"
+          ],
+          "root": "0x129aa00",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x12a9c80",
+          "bytes": "428bbc11b4030000",
+          "sha256": "834ca1885c8a2b5e00ec7d89e3d1e4e53513851d7a358c051456816539b6b71a",
+          "asm": "mov edi, dword ptr [rcx + r10 + 0x3b4]",
+          "fragment": [
+            "0x12a991b",
+            "0x12aa165",
+            "0x24fcd08"
+          ],
+          "root": "0x12a98d0",
+          "base": "rcx",
+          "index": "r10",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x1360cba",
+          "bytes": "898c85b4030000",
+          "sha256": "c7eca9a076389cbf0cadb60d6d104905b9a06fe89ca777145a69dd6455fe33a0",
+          "asm": "mov dword ptr [rbp + rax*4 + 0x3b4], ecx",
+          "fragment": [
+            "0x1360a0b",
+            "0x13616c0",
+            "0x250b89c"
+          ],
+          "root": "0x1360970",
+          "base": "rbp",
+          "index": "rax",
+          "scale": 4,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x1360e16",
+          "bytes": "898c85b4030000",
+          "sha256": "c7eca9a076389cbf0cadb60d6d104905b9a06fe89ca777145a69dd6455fe33a0",
+          "asm": "mov dword ptr [rbp + rax*4 + 0x3b4], ecx",
+          "fragment": [
+            "0x1360a0b",
+            "0x13616c0",
+            "0x250b89c"
+          ],
+          "root": "0x1360970",
+          "base": "rbp",
+          "index": "rax",
+          "scale": 4,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x1360f5e",
+          "bytes": "898c85b4030000",
+          "sha256": "c7eca9a076389cbf0cadb60d6d104905b9a06fe89ca777145a69dd6455fe33a0",
+          "asm": "mov dword ptr [rbp + rax*4 + 0x3b4], ecx",
+          "fragment": [
+            "0x1360a0b",
+            "0x13616c0",
+            "0x250b89c"
+          ],
+          "root": "0x1360970",
+          "base": "rbp",
+          "index": "rax",
+          "scale": 4,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x1361858",
+          "bytes": "898c85b4030000",
+          "sha256": "c7eca9a076389cbf0cadb60d6d104905b9a06fe89ca777145a69dd6455fe33a0",
+          "asm": "mov dword ptr [rbp + rax*4 + 0x3b4], ecx",
+          "fragment": [
+            "0x13616c0",
+            "0x1361d91",
+            "0x250b8b8"
+          ],
+          "root": "0x1360970",
+          "base": "rbp",
+          "index": "rax",
+          "scale": 4,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x13619d8",
+          "bytes": "898c85b4030000",
+          "sha256": "c7eca9a076389cbf0cadb60d6d104905b9a06fe89ca777145a69dd6455fe33a0",
+          "asm": "mov dword ptr [rbp + rax*4 + 0x3b4], ecx",
+          "fragment": [
+            "0x13616c0",
+            "0x1361d91",
+            "0x250b8b8"
+          ],
+          "root": "0x1360970",
+          "base": "rbp",
+          "index": "rax",
+          "scale": 4,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x1361b18",
+          "bytes": "898c85b4030000",
+          "sha256": "c7eca9a076389cbf0cadb60d6d104905b9a06fe89ca777145a69dd6455fe33a0",
+          "asm": "mov dword ptr [rbp + rax*4 + 0x3b4], ecx",
+          "fragment": [
+            "0x13616c0",
+            "0x1361d91",
+            "0x250b8b8"
+          ],
+          "root": "0x1360970",
+          "base": "rbp",
+          "index": "rax",
+          "scale": 4,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x1394d1a",
+          "bytes": "498d8ab4030000",
+          "sha256": "94fbac4ed4f9d1e78bb3f9c753059aac653958174a2ee47a7c253d635e5324a7",
+          "asm": "lea rcx, [r10 + 0x3b4]",
+          "fragment": [
+            "0x1394cf0",
+            "0x1394d4c",
+            "0x250f460"
+          ],
+          "root": "0x1394cf0",
+          "base": "r10",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x13974d2",
+          "bytes": "488d82b4030000",
+          "sha256": "21fb33d96753ea8cf569db56253784431bd9db182f4475251c31f00868366f30",
+          "asm": "lea rax, [rdx + 0x3b4]",
+          "fragment": [
+            "0x139749e",
+            "0x139754a",
+            "0x250f870"
+          ],
+          "root": "0x1397430",
+          "base": "rdx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x1397753",
+          "bytes": "498d88b4030000",
+          "sha256": "cfbbc67ea600536e8e007464ed46234fe4ad1884cf94f69fd642ddf53fccb85e",
+          "asm": "lea rcx, [r8 + 0x3b4]",
+          "fragment": [
+            "0x1397740",
+            "0x1397806",
+            "0x250f904"
+          ],
+          "root": "0x1397670",
+          "base": "r8",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x1397976",
+          "bytes": "498d91b4030000",
+          "sha256": "2ce093ae92126ada5cd8c992925ec7be9567d4abd8d22c943225b7d4a9928890",
+          "asm": "lea rdx, [r9 + 0x3b4]",
+          "fragment": [
+            "0x1397806",
+            "0x1397a16",
+            "0x250f918"
+          ],
+          "root": "0x1397670",
+          "base": "r9",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x1398b6b",
+          "bytes": "498d88b4030000",
+          "sha256": "cfbbc67ea600536e8e007464ed46234fe4ad1884cf94f69fd642ddf53fccb85e",
+          "asm": "lea rcx, [r8 + 0x3b4]",
+          "fragment": [
+            "0x1398800",
+            "0x1399ab4",
+            "0x250fad4"
+          ],
+          "root": "0x1398800",
+          "base": "r8",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x1398d2b",
+          "bytes": "498d88b4030000",
+          "sha256": "cfbbc67ea600536e8e007464ed46234fe4ad1884cf94f69fd642ddf53fccb85e",
+          "asm": "lea rcx, [r8 + 0x3b4]",
+          "fragment": [
+            "0x1398800",
+            "0x1399ab4",
+            "0x250fad4"
+          ],
+          "root": "0x1398800",
+          "base": "r8",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x1399df7",
+          "bytes": "458b8ab4030000",
+          "sha256": "73fcc62742097ecfd8365e4ed2c174ce8bda505c9e68b41b2566fa6618477df0",
+          "asm": "mov r9d, dword ptr [r10 + 0x3b4]",
+          "fragment": [
+            "0x1399bde",
+            "0x1399e3e",
+            "0x250fb24"
+          ],
+          "root": "0x1399ba0",
+          "base": "r10",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x1399e17",
+          "bytes": "4d8d82b4030000",
+          "sha256": "0b888f3b884b8f75f192381f3665f4c4a31e342925a9a3183449055dfd4688e2",
+          "asm": "lea r8, [r10 + 0x3b4]",
+          "fragment": [
+            "0x1399bde",
+            "0x1399e3e",
+            "0x250fb24"
+          ],
+          "root": "0x1399ba0",
+          "base": "r10",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x13fd01c",
+          "bytes": "8b90b4030000",
+          "sha256": "cd59682c3dfc7a35aa8a31d98aa76eb7ebf494eb26fc192ebecef45e39008ef6",
+          "asm": "mov edx, dword ptr [rax + 0x3b4]",
+          "fragment": [
+            "0x13fcfc0",
+            "0x13fd065",
+            "0x25166b0"
+          ],
+          "root": "0x13fcfc0",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x140af22",
+          "bytes": "f30f598437b4030000",
+          "sha256": "d7417705b472becd44ffd4ec4f390f60d0d60f535f0db6be5a851e2b44878799",
+          "asm": "mulss xmm0, dword ptr [rdi + rsi + 0x3b4]",
+          "fragment": [
+            "0x140ad50",
+            "0x140b2fa",
+            "0x25173b0"
+          ],
+          "root": "0x140ad50",
+          "base": "rdi",
+          "index": "rsi",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x142eb61",
+          "bytes": "488d97b4030000",
+          "sha256": "2f50fd4e7f0b8bc698ec513d0b4824e77d66a0709dfa35045cd4f4d3af2ea040",
+          "asm": "lea rdx, [rdi + 0x3b4]",
+          "fragment": [
+            "0x142d8ed",
+            "0x142ee3d",
+            "0x251941c"
+          ],
+          "root": "0x142d870",
+          "base": "rdi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x14306c5",
+          "bytes": "498d88b4030000",
+          "sha256": "cfbbc67ea600536e8e007464ed46234fe4ad1884cf94f69fd642ddf53fccb85e",
+          "asm": "lea rcx, [r8 + 0x3b4]",
+          "fragment": [
+            "0x143062d",
+            "0x1431f9a",
+            "0x251964c"
+          ],
+          "root": "0x1430450",
+          "base": "r8",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x1431523",
+          "bytes": "448bb8b4030000",
+          "sha256": "4ca4fd3e1144fccd97972f9ca37429dbe9cc987fb7d17307434b5a48f20a51fd",
+          "asm": "mov r15d, dword ptr [rax + 0x3b4]",
+          "fragment": [
+            "0x143062d",
+            "0x1431f9a",
+            "0x251964c"
+          ],
+          "root": "0x1430450",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x1433648",
+          "bytes": "488d85b4030000",
+          "sha256": "3857f5a521f60fb724e3dc973acdaffd5190f4a0ff1d29807abe3777290b5bb4",
+          "asm": "lea rax, [rbp + 0x3b4]",
+          "fragment": [
+            "0x14335f0",
+            "0x143372c",
+            "0x25197f4"
+          ],
+          "root": "0x14335f0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x14336d7",
+          "bytes": "488d85b4030000",
+          "sha256": "3857f5a521f60fb724e3dc973acdaffd5190f4a0ff1d29807abe3777290b5bb4",
+          "asm": "lea rax, [rbp + 0x3b4]",
+          "fragment": [
+            "0x14335f0",
+            "0x143372c",
+            "0x25197f4"
+          ],
+          "root": "0x14335f0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x14ce540",
+          "bytes": "498d89b4030000",
+          "sha256": "3f02bfb17004e8efabca5a68105ec185017c48f0b94684255f13d5de2b132e3b",
+          "asm": "lea rcx, [r9 + 0x3b4]",
+          "fragment": [
+            "0x14ce513",
+            "0x14ce637",
+            "0x2522cf8"
+          ],
+          "root": "0x14ce320",
+          "base": "r9",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x183cc8e",
+          "bytes": "418b82b4030000",
+          "sha256": "7e4244c506179fc5f9809810becb2a35461e80f5d7470bb6d15626b7c9819ac4",
+          "asm": "mov eax, dword ptr [r10 + 0x3b4]",
+          "fragment": [
+            "0x183b500",
+            "0x183d788",
+            "0x25767f0"
+          ],
+          "root": "0x183b500",
+          "base": "r10",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x183f825",
+          "bytes": "498d88b4030000",
+          "sha256": "cfbbc67ea600536e8e007464ed46234fe4ad1884cf94f69fd642ddf53fccb85e",
+          "asm": "lea rcx, [r8 + 0x3b4]",
+          "fragment": [
+            "0x183d900",
+            "0x1840eae",
+            "0x2576868"
+          ],
+          "root": "0x183d900",
+          "base": "r8",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x18405dd",
+          "bytes": "488d8fb4030000",
+          "sha256": "fe779096a6ca0d1b56fe6cd336cf2a2a4abfaa1d3e03c334c775b9c6d2d41891",
+          "asm": "lea rcx, [rdi + 0x3b4]",
+          "fragment": [
+            "0x183d900",
+            "0x1840eae",
+            "0x2576868"
+          ],
+          "root": "0x183d900",
+          "base": "rdi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x1840c12",
+          "bytes": "8b90b4030000",
+          "sha256": "cd59682c3dfc7a35aa8a31d98aa76eb7ebf494eb26fc192ebecef45e39008ef6",
+          "asm": "mov edx, dword ptr [rax + 0x3b4]",
+          "fragment": [
+            "0x183d900",
+            "0x1840eae",
+            "0x2576868"
+          ],
+          "root": "0x183d900",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x18673d2",
+          "bytes": "498d88b4030000",
+          "sha256": "cfbbc67ea600536e8e007464ed46234fe4ad1884cf94f69fd642ddf53fccb85e",
+          "asm": "lea rcx, [r8 + 0x3b4]",
+          "fragment": [
+            "0x1865963",
+            "0x1867b30",
+            "0x2578acc"
+          ],
+          "root": "0x1865900",
+          "base": "r8",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x189d201",
+          "bytes": "0f1185b4030000",
+          "sha256": "8e17a11db1b3bf00026063f0f24e920f2c8a409e7c79398fac3cd710268b6761",
+          "asm": "movups xmmword ptr [rbp + 0x3b4], xmm0",
+          "fragment": [
+            "0x189d153",
+            "0x189d27b",
+            "0x257ba7c"
+          ],
+          "root": "0x189d120",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0x18c1159",
+          "bytes": "488d86b4030000",
+          "sha256": "1e9aa62fd16902be1c6d1a6264842ea2d0e8113db873238b3b62c267451bf0d6",
+          "asm": "lea rax, [rsi + 0x3b4]",
+          "fragment": [
+            "0x18c0f47",
+            "0x18c11e7",
+            "0x257e42c"
+          ],
+          "root": "0x18c0ec0",
+          "base": "rsi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x18d6668",
+          "bytes": "458b88b4030000",
+          "sha256": "eaf593ec8ffb57a4c3eab35fcef6a0a9df9faf6c892891c5e35c8883cb23f5f8",
+          "asm": "mov r9d, dword ptr [r8 + 0x3b4]",
+          "fragment": [
+            "0x18d64b3",
+            "0x18d68a1",
+            "0x257fa98"
+          ],
+          "root": "0x18d6490",
+          "base": "r8",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x18ecd50",
+          "bytes": "8bb0b4030000",
+          "sha256": "adce2fd94f6aa0e8c20fcd60d2c1e8a5f8093e78e399376b7437691112b90573",
+          "asm": "mov esi, dword ptr [rax + 0x3b4]",
+          "fragment": [
+            "0x18ecc30",
+            "0x18ececc",
+            "0x2581224"
+          ],
+          "root": "0x18ecc30",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x18ed0e9",
+          "bytes": "8b90b4030000",
+          "sha256": "cd59682c3dfc7a35aa8a31d98aa76eb7ebf494eb26fc192ebecef45e39008ef6",
+          "asm": "mov edx, dword ptr [rax + 0x3b4]",
+          "fragment": [
+            "0x18ed0c0",
+            "0x18ed11c",
+            "0x258124c"
+          ],
+          "root": "0x18ed0c0",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x18ed284",
+          "bytes": "448b80b4030000",
+          "sha256": "4d0f67868c9a111fa902194775085fa84faedb2f1e8543fdcb1c7d9cf0ae23b5",
+          "asm": "mov r8d, dword ptr [rax + 0x3b4]",
+          "fragment": [
+            "0x18ed190",
+            "0x18ed31d",
+            "0x2581268"
+          ],
+          "root": "0x18ed120",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x18ed4bd",
+          "bytes": "8bb8b4030000",
+          "sha256": "c97e9c692d4b2e127b23bd774a6cbd82f4900454c41f9cbb0881aec65e37d976",
+          "asm": "mov edi, dword ptr [rax + 0x3b4]",
+          "fragment": [
+            "0x18ed4aa",
+            "0x18ed523",
+            "0x25812d8"
+          ],
+          "root": "0x18ed340",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x18ed6be",
+          "bytes": "448b96b4030000",
+          "sha256": "2bfd29d3c5124dbd398d331c577e8131020ac9453a58df3e8c9d28a592379bc4",
+          "asm": "mov r10d, dword ptr [rsi + 0x3b4]",
+          "fragment": [
+            "0x18ed6ae",
+            "0x18ed6d5",
+            "0x2581384"
+          ],
+          "root": "0x18ed580",
+          "base": "rsi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x18ed844",
+          "bytes": "8b91b4030000",
+          "sha256": "25821272d3dd139b4af9dfeaffd8642b77b8c0a3153d7f8be3bbb071921d368a",
+          "asm": "mov edx, dword ptr [rcx + 0x3b4]",
+          "fragment": [
+            "0x18ed7b0",
+            "0x18ed877",
+            "0x2581404"
+          ],
+          "root": "0x18ed7b0",
+          "base": "rcx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x18f50e4",
+          "bytes": "488b81b4030000",
+          "sha256": "58566ae5454abe748229f95818452e86b8daacc29f536dcc5307cd0e2a479b0e",
+          "asm": "mov rax, qword ptr [rcx + 0x3b4]",
+          "fragment": [
+            "0x18f50a0",
+            "0x18f50fe",
+            "0x2581bf4"
+          ],
+          "root": "0x18f50a0",
+          "base": "rcx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x191d942",
+          "bytes": "8bb9b4030000",
+          "sha256": "97cef0b0350d17e18972602f05647256c7a33db9531fa92c16a4807a82af8039",
+          "asm": "mov edi, dword ptr [rcx + 0x3b4]",
+          "fragment": [
+            "0x191d10f",
+            "0x191dacf",
+            "0x2583e20"
+          ],
+          "root": "0x191d040",
+          "base": "rcx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x191e557",
+          "bytes": "8b90b4030000",
+          "sha256": "cd59682c3dfc7a35aa8a31d98aa76eb7ebf494eb26fc192ebecef45e39008ef6",
+          "asm": "mov edx, dword ptr [rax + 0x3b4]",
+          "fragment": [
+            "0x191dff7",
+            "0x191e777",
+            "0x2583f14"
+          ],
+          "root": "0x191dfb0",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x192a941",
+          "bytes": "8bb8b4030000",
+          "sha256": "c97e9c692d4b2e127b23bd774a6cbd82f4900454c41f9cbb0881aec65e37d976",
+          "asm": "mov edi, dword ptr [rax + 0x3b4]",
+          "fragment": [
+            "0x192a931",
+            "0x192a972",
+            "0x2585130"
+          ],
+          "root": "0x192a760",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x192aeab",
+          "bytes": "8b99b4030000",
+          "sha256": "beb90e8d0e93b7e3010582d8da04542dd54da018ace0b8ace52b4f1c637dad93",
+          "asm": "mov ebx, dword ptr [rcx + 0x3b4]",
+          "fragment": [
+            "0x192ae9d",
+            "0x192af3b",
+            "0x25851a0"
+          ],
+          "root": "0x192ae70",
+          "base": "rcx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x192afa4",
+          "bytes": "448b88b4030000",
+          "sha256": "4f0b881725b225dea90f011dc81bf7576472e0f8a788010d757bc742f54f55a8",
+          "asm": "mov r9d, dword ptr [rax + 0x3b4]",
+          "fragment": [
+            "0x192af90",
+            "0x192b010",
+            "0x25851dc"
+          ],
+          "root": "0x192af90",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x1993e71",
+          "bytes": "458b86b4030000",
+          "sha256": "1a14a535f050f2f81325a013f5e12f69da95ba78f320e07edd163e133ba24a2a",
+          "asm": "mov r8d, dword ptr [r14 + 0x3b4]",
+          "fragment": [
+            "0x1993e30",
+            "0x1993eb4",
+            "0x258a28c"
+          ],
+          "root": "0x1993e30",
+          "base": "r14",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x1eeac0a",
+          "bytes": "898fb4030000",
+          "sha256": "ae1081de320117b8375b063e027fc5ce95e458a8b715fbe8f453c0b7fe223eb5",
+          "asm": "mov dword ptr [rdi + 0x3b4], ecx",
+          "fragment": [
+            "0x1eeab10",
+            "0x1eeacea",
+            "0x260e918"
+          ],
+          "root": "0x1eeab10",
+          "base": "rdi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x1eeacdb",
+          "bytes": "8987b4030000",
+          "sha256": "b5fbe992c219e0ad0bceb85740730c1ea4280a385fb7525b16b3e3cb9b43032d",
+          "asm": "mov dword ptr [rdi + 0x3b4], eax",
+          "fragment": [
+            "0x1eeab10",
+            "0x1eeacea",
+            "0x260e918"
+          ],
+          "root": "0x1eeab10",
+          "base": "rdi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x1eeebad",
+          "bytes": "399eb4030000",
+          "sha256": "230d17710f254ff76b6add1196401258140ea5999e7c7fb0721988e09ea3de80",
+          "asm": "cmp dword ptr [rsi + 0x3b4], ebx",
+          "fragment": [
+            "0x1eee850",
+            "0x1eeec11",
+            "0x260ebac"
+          ],
+          "root": "0x1eee850",
+          "base": "rsi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        }
+      ],
+      "raw_matches_outside_unwind": 10
+    },
+    "0x3d4": {
+      "references": [
+        {
+          "rva": "0x49b9e8",
+          "bytes": "899dd4030000",
+          "sha256": "edb0ac6e10202853f4b5fc7da24f3703f5f77395e21905679ccb197f8984fa8d",
+          "asm": "mov dword ptr [rbp + 0x3d4], ebx",
+          "fragment": [
+            "0x496700",
+            "0x49cdc1",
+            "0x23f6754"
+          ],
+          "root": "0x4966d0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x4cb644",
+          "bytes": "0f1185d4030000",
+          "sha256": "93acee5b5106c893878c89f7f0444d38abbfe5f7d5991acfc2297cc91aba4a6b",
+          "asm": "movups xmmword ptr [rbp + 0x3d4], xmm0",
+          "fragment": [
+            "0x4cb4f0",
+            "0x4cb9b5",
+            "0x23fef6c"
+          ],
+          "root": "0x4cb4f0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0x5f07db",
+          "bytes": "898fd4030000",
+          "sha256": "72d76784eb6b1dff10f3bdaa5bcb5b6126afb57b3ba1fb502290b069962aa813",
+          "asm": "mov dword ptr [rdi + 0x3d4], ecx",
+          "fragment": [
+            "0x5f0699",
+            "0x5f081f",
+            "0x24230f8"
+          ],
+          "root": "0x5f0660",
+          "base": "rdi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x5f36a1",
+          "bytes": "448b8c11d4030000",
+          "sha256": "5555efa59c27e3588121175d433ce03c3bdd2c3b9ba49dfd2a34d66c630d3c44",
+          "asm": "mov r9d, dword ptr [rcx + rdx + 0x3d4]",
+          "fragment": [
+            "0x5f35b0",
+            "0x5f373f",
+            "0x2423464"
+          ],
+          "root": "0x5f35b0",
+          "base": "rcx",
+          "index": "rdx",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x621472",
+          "bytes": "f30f11b5d4030000",
+          "sha256": "252e197446c3f324a122eeec7b4bbe24acf09af1f0064ed99b804464b3c7b3d1",
+          "asm": "movss dword ptr [rbp + 0x3d4], xmm6",
+          "fragment": [
+            "0x620bb6",
+            "0x62470b",
+            "0x2427b28"
+          ],
+          "root": "0x620b60",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x6237b9",
+          "bytes": "f30f5c9dd4030000",
+          "sha256": "8e08b4293a123ab0ea5c9cd8478a6cabbbbb01011da6ed0ab2031fedc6c1dbeb",
+          "asm": "subss xmm3, dword ptr [rbp + 0x3d4]",
+          "fragment": [
+            "0x620bb6",
+            "0x62470b",
+            "0x2427b28"
+          ],
+          "root": "0x620b60",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x62384e",
+          "bytes": "f30f589dd4030000",
+          "sha256": "38df812f762896bcc0c9f30651820503b27cfc8f1c0249b641bae91350cca3a5",
+          "asm": "addss xmm3, dword ptr [rbp + 0x3d4]",
+          "fragment": [
+            "0x620bb6",
+            "0x62470b",
+            "0x2427b28"
+          ],
+          "root": "0x620b60",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x685460",
+          "bytes": "0f1185d4030000",
+          "sha256": "93acee5b5106c893878c89f7f0444d38abbfe5f7d5991acfc2297cc91aba4a6b",
+          "asm": "movups xmmword ptr [rbp + 0x3d4], xmm0",
+          "fragment": [
+            "0x685279",
+            "0x6857f5",
+            "0x243320c"
+          ],
+          "root": "0x685230",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0x685ea6",
+          "bytes": "0f1185d4030000",
+          "sha256": "93acee5b5106c893878c89f7f0444d38abbfe5f7d5991acfc2297cc91aba4a6b",
+          "asm": "movups xmmword ptr [rbp + 0x3d4], xmm0",
+          "fragment": [
+            "0x685cc0",
+            "0x68632d",
+            "0x24332c0"
+          ],
+          "root": "0x685cc0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0x686e99",
+          "bytes": "4489b430d4030000",
+          "sha256": "f40b36d256f575426b3b9398db4908a4bb3179ec8dec939471eb718fecca5ed4",
+          "asm": "mov dword ptr [rax + rsi + 0x3d4], r14d",
+          "fragment": [
+            "0x686d9e",
+            "0x686eab",
+            "0x24334a8"
+          ],
+          "root": "0x686d60",
+          "base": "rax",
+          "index": "rsi",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x687940",
+          "bytes": "8b86d4030000",
+          "sha256": "6189db9e9c114679b81bbe7fbd94cdf0802a6b74d4668a23f598c6561fdfd6cf",
+          "asm": "mov eax, dword ptr [rsi + 0x3d4]",
+          "fragment": [
+            "0x687912",
+            "0x687ae0",
+            "0x2433690"
+          ],
+          "root": "0x6878e0",
+          "base": "rsi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x6a2f4b",
+          "bytes": "8985d4030000",
+          "sha256": "f5eaae5ff85e1e1abe8db681c3b5bbd03c1966eca070d0c2359751431b378b59",
+          "asm": "mov dword ptr [rbp + 0x3d4], eax",
+          "fragment": [
+            "0x6a2e9a",
+            "0x6a345f",
+            "0x2436138"
+          ],
+          "root": "0x6a2a30",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x77aa71",
+          "bytes": "f30f599bd4030000",
+          "sha256": "eb2ad012b2ea1d97c57f2456e3e86f823795c909a7f7598a1b3e2308ff190931",
+          "asm": "mulss xmm3, dword ptr [rbx + 0x3d4]",
+          "fragment": [
+            "0x77aa08",
+            "0x77ab66",
+            "0x244bec0"
+          ],
+          "root": "0x77a8d0",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x90dc4c",
+          "bytes": "4489b5d4030000",
+          "sha256": "b4f74b6a7010b9bfc9f3d2e7bf74321dde1fad186e63f0402362c7b225c05bd5",
+          "asm": "mov dword ptr [rbp + 0x3d4], r14d",
+          "fragment": [
+            "0x90d777",
+            "0x90e11a",
+            "0x2478448"
+          ],
+          "root": "0x90d2a0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x957668",
+          "bytes": "0f1185d4030000",
+          "sha256": "93acee5b5106c893878c89f7f0444d38abbfe5f7d5991acfc2297cc91aba4a6b",
+          "asm": "movups xmmword ptr [rbp + 0x3d4], xmm0",
+          "fragment": [
+            "0x957420",
+            "0x957990",
+            "0x247f0e0"
+          ],
+          "root": "0x957390",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0xa13cea",
+          "bytes": "8987d4030000",
+          "sha256": "92a4af391ebde70908e2e478128c59f8c365f440525a9d240d00b40d5d82f78f",
+          "asm": "mov dword ptr [rdi + 0x3d4], eax",
+          "fragment": [
+            "0xa13c20",
+            "0xa13f81",
+            "0x2495ae4"
+          ],
+          "root": "0xa13c20",
+          "base": "rdi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xa3ef7a",
+          "bytes": "c787d403000001000000",
+          "sha256": "890b5ea3ed030cfeab7cce3d73617b670cb8704964fa6e5d003a93ea164c4eb2",
+          "asm": "mov dword ptr [rdi + 0x3d4], 1",
+          "fragment": [
+            "0xa3ef49",
+            "0xa3f208",
+            "0x249acc8"
+          ],
+          "root": "0xa3edf0",
+          "base": "rdi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xad0a70",
+          "bytes": "0f1185d4030000",
+          "sha256": "93acee5b5106c893878c89f7f0444d38abbfe5f7d5991acfc2297cc91aba4a6b",
+          "asm": "movups xmmword ptr [rbp + 0x3d4], xmm0",
+          "fragment": [
+            "0xad0047",
+            "0xad1580",
+            "0x24a849c"
+          ],
+          "root": "0xad0010",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0xad174f",
+          "bytes": "0f1185d4030000",
+          "sha256": "93acee5b5106c893878c89f7f0444d38abbfe5f7d5991acfc2297cc91aba4a6b",
+          "asm": "movups xmmword ptr [rbp + 0x3d4], xmm0",
+          "fragment": [
+            "0xad1580",
+            "0xad1a97",
+            "0x24a84c4"
+          ],
+          "root": "0xad0010",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0xad1c6a",
+          "bytes": "0f1185d4030000",
+          "sha256": "93acee5b5106c893878c89f7f0444d38abbfe5f7d5991acfc2297cc91aba4a6b",
+          "asm": "movups xmmword ptr [rbp + 0x3d4], xmm0",
+          "fragment": [
+            "0xad1a97",
+            "0xad1fa9",
+            "0x24a84d8"
+          ],
+          "root": "0xad0010",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0xade259",
+          "bytes": "4489a5d4030000",
+          "sha256": "2e3a2c09864931d84e00a57c671c9e96636e460a3ff6c836d24ab8238e69fde9",
+          "asm": "mov dword ptr [rbp + 0x3d4], r12d",
+          "fragment": [
+            "0xaddf6c",
+            "0xade693",
+            "0x24a8ebc"
+          ],
+          "root": "0xadddf0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xaebf0b",
+          "bytes": "41c786d40300000e000000",
+          "sha256": "d28587748a6e04d91cce875689d20eb0b07155938b89a7f6d7f9719a5d3b9551",
+          "asm": "mov dword ptr [r14 + 0x3d4], 0xe",
+          "fragment": [
+            "0xae6373",
+            "0xaf17ee",
+            "0x24a9920"
+          ],
+          "root": "0xae6360",
+          "base": "r14",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xaf79b8",
+          "bytes": "c786d40300000e000000",
+          "sha256": "add2438ed26d85be03e8a294c4f1250aae8c7b5fb3a566c98fbafee3652a08f6",
+          "asm": "mov dword ptr [rsi + 0x3d4], 0xe",
+          "fragment": [
+            "0xaf26de",
+            "0xafc949",
+            "0x24a9a28"
+          ],
+          "root": "0xaf26d0",
+          "base": "rsi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xb88854",
+          "bytes": "4489ac06d4030000",
+          "sha256": "d9386996dde8b75a14a31eeab3b9927ed610e9e1e00be1c6cc9ffcfd139fd11f",
+          "asm": "mov dword ptr [rsi + rax + 0x3d4], r13d",
+          "fragment": [
+            "0xb88723",
+            "0xb88882",
+            "0x24b5578"
+          ],
+          "root": "0xb886f0",
+          "base": "rsi",
+          "index": "rax",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xfb4936",
+          "bytes": "488d8bd4030000",
+          "sha256": "abc3cd5e8bb43f2e5ff8fba6ccecf66f76782fb3b6f6ffe2137d7df77f72380a",
+          "asm": "lea rcx, [rbx + 0x3d4]",
+          "fragment": [
+            "0xfb4917",
+            "0xfb4957",
+            "0x24cac58"
+          ],
+          "root": "0xfb47c0",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0xfb55b1",
+          "bytes": "f30f108c83d4030000",
+          "sha256": "0b4367a20d38277288825faa4efe531bd638d41708861b9b4200dcd01b7f1b24",
+          "asm": "movss xmm1, dword ptr [rbx + rax*4 + 0x3d4]",
+          "fragment": [
+            "0xfb5561",
+            "0xfb55ff",
+            "0x24cad68"
+          ],
+          "root": "0xfb5410",
+          "base": "rbx",
+          "index": "rax",
+          "scale": 4,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x11b6c4a",
+          "bytes": "4489add4030000",
+          "sha256": "94b5fb463ce19938b59df3971aa04ea06b595a7b3cbc2e2f05c74f66ea9dc3b0",
+          "asm": "mov dword ptr [rbp + 0x3d4], r13d",
+          "fragment": [
+            "0x11b6b00",
+            "0x11b6ff1",
+            "0x24f04c4"
+          ],
+          "root": "0x11b6b00",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x11c8768",
+          "bytes": "0f1185d4030000",
+          "sha256": "93acee5b5106c893878c89f7f0444d38abbfe5f7d5991acfc2297cc91aba4a6b",
+          "asm": "movups xmmword ptr [rbp + 0x3d4], xmm0",
+          "fragment": [
+            "0x11c839c",
+            "0x11c8f77",
+            "0x24f3968"
+          ],
+          "root": "0x11c8230",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0x125e516",
+          "bytes": "c785d403000003000000",
+          "sha256": "c6e928ade7a08253d0978ba5e37f49bc4d1770b8a383d2268e27deaabf9b9ed5",
+          "asm": "mov dword ptr [rbp + 0x3d4], 3",
+          "fragment": [
+            "0x1258050",
+            "0x12616b6",
+            "0x24f839c"
+          ],
+          "root": "0x1258050",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x125ebed",
+          "bytes": "c785d40300001d000000",
+          "sha256": "4e5df0b40e2653b03f9fd1718a4ce97e1f9a87f5305a45646d7676887df475e8",
+          "asm": "mov dword ptr [rbp + 0x3d4], 0x1d",
+          "fragment": [
+            "0x1258050",
+            "0x12616b6",
+            "0x24f839c"
+          ],
+          "root": "0x1258050",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x125f06c",
+          "bytes": "c785d40300001d000000",
+          "sha256": "4e5df0b40e2653b03f9fd1718a4ce97e1f9a87f5305a45646d7676887df475e8",
+          "asm": "mov dword ptr [rbp + 0x3d4], 0x1d",
+          "fragment": [
+            "0x1258050",
+            "0x12616b6",
+            "0x24f839c"
+          ],
+          "root": "0x1258050",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x13562c2",
+          "bytes": "89bdd4030000",
+          "sha256": "061fb91c13db09c27268b4746d479fb14a36fdd24aa0e86bf069c624bf31ef10",
+          "asm": "mov dword ptr [rbp + 0x3d4], edi",
+          "fragment": [
+            "0x13561d0",
+            "0x1356629",
+            "0x250a890"
+          ],
+          "root": "0x1356180",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x13ae4c3",
+          "bytes": "f30f11bdd4030000",
+          "sha256": "ee925f296d000ad3938378418ea1dc5342502469f8315b3ea4a9f59455d6d5e0",
+          "asm": "movss dword ptr [rbp + 0x3d4], xmm7",
+          "fragment": [
+            "0x13ac2db",
+            "0x13afcd1",
+            "0x2511514"
+          ],
+          "root": "0x13ac1f0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x13b01cf",
+          "bytes": "f30f1185d4030000",
+          "sha256": "ef7d4b10db40efd8363c823e4ab92b21705bad66646687c8107adbcaf90fcc2d",
+          "asm": "movss dword ptr [rbp + 0x3d4], xmm0",
+          "fragment": [
+            "0x13afd17",
+            "0x13b02cf",
+            "0x2511558"
+          ],
+          "root": "0x13ac1f0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x13b6886",
+          "bytes": "8985d4030000",
+          "sha256": "f5eaae5ff85e1e1abe8db681c3b5bbd03c1966eca070d0c2359751431b378b59",
+          "asm": "mov dword ptr [rbp + 0x3d4], eax",
+          "fragment": [
+            "0x13b5510",
+            "0x13b7be6",
+            "0x2511c00"
+          ],
+          "root": "0x13b5510",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x13bbba5",
+          "bytes": "8985d4030000",
+          "sha256": "f5eaae5ff85e1e1abe8db681c3b5bbd03c1966eca070d0c2359751431b378b59",
+          "asm": "mov dword ptr [rbp + 0x3d4], eax",
+          "fragment": [
+            "0x13bb29d",
+            "0x13bdc20",
+            "0x2511f5c"
+          ],
+          "root": "0x13bb240",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x13c62ce",
+          "bytes": "4489a5d4030000",
+          "sha256": "2e3a2c09864931d84e00a57c671c9e96636e460a3ff6c836d24ab8238e69fde9",
+          "asm": "mov dword ptr [rbp + 0x3d4], r12d",
+          "fragment": [
+            "0x13c61c3",
+            "0x13c6646",
+            "0x25125ac"
+          ],
+          "root": "0x13c6180",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x140aedf",
+          "bytes": "f30f108437d4030000",
+          "sha256": "e0f03fb75d65570082cdc3f0556838e95b4a97c6429064b2f729d48e4cf215cd",
+          "asm": "movss xmm0, dword ptr [rdi + rsi + 0x3d4]",
+          "fragment": [
+            "0x140ad50",
+            "0x140b2fa",
+            "0x25173b0"
+          ],
+          "root": "0x140ad50",
+          "base": "rdi",
+          "index": "rsi",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x140f7af",
+          "bytes": "f30f599bd4030000",
+          "sha256": "eb2ad012b2ea1d97c57f2456e3e86f823795c909a7f7598a1b3e2308ff190931",
+          "asm": "mulss xmm3, dword ptr [rbx + 0x3d4]",
+          "fragment": [
+            "0x140f0a7",
+            "0x140f9ba",
+            "0x2517974"
+          ],
+          "root": "0x140f060",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x149ec99",
+          "bytes": "89abd4030000",
+          "sha256": "52d24345d4c314b1ea2c2f3b911370b880a8e75ebbe232a2fabe933e29faf9da",
+          "asm": "mov dword ptr [rbx + 0x3d4], ebp",
+          "fragment": [
+            "0x149ec10",
+            "0x149edc7",
+            "0x2520590"
+          ],
+          "root": "0x149ec10",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x184883c",
+          "bytes": "488995d4030000",
+          "sha256": "cb3e5cc80a07417033cd07af0826d3c36a6689c10d4fbc60789467711b8c3c58",
+          "asm": "mov qword ptr [rbp + 0x3d4], rdx",
+          "fragment": [
+            "0x18478ea",
+            "0x1848f3f",
+            "0x2577104"
+          ],
+          "root": "0x18478a0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 2
+        },
+        {
+          "rva": "0x1860ede",
+          "bytes": "c686d403000001",
+          "sha256": "6b3745d75cbd0f9c19e952d581eaaf9b99528f8c4be0ee4f9f83af4694ea67d1",
+          "asm": "mov byte ptr [rsi + 0x3d4], 1",
+          "fragment": [
+            "0x1860ede",
+            "0x1860ef3",
+            "0x2578898"
+          ],
+          "root": "0x1860da0",
+          "base": "rsi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 1,
+          "access": 2
+        },
+        {
+          "rva": "0x1860f0d",
+          "bytes": "80b9d403000000",
+          "sha256": "7e5e216fe3f4f6a48c8d4c77db068a09b86c3aac3d27b198700faf8767084784",
+          "asm": "cmp byte ptr [rcx + 0x3d4], 0",
+          "fragment": [
+            "0x1860f00",
+            "0x1860fd2",
+            "0x25788a8"
+          ],
+          "root": "0x1860f00",
+          "base": "rcx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 1,
+          "access": 1
+        },
+        {
+          "rva": "0x1860f70",
+          "bytes": "c683d403000000",
+          "sha256": "cbb956964775631afd05d8df3c507bc7d83bea855fb8e8991c18ad1846167e69",
+          "asm": "mov byte ptr [rbx + 0x3d4], 0",
+          "fragment": [
+            "0x1860f00",
+            "0x1860fd2",
+            "0x25788a8"
+          ],
+          "root": "0x1860f00",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 1,
+          "access": 2
+        },
+        {
+          "rva": "0x18bcb9a",
+          "bytes": "f30f59a9d4030000",
+          "sha256": "86992e14267285e65afb7861ebdc5b6ecdbafa8f44fb6815e3c7eca477bfeda5",
+          "asm": "mulss xmm5, dword ptr [rcx + 0x3d4]",
+          "fragment": [
+            "0x18bcb70",
+            "0x18bcca3",
+            "0x257dea8"
+          ],
+          "root": "0x18bcb70",
+          "base": "rcx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x18bda37",
+          "bytes": "f30f59a9d4030000",
+          "sha256": "86992e14267285e65afb7861ebdc5b6ecdbafa8f44fb6815e3c7eca477bfeda5",
+          "asm": "mulss xmm5, dword ptr [rcx + 0x3d4]",
+          "fragment": [
+            "0x18bda00",
+            "0x18bdb46",
+            "0x257dfcc"
+          ],
+          "root": "0x18bda00",
+          "base": "rcx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x190a799",
+          "bytes": "83bed403000000",
+          "sha256": "1e4f91f683bbd01d0eb68a49f886f7c0dfb065ffcda2e90cfa3e27fed0138f3a",
+          "asm": "cmp dword ptr [rsi + 0x3d4], 0",
+          "fragment": [
+            "0x190a711",
+            "0x190aac4",
+            "0x2582c44"
+          ],
+          "root": "0x190a6f0",
+          "base": "rsi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x19ed720",
+          "bytes": "418b96d4030000",
+          "sha256": "99765e7aa41c734e05fcba9079fa864ff2eb93cdd1628a45316583588f12bd79",
+          "asm": "mov edx, dword ptr [r14 + 0x3d4]",
+          "fragment": [
+            "0x19ed667",
+            "0x19ed8ae",
+            "0x258ec60"
+          ],
+          "root": "0x19ecee0",
+          "base": "r14",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        }
+      ],
+      "raw_matches_outside_unwind": 1
+    },
+    "0x3f4": {
+      "references": [
+        {
+          "rva": "0x49bc20",
+          "bytes": "c785f4030000f526a009",
+          "sha256": "4f0a2496805a64246168cb2133b3d29d73bb567400bd0d20bf24e3a2652b5df2",
+          "asm": "mov dword ptr [rbp + 0x3f4], 0x9a026f5",
+          "fragment": [
+            "0x496700",
+            "0x49cdc1",
+            "0x23f6754"
+          ],
+          "root": "0x4966d0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x4ca30c",
+          "bytes": "899df4030000",
+          "sha256": "77f6df74cd6e7cf5c3f0b9fa0272da903028fd26a76d5012841f69ede55770a8",
+          "asm": "mov dword ptr [rbp + 0x3f4], ebx",
+          "fragment": [
+            "0x4c9f20",
+            "0x4ca694",
+            "0x23fedc4"
+          ],
+          "root": "0x4c9f20",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x4cb1be",
+          "bytes": "0f1185f4030000",
+          "sha256": "d1458b94a4acd1ba74844f68f4080f1b5296f98bca6b3ac9bc595618a70ed7aa",
+          "asm": "movups xmmword ptr [rbp + 0x3f4], xmm0",
+          "fragment": [
+            "0x4cb070",
+            "0x4cb4ea",
+            "0x23fef4c"
+          ],
+          "root": "0x4cb070",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0x5e9e48",
+          "bytes": "4489adf4030000",
+          "sha256": "b6fca3a7b21706f523f3808b289d8ba450d861d86f896ebb805b6d156bd6d1b1",
+          "asm": "mov dword ptr [rbp + 0x3f4], r13d",
+          "fragment": [
+            "0x5e9d00",
+            "0x5ea3e7",
+            "0x24223d4"
+          ],
+          "root": "0x5e9d00",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x5f28d9",
+          "bytes": "8b87f4030000",
+          "sha256": "4b88befa1cd08bcdb65c4dbb79ae7adcf4758d6c05efa56d98f373fbfbf99c9f",
+          "asm": "mov eax, dword ptr [rdi + 0x3f4]",
+          "fragment": [
+            "0x5f26f0",
+            "0x5f294e",
+            "0x24233d0"
+          ],
+          "root": "0x5f26f0",
+          "base": "rdi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x5f2edd",
+          "bytes": "418986f4030000",
+          "sha256": "b61fb623f7402d84978ce85ab680fcd22262cde564086c6e2d57262bb294922b",
+          "asm": "mov dword ptr [r14 + 0x3f4], eax",
+          "fragment": [
+            "0x5f2ba6",
+            "0x5f30ee",
+            "0x2423414"
+          ],
+          "root": "0x5f2950",
+          "base": "r14",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x6153dc",
+          "bytes": "f30f5895f4030000",
+          "sha256": "887aeff4974943680d215ea9517b5aed28f5ce404c5fbefe9a211dc328e6c244",
+          "asm": "addss xmm2, dword ptr [rbp + 0x3f4]",
+          "fragment": [
+            "0x612f96",
+            "0x615776",
+            "0x2426368"
+          ],
+          "root": "0x6128b0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x621723",
+          "bytes": "f30f10adf4030000",
+          "sha256": "8dc9665f8efd36f434d81904326b5ebdfdbbc0b755efc85c9b99e4bb11aae807",
+          "asm": "movss xmm5, dword ptr [rbp + 0x3f4]",
+          "fragment": [
+            "0x620bb6",
+            "0x62470b",
+            "0x2427b28"
+          ],
+          "root": "0x620b60",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x632661",
+          "bytes": "0f1185f4030000",
+          "sha256": "d1458b94a4acd1ba74844f68f4080f1b5296f98bca6b3ac9bc595618a70ed7aa",
+          "asm": "movups xmmword ptr [rbp + 0x3f4], xmm0",
+          "fragment": [
+            "0x632440",
+            "0x632aec",
+            "0x2429500"
+          ],
+          "root": "0x632440",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0x6a1953",
+          "bytes": "48c785f403000000000000",
+          "sha256": "96a8d74a90042f990c3af8508054e3a12eb1d57f1ee3a0c8623890eb620f592d",
+          "asm": "mov qword ptr [rbp + 0x3f4], 0",
+          "fragment": [
+            "0x6a05d0",
+            "0x6a2a23",
+            "0x2436084"
+          ],
+          "root": "0x6a05d0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 2
+        },
+        {
+          "rva": "0x6a690c",
+          "bytes": "0f1185f4030000",
+          "sha256": "d1458b94a4acd1ba74844f68f4080f1b5296f98bca6b3ac9bc595618a70ed7aa",
+          "asm": "movups xmmword ptr [rbp + 0x3f4], xmm0",
+          "fragment": [
+            "0x6a6600",
+            "0x6a6ca6",
+            "0x243682c"
+          ],
+          "root": "0x6a6600",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0x6a763e",
+          "bytes": "89bdf4030000",
+          "sha256": "4d6bb58abdaf13ef75d6170ab209c4abe85dd5351d3e636e8360a318db4fbe28",
+          "asm": "mov dword ptr [rbp + 0x3f4], edi",
+          "fragment": [
+            "0x6a7297",
+            "0x6a78d5",
+            "0x2436948"
+          ],
+          "root": "0x6a6fe0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x6a7e25",
+          "bytes": "89bdf4030000",
+          "sha256": "4d6bb58abdaf13ef75d6170ab209c4abe85dd5351d3e636e8360a318db4fbe28",
+          "asm": "mov dword ptr [rbp + 0x3f4], edi",
+          "fragment": [
+            "0x6a7a5d",
+            "0x6a8090",
+            "0x24369c0"
+          ],
+          "root": "0x6a79c0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x6d8e72",
+          "bytes": "0f1185f4030000",
+          "sha256": "d1458b94a4acd1ba74844f68f4080f1b5296f98bca6b3ac9bc595618a70ed7aa",
+          "asm": "movups xmmword ptr [rbp + 0x3f4], xmm0",
+          "fragment": [
+            "0x6d8c30",
+            "0x6d977d",
+            "0x243b2f4"
+          ],
+          "root": "0x6d8c30",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0x6d911a",
+          "bytes": "898df4030000",
+          "sha256": "464f7cf123b4f5ac4bf43cf787da7dd35afff0872ea5075943666777327f457a",
+          "asm": "mov dword ptr [rbp + 0x3f4], ecx",
+          "fragment": [
+            "0x6d8c30",
+            "0x6d977d",
+            "0x243b2f4"
+          ],
+          "root": "0x6d8c30",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x6d9909",
+          "bytes": "418b97f4030000",
+          "sha256": "bef656ab64dceb22c13ab5c9a4353de8795d0091b86fb6f724baeaac6ca2d12f",
+          "asm": "mov edx, dword ptr [r15 + 0x3f4]",
+          "fragment": [
+            "0x6d9860",
+            "0x6d9a9d",
+            "0x243b368"
+          ],
+          "root": "0x6d9780",
+          "base": "r15",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x729f4f",
+          "bytes": "f30f1185f4030000",
+          "sha256": "6755c5b02f0342d47c7eeb6a7b0e92072b9eeba67198c61621bea976cba30bf4",
+          "asm": "movss dword ptr [rbp + 0x3f4], xmm0",
+          "fragment": [
+            "0x7252e9",
+            "0x72b8bd",
+            "0x24423bc"
+          ],
+          "root": "0x725160",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x72a85a",
+          "bytes": "f30f108df4030000",
+          "sha256": "d955afcc54309f2243612cd26e9a71c4b500929088826d412658e96fbdb85ec5",
+          "asm": "movss xmm1, dword ptr [rbp + 0x3f4]",
+          "fragment": [
+            "0x7252e9",
+            "0x72b8bd",
+            "0x24423bc"
+          ],
+          "root": "0x725160",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x7491b2",
+          "bytes": "0f1185f4030000",
+          "sha256": "d1458b94a4acd1ba74844f68f4080f1b5296f98bca6b3ac9bc595618a70ed7aa",
+          "asm": "movups xmmword ptr [rbp + 0x3f4], xmm0",
+          "fragment": [
+            "0x748fc3",
+            "0x749551",
+            "0x24465a0"
+          ],
+          "root": "0x748f60",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0x758d11",
+          "bytes": "4489a5f4030000",
+          "sha256": "8dc62bf450cac8f336937308fb469c08c39610b6d016547fd047b568c29fad1c",
+          "asm": "mov dword ptr [rbp + 0x3f4], r12d",
+          "fragment": [
+            "0x758ac8",
+            "0x758fa0",
+            "0x2448520"
+          ],
+          "root": "0x7587e0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xa25576",
+          "bytes": "4489b5f4030000",
+          "sha256": "f32f39463310beae06343985ca4617bfec69dd73e320d72ba8c1e41db7284e07",
+          "asm": "mov dword ptr [rbp + 0x3f4], r14d",
+          "fragment": [
+            "0xa25440",
+            "0xa25a15",
+            "0x2497bac"
+          ],
+          "root": "0xa25440",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xaec20f",
+          "bytes": "41c786f403000012000000",
+          "sha256": "6db0204ddc308990d513b1d993ac6e65e9c99cb359f3a8f9f48a2ef090fa9e0b",
+          "asm": "mov dword ptr [r14 + 0x3f4], 0x12",
+          "fragment": [
+            "0xae6373",
+            "0xaf17ee",
+            "0x24a9920"
+          ],
+          "root": "0xae6360",
+          "base": "r14",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xaf7c74",
+          "bytes": "c786f403000012000000",
+          "sha256": "5456585ba1fb2cfaa80aba8e0d10b543687bf9f00dc644fb0ad188d38327d26d",
+          "asm": "mov dword ptr [rsi + 0x3f4], 0x12",
+          "fragment": [
+            "0xaf26de",
+            "0xafc949",
+            "0x24a9a28"
+          ],
+          "root": "0xaf26d0",
+          "base": "rsi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xb636bb",
+          "bytes": "8b98f4030000",
+          "sha256": "eb5f05ebb831e23c227fd6863d1691016719fd7f4666724a01c8570865d70146",
+          "asm": "mov ebx, dword ptr [rax + 0x3f4]",
+          "fragment": [
+            "0xb636b8",
+            "0xb6377e",
+            "0x24af634"
+          ],
+          "root": "0xb635f0",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xbc17ef",
+          "bytes": "488d8df4030000",
+          "sha256": "864f96a57ec0188105b519d6da13159445f0ecde9ca66aa3c30c8c260247269a",
+          "asm": "lea rcx, [rbp + 0x3f4]",
+          "fragment": [
+            "0xbc1730",
+            "0xbc1b43",
+            "0x24bdbd0"
+          ],
+          "root": "0xbc1730",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0xbc1832",
+          "bytes": "898c85f4030000",
+          "sha256": "59358037d19142f1737888621f4d2fbc39d7cea47ef19d705e72a6fa140aa1a9",
+          "asm": "mov dword ptr [rbp + rax*4 + 0x3f4], ecx",
+          "fragment": [
+            "0xbc1730",
+            "0xbc1b43",
+            "0x24bdbd0"
+          ],
+          "root": "0xbc1730",
+          "base": "rbp",
+          "index": "rax",
+          "scale": 4,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x11b72fd",
+          "bytes": "4489a5f4030000",
+          "sha256": "8dc62bf450cac8f336937308fb469c08c39610b6d016547fd047b568c29fad1c",
+          "asm": "mov dword ptr [rbp + 0x3f4], r12d",
+          "fragment": [
+            "0x11b7000",
+            "0x11b7665",
+            "0x24f04ec"
+          ],
+          "root": "0x11b7000",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x11b7ec9",
+          "bytes": "4489bdf4030000",
+          "sha256": "77d6350f097f54ea011d9f1fc076b565d7cc943755a743af6deac23d3885e65f",
+          "asm": "mov dword ptr [rbp + 0x3f4], r15d",
+          "fragment": [
+            "0x11b7dbd",
+            "0x11b8253",
+            "0x24f059c"
+          ],
+          "root": "0x11b7d70",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x13bedb7",
+          "bytes": "4489b5f4030000",
+          "sha256": "f32f39463310beae06343985ca4617bfec69dd73e320d72ba8c1e41db7284e07",
+          "asm": "mov dword ptr [rbp + 0x3f4], r14d",
+          "fragment": [
+            "0x13bed21",
+            "0x13bf340",
+            "0x251219c"
+          ],
+          "root": "0x13beca0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x140b1c1",
+          "bytes": "8b8437f4030000",
+          "sha256": "bdd6cdfa5ddd4c790bed24f6edecd287822f794ec9c814f4985928d874de6931",
+          "asm": "mov eax, dword ptr [rdi + rsi + 0x3f4]",
+          "fragment": [
+            "0x140ad50",
+            "0x140b2fa",
+            "0x25173b0"
+          ],
+          "root": "0x140ad50",
+          "base": "rdi",
+          "index": "rsi",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x145f053",
+          "bytes": "8b80f4030000",
+          "sha256": "5af9e5697f3f855cd6ee038a1f93df72efc09add03c3bb71fea8c40c80619cf2",
+          "asm": "mov eax, dword ptr [rax + 0x3f4]",
+          "fragment": [
+            "0x145efb0",
+            "0x145f0a2",
+            "0x251cca8"
+          ],
+          "root": "0x145efb0",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x149760b",
+          "bytes": "8b80f4030000",
+          "sha256": "5af9e5697f3f855cd6ee038a1f93df72efc09add03c3bb71fea8c40c80619cf2",
+          "asm": "mov eax, dword ptr [rax + 0x3f4]",
+          "fragment": [
+            "0x1497470",
+            "0x149790e",
+            "0x251fee0"
+          ],
+          "root": "0x1497470",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x1753c06",
+          "bytes": "89bdf4030000",
+          "sha256": "4d6bb58abdaf13ef75d6170ab209c4abe85dd5351d3e636e8360a318db4fbe28",
+          "asm": "mov dword ptr [rbp + 0x3f4], edi",
+          "fragment": [
+            "0x1753a6c",
+            "0x1754094",
+            "0x256ad30"
+          ],
+          "root": "0x1753800",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x1856bf9",
+          "bytes": "c785f40300000000a041",
+          "sha256": "d5d0941ea5ba74c1ed15dd000436f6ab2b33ba8f465ff0979ae758e052aa7ce4",
+          "asm": "mov dword ptr [rbp + 0x3f4], 0x41a00000",
+          "fragment": [
+            "0x18562a0",
+            "0x1856d5e",
+            "0x2577e24"
+          ],
+          "root": "0x18562a0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x18b99fd",
+          "bytes": "468ba4b5f4030000",
+          "sha256": "beca52975de98f53fbb3ae4e3cfee4f7c4a7d0ce99097036c50475012183215f",
+          "asm": "mov r12d, dword ptr [rbp + r14*4 + 0x3f4]",
+          "fragment": [
+            "0x18b97fe",
+            "0x18b9c0d",
+            "0x257db58"
+          ],
+          "root": "0x18b97a0",
+          "base": "rbp",
+          "index": "r14",
+          "scale": 4,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x1961fd3",
+          "bytes": "8b80f4030000",
+          "sha256": "5af9e5697f3f855cd6ee038a1f93df72efc09add03c3bb71fea8c40c80619cf2",
+          "asm": "mov eax, dword ptr [rax + 0x3f4]",
+          "fragment": [
+            "0x1961f50",
+            "0x1962022",
+            "0x2587c34"
+          ],
+          "root": "0x1961f50",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x1962f46",
+          "bytes": "8b80f4030000",
+          "sha256": "5af9e5697f3f855cd6ee038a1f93df72efc09add03c3bb71fea8c40c80619cf2",
+          "asm": "mov eax, dword ptr [rax + 0x3f4]",
+          "fragment": [
+            "0x1962ea0",
+            "0x1962fbe",
+            "0x2587cb0"
+          ],
+          "root": "0x1962ea0",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x1963315",
+          "bytes": "8bb0f4030000",
+          "sha256": "2f8d5f00d321280285d6150aa245709601ad5d085c2a87933ba758f28965c5d4",
+          "asm": "mov esi, dword ptr [rax + 0x3f4]",
+          "fragment": [
+            "0x19632a0",
+            "0x196332b",
+            "0x2587d18"
+          ],
+          "root": "0x19632a0",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x19653c2",
+          "bytes": "8b80f4030000",
+          "sha256": "5af9e5697f3f855cd6ee038a1f93df72efc09add03c3bb71fea8c40c80619cf2",
+          "asm": "mov eax, dword ptr [rax + 0x3f4]",
+          "fragment": [
+            "0x1965370",
+            "0x196540a",
+            "0x2587eb8"
+          ],
+          "root": "0x1965370",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x19655cc",
+          "bytes": "8b90f4030000",
+          "sha256": "31c037a32cc9fda63f49e23f02347cb0855162794fa47af5c4d97bc2a651bee3",
+          "asm": "mov edx, dword ptr [rax + 0x3f4]",
+          "fragment": [
+            "0x1965410",
+            "0x19657cc",
+            "0x2587ec0"
+          ],
+          "root": "0x1965410",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x1965d4e",
+          "bytes": "8b90f4030000",
+          "sha256": "31c037a32cc9fda63f49e23f02347cb0855162794fa47af5c4d97bc2a651bee3",
+          "asm": "mov edx, dword ptr [rax + 0x3f4]",
+          "fragment": [
+            "0x1965d16",
+            "0x1965da0",
+            "0x2587f00"
+          ],
+          "root": "0x1965cf0",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x1966195",
+          "bytes": "8b90f4030000",
+          "sha256": "31c037a32cc9fda63f49e23f02347cb0855162794fa47af5c4d97bc2a651bee3",
+          "asm": "mov edx, dword ptr [rax + 0x3f4]",
+          "fragment": [
+            "0x1966155",
+            "0x19661b0",
+            "0x2587f88"
+          ],
+          "root": "0x1965cf0",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x1a173a6",
+          "bytes": "48898ff4030000",
+          "sha256": "79c9adb9835a196b30ea413a2453aa8ae3d331cb91b580c920c3c90e45432fdc",
+          "asm": "mov qword ptr [rdi + 0x3f4], rcx",
+          "fragment": [
+            "0x1a17240",
+            "0x1a17751",
+            "0x2591274"
+          ],
+          "root": "0x1a17240",
+          "base": "rdi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 2
+        },
+        {
+          "rva": "0x2084096",
+          "bytes": "f20f11bdf4030000",
+          "sha256": "93da726f7e81b75e63d00d3db2c4b26e30bda1b2725879fb3d77479c6358435a",
+          "asm": "movsd qword ptr [rbp + 0x3f4], xmm7",
+          "fragment": [
+            "0x2083433",
+            "0x20865b0",
+            "0x2632ad0"
+          ],
+          "root": "0x20832d0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 2
+        }
+      ],
+      "raw_matches_outside_unwind": 3
+    },
+    "0x414": {
+      "references": [
+        {
+          "rva": "0x49bd07",
+          "bytes": "c78514040000f526a009",
+          "sha256": "b0c87ad58c58b7aa86ba88d205e30a7d6f04a3290ad8f22e4fd34f44839b2000",
+          "asm": "mov dword ptr [rbp + 0x414], 0x9a026f5",
+          "fragment": [
+            "0x496700",
+            "0x49cdc1",
+            "0x23f6754"
+          ],
+          "root": "0x4966d0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x4bf088",
+          "bytes": "f30f11842814040000",
+          "sha256": "90f18aeb4f2ed3e69363de0e28f7691061da44fc52b42d646241dd004321e340",
+          "asm": "movss dword ptr [rax + rbp + 0x414], xmm0",
+          "fragment": [
+            "0x4beef5",
+            "0x4bf194",
+            "0x23fcabc"
+          ],
+          "root": "0x4bedc0",
+          "base": "rax",
+          "index": "rbp",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x4cad6f",
+          "bytes": "0f118514040000",
+          "sha256": "51a14ee1c806c701ff4f210e0554abe9c41d00e82fa58d0f15960d7ebc0eb656",
+          "asm": "movups xmmword ptr [rbp + 0x414], xmm0",
+          "fragment": [
+            "0x4cac10",
+            "0x4cb064",
+            "0x23fef2c"
+          ],
+          "root": "0x4cac10",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0x5d0d7d",
+          "bytes": "80b81404000000",
+          "sha256": "682c4bb86f1c58fbfe798e97bfb4c59d0722b3d73cd15beeef3eed59421c5ca6",
+          "asm": "cmp byte ptr [rax + 0x414], 0",
+          "fragment": [
+            "0x5d0d70",
+            "0x5d0db7",
+            "0x241f1f0"
+          ],
+          "root": "0x5d0d70",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 1,
+          "access": 1
+        },
+        {
+          "rva": "0x5df192",
+          "bytes": "4438a014040000",
+          "sha256": "54f8b3e39b4ec288c16d1fa2e8f7ebeb085d7990459a18d8577463d94f1ee801",
+          "asm": "cmp byte ptr [rax + 0x414], r12b",
+          "fragment": [
+            "0x5def00",
+            "0x5df518",
+            "0x2420d24"
+          ],
+          "root": "0x5def00",
+          "base": "rax",
+          "index": null,
+          "scale": 1,
+          "operand_size": 1,
+          "access": 1
+        },
+        {
+          "rva": "0x621c42",
+          "bytes": "f3440f10a514040000",
+          "sha256": "e93f3e5425ee1af823db286d7b4e9644566149526759b62250dd74c7f880d8c3",
+          "asm": "movss xmm12, dword ptr [rbp + 0x414]",
+          "fragment": [
+            "0x620bb6",
+            "0x62470b",
+            "0x2427b28"
+          ],
+          "root": "0x620b60",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x657b28",
+          "bytes": "0f118514040000",
+          "sha256": "51a14ee1c806c701ff4f210e0554abe9c41d00e82fa58d0f15960d7ebc0eb656",
+          "asm": "movups xmmword ptr [rbp + 0x414], xmm0",
+          "fragment": [
+            "0x657960",
+            "0x657e57",
+            "0x242d8a8"
+          ],
+          "root": "0x657960",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0x67fa23",
+          "bytes": "899514040000",
+          "sha256": "14098e960efd5aefb032e95ae8a75b68f08ff683b5fd40105355b4be62cfd8f5",
+          "asm": "mov dword ptr [rbp + 0x414], edx",
+          "fragment": [
+            "0x67f418",
+            "0x680581",
+            "0x2432934"
+          ],
+          "root": "0x67f3d0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x67fa63",
+          "bytes": "8b9514040000",
+          "sha256": "0fe5ed210693459122c776c44025079662cb7344fc0c265640b35f3d0238a6de",
+          "asm": "mov edx, dword ptr [rbp + 0x414]",
+          "fragment": [
+            "0x67f418",
+            "0x680581",
+            "0x2432934"
+          ],
+          "root": "0x67f3d0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x6a1986",
+          "bytes": "48c7851404000000000000",
+          "sha256": "68fdb708f1cd984fd2963931e2e6f28585710565fb2f70bb401c7da1614b800b",
+          "asm": "mov qword ptr [rbp + 0x414], 0",
+          "fragment": [
+            "0x6a05d0",
+            "0x6a2a23",
+            "0x2436084"
+          ],
+          "root": "0x6a05d0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 2
+        },
+        {
+          "rva": "0x728f32",
+          "bytes": "f30f599514040000",
+          "sha256": "6f4429a225d15911d73f743bdb30a3fd29ced96358ef2afd1ff66daa3d738bb7",
+          "asm": "mulss xmm2, dword ptr [rbp + 0x414]",
+          "fragment": [
+            "0x7252e9",
+            "0x72b8bd",
+            "0x24423bc"
+          ],
+          "root": "0x725160",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x79fa41",
+          "bytes": "0f118514040000",
+          "sha256": "51a14ee1c806c701ff4f210e0554abe9c41d00e82fa58d0f15960d7ebc0eb656",
+          "asm": "movups xmmword ptr [rbp + 0x414], xmm0",
+          "fragment": [
+            "0x79f90c",
+            "0x79fd5a",
+            "0x244f830"
+          ],
+          "root": "0x79f8e0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0x7bf528",
+          "bytes": "488d8b14040000",
+          "sha256": "2113ebebd0e1cd85cb831a17d8b9f92b9437c96346a3730c5b5be3b35a4e2306",
+          "asm": "lea rcx, [rbx + 0x414]",
+          "fragment": [
+            "0x7bf3a0",
+            "0x7bfaed",
+            "0x2452c18"
+          ],
+          "root": "0x7bf3a0",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x7bf538",
+          "bytes": "488d8b14040000",
+          "sha256": "2113ebebd0e1cd85cb831a17d8b9f92b9437c96346a3730c5b5be3b35a4e2306",
+          "asm": "lea rcx, [rbx + 0x414]",
+          "fragment": [
+            "0x7bf3a0",
+            "0x7bfaed",
+            "0x2452c18"
+          ],
+          "root": "0x7bf3a0",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x84ba1e",
+          "bytes": "f3440f109514040000",
+          "sha256": "92cfc82fda9e33cb195428db5ccdae3289595b0abbf0bece249e50577639153e",
+          "asm": "movss xmm10, dword ptr [rbp + 0x414]",
+          "fragment": [
+            "0x84b0f0",
+            "0x84ed22",
+            "0x2463320"
+          ],
+          "root": "0x84b0f0",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x86c3de",
+          "bytes": "0f118514040000",
+          "sha256": "51a14ee1c806c701ff4f210e0554abe9c41d00e82fa58d0f15960d7ebc0eb656",
+          "asm": "movups xmmword ptr [rbp + 0x414], xmm0",
+          "fragment": [
+            "0x86c250",
+            "0x86c6f3",
+            "0x24667b8"
+          ],
+          "root": "0x86c250",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0x894562",
+          "bytes": "f2440f109314040000",
+          "sha256": "0e2c74d8fb06813d130c3a70d2371b29630c7e4f989c43101bf06fabbc31358b",
+          "asm": "movsd xmm10, qword ptr [rbx + 0x414]",
+          "fragment": [
+            "0x8943e9",
+            "0x89496f",
+            "0x246b46c"
+          ],
+          "root": "0x894390",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x894576",
+          "bytes": "f20f108314040000",
+          "sha256": "66146e0f38734d378378c492f3575b55fdcd49565143c04b044a7ee53dbec5dc",
+          "asm": "movsd xmm0, qword ptr [rbx + 0x414]",
+          "fragment": [
+            "0x8943e9",
+            "0x89496f",
+            "0x246b46c"
+          ],
+          "root": "0x894390",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0x8b9611",
+          "bytes": "c6861404000000",
+          "sha256": "099b6daac1a60e25fa3935e5058bf46fe22d6375988751656675d8cd57c5612e",
+          "asm": "mov byte ptr [rsi + 0x414], 0",
+          "fragment": [
+            "0x8b8d23",
+            "0x8b9a39",
+            "0x246e780"
+          ],
+          "root": "0x8b8a20",
+          "base": "rsi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 1,
+          "access": 2
+        },
+        {
+          "rva": "0x8b9925",
+          "bytes": "c6861404000001",
+          "sha256": "628d86a21381bbeafca465ea8135d722318980dbc502188c4533d1a578350d20",
+          "asm": "mov byte ptr [rsi + 0x414], 1",
+          "fragment": [
+            "0x8b8d23",
+            "0x8b9a39",
+            "0x246e780"
+          ],
+          "root": "0x8b8a20",
+          "base": "rsi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 1,
+          "access": 2
+        },
+        {
+          "rva": "0x8f6ad8",
+          "bytes": "c785140400000c000000",
+          "sha256": "89808126855a4e4e91ca8d87ec0e61ed6e66daa1bd13ba97d13a7e9c8375183a",
+          "asm": "mov dword ptr [rbp + 0x414], 0xc",
+          "fragment": [
+            "0x8f6a13",
+            "0x8f6b62",
+            "0x2475c38"
+          ],
+          "root": "0x8f6990",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x902798",
+          "bytes": "0f118514040000",
+          "sha256": "51a14ee1c806c701ff4f210e0554abe9c41d00e82fa58d0f15960d7ebc0eb656",
+          "asm": "movups xmmword ptr [rbp + 0x414], xmm0",
+          "fragment": [
+            "0x902630",
+            "0x902af0",
+            "0x2476cd4"
+          ],
+          "root": "0x902630",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0x94dda8",
+          "bytes": "0f118514040000",
+          "sha256": "51a14ee1c806c701ff4f210e0554abe9c41d00e82fa58d0f15960d7ebc0eb656",
+          "asm": "movups xmmword ptr [rbp + 0x414], xmm0",
+          "fragment": [
+            "0x94dc20",
+            "0x94e08f",
+            "0x247eaf0"
+          ],
+          "root": "0x94dc20",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0x95ce3a",
+          "bytes": "899d14040000",
+          "sha256": "7f1ad3fa48dad24aa2846caf2a68f144f2b3acbf09c10a40c92664c39a21c1d6",
+          "asm": "mov dword ptr [rbp + 0x414], ebx",
+          "fragment": [
+            "0x95cd15",
+            "0x95d1f8",
+            "0x247fb78"
+          ],
+          "root": "0x95c920",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x987f80",
+          "bytes": "f30f11b40114040000",
+          "sha256": "b4dd264fdb43f472ad9463a7ef9d61e026679ec387d398603b91921176b8dab5",
+          "asm": "movss dword ptr [rcx + rax + 0x414], xmm6",
+          "fragment": [
+            "0x987f3f",
+            "0x987f8e",
+            "0x2483a64"
+          ],
+          "root": "0x987ea0",
+          "base": "rcx",
+          "index": "rax",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x9daebe",
+          "bytes": "0f118514040000",
+          "sha256": "51a14ee1c806c701ff4f210e0554abe9c41d00e82fa58d0f15960d7ebc0eb656",
+          "asm": "movups xmmword ptr [rbp + 0x414], xmm0",
+          "fragment": [
+            "0x9dad84",
+            "0x9db1d0",
+            "0x248dc8c"
+          ],
+          "root": "0x9dad50",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0xa2286c",
+          "bytes": "899d14040000",
+          "sha256": "7f1ad3fa48dad24aa2846caf2a68f144f2b3acbf09c10a40c92664c39a21c1d6",
+          "asm": "mov dword ptr [rbp + 0x414], ebx",
+          "fragment": [
+            "0xa223f6",
+            "0xa22c51",
+            "0x24975a0"
+          ],
+          "root": "0xa22380",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xa3e86c",
+          "bytes": "488d8e14040000",
+          "sha256": "73d6d0d10e8453f7980b0c676afed80f0ce569a033f651ab0a5f7455e84ac617",
+          "asm": "lea rcx, [rsi + 0x414]",
+          "fragment": [
+            "0xa3e634",
+            "0xa3eaef",
+            "0x249ac04"
+          ],
+          "root": "0xa3e620",
+          "base": "rsi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0xa3ef9e",
+          "bytes": "899f14040000",
+          "sha256": "c75095ba4d68d8352102273e677c215d84896cc0a624fe0a28479cc354fd6515",
+          "asm": "mov dword ptr [rdi + 0x414], ebx",
+          "fragment": [
+            "0xa3ef49",
+            "0xa3f208",
+            "0x249acc8"
+          ],
+          "root": "0xa3edf0",
+          "base": "rdi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xa3f57c",
+          "bytes": "488d8e14040000",
+          "sha256": "73d6d0d10e8453f7980b0c676afed80f0ce569a033f651ab0a5f7455e84ac617",
+          "asm": "lea rcx, [rsi + 0x414]",
+          "fragment": [
+            "0xa3f220",
+            "0xa40062",
+            "0x249acf4"
+          ],
+          "root": "0xa3f220",
+          "base": "rsi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0xa3f5b0",
+          "bytes": "488d8e14040000",
+          "sha256": "73d6d0d10e8453f7980b0c676afed80f0ce569a033f651ab0a5f7455e84ac617",
+          "asm": "lea rcx, [rsi + 0x414]",
+          "fragment": [
+            "0xa3f220",
+            "0xa40062",
+            "0x249acf4"
+          ],
+          "root": "0xa3f220",
+          "base": "rsi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 1
+        },
+        {
+          "rva": "0xaec513",
+          "bytes": "41c7861404000016000000",
+          "sha256": "9b321f87a9b65f5016ff3786461025d1756d1d01e28008ac6085f7176615bad4",
+          "asm": "mov dword ptr [r14 + 0x414], 0x16",
+          "fragment": [
+            "0xae6373",
+            "0xaf17ee",
+            "0x24a9920"
+          ],
+          "root": "0xae6360",
+          "base": "r14",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xaf7f30",
+          "bytes": "c7861404000016000000",
+          "sha256": "e991798c7b36e171aedfbb6c729e4cfa8c81718fe7173f8ca4c70b1cc4211327",
+          "asm": "mov dword ptr [rsi + 0x414], 0x16",
+          "fragment": [
+            "0xaf26de",
+            "0xafc949",
+            "0x24a9a28"
+          ],
+          "root": "0xaf26d0",
+          "base": "rsi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xb7a5a4",
+          "bytes": "f30f11b40114040000",
+          "sha256": "b4dd264fdb43f472ad9463a7ef9d61e026679ec387d398603b91921176b8dab5",
+          "asm": "movss dword ptr [rcx + rax + 0x414], xmm6",
+          "fragment": [
+            "0xb7a4c1",
+            "0xb7a5c6",
+            "0x24b2f40"
+          ],
+          "root": "0xb7a490",
+          "base": "rcx",
+          "index": "rax",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xb918d9",
+          "bytes": "418b8614040000",
+          "sha256": "385efde7a28c4f238db5f2c82b6938b7e789754ff2843ba0bf39434a7e3d143b",
+          "asm": "mov eax, dword ptr [r14 + 0x414]",
+          "fragment": [
+            "0xb9187d",
+            "0xb91aae",
+            "0x24b6cdc"
+          ],
+          "root": "0xb91850",
+          "base": "r14",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xb91cd8",
+          "bytes": "8b8314040000",
+          "sha256": "3963020b9412308b5cbeee4f73c6d4b23cbe45280fdf039cd737da5e5333e0ce",
+          "asm": "mov eax, dword ptr [rbx + 0x414]",
+          "fragment": [
+            "0xb91c77",
+            "0xb91daf",
+            "0x24b6d54"
+          ],
+          "root": "0xb91c50",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xb91d05",
+          "bytes": "8b8314040000",
+          "sha256": "3963020b9412308b5cbeee4f73c6d4b23cbe45280fdf039cd737da5e5333e0ce",
+          "asm": "mov eax, dword ptr [rbx + 0x414]",
+          "fragment": [
+            "0xb91c77",
+            "0xb91daf",
+            "0x24b6d54"
+          ],
+          "root": "0xb91c50",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xb93262",
+          "bytes": "4489a114040000",
+          "sha256": "27979895cab035f3d28debae97dbdf50d806610659fd7a4f3bdfbf16c1335e6b",
+          "asm": "mov dword ptr [rcx + 0x414], r12d",
+          "fragment": [
+            "0xb93222",
+            "0xb932cb",
+            "0x24b6fd4"
+          ],
+          "root": "0xb931f0",
+          "base": "rcx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xbb4cc1",
+          "bytes": "f30f11b40114040000",
+          "sha256": "b4dd264fdb43f472ad9463a7ef9d61e026679ec387d398603b91921176b8dab5",
+          "asm": "movss dword ptr [rcx + rax + 0x414], xmm6",
+          "fragment": [
+            "0xbb4bdf",
+            "0xbb4ce3",
+            "0x24bbc84"
+          ],
+          "root": "0xbb4b90",
+          "base": "rcx",
+          "index": "rax",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xf7ed23",
+          "bytes": "898514040000",
+          "sha256": "503a8e10b5433f87bed2b041a4738635204f756c1f0e6b9d1663845e6f125d9b",
+          "asm": "mov dword ptr [rbp + 0x414], eax",
+          "fragment": [
+            "0xf7e250",
+            "0xf7ed44",
+            "0x24c8454"
+          ],
+          "root": "0xf7e250",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xfad367",
+          "bytes": "41898614040000",
+          "sha256": "d931ea07f3578be836cbea047bd1c9f8d248b009e3e860c69f71b7d92d70fcb7",
+          "asm": "mov dword ptr [r14 + 0x414], eax",
+          "fragment": [
+            "0xfad16d",
+            "0xfad439",
+            "0x24ca720"
+          ],
+          "root": "0xfad130",
+          "base": "r14",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xfad5c5",
+          "bytes": "f3420f10840914040000",
+          "sha256": "f0b7301f35220099c6aeb33de1f7b4d67f9770da8c80dbdbbbfd86f84066b106",
+          "asm": "movss xmm0, dword ptr [rcx + r9 + 0x414]",
+          "fragment": [
+            "0xfad450",
+            "0xfada85",
+            "0x24ca75c"
+          ],
+          "root": "0xfad450",
+          "base": "rcx",
+          "index": "r9",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xfad5cf",
+          "bytes": "f3430f58840814040000",
+          "sha256": "2fee05b5afe165276de935b8f633bd6f7bee06b0242dce8eb29b51770b515dbc",
+          "asm": "addss xmm0, dword ptr [r8 + r9 + 0x414]",
+          "fragment": [
+            "0xfad450",
+            "0xfada85",
+            "0x24ca75c"
+          ],
+          "root": "0xfad450",
+          "base": "r8",
+          "index": "r9",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xfad5de",
+          "bytes": "f3430f11840814040000",
+          "sha256": "13bfc07fe509002e1cba406dbaefee793fcf5d2042320f40ce34c41ae161b875",
+          "asm": "movss dword ptr [r8 + r9 + 0x414], xmm0",
+          "fragment": [
+            "0xfad450",
+            "0xfada85",
+            "0x24ca75c"
+          ],
+          "root": "0xfad450",
+          "base": "r8",
+          "index": "r9",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xfad5e8",
+          "bytes": "f3420f11840914040000",
+          "sha256": "9a3c35e198b245608f384523d65a204d2bd86e95011ed0eebe07089200164d67",
+          "asm": "movss dword ptr [rcx + r9 + 0x414], xmm0",
+          "fragment": [
+            "0xfad450",
+            "0xfada85",
+            "0x24ca75c"
+          ],
+          "root": "0xfad450",
+          "base": "rcx",
+          "index": "r9",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xfad6c5",
+          "bytes": "f3420f10840914040000",
+          "sha256": "f0b7301f35220099c6aeb33de1f7b4d67f9770da8c80dbdbbbfd86f84066b106",
+          "asm": "movss xmm0, dword ptr [rcx + r9 + 0x414]",
+          "fragment": [
+            "0xfad450",
+            "0xfada85",
+            "0x24ca75c"
+          ],
+          "root": "0xfad450",
+          "base": "rcx",
+          "index": "r9",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xfad6cf",
+          "bytes": "f3430f58840814040000",
+          "sha256": "2fee05b5afe165276de935b8f633bd6f7bee06b0242dce8eb29b51770b515dbc",
+          "asm": "addss xmm0, dword ptr [r8 + r9 + 0x414]",
+          "fragment": [
+            "0xfad450",
+            "0xfada85",
+            "0x24ca75c"
+          ],
+          "root": "0xfad450",
+          "base": "r8",
+          "index": "r9",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xfad6de",
+          "bytes": "f3430f11840814040000",
+          "sha256": "13bfc07fe509002e1cba406dbaefee793fcf5d2042320f40ce34c41ae161b875",
+          "asm": "movss dword ptr [r8 + r9 + 0x414], xmm0",
+          "fragment": [
+            "0xfad450",
+            "0xfada85",
+            "0x24ca75c"
+          ],
+          "root": "0xfad450",
+          "base": "r8",
+          "index": "r9",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xfad6e8",
+          "bytes": "f3420f11840914040000",
+          "sha256": "9a3c35e198b245608f384523d65a204d2bd86e95011ed0eebe07089200164d67",
+          "asm": "movss dword ptr [rcx + r9 + 0x414], xmm0",
+          "fragment": [
+            "0xfad450",
+            "0xfada85",
+            "0x24ca75c"
+          ],
+          "root": "0xfad450",
+          "base": "rcx",
+          "index": "r9",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xfad7c4",
+          "bytes": "f3420f10840914040000",
+          "sha256": "f0b7301f35220099c6aeb33de1f7b4d67f9770da8c80dbdbbbfd86f84066b106",
+          "asm": "movss xmm0, dword ptr [rcx + r9 + 0x414]",
+          "fragment": [
+            "0xfad450",
+            "0xfada85",
+            "0x24ca75c"
+          ],
+          "root": "0xfad450",
+          "base": "rcx",
+          "index": "r9",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xfad7ce",
+          "bytes": "f3430f58840814040000",
+          "sha256": "2fee05b5afe165276de935b8f633bd6f7bee06b0242dce8eb29b51770b515dbc",
+          "asm": "addss xmm0, dword ptr [r8 + r9 + 0x414]",
+          "fragment": [
+            "0xfad450",
+            "0xfada85",
+            "0x24ca75c"
+          ],
+          "root": "0xfad450",
+          "base": "r8",
+          "index": "r9",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xfad7dd",
+          "bytes": "f3430f11840814040000",
+          "sha256": "13bfc07fe509002e1cba406dbaefee793fcf5d2042320f40ce34c41ae161b875",
+          "asm": "movss dword ptr [r8 + r9 + 0x414], xmm0",
+          "fragment": [
+            "0xfad450",
+            "0xfada85",
+            "0x24ca75c"
+          ],
+          "root": "0xfad450",
+          "base": "r8",
+          "index": "r9",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xfad7e7",
+          "bytes": "f3420f11840914040000",
+          "sha256": "9a3c35e198b245608f384523d65a204d2bd86e95011ed0eebe07089200164d67",
+          "asm": "movss dword ptr [rcx + r9 + 0x414], xmm0",
+          "fragment": [
+            "0xfad450",
+            "0xfada85",
+            "0x24ca75c"
+          ],
+          "root": "0xfad450",
+          "base": "rcx",
+          "index": "r9",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xfad8c8",
+          "bytes": "f3420f10840914040000",
+          "sha256": "f0b7301f35220099c6aeb33de1f7b4d67f9770da8c80dbdbbbfd86f84066b106",
+          "asm": "movss xmm0, dword ptr [rcx + r9 + 0x414]",
+          "fragment": [
+            "0xfad450",
+            "0xfada85",
+            "0x24ca75c"
+          ],
+          "root": "0xfad450",
+          "base": "rcx",
+          "index": "r9",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xfad8d2",
+          "bytes": "f3430f58840814040000",
+          "sha256": "2fee05b5afe165276de935b8f633bd6f7bee06b0242dce8eb29b51770b515dbc",
+          "asm": "addss xmm0, dword ptr [r8 + r9 + 0x414]",
+          "fragment": [
+            "0xfad450",
+            "0xfada85",
+            "0x24ca75c"
+          ],
+          "root": "0xfad450",
+          "base": "r8",
+          "index": "r9",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xfad8e1",
+          "bytes": "f3430f11840814040000",
+          "sha256": "13bfc07fe509002e1cba406dbaefee793fcf5d2042320f40ce34c41ae161b875",
+          "asm": "movss dword ptr [r8 + r9 + 0x414], xmm0",
+          "fragment": [
+            "0xfad450",
+            "0xfada85",
+            "0x24ca75c"
+          ],
+          "root": "0xfad450",
+          "base": "r8",
+          "index": "r9",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xfad8eb",
+          "bytes": "f3420f11840914040000",
+          "sha256": "9a3c35e198b245608f384523d65a204d2bd86e95011ed0eebe07089200164d67",
+          "asm": "movss dword ptr [rcx + r9 + 0x414], xmm0",
+          "fragment": [
+            "0xfad450",
+            "0xfada85",
+            "0x24ca75c"
+          ],
+          "root": "0xfad450",
+          "base": "rcx",
+          "index": "r9",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xfada1d",
+          "bytes": "f3420f10840914040000",
+          "sha256": "f0b7301f35220099c6aeb33de1f7b4d67f9770da8c80dbdbbbfd86f84066b106",
+          "asm": "movss xmm0, dword ptr [rcx + r9 + 0x414]",
+          "fragment": [
+            "0xfad450",
+            "0xfada85",
+            "0x24ca75c"
+          ],
+          "root": "0xfad450",
+          "base": "rcx",
+          "index": "r9",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xfada27",
+          "bytes": "f3430f58840814040000",
+          "sha256": "2fee05b5afe165276de935b8f633bd6f7bee06b0242dce8eb29b51770b515dbc",
+          "asm": "addss xmm0, dword ptr [r8 + r9 + 0x414]",
+          "fragment": [
+            "0xfad450",
+            "0xfada85",
+            "0x24ca75c"
+          ],
+          "root": "0xfad450",
+          "base": "r8",
+          "index": "r9",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xfada36",
+          "bytes": "f3430f11840814040000",
+          "sha256": "13bfc07fe509002e1cba406dbaefee793fcf5d2042320f40ce34c41ae161b875",
+          "asm": "movss dword ptr [r8 + r9 + 0x414], xmm0",
+          "fragment": [
+            "0xfad450",
+            "0xfada85",
+            "0x24ca75c"
+          ],
+          "root": "0xfad450",
+          "base": "r8",
+          "index": "r9",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xfada40",
+          "bytes": "f3420f11840914040000",
+          "sha256": "9a3c35e198b245608f384523d65a204d2bd86e95011ed0eebe07089200164d67",
+          "asm": "movss dword ptr [rcx + r9 + 0x414], xmm0",
+          "fragment": [
+            "0xfad450",
+            "0xfada85",
+            "0x24ca75c"
+          ],
+          "root": "0xfad450",
+          "base": "rcx",
+          "index": "r9",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0xfaddaf",
+          "bytes": "f30f108314040000",
+          "sha256": "3654a70a548e0c689637109756dee7dcbcc1b4d4d6a7cd5e6045b913a0408482",
+          "asm": "movss xmm0, dword ptr [rbx + 0x414]",
+          "fragment": [
+            "0xfada90",
+            "0xfadf41",
+            "0x24ca784"
+          ],
+          "root": "0xfada90",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xfadde8",
+          "bytes": "f30f108314040000",
+          "sha256": "3654a70a548e0c689637109756dee7dcbcc1b4d4d6a7cd5e6045b913a0408482",
+          "asm": "movss xmm0, dword ptr [rbx + 0x414]",
+          "fragment": [
+            "0xfada90",
+            "0xfadf41",
+            "0x24ca784"
+          ],
+          "root": "0xfada90",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xfade16",
+          "bytes": "f30f108314040000",
+          "sha256": "3654a70a548e0c689637109756dee7dcbcc1b4d4d6a7cd5e6045b913a0408482",
+          "asm": "movss xmm0, dword ptr [rbx + 0x414]",
+          "fragment": [
+            "0xfada90",
+            "0xfadf41",
+            "0x24ca784"
+          ],
+          "root": "0xfada90",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xfade3f",
+          "bytes": "f30f108314040000",
+          "sha256": "3654a70a548e0c689637109756dee7dcbcc1b4d4d6a7cd5e6045b913a0408482",
+          "asm": "movss xmm0, dword ptr [rbx + 0x414]",
+          "fragment": [
+            "0xfada90",
+            "0xfadf41",
+            "0x24ca784"
+          ],
+          "root": "0xfada90",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xfade68",
+          "bytes": "f30f108314040000",
+          "sha256": "3654a70a548e0c689637109756dee7dcbcc1b4d4d6a7cd5e6045b913a0408482",
+          "asm": "movss xmm0, dword ptr [rbx + 0x414]",
+          "fragment": [
+            "0xfada90",
+            "0xfadf41",
+            "0x24ca784"
+          ],
+          "root": "0xfada90",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xfae8d2",
+          "bytes": "f3450f10a40414040000",
+          "sha256": "aae4bb0547dc00089c5a3ad62db1edb561a9189ed2e25c28f8787c53691e1440",
+          "asm": "movss xmm12, dword ptr [r12 + rax + 0x414]",
+          "fragment": [
+            "0xfae391",
+            "0xfaf10f",
+            "0x24ca840"
+          ],
+          "root": "0xfae300",
+          "base": "r12",
+          "index": "rax",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xfae912",
+          "bytes": "f3460f109c2814040000",
+          "sha256": "c2abceaef8e0e14a5cbea6322bfc93c28e977c0f607b318424fe028608b8dc04",
+          "asm": "movss xmm11, dword ptr [rax + r13 + 0x414]",
+          "fragment": [
+            "0xfae391",
+            "0xfaf10f",
+            "0x24ca840"
+          ],
+          "root": "0xfae300",
+          "base": "rax",
+          "index": "r13",
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xfb06b6",
+          "bytes": "f3410f10842414040000",
+          "sha256": "2005526141653ab0ea6b0207af40aa34e08cf8e4ab4bbfc8f2b61f54b7217d89",
+          "asm": "movss xmm0, dword ptr [r12 + 0x414]",
+          "fragment": [
+            "0xfaf599",
+            "0xfb1a00",
+            "0x24ca8e4"
+          ],
+          "root": "0xfaf130",
+          "base": "r12",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xfb06d0",
+          "bytes": "f3450f109e14040000",
+          "sha256": "15e4b2ce6668539276801dbd45b1e54d64b5800ad90da2b589348c29c7221b5a",
+          "asm": "movss xmm11, dword ptr [r14 + 0x414]",
+          "fragment": [
+            "0xfaf599",
+            "0xfb1a00",
+            "0x24ca8e4"
+          ],
+          "root": "0xfaf130",
+          "base": "r14",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0xfb50cb",
+          "bytes": "f3410f10bf14040000",
+          "sha256": "5f77cb27dff04c84d13fba57d6fbe826fae30b14be20bf48b453a4cc47937a34",
+          "asm": "movss xmm7, dword ptr [r15 + 0x414]",
+          "fragment": [
+            "0xfb4dd0",
+            "0xfb53cc",
+            "0x24cacec"
+          ],
+          "root": "0xfb4dd0",
+          "base": "r15",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x1083220",
+          "bytes": "39b714040000",
+          "sha256": "ea151f6d9fa0693308fe8e886c9783490210ff829813089f0f0c155a003b05b9",
+          "asm": "cmp dword ptr [rdi + 0x414], esi",
+          "fragment": [
+            "0x1083150",
+            "0x10833ee",
+            "0x24d9cdc"
+          ],
+          "root": "0x1083150",
+          "base": "rdi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x10851ad",
+          "bytes": "898e14040000",
+          "sha256": "8115be48208c49cf4ab9c3cba7afd73a98902ec635cfe2fcca8a3574d7a23329",
+          "asm": "mov dword ptr [rsi + 0x414], ecx",
+          "fragment": [
+            "0x10850f0",
+            "0x1085828",
+            "0x24d9e20"
+          ],
+          "root": "0x10850f0",
+          "base": "rsi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x108782f",
+          "bytes": "8b8114040000",
+          "sha256": "7d129baf320e53de97078e80e46c6565ea10ebf9c2e84cee8d9adc5c1b252d71",
+          "asm": "mov eax, dword ptr [rcx + 0x414]",
+          "fragment": [
+            "0x1087800",
+            "0x1087841",
+            "0x24da01c"
+          ],
+          "root": "0x1087800",
+          "base": "rcx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x1087aff",
+          "bytes": "8b8114040000",
+          "sha256": "7d129baf320e53de97078e80e46c6565ea10ebf9c2e84cee8d9adc5c1b252d71",
+          "asm": "mov eax, dword ptr [rcx + 0x414]",
+          "fragment": [
+            "0x1087ab0",
+            "0x1087bd5",
+            "0x24da07c"
+          ],
+          "root": "0x1087ab0",
+          "base": "rcx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x1087b33",
+          "bytes": "8b8314040000",
+          "sha256": "3963020b9412308b5cbeee4f73c6d4b23cbe45280fdf039cd737da5e5333e0ce",
+          "asm": "mov eax, dword ptr [rbx + 0x414]",
+          "fragment": [
+            "0x1087ab0",
+            "0x1087bd5",
+            "0x24da07c"
+          ],
+          "root": "0x1087ab0",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x10888cc",
+          "bytes": "44898114040000",
+          "sha256": "8763119d30f893e9f2042b65af116e4dd4925252bfe692e9e572ee5fc9697cf7",
+          "asm": "mov dword ptr [rcx + 0x414], r8d",
+          "fragment": [
+            "0x10888b9",
+            "0x10888db",
+            "0x24da1d4"
+          ],
+          "root": "0x10888a0",
+          "base": "rcx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 2
+        },
+        {
+          "rva": "0x11b79a6",
+          "bytes": "0f118514040000",
+          "sha256": "51a14ee1c806c701ff4f210e0554abe9c41d00e82fa58d0f15960d7ebc0eb656",
+          "asm": "movups xmmword ptr [rbp + 0x414], xmm0",
+          "fragment": [
+            "0x11b7670",
+            "0x11b7d63",
+            "0x24f0524"
+          ],
+          "root": "0x11b7670",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0x11cad06",
+          "bytes": "0f118514040000",
+          "sha256": "51a14ee1c806c701ff4f210e0554abe9c41d00e82fa58d0f15960d7ebc0eb656",
+          "asm": "movups xmmword ptr [rbp + 0x414], xmm0",
+          "fragment": [
+            "0x11cac05",
+            "0x11cb077",
+            "0x24f3ec0"
+          ],
+          "root": "0x11ca910",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0x11e0f59",
+          "bytes": "0f118514040000",
+          "sha256": "51a14ee1c806c701ff4f210e0554abe9c41d00e82fa58d0f15960d7ebc0eb656",
+          "asm": "movups xmmword ptr [rbp + 0x414], xmm0",
+          "fragment": [
+            "0x11e0e10",
+            "0x11e11d5",
+            "0x24f6aec"
+          ],
+          "root": "0x11e0e10",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0x129a2ba",
+          "bytes": "0f118514040000",
+          "sha256": "51a14ee1c806c701ff4f210e0554abe9c41d00e82fa58d0f15960d7ebc0eb656",
+          "asm": "movups xmmword ptr [rbp + 0x414], xmm0",
+          "fragment": [
+            "0x129a180",
+            "0x129a55f",
+            "0x24fc070"
+          ],
+          "root": "0x129a180",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 16,
+          "access": 1
+        },
+        {
+          "rva": "0x140bc52",
+          "bytes": "f3410f588a14040000",
+          "sha256": "1097bba0bf6e6302a596999d6decc671422d7d2e6d65cafde241adf6132465fd",
+          "asm": "addss xmm1, dword ptr [r10 + 0x414]",
+          "fragment": [
+            "0x140bbf0",
+            "0x140bc8c",
+            "0x2517480"
+          ],
+          "root": "0x140bbf0",
+          "base": "r10",
+          "index": null,
+          "scale": 1,
+          "operand_size": 4,
+          "access": 1
+        },
+        {
+          "rva": "0x189d173",
+          "bytes": "4c89bd14040000",
+          "sha256": "e8cc2a46f32980a4245769a77123423032451245f883fbbcd142c87eff8ae051",
+          "asm": "mov qword ptr [rbp + 0x414], r15",
+          "fragment": [
+            "0x189d153",
+            "0x189d27b",
+            "0x257ba7c"
+          ],
+          "root": "0x189d120",
+          "base": "rbp",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 2
+        },
+        {
+          "rva": "0x1a173bb",
+          "bytes": "48898f14040000",
+          "sha256": "d8ed5651e1c14c559e9ddff754b4d6ec5551d4cad491009cba0d8ba19bfdabd6",
+          "asm": "mov qword ptr [rdi + 0x414], rcx",
+          "fragment": [
+            "0x1a17240",
+            "0x1a17751",
+            "0x2591274"
+          ],
+          "root": "0x1a17240",
+          "base": "rdi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 8,
+          "access": 2
+        }
+      ],
+      "raw_matches_outside_unwind": 6
+    },
+    "0xea0bcc": {
+      "references": [],
+      "raw_matches_outside_unwind": 0
+    }
+  },
+  "limits": [
+    "Only encoded disp32 memory references in captured unwind-covered code are included.",
+    "RIP-relative references are excluded; base-register identity is unproven.",
+    "Computed addresses, indexed layout changes, leaf functions without unwind, and uncaptured code can be omitted."
+  ]
+}

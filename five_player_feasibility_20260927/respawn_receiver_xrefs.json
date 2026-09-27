@@ -1,0 +1,152 @@
+{
+  "capture_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "source_sha256": {
+    "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+  },
+  "code_range": {
+    "rva": 4096,
+    "size": 34667155,
+    "label": "code",
+    "copied_bytes": 34667155,
+    "skipped_bytes": 0
+  },
+  "captured_unwind_table": {
+    "rva": "0x37d8000",
+    "size": 1832304,
+    "fragments": 152692
+  },
+  "header_exception_directory_uncaptured": {
+    "rva": "0x3fd340c",
+    "size": 1832316
+  },
+  "targets": {
+    "0xac83f0": {
+      "branches": [
+        {
+          "rva": "0xac7bbe",
+          "bytes": "e82d080000",
+          "sha256": "510aca04077b2525ada0e33298c41ec1faa7db0cbb0b8e33f2defdc65ca81a2b",
+          "asm": "call 0xac83f0",
+          "fragment": [
+            "0xac7b80",
+            "0xac7bde",
+            "0x24a7cd4"
+          ],
+          "root": [
+            "0xac7280",
+            "0xac7429",
+            "0x24a7c58"
+          ]
+        },
+        {
+          "rva": "0xac8303",
+          "bytes": "e8e8000000",
+          "sha256": "6e883fdc536aebb8383e4ffbe926730b95976fda81a3004ba97a964aff502da4",
+          "asm": "call 0xac83f0",
+          "fragment": [
+            "0xac8251",
+            "0xac836f",
+            "0x24a7d54"
+          ],
+          "root": [
+            "0xac7be0",
+            "0xac7c72",
+            "0x24a7ce4"
+          ]
+        },
+        {
+          "rva": "0xb8ea09",
+          "bytes": "e8e299f3ff",
+          "sha256": "c06d3e67305033e1cf83c45624b3a2dcb80f2f491e2663024177838917d2c1c8",
+          "asm": "call 0xac83f0",
+          "fragment": [
+            "0xb8e99c",
+            "0xb8ea31",
+            "0x24b65d4"
+          ],
+          "root": [
+            "0xb8e970",
+            "0xb8e99c",
+            "0x24b65c4"
+          ]
+        }
+      ],
+      "rip_references": [],
+      "absolute_pointers": [],
+      "rva_literals": [
+        {
+          "rva": "0x24a7da4",
+          "range": "readonly",
+          "bytes": "f083ac00",
+          "aligned": true
+        },
+        {
+          "rva": "0x24a7db4",
+          "range": "readonly",
+          "bytes": "f083ac00",
+          "aligned": true
+        },
+        {
+          "rva": "0x3858cf4",
+          "range": "unwind",
+          "bytes": "f083ac00",
+          "aligned": true
+        }
+      ]
+    },
+    "0xbe1920": {
+      "branches": [
+        {
+          "rva": "0xac7b58",
+          "bytes": "e8c39d1100",
+          "sha256": "d700a13e07311ed5471677edc88b30d893562f45751c7f42c3823c520aee651f",
+          "asm": "call 0xbe1920",
+          "fragment": [
+            "0xac78ff",
+            "0xac7b80",
+            "0x24a7cbc"
+          ],
+          "root": [
+            "0xac7280",
+            "0xac7429",
+            "0x24a7c58"
+          ]
+        },
+        {
+          "rva": "0xac8343",
+          "bytes": "e8d8951100",
+          "sha256": "f5ba47ce93bd591cab3317a5c57ed2f6ba8645db830b7e41fa7d9311b3874204",
+          "asm": "call 0xbe1920",
+          "fragment": [
+            "0xac8251",
+            "0xac836f",
+            "0x24a7d54"
+          ],
+          "root": [
+            "0xac7be0",
+            "0xac7c72",
+            "0x24a7ce4"
+          ]
+        }
+      ],
+      "rip_references": [],
+      "absolute_pointers": [],
+      "rva_literals": [
+        {
+          "rva": "0x38675d4",
+          "range": "unwind",
+          "bytes": "2019be00",
+          "aligned": true
+        }
+      ]
+    }
+  },
+  "limits": [
+    "No heap or writable-data capture.",
+    "RIP reference scan recognizes REX/non-REX MOV/LEA with disp32; it does not solve arbitrary address arithmetic.",
+    "Exception-table boundary validation omits leaf or uncovered code.",
+    "Pointer/RVA literal matches alone are data occurrences, not execution edges.",
+    "No gameplay, ownership, or lifecycle inference."
+  ]
+}

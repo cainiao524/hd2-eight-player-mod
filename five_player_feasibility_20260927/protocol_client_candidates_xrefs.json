@@ -1,0 +1,186 @@
+{
+  "capture_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "source_sha256": {
+    "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+  },
+  "code_range": {
+    "rva": 4096,
+    "size": 34667155,
+    "label": "code",
+    "copied_bytes": 34667155,
+    "skipped_bytes": 0
+  },
+  "captured_unwind_table": {
+    "rva": "0x37d8000",
+    "size": 1832304,
+    "fragments": 152692
+  },
+  "header_exception_directory_uncaptured": {
+    "rva": "0x3fd340c",
+    "size": 1832316
+  },
+  "targets": {
+    "0x10872c0": {
+      "branches": [],
+      "rip_references": [],
+      "absolute_pointers": [],
+      "rva_literals": [
+        {
+          "rva": "0x3877144",
+          "range": "unwind",
+          "bytes": "c0720801",
+          "aligned": true
+        }
+      ]
+    },
+    "0x1087800": {
+      "branches": [
+        {
+          "rva": "0xb91d19",
+          "bytes": "e8e25a4f00",
+          "sha256": "00a12862ec24ac5a64ad46bc67d7948776cda7a1b4ace715eb518e2885548513",
+          "asm": "call 0x1087800",
+          "fragment": [
+            "0xb91c77",
+            "0xb91daf",
+            "0x24b6d54"
+          ],
+          "root": [
+            "0xb91c50",
+            "0xb91c77",
+            "0x24b6d44"
+          ]
+        },
+        {
+          "rva": "0x1087b47",
+          "bytes": "e8b4fcffff",
+          "sha256": "1f2cec987b3126f31b290f42069c8d2bb49cb01e7b59e5f47c5f1c1b354e6425",
+          "asm": "call 0x1087800",
+          "fragment": [
+            "0x1087ab0",
+            "0x1087bd5",
+            "0x24da07c"
+          ],
+          "root": [
+            "0x1087ab0",
+            "0x1087bd5",
+            "0x24da07c"
+          ]
+        }
+      ],
+      "rip_references": [],
+      "absolute_pointers": [],
+      "rva_literals": [
+        {
+          "rva": "0x24da038",
+          "range": "readonly",
+          "bytes": "00780801",
+          "aligned": true
+        },
+        {
+          "rva": "0x24da070",
+          "range": "readonly",
+          "bytes": "00780801",
+          "aligned": true
+        },
+        {
+          "rva": "0x3877180",
+          "range": "unwind",
+          "bytes": "00780801",
+          "aligned": true
+        }
+      ]
+    },
+    "0x10896a0": {
+      "branches": [],
+      "rip_references": [],
+      "absolute_pointers": [],
+      "rva_literals": [
+        {
+          "rva": "0x38773a8",
+          "range": "unwind",
+          "bytes": "a0960801",
+          "aligned": true
+        }
+      ]
+    },
+    "0x108d9f0": {
+      "branches": [
+        {
+          "rva": "0x108aea9",
+          "bytes": "e8422b0000",
+          "sha256": "5c8a58aff95633c4c2b6708a348e79b904bd89518fd07b17448db2121f03eed3",
+          "asm": "call 0x108d9f0",
+          "fragment": [
+            "0x108ab57",
+            "0x108b4f6",
+            "0x24da3b8"
+          ],
+          "root": [
+            "0x108a440",
+            "0x108a5a7",
+            "0x24da36c"
+          ]
+        },
+        {
+          "rva": "0x108d876",
+          "bytes": "e875010000",
+          "sha256": "c67a411afe40592417df3a9e7e6bb55fb130010c0b2b576c7505bf5dfd333ae9",
+          "asm": "call 0x108d9f0",
+          "fragment": [
+            "0x108d840",
+            "0x108d888",
+            "0x24da674"
+          ],
+          "root": [
+            "0x108d840",
+            "0x108d888",
+            "0x24da674"
+          ]
+        }
+      ],
+      "rip_references": [],
+      "absolute_pointers": [],
+      "rva_literals": [
+        {
+          "rva": "0x24da6d4",
+          "range": "readonly",
+          "bytes": "f0d90801",
+          "aligned": true
+        },
+        {
+          "rva": "0x24da6e4",
+          "range": "readonly",
+          "bytes": "f0d90801",
+          "aligned": true
+        },
+        {
+          "rva": "0x24da700",
+          "range": "readonly",
+          "bytes": "f0d90801",
+          "aligned": true
+        },
+        {
+          "rva": "0x38775d4",
+          "range": "unwind",
+          "bytes": "f0d90801",
+          "aligned": true
+        },
+        {
+          "rva": "0x38775dc",
+          "range": "unwind",
+          "bytes": "f0d90801",
+          "aligned": true
+        }
+      ]
+    }
+  },
+  "limits": [
+    "No heap or writable-data capture.",
+    "RIP reference scan recognizes REX/non-REX MOV/LEA with disp32; it does not solve arbitrary address arithmetic.",
+    "Exception-table boundary validation omits leaf or uncovered code.",
+    "Pointer/RVA literal matches alone are data occurrences, not execution edges.",
+    "No gameplay, ownership, or lifecycle inference."
+  ]
+}

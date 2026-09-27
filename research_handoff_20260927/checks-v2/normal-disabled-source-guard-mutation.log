@@ -1,0 +1,19 @@
+test_modified_code_file_is_rejected_by_exact_source_pin (test_generation_research.GenerationResearchTests.test_modified_code_file_is_rejected_by_exact_source_pin) ... FAIL
+
+======================================================================
+FAIL: test_modified_code_file_is_rejected_by_exact_source_pin (test_generation_research.GenerationResearchTests.test_modified_code_file_is_rejected_by_exact_source_pin)
+----------------------------------------------------------------------
+reference_schema.ReferenceDataError: ordinary gun spawn-option determination changed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\OvO\Documents\Codex\2026-09-26\referenced-chatgpt-conversation-this-is-an\outputs\healing-pistol-enhanced\tests\test_generation_research.py", line 248, in test_modified_code_file_is_rejected_by_exact_source_pin
+    with self.assertRaisesRegex(ReferenceDataError, 'file fingerprint mismatch'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "file fingerprint mismatch" does not match "ordinary gun spawn-option determination changed"
+
+----------------------------------------------------------------------
+Ran 1 test in 0.062s
+
+FAILED (failures=1)

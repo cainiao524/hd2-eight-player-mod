@@ -1,0 +1,4987 @@
+{
+  "status": "passed",
+  "test_methods_run": 7,
+  "failure_count": 0,
+  "error_count": 0,
+  "failures": [],
+  "errors": [],
+  "source_sha256": {
+    "Native/roster_departure.py": "a0d9a350254955a840a6039795eb42b89ea8f48e86c3ce00b921e3b1c6f165ba",
+    "Native/roster_getter.py": "3de7432a9c1218ab98f2e92679583cb299c93d4ba8bcb739fea8aa980520ef5d",
+    "Native/roster_classify.py": "bc4508fadf17726b773ed9c4237f7693405856ccc0b57ddcac4d06e073f46153",
+    "Native/roster_remove.py": "097e34c1087f3b311ecf6c9ed85de9165fa739b416e9c99ff7a834aa021c9716",
+    "Native/roster_insert.py": "b7bfcd2184382925b4abade40c5e81f21fcdd689f1aea47a2546c055f0bbf551",
+    "Native/roster_move.py": "cc6df86a567fda45fcac9a258372df52aad085fff67a620b5f4a2d46c100c23f",
+    "Native/roster_bundle.py": "7041074e818277f45476b91611bf8a37a0a94a9244c48c321148341dac824fbf",
+    "Native/roster_property_pair.py": "5828d6a03bfce89ea63e3c8e8c49bca60825aa8b11533dd7e545570f183dba63",
+    "Native/roster_producer.py": "015b2240847019bfb62fa62a72ce8af93894f2d61b0369d5079aa40d40697a4b",
+    "Native/roster_receiver.py": "38b163fe9a0fda32db609ee94f96ab257105221e60e28ad14c4bd14676e61a27",
+    "Native/player_count.py": "d89b5cb7d8c6a574dbb4d1ef24346524c3a9d2cfeae36357a9bf8fd94967d8ab"
+  },
+  "test_sha256": "f0d5a90b52a613799c33a987859717bf2c381cf20f27dd53b1a73d68345b25f0",
+  "evidence_sha256": {
+    "roster_departure_native_evidence.json": "0280267b6f32d4a24f15c69da317d1c2c7a93adb136d4252ff93e09a8d67e609",
+    "roster_departure_callee_evidence.json": "04e16b4b9a301ba2fbd796528df6e53f9d3d8a25626cd459cc9f1329edd5d0d0",
+    "roster_getter_native_evidence.json": "1360863bfe1f1f6ce640ef049776d3b31703a1cbfe2bea3f90bf20555f69e0fd",
+    "roster_remove_native_evidence.json": "67563b2d12860c814096b1d45338dd271ad13975c3ba4f96169a92473ab061af",
+    "roster_departure_aux_evidence.json": "43507a33e177e0a3f43bb0afe16dce99c59a059d57a5a15ec09a7c6d105793df",
+    "roster_classify_native_evidence.json": "f20165dad6823edc40fbcdf0434123139f1c80d9222a2b20d3f4c067768e9e33",
+    "roster_insert_native_evidence.json": "794c357a56b2aa28cfd1061374afe27c1a3a2c06d31ce4ca736e4b783e41b497",
+    "roster_move_native_evidence.json": "115802c09eb15f840932667717731150aa347e7ae8a72245dd92e05a5e86a242",
+    "roster_property_producer_native_evidence.json": "f73ec903d06f2304f4f944c25e011a7ef86d78737cb1b197101a1c96daaabacb",
+    "roster_property_receive_evidence.json": "bad5661771df280dd5e982b765d2f4ab1c73de9ae7e86e974751af6c3c383c10",
+    "roster_player_count_native_evidence.json": "8f0fad49d9f5bc7e95ffe8735007b59c302034704707602c8d8093ad795676e3"
+  },
+  "test_dependency_sha256": {
+    "verification\\native_roster_departure_addresses_synthetic.json": "c24a3b5cb6ce31ca8a5fae5c803de41fd06a8baafa8962b08abfa7673f36b231"
+  },
+  "executed_saved_body_sha256": {
+    "0x606820": "0ee6495101f1fbd8c4a95731144aa5dbd43289f107264c12c4d2d9aab9ffd2ce",
+    "0xb0b020": "5e4eb6a1ec43b034743f67d84cf8af24a83bcbf8c4851211e2074ccb6600d1d4",
+    "0xb11c20": "2cfbab65bc09dab531e0d6d40068a47e7e13a95f1f039ffff5795fb813768b25",
+    "0xb0f820": "533fada65b0fe0477682f7fa97a9c346c0bc3d503065d6e4d211f793b3a4afaa",
+    "0xfd9c80": "0533fa336a0f696021412e722716c7de8ee2096439a98f7e8671a9ea44487eae",
+    "0xfd9d40": "27627b0418666a4ce50917587d9dd779c3736a8af2272a3a3c955f94cb3701ed"
+  },
+  "python_version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "unicorn_version": "2.1.4",
+  "capstone_version": "5.0.7",
+  "fixture_synthetic": true,
+  "game_process_accessed": false,
+  "host_native_code_executed": false,
+  "installable": false,
+  "emulator_runs": [
+    {
+      "name": "original_dense_baseline",
+      "component": "departure",
+      "original": true,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "ordinal": 1,
+      "entry_rva": "0x605950",
+      "associated": true,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "return",
+      "instructions": 670,
+      "actual_helper_entries": [
+        "0x606820",
+        "0xb0b020",
+        "0xb11c20",
+        "0xb0f820",
+        "0xfd9c80"
+      ],
+      "contract_events": [
+        {
+          "kind": "contract_stub",
+          "role": "disconnected",
+          "args": {
+            "rcx": 1657860522048,
+            "rdx": 140694574625720,
+            "r8": 1,
+            "r9": 0
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "network",
+          "args": {
+            "rcx": 1658192920576,
+            "rdx": 4294967294,
+            "r8": 1,
+            "r9": 8
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 41747,
+            "r8": 291,
+            "r9": 4
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 44055,
+            "r8": 4,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657963282432,
+            "rdx": 1657963521336,
+            "r8": 23,
+            "r9": 7
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657965379584,
+            "rdx": 1657965618488,
+            "r8": 23,
+            "r9": 9
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 3,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "tail",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 4,
+            "r8": 1657861574656,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ],
+          "pre_remove_dense": 4
+        }
+      ]
+    },
+    {
+      "name": "candidate_dense_pair",
+      "component": "departure",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "ordinal": 1,
+      "entry_rva": "0x10200000",
+      "associated": true,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "return",
+      "instructions": 766,
+      "actual_helper_entries": [
+        "0x100f0000",
+        "0xb0b020",
+        "0xb11c20",
+        "0xb0f820",
+        "0xfd9c80"
+      ],
+      "contract_events": [
+        {
+          "kind": "contract_stub",
+          "role": "disconnected",
+          "args": {
+            "rcx": 1657860522048,
+            "rdx": 140694574625720,
+            "r8": 1,
+            "r9": 0
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "network",
+          "args": {
+            "rcx": 1658192920576,
+            "rdx": 4294967294,
+            "r8": 4,
+            "r9": 8
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 41747,
+            "r8": 291,
+            "r9": 4
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 44055,
+            "r8": 4,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657963282432,
+            "rdx": 1657963521336,
+            "r8": 23,
+            "r9": 7
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657965379584,
+            "rdx": 1657965618488,
+            "r8": 23,
+            "r9": 9
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 3,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "tail",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 4,
+            "r8": 1657861574656,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ],
+          "pre_remove_dense": 4
+        }
+      ]
+    },
+    {
+      "name": "original_dense_baseline",
+      "component": "departure",
+      "original": true,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "ordinal": 1,
+      "entry_rva": "0x605950",
+      "associated": false,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": true,
+      "mode": 4,
+      "outcome": "return",
+      "instructions": 606,
+      "actual_helper_entries": [
+        "0x606820",
+        "0xb0b020",
+        "0xb11c20",
+        "0xb0f820",
+        "0xfd9c80"
+      ],
+      "contract_events": [
+        {
+          "kind": "contract_stub",
+          "role": "disconnected",
+          "args": {
+            "rcx": 1657860522048,
+            "rdx": 140694574625720,
+            "r8": 1,
+            "r9": 0
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "network",
+          "args": {
+            "rcx": 1658192920576,
+            "rdx": 4294967294,
+            "r8": 1,
+            "r9": 8
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 44055,
+            "r8": 4,
+            "r9": 3
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657963282432,
+            "rdx": 1657963521336,
+            "r8": 23,
+            "r9": 7
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657965379584,
+            "rdx": 1657965618488,
+            "r8": 23,
+            "r9": 9
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 3,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "tail",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 4,
+            "r8": 1657861574656,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ],
+          "pre_remove_dense": 4
+        }
+      ]
+    },
+    {
+      "name": "candidate_dense_pair",
+      "component": "departure",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "ordinal": 1,
+      "entry_rva": "0x10200000",
+      "associated": false,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": true,
+      "mode": 4,
+      "outcome": "return",
+      "instructions": 702,
+      "actual_helper_entries": [
+        "0x100f0000",
+        "0xb0b020",
+        "0xb11c20",
+        "0xb0f820",
+        "0xfd9c80"
+      ],
+      "contract_events": [
+        {
+          "kind": "contract_stub",
+          "role": "disconnected",
+          "args": {
+            "rcx": 1657860522048,
+            "rdx": 140694574625720,
+            "r8": 1,
+            "r9": 0
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "network",
+          "args": {
+            "rcx": 1658192920576,
+            "rdx": 4294967294,
+            "r8": 4,
+            "r9": 8
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 44055,
+            "r8": 4,
+            "r9": 3
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657963282432,
+            "rdx": 1657963521336,
+            "r8": 23,
+            "r9": 7
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657965379584,
+            "rdx": 1657965618488,
+            "r8": 23,
+            "r9": 9
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 3,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "tail",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 4,
+            "r8": 1657861574656,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ],
+          "pre_remove_dense": 4
+        }
+      ]
+    },
+    {
+      "name": "original_dense_baseline",
+      "component": "departure",
+      "original": true,
+      "t": 4,
+      "d": 4,
+      "p": 1,
+      "ordinal": 2,
+      "entry_rva": "0x605950",
+      "associated": true,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "return",
+      "instructions": 557,
+      "actual_helper_entries": [
+        "0x606820",
+        "0xfd9c80",
+        "0xfd9d40"
+      ],
+      "contract_events": [
+        {
+          "kind": "contract_stub",
+          "role": "network",
+          "args": {
+            "rcx": 1658192920576,
+            "rdx": 2147483647,
+            "r8": 2,
+            "r9": 8
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "controller_check",
+          "args": {
+            "rcx": 57,
+            "rdx": 1657861574656,
+            "r8": 291,
+            "r9": 4
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "associated_controller",
+          "args": {
+            "rcx": 1126236161,
+            "rdx": 57,
+            "r8": 0,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_reset",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 0,
+            "r8": 3,
+            "r9": 4
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_query",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 3,
+            "r8": 4,
+            "r9": 41747
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_flag",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 1,
+            "r8": 4,
+            "r9": 41747
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "link_old",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 27,
+            "r8": 41747,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "relationship_old",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 41747,
+            "r8": 27,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "create_output",
+          "args": {
+            "rcx": 1658209697792,
+            "rdx": 1661883940880,
+            "r8": 41747,
+            "r9": 57
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "output_id": 46103
+        },
+        {
+          "kind": "contract_stub",
+          "role": "link_output",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 27,
+            "r8": 46103,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "relationship_output",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 46103,
+            "r8": 27,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 41747,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 44055,
+            "r8": 4,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657963282432,
+            "rdx": 1657963521336,
+            "r8": 23,
+            "r9": 7
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657965379584,
+            "rdx": 1657965618488,
+            "r8": 23,
+            "r9": 9
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 3,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "tail",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 4,
+            "r8": 1657861574656,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "pre_remove_dense": 4
+        }
+      ]
+    },
+    {
+      "name": "candidate_dense_pair",
+      "component": "departure",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 1,
+      "ordinal": 2,
+      "entry_rva": "0x10200000",
+      "associated": true,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "return",
+      "instructions": 660,
+      "actual_helper_entries": [
+        "0x100f0000",
+        "0xfd9c80",
+        "0xfd9d40"
+      ],
+      "contract_events": [
+        {
+          "kind": "contract_stub",
+          "role": "network",
+          "args": {
+            "rcx": 1658192920576,
+            "rdx": 2147483647,
+            "r8": 5,
+            "r9": 8
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "controller_check",
+          "args": {
+            "rcx": 57,
+            "rdx": 1657861574656,
+            "r8": 291,
+            "r9": 4
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "associated_controller",
+          "args": {
+            "rcx": 1126236161,
+            "rdx": 57,
+            "r8": 0,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_reset",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 0,
+            "r8": 3,
+            "r9": 4
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_query",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 3,
+            "r8": 4,
+            "r9": 41747
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_flag",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 1,
+            "r8": 4,
+            "r9": 41747
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "link_old",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 27,
+            "r8": 41747,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "relationship_old",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 41747,
+            "r8": 27,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "create_output",
+          "args": {
+            "rcx": 1658209697792,
+            "rdx": 1661883940880,
+            "r8": 41747,
+            "r9": 57
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "output_id": 46103
+        },
+        {
+          "kind": "contract_stub",
+          "role": "link_output",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 27,
+            "r8": 46103,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "relationship_output",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 46103,
+            "r8": 27,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 41747,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 44055,
+            "r8": 4,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657963282432,
+            "rdx": 1657963521336,
+            "r8": 23,
+            "r9": 7
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657965379584,
+            "rdx": 1657965618488,
+            "r8": 23,
+            "r9": 9
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 3,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "tail",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 4,
+            "r8": 1657861574656,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "pre_remove_dense": 4
+        }
+      ]
+    },
+    {
+      "name": "original_dense_baseline",
+      "component": "departure",
+      "original": true,
+      "t": 4,
+      "d": 4,
+      "p": 1,
+      "ordinal": 2,
+      "entry_rva": "0x605950",
+      "associated": true,
+      "associated_flag": true,
+      "controller": true,
+      "query": false,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "return",
+      "instructions": 527,
+      "actual_helper_entries": [
+        "0x606820",
+        "0xfd9c80",
+        "0xfd9d40"
+      ],
+      "contract_events": [
+        {
+          "kind": "contract_stub",
+          "role": "network",
+          "args": {
+            "rcx": 1658192920576,
+            "rdx": 2147483647,
+            "r8": 2,
+            "r9": 8
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "controller_check",
+          "args": {
+            "rcx": 57,
+            "rdx": 1657861574656,
+            "r8": 291,
+            "r9": 4
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "associated_controller",
+          "args": {
+            "rcx": 1126236161,
+            "rdx": 57,
+            "r8": 0,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_reset",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 0,
+            "r8": 3,
+            "r9": 4
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_query",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 3,
+            "r8": 4,
+            "r9": 41747
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "link_old",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 27,
+            "r8": 41747,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "relationship_old",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 41747,
+            "r8": 27,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "create_output",
+          "args": {
+            "rcx": 1658209697792,
+            "rdx": 1661883940880,
+            "r8": 41747,
+            "r9": 57
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "output_id": 46103
+        },
+        {
+          "kind": "contract_stub",
+          "role": "link_output",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 27,
+            "r8": 46103,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "relationship_output",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 46103,
+            "r8": 27,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 41747,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 44055,
+            "r8": 4,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657963282432,
+            "rdx": 1657963521336,
+            "r8": 23,
+            "r9": 7
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657965379584,
+            "rdx": 1657965618488,
+            "r8": 23,
+            "r9": 9
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 3,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "tail",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 4,
+            "r8": 1657861574656,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "pre_remove_dense": 4
+        }
+      ]
+    },
+    {
+      "name": "candidate_dense_pair",
+      "component": "departure",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 1,
+      "ordinal": 2,
+      "entry_rva": "0x10200000",
+      "associated": true,
+      "associated_flag": true,
+      "controller": true,
+      "query": false,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "return",
+      "instructions": 630,
+      "actual_helper_entries": [
+        "0x100f0000",
+        "0xfd9c80",
+        "0xfd9d40"
+      ],
+      "contract_events": [
+        {
+          "kind": "contract_stub",
+          "role": "network",
+          "args": {
+            "rcx": 1658192920576,
+            "rdx": 2147483647,
+            "r8": 5,
+            "r9": 8
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "controller_check",
+          "args": {
+            "rcx": 57,
+            "rdx": 1657861574656,
+            "r8": 291,
+            "r9": 4
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "associated_controller",
+          "args": {
+            "rcx": 1126236161,
+            "rdx": 57,
+            "r8": 0,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_reset",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 0,
+            "r8": 3,
+            "r9": 4
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_query",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 3,
+            "r8": 4,
+            "r9": 41747
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "link_old",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 27,
+            "r8": 41747,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "relationship_old",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 41747,
+            "r8": 27,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "create_output",
+          "args": {
+            "rcx": 1658209697792,
+            "rdx": 1661883940880,
+            "r8": 41747,
+            "r9": 57
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "output_id": 46103
+        },
+        {
+          "kind": "contract_stub",
+          "role": "link_output",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 27,
+            "r8": 46103,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "relationship_output",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 46103,
+            "r8": 27,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 41747,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 44055,
+            "r8": 4,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657963282432,
+            "rdx": 1657963521336,
+            "r8": 23,
+            "r9": 7
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657965379584,
+            "rdx": 1657965618488,
+            "r8": 23,
+            "r9": 9
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 3,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "tail",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 4,
+            "r8": 1657861574656,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "pre_remove_dense": 4
+        }
+      ]
+    },
+    {
+      "name": "original_dense_baseline",
+      "component": "departure",
+      "original": true,
+      "t": 4,
+      "d": 4,
+      "p": 1,
+      "ordinal": 2,
+      "entry_rva": "0x605950",
+      "associated": true,
+      "associated_flag": true,
+      "controller": false,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "return",
+      "instructions": 374,
+      "actual_helper_entries": [
+        "0x606820",
+        "0xfd9c80"
+      ],
+      "contract_events": [
+        {
+          "kind": "contract_stub",
+          "role": "network",
+          "args": {
+            "rcx": 1658192920576,
+            "rdx": 2147483647,
+            "r8": 2,
+            "r9": 8
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "controller_check",
+          "args": {
+            "rcx": 57,
+            "rdx": 1657861574656,
+            "r8": 291,
+            "r9": 4
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 41747,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 44055,
+            "r8": 4,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657963282432,
+            "rdx": 1657963521336,
+            "r8": 23,
+            "r9": 7
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657965379584,
+            "rdx": 1657965618488,
+            "r8": 23,
+            "r9": 9
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 3,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "tail",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 4,
+            "r8": 1657861574656,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "pre_remove_dense": 4
+        }
+      ]
+    },
+    {
+      "name": "candidate_dense_pair",
+      "component": "departure",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 1,
+      "ordinal": 2,
+      "entry_rva": "0x10200000",
+      "associated": true,
+      "associated_flag": true,
+      "controller": false,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "return",
+      "instructions": 477,
+      "actual_helper_entries": [
+        "0x100f0000",
+        "0xfd9c80"
+      ],
+      "contract_events": [
+        {
+          "kind": "contract_stub",
+          "role": "network",
+          "args": {
+            "rcx": 1658192920576,
+            "rdx": 2147483647,
+            "r8": 5,
+            "r9": 8
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "controller_check",
+          "args": {
+            "rcx": 57,
+            "rdx": 1657861574656,
+            "r8": 291,
+            "r9": 4
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 41747,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 44055,
+            "r8": 4,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657963282432,
+            "rdx": 1657963521336,
+            "r8": 23,
+            "r9": 7
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657965379584,
+            "rdx": 1657965618488,
+            "r8": 23,
+            "r9": 9
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 3,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "tail",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 4,
+            "r8": 1657861574656,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "pre_remove_dense": 4
+        }
+      ]
+    },
+    {
+      "name": "original_dense_baseline",
+      "component": "departure",
+      "original": true,
+      "t": 4,
+      "d": 4,
+      "p": 1,
+      "ordinal": 2,
+      "entry_rva": "0x605950",
+      "associated": true,
+      "associated_flag": false,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "return",
+      "instructions": 358,
+      "actual_helper_entries": [
+        "0x606820",
+        "0xfd9c80"
+      ],
+      "contract_events": [
+        {
+          "kind": "contract_stub",
+          "role": "network",
+          "args": {
+            "rcx": 1658192920576,
+            "rdx": 2147483647,
+            "r8": 2,
+            "r9": 8
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 44055,
+            "r8": 4,
+            "r9": 4
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657963282432,
+            "rdx": 1657963521336,
+            "r8": 23,
+            "r9": 7
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657965379584,
+            "rdx": 1657965618488,
+            "r8": 23,
+            "r9": 9
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 3,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "tail",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 4,
+            "r8": 1657861574656,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "pre_remove_dense": 4
+        }
+      ]
+    },
+    {
+      "name": "candidate_dense_pair",
+      "component": "departure",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 1,
+      "ordinal": 2,
+      "entry_rva": "0x10200000",
+      "associated": true,
+      "associated_flag": false,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "return",
+      "instructions": 461,
+      "actual_helper_entries": [
+        "0x100f0000",
+        "0xfd9c80"
+      ],
+      "contract_events": [
+        {
+          "kind": "contract_stub",
+          "role": "network",
+          "args": {
+            "rcx": 1658192920576,
+            "rdx": 2147483647,
+            "r8": 5,
+            "r9": 8
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 44055,
+            "r8": 4,
+            "r9": 4
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657963282432,
+            "rdx": 1657963521336,
+            "r8": 23,
+            "r9": 7
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657965379584,
+            "rdx": 1657965618488,
+            "r8": 23,
+            "r9": 9
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 3,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "tail",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 4,
+            "r8": 1657861574656,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            1
+          ],
+          "pre_remove_dense": 4
+        }
+      ]
+    },
+    {
+      "name": "original_dense_baseline",
+      "component": "departure",
+      "original": true,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "ordinal": 1,
+      "entry_rva": "0x605950",
+      "associated": true,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 3,
+      "outcome": "return",
+      "instructions": 626,
+      "actual_helper_entries": [
+        "0x606820",
+        "0xb0b020",
+        "0xb11c20",
+        "0xb0f820",
+        "0xfd9c80"
+      ],
+      "contract_events": [
+        {
+          "kind": "contract_stub",
+          "role": "network",
+          "args": {
+            "rcx": 1658192920576,
+            "rdx": 4294967294,
+            "r8": 1,
+            "r9": 8
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 41747,
+            "r8": 291,
+            "r9": 4
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 44055,
+            "r8": 4,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "count",
+          "args": {
+            "rcx": 1657965379584,
+            "rdx": 3,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "tail",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 4,
+            "r8": 1657861574656,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ],
+          "pre_remove_dense": 4
+        }
+      ]
+    },
+    {
+      "name": "candidate_dense_pair",
+      "component": "departure",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "ordinal": 1,
+      "entry_rva": "0x10200000",
+      "associated": true,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 3,
+      "outcome": "return",
+      "instructions": 722,
+      "actual_helper_entries": [
+        "0x100f0000",
+        "0xb0b020",
+        "0xb11c20",
+        "0xb0f820",
+        "0xfd9c80"
+      ],
+      "contract_events": [
+        {
+          "kind": "contract_stub",
+          "role": "network",
+          "args": {
+            "rcx": 1658192920576,
+            "rdx": 4294967294,
+            "r8": 4,
+            "r9": 8
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 41747,
+            "r8": 291,
+            "r9": 4
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 44055,
+            "r8": 4,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "count",
+          "args": {
+            "rcx": 1657965379584,
+            "rdx": 3,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "tail",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 4,
+            "r8": 1657861574656,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            4,
+            4,
+            2
+          ],
+          "pre_remove_dense": 4
+        }
+      ]
+    },
+    {
+      "name": "pending_five_through_eight",
+      "component": "departure",
+      "original": false,
+      "t": 5,
+      "d": 3,
+      "p": 1,
+      "ordinal": 4,
+      "entry_rva": "0x10200000",
+      "associated": true,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "return",
+      "instructions": 720,
+      "actual_helper_entries": [
+        "0x100f0000",
+        "0xfd9c80",
+        "0xfd9d40"
+      ],
+      "contract_events": [
+        {
+          "kind": "contract_stub",
+          "role": "network",
+          "args": {
+            "rcx": 1658192920576,
+            "rdx": 2882400004,
+            "r8": 7,
+            "r9": 8
+          },
+          "counts": [
+            5,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "controller_check",
+          "args": {
+            "rcx": 57,
+            "rdx": 1657861574656,
+            "r8": 291,
+            "r9": 4
+          },
+          "counts": [
+            5,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "associated_controller",
+          "args": {
+            "rcx": 1126236161,
+            "rdx": 57,
+            "r8": 0,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            5,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_reset",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 0,
+            "r8": 3,
+            "r9": 4
+          },
+          "counts": [
+            5,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_query",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 3,
+            "r8": 4,
+            "r9": 41747
+          },
+          "counts": [
+            5,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_flag",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 1,
+            "r8": 4,
+            "r9": 41747
+          },
+          "counts": [
+            5,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "link_old",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 43,
+            "r8": 41747,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            5,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "relationship_old",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 41747,
+            "r8": 43,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            5,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "create_output",
+          "args": {
+            "rcx": 1658209697792,
+            "rdx": 1661883940880,
+            "r8": 41747,
+            "r9": 57
+          },
+          "counts": [
+            5,
+            3,
+            1
+          ],
+          "output_id": 46103
+        },
+        {
+          "kind": "contract_stub",
+          "role": "link_output",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 43,
+            "r8": 46103,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            5,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "relationship_output",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 46103,
+            "r8": 43,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            5,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 41747,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            5,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 44055,
+            "r8": 4,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            5,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657963282432,
+            "rdx": 1657963521336,
+            "r8": 23,
+            "r9": 7
+          },
+          "counts": [
+            5,
+            3,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657965379584,
+            "rdx": 1657965618488,
+            "r8": 23,
+            "r9": 9
+          },
+          "counts": [
+            5,
+            3,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 3,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            5,
+            3,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "tail",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 3,
+            "r8": 1657861574656,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            5,
+            3,
+            1
+          ],
+          "pre_remove_dense": 3
+        }
+      ]
+    },
+    {
+      "name": "pending_five_through_eight",
+      "component": "departure",
+      "original": false,
+      "t": 6,
+      "d": 3,
+      "p": 1,
+      "ordinal": 5,
+      "entry_rva": "0x10200000",
+      "associated": true,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "return",
+      "instructions": 753,
+      "actual_helper_entries": [
+        "0x100f0000",
+        "0xfd9c80",
+        "0xfd9d40"
+      ],
+      "contract_events": [
+        {
+          "kind": "contract_stub",
+          "role": "network",
+          "args": {
+            "rcx": 1658192920576,
+            "rdx": 65536,
+            "r8": 0,
+            "r9": 8
+          },
+          "counts": [
+            6,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "controller_check",
+          "args": {
+            "rcx": 57,
+            "rdx": 1657861574656,
+            "r8": 291,
+            "r9": 4
+          },
+          "counts": [
+            6,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "associated_controller",
+          "args": {
+            "rcx": 1126236161,
+            "rdx": 57,
+            "r8": 0,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            6,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_reset",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 0,
+            "r8": 3,
+            "r9": 4
+          },
+          "counts": [
+            6,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_query",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 3,
+            "r8": 4,
+            "r9": 41747
+          },
+          "counts": [
+            6,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_flag",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 1,
+            "r8": 4,
+            "r9": 41747
+          },
+          "counts": [
+            6,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "link_old",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 51,
+            "r8": 41747,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            6,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "relationship_old",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 41747,
+            "r8": 51,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            6,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "create_output",
+          "args": {
+            "rcx": 1658209697792,
+            "rdx": 1661883940880,
+            "r8": 41747,
+            "r9": 57
+          },
+          "counts": [
+            6,
+            3,
+            1
+          ],
+          "output_id": 46103
+        },
+        {
+          "kind": "contract_stub",
+          "role": "link_output",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 51,
+            "r8": 46103,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            6,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "relationship_output",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 46103,
+            "r8": 51,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            6,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 41747,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            6,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 44055,
+            "r8": 4,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            6,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657963282432,
+            "rdx": 1657963521336,
+            "r8": 23,
+            "r9": 7
+          },
+          "counts": [
+            6,
+            3,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657965379584,
+            "rdx": 1657965618488,
+            "r8": 23,
+            "r9": 9
+          },
+          "counts": [
+            6,
+            3,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 3,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            6,
+            3,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "tail",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 3,
+            "r8": 1657861574656,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            6,
+            3,
+            1
+          ],
+          "pre_remove_dense": 3
+        }
+      ]
+    },
+    {
+      "name": "pending_five_through_eight",
+      "component": "departure",
+      "original": false,
+      "t": 7,
+      "d": 3,
+      "p": 1,
+      "ordinal": 6,
+      "entry_rva": "0x10200000",
+      "associated": true,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "return",
+      "instructions": 786,
+      "actual_helper_entries": [
+        "0x100f0000",
+        "0xfd9c80",
+        "0xfd9d40"
+      ],
+      "contract_events": [
+        {
+          "kind": "contract_stub",
+          "role": "network",
+          "args": {
+            "rcx": 1658192920576,
+            "rdx": 4294967295,
+            "r8": 1,
+            "r9": 8
+          },
+          "counts": [
+            7,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "controller_check",
+          "args": {
+            "rcx": 57,
+            "rdx": 1657861574656,
+            "r8": 291,
+            "r9": 4
+          },
+          "counts": [
+            7,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "associated_controller",
+          "args": {
+            "rcx": 1126236161,
+            "rdx": 57,
+            "r8": 0,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            7,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_reset",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 0,
+            "r8": 3,
+            "r9": 4
+          },
+          "counts": [
+            7,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_query",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 3,
+            "r8": 4,
+            "r9": 41747
+          },
+          "counts": [
+            7,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_flag",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 1,
+            "r8": 4,
+            "r9": 41747
+          },
+          "counts": [
+            7,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "link_old",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 59,
+            "r8": 41747,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            7,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "relationship_old",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 41747,
+            "r8": 59,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            7,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "create_output",
+          "args": {
+            "rcx": 1658209697792,
+            "rdx": 1661883940880,
+            "r8": 41747,
+            "r9": 57
+          },
+          "counts": [
+            7,
+            3,
+            1
+          ],
+          "output_id": 46103
+        },
+        {
+          "kind": "contract_stub",
+          "role": "link_output",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 59,
+            "r8": 46103,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            7,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "relationship_output",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 46103,
+            "r8": 59,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            7,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 41747,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            7,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 44055,
+            "r8": 4,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            7,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657963282432,
+            "rdx": 1657963521336,
+            "r8": 23,
+            "r9": 7
+          },
+          "counts": [
+            7,
+            3,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657965379584,
+            "rdx": 1657965618488,
+            "r8": 23,
+            "r9": 9
+          },
+          "counts": [
+            7,
+            3,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 3,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            7,
+            3,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "tail",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 3,
+            "r8": 1657861574656,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            7,
+            3,
+            1
+          ],
+          "pre_remove_dense": 3
+        }
+      ]
+    },
+    {
+      "name": "pending_five_through_eight",
+      "component": "departure",
+      "original": false,
+      "t": 8,
+      "d": 3,
+      "p": 1,
+      "ordinal": 7,
+      "entry_rva": "0x10200000",
+      "associated": true,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "return",
+      "instructions": 819,
+      "actual_helper_entries": [
+        "0x100f0000",
+        "0xfd9c80",
+        "0xfd9d40"
+      ],
+      "contract_events": [
+        {
+          "kind": "contract_stub",
+          "role": "network",
+          "args": {
+            "rcx": 1658192920576,
+            "rdx": 4275878552,
+            "r8": 2,
+            "r9": 8
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "controller_check",
+          "args": {
+            "rcx": 57,
+            "rdx": 1657861574656,
+            "r8": 291,
+            "r9": 4
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "associated_controller",
+          "args": {
+            "rcx": 1126236161,
+            "rdx": 57,
+            "r8": 0,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_reset",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 0,
+            "r8": 3,
+            "r9": 4
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_query",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 3,
+            "r8": 4,
+            "r9": 41747
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_flag",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 1,
+            "r8": 4,
+            "r9": 41747
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "link_old",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 67,
+            "r8": 41747,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "relationship_old",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 41747,
+            "r8": 67,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "create_output",
+          "args": {
+            "rcx": 1658209697792,
+            "rdx": 1661883940880,
+            "r8": 41747,
+            "r9": 57
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ],
+          "output_id": 46103
+        },
+        {
+          "kind": "contract_stub",
+          "role": "link_output",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 67,
+            "r8": 46103,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "relationship_output",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 46103,
+            "r8": 67,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 41747,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 44055,
+            "r8": 4,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657963282432,
+            "rdx": 1657963521336,
+            "r8": 23,
+            "r9": 7
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657965379584,
+            "rdx": 1657965618488,
+            "r8": 23,
+            "r9": 9
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 3,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "tail",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 3,
+            "r8": 1657861574656,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ],
+          "pre_remove_dense": 3
+        }
+      ]
+    },
+    {
+      "name": "pending_zero_dense_no_underflow",
+      "component": "departure",
+      "original": false,
+      "t": 8,
+      "d": 0,
+      "p": 0,
+      "ordinal": 7,
+      "entry_rva": "0x10200000",
+      "associated": false,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "return",
+      "instructions": 584,
+      "actual_helper_entries": [
+        "0x100f0000",
+        "0xfd9c80"
+      ],
+      "contract_events": [
+        {
+          "kind": "contract_stub",
+          "role": "network",
+          "args": {
+            "rcx": 1658192920576,
+            "rdx": 4275878552,
+            "r8": 2,
+            "r9": 8
+          },
+          "counts": [
+            8,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 44055,
+            "r8": 4,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657963282432,
+            "rdx": 1657963521336,
+            "r8": 23,
+            "r9": 7
+          },
+          "counts": [
+            8,
+            0,
+            0
+          ],
+          "remaining_dense": 0
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657965379584,
+            "rdx": 1657965618488,
+            "r8": 23,
+            "r9": 9
+          },
+          "counts": [
+            8,
+            0,
+            0
+          ],
+          "remaining_dense": 0
+        },
+        {
+          "kind": "contract_stub",
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 0,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            0,
+            0
+          ],
+          "remaining_dense": 0
+        },
+        {
+          "kind": "contract_stub",
+          "role": "tail",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 0,
+            "r8": 1657861574656,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            0,
+            0
+          ],
+          "pre_remove_dense": 0
+        }
+      ]
+    },
+    {
+      "name": "slot_seven_primary_second_aslr",
+      "component": "departure",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 8,
+      "ordinal": 7,
+      "entry_rva": "0x10200000",
+      "associated": true,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": true,
+      "mode": 4,
+      "outcome": "return",
+      "instructions": 940,
+      "actual_helper_entries": [
+        "0x100f0000",
+        "0xb0b020",
+        "0xb11c20",
+        "0xb0f820",
+        "0xfd9c80"
+      ],
+      "contract_events": [
+        {
+          "kind": "contract_stub",
+          "role": "disconnected",
+          "args": {
+            "rcx": 1657860522432,
+            "rdx": 140703164560312,
+            "r8": 1,
+            "r9": 0
+          },
+          "counts": [
+            8,
+            8,
+            8
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "network",
+          "args": {
+            "rcx": 1658192920576,
+            "rdx": 4275878552,
+            "r8": 0,
+            "r9": 8
+          },
+          "counts": [
+            8,
+            8,
+            8
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 41747,
+            "r8": 291,
+            "r9": 4
+          },
+          "counts": [
+            8,
+            8,
+            8
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 44055,
+            "r8": 4,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            8,
+            8
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657963282432,
+            "rdx": 1657963521336,
+            "r8": 23,
+            "r9": 7
+          },
+          "counts": [
+            8,
+            8,
+            8
+          ],
+          "remaining_dense": 7
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657965379584,
+            "rdx": 1657965618488,
+            "r8": 23,
+            "r9": 9
+          },
+          "counts": [
+            8,
+            8,
+            8
+          ],
+          "remaining_dense": 7
+        },
+        {
+          "kind": "contract_stub",
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 7,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            8,
+            8
+          ],
+          "remaining_dense": 7
+        },
+        {
+          "kind": "contract_stub",
+          "role": "tail",
+          "args": {
+            "rcx": 140703164560328,
+            "rdx": 8,
+            "r8": 1657861574656,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            8,
+            8
+          ],
+          "pre_remove_dense": 8
+        }
+      ]
+    },
+    {
+      "name": "slot_seven_full_associated",
+      "component": "departure",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 0,
+      "ordinal": 7,
+      "entry_rva": "0x10200000",
+      "associated": true,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "return",
+      "instructions": 825,
+      "actual_helper_entries": [
+        "0x100f0000",
+        "0xfd9c80",
+        "0xfd9d40"
+      ],
+      "contract_events": [
+        {
+          "kind": "contract_stub",
+          "role": "network",
+          "args": {
+            "rcx": 1658192920576,
+            "rdx": 4275878552,
+            "r8": 2,
+            "r9": 8
+          },
+          "counts": [
+            8,
+            8,
+            0
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "controller_check",
+          "args": {
+            "rcx": 57,
+            "rdx": 1657861574656,
+            "r8": 291,
+            "r9": 4
+          },
+          "counts": [
+            8,
+            8,
+            0
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "associated_controller",
+          "args": {
+            "rcx": 1126236161,
+            "rdx": 57,
+            "r8": 0,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            8,
+            0
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_reset",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 0,
+            "r8": 3,
+            "r9": 4
+          },
+          "counts": [
+            8,
+            8,
+            0
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_query",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 3,
+            "r8": 4,
+            "r9": 41747
+          },
+          "counts": [
+            8,
+            8,
+            0
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_flag",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 1,
+            "r8": 4,
+            "r9": 41747
+          },
+          "counts": [
+            8,
+            8,
+            0
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "link_old",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 67,
+            "r8": 41747,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            8,
+            0
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "relationship_old",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 41747,
+            "r8": 67,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            8,
+            0
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "create_output",
+          "args": {
+            "rcx": 1658209697792,
+            "rdx": 1661883940880,
+            "r8": 41747,
+            "r9": 57
+          },
+          "counts": [
+            8,
+            8,
+            0
+          ],
+          "output_id": 46103
+        },
+        {
+          "kind": "contract_stub",
+          "role": "link_output",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 67,
+            "r8": 46103,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            8,
+            0
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "relationship_output",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 46103,
+            "r8": 67,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            8,
+            0
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 41747,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            8,
+            0
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 44055,
+            "r8": 4,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            8,
+            0
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657963282432,
+            "rdx": 1657963521336,
+            "r8": 23,
+            "r9": 7
+          },
+          "counts": [
+            8,
+            8,
+            0
+          ],
+          "remaining_dense": 7
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657965379584,
+            "rdx": 1657965618488,
+            "r8": 23,
+            "r9": 9
+          },
+          "counts": [
+            8,
+            8,
+            0
+          ],
+          "remaining_dense": 7
+        },
+        {
+          "kind": "contract_stub",
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 7,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            8,
+            0
+          ],
+          "remaining_dense": 7
+        },
+        {
+          "kind": "contract_stub",
+          "role": "tail",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 8,
+            "r8": 1657861574656,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            8,
+            0
+          ],
+          "pre_remove_dense": 8
+        }
+      ]
+    },
+    {
+      "name": "minimal_no_associated_ui_or_manager",
+      "component": "departure",
+      "original": false,
+      "t": 1,
+      "d": 1,
+      "p": 0,
+      "ordinal": 0,
+      "entry_rva": "0x10200000",
+      "associated": false,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "return",
+      "instructions": 226,
+      "actual_helper_entries": [
+        "0x100f0000",
+        "0xfd9c80"
+      ],
+      "contract_events": [
+        {
+          "kind": "contract_stub",
+          "role": "network",
+          "args": {
+            "rcx": 1658192920576,
+            "rdx": 2147483655,
+            "r8": 3,
+            "r9": 8
+          },
+          "counts": [
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "count",
+          "args": {
+            "rcx": 32767,
+            "rdx": 0,
+            "r8": 32767,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            1,
+            1,
+            0
+          ],
+          "remaining_dense": 0
+        },
+        {
+          "kind": "contract_stub",
+          "role": "tail",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 1,
+            "r8": 1657861574656,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            1,
+            1,
+            0
+          ],
+          "pre_remove_dense": 1
+        }
+      ]
+    },
+    {
+      "name": "guard_binding",
+      "component": "departure",
+      "original": false,
+      "t": 8,
+      "d": 6,
+      "p": 2,
+      "ordinal": 1,
+      "entry_rva": "0x10200000",
+      "associated": false,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "reject",
+      "instructions": 23,
+      "actual_helper_entries": [],
+      "contract_events": []
+    },
+    {
+      "name": "guard_null",
+      "component": "departure",
+      "original": false,
+      "t": 8,
+      "d": 6,
+      "p": 2,
+      "ordinal": 1,
+      "entry_rva": "0x10200000",
+      "associated": false,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "reject",
+      "instructions": 25,
+      "actual_helper_entries": [],
+      "contract_events": []
+    },
+    {
+      "name": "guard_tracked_zero",
+      "component": "departure",
+      "original": false,
+      "t": 8,
+      "d": 6,
+      "p": 2,
+      "ordinal": 1,
+      "entry_rva": "0x10200000",
+      "associated": false,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "reject",
+      "instructions": 28,
+      "actual_helper_entries": [],
+      "contract_events": []
+    },
+    {
+      "name": "guard_tracked_nine",
+      "component": "departure",
+      "original": false,
+      "t": 8,
+      "d": 6,
+      "p": 2,
+      "ordinal": 1,
+      "entry_rva": "0x10200000",
+      "associated": false,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "reject",
+      "instructions": 30,
+      "actual_helper_entries": [],
+      "contract_events": []
+    },
+    {
+      "name": "guard_dense_order",
+      "component": "departure",
+      "original": false,
+      "t": 8,
+      "d": 6,
+      "p": 2,
+      "ordinal": 1,
+      "entry_rva": "0x10200000",
+      "associated": false,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "reject",
+      "instructions": 33,
+      "actual_helper_entries": [],
+      "contract_events": []
+    },
+    {
+      "name": "guard_prefix_order",
+      "component": "departure",
+      "original": false,
+      "t": 8,
+      "d": 6,
+      "p": 2,
+      "ordinal": 1,
+      "entry_rva": "0x10200000",
+      "associated": false,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "reject",
+      "instructions": 36,
+      "actual_helper_entries": [],
+      "contract_events": []
+    },
+    {
+      "name": "guard_map_capacity",
+      "component": "departure",
+      "original": false,
+      "t": 8,
+      "d": 6,
+      "p": 2,
+      "ordinal": 1,
+      "entry_rva": "0x10200000",
+      "associated": false,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "reject",
+      "instructions": 38,
+      "actual_helper_entries": [],
+      "contract_events": []
+    },
+    {
+      "name": "guard_empty_id",
+      "component": "departure",
+      "original": false,
+      "t": 8,
+      "d": 6,
+      "p": 2,
+      "ordinal": 1,
+      "entry_rva": "0x10200000",
+      "associated": false,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "reject",
+      "instructions": 41,
+      "actual_helper_entries": [],
+      "contract_events": []
+    },
+    {
+      "name": "guard_invalid_id",
+      "component": "departure",
+      "original": false,
+      "t": 8,
+      "d": 6,
+      "p": 2,
+      "ordinal": 1,
+      "entry_rva": "0x10200000",
+      "associated": false,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "reject",
+      "instructions": 44,
+      "actual_helper_entries": [],
+      "contract_events": []
+    },
+    {
+      "name": "guard_missing_full",
+      "component": "departure",
+      "original": false,
+      "t": 8,
+      "d": 6,
+      "p": 2,
+      "ordinal": 1,
+      "entry_rva": "0x10200000",
+      "associated": false,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "reject",
+      "instructions": 130,
+      "actual_helper_entries": [],
+      "contract_events": []
+    },
+    {
+      "name": "guard_missing_empty",
+      "component": "departure",
+      "original": false,
+      "t": 3,
+      "d": 2,
+      "p": 2,
+      "ordinal": 1,
+      "entry_rva": "0x10200000",
+      "associated": false,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "reject",
+      "instructions": 84,
+      "actual_helper_entries": [],
+      "contract_events": []
+    },
+    {
+      "name": "guard_ordinal_untracked",
+      "component": "departure",
+      "original": false,
+      "t": 8,
+      "d": 6,
+      "p": 2,
+      "ordinal": 1,
+      "entry_rva": "0x10200000",
+      "associated": false,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "reject",
+      "instructions": 64,
+      "actual_helper_entries": [],
+      "contract_events": []
+    },
+    {
+      "name": "guard_pointer_binding",
+      "component": "departure",
+      "original": false,
+      "t": 8,
+      "d": 6,
+      "p": 2,
+      "ordinal": 1,
+      "entry_rva": "0x10200000",
+      "associated": false,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "reject",
+      "instructions": 68,
+      "actual_helper_entries": [],
+      "contract_events": []
+    },
+    {
+      "name": "guard_prefix_flag_clear",
+      "component": "departure",
+      "original": false,
+      "t": 8,
+      "d": 6,
+      "p": 2,
+      "ordinal": 1,
+      "entry_rva": "0x10200000",
+      "associated": false,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "reject",
+      "instructions": 76,
+      "actual_helper_entries": [],
+      "contract_events": []
+    },
+    {
+      "name": "guard_nonprefix_flag_set",
+      "component": "departure",
+      "original": false,
+      "t": 8,
+      "d": 6,
+      "p": 2,
+      "ordinal": 1,
+      "entry_rva": "0x10200000",
+      "associated": false,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "reject",
+      "instructions": 76,
+      "actual_helper_entries": [],
+      "contract_events": []
+    },
+    {
+      "name": "pending_departure_before_removal",
+      "component": "departure",
+      "original": false,
+      "t": 8,
+      "d": 3,
+      "p": 1,
+      "ordinal": 4,
+      "entry_rva": "0x10200000",
+      "associated": true,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "return",
+      "instructions": 720,
+      "actual_helper_entries": [
+        "0x100f0000",
+        "0xfd9c80",
+        "0xfd9d40"
+      ],
+      "contract_events": [
+        {
+          "kind": "contract_stub",
+          "role": "network",
+          "args": {
+            "rcx": 1658192920576,
+            "rdx": 2882400004,
+            "r8": 7,
+            "r9": 8
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "controller_check",
+          "args": {
+            "rcx": 57,
+            "rdx": 1657861574656,
+            "r8": 291,
+            "r9": 4
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "associated_controller",
+          "args": {
+            "rcx": 1126236161,
+            "rdx": 57,
+            "r8": 0,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_reset",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 0,
+            "r8": 3,
+            "r9": 4
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_query",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 3,
+            "r8": 4,
+            "r9": 41747
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "record_flag",
+          "args": {
+            "rcx": 1657901679032,
+            "rdx": 1,
+            "r8": 4,
+            "r9": 41747
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "link_old",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 43,
+            "r8": 41747,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "relationship_old",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 41747,
+            "r8": 43,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "create_output",
+          "args": {
+            "rcx": 1658209697792,
+            "rdx": 1661883940880,
+            "r8": 41747,
+            "r9": 57
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ],
+          "output_id": 46103
+        },
+        {
+          "kind": "contract_stub",
+          "role": "link_output",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 43,
+            "r8": 46103,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "relationship_output",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 46103,
+            "r8": 43,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 41747,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "queue_entity",
+          "args": {
+            "rcx": 1658125811712,
+            "rdx": 44055,
+            "r8": 4,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657963282432,
+            "rdx": 1657963521336,
+            "r8": 23,
+            "r9": 7
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "ui",
+          "args": {
+            "rcx": 1657965379584,
+            "rdx": 1657965618488,
+            "r8": 23,
+            "r9": 9
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "count",
+          "args": {
+            "rcx": 14829509148000911361,
+            "rdx": 3,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ],
+          "remaining_dense": 3
+        },
+        {
+          "kind": "contract_stub",
+          "role": "tail",
+          "args": {
+            "rcx": 140694574625736,
+            "rdx": 3,
+            "r8": 1657861574656,
+            "r9": 14829509148000911364
+          },
+          "counts": [
+            8,
+            3,
+            1
+          ],
+          "pre_remove_dense": 3
+        }
+      ]
+    },
+    {
+      "name": "actual_remove_after_departure",
+      "component": "remove",
+      "original": false,
+      "t": 8,
+      "d": 3,
+      "p": 1,
+      "ordinal": 4,
+      "entry_rva": "0x100c0000",
+      "associated": true,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "return",
+      "instructions": 525,
+      "actual_helper_entries": [
+        "0x172f8a0",
+        "candidate_mover"
+      ],
+      "contract_events": []
+    },
+    {
+      "name": "getter_after_pending_tail_move",
+      "component": "getter",
+      "original": false,
+      "t": 7,
+      "d": 3,
+      "p": 1,
+      "ordinal": 4,
+      "entry_rva": "0x100f0000",
+      "associated": true,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "return",
+      "instructions": 122,
+      "actual_helper_entries": [
+        "0x100f0000"
+      ],
+      "contract_events": []
+    },
+    {
+      "name": "deleted_id_missing_after_departure",
+      "component": "getter",
+      "original": false,
+      "t": 7,
+      "d": 3,
+      "p": 1,
+      "ordinal": 4,
+      "entry_rva": "0x100f0000",
+      "associated": true,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "return",
+      "instructions": 120,
+      "actual_helper_entries": [
+        "0x100f0000"
+      ],
+      "contract_events": []
+    },
+    {
+      "name": "reject_rel32_boundary",
+      "component": "departure",
+      "original": false,
+      "t": 8,
+      "d": 6,
+      "p": 2,
+      "ordinal": 1,
+      "entry_rva": "0x10200000",
+      "associated": false,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "reject",
+      "instructions": 23,
+      "actual_helper_entries": [],
+      "contract_events": []
+    },
+    {
+      "name": "reject_rel32_boundary",
+      "component": "departure",
+      "original": false,
+      "t": 8,
+      "d": 6,
+      "p": 2,
+      "ordinal": 1,
+      "entry_rva": "0x10200000",
+      "associated": false,
+      "associated_flag": true,
+      "controller": true,
+      "query": true,
+      "deferred": false,
+      "mode": 4,
+      "outcome": "reject",
+      "instructions": 23,
+      "actual_helper_entries": [],
+      "contract_events": []
+    }
+  ],
+  "execution_counts": {
+    "total": 43,
+    "candidate": 36,
+    "original_departure_baseline": 7,
+    "candidate_departure_complete_return": 16,
+    "candidate_departure_preflight_rejection": 17,
+    "candidate_remove_chain": 1,
+    "candidate_getter_chain": 2
+  },
+  "nested_helper_entries_not_added_to_top_level_total": {
+    "0x606820": 7,
+    "0xb0b020": 7,
+    "0xb11c20": 7,
+    "0xb0f820": 7,
+    "0xfd9c80": 23,
+    "0x100f0000": 16,
+    "0xfd9d40": 10,
+    "0x172f8a0": 1,
+    "candidate_mover": 1
+  },
+  "fixed_float_literal": {
+    "rva": "0x23c6d70",
+    "bytes_hex": "0000803f",
+    "evidence": "roster_departure_aux_evidence.json"
+  },
+  "contracts": {
+    "shared_state": "Binding S, map, P/D/T, target identity and all array records remain stable throughout callbacks; true primary helpers only edit separate synthetic owner registries",
+    "three_primary_helpers": "Actual captured B0B020/B11C20/B0F820 each see resource from target primary, RDX original S, R8D target ID; three 24B owners distinguish owner and ID; verify immediate swap-last deletion or deferred owner-null; nonempty registry only",
+    "associated_lookups": "Actual captured FD9C80 (7FFF direct-null or valid found) and FD9D40 valid found; supplied context maps resolve nonzero ordinal2. FD9D40 preserves ECX naturally for subsequent create-output R8D",
+    "disconnected": "13462C0 stub checks original target pointer, exact disconnected literal, R8B1/R9D0; no game notification implementation",
+    "controller_virtual": "context.vtable+720 stub checks ECX controller ID, returns AL eligibility and a specified volatile RCX consumed unchanged by 838680",
+    "associated_record_calls": "838680/A747D0/A74700/A77800 stubs check controller ID/zero, manager record address, reset EDX0, query AL, conditional flag EDX1 and XMM2 zero",
+    "associated_relationships": "135A4A0/BE21A0 and 135AB10/BE16F0 stubs check exact target/associated/output ID orientation and order",
+    "create_output": "13BFB40 stub checks RCX context, stack out-DWORD pointer, preserved associated ID R8D, resolved controller R9D, all seven stack arguments; writes only that DWORD with synthetic created ID",
+    "manager_queue": "FDC310 stub checks context and associated or eligible-loop entity ID; fixtures include same associated pointer, null, unset flag, mismatched type and one eligible record; real queue/reentrancy not emulated",
+    "notifications": "139C360 network DWORD, two eligible 94C9C0 UI callbacks, 60C2A0 EDX prediction, tail exact player_count literal/current pre-remove D; precise order checked; callbacks do not implement actual notifications or assets",
+    "stub_abi": "Each contract stub validates call-entry RSP%16=8, writes 32-byte shadow space, clobbers volatile GPR/XMM0..5 and preserves nonvolatile state; all return effects explicitly listed",
+    "remove_chain": "Synthetic harness invokes departure then registered remove with actual captured map-delete and candidate mover; four full records move slot7 to slot4, map remains bijective/probeable, true getter follows moved ID and deleted ID misses",
+    "bundle": "Thirteen roster function artifacts plus player-count patch plan built and checked for common binding/getter target and cross-region overlap; other twelve functions and count-filter suite are not rerun here"
+  },
+  "limits": [
+    "Finite complete-body cases do not prove every engine state, callback failure, associated resource lifetime or caller reachability",
+    "Stable binding/map/count/array state is a supplied precondition; no reentrant callback, state-change recovery or rollback is proved",
+    "Primary helper registry-empty cleanup, allocator callback and map-key deletion are outside these nonempty owner-list cases",
+    "FD9C80 and FD9D40 arbitrary malformed or missing-map paths are not generalized as safe; only proven sentinel-null and supplied valid hits are exercised",
+    "Associated controller/resource/link/creation/queue operations use explicit caller contracts, including a successful synthetic output ID, not real resource or notification implementations",
+    "Remaining-D prediction is a new candidate policy; preserved tail reads pre-removal D under stable state. UI/count consumers are stubs; zero-to-one clamp and named resources above four are not resolved",
+    "The departure-remove sequence is a synthetic harness, not execution of outer FDC820, actual hooks or production caller synchronization",
+    "The separate count-plan build does not execute full 94C9C0 context or connect all notification callbacks end to end",
+    "No native executor, executable allocation, unwind, installation, game process, runtime asset validation or multiplayer acceptance"
+  ]
+}

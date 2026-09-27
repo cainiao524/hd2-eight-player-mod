@@ -1,0 +1,60 @@
+0x544fd0 mov qword ptr [rsp + 8], rbx
+0x544fd5 mov qword ptr [rsp + 0x10], rbp
+0x544fda mov qword ptr [rsp + 0x18], rsi
+0x544fdf push rdi
+0x544fe0 sub rsp, 0x20
+0x544fe4 mov rdi, qword ptr [rip + 0x2de1a65]
+0x544feb mov rbx, rdx
+0x544fee mov rbp, rcx
+0x544ff1 mov eax, dword ptr [rdi + 0xc]
+0x544ff4 cmp eax, dword ptr [rdi + 0x28]
+0x544ff7 jb 0x545004
+0x544ff9 mov rcx, rdi
+0x544ffc call 0x799ca0
+0x545001 mov eax, dword ptr [rdi + 0xc]
+0x545004 cmp eax, dword ptr [rdi + 4]
+0x545007 jb 0x545011
+0x545009 mov rcx, rdi
+0x54500c call 0x799ea0
+0x545011 cmp byte ptr [rbx], 0
+0x545014 mov eax, dword ptr [rdi + 0x10]
+0x545017 je 0x545044
+0x545019 mov esi, dword ptr [rdi + 0x14]
+0x54501c cmp esi, eax
+0x54501e jae 0x545030
+0x545020 mov r8d, esi
+0x545023 mov edx, eax
+0x545025 mov rcx, rdi
+0x545028 call 0x7992d0
+0x54502d mov esi, dword ptr [rdi + 0x14]
+0x545030 lea eax, [rsi + 1]
+0x545033 mov ecx, esi
+0x545035 mov dword ptr [rdi + 0x14], eax
+0x545038 xor edx, edx
+0x54503a mov rax, qword ptr [rdi + 0x40]
+0x54503e mov qword ptr [rax + rcx*8], rdx
+0x545042 jmp 0x545046
+0x545044 mov esi, eax
+0x545046 mov ebx, esi
+0x545048 xor edx, edx
+0x54504a imul rcx, rbx, 0x178
+0x545051 mov r8d, 0x178
+0x545057 add rcx, qword ptr [rdi + 0x48]
+0x54505b call 0x208aaa0
+0x545060 inc dword ptr [rdi + 0x10]
+0x545063 mov r8d, esi
+0x545066 mov ecx, dword ptr [rdi + 0x10]
+0x545069 inc dword ptr [rdi + 0xc]
+0x54506c cmp dword ptr [rdi + 8], ecx
+0x54506f mov rax, qword ptr [rdi + 0x38]
+0x545073 cmova ecx, dword ptr [rdi + 8]
+0x545077 mov dword ptr [rdi + 8], ecx
+0x54507a lea rcx, [rdi + 0x20]
+0x54507e mov qword ptr [rax + rbx*8], rbp
+0x545082 mov edx, dword ptr [rbp + 8]
+0x545085 mov rbx, qword ptr [rsp + 0x30]
+0x54508a mov rbp, qword ptr [rsp + 0x38]
+0x54508f mov rsi, qword ptr [rsp + 0x40]
+0x545094 add rsp, 0x20
+0x545098 pop rdi
+0x545099 jmp 0x172f790

@@ -1,0 +1,73 @@
+0x7af610 mov qword ptr [rsp + 0x20], rbx
+0x7af615 push r14
+0x7af617 push r15
+0x7af619 cmp edx, dword ptr [rip + 0x2cd4615]
+0x7af61f mov r14, r9
+0x7af622 mov r15, r8
+0x7af625 mov rbx, rcx
+0x7af628 jne 0x7af631
+0x7af62a mov eax, 0xffffffff
+0x7af62f jmp 0x7af69c
+0x7af631 mov r10d, dword ptr [rcx + 0x58]
+0x7af635 xor eax, eax
+0x7af637 mov r11d, dword ptr [rcx + 0x60]
+0x7af63b mov qword ptr [rsp + 0x18], rbp
+0x7af640 imul r11d, edx
+0x7af644 mov qword ptr [rsp + 0x20], rsi
+0x7af649 lea ebp, [r10 - 1]
+0x7af64d mov qword ptr [rsp + 0x28], rdi
+0x7af652 test r10d, r10d
+0x7af655 je 0x7af688
+0x7af657 mov rdi, qword ptr [rcx + 0x50]
+0x7af65b mov esi, dword ptr [rcx + 0x5c]
+0x7af65e nop 
+0x7af660 mov ecx, ebp
+0x7af662 lea r8d, [rax + r11]
+0x7af666 and r8, rcx
+0x7af669 mov ecx, dword ptr [rdi + r8*8]
+0x7af66d lea r9, [rdi + r8*8]
+0x7af671 cmp ecx, esi
+0x7af673 je 0x7af714
+0x7af679 cmp ecx, edx
+0x7af67b je 0x7af71c
+0x7af681 inc eax
+0x7af683 cmp eax, r10d
+0x7af686 jb 0x7af660
+0x7af688 mov eax, 0xffffffff
+0x7af68d mov rsi, qword ptr [rsp + 0x20]
+0x7af692 mov rbp, qword ptr [rsp + 0x18]
+0x7af697 mov rdi, qword ptr [rsp + 0x28]
+0x7af69c mov ecx, eax
+0x7af69e lea r8, [rbx + 0x26688]
+0x7af6a5 mov rbx, qword ptr [rsp + 0x30]
+0x7af6aa imul rax, rcx, 0x58
+0x7af6ae mov ecx, dword ptr [r14]
+0x7af6b1 add r8, rax
+0x7af6b4 mov eax, dword ptr [rcx + r15]
+0x7af6b8 lea edx, [rcx + 0x2c]
+0x7af6bb mov dword ptr [r8], eax
+0x7af6be movups xmm0, xmmword ptr [rcx + r15 + 4]
+0x7af6c4 movups xmmword ptr [r8 + 4], xmm0
+0x7af6c9 movups xmm1, xmmword ptr [rcx + r15 + 0x14]
+0x7af6cf movups xmmword ptr [r8 + 0x14], xmm1
+0x7af6d4 movsd xmm0, qword ptr [rcx + r15 + 0x24]
+0x7af6db movsd qword ptr [r8 + 0x24], xmm0
+0x7af6e1 mov ecx, edx
+0x7af6e3 add rcx, r15
+0x7af6e6 mov eax, dword ptr [rcx]
+0x7af6e8 mov dword ptr [r8 + 0x2c], eax
+0x7af6ec lea eax, [rdx + 0x2c]
+0x7af6ef movups xmm0, xmmword ptr [rcx + 4]
+0x7af6f3 mov dword ptr [r14], eax
+0x7af6f6 movups xmmword ptr [r8 + 0x30], xmm0
+0x7af6fb movups xmm1, xmmword ptr [rcx + 0x14]
+0x7af6ff movups xmmword ptr [r8 + 0x40], xmm1
+0x7af704 movsd xmm0, qword ptr [rcx + 0x24]
+0x7af709 movsd qword ptr [r8 + 0x50], xmm0
+0x7af70f pop r15
+0x7af711 pop r14
+0x7af713 ret 
+0x7af714 cmp ecx, edx
+0x7af716 jne 0x7af688
+0x7af71c mov eax, dword ptr [r9 + 4]
+0x7af720 jmp 0x7af68d

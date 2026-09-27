@@ -1,0 +1,42 @@
+0x140c200 mov qword ptr [rsp + 0x10], rbx
+0x140c205 mov qword ptr [rsp + 0x18], rbp
+0x140c20a push rsi
+0x140c20b sub rsp, 0x20
+0x140c20f xor ebp, ebp
+0x140c211 mov rbx, rcx
+0x140c214 mov esi, ebp
+0x140c216 cmp dword ptr [rcx + 0x58], ebp
+0x140c219 jbe 0x140c277
+0x140c21b mov qword ptr [rsp + 0x30], rdi
+0x140c220 mov eax, esi
+0x140c222 lea rdi, [rbx + rax*4]
+0x140c226 mov eax, dword ptr [rbx + rax*4 + 0x28]
+0x140c22a imul rcx, rax, 0x208
+0x140c231 mov rax, qword ptr [rbx + 0x20]
+0x140c235 add rcx, qword ptr [rax]
+0x140c238 call 0x1408f00
+0x140c23d mov rdx, qword ptr [rbx + 0x20]
+0x140c241 mov ecx, dword ptr [rdi + 0x28]
+0x140c244 mov rax, qword ptr [rdx + 8]
+0x140c248 cmp byte ptr [rax + rcx], bpl
+0x140c24c je 0x140c255
+0x140c24e mov byte ptr [rax + rcx], bpl
+0x140c252 dec dword ptr [rdx + 0x10]
+0x140c255 inc esi
+0x140c257 cmp esi, dword ptr [rbx + 0x58]
+0x140c25a jb 0x140c220
+0x140c25c mov rdi, qword ptr [rsp + 0x30]
+0x140c261 mov dword ptr [rbx + 0x1c], ebp
+0x140c264 mov dword ptr [rbx + 0x58], ebp
+0x140c267 mov rbx, qword ptr [rsp + 0x38]
+0x140c26c mov rbp, qword ptr [rsp + 0x40]
+0x140c271 add rsp, 0x20
+0x140c275 pop rsi
+0x140c276 ret 
+0x140c277 mov rbx, qword ptr [rsp + 0x38]
+0x140c27c mov dword ptr [rcx + 0x1c], ebp
+0x140c27f mov dword ptr [rcx + 0x58], ebp
+0x140c282 mov rbp, qword ptr [rsp + 0x40]
+0x140c287 add rsp, 0x20
+0x140c28b pop rsi
+0x140c28c ret 

@@ -1,0 +1,30 @@
+{
+  "capture_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "source_sha256": {
+    "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+  },
+  "value": "0x4804fcf4",
+  "little_endian_bytes": "f4fc0448",
+  "ranges_scanned": [
+    "headers",
+    "code",
+    "readonly",
+    "unwind",
+    "readonly_5",
+    "readonly_6",
+    "readonly_7"
+  ],
+  "hits": [
+    {
+      "rva": "0xbe4982",
+      "range": "code",
+      "containing_instruction": {
+        "rva": "0xbe4981",
+        "bytes": "b9f4fc0448",
+        "sha256": "7c68e2fada58bf556535914c97baf785e3981d33d878430c477fe99e9533c1b3",
+        "asm": "mov ecx, 0x4804fcf4"
+      }
+    }
+  ]
+}

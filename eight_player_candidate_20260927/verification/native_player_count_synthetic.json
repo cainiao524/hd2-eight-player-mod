@@ -1,0 +1,116 @@
+{
+  "status": "offline_native_player_count_candidate",
+  "installable": false,
+  "game_execution": false,
+  "multiplayer_verified": false,
+  "target_profile": {
+    "build": 25480438,
+    "platform": "Windows x64; offline profile only",
+    "exe_sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+    "game_dll_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e"
+  },
+  "game_base": 140694538682368,
+  "source_sha256": {
+    "context": "7cc342fdc09d11b0bde285b179adcd4b5356df5df667be89bd7d5c6f76ca4ef2",
+    "filter": "0316a5430e599017d5a3251dd3b2f63e5bfad65190afb3fc10e19b55ccf81c9e"
+  },
+  "evidence_sha256": {
+    "filter": "8f0fad49d9f5bc7e95ffe8735007b59c302034704707602c8d8093ad795676e3",
+    "context": "04e16b4b9a301ba2fbd796528df6e53f9d3d8a25626cd459cc9f1329edd5d0d0"
+  },
+  "code_address": 140694808231936,
+  "entry_address": 140694808231936,
+  "size_bytes": 51,
+  "code_hex": "41837f08040f851900000041837f04040f870e00000083f8080f8766c083f0e95dc083f0413b47080f8757c083f0e94ec083f0",
+  "code_sha256": "6d8f61f3c8ef77a3fb41419060c758c3a8caf339067c843d9a45462a95de151d",
+  "patches": [
+    {
+      "source": "context",
+      "rva": 9751088,
+      "address": 140694548433456,
+      "size_bytes": 5,
+      "expected_hex": "b804000000",
+      "replacement_hex": "b808000000"
+    },
+    {
+      "source": "filter",
+      "rva": 9748603,
+      "address": 140694548430971,
+      "size_bytes": 6,
+      "expected_hex": "413b47087704",
+      "replacement_hex": "e9803f7c0f90"
+    }
+  ],
+  "branches": [
+    {
+      "address": 140694808231941,
+      "target_address": 140694808231972,
+      "opcode_hex": "0f85"
+    },
+    {
+      "address": 140694808231952,
+      "target_address": 140694808231972,
+      "opcode_hex": "0f87"
+    },
+    {
+      "address": 140694808231961,
+      "target_address": 140694548430981,
+      "opcode_hex": "0f87"
+    },
+    {
+      "address": 140694808231967,
+      "target_address": 140694548430977,
+      "opcode_hex": "e9"
+    },
+    {
+      "address": 140694808231976,
+      "target_address": 140694548430981,
+      "opcode_hex": "0f87"
+    },
+    {
+      "address": 140694808231982,
+      "target_address": 140694548430977,
+      "opcode_hex": "e9"
+    }
+  ],
+  "known_regions": [
+    {
+      "name": "original game image",
+      "address": 140694538682368,
+      "size_bytes": 74727424
+    },
+    {
+      "name": "count range trampoline",
+      "address": 140694808231936,
+      "size_bytes": 51
+    }
+  ],
+  "policy": {
+    "context_player_count": "unsigned clamp [1,8]; original raw 0 still becomes 1",
+    "record_range": "retain minimum; effective maximum is 8 iff maximum==4 and minimum<=4, otherwise retain maximum",
+    "four_player_equivalence": "For records with 1<=minimum<=maximum<=4, counts 5..8 select the same records as original count4, with other state/helper results equal",
+    "other_ranges": "Maximum values other than four keep their original meaning; unknown records do not imply coverage for all eight counts",
+    "override": "original tag/flag bypass of range eligibility remains unchanged",
+    "tech_level": "unchanged; separate [1,10] parameter and weight indexes are not player count"
+  },
+  "continuations": {
+    "accepted": 140694548430977,
+    "rejected": 140694548430981
+  },
+  "trampoline_contract": {
+    "entry": "original 94C07B state after the original unsigned lower-bound check",
+    "preserved": "all GPR/XMM registers and RSP; no writes, calls, allocation or stack accesses",
+    "flags": "changed comparisons; original continuations set AL then overwrite flags with COMISS at 94C087",
+    "standalone_callable": false
+  },
+  "installation_plan": null,
+  "limits": [
+    "Supplied source fingerprints do not verify a currently loaded game image",
+    "The two code patches and trampoline are an offline plan; no executable memory allocation or patch application is provided",
+    "Coordinated application/removal, instruction cache handling and valid Windows unwind for the trampoline remain required",
+    "Runtime records, resource availability, output buffer capacity, callbacks and synchronized lifetimes remain unverified",
+    "Reusing four-player-eligible configurations is a new candidate rule, not verified eight-player balancing",
+    "FFFFFFFF from pending D=0 still clamps to 8; this does not resolve the earlier departure count/lifecycle defect",
+    "No roster storage, pending/departure semantics, joining, character creation, transport or mission acceptance is completed by this component"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "scope": "Read-only static replay of the pinned Steam build 25480438 capture. RVA values are relative to the captured game.dll image.",
+  "source": {
+    "capture_report_sha256": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured_data_sha256": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d",
+    "capture_identity_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+    "replay_script": "../research_handoff_20260927/indirect/inspect_capture.py"
+  },
+  "unwind_fragments": [
+    {"start": "0x108bc70", "end": "0x108bcd2", "sha256": "192c458380e95e06ce45c99c313aea28779c2ed43f3a042446c9cc35327eaae2"},
+    {"start": "0x108bcd2", "end": "0x108bdd6", "sha256": "09cc602896bbb9548ade530e00c0be41e351f57241e3b0e16a6ad359299d779a"},
+    {"start": "0x108bdd6", "end": "0x108bdf2", "sha256": "61b5ecf5d8f6417806e7b7d8bdf92f6bfa9865a8f82536b64dada16e9b2152ad"},
+    {"start": "0x108bdf2", "end": "0x108be06", "sha256": "22b41a752102a37d48a1bd417b8f151e2ab4e474b63363d71128dc64668f0981"},
+    {"start": "0x108be06", "end": "0x108c5be", "sha256": "eddf36cce4e94b0aa142eee6f0452c67bf3871a76cec805cdb343db5a02969b3"},
+    {"start": "0x108c5be", "end": "0x108c5d7", "sha256": "7f05d6357fde5413a2673d11025718a0a755ae9efa470e18be0c7d164497d441"}
+  ],
+  "selected_contiguous_ranges": [
+    {"start": "0x108c1db", "end": "0x108c205", "sha256": "446f63a2d7432c4ca537ab3ede7edb41be03d782c779e545d6050d1071f3e8a1"},
+    {"start": "0x108c205", "end": "0x108c29f", "sha256": "c324f8146ba7e63767322766f4a726e4c09e11c8c8f6c00edb11736573341dd0"},
+    {"start": "0x108c2a3", "end": "0x108c409", "sha256": "1526fe5da99533df845013858999b9e1ddbaa53ee55389290176826af2b3ef5a"},
+    {"start": "0x108c409", "end": "0x108c451", "sha256": "0664c6c78df9b29edbd9b34065e0afbde4b4b968712af60b8c11a8d0cc7028a8"},
+    {"start": "0x108c451", "end": "0x108c4fd", "sha256": "50ebf310c097c2f89b9480e2f82cac6343082eb56fb05bff1e6d4cadfa90380b"},
+    {"start": "0x108bb51", "end": "0x108bb9b", "sha256": "d95ec72c9ec1ca4663ece5ba7b7f29ca672f0e6a63cdd6e6537892f145cb58e2"}
+  ],
+  "host_peer_layout": {
+    "host_pointer": "Handler first argument rcx, saved at [rbp-0x59] by 0x108bca5; this is separate from request pointer [rbp-0x51].",
+    "entry_array": "Four entries at host+0x20+0x38*i, i=0..3. The end address host+0x100 is formed by 0x108c2a7. Existing-id scan is bounded at 0x108c2cb; free-entry scan at 0x108c393.",
+    "occupancy_count": "0x108c192..0x108c1b2 starts at one and adds nonzero host+0x58, +0x90, +0xc8; it does not examine the first entry at host+0x20. Treat that starting one as an inferred invariant, not an established identity.",
+    "entry_writes": "0x108c3b0 stores a requested qword at entry+0; 0x108c3b9 stores dword 1 at +0x20; 0x108c3c3 stores 0x41a00000 (20.0f) at +0x1c; 0x108c3cd stores zero at +0x24; 0x108c3d1 initializes +0x14 to 0xffffffff.",
+    "index_bytes": "0x108c3d8..0x108c3ee scans four bytes at host+0x100..+0x103, sets the first zero byte to 1, and stores that index in entry+0x14 at 0x108c3fb. If all four bytes are nonzero, the stored index remains 0xffffffff in this visible path.",
+    "existing_entry_helper": "0x108c34e calls 0x108b6b0 when a requested qword already appears in the four entry records. Within that helper, 0x108bb51..0x108bb93 scans four records, clears matching entry+0/+0x18/+0x20, and clears host+0x100+index when entry+0x14 is not -1. The helper also mutates other arrays; its full business meaning remains unverified."
+  },
+  "after_capacity_check": [
+    {"rva": "0x108c1db..0x108c205", "observation": "Reads a global pointer and tests byte at +0x1f868. Nonzero calls 0xbe3cf0 with r8d=9 and jumps to common epilogue. Zero enters per-request checks."},
+    {"rva": "0x108c210..0x108c29f", "observation": "Iterates the request count read at 0x108befd. A failed indirect predicate at 0x108c238 enters the path calling 0xbe3cf0 with code 6 at 0x108c2fe. A matching nonzero byte in a separate global stride-0x1690 table enters code 5 at 0x108c331. Both jump to epilogue. Exact predicate and table semantics are unverified."},
+    {"rva": "0x108c2a3..0x108c409", "observation": "For each requested qword, locates an existing record among four, calls the helper if found, then scans four entries for a zero qword and writes a record and up to one of four index bytes. The no-free-entry branch 0x108c398..0x108c3b0 assigns rdx=0 and would reach a store through rdx; capacity/structure invariants appear intended to prevent it. No runtime reachability claim is made."},
+    {"rva": "0x108c409..0x108c451", "observation": "Loads a separate global pointer, scans eight qwords at global+0x108+8*i for equality with the handler second argument r12, then clears the matching qword and its 32-byte companion block at global+0x148+0x20*i. This is removal/cleanup by key in an eight-entry global table, not evidence for eight host peer records."},
+    {"rva": "0x108c451..0x108c489", "observation": "Calls 0x12be5a0. If it returns nonzero, appends a qword to a separate 32-entry ring at global+0x248+8*i with index global+0x348. The qword's domain is not established."},
+    {"rva": "0x108c489..0x108c4fd", "observation": "Scans four entries at host+0x808+0x40*i for a zero qword. When all are occupied, 0x108c4a7 goes directly to the common epilogue without an immediate 0xbe3cf0 call. Otherwise stores a qword at entry+0 and copies 0x30 bytes from the request pointer into entry+8..+0x37, stores another qword at entry+0x38, then jumps to the epilogue. This is a four-entry pending-record path; it does not visibly send a success response."}
+  ],
+  "immediate_status_calls": [
+    {"call_rva": "0x108c1d1", "r8d": 4, "trigger": "remaining capacity is below request count", "then": "jump to 0x108c59e"},
+    {"call_rva": "0x108c1fb", "r8d": 9, "trigger": "global byte at +0x1f868 nonzero", "then": "jump to 0x108c59e"},
+    {"call_rva": "0x108c2fe", "r8d": 6, "trigger": "per-request indirect predicate returns nonzero", "then": "jump to 0x108c59e"},
+    {"call_rva": "0x108c331", "r8d": 5, "trigger": "per-request global-table byte nonzero", "then": "jump to 0x108c59e"}
+  ],
+  "other_exits": "The function has earlier calls with other numeric r8d values and a separate structured-dispatch path at 0x108c4fd/0x108c51c. These are not evidence of a successful fifth peer. All above jumps converge at 0x108c59e and then 0x108c5be..0x108c5d7 epilogue.",
+  "interpretation_limits": [
+    "0xbe3cf0 serializes three arguments into a structure and calls 0xbde430 (visible at 0xbe3cf0..0xbe3d83); the exact response format, wire behavior, and semantic names of numeric codes are unverified.",
+    "The eight-entry global table at 0x108c420 is a different object from the four-entry host peer array and the four-entry pending-record array.",
+    "The capture lacks writable global values and heap; data invariants, successful join, client synchronization, and network/service acceptance cannot be proven statically.",
+    "This document gives no patch locations or modification instructions."
+  ]
+}

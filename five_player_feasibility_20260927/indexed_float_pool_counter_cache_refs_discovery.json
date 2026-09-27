@@ -1,0 +1,139 @@
+{
+  "source_sha256": {
+    "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+  },
+  "capture_identity_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "requested_ranges": [],
+  "offsets": {
+    "0x8d709": {
+      "references": [
+        {
+          "rva": "0x72336a",
+          "bytes": "4488b309d70800",
+          "sha256": "89bba573308fdf08269ff578f76c2737bfffeb4712bf20eb183bcf33ccd583c3",
+          "asm": "mov byte ptr [rbx + 0x8d709], r14b",
+          "fragment": [
+            "0x723176",
+            "0x7233e8",
+            "0x2442110"
+          ],
+          "root": "0x723150",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 1,
+          "access": 2
+        },
+        {
+          "rva": "0x724e4e",
+          "bytes": "c68309d7080000",
+          "sha256": "910f746efef8e5817dafbb7361ea4a0b584d4fb82c89708defab3f9a351d4f4b",
+          "asm": "mov byte ptr [rbx + 0x8d709], 0",
+          "fragment": [
+            "0x7248d0",
+            "0x724ff7",
+            "0x244232c"
+          ],
+          "root": "0x7248d0",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 1,
+          "access": 2
+        },
+        {
+          "rva": "0x142bfe0",
+          "bytes": "888b09d70800",
+          "sha256": "ef5250bed0cc60c7d03e418eeac52b6ec201e3ed1edb59f1d1ece892f35117f0",
+          "asm": "mov byte ptr [rbx + 0x8d709], cl",
+          "fragment": [
+            "0x142bed0",
+            "0x142c89e",
+            "0x25192c8"
+          ],
+          "root": "0x142bed0",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 1,
+          "access": 2
+        },
+        {
+          "rva": "0x142c940",
+          "bytes": "c68309d7080000",
+          "sha256": "910f746efef8e5817dafbb7361ea4a0b584d4fb82c89708defab3f9a351d4f4b",
+          "asm": "mov byte ptr [rbx + 0x8d709], 0",
+          "fragment": [
+            "0x142c8f0",
+            "0x142c94d",
+            "0x25192e0"
+          ],
+          "root": "0x142c8f0",
+          "base": "rbx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 1,
+          "access": 2
+        },
+        {
+          "rva": "0x142d7cb",
+          "bytes": "c68709d7080001",
+          "sha256": "cc580e52c1ced66c492b4b199d10ae095f9581bc2b60f5147d796c4e854716dd",
+          "asm": "mov byte ptr [rdi + 0x8d709], 1",
+          "fragment": [
+            "0x142d791",
+            "0x142d810",
+            "0x25193cc"
+          ],
+          "root": "0x142cb90",
+          "base": "rdi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 1,
+          "access": 2
+        },
+        {
+          "rva": "0x142d965",
+          "bytes": "80be09d7080000",
+          "sha256": "2b1ca7e6f605b658e50bc9e66b16ae7eefb1fe91d1b10eb8c5135848f0232fcc",
+          "asm": "cmp byte ptr [rsi + 0x8d709], 0",
+          "fragment": [
+            "0x142d8ed",
+            "0x142ee3d",
+            "0x251941c"
+          ],
+          "root": "0x142d870",
+          "base": "rsi",
+          "index": null,
+          "scale": 1,
+          "operand_size": 1,
+          "access": 1
+        },
+        {
+          "rva": "0x1432f1a",
+          "bytes": "80b909d7080000",
+          "sha256": "98e813a0a8692b21e1b13dad05905f6d4e5a563e361256ee12f15dbd13b70e02",
+          "asm": "cmp byte ptr [rcx + 0x8d709], 0",
+          "fragment": [
+            "0x1432f10",
+            "0x1433013",
+            "0x251978c"
+          ],
+          "root": "0x1432f10",
+          "base": "rcx",
+          "index": null,
+          "scale": 1,
+          "operand_size": 1,
+          "access": 1
+        }
+      ],
+      "raw_matches_outside_unwind": 0
+    }
+  },
+  "limits": [
+    "Only encoded disp32 memory references in captured unwind-covered code are included.",
+    "RIP-relative references are excluded; base-register identity is unproven.",
+    "Computed addresses, indexed layout changes, leaf functions without unwind, and uncaptured code can be omitted."
+  ]
+}

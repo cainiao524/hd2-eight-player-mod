@@ -1,0 +1,41 @@
+0x51ba90 mov qword ptr [rsp + 8], rbx
+0x51ba95 mov qword ptr [rsp + 0x10], rbp
+0x51ba9a mov qword ptr [rsp + 0x18], rsi
+0x51ba9f push rdi
+0x51baa0 sub rsp, 0x20
+0x51baa4 mov rdi, qword ptr [rip + 0x2e0aeed]
+0x51baab mov rbp, rcx
+0x51baae mov esi, dword ptr [rdi + 4]
+0x51bab1 lea eax, [rsi + 1]
+0x51bab4 cmp eax, 4
+0x51bab7 jbe 0x51bac7
+0x51bab9 mov dword ptr [0], 0
+0x51bac4 mov esi, dword ptr [rdi + 4]
+0x51bac7 mov ebx, esi
+0x51bac9 lea rcx, [rdi + 0x88]
+0x51bad0 imul rax, rbx, 0x9928
+0x51bad7 xor edx, edx
+0x51bad9 mov r8d, 0x9928
+0x51badf add rcx, rax
+0x51bae2 call 0x208aaa0
+0x51bae7 imul rax, rbx, 0x58
+0x51baeb xorps xmm0, xmm0
+0x51baee xor ecx, ecx
+0x51baf0 mov r8d, esi
+0x51baf3 movups xmmword ptr [rax + rdi + 0x26528], xmm0
+0x51bafb movups xmmword ptr [rax + rdi + 0x26538], xmm0
+0x51bb03 movups xmmword ptr [rax + rdi + 0x26548], xmm0
+0x51bb0b movups xmmword ptr [rax + rdi + 0x26558], xmm0
+0x51bb13 movups xmmword ptr [rax + rdi + 0x26568], xmm0
+0x51bb1b mov qword ptr [rax + rdi + 0x26578], rcx
+0x51bb23 lea rcx, [rdi + 0x50]
+0x51bb27 mov qword ptr [rdi + rbx*8 + 0x68], rbp
+0x51bb2c mov edx, dword ptr [rbp + 8]
+0x51bb2f call 0x172f790
+0x51bb34 inc dword ptr [rdi + 4]
+0x51bb37 mov rbx, qword ptr [rsp + 0x30]
+0x51bb3c mov rbp, qword ptr [rsp + 0x38]
+0x51bb41 mov rsi, qword ptr [rsp + 0x40]
+0x51bb46 add rsp, 0x20
+0x51bb4a pop rdi
+0x51bb4b ret 

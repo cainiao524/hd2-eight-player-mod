@@ -1,0 +1,76 @@
+0x799790 mov qword ptr [rsp + 0x18], rbx
+0x799795 mov qword ptr [rsp + 0x20], rbp
+0x79979a push r14
+0x79979c cmp edx, dword ptr [rip + 0x2cea492]
+0x7997a2 mov r14, r9
+0x7997a5 mov rbp, r8
+0x7997a8 mov rbx, rcx
+0x7997ab jne 0x7997b4
+0x7997ad mov eax, 0xffffffff
+0x7997b2 jmp 0x799813
+0x7997b4 mov r9d, dword ptr [rcx + 0x28]
+0x7997b8 mov r10d, dword ptr [rcx + 0x30]
+0x7997bc xor ecx, ecx
+0x7997be mov qword ptr [rsp + 0x10], rsi
+0x7997c3 imul r10d, edx
+0x7997c7 mov qword ptr [rsp + 0x18], rdi
+0x7997cc lea esi, [r9 - 1]
+0x7997d0 test r9d, r9d
+0x7997d3 je 0x799804
+0x7997d5 mov r11, qword ptr [rbx + 0x20]
+0x7997d9 mov edi, dword ptr [rbx + 0x2c]
+0x7997dc nop dword ptr [rax]
+0x7997e0 mov eax, esi
+0x7997e2 lea r8d, [rcx + r10]
+0x7997e6 and r8, rax
+0x7997e9 mov eax, dword ptr [r11 + r8*8]
+0x7997ed cmp eax, edi
+0x7997ef je 0x799893
+0x7997f5 cmp eax, edx
+0x7997f7 je 0x79989b
+0x7997fd inc ecx
+0x7997ff cmp ecx, r9d
+0x799802 jb 0x7997e0
+0x799804 mov eax, 0xffffffff
+0x799809 mov rsi, qword ptr [rsp + 0x10]
+0x79980e mov rdi, qword ptr [rsp + 0x18]
+0x799813 mov r8, qword ptr [rbx + 0x50]
+0x799817 mov rbx, qword ptr [rsp + 0x20]
+0x79981c mov ecx, eax
+0x79981e lea r9, [rcx + rcx*8]
+0x799822 mov ecx, dword ptr [r14]
+0x799825 mov eax, dword ptr [rcx + rbp]
+0x799828 lea edx, [rcx + 4]
+0x79982b mov dword ptr [r8 + r9*4], eax
+0x79982f mov ecx, dword ptr [rdx + rbp]
+0x799832 add edx, 4
+0x799835 mov dword ptr [r8 + r9*4 + 4], ecx
+0x79983a mov ecx, dword ptr [rdx + rbp]
+0x79983d add edx, 4
+0x799840 mov dword ptr [r8 + r9*4 + 8], ecx
+0x799845 mov ecx, dword ptr [rdx + rbp]
+0x799848 add edx, 4
+0x79984b mov dword ptr [r8 + r9*4 + 0xc], ecx
+0x799850 mov ecx, dword ptr [rdx + rbp]
+0x799853 add edx, 4
+0x799856 mov dword ptr [r8 + r9*4 + 0x10], ecx
+0x79985b mov ecx, dword ptr [rdx + rbp]
+0x79985e add edx, 4
+0x799861 mov dword ptr [r8 + r9*4 + 0x14], ecx
+0x799866 mov ecx, dword ptr [rdx + rbp]
+0x799869 add edx, 4
+0x79986c mov dword ptr [r8 + r9*4 + 0x18], ecx
+0x799871 movzx ecx, byte ptr [rdx + rbp]
+0x799875 add edx, 4
+0x799878 mov byte ptr [r8 + r9*4 + 0x1c], cl
+0x79987d mov ecx, dword ptr [rdx + rbp]
+0x799880 lea eax, [rdx + 4]
+0x799883 mov rbp, qword ptr [rsp + 0x28]
+0x799888 mov dword ptr [r14], eax
+0x79988b mov dword ptr [r8 + r9*4 + 0x20], ecx
+0x799890 pop r14
+0x799892 ret 
+0x799893 cmp eax, edx
+0x799895 jne 0x799804
+0x79989b mov eax, dword ptr [r11 + r8*8 + 4]
+0x7998a0 jmp 0x799809

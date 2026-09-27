@@ -1,0 +1,74 @@
+{
+  "capture_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "source_sha256": {
+    "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+  },
+  "code_range": {
+    "rva": 4096,
+    "size": 34667155,
+    "label": "code",
+    "copied_bytes": 34667155,
+    "skipped_bytes": 0
+  },
+  "captured_unwind_table": {
+    "rva": "0x37d8000",
+    "size": 1832304,
+    "fragments": 152692
+  },
+  "header_exception_directory_uncaptured": {
+    "rva": "0x3fd340c",
+    "size": 1832316
+  },
+  "targets": {
+    "0xacbe60": {
+      "branches": [
+        {
+          "rva": "0xab60f9",
+          "bytes": "e8625d0100",
+          "sha256": "cc95634fb326809b6d17fbfbf0461e43c8a9aab5dc0b6d5f14212c2f81a099d3",
+          "asm": "call 0xacbe60",
+          "fragment": [
+            "0xab5054",
+            "0xab62d6",
+            "0x24a6e3c"
+          ],
+          "root": [
+            "0xab5000",
+            "0xab502c",
+            "0x24a6de8"
+          ]
+        }
+      ],
+      "rip_references": [],
+      "absolute_pointers": [],
+      "rva_literals": [
+        {
+          "rva": "0x24a818c",
+          "range": "readonly",
+          "bytes": "60beac00",
+          "aligned": true
+        },
+        {
+          "rva": "0x24a8254",
+          "range": "readonly",
+          "bytes": "60beac00",
+          "aligned": true
+        },
+        {
+          "rva": "0x3858ef8",
+          "range": "unwind",
+          "bytes": "60beac00",
+          "aligned": true
+        }
+      ]
+    }
+  },
+  "limits": [
+    "No heap or writable-data capture.",
+    "RIP reference scan recognizes REX/non-REX MOV/LEA with disp32; it does not solve arbitrary address arithmetic.",
+    "Exception-table boundary validation omits leaf or uncovered code.",
+    "Pointer/RVA literal matches alone are data occurrences, not execution edges.",
+    "No gameplay, ownership, or lifecycle inference."
+  ]
+}

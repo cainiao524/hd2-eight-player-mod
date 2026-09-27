@@ -1,0 +1,57 @@
+0x1408fe0 push rbx
+0x1408fe2 sub rsp, 0x20
+0x1408fe6 mov rbx, rcx
+0x1408fe9 mov dword ptr [rcx + 0xa8], 0x3f800000
+0x1408ff3 mov dword ptr [rcx + 0xac], 0x3f800000
+0x1408ffd mov ecx, dword ptr [rcx + 0x28]
+0x1409000 sub ecx, 1
+0x1409003 je 0x140908c
+0x1409009 sub ecx, 1
+0x140900c je 0x1409063
+0x140900e sub ecx, 1
+0x1409011 je 0x140904c
+0x1409013 cmp ecx, 1
+0x1409016 jne 0x14090a5
+0x140901c xorps xmm0, xmm0
+0x140901f xor eax, eax
+0x1409021 movups xmmword ptr [rbx + 0x30], xmm0
+0x1409025 movups xmmword ptr [rbx + 0x40], xmm0
+0x1409029 movups xmmword ptr [rbx + 0x50], xmm0
+0x140902d movups xmmword ptr [rbx + 0x60], xmm0
+0x1409031 movups xmmword ptr [rbx + 0x70], xmm0
+0x1409035 movups xmmword ptr [rbx + 0x80], xmm0
+0x140903c movups xmmword ptr [rbx + 0x90], xmm0
+0x1409043 mov qword ptr [rbx + 0xa0], rax
+0x140904a jmp 0x14090a5
+0x140904c xorps xmm0, xmm0
+0x140904f xor eax, eax
+0x1409051 movups xmmword ptr [rbx + 0x30], xmm0
+0x1409055 movups xmmword ptr [rbx + 0x40], xmm0
+0x1409059 movups xmmword ptr [rbx + 0x50], xmm0
+0x140905d mov qword ptr [rbx + 0x60], rax
+0x1409061 jmp 0x14090a5
+0x1409063 xorps xmm0, xmm0
+0x1409066 xor eax, eax
+0x1409068 movups xmmword ptr [rbx + 0x30], xmm0
+0x140906c movups xmmword ptr [rbx + 0x40], xmm0
+0x1409070 movups xmmword ptr [rbx + 0x50], xmm0
+0x1409074 movups xmmword ptr [rbx + 0x60], xmm0
+0x1409078 movups xmmword ptr [rbx + 0x70], xmm0
+0x140907c movups xmmword ptr [rbx + 0x80], xmm0
+0x1409083 mov qword ptr [rbx + 0x90], rax
+0x140908a jmp 0x14090a5
+0x140908c xorps xmm0, xmm0
+0x140908f xor eax, eax
+0x1409091 movups xmmword ptr [rbx + 0x30], xmm0
+0x1409095 movups xmmword ptr [rbx + 0x40], xmm0
+0x1409099 movups xmmword ptr [rbx + 0x50], xmm0
+0x140909d movups xmmword ptr [rbx + 0x60], xmm0
+0x14090a1 mov qword ptr [rbx + 0x70], rax
+0x14090a5 lea rcx, [rbx + 0xb0]
+0x14090ac xor edx, edx
+0x14090ae mov r8d, 0x140
+0x14090b4 call 0x208aaa0
+0x14090b9 mov byte ptr [rbx + 0x200], 0
+0x14090c0 add rsp, 0x20
+0x14090c4 pop rbx
+0x14090c5 ret 

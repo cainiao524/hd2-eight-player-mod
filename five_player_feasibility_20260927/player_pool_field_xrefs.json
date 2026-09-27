@@ -1,0 +1,29 @@
+{
+  "source_sha256": {
+    "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+  },
+  "game_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+  "stat_string_rva": "0x2247520",
+  "stat_xref_rva": "0x56e7ec",
+  "stat_read_field": "0xea0894",
+  "fields": {
+    "0xea0894": [
+      {
+        "rva": "0x56e7de",
+        "bytes": "448b8f9408ea00",
+        "sha256": "f02181df2fb66ec2ec8022c9ecac172a880855fd7882b2423d23bc30dbd511fd",
+        "asm": "mov r9d, dword ptr [rdi + 0xea0894]",
+        "root": "0x56a920"
+      }
+    ],
+    "0xea0890": [],
+    "0xea0888": [],
+    "0xea0898": []
+  },
+  "limits": [
+    "These are direct disp32 references in unwind-covered code, not full dataflow.",
+    "The diagnostic format capacity literal 4 alone does not prove the gameplay allocator limit.",
+    "No game execution or writable-data capture."
+  ]
+}

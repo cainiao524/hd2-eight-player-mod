@@ -1,0 +1,1009 @@
+{
+  "title": "Bounded exact-build HostSynchronizer embedded owner references",
+  "capture_identity_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "capture_report_sha256": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+  "captured_data_sha256": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d",
+  "disk_game_dll_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+  "reproduction": "python host_relocation_inventory.py --capture-dir <pinned-capture-directory>; all RVA bytes come from captured code fragments and are validated against the pinned capture",
+  "capture_verification": "100 sites: exact capture bytes, instruction boundaries, and unwind roots verified",
+  "scope": "Only listed roots and listed instructions. Root bounds follow captured fragments, not independently established complete function boundaries. This is a proven subset, not all readers or writers.",
+  "structural_constraints": {
+    "host_owner_offset": "0x159b0",
+    "host_state_owner_offset": "0x159c8",
+    "next_sibling_owner_offset": "0x162c8",
+    "host_sibling_delta": "0x918",
+    "host_peer_region": "host+0x20, four records x 0x38",
+    "host_large_region": "host+0x108, four records x 0x1c0; ends at host+0x808",
+    "host_pending_region": "host+0x808, four records x 0x40; ends at host+0x908",
+    "live_tail": "host+0x908 and host+0x910, two qwords"
+  },
+  "verified_groups": [
+    {
+      "name": "inline_host_constructor",
+      "root": "0x134d740",
+      "base_provenance": "rsi is the outer owner from the global at 0x134d754; r9=outer+0x159b0 at 0x134dc9e; rax=outer+0x159f0 (=host+0x40) at 0x134dcba. edi=0. The peer clear is four unrolled records in one loop iteration: ecx begins 0, adds 4, then cmp ecx,4.",
+      "conclusion": "Host is embedded; [host+0] is an owner backpointer. Four peer records are initialized inline, bypassing any HostSynchronizer method or pointer indirection. The next sibling begins at outer+0x162c8 (=host+0x918).",
+      "sites": [
+        {
+          "rva": "0x134d754",
+          "bytes": "488b3595f71202",
+          "instruction_sha256": "072051abe1256b38209cb7bf075339a6fc8ae03eaacab378efdc2cf203a1aed9",
+          "asm": "mov rsi, qword ptr [rip + 0x212f795]",
+          "fragment_file": "host_relocation_ctor_root.json",
+          "fragment_sha256": "2a502b38f5582a4b8ef0c49b7da775ff4afe69391feef5098f4ce510b368e994"
+        },
+        {
+          "rva": "0x134dc9e",
+          "bytes": "4c8d8eb0590100",
+          "instruction_sha256": "ea216a5f36b0d3480789a71a1fb71691b4b04106ec87671e0d6917dbc703728e",
+          "asm": "lea r9, [rsi + 0x159b0]",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dca8",
+          "bytes": "498931",
+          "instruction_sha256": "d5b793d237ef2327f3248e99b187c27e6e3f9fdf20d923dabfcef1216e95bb94",
+          "asm": "mov qword ptr [r9], rsi",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dcab",
+          "bytes": "49894108",
+          "instruction_sha256": "08ccd29c21daddc73e86da7b3a2f074bc87dfc1d5177f36c5e4e7f29068f956b",
+          "asm": "mov qword ptr [r9 + 8], rax",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dcb6",
+          "bytes": "41897918",
+          "instruction_sha256": "d33ce30afcc62ba534401906a98a4b4153512491ea37c1b848ea62e8466929b6",
+          "asm": "mov dword ptr [r9 + 0x18], edi",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dcba",
+          "bytes": "488d86f0590100",
+          "instruction_sha256": "c51c11fc14ea76ae70b32f66142c131ee3dd811341251827cc037260b2f17de3",
+          "asm": "lea rax, [rsi + 0x159f0]",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dcd0",
+          "bytes": "488978e0",
+          "instruction_sha256": "715d26b90b71d7ee97b1c7a568a4ff0e43f9ed3ca6d3387e7645dafe28fb3831",
+          "asm": "mov qword ptr [rax - 0x20], rdi",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dcd4",
+          "bytes": "83c104",
+          "instruction_sha256": "de40bc59184915c29d06f2d83944a51da12276621488d3ec285b94502f419126",
+          "asm": "add ecx, 4",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dcd7",
+          "bytes": "8938",
+          "instruction_sha256": "1aace8871496ce645e91d6faf40093becd6152a5cf5cb7c1536edce2cb65a6d4",
+          "asm": "mov dword ptr [rax], edi",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dcd9",
+          "bytes": "48897818",
+          "instruction_sha256": "c2116734bbc774724115ab4923c6ff0fd14972aec83c903564d6e2caf4986567",
+          "asm": "mov qword ptr [rax + 0x18], rdi",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dcdd",
+          "bytes": "897838",
+          "instruction_sha256": "dda59495a94c6a810e2bf1be9b8f77b9422277d80ebe0f623333360d79f21d57",
+          "asm": "mov dword ptr [rax + 0x38], edi",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dce0",
+          "bytes": "48897850",
+          "instruction_sha256": "a0a65edc7c251db55ce8c7dd2306577d33edd4e3659a613534bf79e8853095db",
+          "asm": "mov qword ptr [rax + 0x50], rdi",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dce4",
+          "bytes": "897870",
+          "instruction_sha256": "5ee42e06d80ed65f9b5029c7367fa623ef4541abb8adfe37a866ffac2c489cdb",
+          "asm": "mov dword ptr [rax + 0x70], edi",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dce7",
+          "bytes": "4889b888000000",
+          "instruction_sha256": "4e17c68afeb7083ed641d1d36d5d7aaf442d47d9ab8019835aa1d1d28ca85be8",
+          "asm": "mov qword ptr [rax + 0x88], rdi",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dcee",
+          "bytes": "89b8a8000000",
+          "instruction_sha256": "9d8f269df68c230a25ecc839e2210a80cf6b2127834759d7f4cbff1ed11e49f7",
+          "asm": "mov dword ptr [rax + 0xa8], edi",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dcf4",
+          "bytes": "488d80e0000000",
+          "instruction_sha256": "62caccaad750122bb511438c57a671cdc382e4741c54a0d234a796d1f84585cb",
+          "asm": "lea rax, [rax + 0xe0]",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dcfb",
+          "bytes": "83f904",
+          "instruction_sha256": "e0f8e2a8fea2f143982c5ab1163b172f31e74c40937537efff6ac915f0d96567",
+          "asm": "cmp ecx, 4",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dcfe",
+          "bytes": "72d0",
+          "instruction_sha256": "dc519b38e8bc2f9c6f54440f01144e9df9c849ad93f961636227d8ea4133ac42",
+          "asm": "jb 0x134dcd0",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dd07",
+          "bytes": "4c8d86c8620100",
+          "instruction_sha256": "3806cc3bf573031da0cadd0b9d43232d13851d59149c3370688d1d91c61ae50b",
+          "asm": "lea r8, [rsi + 0x162c8]",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dd28",
+          "bytes": "498930",
+          "instruction_sha256": "79cd53523e355bc885e01948a650116e53250893f59d4c5f82bc98fdb65739a4",
+          "asm": "mov qword ptr [r8], rsi",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        }
+      ]
+    },
+    {
+      "name": "outer_cleanup_dispatch",
+      "root": "0x134e160",
+      "base_provenance": "rdi=entry rcx at 0x134e16d; same rdi forms adjacent sibling and host addresses.",
+      "conclusion": "Cleanup calls the sibling handler first and the embedded HostSynchronizer handler second. Callee internals were not analyzed in this bounded inventory.",
+      "sites": [
+        {
+          "rva": "0x134e16d",
+          "bytes": "488bf9",
+          "instruction_sha256": "3a513e755bcc92dc07f967959cf4f4be34e79b71b62c3aec3954f17bee488df0",
+          "asm": "mov rdi, rcx",
+          "fragment_file": "host_relocation_134e160.json",
+          "fragment_sha256": "c1114895987877c51b4037f2bdac893fd357fae321bfed7ef492951e32fe1797"
+        },
+        {
+          "rva": "0x134e1c8",
+          "bytes": "488d8fc8620100",
+          "instruction_sha256": "16cbdf2eabb43fddeb6cdd9fe666dfaca8e6849ae8f2e6d663f0e144f26ec91d",
+          "asm": "lea rcx, [rdi + 0x162c8]",
+          "fragment_file": "host_relocation_fragment_134e1c8.json",
+          "fragment_sha256": "6b69352479039c31dbf54da4339cbbf6dc01734a4b7fb0df5c749328f1357f54"
+        },
+        {
+          "rva": "0x134e1e2",
+          "bytes": "e8490e7fff",
+          "instruction_sha256": "de34a165da1d83f9c4d1a6ad75bc277223a4e00530aa08398e4bc67b77786ff4",
+          "asm": "call 0xb3f030",
+          "fragment_file": "host_relocation_fragment_134e1c8.json",
+          "fragment_sha256": "6b69352479039c31dbf54da4339cbbf6dc01734a4b7fb0df5c749328f1357f54"
+        },
+        {
+          "rva": "0x134e1e7",
+          "bytes": "488d8fb0590100",
+          "instruction_sha256": "345a4e214ffcbf6fd9fec612db33211fd31499069089b1e92ac38eec2b1a6b94",
+          "asm": "lea rcx, [rdi + 0x159b0]",
+          "fragment_file": "host_relocation_fragment_134e1c8.json",
+          "fragment_sha256": "6b69352479039c31dbf54da4339cbbf6dc01734a4b7fb0df5c749328f1357f54"
+        },
+        {
+          "rva": "0x134e1ee",
+          "bytes": "e8dd1a7fff",
+          "instruction_sha256": "2eeeac99d3f86b0eb7b1c5e46d2ca5417e4111b96ab9591b591380b4717cd758",
+          "asm": "call 0xb3fcd0",
+          "fragment_file": "host_relocation_fragment_134e1c8.json",
+          "fragment_sha256": "6b69352479039c31dbf54da4339cbbf6dc01734a4b7fb0df5c749328f1357f54"
+        }
+      ]
+    },
+    {
+      "name": "outer_update_dispatch",
+      "root": "0x134e400",
+      "base_provenance": "rbx=entry rcx at 0x134e40f. This owner provides host+0x159b0 to 0x108a440 and sibling+0x162c8 to 0x1083150 and 0x10845b0.",
+      "conclusion": "Normal update invokes the four-pending consumer on the embedded host, then the sibling subsystem. Another later path calls the sibling transition handler.",
+      "sites": [
+        {
+          "rva": "0x134e40f",
+          "bytes": "488bd9",
+          "instruction_sha256": "d4ed4cfc264b5da25bc0a40c02f9818c48ff0ac8fd85318f45a886a82fe74e31",
+          "asm": "mov rbx, rcx",
+          "fragment_file": "host_relocation_134e400.json",
+          "fragment_sha256": "695af5ca372312d2b70e65c8aab364e7b4af1cffd216cdbf2ebd5ce1a0d64a7c"
+        },
+        {
+          "rva": "0x134e42b",
+          "bytes": "488d8bb0590100",
+          "instruction_sha256": "1b123fdc0d5c21f014035f432c7810582a50d5dbb4e99104a418da5d115a606b",
+          "asm": "lea rcx, [rbx + 0x159b0]",
+          "fragment_file": "host_relocation_134e400.json",
+          "fragment_sha256": "695af5ca372312d2b70e65c8aab364e7b4af1cffd216cdbf2ebd5ce1a0d64a7c"
+        },
+        {
+          "rva": "0x134e432",
+          "bytes": "e809c0d3ff",
+          "instruction_sha256": "c581ce11b7ab6f6c1f5ad878949f4d937e6b3a1487bae5c502b8100e605a930d",
+          "asm": "call 0x108a440",
+          "fragment_file": "host_relocation_134e400.json",
+          "fragment_sha256": "695af5ca372312d2b70e65c8aab364e7b4af1cffd216cdbf2ebd5ce1a0d64a7c"
+        },
+        {
+          "rva": "0x134e437",
+          "bytes": "488d8bc8620100",
+          "instruction_sha256": "1ddc6701ec0955d14908ff2363fe48945d5924aafc583f695bfa87a00c89f4a1",
+          "asm": "lea rcx, [rbx + 0x162c8]",
+          "fragment_file": "host_relocation_134e400.json",
+          "fragment_sha256": "695af5ca372312d2b70e65c8aab364e7b4af1cffd216cdbf2ebd5ce1a0d64a7c"
+        },
+        {
+          "rva": "0x134e43e",
+          "bytes": "e80d4dd3ff",
+          "instruction_sha256": "d6f07d3f6a45b6b7cc400dd530e5c129b36d1e66d8eea6d81d85e0567d258fa8",
+          "asm": "call 0x1083150",
+          "fragment_file": "host_relocation_134e400.json",
+          "fragment_sha256": "695af5ca372312d2b70e65c8aab364e7b4af1cffd216cdbf2ebd5ce1a0d64a7c"
+        },
+        {
+          "rva": "0x134e545",
+          "bytes": "488d8bc8620100",
+          "instruction_sha256": "1ddc6701ec0955d14908ff2363fe48945d5924aafc583f695bfa87a00c89f4a1",
+          "asm": "lea rcx, [rbx + 0x162c8]",
+          "fragment_file": "host_relocation_134e400.json",
+          "fragment_sha256": "695af5ca372312d2b70e65c8aab364e7b4af1cffd216cdbf2ebd5ce1a0d64a7c"
+        },
+        {
+          "rva": "0x134e550",
+          "bytes": "e85b60d3ff",
+          "instruction_sha256": "1784520214b766182e0513c903a90e8cfa6330d97b53c851f04fdda8b4d4c788",
+          "asm": "call 0x10845b0",
+          "fragment_file": "host_relocation_134e400.json",
+          "fragment_sha256": "695af5ca372312d2b70e65c8aab364e7b4af1cffd216cdbf2ebd5ce1a0d64a7c"
+        }
+      ]
+    },
+    {
+      "name": "outer_start_hosting",
+      "root": "0x13500f0",
+      "base_provenance": "rbx=entry rcx at 0x13500fd; direct state access at outer+0x159c8 is host+0x18; rcx=outer+0x159b0.",
+      "conclusion": "Owner state check and both hosting branches use the embedded host address directly.",
+      "sites": [
+        {
+          "rva": "0x13500fd",
+          "bytes": "488bd9",
+          "instruction_sha256": "d4ed4cfc264b5da25bc0a40c02f9818c48ff0ac8fd85318f45a886a82fe74e31",
+          "asm": "mov rbx, rcx",
+          "fragment_file": "host_relocation_13500f0.json",
+          "fragment_sha256": "ca1da891a4ec738e1bb046b805f45bdae46ff745004dfeb86b90b0e5d2b8b51f"
+        },
+        {
+          "rva": "0x1350125",
+          "bytes": "83bbc859010002",
+          "instruction_sha256": "f559743d040b576e92571cf3af9ecea062dca5e202193ee58369239e76fbebee",
+          "asm": "cmp dword ptr [rbx + 0x159c8], 2",
+          "fragment_file": "host_relocation_13500f0.json",
+          "fragment_sha256": "ca1da891a4ec738e1bb046b805f45bdae46ff745004dfeb86b90b0e5d2b8b51f"
+        },
+        {
+          "rva": "0x135012c",
+          "bytes": "488d8bb0590100",
+          "instruction_sha256": "1b123fdc0d5c21f014035f432c7810582a50d5dbb4e99104a418da5d115a606b",
+          "asm": "lea rcx, [rbx + 0x159b0]",
+          "fragment_file": "host_relocation_13500f0.json",
+          "fragment_sha256": "ca1da891a4ec738e1bb046b805f45bdae46ff745004dfeb86b90b0e5d2b8b51f"
+        },
+        {
+          "rva": "0x135013a",
+          "bytes": "e9418ed3ff",
+          "instruction_sha256": "c4b5aa0f5d1e1a17b6dfb7b87519702085dd23acf6c7ac6671e4863391ca2ea3",
+          "asm": "jmp 0x1088f80",
+          "fragment_file": "host_relocation_13500f0.json",
+          "fragment_sha256": "ca1da891a4ec738e1bb046b805f45bdae46ff745004dfeb86b90b0e5d2b8b51f"
+        },
+        {
+          "rva": "0x1350146",
+          "bytes": "e9e588d3ff",
+          "instruction_sha256": "0f19fc2c853432d791d7b2f40d5964ef7a4b800b607883739b3deb496fad931a",
+          "asm": "jmp 0x1088a30",
+          "fragment_file": "host_relocation_13500f0.json",
+          "fragment_sha256": "ca1da891a4ec738e1bb046b805f45bdae46ff745004dfeb86b90b0e5d2b8b51f"
+        }
+      ]
+    },
+    {
+      "name": "outer_peer_and_tail_access",
+      "root": "0x1350680",
+      "base_provenance": "entry rcx is the owner (reads owner+0xb3a8 and owner+0xb398); rbp=owner+0x159b0 at 0x13506ad.",
+      "conclusion": "Owner writes peer state fields, reads live tail qwords host+0x908/+0x910, and iterates exactly four peer records at host+0x20 stride 0x38 on two paths.",
+      "sites": [
+        {
+          "rva": "0x1350686",
+          "bytes": "488b81a8b30000",
+          "instruction_sha256": "39c25c19aeb902a3b538e7a229a3d47f4182209e55f24c3217e3bc3a5a55045b",
+          "asm": "mov rax, qword ptr [rcx + 0xb3a8]",
+          "fragment_file": "host_relocation_1350680.json",
+          "fragment_sha256": "65d9ec81a94e1dee6a71ffdee5d843e79dfb7ac2563cbaca8c98fd4ad36e7794"
+        },
+        {
+          "rva": "0x1350694",
+          "bytes": "483b8198b30000",
+          "instruction_sha256": "1083287028c792d1c0799040e4129b43a0b3d6da907c926eb60fbafe3da17726",
+          "asm": "cmp rax, qword ptr [rcx + 0xb398]",
+          "fragment_file": "host_relocation_1350680.json",
+          "fragment_sha256": "65d9ec81a94e1dee6a71ffdee5d843e79dfb7ac2563cbaca8c98fd4ad36e7794"
+        },
+        {
+          "rva": "0x13506ad",
+          "bytes": "488da9b0590100",
+          "instruction_sha256": "9c8c64b5a3c27f6f0f619fdcced2a43e143b35e071129b6345276bb98770d7aa",
+          "asm": "lea rbp, [rcx + 0x159b0]",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        },
+        {
+          "rva": "0x13506cf",
+          "bytes": "897d1c",
+          "instruction_sha256": "ab3c630f4d2d1afc8391c4877ba69789d7fa3e00e1783ec5f4576c077591b166",
+          "asm": "mov dword ptr [rbp + 0x1c], edi",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        },
+        {
+          "rva": "0x13506d7",
+          "bytes": "897d44",
+          "instruction_sha256": "a79861746567c51a7e0761de89ce8303b00f1427d2196da5fe1273e7dfcd2add",
+          "asm": "mov dword ptr [rbp + 0x44], edi",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        },
+        {
+          "rva": "0x13506dc",
+          "bytes": "897d7c",
+          "instruction_sha256": "715724ca3106ca85666f56b073b409944056372f4d59259f11bd05399b3752ea",
+          "asm": "mov dword ptr [rbp + 0x7c], edi",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        },
+        {
+          "rva": "0x13506e2",
+          "bytes": "89bdb4000000",
+          "instruction_sha256": "ae2f5ef6c4a5547f53ff33c300d5e0673e21e395d5d052c9444b0032e9ba4177",
+          "asm": "mov dword ptr [rbp + 0xb4], edi",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        },
+        {
+          "rva": "0x13506e8",
+          "bytes": "89bdec000000",
+          "instruction_sha256": "0369e6778c1e02fcda9a73b805207c16bc8ecd33d4a5f9ddecc449d861d12587",
+          "asm": "mov dword ptr [rbp + 0xec], edi",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        },
+        {
+          "rva": "0x13506ee",
+          "bytes": "e88ddfd3ff",
+          "instruction_sha256": "58695e3b02c4d5610a2d414048b3d2a446e9357d1321a775e218e66fe1efe1b8",
+          "asm": "call 0x108e680",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        },
+        {
+          "rva": "0x135071c",
+          "bytes": "488d8d08090000",
+          "instruction_sha256": "b62615d1fd23c8c95b2908fa8446a01b9275bbb9b1ce2e5823ffcc6442559b72",
+          "asm": "lea rcx, [rbp + 0x908]",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        },
+        {
+          "rva": "0x135072d",
+          "bytes": "488d5d20",
+          "instruction_sha256": "e05dd23aeeb90dc44058744bb62b5a5f701132c379e55b9c9a3629d4d1a55cc5",
+          "asm": "lea rbx, [rbp + 0x20]",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        },
+        {
+          "rva": "0x1350731",
+          "bytes": "8d7704",
+          "instruction_sha256": "a19d1562366e0d70daa2fc8d15adc9a31467f7ef88f4a838e5d3242d5f47507a",
+          "asm": "lea esi, [rdi + 4]",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        },
+        {
+          "rva": "0x135074a",
+          "bytes": "488b8510090000",
+          "instruction_sha256": "4f7fb4c50770687e0a30c77e7f2a8f1feeecee22e545d6398b5f7cdfcc78d2c6",
+          "asm": "mov rax, qword ptr [rbp + 0x910]",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        },
+        {
+          "rva": "0x1350764",
+          "bytes": "488b8508090000",
+          "instruction_sha256": "adb268488c666937ec78264ed8a6d17d75cd4b08217904e9165325dad6503aa4",
+          "asm": "mov rax, qword ptr [rbp + 0x908]",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        },
+        {
+          "rva": "0x13507ca",
+          "bytes": "4883c338",
+          "instruction_sha256": "9b72e32f6853b040dd8f15d6a17df518770608e340479290972aba30684bdc43",
+          "asm": "add rbx, 0x38",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        },
+        {
+          "rva": "0x13507ce",
+          "bytes": "4883ee01",
+          "instruction_sha256": "eb9242f501ddf1e096e26d2bec2347d85d5a1987d5fa2b05feb63549235af937",
+          "asm": "sub rsi, 1",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        },
+        {
+          "rva": "0x13507d2",
+          "bytes": "0f855cffffff",
+          "instruction_sha256": "8ea065956bc7bde72562663c45565b3643eade3019b13aa5b0567fab18cc5b2d",
+          "asm": "jne 0x1350734",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        },
+        {
+          "rva": "0x13507e6",
+          "bytes": "be04000000",
+          "instruction_sha256": "36b7c6b41b361e2b228f4132faa8e3982bcc4a77c00b26043ccae77d12f06583",
+          "asm": "mov esi, 4",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        },
+        {
+          "rva": "0x13507eb",
+          "bytes": "488d5d40",
+          "instruction_sha256": "1d6b6bef603ce7c72ad3f45a4528692a571b36464d869cffc2502b9bd62742f9",
+          "asm": "lea rbx, [rbp + 0x40]",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        },
+        {
+          "rva": "0x1350835",
+          "bytes": "4883c338",
+          "instruction_sha256": "9b72e32f6853b040dd8f15d6a17df518770608e340479290972aba30684bdc43",
+          "asm": "add rbx, 0x38",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        },
+        {
+          "rva": "0x1350839",
+          "bytes": "4983ee01",
+          "instruction_sha256": "1dae1514c419a1554fab996742ada1194487447d17dc49d76c133fee73f6607e",
+          "asm": "sub r14, 1",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        },
+        {
+          "rva": "0x135083d",
+          "bytes": "75b3",
+          "instruction_sha256": "2020c47f039624e12707a801a3573c30418e02aa6cecd28403b3eb687393169e",
+          "asm": "jne 0x13507f2",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        },
+        {
+          "rva": "0x1350849",
+          "bytes": "897d1c",
+          "instruction_sha256": "ab3c630f4d2d1afc8391c4877ba69789d7fa3e00e1783ec5f4576c077591b166",
+          "asm": "mov dword ptr [rbp + 0x1c], edi",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        }
+      ]
+    },
+    {
+      "name": "sibling_direct_host_state",
+      "root": "0x1083150",
+      "base_provenance": "0x134e437 passes outer+0x162c8 as entry rcx; constructor sets [sibling+0]=outer at 0x134dd28. Here rdi=entry rcx and rbx=[rdi] at 0x108384e, 0x1084291, 0x10842d1.",
+      "conclusion": "Sibling update directly reads and writes host state at outer+0x159c8, including qword stores, without receiving a HostSynchronizer pointer.",
+      "sites": [
+        {
+          "rva": "0x1083176",
+          "bytes": "488b01",
+          "instruction_sha256": "151d32d4e1e6ca5699d939bbc6112ec17a1353964867118ce8ee5a28bb8c125c",
+          "asm": "mov rax, qword ptr [rcx]",
+          "fragment_file": "host_relocation_1083150.json",
+          "fragment_sha256": "c040a79a805e6efd7ca10167e57fb8cd1ba8caa2ba2a26d6f05c2f77223a4e86"
+        },
+        {
+          "rva": "0x1083179",
+          "bytes": "488bf9",
+          "instruction_sha256": "3a513e755bcc92dc07f967959cf4f4be34e79b71b62c3aec3954f17bee488df0",
+          "asm": "mov rdi, rcx",
+          "fragment_file": "host_relocation_1083150.json",
+          "fragment_sha256": "c040a79a805e6efd7ca10167e57fb8cd1ba8caa2ba2a26d6f05c2f77223a4e86"
+        },
+        {
+          "rva": "0x108384e",
+          "bytes": "488b1f",
+          "instruction_sha256": "4b9e002fdb18e50ea4953776f8cc9d4262b35cfa70ed799ba521894d4fdf0ed2",
+          "asm": "mov rbx, qword ptr [rdi]",
+          "fragment_file": "host_relocation_fragment_1083851.json",
+          "fragment_sha256": "01b0173d7daf4e6327841ca4e7ff6690e648a8dbc157f4cfe766d6aeba7e5324"
+        },
+        {
+          "rva": "0x1083851",
+          "bytes": "39b3c8590100",
+          "instruction_sha256": "96981e0ca8e2733ba46030a3dd212694d72bf14497464c95dfd4dce7da84f17a",
+          "asm": "cmp dword ptr [rbx + 0x159c8], esi",
+          "fragment_file": "host_relocation_fragment_1083851.json",
+          "fragment_sha256": "01b0173d7daf4e6327841ca4e7ff6690e648a8dbc157f4cfe766d6aeba7e5324"
+        },
+        {
+          "rva": "0x108386c",
+          "bytes": "4889b3c8590100",
+          "instruction_sha256": "68b785675e1c677a48faa5753210dbd7fc0558a12fcc534caec55b9cfa34ebf1",
+          "asm": "mov qword ptr [rbx + 0x159c8], rsi",
+          "fragment_file": "host_relocation_fragment_1083851.json",
+          "fragment_sha256": "01b0173d7daf4e6327841ca4e7ff6690e648a8dbc157f4cfe766d6aeba7e5324"
+        },
+        {
+          "rva": "0x1084291",
+          "bytes": "488b1f",
+          "instruction_sha256": "4b9e002fdb18e50ea4953776f8cc9d4262b35cfa70ed799ba521894d4fdf0ed2",
+          "asm": "mov rbx, qword ptr [rdi]",
+          "fragment_file": "host_relocation_fragment_1083851.json",
+          "fragment_sha256": "01b0173d7daf4e6327841ca4e7ff6690e648a8dbc157f4cfe766d6aeba7e5324"
+        },
+        {
+          "rva": "0x1084294",
+          "bytes": "83bbc859010000",
+          "instruction_sha256": "e685d9443bcb142aff1cf0112264692a36513385c42068c43028838fab4bb637",
+          "asm": "cmp dword ptr [rbx + 0x159c8], 0",
+          "fragment_file": "host_relocation_fragment_1083851.json",
+          "fragment_sha256": "01b0173d7daf4e6327841ca4e7ff6690e648a8dbc157f4cfe766d6aeba7e5324"
+        },
+        {
+          "rva": "0x10842b0",
+          "bytes": "33c0",
+          "instruction_sha256": "72fb562c9d90dfcc008e5b0a391395fd2a244bb6bc231e2621a8ec6860d21fa3",
+          "asm": "xor eax, eax",
+          "fragment_file": "host_relocation_fragment_1083851.json",
+          "fragment_sha256": "01b0173d7daf4e6327841ca4e7ff6690e648a8dbc157f4cfe766d6aeba7e5324"
+        },
+        {
+          "rva": "0x10842b2",
+          "bytes": "488983c8590100",
+          "instruction_sha256": "b4c15157ba7923f443b502596303412207d4ba94b150be46532ba122cf1401b9",
+          "asm": "mov qword ptr [rbx + 0x159c8], rax",
+          "fragment_file": "host_relocation_fragment_1083851.json",
+          "fragment_sha256": "01b0173d7daf4e6327841ca4e7ff6690e648a8dbc157f4cfe766d6aeba7e5324"
+        },
+        {
+          "rva": "0x10842d1",
+          "bytes": "488b1f",
+          "instruction_sha256": "4b9e002fdb18e50ea4953776f8cc9d4262b35cfa70ed799ba521894d4fdf0ed2",
+          "asm": "mov rbx, qword ptr [rdi]",
+          "fragment_file": "host_relocation_fragment_1083851.json",
+          "fragment_sha256": "01b0173d7daf4e6327841ca4e7ff6690e648a8dbc157f4cfe766d6aeba7e5324"
+        },
+        {
+          "rva": "0x10842d4",
+          "bytes": "83bbc859010000",
+          "instruction_sha256": "e685d9443bcb142aff1cf0112264692a36513385c42068c43028838fab4bb637",
+          "asm": "cmp dword ptr [rbx + 0x159c8], 0",
+          "fragment_file": "host_relocation_fragment_1083851.json",
+          "fragment_sha256": "01b0173d7daf4e6327841ca4e7ff6690e648a8dbc157f4cfe766d6aeba7e5324"
+        },
+        {
+          "rva": "0x10842f0",
+          "bytes": "48c783c859010000000000",
+          "instruction_sha256": "17c3ae7a02492dd48051ea589bae9fdb1a017d065ec3890e9a8ea0d81925bbc2",
+          "asm": "mov qword ptr [rbx + 0x159c8], 0",
+          "fragment_file": "host_relocation_fragment_1083851.json",
+          "fragment_sha256": "01b0173d7daf4e6327841ca4e7ff6690e648a8dbc157f4cfe766d6aeba7e5324"
+        }
+      ]
+    },
+    {
+      "name": "sibling_transition_direct_host_state",
+      "root": "0x10845b0",
+      "base_provenance": "0x134e545 passes outer+0x162c8 as entry rcx; rdi=entry rcx at 0x10845d3; rbx=[rdi] at 0x10845f6, consistent with constructor-set owner backpointer at sibling+0. This proves the 0x134e545 call path; other callers are not classified here.",
+      "conclusion": "Transition handler directly accesses owner+0x159c8 (=host+0x18), reads [owner+0x159b0] (=host+0 owner backpointer), and calls start_hosting with owner+0x159b0.",
+      "sites": [
+        {
+          "rva": "0x10845d3",
+          "bytes": "488bf9",
+          "instruction_sha256": "3a513e755bcc92dc07f967959cf4f4be34e79b71b62c3aec3954f17bee488df0",
+          "asm": "mov rdi, rcx",
+          "fragment_file": "host_relocation_fragment_10845fc.json",
+          "fragment_sha256": "9672b19d45828089143ddc01d5ad3e764a42503a383e0307268439e3fbc2b148"
+        },
+        {
+          "rva": "0x10845f6",
+          "bytes": "488b1f",
+          "instruction_sha256": "4b9e002fdb18e50ea4953776f8cc9d4262b35cfa70ed799ba521894d4fdf0ed2",
+          "asm": "mov rbx, qword ptr [rdi]",
+          "fragment_file": "host_relocation_fragment_10845fc.json",
+          "fragment_sha256": "9672b19d45828089143ddc01d5ad3e764a42503a383e0307268439e3fbc2b148"
+        },
+        {
+          "rva": "0x10845fc",
+          "bytes": "4439a3c8590100",
+          "instruction_sha256": "0e87fdc131b7375b81443a954bec2aa6260fd559d2fea08f108e88bdff81fd30",
+          "asm": "cmp dword ptr [rbx + 0x159c8], r12d",
+          "fragment_file": "host_relocation_fragment_10845fc.json",
+          "fragment_sha256": "9672b19d45828089143ddc01d5ad3e764a42503a383e0307268439e3fbc2b148"
+        },
+        {
+          "rva": "0x1084618",
+          "bytes": "4c89a3c8590100",
+          "instruction_sha256": "232d8c160495b5e6aaf3001920b38ce1a1f94ba32cc486094429bf5472906bea",
+          "asm": "mov qword ptr [rbx + 0x159c8], r12",
+          "fragment_file": "host_relocation_fragment_10845fc.json",
+          "fragment_sha256": "9672b19d45828089143ddc01d5ad3e764a42503a383e0307268439e3fbc2b148"
+        },
+        {
+          "rva": "0x1084a67",
+          "bytes": "4439bbc8590100",
+          "instruction_sha256": "a6141409b997d9a5a3090f58cef0c4aa8625d52315c85b8f0eee4200f7961918",
+          "asm": "cmp dword ptr [rbx + 0x159c8], r15d",
+          "fragment_file": "host_relocation_fragment_1084a83.json",
+          "fragment_sha256": "f0b247d72ba3890d72d5ebeacbf0ed6cd9899149250fc79691f55b6f261510a5"
+        },
+        {
+          "rva": "0x1084a83",
+          "bytes": "488b8bb0590100",
+          "instruction_sha256": "75251001990db8a91cf58b30ca6db81dcf57f3f8cefa58e18a5d421084742449",
+          "asm": "mov rcx, qword ptr [rbx + 0x159b0]",
+          "fragment_file": "host_relocation_fragment_1084a83.json",
+          "fragment_sha256": "f0b247d72ba3890d72d5ebeacbf0ed6cd9899149250fc79691f55b6f261510a5"
+        },
+        {
+          "rva": "0x1084a8a",
+          "bytes": "c783c859010001000000",
+          "instruction_sha256": "ff17b35b27b048317923c6100aa8ba3e10e8d26386d298cd6842b91732d05308",
+          "asm": "mov dword ptr [rbx + 0x159c8], 1",
+          "fragment_file": "host_relocation_fragment_1084a83.json",
+          "fragment_sha256": "f0b247d72ba3890d72d5ebeacbf0ed6cd9899149250fc79691f55b6f261510a5"
+        },
+        {
+          "rva": "0x1084aa9",
+          "bytes": "488b8bb0590100",
+          "instruction_sha256": "75251001990db8a91cf58b30ca6db81dcf57f3f8cefa58e18a5d421084742449",
+          "asm": "mov rcx, qword ptr [rbx + 0x159b0]",
+          "fragment_file": "host_relocation_fragment_1084a83.json",
+          "fragment_sha256": "f0b247d72ba3890d72d5ebeacbf0ed6cd9899149250fc79691f55b6f261510a5"
+        },
+        {
+          "rva": "0x1084ac2",
+          "bytes": "488d8bb0590100",
+          "instruction_sha256": "1b123fdc0d5c21f014035f432c7810582a50d5dbb4e99104a418da5d115a606b",
+          "asm": "lea rcx, [rbx + 0x159b0]",
+          "fragment_file": "host_relocation_fragment_1084a83.json",
+          "fragment_sha256": "f0b247d72ba3890d72d5ebeacbf0ed6cd9899149250fc79691f55b6f261510a5"
+        },
+        {
+          "rva": "0x1084ac9",
+          "bytes": "e8623f0000",
+          "instruction_sha256": "c9489fcd4eac9ea43c700baac715b493b7f9ab19b3bce1ac89d7f565006be604",
+          "asm": "call 0x1088a30",
+          "fragment_file": "host_relocation_fragment_1084a83.json",
+          "fragment_sha256": "f0b247d72ba3890d72d5ebeacbf0ed6cd9899149250fc79691f55b6f261510a5"
+        }
+      ]
+    },
+    {
+      "name": "peer_removal_fallback_a",
+      "root": "0xb99ff0",
+      "base_provenance": "rcx is outer owner loaded from an owner list at 0xb9a036; sibling is rcx+0x162c8 at 0xb9a06d; fallback r10=rcx+0x159b0 at 0xb9a0aa.",
+      "conclusion": "Fallback scans exactly four embedded host peers, stride 0x38, and calls remove-peer with r10 as host pointer.",
+      "sites": [
+        {
+          "rva": "0xb9a036",
+          "bytes": "488b8cc6d86e0000",
+          "instruction_sha256": "a95bd23e4f504a67738f641258f51a7f9c2de8182477741b29679e8c6f8be3cd",
+          "asm": "mov rcx, qword ptr [rsi + rax*8 + 0x6ed8]",
+          "fragment_file": "host_relocation_b99ff0.json",
+          "fragment_sha256": "e67c49619d1256ebd14f868dd8fc8882ac4b70b4730a8c7e6067693750d80517"
+        },
+        {
+          "rva": "0xb9a06d",
+          "bytes": "4c8d81c8620100",
+          "instruction_sha256": "05ca12f18246de9fafaf3f6cc211fcf57cdbe8e12bda7ebce7f0a3dec681ef5d",
+          "asm": "lea r8, [rcx + 0x162c8]",
+          "fragment_file": "host_relocation_b99ff0.json",
+          "fragment_sha256": "e67c49619d1256ebd14f868dd8fc8882ac4b70b4730a8c7e6067693750d80517"
+        },
+        {
+          "rva": "0xb9a0aa",
+          "bytes": "4c8d91b0590100",
+          "instruction_sha256": "8a2a9ee9da18c5bbce941b5961c32b5fc3ad10a8d5cc406386e7ac2e44878fee",
+          "asm": "lea r10, [rcx + 0x159b0]",
+          "fragment_file": "host_relocation_b99ff0.json",
+          "fragment_sha256": "e67c49619d1256ebd14f868dd8fc8882ac4b70b4730a8c7e6067693750d80517"
+        },
+        {
+          "rva": "0xb9a0b3",
+          "bytes": "498d4220",
+          "instruction_sha256": "0550c3bb947fcc4f8429d455088ac2d190d328543b8f960c730336a45cb856ff",
+          "asm": "lea rax, [r10 + 0x20]",
+          "fragment_file": "host_relocation_b99ff0.json",
+          "fragment_sha256": "e67c49619d1256ebd14f868dd8fc8882ac4b70b4730a8c7e6067693750d80517"
+        },
+        {
+          "rva": "0xb9a0be",
+          "bytes": "4883c038",
+          "instruction_sha256": "94785a19fda7dd903d165071fcd403fab0a091e83005f33bc6eee270761d3ec8",
+          "asm": "add rax, 0x38",
+          "fragment_file": "host_relocation_b99ff0.json",
+          "fragment_sha256": "e67c49619d1256ebd14f868dd8fc8882ac4b70b4730a8c7e6067693750d80517"
+        },
+        {
+          "rva": "0xb9a0c2",
+          "bytes": "83f904",
+          "instruction_sha256": "e0f8e2a8fea2f143982c5ab1163b172f31e74c40937537efff6ac915f0d96567",
+          "asm": "cmp ecx, 4",
+          "fragment_file": "host_relocation_b99ff0.json",
+          "fragment_sha256": "e67c49619d1256ebd14f868dd8fc8882ac4b70b4730a8c7e6067693750d80517"
+        },
+        {
+          "rva": "0xb9a0cf",
+          "bytes": "498d4220",
+          "instruction_sha256": "0550c3bb947fcc4f8429d455088ac2d190d328543b8f960c730336a45cb856ff",
+          "asm": "lea rax, [r10 + 0x20]",
+          "fragment_file": "host_relocation_b99ff0.json",
+          "fragment_sha256": "e67c49619d1256ebd14f868dd8fc8882ac4b70b4730a8c7e6067693750d80517"
+        },
+        {
+          "rva": "0xb9a0de",
+          "bytes": "498bca",
+          "instruction_sha256": "ab272fe16c24344c98771c1732bc495992ec89535e1b984e665959d083e625b7",
+          "asm": "mov rcx, r10",
+          "fragment_file": "host_relocation_b99ff0.json",
+          "fragment_sha256": "e67c49619d1256ebd14f868dd8fc8882ac4b70b4730a8c7e6067693750d80517"
+        },
+        {
+          "rva": "0xb9a0e5",
+          "bytes": "e8a6304f00",
+          "instruction_sha256": "2cf2f063d912d48dfe03409db1a54b74a7b4c05f28faf6a48d9f57487de0e799",
+          "asm": "call 0x108d190",
+          "fragment_file": "host_relocation_b99ff0.json",
+          "fragment_sha256": "e67c49619d1256ebd14f868dd8fc8882ac4b70b4730a8c7e6067693750d80517"
+        }
+      ]
+    },
+    {
+      "name": "peer_removal_fallback_b",
+      "root": "0xbaa560",
+      "base_provenance": "rcx is outer owner loaded from an owner list at 0xbaa5a6; sibling is rcx+0x162c8 at 0xbaa5dd; fallback r10=rcx+0x159b0 at 0xbaa61a.",
+      "conclusion": "Second homologous path scans four embedded host peers, stride 0x38, and calls remove-peer with r10 as host pointer.",
+      "sites": [
+        {
+          "rva": "0xbaa5a6",
+          "bytes": "488b8cc6d86e0000",
+          "instruction_sha256": "a95bd23e4f504a67738f641258f51a7f9c2de8182477741b29679e8c6f8be3cd",
+          "asm": "mov rcx, qword ptr [rsi + rax*8 + 0x6ed8]",
+          "fragment_file": "host_relocation_baa560.json",
+          "fragment_sha256": "d4450c2484580737ab674c7ae049955c697721cdb0fb55fd2fd822496a382dd2"
+        },
+        {
+          "rva": "0xbaa5dd",
+          "bytes": "4c8d81c8620100",
+          "instruction_sha256": "05ca12f18246de9fafaf3f6cc211fcf57cdbe8e12bda7ebce7f0a3dec681ef5d",
+          "asm": "lea r8, [rcx + 0x162c8]",
+          "fragment_file": "host_relocation_baa560.json",
+          "fragment_sha256": "d4450c2484580737ab674c7ae049955c697721cdb0fb55fd2fd822496a382dd2"
+        },
+        {
+          "rva": "0xbaa61a",
+          "bytes": "4c8d91b0590100",
+          "instruction_sha256": "8a2a9ee9da18c5bbce941b5961c32b5fc3ad10a8d5cc406386e7ac2e44878fee",
+          "asm": "lea r10, [rcx + 0x159b0]",
+          "fragment_file": "host_relocation_baa560.json",
+          "fragment_sha256": "d4450c2484580737ab674c7ae049955c697721cdb0fb55fd2fd822496a382dd2"
+        },
+        {
+          "rva": "0xbaa623",
+          "bytes": "498d4220",
+          "instruction_sha256": "0550c3bb947fcc4f8429d455088ac2d190d328543b8f960c730336a45cb856ff",
+          "asm": "lea rax, [r10 + 0x20]",
+          "fragment_file": "host_relocation_baa560.json",
+          "fragment_sha256": "d4450c2484580737ab674c7ae049955c697721cdb0fb55fd2fd822496a382dd2"
+        },
+        {
+          "rva": "0xbaa62e",
+          "bytes": "4883c038",
+          "instruction_sha256": "94785a19fda7dd903d165071fcd403fab0a091e83005f33bc6eee270761d3ec8",
+          "asm": "add rax, 0x38",
+          "fragment_file": "host_relocation_baa560.json",
+          "fragment_sha256": "d4450c2484580737ab674c7ae049955c697721cdb0fb55fd2fd822496a382dd2"
+        },
+        {
+          "rva": "0xbaa632",
+          "bytes": "83f904",
+          "instruction_sha256": "e0f8e2a8fea2f143982c5ab1163b172f31e74c40937537efff6ac915f0d96567",
+          "asm": "cmp ecx, 4",
+          "fragment_file": "host_relocation_baa560.json",
+          "fragment_sha256": "d4450c2484580737ab674c7ae049955c697721cdb0fb55fd2fd822496a382dd2"
+        },
+        {
+          "rva": "0xbaa63f",
+          "bytes": "498d4220",
+          "instruction_sha256": "0550c3bb947fcc4f8429d455088ac2d190d328543b8f960c730336a45cb856ff",
+          "asm": "lea rax, [r10 + 0x20]",
+          "fragment_file": "host_relocation_baa560.json",
+          "fragment_sha256": "d4450c2484580737ab674c7ae049955c697721cdb0fb55fd2fd822496a382dd2"
+        },
+        {
+          "rva": "0xbaa64e",
+          "bytes": "498bca",
+          "instruction_sha256": "ab272fe16c24344c98771c1732bc495992ec89535e1b984e665959d083e625b7",
+          "asm": "mov rcx, r10",
+          "fragment_file": "host_relocation_baa560.json",
+          "fragment_sha256": "d4450c2484580737ab674c7ae049955c697721cdb0fb55fd2fd822496a382dd2"
+        },
+        {
+          "rva": "0xbaa655",
+          "bytes": "e8362b4e00",
+          "instruction_sha256": "387dca86b0e41929ec1b3507d3f8c00f009b8efd4e8ae029c04dd880469e0022",
+          "asm": "call 0x108d190",
+          "fragment_file": "host_relocation_baa560.json",
+          "fragment_sha256": "d4450c2484580737ab674c7ae049955c697721cdb0fb55fd2fd822496a382dd2"
+        }
+      ]
+    }
+  ],
+  "unverified_candidates": [
+    "The literal-offset hits in host_embedded_region_refs.json outside these roots have not all had base-register provenance checked; shared displacements alone do not prove HostSynchronizer access.",
+    "Callee 0xb3fcd0 (cleanup), constructor helper 0xb2afb0, and sibling constructor helper 0xb2abd0 may contain further references; this inventory records call sites but does not characterize those callees.",
+    "Other callers of 0x10845b0 may pass a different object type. The owner/sibling provenance is verified for the 0x134e545 call path.",
+    "Computed indexing, register aliases, callback calls, and dynamic API table targets can reference the same state without a literal outer displacement. They are outside this bounded scan.",
+    "No runtime memory allocation, live join, or cross-client protocol behavior is inferred from the static capture."
+  ],
+  "architecture_implication": "The four-slot host is embedded and multiple owner/sibling paths use absolute owner-relative offsets or inline loops. Replacing [host+0] with a sidecar pointer would corrupt the owner backpointer. Any expanded storage architecture must account for these direct sites and for the occupied host tail; the inventory does not establish a complete hook set or a working 8-player implementation.",
+  "source_fragments": {
+    "host_relocation_ctor_root.json": {
+      "range": [
+        "0x134d740",
+        "0x134d9bd"
+      ],
+      "fragment_sha256": "2a502b38f5582a4b8ef0c49b7da775ff4afe69391feef5098f4ce510b368e994"
+    },
+    "host_owner_init_disasm.json": {
+      "range": [
+        "0x134d9bd",
+        "0x134e15c"
+      ],
+      "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+    },
+    "host_relocation_134e160.json": {
+      "range": [
+        "0x134e160",
+        "0x134e176"
+      ],
+      "fragment_sha256": "c1114895987877c51b4037f2bdac893fd357fae321bfed7ef492951e32fe1797"
+    },
+    "host_relocation_fragment_134e1c8.json": {
+      "range": [
+        "0x134e19d",
+        "0x134e280"
+      ],
+      "fragment_sha256": "6b69352479039c31dbf54da4339cbbf6dc01734a4b7fb0df5c749328f1357f54"
+    },
+    "host_relocation_134e400.json": {
+      "range": [
+        "0x134e400",
+        "0x134e596"
+      ],
+      "fragment_sha256": "695af5ca372312d2b70e65c8aab364e7b4af1cffd216cdbf2ebd5ce1a0d64a7c"
+    },
+    "host_relocation_13500f0.json": {
+      "range": [
+        "0x13500f0",
+        "0x135014b"
+      ],
+      "fragment_sha256": "ca1da891a4ec738e1bb046b805f45bdae46ff745004dfeb86b90b0e5d2b8b51f"
+    },
+    "host_relocation_1350680.json": {
+      "range": [
+        "0x1350680",
+        "0x13506a1"
+      ],
+      "fragment_sha256": "65d9ec81a94e1dee6a71ffdee5d843e79dfb7ac2563cbaca8c98fd4ad36e7794"
+    },
+    "host_relocation_fragment_13506ad.json": {
+      "range": [
+        "0x13506a1",
+        "0x1350856"
+      ],
+      "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+    },
+    "host_relocation_1083150.json": {
+      "range": [
+        "0x1083150",
+        "0x10833ee"
+      ],
+      "fragment_sha256": "c040a79a805e6efd7ca10167e57fb8cd1ba8caa2ba2a26d6f05c2f77223a4e86"
+    },
+    "host_relocation_fragment_1083851.json": {
+      "range": [
+        "0x10833ee",
+        "0x108431e"
+      ],
+      "fragment_sha256": "01b0173d7daf4e6327841ca4e7ff6690e648a8dbc157f4cfe766d6aeba7e5324"
+    },
+    "host_relocation_10845b0.json": {
+      "range": [
+        "0x10845b0",
+        "0x10845cf"
+      ],
+      "fragment_sha256": "f68377019ff894509623874fd0c3dec0e1ce47080fc8f9b58081d9714b9bbcb9"
+    },
+    "host_relocation_fragment_10845fc.json": {
+      "range": [
+        "0x10845cf",
+        "0x108461f"
+      ],
+      "fragment_sha256": "9672b19d45828089143ddc01d5ad3e764a42503a383e0307268439e3fbc2b148"
+    },
+    "host_relocation_fragment_1084a83.json": {
+      "range": [
+        "0x10849ac",
+        "0x1084b67"
+      ],
+      "fragment_sha256": "f0b247d72ba3890d72d5ebeacbf0ed6cd9899149250fc79691f55b6f261510a5"
+    },
+    "host_relocation_b99ff0.json": {
+      "range": [
+        "0xb99ff0",
+        "0xb9a108"
+      ],
+      "fragment_sha256": "e67c49619d1256ebd14f868dd8fc8882ac4b70b4730a8c7e6067693750d80517"
+    },
+    "host_relocation_baa560.json": {
+      "range": [
+        "0xbaa560",
+        "0xbaa678"
+      ],
+      "fragment_sha256": "d4450c2484580737ab674c7ae049955c697721cdb0fb55fd2fd822496a382dd2"
+    }
+  }
+}

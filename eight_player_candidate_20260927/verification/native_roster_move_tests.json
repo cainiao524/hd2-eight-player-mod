@@ -1,0 +1,990 @@
+{
+  "status": "passed",
+  "test_methods_run": 11,
+  "failure_count": 0,
+  "error_count": 0,
+  "failures": [],
+  "errors": [],
+  "source_sha256": {
+    "Native/roster_move.py": "cc6df86a567fda45fcac9a258372df52aad085fff67a620b5f4a2d46c100c23f",
+    "Native/roster_bundle.py": "7041074e818277f45476b91611bf8a37a0a94a9244c48c321148341dac824fbf",
+    "Native/roster_property_pair.py": "5828d6a03bfce89ea63e3c8e8c49bca60825aa8b11533dd7e545570f183dba63",
+    "Native/roster_producer.py": "015b2240847019bfb62fa62a72ce8af93894f2d61b0369d5079aa40d40697a4b",
+    "Native/roster_receiver.py": "38b163fe9a0fda32db609ee94f96ab257105221e60e28ad14c4bd14676e61a27"
+  },
+  "test_sha256": "603259862dcc109b0be9c3227954ff771342fbfd416eb71eb9f0687e770bb687",
+  "test_dependency_sha256": {
+    "tests/test_native_roster_producer.py": "68b6d7573c219a977903e345e67fa24792e852ef234392da12c4f4ad312e7fe7"
+  },
+  "evidence_sha256": {
+    "five_player_feasibility_20260927\\roster_move_native_evidence.json": "115802c09eb15f840932667717731150aa347e7ae8a72245dd92e05a5e86a242",
+    "five_player_feasibility_20260927\\roster_property_producer_native_evidence.json": "f73ec903d06f2304f4f944c25e011a7ef86d78737cb1b197101a1c96daaabacb",
+    "five_player_feasibility_20260927\\roster_property_receive_evidence.json": "bad5661771df280dd5e982b765d2f4ab1c73de9ae7e86e974751af6c3c383c10",
+    "five_player_feasibility_20260927\\roster_component_binding_evidence_v3.json": "274833c418bfa7dec4e4097dda5031f3a11e8c69689ae4ed758e75a40481c2e2"
+  },
+  "original_body_sha256": "b977816b8863034f0c247d0ee58779ab0f7d87cdb54eaa49ebfcdd5cab95434b",
+  "original_size_bytes": 430,
+  "original_instruction_count": 78,
+  "python_version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "unicorn_version": "2.1.4",
+  "capstone_version": "5.0.7",
+  "fixture_synthetic": true,
+  "game_process_accessed": false,
+  "host_native_code_executed": false,
+  "game_or_multiplayer_verified": false,
+  "installable": false,
+  "emulator_runs": [
+    {
+      "name": "candidate_0_to_0",
+      "original": false,
+      "source_ordinal": 0,
+      "destination_ordinal": 0,
+      "outcome": "return",
+      "instructions": 4,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_0_to_1",
+      "original": false,
+      "source_ordinal": 0,
+      "destination_ordinal": 1,
+      "outcome": "return",
+      "instructions": 88,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_0_to_2",
+      "original": false,
+      "source_ordinal": 0,
+      "destination_ordinal": 2,
+      "outcome": "return",
+      "instructions": 88,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_0_to_3",
+      "original": false,
+      "source_ordinal": 0,
+      "destination_ordinal": 3,
+      "outcome": "return",
+      "instructions": 88,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_0_to_4",
+      "original": false,
+      "source_ordinal": 0,
+      "destination_ordinal": 4,
+      "outcome": "return",
+      "instructions": 88,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_0_to_5",
+      "original": false,
+      "source_ordinal": 0,
+      "destination_ordinal": 5,
+      "outcome": "return",
+      "instructions": 88,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_0_to_6",
+      "original": false,
+      "source_ordinal": 0,
+      "destination_ordinal": 6,
+      "outcome": "return",
+      "instructions": 88,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_0_to_7",
+      "original": false,
+      "source_ordinal": 0,
+      "destination_ordinal": 7,
+      "outcome": "return",
+      "instructions": 88,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_1_to_0",
+      "original": false,
+      "source_ordinal": 1,
+      "destination_ordinal": 0,
+      "outcome": "return",
+      "instructions": 88,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_1_to_1",
+      "original": false,
+      "source_ordinal": 1,
+      "destination_ordinal": 1,
+      "outcome": "return",
+      "instructions": 4,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_1_to_2",
+      "original": false,
+      "source_ordinal": 1,
+      "destination_ordinal": 2,
+      "outcome": "return",
+      "instructions": 100,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_1_to_3",
+      "original": false,
+      "source_ordinal": 1,
+      "destination_ordinal": 3,
+      "outcome": "return",
+      "instructions": 100,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_1_to_4",
+      "original": false,
+      "source_ordinal": 1,
+      "destination_ordinal": 4,
+      "outcome": "return",
+      "instructions": 100,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_1_to_5",
+      "original": false,
+      "source_ordinal": 1,
+      "destination_ordinal": 5,
+      "outcome": "return",
+      "instructions": 100,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_1_to_6",
+      "original": false,
+      "source_ordinal": 1,
+      "destination_ordinal": 6,
+      "outcome": "return",
+      "instructions": 100,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_1_to_7",
+      "original": false,
+      "source_ordinal": 1,
+      "destination_ordinal": 7,
+      "outcome": "return",
+      "instructions": 100,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_2_to_0",
+      "original": false,
+      "source_ordinal": 2,
+      "destination_ordinal": 0,
+      "outcome": "return",
+      "instructions": 100,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_2_to_1",
+      "original": false,
+      "source_ordinal": 2,
+      "destination_ordinal": 1,
+      "outcome": "return",
+      "instructions": 100,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_2_to_2",
+      "original": false,
+      "source_ordinal": 2,
+      "destination_ordinal": 2,
+      "outcome": "return",
+      "instructions": 4,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_2_to_3",
+      "original": false,
+      "source_ordinal": 2,
+      "destination_ordinal": 3,
+      "outcome": "return",
+      "instructions": 112,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_2_to_4",
+      "original": false,
+      "source_ordinal": 2,
+      "destination_ordinal": 4,
+      "outcome": "return",
+      "instructions": 112,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_2_to_5",
+      "original": false,
+      "source_ordinal": 2,
+      "destination_ordinal": 5,
+      "outcome": "return",
+      "instructions": 112,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_2_to_6",
+      "original": false,
+      "source_ordinal": 2,
+      "destination_ordinal": 6,
+      "outcome": "return",
+      "instructions": 112,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_2_to_7",
+      "original": false,
+      "source_ordinal": 2,
+      "destination_ordinal": 7,
+      "outcome": "return",
+      "instructions": 112,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_3_to_0",
+      "original": false,
+      "source_ordinal": 3,
+      "destination_ordinal": 0,
+      "outcome": "return",
+      "instructions": 112,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_3_to_1",
+      "original": false,
+      "source_ordinal": 3,
+      "destination_ordinal": 1,
+      "outcome": "return",
+      "instructions": 112,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_3_to_2",
+      "original": false,
+      "source_ordinal": 3,
+      "destination_ordinal": 2,
+      "outcome": "return",
+      "instructions": 112,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_3_to_3",
+      "original": false,
+      "source_ordinal": 3,
+      "destination_ordinal": 3,
+      "outcome": "return",
+      "instructions": 4,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_3_to_4",
+      "original": false,
+      "source_ordinal": 3,
+      "destination_ordinal": 4,
+      "outcome": "return",
+      "instructions": 124,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_3_to_5",
+      "original": false,
+      "source_ordinal": 3,
+      "destination_ordinal": 5,
+      "outcome": "return",
+      "instructions": 124,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_3_to_6",
+      "original": false,
+      "source_ordinal": 3,
+      "destination_ordinal": 6,
+      "outcome": "return",
+      "instructions": 124,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_3_to_7",
+      "original": false,
+      "source_ordinal": 3,
+      "destination_ordinal": 7,
+      "outcome": "return",
+      "instructions": 124,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_4_to_0",
+      "original": false,
+      "source_ordinal": 4,
+      "destination_ordinal": 0,
+      "outcome": "return",
+      "instructions": 124,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_4_to_1",
+      "original": false,
+      "source_ordinal": 4,
+      "destination_ordinal": 1,
+      "outcome": "return",
+      "instructions": 124,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_4_to_2",
+      "original": false,
+      "source_ordinal": 4,
+      "destination_ordinal": 2,
+      "outcome": "return",
+      "instructions": 124,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_4_to_3",
+      "original": false,
+      "source_ordinal": 4,
+      "destination_ordinal": 3,
+      "outcome": "return",
+      "instructions": 124,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_4_to_4",
+      "original": false,
+      "source_ordinal": 4,
+      "destination_ordinal": 4,
+      "outcome": "return",
+      "instructions": 4,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_4_to_5",
+      "original": false,
+      "source_ordinal": 4,
+      "destination_ordinal": 5,
+      "outcome": "return",
+      "instructions": 136,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_4_to_6",
+      "original": false,
+      "source_ordinal": 4,
+      "destination_ordinal": 6,
+      "outcome": "return",
+      "instructions": 136,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_4_to_7",
+      "original": false,
+      "source_ordinal": 4,
+      "destination_ordinal": 7,
+      "outcome": "return",
+      "instructions": 136,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_5_to_0",
+      "original": false,
+      "source_ordinal": 5,
+      "destination_ordinal": 0,
+      "outcome": "return",
+      "instructions": 136,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_5_to_1",
+      "original": false,
+      "source_ordinal": 5,
+      "destination_ordinal": 1,
+      "outcome": "return",
+      "instructions": 136,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_5_to_2",
+      "original": false,
+      "source_ordinal": 5,
+      "destination_ordinal": 2,
+      "outcome": "return",
+      "instructions": 136,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_5_to_3",
+      "original": false,
+      "source_ordinal": 5,
+      "destination_ordinal": 3,
+      "outcome": "return",
+      "instructions": 136,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_5_to_4",
+      "original": false,
+      "source_ordinal": 5,
+      "destination_ordinal": 4,
+      "outcome": "return",
+      "instructions": 136,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_5_to_5",
+      "original": false,
+      "source_ordinal": 5,
+      "destination_ordinal": 5,
+      "outcome": "return",
+      "instructions": 4,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_5_to_6",
+      "original": false,
+      "source_ordinal": 5,
+      "destination_ordinal": 6,
+      "outcome": "return",
+      "instructions": 148,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_5_to_7",
+      "original": false,
+      "source_ordinal": 5,
+      "destination_ordinal": 7,
+      "outcome": "return",
+      "instructions": 148,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_6_to_0",
+      "original": false,
+      "source_ordinal": 6,
+      "destination_ordinal": 0,
+      "outcome": "return",
+      "instructions": 148,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_6_to_1",
+      "original": false,
+      "source_ordinal": 6,
+      "destination_ordinal": 1,
+      "outcome": "return",
+      "instructions": 148,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_6_to_2",
+      "original": false,
+      "source_ordinal": 6,
+      "destination_ordinal": 2,
+      "outcome": "return",
+      "instructions": 148,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_6_to_3",
+      "original": false,
+      "source_ordinal": 6,
+      "destination_ordinal": 3,
+      "outcome": "return",
+      "instructions": 148,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_6_to_4",
+      "original": false,
+      "source_ordinal": 6,
+      "destination_ordinal": 4,
+      "outcome": "return",
+      "instructions": 148,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_6_to_5",
+      "original": false,
+      "source_ordinal": 6,
+      "destination_ordinal": 5,
+      "outcome": "return",
+      "instructions": 148,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_6_to_6",
+      "original": false,
+      "source_ordinal": 6,
+      "destination_ordinal": 6,
+      "outcome": "return",
+      "instructions": 4,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_6_to_7",
+      "original": false,
+      "source_ordinal": 6,
+      "destination_ordinal": 7,
+      "outcome": "return",
+      "instructions": 160,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_7_to_0",
+      "original": false,
+      "source_ordinal": 7,
+      "destination_ordinal": 0,
+      "outcome": "return",
+      "instructions": 160,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_7_to_1",
+      "original": false,
+      "source_ordinal": 7,
+      "destination_ordinal": 1,
+      "outcome": "return",
+      "instructions": 160,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_7_to_2",
+      "original": false,
+      "source_ordinal": 7,
+      "destination_ordinal": 2,
+      "outcome": "return",
+      "instructions": 160,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_7_to_3",
+      "original": false,
+      "source_ordinal": 7,
+      "destination_ordinal": 3,
+      "outcome": "return",
+      "instructions": 160,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_7_to_4",
+      "original": false,
+      "source_ordinal": 7,
+      "destination_ordinal": 4,
+      "outcome": "return",
+      "instructions": 160,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_7_to_5",
+      "original": false,
+      "source_ordinal": 7,
+      "destination_ordinal": 5,
+      "outcome": "return",
+      "instructions": 160,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_7_to_6",
+      "original": false,
+      "source_ordinal": 7,
+      "destination_ordinal": 6,
+      "outcome": "return",
+      "instructions": 160,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "candidate_7_to_7",
+      "original": false,
+      "source_ordinal": 7,
+      "destination_ordinal": 7,
+      "outcome": "return",
+      "instructions": 4,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "original_0_to_0",
+      "original": true,
+      "source_ordinal": 0,
+      "destination_ordinal": 0,
+      "outcome": "return",
+      "instructions": 4,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "original_0_to_1",
+      "original": true,
+      "source_ordinal": 0,
+      "destination_ordinal": 1,
+      "outcome": "return",
+      "instructions": 75,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "original_0_to_2",
+      "original": true,
+      "source_ordinal": 0,
+      "destination_ordinal": 2,
+      "outcome": "return",
+      "instructions": 75,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "original_0_to_3",
+      "original": true,
+      "source_ordinal": 0,
+      "destination_ordinal": 3,
+      "outcome": "return",
+      "instructions": 75,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "original_1_to_0",
+      "original": true,
+      "source_ordinal": 1,
+      "destination_ordinal": 0,
+      "outcome": "return",
+      "instructions": 75,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "original_1_to_1",
+      "original": true,
+      "source_ordinal": 1,
+      "destination_ordinal": 1,
+      "outcome": "return",
+      "instructions": 4,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "original_1_to_2",
+      "original": true,
+      "source_ordinal": 1,
+      "destination_ordinal": 2,
+      "outcome": "return",
+      "instructions": 87,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "original_1_to_3",
+      "original": true,
+      "source_ordinal": 1,
+      "destination_ordinal": 3,
+      "outcome": "return",
+      "instructions": 87,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "original_2_to_0",
+      "original": true,
+      "source_ordinal": 2,
+      "destination_ordinal": 0,
+      "outcome": "return",
+      "instructions": 87,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "original_2_to_1",
+      "original": true,
+      "source_ordinal": 2,
+      "destination_ordinal": 1,
+      "outcome": "return",
+      "instructions": 87,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "original_2_to_2",
+      "original": true,
+      "source_ordinal": 2,
+      "destination_ordinal": 2,
+      "outcome": "return",
+      "instructions": 4,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "original_2_to_3",
+      "original": true,
+      "source_ordinal": 2,
+      "destination_ordinal": 3,
+      "outcome": "return",
+      "instructions": 99,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "original_3_to_0",
+      "original": true,
+      "source_ordinal": 3,
+      "destination_ordinal": 0,
+      "outcome": "return",
+      "instructions": 99,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "original_3_to_1",
+      "original": true,
+      "source_ordinal": 3,
+      "destination_ordinal": 1,
+      "outcome": "return",
+      "instructions": 99,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "original_3_to_2",
+      "original": true,
+      "source_ordinal": 3,
+      "destination_ordinal": 2,
+      "outcome": "return",
+      "instructions": 99,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "original_3_to_3",
+      "original": true,
+      "source_ordinal": 3,
+      "destination_ordinal": 3,
+      "outcome": "return",
+      "instructions": 4,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "highbits_0_7",
+      "original": false,
+      "source_ordinal": 0,
+      "destination_ordinal": 7,
+      "outcome": "return",
+      "instructions": 88,
+      "game_base": "0x700000000000"
+    },
+    {
+      "name": "highbits_7_0",
+      "original": false,
+      "source_ordinal": 7,
+      "destination_ordinal": 0,
+      "outcome": "return",
+      "instructions": 160,
+      "game_base": "0x700000000000"
+    },
+    {
+      "name": "highbits_4_3",
+      "original": false,
+      "source_ordinal": 4,
+      "destination_ordinal": 3,
+      "outcome": "return",
+      "instructions": 124,
+      "game_base": "0x700000000000"
+    },
+    {
+      "name": "highbits_3_4",
+      "original": false,
+      "source_ordinal": 3,
+      "destination_ordinal": 4,
+      "outcome": "return",
+      "instructions": 124,
+      "game_base": "0x700000000000"
+    },
+    {
+      "name": "equal_0",
+      "original": false,
+      "source_ordinal": 0,
+      "destination_ordinal": 0,
+      "outcome": "return",
+      "instructions": 4,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "equal_7",
+      "original": false,
+      "source_ordinal": 7,
+      "destination_ordinal": 7,
+      "outcome": "return",
+      "instructions": 4,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "equal_8",
+      "original": false,
+      "source_ordinal": 8,
+      "destination_ordinal": 8,
+      "outcome": "return",
+      "instructions": 4,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "equal_ffffffff",
+      "original": false,
+      "source_ordinal": 4294967295,
+      "destination_ordinal": 4294967295,
+      "outcome": "return",
+      "instructions": 4,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "reject_0_8_1",
+      "original": false,
+      "source_ordinal": 0,
+      "destination_ordinal": 8,
+      "outcome": "reject",
+      "instructions": 8,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "reject_8_0_2",
+      "original": false,
+      "source_ordinal": 8,
+      "destination_ordinal": 0,
+      "outcome": "reject",
+      "instructions": 10,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "reject_ffffffff_7_2",
+      "original": false,
+      "source_ordinal": 4294967295,
+      "destination_ordinal": 7,
+      "outcome": "reject",
+      "instructions": 10,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "reject_7_80000000_1",
+      "original": false,
+      "source_ordinal": 7,
+      "destination_ordinal": 2147483648,
+      "outcome": "reject",
+      "instructions": 8,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "reject_8_9_1",
+      "original": false,
+      "source_ordinal": 8,
+      "destination_ordinal": 9,
+      "outcome": "reject",
+      "instructions": 8,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "reject_7_2_3",
+      "original": false,
+      "source_ordinal": 7,
+      "destination_ordinal": 2,
+      "outcome": "reject",
+      "instructions": 13,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "rel32_7ff59004020b_1",
+      "original": false,
+      "source_ordinal": 0,
+      "destination_ordinal": 8,
+      "outcome": "reject",
+      "instructions": 8,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "rel32_7ff59004020b_2",
+      "original": false,
+      "source_ordinal": 8,
+      "destination_ordinal": 0,
+      "outcome": "reject",
+      "instructions": 10,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "rel32_7ff59004020b_3",
+      "original": false,
+      "source_ordinal": 7,
+      "destination_ordinal": 2,
+      "outcome": "reject",
+      "instructions": 13,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "rel32_7ff6900401f4_1",
+      "original": false,
+      "source_ordinal": 0,
+      "destination_ordinal": 8,
+      "outcome": "reject",
+      "instructions": 8,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "rel32_7ff6900401f4_2",
+      "original": false,
+      "source_ordinal": 8,
+      "destination_ordinal": 0,
+      "outcome": "reject",
+      "instructions": 10,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "rel32_7ff6900401f4_3",
+      "original": false,
+      "source_ordinal": 7,
+      "destination_ordinal": 2,
+      "outcome": "reject",
+      "instructions": 13,
+      "game_base": "0x7ff600000000"
+    },
+    {
+      "name": "chain_producer",
+      "original": false,
+      "outcome": "return",
+      "ordinal": 7,
+      "network_dword": 4,
+      "game_base": "0x7ff600000000",
+      "instructions": 191,
+      "allocator_contract_calls": 1,
+      "actual_index_leaf_calls": 1,
+      "role": "producer"
+    },
+    {
+      "name": "chain_move",
+      "original": false,
+      "outcome": "return",
+      "ordinal": 7,
+      "network_dword": 4,
+      "game_base": "0x7ff600000000",
+      "instructions": 88,
+      "allocator_contract_calls": 0,
+      "actual_index_leaf_calls": 0,
+      "role": "move"
+    },
+    {
+      "name": "chain_receiver",
+      "original": false,
+      "outcome": "return",
+      "ordinal": 7,
+      "network_dword": 4,
+      "game_base": "0x7ff600000000",
+      "instructions": 73,
+      "allocator_contract_calls": 0,
+      "actual_index_leaf_calls": 0,
+      "role": "receiver"
+    }
+  ],
+  "verified_scope": [
+    "All64 source/destination combinations for four disjoint eight-record arrays; original four-slot comparison only",
+    "Exact whole-page mutation oracle, original write order, source retained, counts/header preserved, moved entity map value updated",
+    "Low32 ordinal semantics, equal no-op with unmapped inputs, unequal guard before data access or prologue stack write",
+    "Nonvolatile GPR/XMM and stack restoration,26 displacements and two splices, original internal branches",
+    "Three reject-branch range intersection boundaries; whole-storage and bundle cross-code/reject/global collision checks",
+    "Actual producer -> full-array move -> receiver execution uses updated entity map and same property binding"
+  ],
+  "limits": [
+    "Synthetic memory only; valid map/source entity and caller-provided destination slot are preconditions",
+    "Original map empty/miss behavior remains unsafe for invalid inputs and is not fixed by ordinal/binding guards",
+    "Mover does not remove old map entries, clear source records, change counts or implement full compaction/removal",
+    "Bridge reuses successful allocator contract and manually supplies incoming payload; no real serializer/transport",
+    "No sidecar allocation, opaque-state migration, initialization/publication or lifetime/synchronization proof",
+    "No Windows unwind, reject continuation implementation, hook installation or multiplayer verification"
+  ]
+}

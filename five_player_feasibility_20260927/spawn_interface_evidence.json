@@ -1,0 +1,103 @@
+{
+  "capture_file_sha256": "44773c271226df2df3a93991421287cee71ea7971cbad877ed5a70275dff798a",
+  "capture_utc": "2026-09-27T04:49:36.086697+00:00",
+  "memory_bytes_read": 24966,
+  "saved_pointer_chain_verified": true,
+  "entry": {
+    "entry_rva": "0x30ff50",
+    "window_size": 4096,
+    "window_sha256": "484f5437b325ff273041e496b4f609d393ed24a4af38b63cce5c6f63d706b04a",
+    "instruction_count": 9,
+    "decoded_bytes": 34,
+    "instructions": [
+      {
+        "rva": "0x30ff50",
+        "bytes": "4883ec28",
+        "sha256": "78fed029e2ced62cd189bfe8136387148aefd72120e35b0ff85c1d379bb362f9",
+        "asm": "sub rsp, 0x28"
+      },
+      {
+        "rva": "0x30ff54",
+        "bytes": "4889542438",
+        "sha256": "fd53a73b46e13085de89369b5e57875fc39a40b17ece9c411c6e97c1139a994b",
+        "asm": "mov qword ptr [rsp + 0x38], rdx"
+      },
+      {
+        "rva": "0x30ff59",
+        "bytes": "4d8bc8",
+        "sha256": "c085560dc97941f772f7c93b23bc33eb4213d2a8909cb72a17d3158a2d6f7984",
+        "asm": "mov r9, r8"
+      },
+      {
+        "rva": "0x30ff5c",
+        "bytes": "4c8d442438",
+        "sha256": "5b67e815eb3c373591d36fe7c4880dd5b25539b9561e0018b67d4e037983a557",
+        "asm": "lea r8, [rsp + 0x38]"
+      },
+      {
+        "rva": "0x30ff61",
+        "bytes": "488d542430",
+        "sha256": "23514bf0323108337d652d53d5e4ed4106f2097b4c5dc99acdb7c27e34ea22d0",
+        "asm": "lea rdx, [rsp + 0x30]"
+      },
+      {
+        "rva": "0x30ff66",
+        "bytes": "e815e4e9ff",
+        "sha256": "c6ce63021e44d7a47d5337f9189dbcebf9dcd64c86308863b8d05124e2ca883e",
+        "asm": "call 0x1ae380"
+      },
+      {
+        "rva": "0x30ff6b",
+        "bytes": "8b00",
+        "sha256": "736aaffccc35e5ac4a9c0d7b2f64ae9ed7ead848f3eb93c8ad4b50b9b76b5e39",
+        "asm": "mov eax, dword ptr [rax]"
+      },
+      {
+        "rva": "0x30ff6d",
+        "bytes": "4883c428",
+        "sha256": "805846e33946315f80ef7200aa691c8ff16a680b10aa378956bb8baedf388bce",
+        "asm": "add rsp, 0x28"
+      },
+      {
+        "rva": "0x30ff71",
+        "bytes": "c3",
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "asm": "ret "
+      }
+    ],
+    "edges": [
+      {
+        "from": "0x30ff66",
+        "kind": "call",
+        "target": "0x1ae380"
+      },
+      {
+        "from": "0x30ff71",
+        "kind": "return"
+      }
+    ],
+    "unresolved": [],
+    "limits": [
+      "Entry is established by the saved four-pointer chain and pinned indirect caller; no invocation is observed.",
+      "Normal static paths only; calls, exceptions, handlers, and computed dispatch are not followed.",
+      "A captured window is not an independently established function extent.",
+      "No runtime invocation or service response is demonstrated.",
+      "An empty unresolved list concerns jumps only; the call target 0x1ae380 is outside this prefix."
+    ]
+  },
+  "callee": {
+    "module": "helldivers2.exe",
+    "rva": "0x1ae380",
+    "in_this_capture": false
+  },
+  "argument_flow": {
+    "helper_rcx": "entry RCX unchanged; caller supplies its world/context value",
+    "helper_rdx": "address of stack storage at entry RSP+8; semantic output role inferred",
+    "helper_r8": "address of copied entry RDX resource hash at entry RSP+0x10",
+    "helper_r9": "entry R8 unchanged",
+    "wrapper_return_eax": "DWORD at the RAX pointer returned by helper"
+  },
+  "capacity_conclusion": "No four/eight-player capacity comparison occurs in these nine instructions; helper remains unknown.",
+  "runtime_invocation_verified": false,
+  "eight_player_verified": false
+}

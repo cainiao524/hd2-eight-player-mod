@@ -1,0 +1,561 @@
+{
+  "source": {
+    "capture_json_sha256": "157ddf9f9f9c04265dbc80109441af7090fcf78316e8642781857668348f129a",
+    "cfg_json_sha256": "2b9206b5b9371a5b422baba1dec32d540d670876e121aff15e26f43b019bd5f7",
+    "disk_exe_sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+    "atomic_snapshot": false,
+    "all_saved_ranges_unchanged_on_reread": true
+  },
+  "stack_argument_mapping": {
+    "caller_before_call": {
+      "arg6": "[RSP+0x28] low32 = prior API ECX",
+      "arg7": "[RSP+0x30] low32 = prior API EDX"
+    },
+    "callee_entry": {
+      "arg6": "[RSP+0x30]",
+      "arg7": "[RSP+0x38]"
+    },
+    "callee_after_push_rdi_sub_0x30": {
+      "arg6": "[RSP+0x68]",
+      "arg7": "[RSP+0x70]"
+    }
+  },
+  "groups": [
+    {
+      "entry": "0x4acde0",
+      "name": "first_direct_callee_argument_flow",
+      "instruction_count": 106,
+      "normal_edges": [
+        {
+          "from": "0x4ace27",
+          "kind": "call",
+          "target": "0x5c2c40"
+        },
+        {
+          "from": "0x4ace5d",
+          "kind": "call",
+          "target": null
+        },
+        {
+          "from": "0x4acf1d",
+          "kind": "call",
+          "target": null
+        },
+        {
+          "from": "0x4acf2d",
+          "kind": "call",
+          "target": null
+        },
+        {
+          "from": "0x4acf3a",
+          "kind": "call",
+          "target": null
+        },
+        {
+          "from": "0x4acf5b",
+          "kind": "call",
+          "target": null
+        },
+        {
+          "from": "0x4acf63",
+          "kind": "conditional",
+          "target": "0x4acf74"
+        },
+        {
+          "from": "0x4acf6f",
+          "kind": "jump",
+          "target": "0x4ad003"
+        },
+        {
+          "from": "0x4acf8d",
+          "kind": "call",
+          "target": null
+        },
+        {
+          "from": "0x4acf97",
+          "kind": "call",
+          "target": null
+        },
+        {
+          "from": "0x4acfa2",
+          "kind": "call",
+          "target": null
+        },
+        {
+          "from": "0x4acfd0",
+          "kind": "call",
+          "target": null
+        },
+        {
+          "from": "0x4acfda",
+          "kind": "call",
+          "target": null
+        },
+        {
+          "from": "0x4acfe5",
+          "kind": "call",
+          "target": null
+        },
+        {
+          "from": "0x4acffe",
+          "kind": "call",
+          "target": "0x4af960"
+        },
+        {
+          "from": "0x4ad01a",
+          "kind": "return"
+        }
+      ],
+      "unresolved_normal_edges": [],
+      "sites": [
+        {
+          "rva": "0x4acdf4",
+          "bytes": "57",
+          "sha256": "fcb5f40df9be6bae66c1d77a6c15968866a9e6cbd7314ca432b019d17392f6f4",
+          "asm": "push rdi",
+          "kind": "stack",
+          "effect": "push RDI adjusts entry RSP by 8"
+        },
+        {
+          "rva": "0x4acdf5",
+          "bytes": "4883ec30",
+          "sha256": "5c9eb626cdaf474659ba4777e05e2e96d6a0c2ceebfaabb102ed7eaa0c6a4238",
+          "asm": "sub rsp, 0x30",
+          "kind": "stack",
+          "effect": "sub RSP,0x30; total body RSP shift is 0x38"
+        },
+        {
+          "rva": "0x4ace2c",
+          "bytes": "488b442460",
+          "sha256": "acc897f7bdfa03019773069d458fa869355fb9fd1fecee4420ee5aa37cef1142",
+          "asm": "mov rax, qword ptr [rsp + 0x60]",
+          "kind": "read",
+          "effect": "body [RSP+0x60] is entry argument 5"
+        },
+        {
+          "rva": "0x4ace3b",
+          "bytes": "bb02000000",
+          "sha256": "fafa2e7548f51aa70fe5ba33a510dd82a3f8384c170f952461ae6f54a54f01db",
+          "asm": "mov ebx, 2",
+          "kind": "value",
+          "effect": "EBX=2; used as first two integer arguments at later indirect call"
+        },
+        {
+          "rva": "0x4ace47",
+          "bytes": "8bd3",
+          "sha256": "25022a7edaed2210c51336bdc94452e745939ee6f9db6af570eb3a833e9e97f5",
+          "asm": "mov edx, ebx",
+          "kind": "argument",
+          "effect": "EDX=2 for indirect call at 0x4ace5d"
+        },
+        {
+          "rva": "0x4ace50",
+          "bytes": "8bcb",
+          "sha256": "4b114be14a1901cce6f7a0f927756e414400942123cd365bfe5043a4b118045f",
+          "asm": "mov ecx, ebx",
+          "kind": "argument",
+          "effect": "ECX=2 for indirect call at 0x4ace5d"
+        },
+        {
+          "rva": "0x4ace5d",
+          "bytes": "ff15b5a6f400",
+          "sha256": "223409807c2fe67fc32f5088daddd86fdacd3c39f1da6d20fa9a6e122fd83c8c",
+          "asm": "call qword ptr [rip + 0xf4a6b5]",
+          "rip_reference_rvas": [
+            "0x13f7518"
+          ],
+          "kind": "indirect_call",
+          "effect": "unresolved RIP-slot call using ECX=2, EDX=2, R8D=0"
+        },
+        {
+          "rva": "0x4ace63",
+          "bytes": "488986a0000000",
+          "sha256": "db9e387fe80c80ae27ca68e2ba43b56dfd065eb1a40c8306117b88dc8d1808d0",
+          "asm": "mov qword ptr [rsi + 0xa0], rax",
+          "kind": "write",
+          "effect": "indirect return RAX stored at object+0xa0"
+        },
+        {
+          "rva": "0x4ace6a",
+          "bytes": "4c8d442470",
+          "sha256": "f1413c36b46e786d939baeed319f88d06ce42258fa9f6900429c1fce9322db8d",
+          "asm": "lea r8, [rsp + 0x70]",
+          "kind": "address",
+          "effect": "address of body [RSP+0x70], entry argument 7 slot"
+        },
+        {
+          "rva": "0x4ace6f",
+          "bytes": "8b442470",
+          "sha256": "00bd05c49ef73cd7c643d22bcf836b62cf990a822b091b8a2de93fcc38b0f37e",
+          "asm": "mov eax, dword ptr [rsp + 0x70]",
+          "kind": "read",
+          "effect": "entry argument 7 low 32 bits"
+        },
+        {
+          "rva": "0x4ace73",
+          "bytes": "ba7e660480",
+          "sha256": "e334109b101254b278c5a82173af2b66ecf3de72ddf51f43f0b1c6a894ef3430",
+          "asm": "mov edx, 0x8004667e",
+          "kind": "value",
+          "effect": "EDX=0x8004667e for another unresolved indirect call"
+        },
+        {
+          "rva": "0x4aceaf",
+          "bytes": "8986a8000000",
+          "sha256": "e39a6306baf595615bca94b401d196639a570f5e9da92767377609a5204fa8cd",
+          "asm": "mov dword ptr [rsi + 0xa8], eax",
+          "kind": "write",
+          "effect": "entry argument 7 low 32 bits stored at object+0xa8"
+        },
+        {
+          "rva": "0x4acf15",
+          "bytes": "c744247001000000",
+          "sha256": "304b948e6a21b59e1ef2a93f863fc36a0c18f706b0333ff3b5749024ad516055",
+          "asm": "mov dword ptr [rsp + 0x70], 1",
+          "kind": "write",
+          "effect": "reuse of argument-7 stack slot as scratch value 1 after original copied"
+        },
+        {
+          "rva": "0x4acf23",
+          "bytes": "0fb74c2468",
+          "sha256": "68b4f8075cb206487189dd649ad79fbdfa1d12ef570d6ebb8f670f78f3965b0c",
+          "asm": "movzx ecx, word ptr [rsp + 0x68]",
+          "kind": "read",
+          "effect": "entry argument 6 low 16 bits from body [RSP+0x68]"
+        },
+        {
+          "rva": "0x4acf28",
+          "bytes": "66895c2420",
+          "sha256": "245f3870c6572e90a7f7ea5d160447a9fc2f88eb2a08fe623e012ae68c32ff98",
+          "asm": "mov word ptr [rsp + 0x20], bx",
+          "kind": "write",
+          "effect": "word value 2 at start of 16-byte local buffer"
+        },
+        {
+          "rva": "0x4acf2d",
+          "bytes": "ff150da6f400",
+          "sha256": "b2526b9fcf318d751b13758fbc40b0a0cd571ebfa6d26777cd0b62c43e8825c3",
+          "asm": "call qword ptr [rip + 0xf4a60d]",
+          "rip_reference_rvas": [
+            "0x13f7540"
+          ],
+          "kind": "indirect_call",
+          "effect": "arg6 low16 passed in ECX to unresolved RIP-slot call"
+        },
+        {
+          "rva": "0x4acf33",
+          "bytes": "33c9",
+          "sha256": "6b3abe7b30d64eef0441e29f68b0eabf17526b476fa2495d67f1a901e3e73ec5",
+          "asm": "xor ecx, ecx",
+          "kind": "value",
+          "effect": "ECX=0 for another unresolved indirect conversion call"
+        },
+        {
+          "rva": "0x4acf35",
+          "bytes": "6689442422",
+          "sha256": "8d8974f99ce4ca89dffeb45eeeac6c66e3cebf82ce32f91220d04f17590e9d5d",
+          "asm": "mov word ptr [rsp + 0x22], ax",
+          "kind": "write",
+          "effect": "returned AX stored at local buffer+2"
+        },
+        {
+          "rva": "0x4acf3a",
+          "bytes": "ff15f8a5f400",
+          "sha256": "3a305cb1858ad963960233cd521d0cc307d67dd45dcff6a4bde64033eb1103df",
+          "asm": "call qword ptr [rip + 0xf4a5f8]",
+          "rip_reference_rvas": [
+            "0x13f7538"
+          ],
+          "kind": "indirect_call",
+          "effect": "unresolved call whose return EAX later stored at local buffer+4"
+        },
+        {
+          "rva": "0x4acf47",
+          "bytes": "448d430e",
+          "sha256": "da34f5fe140ba45e7bde24cfa13d93278f1d633cadd4c56c0f9759a70d5bfe1c",
+          "asm": "lea r8d, [rbx + 0xe]",
+          "kind": "value",
+          "effect": "R8D=0x10 (16) for call using local buffer"
+        },
+        {
+          "rva": "0x4acf4b",
+          "bytes": "89442424",
+          "sha256": "f4bc9ebe96017dcf7c9b6f87e219ec2c6c3853ffd1ad7fc1a25fc5a749086926",
+          "asm": "mov dword ptr [rsp + 0x24], eax",
+          "kind": "write",
+          "effect": "returned EAX stored at local buffer+4"
+        },
+        {
+          "rva": "0x4acf4f",
+          "bytes": "488d542420",
+          "sha256": "7d203dd069da8865d96db3f316625f07cbf25e3fb86a1979f3e5283a6f206e01",
+          "asm": "lea rdx, [rsp + 0x20]",
+          "kind": "address",
+          "effect": "RDX points to local buffer"
+        },
+        {
+          "rva": "0x4acf5b",
+          "bytes": "ff15afa6f400",
+          "sha256": "48e9060cfbbaa46afc4991da086689776d13e3799651917e947756b8d21c26ad",
+          "asm": "call qword ptr [rip + 0xf4a6af]",
+          "rip_reference_rvas": [
+            "0x13f7610"
+          ],
+          "kind": "indirect_call",
+          "effect": "unresolved call with object+0xa0, 16-byte local buffer, size 16"
+        },
+        {
+          "rva": "0x4acf63",
+          "bytes": "790f",
+          "sha256": "2f565d69edf1b2be4f1e1e2fbf76142870ef79dde47c3fc07262ae5ae3a0299a",
+          "asm": "jns 0x4acf74",
+          "kind": "branch",
+          "effect": "both sign-result branches included in saved CFG"
+        },
+        {
+          "rva": "0x4acf6f",
+          "bytes": "e98f000000",
+          "sha256": "5b309cfb849cd481afced5584d321fe1aaf32dbfcdf4be9b83d334d121c4c3af",
+          "asm": "jmp 0x4ad003",
+          "kind": "branch",
+          "effect": "error branch jumps to common return path"
+        },
+        {
+          "rva": "0x4acffe",
+          "bytes": "e85d290000",
+          "sha256": "3706452048ff44abb9bf4a3014d218364bb24a7ba3963e6e3e6036292358788a",
+          "asm": "call 0x4af960",
+          "kind": "direct_call",
+          "effect": "call 0x4af960 outside all saved windows"
+        },
+        {
+          "rva": "0x4ad01a",
+          "bytes": "c3",
+          "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+          "asm": "ret ",
+          "kind": "return",
+          "effect": "common return after normal and error branches"
+        }
+      ]
+    },
+    {
+      "entry": "0x349110",
+      "name": "second_direct_callee_pointer_append",
+      "instruction_count": 29,
+      "normal_edges": [
+        {
+          "from": "0x349130",
+          "kind": "conditional",
+          "target": "0x349152"
+        },
+        {
+          "from": "0x34914b",
+          "kind": "call",
+          "target": "0x172ae0"
+        },
+        {
+          "from": "0x349172",
+          "kind": "return"
+        }
+      ],
+      "unresolved_normal_edges": [],
+      "sites": [
+        {
+          "rva": "0x34911a",
+          "bytes": "488d99b8000000",
+          "sha256": "cf32139fd24f93eea03bbc2a2597f6be12fa9db903556b0d049a730ab0e13987",
+          "asm": "lea rbx, [rcx + 0xb8]",
+          "kind": "address",
+          "effect": "RBX=entry RCX+0xb8; count/capacity/data fields"
+        },
+        {
+          "rva": "0x349121",
+          "bytes": "488bfa",
+          "sha256": "2f3c20fe28c24ad8380cb6c04ecf948518e0c83478fdfae83315d688b6268585",
+          "asm": "mov rdi, rdx",
+          "kind": "base",
+          "effect": "RDI=entry RDX (first callee's returned pointer)"
+        },
+        {
+          "rva": "0x349124",
+          "bytes": "8b0b",
+          "sha256": "3c424ff1aac6d969fe33cb3f6c9c230e80ee4a44235617c249248ca5e04cd2e4",
+          "asm": "mov ecx, dword ptr [rbx]",
+          "kind": "read",
+          "effect": "count dword at object+0xb8"
+        },
+        {
+          "rva": "0x349126",
+          "bytes": "448b4304",
+          "sha256": "93395347062e661dd825b44ca2a7cd7850add8c98771f50166ec040370a91f0e",
+          "asm": "mov r8d, dword ptr [rbx + 4]",
+          "kind": "read",
+          "effect": "capacity dword at object+0xbc"
+        },
+        {
+          "rva": "0x34912a",
+          "bytes": "8d4101",
+          "sha256": "30058ff4624ced0f422eb9f36475c25b54b04a39c0eeff599d72fd7ba0dbc931",
+          "asm": "lea eax, [rcx + 1]",
+          "kind": "value",
+          "effect": "count+1"
+        },
+        {
+          "rva": "0x34912d",
+          "bytes": "413bc0",
+          "sha256": "e6b20ec2c9fc0d0c2f36bfafb5a126db0729e83d9c59349c10ed0b77f2f61ca9",
+          "asm": "cmp eax, r8d",
+          "kind": "branch",
+          "effect": "count+1 <= capacity skips growth"
+        },
+        {
+          "rva": "0x349132",
+          "bytes": "4a8d04450a000000",
+          "sha256": "60ae03a455da230417e65cc25858eb1b813ee8933f6f65f5bfcd666afaf88a1c",
+          "asm": "lea rax, [r8*2 + 0xa]",
+          "kind": "value",
+          "effect": "growth request 2*capacity+10"
+        },
+        {
+          "rva": "0x34913a",
+          "bytes": "b9ffffffff",
+          "sha256": "a8dce93126e738a855755f74063b6c685bdcfb925be2622d84c01522b8447655",
+          "asm": "mov ecx, 0xffffffff",
+          "kind": "value",
+          "effect": "cap growth request at 0xffffffff"
+        },
+        {
+          "rva": "0x34914b",
+          "bytes": "e89099e2ff",
+          "sha256": "a0e5dfd710ed526431f8197fcd307ecb1f127d1b1d2ca0b6f0c5b7e5de1001c0",
+          "asm": "call 0x172ae0",
+          "kind": "direct_call",
+          "effect": "call 0x172ae0 outside saved windows for capacity growth"
+        },
+        {
+          "rva": "0x349152",
+          "bytes": "488b4308",
+          "sha256": "2864ae37a3551d2e2a9eaefbe1f2448abc63f3db58d7375ce2889ef2757b8a77",
+          "asm": "mov rax, qword ptr [rbx + 8]",
+          "kind": "read",
+          "effect": "data pointer at object+0xc0"
+        },
+        {
+          "rva": "0x349162",
+          "bytes": "48893cc8",
+          "sha256": "edcaf9cd888c9494fbcf9a44e53751b5008e39a1268e890c87fd968fbd4bc824",
+          "asm": "mov qword ptr [rax + rcx*8], rdi",
+          "kind": "write",
+          "effect": "entry RDX pointer stored in data[count]"
+        },
+        {
+          "rva": "0x349166",
+          "bytes": "ff03",
+          "sha256": "5b9f13720f7a45875e7095b41e43a15ec699bb298bc7b811495911d683a1b1f0",
+          "asm": "inc dword ptr [rbx]",
+          "kind": "write",
+          "effect": "count dword incremented"
+        },
+        {
+          "rva": "0x349172",
+          "bytes": "c3",
+          "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+          "asm": "ret ",
+          "kind": "return",
+          "effect": "common return for both growth and no-growth paths"
+        }
+      ]
+    }
+  ],
+  "pe_metadata": {
+    "network_related_declared_imports": [
+      {
+        "iat_rva": "0x2961768",
+        "dll": "WS2_32.dll",
+        "symbol": "ntohs",
+        "ordinal": 15
+      },
+      {
+        "iat_rva": "0x29617d8",
+        "dll": "PartyWin.dll",
+        "symbol": "PartyNetworkSetCustomContext",
+        "ordinal": null
+      },
+      {
+        "iat_rva": "0x29617e8",
+        "dll": "PlayFabMultiplayerWin.dll",
+        "symbol": "PFLobbySendInvite",
+        "ordinal": null
+      }
+    ],
+    "indirect_call_slots": [
+      {
+        "call_site_rva": "0x4ace5d",
+        "pointer_slot_rva": "0x13f7518",
+        "declared_pe_import": null
+      },
+      {
+        "call_site_rva": "0x4acf1d",
+        "pointer_slot_rva": "0x13f7550",
+        "declared_pe_import": null
+      },
+      {
+        "call_site_rva": "0x4acf2d",
+        "pointer_slot_rva": "0x13f7540",
+        "declared_pe_import": null
+      },
+      {
+        "call_site_rva": "0x4acf3a",
+        "pointer_slot_rva": "0x13f7538",
+        "declared_pe_import": null
+      },
+      {
+        "call_site_rva": "0x4acf5b",
+        "pointer_slot_rva": "0x13f7610",
+        "declared_pe_import": null
+      },
+      {
+        "call_site_rva": "0x4acf8d",
+        "pointer_slot_rva": "0x13f7558",
+        "declared_pe_import": null
+      },
+      {
+        "call_site_rva": "0x4acf97",
+        "pointer_slot_rva": "0x13f7570",
+        "declared_pe_import": null
+      },
+      {
+        "call_site_rva": "0x4acfa2",
+        "pointer_slot_rva": "0x13f7510",
+        "declared_pe_import": null
+      },
+      {
+        "call_site_rva": "0x4acfd0",
+        "pointer_slot_rva": "0x13f7558",
+        "declared_pe_import": null
+      },
+      {
+        "call_site_rva": "0x4acfda",
+        "pointer_slot_rva": "0x13f7570",
+        "declared_pe_import": null
+      },
+      {
+        "call_site_rva": "0x4acfe5",
+        "pointer_slot_rva": "0x13f7510",
+        "declared_pe_import": null
+      }
+    ],
+    "interpretation": "No indirect call pointer slot above coincides with a declared static PE import IAT RVA; disk import names cannot label the captured indirect calls."
+  },
+  "conclusions": [
+    "Argument 6 low16 feeds an unresolved indirect conversion call, whose AX return is stored at offset +2 of a 16-byte local buffer with word 2 at offset 0 and another return dword at offset +4. This matches a sockaddr_in-style family/port/address layout and makes a port interpretation plausible, but the call target and actual service use are unverified.",
+    "Argument 7 low32 is copied verbatim into the newly initialized object's +0xa8 dword before its stack slot is reused. No fixed-four comparison or bound on this argument appears on the CFG-reachable constructor path; downstream uses of +0xa8 are not covered.",
+    "The second callee appends the first callee's returned pointer into a growable object-local array at object+0xb8/+0xbc/+0xc0. Its own growth condition is count+1 > capacity and contains no fixed-four limit; this array is not thereby identified as a player roster."
+  ],
+  "limits": [
+    "CFG explores all in-window normal direct branches from these two entries, not merely the first RET. It does not follow direct/indirect calls, exception paths, or dynamic dispatch.",
+    "Direct callees 0x5c2c40, 0x4af960, and 0x172ae0 lie outside all four saved ranges. Indirect calls use unobserved pointer slots.",
+    "No live heap/object values, function-pointer table values, network service responses, or eight-player gameplay were captured.",
+    "Only PE import metadata is read from disk; disk code is not substituted for saved loaded code."
+  ]
+}

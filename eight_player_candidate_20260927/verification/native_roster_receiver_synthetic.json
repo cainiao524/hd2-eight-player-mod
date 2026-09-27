@@ -1,0 +1,67 @@
+{
+  "status": "offline_native_candidate",
+  "installable": false,
+  "game_execution": false,
+  "multiplayer_verified": false,
+  "target_profile": {
+    "build": 25480438,
+    "exe_sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+    "game_dll_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e"
+  },
+  "source_sha256": "23d53b4f2f46ec26d23d79b958ee31d469910217ea843fb92bd98cf24c017411",
+  "evidence_sha256": "bad5661771df280dd5e982b765d2f4ab1c73de9ae7e86e974751af6c3c383c10",
+  "code_sha256": "7a5a4e14649dfde0451b8f3e3e03d62cb41be2a9103c153be32054a95937758c",
+  "code_hex": "48896c242041563b15133c48fe4d8bf1498be84c8bd97507b8ffffffffeb79448b89d8000000448b91e000000033c948895c24104889742418440fafd2418d71ff48897c24204585c97439498b9bd0000000418bbbdc0000000f1f80000000008bc6468d04114c23c0428b04c33bc70f84a80000003bc20f84a8000000ffc1413bc972dcb8ffffffff488b742418488b5c2410488b7c2420418b0e448bc049c1e005e9890000009043898418a80300008b0c2a83c20443898c18ac0300008b0c2a83c20443898c18b00300008b0c2a83c20443898c18b40300008b0c2a83c20443898c18b80300008b0c2a83c20443898c18bc0300008b0c2a83c20443898c18c00300008b0c2a8d4204488b6c242841890643898c18c4030000415ec33bc20f855fffffff428b44c304e95affffffcc83f8080f832800000048b800000020000000004939c30f852000000049bb58fcff2f000000008b04298d5104e947ffffff41ba01000000e994fe000041ba02000000e989fe0000",
+  "code_address": 140703212503040,
+  "entry_address": 140703212503040,
+  "size_bytes": 375,
+  "game_base": 140703128616960,
+  "roster_address": 536870912,
+  "property_address": 805306368,
+  "property_size_bytes": 256,
+  "record_capacity": 8,
+  "record_stride": 32,
+  "trampoline_address": 140703212503344,
+  "resume_address": 140703212503208,
+  "splice": {
+    "offset": 162,
+    "expected_hex": "8b04298d5104",
+    "replacement_hex": "e98900000090"
+  },
+  "rip_relocation": {
+    "displacement_offset": 9,
+    "target": 140703183682592
+  },
+  "reject_address": 140703212568576,
+  "reject_reasons": {
+    "1": "ordinal_outside_0_to_7",
+    "2": "roster_binding_mismatch"
+  },
+  "reject_state": {
+    "rsp": "entry_rsp-8; [rsp] saved R14; [rsp+28h] saved RBP",
+    "r14": "cursor pointer",
+    "rbp": "payload base",
+    "r11": "input roster",
+    "r8": "zero-extended uint32 ordinal * 32",
+    "rcx": "uint32 entry cursor",
+    "rax": "reason 1: uint32 ordinal; reason 2: expected roster binding address",
+    "r10d": "rejection reason; original RBX/RSI/RDI already restored",
+    "memory": "no payload read or record/cursor write by this receiver before rejection"
+  },
+  "entry_or_callsite_patch": null,
+  "required_integration": [
+    "Actual image fingerprint and source validation; allocate live code and sidecar storage",
+    "Bind the current roster incarnation and redirect all other parallel-array consumers",
+    "Valid map/header/payload/cursor and non-overlapping source/storage; shared lifetime and synchronization",
+    "Provide rejection continuation that restores the interior frame and aborts this whole property dispatch",
+    "Register valid Windows unwind metadata for clone and trampoline; original chained entries cannot be reused blindly",
+    "Install/remove entry or callsite redirection under engine-safe execution control",
+    "Verify original four-player behavior and fifth-through-eighth-player mission lifecycle"
+  ],
+  "limits": [
+    "Fixed supplied bytes and supplied addresses only; no runtime origin/allocation/lifetime proof",
+    "Only this receiver is redirected; it must not be enabled while producers and other consumers use old storage",
+    "No safe continuation or return is supplied for rejection; caller cursor recovery is an unresolved integration requirement",
+    "Emulator execution does not verify Windows unwinding, concurrent callbacks, native ABI callers or gameplay"
+  ]
+}

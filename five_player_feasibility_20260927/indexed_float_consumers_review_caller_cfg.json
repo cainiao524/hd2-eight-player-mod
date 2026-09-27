@@ -1,0 +1,207 @@
+{
+  "root": "0x725160",
+  "fragments": [
+    [
+      "0x725160",
+      "0x7251ba",
+      "0x244236c"
+    ],
+    [
+      "0x7251ba",
+      "0x7252e9",
+      "0x2442384"
+    ],
+    [
+      "0x7252e9",
+      "0x72b8bd",
+      "0x24423bc"
+    ],
+    [
+      "0x72b8bd",
+      "0x72b8e0",
+      "0x24423e0"
+    ]
+  ],
+  "instructions": 5507,
+  "all_reachable": true,
+  "cfg_reaching_definitions": [
+    {
+      "at": "0x72755d",
+      "aliases": [
+        "rsi",
+        "esi",
+        "si",
+        "sil"
+      ],
+      "definitions": [
+        {
+          "rva": "0x727537",
+          "bytes": "4803f0",
+          "sha256": "6cf1935d5dbc5355543018ec8e6a1e98174e8ac3ce240d2a90c8b13d991a1eae",
+          "asm": "add rsi, rax"
+        }
+      ]
+    },
+    {
+      "at": "0x7275f3",
+      "aliases": [
+        "rsi",
+        "esi",
+        "si",
+        "sil"
+      ],
+      "definitions": [
+        {
+          "rva": "0x727537",
+          "bytes": "4803f0",
+          "sha256": "6cf1935d5dbc5355543018ec8e6a1e98174e8ac3ce240d2a90c8b13d991a1eae",
+          "asm": "add rsi, rax"
+        }
+      ]
+    },
+    {
+      "at": "0x72ac69",
+      "aliases": [
+        "rsi",
+        "esi",
+        "si",
+        "sil"
+      ],
+      "definitions": [
+        {
+          "rva": "0x727537",
+          "bytes": "4803f0",
+          "sha256": "6cf1935d5dbc5355543018ec8e6a1e98174e8ac3ce240d2a90c8b13d991a1eae",
+          "asm": "add rsi, rax"
+        }
+      ]
+    },
+    {
+      "at": "0x72aca3",
+      "aliases": [
+        "rsi",
+        "esi",
+        "si",
+        "sil"
+      ],
+      "definitions": [
+        {
+          "rva": "0x727537",
+          "bytes": "4803f0",
+          "sha256": "6cf1935d5dbc5355543018ec8e6a1e98174e8ac3ce240d2a90c8b13d991a1eae",
+          "asm": "add rsi, rax"
+        }
+      ]
+    },
+    {
+      "at": "0x72acfc",
+      "aliases": [
+        "rsi",
+        "esi",
+        "si",
+        "sil"
+      ],
+      "definitions": [
+        {
+          "rva": "0x727537",
+          "bytes": "4803f0",
+          "sha256": "6cf1935d5dbc5355543018ec8e6a1e98174e8ac3ce240d2a90c8b13d991a1eae",
+          "asm": "add rsi, rax"
+        }
+      ]
+    },
+    {
+      "at": "0x72ad1a",
+      "aliases": [
+        "rsi",
+        "esi",
+        "si",
+        "sil"
+      ],
+      "definitions": [
+        {
+          "rva": "0x727537",
+          "bytes": "4803f0",
+          "sha256": "6cf1935d5dbc5355543018ec8e6a1e98174e8ac3ce240d2a90c8b13d991a1eae",
+          "asm": "add rsi, rax"
+        }
+      ]
+    },
+    {
+      "at": "0x727516",
+      "aliases": [
+        "r14",
+        "r14d",
+        "r14w",
+        "r14b"
+      ],
+      "definitions": [
+        {
+          "rva": "0x7251a4",
+          "bytes": "4c8bf1",
+          "sha256": "a3854ee48daadc23ae9741ca7d47cb2cb42ad7c677e939c6fca2f2c4090fdbc1",
+          "asm": "mov r14, rcx"
+        },
+        {
+          "rva": "0x72b230",
+          "bytes": "4c8bb530010000",
+          "sha256": "d5f4a93461ac71ccd1296b3b8f625e9422dedc5df05d8544c25cb8a28bae7fa1",
+          "asm": "mov r14, qword ptr [rbp + 0x130]"
+        }
+      ]
+    }
+  ],
+  "assumptions": "Normal direct-branch control flow; calls preserve Windows x64 nonvolatile registers; no exception edges.",
+  "capture_identity_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "manager_entry_save_restore": [
+    {
+      "rva": "0x7251a4",
+      "bytes": "4c8bf1",
+      "sha256": "a3854ee48daadc23ae9741ca7d47cb2cb42ad7c677e939c6fca2f2c4090fdbc1",
+      "asm": "mov r14, rcx"
+    },
+    {
+      "rva": "0x7251a7",
+      "bytes": "48898d30010000",
+      "sha256": "6c04b4cb096f8d80af257e3b2a16e208c6bea4bd46ad240941fda7baa81a0296",
+      "asm": "mov qword ptr [rbp + 0x130], rcx"
+    },
+    {
+      "rva": "0x72b230",
+      "bytes": "4c8bb530010000",
+      "sha256": "d5f4a93461ac71ccd1296b3b8f625e9422dedc5df05d8544c25cb8a28bae7fa1",
+      "asm": "mov r14, qword ptr [rbp + 0x130]"
+    }
+  ],
+  "fixed_stack_alias_model": "For these normal frames RBP=RSP+100h after the prologue; include memory widths for constant displacement writes.",
+  "manager_saved_entry_overlap_writes": [
+    {
+      "rva": "0x7251a7",
+      "bytes": "48898d30010000",
+      "sha256": "6c04b4cb096f8d80af257e3b2a16e208c6bea4bd46ad240941fda7baa81a0296",
+      "asm": "mov qword ptr [rbp + 0x130], rcx"
+    }
+  ],
+  "D_saved_entry_overlap_writes": [
+    {
+      "rva": "0x142d8a7",
+      "bytes": "48894c2468",
+      "sha256": "358a2f2eab5235456e11513ab005d7695fe36fe6ceed6a7b377f6f0e74ce295a",
+      "asm": "mov qword ptr [rsp + 0x68], rcx"
+    }
+  ],
+  "D_second_loop_counter_overlap_writes": [
+    {
+      "rva": "0x142da9b",
+      "bytes": "4489642460",
+      "sha256": "29365d9df8a3f58d48df0226d0190b573fc7f3375f4d8610f96d5e65145c1638",
+      "asm": "mov dword ptr [rsp + 0x60], r12d"
+    },
+    {
+      "rva": "0x142edc2",
+      "bytes": "89442460",
+      "sha256": "cc2b2d8c5e8973c89dd596eed237393a70aa508e3cd2b9a227f052a4891ef1b4",
+      "asm": "mov dword ptr [rsp + 0x60], eax"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "source_sha256": {
+    "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+  },
+  "game_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+  "regex": "(?:player|helldiver|diver).{0,36}(?:spawn|create|entity|unit)|(?:spawn|create|entity|unit).{0,36}(?:player|helldiver|diver)",
+  "strings": [
+    {
+      "rva": "0x224db70",
+      "text": "\"spawn_on_players\" : { \"max\" : %u, \"capacity\" : 16 }"
+    },
+    {
+      "rva": "0x2254b30",
+      "text": "Player %llx stuck in WaitingForRespawnTimer state while dead for %fs. Forcing recovery."
+    },
+    {
+      "rva": "0x2254b90",
+      "text": "Player %llx stuck in Spawned state while dead for %fs. Forcing recovery."
+    },
+    {
+      "rva": "0x225a0b0",
+      "text": "PlayerReinforceSpawned"
+    },
+    {
+      "rva": "0x2265750",
+      "text": "respawn_camera_above_player"
+    }
+  ],
+  "limits": [
+    "String names alone do not prove reachable player creation code."
+  ]
+}

@@ -1,0 +1,495 @@
+{
+  "source_sha256": {
+    "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+  },
+  "capture_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "game_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+  "build_id": 25480438,
+  "runtime_verified": false,
+  "pins": {
+    "owner_construct_and_publish": [
+      {
+        "rva": "0x551b7d",
+        "bytes": "e8ae660100",
+        "sha256": "c500181e4a9ed466a1afc8d235ebc5ab3546e5b9a59824314c6447f350275e76",
+        "asm": "call 0x568230",
+        "root": "0x551b60",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x5565ef",
+        "bytes": "488d8e1808ea00",
+        "sha256": "7fdb9c81df2ee0706828cb19a2aeafd7c14ed0af35a8cf7c310dcb101a118893",
+        "asm": "lea rcx, [rsi + 0xea0818]",
+        "root": "0x551b60",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x5565f9",
+        "bytes": "e8c2630b00",
+        "sha256": "4001a1eaf25912878a0f1bcf54b43674773b13b1df4b3418ba9231d494977297",
+        "asm": "call 0x60c9c0",
+        "root": "0x551b60",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x5565fe",
+        "bytes": "488d8e1808ea00",
+        "sha256": "7fdb9c81df2ee0706828cb19a2aeafd7c14ed0af35a8cf7c310dcb101a118893",
+        "asm": "lea rcx, [rsi + 0xea0818]",
+        "root": "0x551b60",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x556605",
+        "bytes": "e8560f5d00",
+        "sha256": "b5706d794e48a5d0d7a778413ad7e5da0c72dd126157e13966ce26617f7f68f8",
+        "asm": "call 0xb27560",
+        "root": "0x551b60",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x568ec8",
+        "bytes": "488d831808ea00",
+        "sha256": "21ee1dd711f2b10e4e88288bce01dfd9fc2d175fad6c12b947b818330e29f197",
+        "asm": "lea rax, [rbx + 0xea0818]",
+        "root": "0x568230",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x568ecf",
+        "bytes": "48890592d5db02",
+        "sha256": "26edae102807b031a22cae5f5594ddddeaae28d6b8ce0e045340d9353b562a35",
+        "asm": "mov qword ptr [rip + 0x2dbd592], rax",
+        "root": "0x568230",
+        "boundary_validation": "captured unwind fragment"
+      }
+    ],
+    "subobject_constructor": [
+      {
+        "rva": "0x60c9c0",
+        "bytes": "4533db",
+        "sha256": "a5ffd338eff341d0d3a9ea7b96f7713c27f1daf0e9f9aefb439549900c92b6f2",
+        "asm": "xor r11d, r11d",
+        "root": "0x60c9c0",
+        "boundary_validation": "known direct-call leaf entry; no captured unwind"
+      },
+      {
+        "rva": "0x60c9ca",
+        "bytes": "4c899980000000",
+        "sha256": "77b44e11a7d07c532d6c5bbcaeecc7809b0d6484ddd21e45fe6c990897bdac52",
+        "asm": "mov qword ptr [rcx + 0x80], r11",
+        "root": "0x60c9c0",
+        "boundary_validation": "known direct-call leaf entry; no captured unwind"
+      },
+      {
+        "rva": "0x60c9e8",
+        "bytes": "488981d0000000",
+        "sha256": "9fc608e666735219452dbc6ca21f970ca7246c3beb72cae31a10ef8b596b14dd",
+        "asm": "mov qword ptr [rcx + 0xd0], rax",
+        "root": "0x60c9c0",
+        "boundary_validation": "known direct-call leaf entry; no captured unwind"
+      },
+      {
+        "rva": "0x60c9ef",
+        "bytes": "c781d800000008000000",
+        "sha256": "ce86a7e4e344d136ec4a9621e6e200d5a921d17420766cae25a938cf703954e4",
+        "asm": "mov dword ptr [rcx + 0xd8], 8",
+        "root": "0x60c9c0",
+        "boundary_validation": "known direct-call leaf entry; no captured unwind"
+      },
+      {
+        "rva": "0x60ca10",
+        "bytes": "4c891cd0",
+        "sha256": "b7af7424e8438a12c5006c987e59ca70836a6fb140ea5be89d87cda0a1c36142",
+        "asm": "mov qword ptr [rax + rdx*8], r11",
+        "root": "0x60c9c0",
+        "boundary_validation": "known direct-call leaf entry; no captured unwind"
+      }
+    ],
+    "roster_insert_a_guard_and_fields": [
+      {
+        "rva": "0x60ca8a",
+        "bytes": "488b1dd799d102",
+        "sha256": "982d088aaae816bf1435204ef375b9f719d7eacc035f92c388216df92bfb0c5e",
+        "asm": "mov rbx, qword ptr [rip + 0x2d199d7]",
+        "root": "0x60ca80",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60ca94",
+        "bytes": "8b8380000000",
+        "sha256": "03189072dbcb237594ba019b0f3ec1af8b027cfadd33b2ba8e411838d92bb612",
+        "asm": "mov eax, dword ptr [rbx + 0x80]",
+        "root": "0x60ca80",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60ca9a",
+        "bytes": "ffc0",
+        "sha256": "36cf7346f0d0c76f16dd999870c6db6c7dd76557592e00b519bcefb73f0a80f6",
+        "asm": "inc eax",
+        "root": "0x60ca80",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60ca9c",
+        "bytes": "83f804",
+        "sha256": "ec9d1a6c95187ab3425edbcdf19a43602dabed7b1d6a5c436f9d713baec3f3d1",
+        "asm": "cmp eax, 4",
+        "root": "0x60ca80",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60ca9f",
+        "bytes": "760b",
+        "sha256": "69c0a381ddd5382c679350caec40d96bcf17eaa613a2db8af19d45267b6685a3",
+        "asm": "jbe 0x60caac",
+        "root": "0x60ca80",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60caa1",
+        "bytes": "c704250000000000000000",
+        "sha256": "580dcf9fa87f8f2b97423cf3ae7a6637c9210a31c7488ac00469bfbeb1ee19f1",
+        "asm": "mov dword ptr [0], 0",
+        "root": "0x60ca80",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60caac",
+        "bytes": "41803800",
+        "sha256": "f758c6c21ea5df0b1df0261e6bdb095d033c541d9ea8ff78ab043ea899d421e9",
+        "asm": "cmp byte ptr [r8], 0",
+        "root": "0x60ca80",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cab0",
+        "bytes": "8b8384000000",
+        "sha256": "bd05ec1f8a9f6a75b4cb813b2b660ebfe16af64641cd209b2e50ade55e28f1be",
+        "asm": "mov eax, dword ptr [rbx + 0x84]",
+        "root": "0x60ca80",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cadc",
+        "bytes": "898388000000",
+        "sha256": "08556060e388211619800eaa904b3238ee39ae74920cf67ed507b453373ed578",
+        "asm": "mov dword ptr [rbx + 0x88], eax",
+        "root": "0x60ca80",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cae5",
+        "bytes": "486bc870",
+        "sha256": "ac80a3b3fa2213b3a7b9340f4ce2edd7a763af80e412f73a04da5c4464803d82",
+        "asm": "imul rcx, rax, 0x70",
+        "root": "0x60ca80",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cae9",
+        "bytes": "0f11841908010000",
+        "sha256": "677143863bd45508e1dc0368527e457c163e4f80c547cb4697e25b4af164bafd",
+        "asm": "movups xmmword ptr [rcx + rbx + 0x108], xmm0",
+        "root": "0x60ca80",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cb2b",
+        "bytes": "486bc238",
+        "sha256": "625573be8f354b1d57a3f44803e0f3488e87a78bb6a26addc543c05a33943256",
+        "asm": "imul rax, rdx, 0x38",
+        "root": "0x60ca80",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cb32",
+        "bytes": "0f118418c8020000",
+        "sha256": "673f75c819034791f46981425ef42647e8ffff61a2f757f0c10f29a17344bffe",
+        "asm": "movups xmmword ptr [rax + rbx + 0x2c8], xmm0",
+        "root": "0x60ca80",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cb62",
+        "bytes": "ff8384000000",
+        "sha256": "87b8303f0bac8e25759eafb228d51a9b5df73b8eaee09a0798b5b9d7b1cc0c8a",
+        "asm": "inc dword ptr [rbx + 0x84]",
+        "root": "0x60ca80",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cb68",
+        "bytes": "8b8b84000000",
+        "sha256": "ad031f92675e56d5a2041dad3bc6807d261b208e6c0386c056b0e8ee3e3628a5",
+        "asm": "mov ecx, dword ptr [rbx + 0x84]",
+        "root": "0x60ca80",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cb6e",
+        "bytes": "ff8380000000",
+        "sha256": "9244e896c9631866bfa82b4aa7c653b140a6941f558a0b4b24c0667c969486db",
+        "asm": "inc dword ptr [rbx + 0x80]",
+        "root": "0x60ca80",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cb74",
+        "bytes": "394b7c",
+        "sha256": "fef4e0ba272d726e314b9b914c7d0ae00ef186eb9e4f55ac052f70279e919e86",
+        "asm": "cmp dword ptr [rbx + 0x7c], ecx",
+        "root": "0x60ca80",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cb77",
+        "bytes": "0f474b7c",
+        "sha256": "68fcd533a4406ce4aea668cc5956e4fe07ab01b6b82bf3cbbc8cea7e286d1b73",
+        "asm": "cmova ecx, dword ptr [rbx + 0x7c]",
+        "root": "0x60ca80",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cb7b",
+        "bytes": "894b7c",
+        "sha256": "27aed38328c2fd81cd95e77a5252ac397703b5d6110f5d6b632865574c4fda7b",
+        "asm": "mov dword ptr [rbx + 0x7c], ecx",
+        "root": "0x60ca80",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cb85",
+        "bytes": "4889bcd3e8000000",
+        "sha256": "9feb7345bb118d6bbed3234b9441fe960d9e3d3f9826449565c0e9031324c270",
+        "asm": "mov qword ptr [rbx + rdx*8 + 0xe8], rdi",
+        "root": "0x60ca80",
+        "boundary_validation": "captured unwind fragment"
+      }
+    ],
+    "roster_insert_b_guard_and_fields": [
+      {
+        "rva": "0x60cba6",
+        "bytes": "488b1dbb98d102",
+        "sha256": "bbc9d161365db89d8aab23f800e7b48c11f1aa6ac757dda57ab4c74ccc27755d",
+        "asm": "mov rbx, qword ptr [rip + 0x2d198bb]",
+        "root": "0x60cba0",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cbb0",
+        "bytes": "448b8380000000",
+        "sha256": "1e295710cd15eeba7dd0c21a71471909feb044a216c06511c0f81a134ebcf25a",
+        "asm": "mov r8d, dword ptr [rbx + 0x80]",
+        "root": "0x60cba0",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cbb7",
+        "bytes": "418d4001",
+        "sha256": "93f910598cd1e8fccf5551d5c4aa4f62cdcc6e7ef6ea7281171e3f6aeed513fb",
+        "asm": "lea eax, [r8 + 1]",
+        "root": "0x60cba0",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cbbb",
+        "bytes": "83f804",
+        "sha256": "ec9d1a6c95187ab3425edbcdf19a43602dabed7b1d6a5c436f9d713baec3f3d1",
+        "asm": "cmp eax, 4",
+        "root": "0x60cba0",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cbbe",
+        "bytes": "760f",
+        "sha256": "25e7bbe714d18be0542ca0ce7eb82ecdc00bed955bfa8a594b6f300411758a1b",
+        "asm": "jbe 0x60cbcf",
+        "root": "0x60cba0",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cbc0",
+        "bytes": "4489142500000000",
+        "sha256": "ce8aa8a3d314fe17228b5ac0a3a46d81475cb1223e7e323b3e577158ea58ba29",
+        "asm": "mov dword ptr [0], r10d",
+        "root": "0x60cba0",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cbc8",
+        "bytes": "448b8380000000",
+        "sha256": "1e295710cd15eeba7dd0c21a71471909feb044a216c06511c0f81a134ebcf25a",
+        "asm": "mov r8d, dword ptr [rbx + 0x80]",
+        "root": "0x60cba0",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cbd5",
+        "bytes": "486bc170",
+        "sha256": "2cdd5db1a17a380d4c4023603be1ac1a4df5e1ee5fd33439664210e9f517c58a",
+        "asm": "imul rax, rcx, 0x70",
+        "root": "0x60cba0",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cbdc",
+        "bytes": "0f11841808010000",
+        "sha256": "06675619b1f1cdb14ccd96188869de3fcf0845b57d4b1fb6e7716b0372a074c9",
+        "asm": "movups xmmword ptr [rax + rbx + 0x108], xmm0",
+        "root": "0x60cba0",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cc14",
+        "bytes": "486bc138",
+        "sha256": "efa3a1aa9f3b592163181348f990be1a22cfd757744b12f9cfe0da6f8cdc2617",
+        "asm": "imul rax, rcx, 0x38",
+        "root": "0x60cba0",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cc18",
+        "bytes": "0f118418c8020000",
+        "sha256": "673f75c819034791f46981425ef42647e8ffff61a2f757f0c10f29a17344bffe",
+        "asm": "movups xmmword ptr [rax + rbx + 0x2c8], xmm0",
+        "root": "0x60cba0",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cc48",
+        "bytes": "488994cbe8000000",
+        "sha256": "28d266497edef8ffd967cad72957c68ef2839597c427fa8ea8511afb26a2f900",
+        "asm": "mov qword ptr [rbx + rcx*8 + 0xe8], rdx",
+        "root": "0x60cba0",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cc5f",
+        "bytes": "ff8380000000",
+        "sha256": "9244e896c9631866bfa82b4aa7c653b140a6941f558a0b4b24c0667c969486db",
+        "asm": "inc dword ptr [rbx + 0x80]",
+        "root": "0x60cba0",
+        "boundary_validation": "captured unwind fragment"
+      }
+    ],
+    "roster_compaction_and_gameplay_consumer": [
+      {
+        "rva": "0x60cc7a",
+        "bytes": "8bb984000000",
+        "sha256": "70309c0f1e9167b95673e8cef43ea4f1720c7d9cc9e40ee3995bcd6144c297d7",
+        "asm": "mov edi, dword ptr [rcx + 0x84]",
+        "root": "0x60cc70",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60cc83",
+        "bytes": "8b8180000000",
+        "sha256": "615e163a59b2a4b0c11924250a4d64035ea017c46a046e0be8e6d2299942399b",
+        "asm": "mov eax, dword ptr [rcx + 0x80]",
+        "root": "0x60cc70",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60ccb5",
+        "bytes": "4a8b84c3e8000000",
+        "sha256": "a4f338cbae6742b8e575c60718c9695a18965689b0b76006e27b94769682a6c1",
+        "asm": "mov rax, qword ptr [rbx + r8*8 + 0xe8]",
+        "root": "0x60cc70",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60ccc3",
+        "bytes": "498981e8000000",
+        "sha256": "0fecf3a0320dbf736e5ba2064417cd9a87942da9222416e002affc083c9d601b",
+        "asm": "mov qword ptr [r9 + 0xe8], rax",
+        "root": "0x60cc70",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60ce54",
+        "bytes": "898384000000",
+        "sha256": "526e3cfee12b17a65c0f8c0f56bbaf891e567a97e4845b4436933f4ca4f6b65c",
+        "asm": "mov dword ptr [rbx + 0x84], eax",
+        "root": "0x60cc70",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x60ce6a",
+        "bytes": "898184000000",
+        "sha256": "1d1365ce03e6d5eea40862dab5ada4ee23efd87d16b13fa7b93d0b9a70cdc097",
+        "asm": "mov dword ptr [rcx + 0x84], eax",
+        "root": "0x60cc70",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0xacc620",
+        "bytes": "8b00",
+        "sha256": "736aaffccc35e5ac4a9c0d7b2f64ae9ed7ead848f3eb93c8ad4b50b9b76b5e39",
+        "asm": "mov eax, dword ptr [rax]",
+        "root": "0xacbe60",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0xacc622",
+        "bytes": "413b8684000000",
+        "sha256": "3f6fd3173bb842289f3829891263353b0112a5fc237c0958ddbc6d43c43a96d9",
+        "asm": "cmp eax, dword ptr [r14 + 0x84]",
+        "root": "0xacbe60",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0xacc638",
+        "bytes": "498b84c6e8000000",
+        "sha256": "2144de1a69ab426c3faaa92a8fe609b4ab72b6fecf8220b5a1094f8ceda189e3",
+        "asm": "mov rax, qword ptr [r14 + rax*8 + 0xe8]",
+        "root": "0xacbe60",
+        "boundary_validation": "captured unwind fragment"
+      }
+    ],
+    "capacity_diagnostic_connection": [
+      {
+        "rva": "0x56e7de",
+        "bytes": "448b8f9408ea00",
+        "sha256": "f02181df2fb66ec2ec8022c9ecac172a880855fd7882b2423d23bc30dbd511fd",
+        "asm": "mov r9d, dword ptr [rdi + 0xea0894]",
+        "root": "0x56a920",
+        "boundary_validation": "captured unwind fragment"
+      },
+      {
+        "rva": "0x56e7ec",
+        "bytes": "4c8d052d8dcd01",
+        "sha256": "06aa7b24caa34b6f2d8a21429a6a5b2132437eb12dcf8263e666026a0eae31e9",
+        "asm": "lea r8, [rip + 0x1cd8d2d]",
+        "root": "0x56a920",
+        "boundary_validation": "captured unwind fragment"
+      }
+    ]
+  },
+  "derived_layout": {
+    "global_rva": "0x3326468",
+    "owner_subobject_offset": "0xea0818",
+    "guarded_tracked_count_offset": "0x80",
+    "gameplay_consumed_dense_count_offset": "0x84",
+    "high_water_count_offset": "0x7c",
+    "pointer_slot_offsets": [
+      "0xe8",
+      "0xf0",
+      "0xf8",
+      "0x100"
+    ],
+    "next_auxiliary_record_start": "0x108",
+    "diagnostic_owner_field_offset": "0xea0894"
+  },
+  "limits": [
+    "The two insertion functions test tracked_count + 1 <= 4 before indexed stores.",
+    "The >4 path contains a write to virtual address zero, followed by linear fallthrough; on ordinary Windows process memory this would fault. Its source-level assertion macro is unknown.",
+    "The +0xE8 pointer array has four qword positions before a distinct +0x108 0x70-stride record; merely changing the comparison cannot make a fifth pointer safe.",
+    "This proves a four-entry roster insertion layout, not a four-object entity heap allocator or platform/backend lobby capacity.",
+    "Direct-call xref scanning found no callers of 0x60CA80/0x60CBA0; indirect and computed references, uncovered leaf callers, and dynamic runtime dispatch remain unexamined.",
+    "The installed game and any runtime platform interface were not accessed; runtime_verified is false."
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "scope": "Offline static replay of the pinned Steam build 25480438 capture; no game execution or modifications",
+  "source_fingerprints": {
+    "capture_report_sha256": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured_data_sha256": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d",
+    "capture_identity_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8"
+  },
+  "replay": {
+    "script": "pending_scan.py",
+    "candidate_output": "pending_offset_candidates.json",
+    "consumer_disassembly": [
+      "pending_consumer_root.json",
+      "pending_consumer_middle.json",
+      "pending_consumer_middle2.json",
+      "pending_candidate_108af53.json",
+      "pending_consumer_epilogue.json"
+    ],
+    "caller_disassembly": ["pending_caller_134e432.json", "pending_caller_13f7872.json"],
+    "consumer_xrefs": "pending_consumer_xrefs.json"
+  },
+  "validated_unwind_fragments": [
+    {"start": "0x108a440", "end": "0x108a5a7", "sha256": "5e63a359d4e1c1588cccac68f322bf4123f8d1dc91cd9e191a941265ce110af0"},
+    {"start": "0x108a5a7", "end": "0x108a5d2", "sha256": "d9afefa81096d24325e88760585d8ccabe8cf3d1ca782dd26e6f2a8099e78817"},
+    {"start": "0x108a5d2", "end": "0x108ab57", "sha256": "6df9787e00caa86931a85526e12a8d8a3ca52d52d433602f230904db72868fa1"},
+    {"start": "0x108ab57", "end": "0x108b4f6", "sha256": "8b1ea84fac86ff8967a6310dae38347d48ed6b43de11e257f3262a7b29496a80"},
+    {"start": "0x108b4f6", "end": "0x108b512", "sha256": "92d14897b8014a0727f97f8e735b83d8ddb8ecff03c8ff135d4f2cceaa3a50ff"}
+  ],
+  "selected_contiguous_ranges": [
+    {"start": "0x108af4c", "end": "0x108af7a", "sha256": "b873eca6584c122c842d2556854cec0b4623dd4cf345208eb6baa2214f4aab58"},
+    {"start": "0x108af70", "end": "0x108b081", "sha256": "0ac2c0969e86bc68b0fa9252b097f0fedc77450d2712e3ccc94c57bdd6e36488"},
+    {"start": "0x108b086", "end": "0x108b22b", "sha256": "dcdb210dfe0a32321e6d087cd497bde1d1cfc9badb0bc256a5b83c2b25c308d2"},
+    {"start": "0x108b22b", "end": "0x108b2a2", "sha256": "d247fe392ec01ee7beba5eff52eeb1a6e61c6972bcf2e29c8f6e08cefab2b951"},
+    {"start": "0x108b2a2", "end": "0x108b491", "sha256": "624dc17b31f994f6439eb5549f59e62d3bb5417174d5b07b3dff95526a2873ac"},
+    {"start": "0x108b491", "end": "0x108b4d6", "sha256": "52d61c5a5fb212cbfde63351a7a591f72d5043e25ee3d57c93fb16bde4309bf6"},
+    {"start": "0x134e42b", "end": "0x134e443", "sha256": "9a9af4e2ef81269d41e4d03d1c429a01c700fd1f21976b6fbcf689a8294fa03d"},
+    {"start": "0x13f786b", "end": "0x13f7883", "sha256": "cb037ca3412498e2cc1f1ae831eafffc4bf38905e1b33cecb51a8b38f853cd7a"}
+  ],
+  "provenance": [
+    "0x108a469 moves rcx to r12; later references use r12 as the same host object that owns peer records at +0x20 and pending records at +0x808.",
+    "Direct calls 0x134e432 and 0x13f7872 both form rcx as outer-object+0x159b0 before calling 0x108a440. Both immediately call 0x1083150 with outer-object+0x162c8. Their semantic scheduling/frequency is not proven.",
+    "The outer-object offset difference between these consecutive subobjects is 0x918. Current pending range host+0x808..+0x907 is followed by two used qwords at host+0x908 and +0x910. Eight inline records at stride 0x40 would end-exclusive at host+0xa08 and overwrite these qwords and overlap the next subobject by 0xf0 if layout remained unchanged."
+  ],
+  "pending_flow": [
+    {"rva": "0x108a59b..0x108a5a1", "effect": "The consumer takes the host-state-one path; other states branch to epilogue."},
+    {"rva": "0x108af53..0x108b4d0", "effect": "r14=host+0x808, r13d=4; each nonempty 0x40-byte pending record is examined and the loop advances by 0x40, four times."},
+    {"rva": "0x108af81..0x108afa9", "effect": "Under a global flag, the record's +0x38 qword is matched against a distinct global eight-entry key table. Absence sets sil=0 and can defer processing; the table does not extend the host's peer or pending counts."},
+    {"rva": "0x108afb3..0x108b081", "effect": "A separate global byte controls a structured-dispatch branch that clears all 0x40 bytes of the pending record. The numeric event content is not given a gameplay name."},
+    {"rva": "0x108b086..0x108b22b", "effect": "When an eight-entry key match exists, an indirect 32-byte companion comparison is attempted. Failure enters a structured-dispatch path, clears the matching global key/companion, clears the pending 0x40 bytes, and continues. The external predicate's domain is unverified."},
+    {"rva": "0x108b22b..0x108b2a2", "effect": "Only when sil is set and ebx==1 does this branch scan four larger host records at host+0x108+0x1c0*i, i=0..3, and copy the pending first qword plus 0x30 subsequent bytes to the first record with a zero first qword. If all four are occupied, it falls through without the copy."},
+    {"rva": "0x108b2a2..0x108b4a2", "effect": "Builds a structured event using the pending request count and qwords, calls 0xbde430, invokes 0x12d59d0 with the pending +0x38 qword, clears a matching global eight-entry key/companion, then zeroes the pending 0x40-byte record. It does this even when the preceding four-record scan found no empty destination; runtime reachability/invariants are unknown."},
+    {"rva": "0x108b4c8..0x108b4d0", "effect": "Advances pending pointer by 0x40 and decrements a four-iteration counter."}
+  ],
+  "adjacent_layout": {
+    "large_record_array": "host+0x108+0x1c0*i, i=0..3; end-exclusive host+0x808",
+    "pending_record_array": "host+0x808+0x40*i, i=0..3; end-exclusive host+0x908",
+    "used_tail_fields": "At 0x108d851 root 0x108d840 puts host rcx in rsi. At 0x108d899 it passes host+0x908 to an indirect call, and at 0x108d8c5/0x108d8d7 reads qwords host+0x910/+0x908 for a structured dispatch. Root 0x108e830 repeats matching access at 0x108e8a8/0x108e8d6/0x108e8ed.",
+    "next_subobject_pointer_from_two_callers": "host+0x918"
+  },
+  "large_record_lifecycle_helper": {
+    "root": "0x108b6b0",
+    "fragment_end": "0x108bbb4",
+    "fragment_sha256": "8ba9b041490cc4393dbc93df6d246478df4470153056bbe5535d953f824eb3fe",
+    "observation": "The helper is called by the join handler at 0x108c34e when a requested qword already appears in a four-slot peer entry. It explicitly handles four large-record bases host+0x108 (0x108b6c7), +0x2c8 (0x108b7f1), +0x488 (0x108b911), +0x648 (0x108ba31), searching per-record qword sublists for the passed qword and decrementing counts. When the principal count is zero it zero-fills and copies over 0x1c0 bytes of that record; the first case begins 0x108b761. It then scans four peer records and clears the matching peer entry and index flag at 0x108bb51..0x108bb93. This connects the large-record array to peer lifecycle, but does not establish every caller or runtime order."
+  },
+  "false_positive_excluded": "The other literal +0x820 hit at 0x109533c belongs to root 0x10952b0, which initializes a separate repeated stride-0x130 structure up to +0x2810. Its base is not proven to be the HostSynchronizer and it is not counted as a pending writer.",
+  "limits": [
+    "Only the captured code range and unwind-validated boundaries were decoded; writable globals and heap were not captured.",
+    "A literal displacement match is not itself object identity. The consumer identity is supported by base-register provenance, four-iteration stride, matching entry fields, and two direct callers.",
+    "A structured event call does not establish game-server acceptance, client synchronization, or a fifth player reaching gameplay.",
+    "No runtime path, allocation change, or patch is proposed by this evidence."
+  ]
+}

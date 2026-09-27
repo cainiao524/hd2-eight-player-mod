@@ -1,0 +1,43 @@
+{
+  "status": "completed_with_research_gaps",
+  "offline_test_counts": {
+    "normal": 118,
+    "optimized": 118
+  },
+  "new_entity_tests_per_mode": 6,
+  "new_indirect_tests_per_mode": 7,
+  "total_tests_per_mode": 131,
+  "mutation_runs": {
+    "normal": "expected failure, exit 1",
+    "optimized": "expected failure, exit 1"
+  },
+  "reference_analysis_fingerprint": "a1c7d72ba38d91f3526af7d8a58f2eee0ec235198d9a28d454abf2bc84eca1b3",
+  "prior_evidence_replay_fingerprint": "91a2468bb745b6f266ca7aa3f537e7dba35569fd937c0a8ee4a39a0b46d65ac2",
+  "prior_evidence_comparison": "unchanged_still_unverified",
+  "settings_pinned_instructions": 44,
+  "settings_normal_optimized_equal": true,
+  "settings_evidence_sha256": "35f62cb90481672f9e9c82f841af30e1ebae1f6862aba0965d00ed47ac03fac1",
+  "entity_and_indirect_fault_injection": "both normal and optimized runs failed as expected",
+  "earlier_attempts": [
+    {
+      "path": "checks/",
+      "result": "harness output decoding failed on UTF-8 child output with Windows GBK parent default",
+      "resolution": "explicit UTF-8 decoding; rerun logs in checks-v2/"
+    },
+    {
+      "path": "checks-v2/replay.log",
+      "exit_code": 2,
+      "result": "old analysis graph correctly rejected as missing or malformed",
+      "resolution": "used the spec-pinned analysis-final; replay-final/ and compare-final/ passed; freshly replayed original 16-source bundle into reference-replay/ with matching fingerprint"
+    }
+  ],
+  "not_executed": [
+    "new candidate ownership/write refusal, object-reuse and restore tests: no field binding or runtime exists",
+    "gameplay comparison, FPS and frame time measurement: no qualified candidate exists"
+  ],
+  "new_candidate_acceptance_passed": false,
+  "field_binding": null,
+  "gameplay_verified": false,
+  "fps_measured": false,
+  "frametime_measured": false
+}

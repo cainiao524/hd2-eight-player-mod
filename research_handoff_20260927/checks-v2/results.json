@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "checks": [
+    {
+      "name": "normal-test_generationall.py",
+      "command": [
+        "C:\\Users\\OvO\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_generation*.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 2.551
+    },
+    {
+      "name": "normal-test_referenceall.py",
+      "command": [
+        "C:\\Users\\OvO\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_reference*.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 8.534
+    },
+    {
+      "name": "normal-test_secondary_catalog.py",
+      "command": [
+        "C:\\Users\\OvO\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_secondary_catalog.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 0.149
+    },
+    {
+      "name": "normal-test_projectile_verifier.py",
+      "command": [
+        "C:\\Users\\OvO\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_projectile_verifier.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 0.505
+    },
+    {
+      "name": "normal-disabled-source-guard-mutation",
+      "command": [
+        "C:\\Users\\OvO\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "-c",
+        "import sys, unittest\nsys.path[:0] = ['tests', 'tools']\nimport test_generation_research as tests\noriginal = tests.study.require\ndef broken_require(condition, message):\n    if message == 'existing code evidence file fingerprint mismatch':\n        return\n    return original(condition, message)\ntests.study.require = broken_require\nsuite = unittest.TestSuite([tests.GenerationResearchTests('test_modified_code_file_is_rejected_by_exact_source_pin')])\nresult = unittest.TextTestRunner(verbosity=2).run(suite)\nsys.exit(0 if result.wasSuccessful() else 1)\n"
+      ],
+      "exit_code": 1,
+      "expected_exit_code": 1,
+      "passed": true,
+      "elapsed_seconds": 0.236
+    },
+    {
+      "name": "optimized-test_generationall.py",
+      "command": [
+        "C:\\Users\\OvO\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "-O",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_generation*.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 2.672
+    },
+    {
+      "name": "optimized-test_referenceall.py",
+      "command": [
+        "C:\\Users\\OvO\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "-O",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_reference*.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 8.221
+    },
+    {
+      "name": "optimized-test_secondary_catalog.py",
+      "command": [
+        "C:\\Users\\OvO\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "-O",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_secondary_catalog.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 0.146
+    },
+    {
+      "name": "optimized-test_projectile_verifier.py",
+      "command": [
+        "C:\\Users\\OvO\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "-O",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_projectile_verifier.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "passed": true,
+      "elapsed_seconds": 0.495
+    },
+    {
+      "name": "optimized-disabled-source-guard-mutation",
+      "command": [
+        "C:\\Users\\OvO\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "-O",
+        "-c",
+        "import sys, unittest\nsys.path[:0] = ['tests', 'tools']\nimport test_generation_research as tests\noriginal = tests.study.require\ndef broken_require(condition, message):\n    if message == 'existing code evidence file fingerprint mismatch':\n        return\n    return original(condition, message)\ntests.study.require = broken_require\nsuite = unittest.TestSuite([tests.GenerationResearchTests('test_modified_code_file_is_rejected_by_exact_source_pin')])\nresult = unittest.TextTestRunner(verbosity=2).run(suite)\nsys.exit(0 if result.wasSuccessful() else 1)\n"
+      ],
+      "exit_code": 1,
+      "expected_exit_code": 1,
+      "passed": true,
+      "elapsed_seconds": 0.231
+    },
+    {
+      "name": "replay",
+      "command": [
+        "C:\\Users\\OvO\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "tools/generation_research.py",
+        "analyze",
+        "--analysis",
+        "build/generation-research-v1-analysis/analysis.json",
+        "--code-evidence-dir",
+        "build/existing-code-evidence-25480438",
+        "--output",
+        "E:\\File\\Codes\\0\\26.10.1\\HD2\\research_handoff_20260927\\checks-v2\\replay"
+      ],
+      "exit_code": 2,
+      "expected_exit_code": 0,
+      "passed": false,
+      "elapsed_seconds": 0.785
+    }
+  ],
+  "all_expected_results": false,
+  "scope": "Offline evidence and classification only; no new runtime or lifecycle binding exists.",
+  "gameplay_verified": false,
+  "fps_measured": false,
+  "frametime_measured": false
+}

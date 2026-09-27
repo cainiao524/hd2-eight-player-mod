@@ -1,0 +1,99 @@
+{
+  "capture_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "source_sha256": {
+    "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+  },
+  "code_range": {
+    "rva": 4096,
+    "size": 34667155,
+    "label": "code",
+    "copied_bytes": 34667155,
+    "skipped_bytes": 0
+  },
+  "captured_unwind_table": {
+    "rva": "0x37d8000",
+    "size": 1832304,
+    "fragments": 152692
+  },
+  "header_exception_directory_uncaptured": {
+    "rva": "0x3fd340c",
+    "size": 1832316
+  },
+  "targets": {
+    "0x581c40": {
+      "branches": [],
+      "rip_references": [],
+      "absolute_pointers": [],
+      "rva_literals": [
+        {
+          "rva": "0x2413b64",
+          "range": "readonly",
+          "bytes": "401c5800",
+          "aligned": true
+        },
+        {
+          "rva": "0x2413b74",
+          "range": "readonly",
+          "bytes": "401c5800",
+          "aligned": true
+        },
+        {
+          "rva": "0x38007d0",
+          "range": "unwind",
+          "bytes": "401c5800",
+          "aligned": true
+        }
+      ]
+    },
+    "0x581e10": {
+      "branches": [
+        {
+          "rva": "0xfdbf80",
+          "bytes": "e88b5e5aff",
+          "sha256": "6830fbcec5703d724efe712be442adb3904549f98402fab474b7808e76484ab6",
+          "asm": "call 0x581e10",
+          "fragment": [
+            "0xfdbee5",
+            "0xfdc020",
+            "0x24cde04"
+          ],
+          "root": [
+            "0xfdbea0",
+            "0xfdbee5",
+            "0x24cddf4"
+          ]
+        }
+      ],
+      "rip_references": [],
+      "absolute_pointers": [],
+      "rva_literals": [
+        {
+          "rva": "0x2413ba0",
+          "range": "readonly",
+          "bytes": "101e5800",
+          "aligned": true
+        },
+        {
+          "rva": "0x2413bb0",
+          "range": "readonly",
+          "bytes": "101e5800",
+          "aligned": true
+        },
+        {
+          "rva": "0x38007f4",
+          "range": "unwind",
+          "bytes": "101e5800",
+          "aligned": true
+        }
+      ]
+    }
+  },
+  "limits": [
+    "No heap or writable-data capture.",
+    "RIP reference scan recognizes REX/non-REX MOV/LEA with disp32; it does not solve arbitrary address arithmetic.",
+    "Exception-table boundary validation omits leaf or uncovered code.",
+    "Pointer/RVA literal matches alone are data occurrences, not execution edges.",
+    "No gameplay, ownership, or lifecycle inference."
+  ]
+}

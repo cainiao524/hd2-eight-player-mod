@@ -1,0 +1,57 @@
+0x581a80 mov qword ptr [rsp + 0x18], rbp
+0x581a85 push rsi
+0x581a86 sub rsp, 0x40
+0x581a8a mov rax, qword ptr [rdx]
+0x581a8d mov rsi, rdx
+0x581a90 mov r8, qword ptr [rip + 0x2eea501]
+0x581a97 mov r9d, eax
+0x581a9a and r9d, 0xfff
+0x581aa1 mov rbp, rcx
+0x581aa4 xor r10d, r10d
+0x581aa7 mov r11, qword ptr [r8 + 0xf12ea0]
+0x581aae nop 
+0x581ab0 mov r8d, r9d
+0x581ab3 shl r8, 5
+0x581ab7 add r8, r11
+0x581aba mov rcx, qword ptr [r8]
+0x581abd test rcx, rcx
+0x581ac0 je 0x581aec
+0x581ac2 cmp rcx, rax
+0x581ac5 je 0x581aef
+0x581ac7 mov ecx, r9d
+0x581aca lea edx, [r9 + 1]
+0x581ace xor r9d, r9d
+0x581ad1 xor r8d, r8d
+0x581ad4 inc r10d
+0x581ad7 cmp ecx, 0xfff
+0x581add cmovne r9d, edx
+0x581ae1 cmp r10d, 0x1000
+0x581ae8 jb 0x581ab0
+0x581aea jmp 0x581aef
+0x581aec xor r8d, r8d
+0x581aef movups xmm0, xmmword ptr [r8]
+0x581af3 mov eax, dword ptr [r8 + 0x10]
+0x581af7 movups xmmword ptr [rsp + 0x20], xmm0
+0x581afc test eax, eax
+0x581afe je 0x581b49
+0x581b00 mov qword ptr [rsp + 0x50], rbx
+0x581b05 mov rbx, qword ptr [rsp + 0x28]
+0x581b0a mov qword ptr [rsp + 0x58], rdi
+0x581b0f mov edi, eax
+0x581b11 nop dword ptr [rax]
+0x581b15 nop word ptr [rax + rax]
+0x581b20 movzx eax, word ptr [rbx]
+0x581b23 mov rdx, qword ptr [rbp + rax*8 + 0xf0df70]
+0x581b2b test rdx, rdx
+0x581b2e je 0x581b35
+0x581b30 mov rcx, rsi
+0x581b33 call rdx
+0x581b35 add rbx, 2
+0x581b39 sub rdi, 1
+0x581b3d jne 0x581b20
+0x581b3f mov rdi, qword ptr [rsp + 0x58]
+0x581b44 mov rbx, qword ptr [rsp + 0x50]
+0x581b49 mov rbp, qword ptr [rsp + 0x60]
+0x581b4e add rsp, 0x40
+0x581b52 pop rsi
+0x581b53 ret 

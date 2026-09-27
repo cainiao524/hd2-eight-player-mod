@@ -1,0 +1,4277 @@
+{
+  "source_sha256": {
+    "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+  },
+  "capture_identity_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "scope": "Offline fixed code/readonly/unwind capture only. No process query/read or execution.",
+  "groups": [
+    {
+      "name": "state_game_parent_identity",
+      "base_provenance": "AC5D40 saves entry RCX as parent P, associates StateGame / On Enter literals, registers (P, B5) with registry3326E68+24F8. B61E60 dispatches that exact table/tag to AD4520, which saves entry RCX as R13 and passes P+50 to FFD8C0.",
+      "blocks": [
+        {
+          "start": "0xac5d68",
+          "end_exclusive": "0xac5daf",
+          "sha256": "e9564d8cd45da3022e771bb3dc99cfd216c45fdfadc2c43d0f368fd1c6e239ba",
+          "instructions": [
+            {
+              "rva": "0xac5d68",
+              "bytes": "4c8bfa",
+              "sha256": "a02e0fbbce5bea45b2d7e6ea47e4b2d0d6f2d5c75ded2b4bdee897867ad3b79a",
+              "asm": "mov r15, rdx",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac5d6b",
+              "bytes": "4c8be1",
+              "sha256": "e6697111fb1ea053ba1f6044e232fd1fd9eb663ad0023dcc049c5ab8d34084d2",
+              "asm": "mov r12, rcx",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac5d6e",
+              "bytes": "488d155bec7801",
+              "sha256": "a500a6e2684baf19dbbe835f0e66d5c2f537f377f09775e31ba5ed10eec3d38c",
+              "asm": "lea rdx, [rip + 0x178ec5b]",
+              "root": "0xac5d40",
+              "rip_memory_targets": [
+                "0x22549d0"
+              ]
+            },
+            {
+              "rva": "0xac5d75",
+              "bytes": "498bd8",
+              "sha256": "3f89491210b5be5cf6b59c57c822e8d90a308212ed0bd345dc687687e1826976",
+              "asm": "mov rbx, r8",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac5d78",
+              "bytes": "488d0d41ec7801",
+              "sha256": "a44ad9f08e134463d87b050d4f0cf7f3481fa48f7e03a5e611dedb47bfb9df32",
+              "asm": "lea rcx, [rip + 0x178ec41]",
+              "root": "0xac5d40",
+              "rip_memory_targets": [
+                "0x22549c0"
+              ]
+            },
+            {
+              "rva": "0xac5d7f",
+              "bytes": "e87c25c700",
+              "sha256": "d81d6e4e1b4154b3a96e769c838453aee1945c82ab190e52231b8df8246e9246",
+              "asm": "call 0x1738300",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac5d84",
+              "bytes": "4d897c2440",
+              "sha256": "737ac65c2ed64f0e03761c7965e611840f06217a1958f823ff34be70959aaa04",
+              "asm": "mov qword ptr [r12 + 0x40], r15",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac5d89",
+              "bytes": "4885db",
+              "sha256": "2cf4a4a2a0eead8a720a70b7cde1047cbe8bd81262905504c08d4484e120b121",
+              "asm": "test rbx, rbx",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac5d8c",
+              "bytes": "7408",
+              "sha256": "ce7b207f44bdfcb4050755ac2969bf23f44a92ef9c1139df06caf97b9b3aedd1",
+              "asm": "je 0xac5d96",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac5d8e",
+              "bytes": "0fb603",
+              "sha256": "781426bc74fa2fc2959d7023009367d124a0f7df2649ba6b037683c3632e989c",
+              "asm": "movzx eax, byte ptr [rbx]",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac5d91",
+              "bytes": "418844241e",
+              "sha256": "add6af7c49c3652099ee475d6891f9d580d0c4fa6e280312a28c4b8d65d1732f",
+              "asm": "mov byte ptr [r12 + 0x1e], al",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac5d96",
+              "bytes": "488b0dcb108602",
+              "sha256": "f13a81f75232526645ce62f78dd35c2625225faf95c236854c3c4b9773d4828f",
+              "asm": "mov rcx, qword ptr [rip + 0x28610cb]",
+              "root": "0xac5d40",
+              "rip_memory_targets": [
+                "0x3326e68"
+              ]
+            },
+            {
+              "rva": "0xac5d9d",
+              "bytes": "4c8965e0",
+              "sha256": "d9d0e8a935187ef7a1dfb1d8ca3535e0fb8d5c72b1399b3bb3b44fe36236419e",
+              "asm": "mov qword ptr [rbp - 0x20], r12",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac5da1",
+              "bytes": "c745e8b5000000",
+              "sha256": "aea2cc15ccafd09539f9fc2497945ae07204f019bc7fc8a64e5ac05985cb8717",
+              "asm": "mov dword ptr [rbp - 0x18], 0xb5",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac5da8",
+              "bytes": "0f1045e0",
+              "sha256": "24d22405137de2a1425152df43b5811b4d58c1423b1d86bd1fc2cc843f6ea8a4",
+              "asm": "movups xmm0, xmmword ptr [rbp - 0x20]",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac5dac",
+              "bytes": "8b4144",
+              "sha256": "44b87dd9fb261925c7230cd6d119a10125729d1d234e0831dfe38f4a8ca1b840",
+              "asm": "mov eax, dword ptr [rcx + 0x44]",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            }
+          ]
+        },
+        {
+          "start": "0xac5e42",
+          "end_exclusive": "0xac5e65",
+          "sha256": "4b10668fcb460f03fa8371a59f0b9f9c51097c90fcd7f717e008ed802526387d",
+          "instructions": [
+            {
+              "rva": "0xac5e42",
+              "bytes": "8b81f0240000",
+              "sha256": "f665b9c2d52fc46343abd1acb4cb12515712a85b139dddc2550cbefbdcd59afb",
+              "asm": "mov eax, dword ptr [rcx + 0x24f0]",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac5e48",
+              "bytes": "ff81d8240000",
+              "sha256": "48cb3dd512ef76264ed8e6bbffaafe1d05bd03ef1751981d2bcd6b257eccdf44",
+              "asm": "inc dword ptr [rcx + 0x24d8]",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac5e4e",
+              "bytes": "4803c0",
+              "sha256": "ac91655ff88f0eb712b5a8c539064d5864202899f12f88927d4151a25a41e1bc",
+              "asm": "add rax, rax",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac5e51",
+              "bytes": "0f1184c1f8240000",
+              "sha256": "1f9011bc314b5a042c8591bbf56445210882fefefce8707c0d7b5e725cef8c3a",
+              "asm": "movups xmmword ptr [rcx + rax*8 + 0x24f8], xmm0",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac5e59",
+              "bytes": "8b8118250000",
+              "sha256": "30239db7dfc68ebf308a66acd1ba2f4e20043c2d84b7fe00b1bca72bbd92d33f",
+              "asm": "mov eax, dword ptr [rcx + 0x2518]",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac5e5f",
+              "bytes": "ff81f0240000",
+              "sha256": "8aaa76c4f934f1e1d63a910d4e0853fd30839e6031674663c33542263371bb70",
+              "asm": "inc dword ptr [rcx + 0x24f0]",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            }
+          ]
+        },
+        {
+          "start": "0xb61e6a",
+          "end_exclusive": "0xb61eb5",
+          "sha256": "b2f9e669887256b0868796a35fefde8826eb26d076edf034ce8a0f7ab3106b0e",
+          "instructions": [
+            {
+              "rva": "0xb61e6a",
+              "bytes": "488b3df74f7c02",
+              "sha256": "6f72768c4f157c0e0aac1c604848cd844e2cbc1a499c42ba78ee73392d7fba6a",
+              "asm": "mov rdi, qword ptr [rip + 0x27c4ff7]",
+              "root": "0xb61e60",
+              "rip_memory_targets": [
+                "0x3326e68"
+              ]
+            },
+            {
+              "rva": "0xb61e71",
+              "bytes": "33db",
+              "sha256": "45f1dcfd70b34f4cf0bb2c8541d74e6ec286851628ace2c254fae48a382a590d",
+              "asm": "xor ebx, ebx",
+              "root": "0xb61e60",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xb61e73",
+              "bytes": "399ff0240000",
+              "sha256": "38b15c241a61bdf3f36eb6d8e08ed1944a6e72f6a584eb0f10e385d6cc71764e",
+              "asm": "cmp dword ptr [rdi + 0x24f0], ebx",
+              "root": "0xb61e60",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xb61e79",
+              "bytes": "7644",
+              "sha256": "0286b2c6e63fb56d8ab638891861fced71407bb99ce8e803bf9616569985690e",
+              "asm": "jbe 0xb61ebf",
+              "root": "0xb61e60",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xb61e7b",
+              "bytes": "0f1f440000",
+              "sha256": "2ae7df4edc1b5f7269dd806e060711cdb6d1bd1aa0b17edbb06415945070f3a2",
+              "asm": "nop dword ptr [rax + rax]",
+              "root": "0xb61e60",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xb61e80",
+              "bytes": "8bcb",
+              "sha256": "4b114be14a1901cce6f7a0f927756e414400942123cd365bfe5043a4b118045f",
+              "asm": "mov ecx, ebx",
+              "root": "0xb61e60",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xb61e82",
+              "bytes": "4803c9",
+              "sha256": "94bf633da63e9b9ca667b7613711e4b03490a1fbd89fdc4c90b6aabb24175cb2",
+              "asm": "add rcx, rcx",
+              "root": "0xb61e60",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xb61e85",
+              "bytes": "8b94cf00250000",
+              "sha256": "984cf7b28150bf8d760e2219b626b25129785d1a7db6dd005dfbf59c5aa11305",
+              "asm": "mov edx, dword ptr [rdi + rcx*8 + 0x2500]",
+              "root": "0xb61e60",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xb61e8c",
+              "bytes": "81eab5000000",
+              "sha256": "055d19d6c9902fb5d5b63966c345b6739320122b7ff766804a5f64fab1640155",
+              "asm": "sub edx, 0xb5",
+              "root": "0xb61e60",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xb61e92",
+              "bytes": "7414",
+              "sha256": "58fa647efa065bcc12c78b62b4f922263aca998530ca6c5a62dde0c79b327afd",
+              "asm": "je 0xb61ea8",
+              "root": "0xb61e60",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xb61e94",
+              "bytes": "83fa01",
+              "sha256": "f72822451c7d0ca025ecdbe596359d219bdddf3424b88d0d5798f699408e9132",
+              "asm": "cmp edx, 1",
+              "root": "0xb61e60",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xb61e97",
+              "bytes": "751c",
+              "sha256": "5f019e1ac2f2317815db4cfaf94dd4e218a47189b9e1f2a2b75bcf2bb57fea4e",
+              "asm": "jne 0xb61eb5",
+              "root": "0xb61e60",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xb61e99",
+              "bytes": "488b8ccff8240000",
+              "sha256": "94700845b2fd7f2b023f4ee8be9e00129fd340cb74bbb366d01d480029c464f6",
+              "asm": "mov rcx, qword ptr [rdi + rcx*8 + 0x24f8]",
+              "root": "0xb61e60",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xb61ea1",
+              "bytes": "e8aa9cf7ff",
+              "sha256": "060ea93d5fc5758be7c0681a0b2a58b626d2cb900e00b8e0dfa5de40853acd69",
+              "asm": "call 0xadbb50",
+              "root": "0xb61e60",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xb61ea6",
+              "bytes": "eb0d",
+              "sha256": "06c8c2f66b59d22018450ce88a0d5e955fcc74c7e8b2a13467889a08937f39c6",
+              "asm": "jmp 0xb61eb5",
+              "root": "0xb61e60",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xb61ea8",
+              "bytes": "488b8ccff8240000",
+              "sha256": "94700845b2fd7f2b023f4ee8be9e00129fd340cb74bbb366d01d480029c464f6",
+              "asm": "mov rcx, qword ptr [rdi + rcx*8 + 0x24f8]",
+              "root": "0xb61e60",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xb61eb0",
+              "bytes": "e86b26f7ff",
+              "sha256": "614afa9e40ed4a5469b889c40125443532329c5b85102c4200d13185be75d1e8",
+              "asm": "call 0xad4520",
+              "root": "0xb61e60",
+              "rip_memory_targets": []
+            }
+          ]
+        },
+        {
+          "start": "0xad455e",
+          "end_exclusive": "0xad4579",
+          "sha256": "11d4e00912f12dc6c64782644078be928268c8316e06b42f9fd57d1989ffade5",
+          "instructions": [
+            {
+              "rva": "0xad455e",
+              "bytes": "4c8be9",
+              "sha256": "433298f9898ffc56adf96c7301d19ad579a3104f6f288d67327842cc4b2dcd27",
+              "asm": "mov r13, rcx",
+              "root": "0xad4520",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xad4561",
+              "bytes": "48894c2468",
+              "sha256": "358a2f2eab5235456e11513ab005d7695fe36fe6ceed6a7b377f6f0e74ce295a",
+              "asm": "mov qword ptr [rsp + 0x68], rcx",
+              "root": "0xad4520",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xad4566",
+              "bytes": "488d0d53047801",
+              "sha256": "79d730f940c24a0d2c0aef0f592ba2d6447bc6785fffa0afb99043af5c72ab9f",
+              "asm": "lea rcx, [rip + 0x1780453]",
+              "root": "0xad4520",
+              "rip_memory_targets": [
+                "0x22549c0"
+              ]
+            },
+            {
+              "rva": "0xad456d",
+              "bytes": "488d154c097801",
+              "sha256": "c9685c7ebe967977fbf4bea0954c8421eb76e8beb28dff57841d93f275bb2645",
+              "asm": "lea rdx, [rip + 0x178094c]",
+              "root": "0xad4520",
+              "rip_memory_targets": [
+                "0x2254ec0"
+              ]
+            },
+            {
+              "rva": "0xad4574",
+              "bytes": "e8873dc600",
+              "sha256": "906d5ebd3b6859f68db3e247b01be6b565159ccfd10840cd9a8daab5706e0c3c",
+              "asm": "call 0x1738300",
+              "root": "0xad4520",
+              "rip_memory_targets": []
+            }
+          ]
+        },
+        {
+          "start": "0xad4c16",
+          "end_exclusive": "0xad4c2a",
+          "sha256": "6bb2b5165a25d56ec4f8b1ef388e2c0cffbf5ddf3c07febea6e8b94437dd9f4d",
+          "instructions": [
+            {
+              "rva": "0xad4c16",
+              "bytes": "498b5540",
+              "sha256": "c64a024f642c4084bc6c5cbaf65e6835b6bcf934c2c121afe029f16bd78ca135",
+              "asm": "mov rdx, qword ptr [r13 + 0x40]",
+              "root": "0xad4520",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xad4c1a",
+              "bytes": "498d4d50",
+              "sha256": "2ef2a508e142265f2c6ce43222de6ac2c69c4197821184318b89ca5694f3afab",
+              "asm": "lea rcx, [r13 + 0x50]",
+              "root": "0xad4520",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xad4c1e",
+              "bytes": "488b92e8100000",
+              "sha256": "2fffe4c8ff9cf0b76e805385d7004fddcf4f75add229c96a1bae9c3e6045f397",
+              "asm": "mov rdx, qword ptr [rdx + 0x10e8]",
+              "root": "0xad4520",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xad4c25",
+              "bytes": "e8968c5200",
+              "sha256": "7dfbc50ffe8a107018837d8e1c60d662188fb19bc4b6722a1049078b6e865f2d",
+              "asm": "call 0xffd8c0",
+              "root": "0xad4520",
+              "rip_memory_targets": []
+            }
+          ]
+        },
+        {
+          "start": "0xab3123",
+          "end_exclusive": "0xab3147",
+          "sha256": "1447bd3c0ef25f918bfaad8bdcafbde11c34fff2e53357bbd6b905cb1932b591",
+          "instructions": [
+            {
+              "rva": "0xab3123",
+              "bytes": "488d8f08fa0100",
+              "sha256": "32b3eb142c93ca8ec186f648104a9a561f8ff4e9d0f040be883422306fb299d4",
+              "asm": "lea rcx, [rdi + 0x1fa08]",
+              "root": "0xab2fa0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xab312a",
+              "bytes": "41b810c80800",
+              "sha256": "557b79ccd930a879ecd447a4c094e076e36dd56d124e7cc0172c864d06ac45a3",
+              "asm": "mov r8d, 0x8c810",
+              "root": "0xab2fa0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xab3130",
+              "bytes": "e86b795d01",
+              "sha256": "35993e20f30cdc0cc5e82d9475c9c1a4736a41a6817fd3463e0310ad59f9aa79",
+              "asm": "call 0x208aaa0",
+              "root": "0xab2fa0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xab3135",
+              "bytes": "4c8bc6",
+              "sha256": "4a1b59f70929084055d7e3e9d819460ca1f53c63be9a1874d7bad6cfd3001fa3",
+              "asm": "mov r8, rsi",
+              "root": "0xab2fa0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xab3138",
+              "bytes": "488d8f08fa0100",
+              "sha256": "32b3eb142c93ca8ec186f648104a9a561f8ff4e9d0f040be883422306fb299d4",
+              "asm": "lea rcx, [rdi + 0x1fa08]",
+              "root": "0xab2fa0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xab313f",
+              "bytes": "488bd7",
+              "sha256": "54166d544d08cdfc24b13ecc48d0db0528aea4df618aa10ec6001b666e518781",
+              "asm": "mov rdx, rdi",
+              "root": "0xab2fa0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xab3142",
+              "bytes": "e8f92b0100",
+              "sha256": "86d657405183f36999d7d4f34c476503bba79a5e250c56d5c7fc7160925db22e",
+              "asm": "call 0xac5d40",
+              "root": "0xab2fa0",
+              "rip_memory_targets": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "tag_da_embedded_four_records_and_parallel_array",
+      "base_provenance": "FFD8C0 saves entry S=P+50 and registers tag DA. Its initialization loop uses S+80 with stride90 and counter<4; a parallel dword pointer begins at S+70 and advances4 once per iteration.",
+      "blocks": [
+        {
+          "start": "0xffd936",
+          "end_exclusive": "0xffd97b",
+          "sha256": "8fa5d39b7bbc49d2a7c011d9cf5db6d2ffa661c537fcfe68068c721035885943",
+          "instructions": [
+            {
+              "rva": "0xffd936",
+              "bytes": "4c8b052b953202",
+              "sha256": "9c00d9260660ca291e8df49e5ade0328e320100b1614458c1080b72b769d886d",
+              "asm": "mov r8, qword ptr [rip + 0x232952b]",
+              "root": "0xffd8c0",
+              "rip_memory_targets": [
+                "0x3326e68"
+              ]
+            },
+            {
+              "rva": "0xffd93d",
+              "bytes": "4533f6",
+              "sha256": "0385882cef4c3440ab67752cc28e1630e8fd267c66218b142a2ba5468d1da828",
+              "asm": "xor r14d, r14d",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffd940",
+              "bytes": "48894c2438",
+              "sha256": "f7fbe62d893a570bf1e297a684da8e54662f7165ae5a5e69271f6d08192bb4c5",
+              "asm": "mov qword ptr [rsp + 0x38], rcx",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffd945",
+              "bytes": "4c8be1",
+              "sha256": "e6697111fb1ea053ba1f6044e232fd1fd9eb663ad0023dcc049c5ab8d34084d2",
+              "asm": "mov r12, rcx",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffd948",
+              "bytes": "c7442440da000000",
+              "sha256": "024b97158ae3a9c60afb66b2106b7d4a7e7755933bd3159067a42eca38187dc6",
+              "asm": "mov dword ptr [rsp + 0x40], 0xda",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffd950",
+              "bytes": "0f10442438",
+              "sha256": "5b1ea55c46cf550405405a0d0d83b7c152a6f1b145ef83f6f7a11229929e124d",
+              "asm": "movups xmm0, xmmword ptr [rsp + 0x38]",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffd955",
+              "bytes": "418b8050610000",
+              "sha256": "e24bde77686dd8f67201c1e2b7ddfb5a74f1c5351203b01794c9c3f23e1b7ecb",
+              "asm": "mov eax, dword ptr [r8 + 0x6150]",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffd95c",
+              "bytes": "4803c0",
+              "sha256": "ac91655ff88f0eb712b5a8c539064d5864202899f12f88927d4151a25a41e1bc",
+              "asm": "add rax, rax",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffd95f",
+              "bytes": "48894c2458",
+              "sha256": "b4bbfb5bdcf3206bf5c2dc70e7a9577ce2e4bfcb6639fa1085e4e60224a6f7da",
+              "asm": "mov qword ptr [rsp + 0x58], rcx",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffd964",
+              "bytes": "410f1184c058610000",
+              "sha256": "7a820a336f7e6bfdbaa1af1cb77783cef0b71607058e8ec5985b8475f3a2b95d",
+              "asm": "movups xmmword ptr [r8 + rax*8 + 0x6158], xmm0",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffd96d",
+              "bytes": "418b8068610000",
+              "sha256": "54592362e1bb010e4521f86da2fe96d425c92d9a4f88fc9eb937e087de87bb41",
+              "asm": "mov eax, dword ptr [r8 + 0x6168]",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffd974",
+              "bytes": "41ff8050610000",
+              "sha256": "39583d8a4d611888d1858905e226caaeb431a52131dfbc97c4248de74e0da1d5",
+              "asm": "inc dword ptr [r8 + 0x6150]",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            }
+          ]
+        },
+        {
+          "start": "0xffd9e7",
+          "end_exclusive": "0xffda50",
+          "sha256": "babdfc42772f0d9f334e925a500cab324b36210b020b5fa030763ff70fd3d249",
+          "instructions": [
+            {
+              "rva": "0xffd9e7",
+              "bytes": "48895108",
+              "sha256": "7e40478a3b08a154506174a1cf80dca03e31086b6fb6941598ac4827e3eafc14",
+              "asm": "mov qword ptr [rcx + 8], rdx",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffd9eb",
+              "bytes": "44897104",
+              "sha256": "169f820928e2e0fcae4a115f9ba3020c95f9c24667f8fc257ce509199f7ced10",
+              "asm": "mov dword ptr [rcx + 4], r14d",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffd9ef",
+              "bytes": "44397008",
+              "sha256": "6d81eb8870b0f8e193b12c6ef7886574a06a9950c0834ff1225a915d1e6c34f7",
+              "asm": "cmp dword ptr [rax + 8], r14d",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffd9f3",
+              "bytes": "7605",
+              "sha256": "b2e5b4d6c3c7cd213aa8742ebffbbc64c87547c1ff3da6e00b1ac4c3c1deca1d",
+              "asm": "jbe 0xffd9fa",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffd9f5",
+              "bytes": "8b5040",
+              "sha256": "7fe41d78bae69f253fef082a6b1c5bd87619ec3fc843829c04adfdb80704e5de",
+              "asm": "mov edx, dword ptr [rax + 0x40]",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffd9f8",
+              "bytes": "eb03",
+              "sha256": "c3ce784032215a5bb8028beba705a6f0b97cfeb0ae5541802743e954da13169e",
+              "asm": "jmp 0xffd9fd",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffd9fa",
+              "bytes": "418bd6",
+              "sha256": "39214d39ba2860af54da1f381da5e972206e36909b2b29bca1a91bff340397ab",
+              "asm": "mov edx, r14d",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffd9fd",
+              "bytes": "488b053c893202",
+              "sha256": "9dcac6651854a3ea9874ea5c9bd23180bcd77e19e3a8ea5cc8efeb49d744056c",
+              "asm": "mov rax, qword ptr [rip + 0x232893c]",
+              "root": "0xffd8c0",
+              "rip_memory_targets": [
+                "0x3326340"
+              ]
+            },
+            {
+              "rva": "0xffda04",
+              "bytes": "4d8dbc2480000000",
+              "sha256": "3e2e1cd598b26905851dfcd837d44ed4cda18afb34a6b50559a64fb8a5d6defc",
+              "asm": "lea r15, [r12 + 0x80]",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffda0c",
+              "bytes": "f3440f103d5b933c01",
+              "sha256": "73d41600e8397c2ac311947e637772cf168a7ea99746de299fde8388120af3bd",
+              "asm": "movss xmm15, dword ptr [rip + 0x13c935b]",
+              "root": "0xffd8c0",
+              "rip_memory_targets": [
+                "0x23c6d70"
+              ]
+            },
+            {
+              "rva": "0xffda15",
+              "bytes": "83fa04",
+              "sha256": "55a4e366acc4f85057ac7f433de4b678ffbb67e8d62d4f56d4826e1bd9443d48",
+              "asm": "cmp edx, 4",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffda18",
+              "bytes": "48bfe12079e3f967650c",
+              "sha256": "2509b502c0fb9f3574f7d2fca0f9ff43ddadfe40cb26fe16baa62604d2cc3189",
+              "asm": "movabs rdi, 0xc6567f9e37920e1",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffda22",
+              "bytes": "48bb9b7b13fb7a924db0",
+              "sha256": "1b9125aa13badae42b3e6b4dc3a2568c982665e122c3ed0d6ad8e4fa5c4fc5f0",
+              "asm": "movabs rbx, 0xb04d927afb137b9b",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffda2c",
+              "bytes": "488b88f8100000",
+              "sha256": "aaed8df043576593bc8b15b230d43f38ba65ccee43fb55f576010c168ee9ba6b",
+              "asm": "mov rcx, qword ptr [rax + 0x10f8]",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffda33",
+              "bytes": "0f95c0",
+              "sha256": "b4b5d99b9e26a7b2385387580c69d872aa380120dba2252717a826435b88b024",
+              "asm": "setne al",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffda36",
+              "bytes": "41880424",
+              "sha256": "c750e7398df27eb3ff2a1804f0503eb30708015c0a8f2310ac56d4d9684c5f9d",
+              "asm": "mov byte ptr [r12], al",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffda3a",
+              "bytes": "88442430",
+              "sha256": "ac988f624569bdae094577f30a1ea497435da708cc51bf63ee047fcce2ac6eaf",
+              "asm": "mov byte ptr [rsp + 0x30], al",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffda3e",
+              "bytes": "498d442470",
+              "sha256": "6b1498fc04565a3f44ae08183f60fbb8fb25d725a69151ccaa7dc99e58016880",
+              "asm": "lea rax, [r12 + 0x70]",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffda43",
+              "bytes": "4889442460",
+              "sha256": "d9337b89761b42fa2233f17040a058b79ef189496a9f4d03f4669f0f5b77dc29",
+              "asm": "mov qword ptr [rsp + 0x60], rax",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffda48",
+              "bytes": "458be6",
+              "sha256": "a2fc1a795da2842284d368a7ee00f96b71feb270b2187a3cbcb4b55fd7f42698",
+              "asm": "mov r12d, r14d",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffda4b",
+              "bytes": "48894de8",
+              "sha256": "5f80f01d271fdb3167629349ef8fba61891a5a63f8a486197c70ba9e830a3e82",
+              "asm": "mov qword ptr [rbp - 0x18], rcx",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffda4f",
+              "bytes": "90",
+              "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+              "asm": "nop ",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            }
+          ]
+        },
+        {
+          "start": "0xffe359",
+          "end_exclusive": "0xffe3d6",
+          "sha256": "0dab913290d6fbac8c8ecf41c14b47907fa3fec94395b97434e805d7396c0c4a",
+          "instructions": [
+            {
+              "rva": "0xffe359",
+              "bytes": "488b5c2460",
+              "sha256": "7c68f80c64ee559a627d7223da637ced52c973a03a5c1737b9e6c4ed798c9b66",
+              "asm": "mov rbx, qword ptr [rsp + 0x60]",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe35e",
+              "bytes": "41ffc4",
+              "sha256": "3558632ebdaceb5909980943bea29ae8a9d6f8ca8066b47bb5b8541ef64424d7",
+              "asm": "inc r12d",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe361",
+              "bytes": "f3440f103d068a3c01",
+              "sha256": "e89c4f50384f6cf26a07f5bd4c47bfc16cf9d809a734ab7963333f4051616555",
+              "asm": "movss xmm15, dword ptr [rip + 0x13c8a06]",
+              "root": "0xffd8c0",
+              "rip_memory_targets": [
+                "0x23c6d70"
+              ]
+            },
+            {
+              "rva": "0xffe36a",
+              "bytes": "6641c747080000",
+              "sha256": "b5b1e744b36de8130ca7ef77a1a01f761f10c5320e4f989a59d27175ea026a25",
+              "asm": "mov word ptr [r15 + 8], 0",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe371",
+              "bytes": "49c7470c00000000",
+              "sha256": "8f9fbf422a2278c6b280e648f8f66259998ca4abfc4b034e95713a4f08217710",
+              "asm": "mov qword ptr [r15 + 0xc], 0",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe379",
+              "bytes": "448933",
+              "sha256": "64f21cf1355ad72747cb7f015fcd999ffdd1e7f8b4d80934feaa7a86da602461",
+              "asm": "mov dword ptr [rbx], r14d",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe37c",
+              "bytes": "4883c304",
+              "sha256": "9a62b20e20d3086c6a99c499eb62e4de8f8335786074f3ca9aad7dd22f380c1a",
+              "asm": "add rbx, 4",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe380",
+              "bytes": "418b4720",
+              "sha256": "2bbe11eb55f3041c7e55a425fd4f9cc98b71c5974784eb95e6be4bd36ea8bf1b",
+              "asm": "mov eax, dword ptr [r15 + 0x20]",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe384",
+              "bytes": "41894764",
+              "sha256": "99b73b40fdddab1cadf55938d4e174ad79291a5d356160ece603798e20df7c08",
+              "asm": "mov dword ptr [r15 + 0x64], eax",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe388",
+              "bytes": "418b4724",
+              "sha256": "a8635ad60eb8d81ce73a6c998d2305663f660b9184f7d54874cf6548a936d63b",
+              "asm": "mov eax, dword ptr [r15 + 0x24]",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe38c",
+              "bytes": "41894778",
+              "sha256": "a51bd2b15692ac8d162632a998abe1a9a6130b2d4bf5562a77994e42e16d3df5",
+              "asm": "mov dword ptr [r15 + 0x78], eax",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe390",
+              "bytes": "41c787840000000000803f",
+              "sha256": "d4f030c14b7c3856a909f08c1d8257ad4c7eadda0998dccebf0b3786d30a5d29",
+              "asm": "mov dword ptr [r15 + 0x84], 0x3f800000",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe39b",
+              "bytes": "41c747700000803f",
+              "sha256": "a5033e7bcd89fd3029ba4e9881f653b6dafbc7f640a147e8152e520dabd22a12",
+              "asm": "mov dword ptr [r15 + 0x70], 0x3f800000",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe3a3",
+              "bytes": "41c7878800000000008041",
+              "sha256": "d2a2202582bd9d7e334aba37bbca4e9a2a13e12b4b2ca9f48178eb180f1bb0ff",
+              "asm": "mov dword ptr [r15 + 0x88], 0x41800000",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe3ae",
+              "bytes": "41c7477400008041",
+              "sha256": "590ac08595954f77679a4e2b81bc7105b1ef3409aedac488272fd64c504ac150",
+              "asm": "mov dword ptr [r15 + 0x74], 0x41800000",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe3b6",
+              "bytes": "4981c790000000",
+              "sha256": "27c5074ecef03fb61c589e793a5f4d45fcf5bd7ce404efe6da8539d94cd2500c",
+              "asm": "add r15, 0x90",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe3bd",
+              "bytes": "48895c2460",
+              "sha256": "9d97d2fce0991788b616ee57849f05636be374f9a48de233c13fa1adbeb04aa5",
+              "asm": "mov qword ptr [rsp + 0x60], rbx",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe3c2",
+              "bytes": "48bb9b7b13fb7a924db0",
+              "sha256": "1b9125aa13badae42b3e6b4dc3a2568c982665e122c3ed0d6ad8e4fa5c4fc5f0",
+              "asm": "movabs rbx, 0xb04d927afb137b9b",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe3cc",
+              "bytes": "4183fc04",
+              "sha256": "25099596201a6c3e1020503c5155cb443c63b351c8358ddcd2a3e3670a69a11e",
+              "asm": "cmp r12d, 4",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe3d0",
+              "bytes": "0f827af6ffff",
+              "sha256": "6941b5b00eca0227cc166e7cd843d696e89364015bb68d472124227994ce7eb0",
+              "asm": "jb 0xffda50",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "tag_da_unchecked_network_index_writes",
+      "base_provenance": "R9=global3326468; ordinal ranges over roster+84. Each record at ordinal*20+3B4 supplies network index n. Four stores target S+n*90+88/8C/90/89 with no index<4 or sentinel guard in this block.",
+      "blocks": [
+        {
+          "start": "0xffe3d6",
+          "end_exclusive": "0xffe443",
+          "sha256": "0c733d61ac4f395d3f124991994f967ebf9f1cd4021af7b27ff7f2a402b0bea1",
+          "instructions": [
+            {
+              "rva": "0xffe3d6",
+              "bytes": "4c8b0d8b803202",
+              "sha256": "89b71f0611c8bfc97c85e40cac948bb4dddb5ce280dbfae3b6866a7f38d095da",
+              "asm": "mov r9, qword ptr [rip + 0x232808b]",
+              "root": "0xffd8c0",
+              "rip_memory_targets": [
+                "0x3326468"
+              ]
+            },
+            {
+              "rva": "0xffe3dd",
+              "bytes": "458bc6",
+              "sha256": "1a7ca55c5b0f10f8f3309dc887f7c8530c9bb8ba362c4b7e83929d6eb5beb25e",
+              "asm": "mov r8d, r14d",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe3e0",
+              "bytes": "4c8b642458",
+              "sha256": "01c397fb38c14033ccf74e9addbc9459db17f2df9480847b2de80b8314b8d791",
+              "asm": "mov r12, qword ptr [rsp + 0x58]",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe3e5",
+              "bytes": "4183b98400000000",
+              "sha256": "4446c3a5be0deb67558ab4ee1589743c5736184c49e952230592fd121583ad46",
+              "asm": "cmp dword ptr [r9 + 0x84], 0",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe3ed",
+              "bytes": "7654",
+              "sha256": "48021765412407a063f82ed95cf13c094100fc4280b46b9913653d4a9adb917a",
+              "asm": "jbe 0xffe443",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe3ef",
+              "bytes": "440fb6542430",
+              "sha256": "69bd90c3b6cdf09be813cafa50e0a25356c768a537127a748b33f5bc155c643c",
+              "asm": "movzx r10d, byte ptr [rsp + 0x30]",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe3f5",
+              "bytes": "418bc0",
+              "sha256": "3de86a1a104f1483ada612c952b42e14afc02aba9105504097d6f0ea9ac3fc37",
+              "asm": "mov eax, r8d",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe3f8",
+              "bytes": "41ffc0",
+              "sha256": "3809a8d752879aa5e1c6e3001adbf79bf9747c79042d6fae299ac73d1f842fc4",
+              "asm": "inc r8d",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe3fb",
+              "bytes": "48c1e005",
+              "sha256": "d542a7a083a7811bed359570427a3aa47f35397c79b144d4b4b4088a84f2097f",
+              "asm": "shl rax, 5",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe3ff",
+              "bytes": "428b8c08b4030000",
+              "sha256": "9d8509146f6b85c1857163629bc25bf7d9b306a5fd8657958d2866490610d5e2",
+              "asm": "mov ecx, dword ptr [rax + r9 + 0x3b4]",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe407",
+              "bytes": "488d14c9",
+              "sha256": "7aec45cb7129382d829d2e0f905d0c5efb018103771bec9641fc8245efc596d2",
+              "asm": "lea rdx, [rcx + rcx*8]",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe40b",
+              "bytes": "4803d2",
+              "sha256": "30c50bedb2fa94d00b9f55d7c716aeb4e2394aa6e614f885fce9ef2cd015a0ad",
+              "asm": "add rdx, rdx",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe40e",
+              "bytes": "488d04c9",
+              "sha256": "0414786740a385dbc0714b2e63d70b05390d9a9dedae91048bdcdb32a135ac11",
+              "asm": "lea rax, [rcx + rcx*8]",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe412",
+              "bytes": "4803c0",
+              "sha256": "ac91655ff88f0eb712b5a8c539064d5864202899f12f88927d4151a25a41e1bc",
+              "asm": "add rax, rax",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe415",
+              "bytes": "41c684d48800000000",
+              "sha256": "8d639d50d670afe9888814ecba2c59b2448d50ba6a868566b4f08b27318e86da",
+              "asm": "mov byte ptr [r12 + rdx*8 + 0x88], 0",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe41e",
+              "bytes": "41c784c48c0000000000a040",
+              "sha256": "5d029a24dc90b7ea1c31a1070f5dd8144e2363d5774cd76ae2a3aca6787f9573",
+              "asm": "mov dword ptr [r12 + rax*8 + 0x8c], 0x40a00000",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe42a",
+              "bytes": "4589b4d490000000",
+              "sha256": "e5bc4de930551cf996592ddfbdbf02297888d0cfa4787c2bd5ec1af79b1bfd8b",
+              "asm": "mov dword ptr [r12 + rdx*8 + 0x90], r14d",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe432",
+              "bytes": "458894d489000000",
+              "sha256": "449948f0e50b8efbdf233b77645253129800d1094fd9cb6a18b8e6300874d2cb",
+              "asm": "mov byte ptr [r12 + rdx*8 + 0x89], r10b",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe43a",
+              "bytes": "453b8184000000",
+              "sha256": "1f9d9b67d27398f6bcf3a7b8c26ba5685588b6a07ef142939503b485d55c64c1",
+              "asm": "cmp r8d, dword ptr [r9 + 0x84]",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xffe441",
+              "bytes": "72b2",
+              "sha256": "e48ee04be6c2c21e74fbf2f6dad77a54a0db29467eb3be5fd009138867fe355c",
+              "asm": "jb 0xffe3f5",
+              "root": "0xffd8c0",
+              "rip_memory_targets": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "same_parent_used_fields_hit_at_index_four",
+      "base_provenance": "Within AC5D40, R12 is the registered parent P. P+318 receives qword owner+10E8. P+320 receives a 16-byte bitset assembled by BTS and POR. The unchecked DA stores for n=4 hit these precise bytes.",
+      "blocks": [
+        {
+          "start": "0xac67eb",
+          "end_exclusive": "0xac685f",
+          "sha256": "eda8a12ceacc00c1538356342990c0acbb7cab25506166582edcd8a399e1bc9f",
+          "instructions": [
+            {
+              "rva": "0xac67eb",
+              "bytes": "498b87e8100000",
+              "sha256": "acd000343520101122385539aa3aa7ad969b497961047f8452dc7ee38a72dff3",
+              "asm": "mov rax, qword ptr [r15 + 0x10e8]",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac67f2",
+              "bytes": "4989842418030000",
+              "sha256": "523fa43c5b007541e64ca29f45b623cb912138374ffe2ce7faa04d4d469e3d51",
+              "asm": "mov qword ptr [r12 + 0x318], rax",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac67fa",
+              "bytes": "488975e0",
+              "sha256": "375a196f5e47fb37ae6f6896ce09ce8a9ec4ef8ef0c5dfe9220fb6a12b671844",
+              "asm": "mov qword ptr [rbp - 0x20], rsi",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac67fe",
+              "bytes": "488975e8",
+              "sha256": "c9d7fdb7fc1067fa3699a3ecd6e7af4086c8ff6a342195fa1f49a5d05b1ec0b4",
+              "asm": "mov qword ptr [rbp - 0x18], rsi",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac6802",
+              "bytes": "418b10",
+              "sha256": "22022b43fb7e00bc2430a2e61979e75ea77002da5d432e815762c3bf9618cd0c",
+              "asm": "mov edx, dword ptr [r8]",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac6805",
+              "bytes": "4d8d4020",
+              "sha256": "72ee0e467de2a507a258539aa2a028ddd43985e617658cbf1b0d5359f61fab79",
+              "asm": "lea r8, [r8 + 0x20]",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac6809",
+              "bytes": "f30f6f4de0",
+              "sha256": "3a9542bd91fb301c0efe4d21764d2d927ac816dd681ce2a3bdc1f0b98ee70d87",
+              "asm": "movdqu xmm1, xmmword ptr [rbp - 0x20]",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac680e",
+              "bytes": "8bca",
+              "sha256": "1c0c6fc54530d27dc01370b9d697dba3556168a2412bfac3567ae519ca38caa0",
+              "asm": "mov ecx, edx",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac6810",
+              "bytes": "83e23f",
+              "sha256": "df7b3b34ed33df2c833a12f9ce11d33fc985864145e3c04fcc5196b0c009534b",
+              "asm": "and edx, 0x3f",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac6813",
+              "bytes": "48c1e906",
+              "sha256": "9734852386ab747aa14b73494cce021d5bf2fa55ff6df4326ddfe9e11c6c3de3",
+              "asm": "shr rcx, 6",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac6817",
+              "bytes": "0f57c0",
+              "sha256": "c7630204468a3500470f01d0623aed0ca994cc8431918ef6327b3f160b1f0b6c",
+              "asm": "xorps xmm0, xmm0",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac681a",
+              "bytes": "0f1145d0",
+              "sha256": "192066e4fa0a7217b67b1d498a9e50d9c6d1f8205db7a2f198192ac57e36da08",
+              "asm": "movups xmmword ptr [rbp - 0x30], xmm0",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac681e",
+              "bytes": "488b44cdd0",
+              "sha256": "601101c63863159c2fb73398e1edf7e3db91499052390613749f8dbe3e9d49d8",
+              "asm": "mov rax, qword ptr [rbp + rcx*8 - 0x30]",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac6823",
+              "bytes": "480fabd0",
+              "sha256": "d233c2e9afca22e51c472788c8f44feb9ece7c92140a5db171ecb7b7c6664362",
+              "asm": "bts rax, rdx",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac6827",
+              "bytes": "488944cdd0",
+              "sha256": "201f0855407cb0927dadb8054122fdfc5fe491e34f51656ad8c1210740bb9184",
+              "asm": "mov qword ptr [rbp + rcx*8 - 0x30], rax",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac682c",
+              "bytes": "488365d0fe",
+              "sha256": "f9e642d8e54dea68e96a81377370e2373af262694c95193916a109bd9c33cbf1",
+              "asm": "and qword ptr [rbp - 0x30], 0xfffffffffffffffe",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac6831",
+              "bytes": "f30f6f45d0",
+              "sha256": "59fa2e0f0bdcff950689c80db64d4e3a211e831344a1a8704e792e164378fe80",
+              "asm": "movdqu xmm0, xmmword ptr [rbp - 0x30]",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac6836",
+              "bytes": "660febc8",
+              "sha256": "760dc79f3bf2bdf7efd9afbbfb1079bed9eb004b26ba491a963e6c8b77c1d748",
+              "asm": "por xmm1, xmm0",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac683a",
+              "bytes": "66480f7ec8",
+              "sha256": "c3f42c34da21d7753d34c6f18077207febfdb2c4b0aa1d652d0e448001444080",
+              "asm": "movq rax, xmm1",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac683f",
+              "bytes": "4883e0fe",
+              "sha256": "6d0d0f6be9a54d9416627e29552d5b07425cf2daffea57edd8feaf7336efb339",
+              "asm": "and rax, 0xfffffffffffffffe",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac6843",
+              "bytes": "f30f7f4de0",
+              "sha256": "1d3bb380a7bae936d1facb6196e307d3552855007953a00d129f91d8fdeca0e2",
+              "asm": "movdqu xmmword ptr [rbp - 0x20], xmm1",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac6848",
+              "bytes": "488945e0",
+              "sha256": "c36d577a364602f300d1f42b761c40a0af6919d552774ad8915ae99ae44dc97d",
+              "asm": "mov qword ptr [rbp - 0x20], rax",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac684c",
+              "bytes": "4983e901",
+              "sha256": "5761a0c097af352cd9cdfa9d96ef8686855aa93d68ff183d14cca9c8f7648786",
+              "asm": "sub r9, 1",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac6850",
+              "bytes": "75b0",
+              "sha256": "af140989181ded3d2b3328fa00abd50d8e39b4cb869d2278352c668c6be4d167",
+              "asm": "jne 0xac6802",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac6852",
+              "bytes": "0f1045e0",
+              "sha256": "24d22405137de2a1425152df43b5811b4d58c1423b1d86bd1fc2cc843f6ea8a4",
+              "asm": "movups xmm0, xmmword ptr [rbp - 0x20]",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xac6856",
+              "bytes": "410f11842420030000",
+              "sha256": "449f29a7696f99d344df847f1d1b76a87d29ce4fe39d8c77d1eddcc256f34b54",
+              "asm": "movups xmmword ptr [r12 + 0x320], xmm0",
+              "root": "0xac5d40",
+              "rip_memory_targets": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "bounded_normalized_vector_caller",
+      "base_provenance": "ACA400 preserves entry RCX in rsp+70, then passes first roster record network index as R8D to ACF1F0. The index is sourced directly from global3326468+3B4, not a same-offset guess.",
+      "blocks": [
+        {
+          "start": "0xaca422",
+          "end_exclusive": "0xaca430",
+          "sha256": "aa14324b25b1d250fe066f72adea69166136564b7ad2c278f16aa6b1da27812f",
+          "instructions": [
+            {
+              "rva": "0xaca422",
+              "bytes": "48894c2470",
+              "sha256": "6b0087c9e647d5f44852d36af07e7849382ce6040585446a1642b7e5248983f9",
+              "asm": "mov qword ptr [rsp + 0x70], rcx",
+              "root": "0xaca400",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xaca427",
+              "bytes": "8bfa",
+              "sha256": "f96147fafc6eea523232915741d9ba8e1f1664063a613f01beaaab8f19e788e1",
+              "asm": "mov edi, edx",
+              "root": "0xaca400",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xaca429",
+              "bytes": "8bca",
+              "sha256": "1c0c6fc54530d27dc01370b9d697dba3556168a2412bfac3567ae519ca38caa0",
+              "asm": "mov ecx, edx",
+              "root": "0xaca400",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xaca42b",
+              "bytes": "e810f95000",
+              "sha256": "07ec91d0e3b3d1752c44ced160e9c2becd252ea2d930c7123521cb3d4867dab6",
+              "asm": "call 0xfd9d40",
+              "root": "0xaca400",
+              "rip_memory_targets": []
+            }
+          ]
+        },
+        {
+          "start": "0xaca57b",
+          "end_exclusive": "0xaca597",
+          "sha256": "5b475d1ce6c7d96833580e5707f55d96849bde66415e808db9d2059bb39c296d",
+          "instructions": [
+            {
+              "rva": "0xaca57b",
+              "bytes": "488b05e6be8502",
+              "sha256": "3b09cd6b4169614a22efaea7c749e6944f79f1832b724d91420e04051009a2e6",
+              "asm": "mov rax, qword ptr [rip + 0x285bee6]",
+              "root": "0xaca400",
+              "rip_memory_targets": [
+                "0x3326468"
+              ]
+            },
+            {
+              "rva": "0xaca582",
+              "bytes": "488d5590",
+              "sha256": "8eec475f528b1aaded3b70d68e3fd922b80ac5250f50c9d36f3b6c2981339e19",
+              "asm": "lea rdx, [rbp - 0x70]",
+              "root": "0xaca400",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xaca586",
+              "bytes": "488b4c2470",
+              "sha256": "84313e785bf06e456eefe8c11860f390c0fd947e676801f1c3faf5b8a3cf0c38",
+              "asm": "mov rcx, qword ptr [rsp + 0x70]",
+              "root": "0xaca400",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xaca58b",
+              "bytes": "448b80b4030000",
+              "sha256": "4d0f67868c9a111fa902194775085fa84faedb2f1e8543fdcb1c7d9cf0ae23b5",
+              "asm": "mov r8d, dword ptr [rax + 0x3b4]",
+              "root": "0xaca400",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xaca592",
+              "bytes": "e8594c0000",
+              "sha256": "488c891a8a19a7344774844c3188e8075b22056f91fa8124a56b1c2bf54660f4",
+              "asm": "call 0xacf1f0",
+              "root": "0xaca400",
+              "rip_memory_targets": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "bounded_normalized_vector_with_default",
+      "base_provenance": "ACF1F0 takes unsigned R8D<4 before using n*90 storage. Valid fields form a normalized three-float vector. Otherwise it copies a 12-byte default from uncaptured global32A8E60/68 and returns the output pointer.",
+      "blocks": [
+        {
+          "start": "0xacf1f0",
+          "end_exclusive": "0xacf21e",
+          "sha256": "f01a3cbabf3c2f5d924ccb9927821e0108d91c6a02104ea97506775d416f9f6f",
+          "instructions": [
+            {
+              "rva": "0xacf1f0",
+              "bytes": "4053",
+              "sha256": "609777c21118747ee9511a13231c87cad62e7c9c8747f9b07c59bd892278f65b",
+              "asm": "push rbx",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf1f2",
+              "bytes": "4883ec60",
+              "sha256": "58f4db8865c5dc97555f13169b8437cad4a09e37f9cf039bd9c60ebfb871e69f",
+              "asm": "sub rsp, 0x60",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf1f6",
+              "bytes": "488bda",
+              "sha256": "7f5c189e3caf69b1430a1c37f807813ce9b20fc27eb31797e30e6523cff913c8",
+              "asm": "mov rbx, rdx",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf1f9",
+              "bytes": "4183f804",
+              "sha256": "6c966c145c5bedcf1176e13d6e98b3bbd76dac0e55ecf7a896f12067d05496ca",
+              "asm": "cmp r8d, 4",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf1fd",
+              "bytes": "0f83e2000000",
+              "sha256": "ecc18bd8ed57b7e4c60b67e1ac7d325406bc932e52abdb62f744e5ca1e7cb7b5",
+              "asm": "jae 0xacf2e5",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf203",
+              "bytes": "418bc0",
+              "sha256": "3de86a1a104f1483ada612c952b42e14afc02aba9105504097d6f0ea9ac3fc37",
+              "asm": "mov eax, r8d",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf206",
+              "bytes": "488d14c0",
+              "sha256": "ec6e71df89f62dc5ae2d892ab58baed724796fc71b305364ae3bc13f6d185d5b",
+              "asm": "lea rdx, [rax + rax*8]",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf20a",
+              "bytes": "48c1e204",
+              "sha256": "a128ea09ed2d50b3565f65c794b5646c1943167104343663e5ef2fd50c5c61f9",
+              "asm": "shl rdx, 4",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf20e",
+              "bytes": "4803d1",
+              "sha256": "8731d4485e34fbf53e558cddc9cec70d9a93bccec73c7562935d5e68643007e5",
+              "asm": "add rdx, rcx",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf211",
+              "bytes": "80bad900000000",
+              "sha256": "fb6426c7c89f3f773a5d5d9ed531fa6b771a5faf46102e148de88ef36a9bb2aa",
+              "asm": "cmp byte ptr [rdx + 0xd9], 0",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf218",
+              "bytes": "0f84c7000000",
+              "sha256": "652a4bf5dacd1905f7f9cbed38cf10d0c6f29f34f2689a6a15f27175f5b66343",
+              "asm": "je 0xacf2e5",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            }
+          ]
+        },
+        {
+          "start": "0xacf223",
+          "end_exclusive": "0xacf244",
+          "sha256": "95c44248a822ea7ed0e03a9796bfc93dd603167dcfccb24d4ee815456f9e5a4a",
+          "instructions": [
+            {
+              "rva": "0xacf223",
+              "bytes": "f30f10b2f8000000",
+              "sha256": "9ad7d2d0eebecb6c20b4029017182d06cc813ac521b571d7434c4c9f25f19622",
+              "asm": "movss xmm6, dword ptr [rdx + 0xf8]",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf22b",
+              "bytes": "0f297c2440",
+              "sha256": "c2f5fef3669163b37057ced4e444bba9b8fef978df3c9d5b3eba23da4ab9f914",
+              "asm": "movaps xmmword ptr [rsp + 0x40], xmm7",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf230",
+              "bytes": "0f28ce",
+              "sha256": "cfc266a7a1824b7b2905c1cef87401c8c4bb74a206195dfc87ce47c37427cd92",
+              "asm": "movaps xmm1, xmm6",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf233",
+              "bytes": "f30f10baf4000000",
+              "sha256": "5d6d065edfe8ff4cf39824ee66c23928452be35999f3ff6c0ad24e8f3609469a",
+              "asm": "movss xmm7, dword ptr [rdx + 0xf4]",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf23b",
+              "bytes": "440f29442430",
+              "sha256": "b033cf66e37d57d985e21b8578d636ea724b6c1a8f224a56963add2cf43600b9",
+              "asm": "movaps xmmword ptr [rsp + 0x30], xmm8",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf241",
+              "bytes": "0f28c7",
+              "sha256": "aaeb1d66107d4fb22947a0c5523f88b6038562f15fc93d7597f33e7a5ee35c29",
+              "asm": "movaps xmm0, xmm7",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            }
+          ]
+        },
+        {
+          "start": "0xacf244",
+          "end_exclusive": "0xacf262",
+          "sha256": "2b5bcf7c3e3e2844ba2c6008ae59a6494f9fbe99ddf90247334e56c36b3d61c4",
+          "instructions": [
+            {
+              "rva": "0xacf244",
+              "bytes": "f3440f1082f0000000",
+              "sha256": "8c2ed5be7ff1d401acc1426901c73d5c4927a7cabb325ff70b4183e6e92c101c",
+              "asm": "movss xmm8, dword ptr [rdx + 0xf0]",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf24d",
+              "bytes": "410f28d0",
+              "sha256": "b3336a2782a0431208a07ab1f1b39838f1e8b6f2dae5abafb2365cdb14a4d428",
+              "asm": "movaps xmm2, xmm8",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf251",
+              "bytes": "f30f59c7",
+              "sha256": "985a2dc5609c0ac32315a3401fc324629a2fe3322324c312f16bf92bd7ec6eb7",
+              "asm": "mulss xmm0, xmm7",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf255",
+              "bytes": "f3410f59d0",
+              "sha256": "0d29988b03d1961c46dad3928bbe31aa0efd4c036f3032778f71adad3dc27a6f",
+              "asm": "mulss xmm2, xmm8",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf25a",
+              "bytes": "f30f59ce",
+              "sha256": "1a64865bba8a96d7c906864cd4ee3b98876a40da871f1900d9681289d2f26376",
+              "asm": "mulss xmm1, xmm6",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf25e",
+              "bytes": "f30f58d0",
+              "sha256": "8028ce4a570b5c8b6fda059f453939449d54a9daf237ef8cdbb8a70bc32317c0",
+              "asm": "addss xmm2, xmm0",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            }
+          ]
+        },
+        {
+          "start": "0xacf280",
+          "end_exclusive": "0xacf289",
+          "sha256": "16130b66690aae1a1f70ed888b8acb7eab6a91ee493ff812f093d908a3521fbe",
+          "instructions": [
+            {
+              "rva": "0xacf280",
+              "bytes": "0f57c0",
+              "sha256": "c7630204468a3500470f01d0623aed0ca994cc8431918ef6327b3f160b1f0b6c",
+              "asm": "xorps xmm0, xmm0",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf283",
+              "bytes": "f30f51c2",
+              "sha256": "357eb809b549c3a9e482790ee1cb5d9c313ce21ca6f6b9e9626f58a0c98968e6",
+              "asm": "sqrtss xmm0, xmm2",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf287",
+              "bytes": "eb08",
+              "sha256": "68b50534f0ab3d4a740d9915093dd8228a69f6c01867faaea436093efd3da225",
+              "asm": "jmp 0xacf291",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            }
+          ]
+        },
+        {
+          "start": "0xacf29e",
+          "end_exclusive": "0xacf2c9",
+          "sha256": "516b5bb2860807d540ec3d4edc4b521c27505c72780ee79dd3c438390129182f",
+          "instructions": [
+            {
+              "rva": "0xacf29e",
+              "bytes": "f30f5ef0",
+              "sha256": "174267afe235890764fafbc9ee71769a26a55dd445db3ddd1c26e4675ce6e165",
+              "asm": "divss xmm6, xmm0",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf2a2",
+              "bytes": "f30f5ef8",
+              "sha256": "d83b7db504b90d93d9925d78b31954b048f75b32b8596f18803101b5abb21f5a",
+              "asm": "divss xmm7, xmm0",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf2a6",
+              "bytes": "f3440f5ec0",
+              "sha256": "ed53efa5183bb07fbba6e3aa0b4a3d7859a74cea788355ce66e2aecd7afd8810",
+              "asm": "divss xmm8, xmm0",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf2ab",
+              "bytes": "eb0a",
+              "sha256": "67cc18179e20bc20875e5aa6a32f5cfff2aed47bdbb4e15646841e461be533d1",
+              "asm": "jmp 0xacf2b7",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf2ad",
+              "bytes": "0f57f6",
+              "sha256": "fa874d6addfa898c1274b6759e5bd66e0b4ba57815298214b14087115a196b26",
+              "asm": "xorps xmm6, xmm6",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf2b0",
+              "bytes": "0f57ff",
+              "sha256": "16e0c14e5e528b300f9314743220a07b957d07cfe8a4abe5bcf17f57f25b7414",
+              "asm": "xorps xmm7, xmm7",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf2b3",
+              "bytes": "450f57c0",
+              "sha256": "bb49f2c138d6a7b5a64db6582b903a21663b223f428ee865bd1d7d1893ec65eb",
+              "asm": "xorps xmm8, xmm8",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf2b7",
+              "bytes": "f3440f1103",
+              "sha256": "b4106d704634cae242dff227004d23fd909443661b6063ca6c0b4ec582cd4b46",
+              "asm": "movss dword ptr [rbx], xmm8",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf2bc",
+              "bytes": "488bc3",
+              "sha256": "88de8531189088e84aea757958f351c870c008322498ae012d5c1e52fc597037",
+              "asm": "mov rax, rbx",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf2bf",
+              "bytes": "f30f117b04",
+              "sha256": "7195e704a42a4e7467d8b36e319f0540f4306905275395937a40dfc6850a7c7f",
+              "asm": "movss dword ptr [rbx + 4], xmm7",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf2c4",
+              "bytes": "f30f117308",
+              "sha256": "9d3c23de70c08937ca5c1d3ddfae622efd69c689f027ebdd461ec2c05b9b8469",
+              "asm": "movss dword ptr [rbx + 8], xmm6",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            }
+          ]
+        },
+        {
+          "start": "0xacf2e5",
+          "end_exclusive": "0xacf303",
+          "sha256": "4a2acddfed8312873e2bf2593e7d4ae2a660c9dc2c0e973b1462ac08015fda47",
+          "instructions": [
+            {
+              "rva": "0xacf2e5",
+              "bytes": "8b057d9b7d02",
+              "sha256": "d63c5b88b90e3419d742322dcc6479a5837ed4607a09efbc1a62ed80cac8d808",
+              "asm": "mov eax, dword ptr [rip + 0x27d9b7d]",
+              "root": "0xacf1f0",
+              "rip_memory_targets": [
+                "0x32a8e68"
+              ]
+            },
+            {
+              "rva": "0xacf2eb",
+              "bytes": "f20f10056d9b7d02",
+              "sha256": "ec496c2d24fa452a18e09e49ca5a0b683c2e66752453a39523284fbe48a4cf09",
+              "asm": "movsd xmm0, qword ptr [rip + 0x27d9b6d]",
+              "root": "0xacf1f0",
+              "rip_memory_targets": [
+                "0x32a8e60"
+              ]
+            },
+            {
+              "rva": "0xacf2f3",
+              "bytes": "f20f1103",
+              "sha256": "574caa3e4562db7150f4a617a3679f87cb7d6c8c15aa4f4e3c4b59dc3fd83e07",
+              "asm": "movsd qword ptr [rbx], xmm0",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf2f7",
+              "bytes": "894308",
+              "sha256": "e78b77f60f9db7683037303ae4f1c81c02dcf56f6ad17a62cdfade7499809dc9",
+              "asm": "mov dword ptr [rbx + 8], eax",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf2fa",
+              "bytes": "488bc3",
+              "sha256": "88de8531189088e84aea757958f351c870c008322498ae012d5c1e52fc597037",
+              "asm": "mov rax, rbx",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf2fd",
+              "bytes": "4883c460",
+              "sha256": "c739ffc6ec3855d252a9a2b9a35c1e58cf65b3f8f540800a5efe9c4bf4396f74",
+              "asm": "add rsp, 0x60",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf301",
+              "bytes": "5b",
+              "sha256": "245843abef9e72e7efac30138a994bf6301e7e1d7d7042a33d42e863d2638811",
+              "asm": "pop rbx",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf302",
+              "bytes": "c3",
+              "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+              "asm": "ret ",
+              "root": "0xacf1f0",
+              "rip_memory_targets": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "bounded_state_operation_roster_map_caller",
+      "base_provenance": "12A98D0 obtains roster R10 from global3326468, resolves a peer-associated entity ID through roster+D0/D8/DC/E0 map to ordinal, reads ordinal*20+3B4, and calls ACF420 with that index and outer3326340+1FA08. The outer+1FA08 parent constructor call is pinned above.",
+      "blocks": [
+        {
+          "start": "0x12a9bd9",
+          "end_exclusive": "0x12a9c7a",
+          "sha256": "6fd48af4c391c9ae955a27f11a2f16e8cfd6770f16a40f1f08f56f37af660fbe",
+          "instructions": [
+            {
+              "rva": "0x12a9bd9",
+              "bytes": "4c8b3d60c70702",
+              "sha256": "39ffe51c040d82cd5b46ff8be4628f25a8f2fce94bf7117d65efdef724fbc995",
+              "asm": "mov r15, qword ptr [rip + 0x207c760]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": [
+                "0x3326340"
+              ]
+            },
+            {
+              "rva": "0x12a9be0",
+              "bytes": "4c8b1581c80702",
+              "sha256": "69481136307339ad4551f3d4f519fdafb56e19a916d1be562f598f2c2a0aa55c",
+              "asm": "mov r10, qword ptr [rip + 0x207c881]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": [
+                "0x3326468"
+              ]
+            },
+            {
+              "rva": "0x12a9be7",
+              "bytes": "33c9",
+              "sha256": "6b3abe7b30d64eef0441e29f68b0eabf17526b476fa2495d67f1a901e3e73ec5",
+              "asm": "xor ecx, ecx",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9be9",
+              "bytes": "458b8284000000",
+              "sha256": "1d6ce117d9d727fc6aa53f31cd408bdcda284c04c85adcb0af9068a743f9ef72",
+              "asm": "mov r8d, dword ptr [r10 + 0x84]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9bf0",
+              "bytes": "4585c0",
+              "sha256": "dbf58ca55b387ccadd3a35bb706733d10b2c3d0f20a3cc0894160537462d14b5",
+              "asm": "test r8d, r8d",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9bf3",
+              "bytes": "741f",
+              "sha256": "a819eea7993b5220e9d69e8393a16b0e8d5e1e4691768768829f909bec2ac406",
+              "asm": "je 0x12a9c14",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9bf5",
+              "bytes": "498d92c8020000",
+              "sha256": "fe2cfb6b863f817b1f0e2893d23e8fdd75372c93e5a8592a6542a5b815918083",
+              "asm": "lea rdx, [r10 + 0x2c8]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9bfc",
+              "bytes": "0f1f4000",
+              "sha256": "eabfa5c76d1038002d4162da7eec65f68ce1fa581ec1898b6751b53ad6935a57",
+              "asm": "nop dword ptr [rax]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c00",
+              "bytes": "483b02",
+              "sha256": "efa9c0a179284e7f54ce5e80c46597a98ca01601b966f7c8c95b775980c1e2a0",
+              "asm": "cmp rax, qword ptr [rdx]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c03",
+              "bytes": "0f848a020000",
+              "sha256": "b7ac0645ed45746842dba9eb4e89ea195a68fbf82a28d84d01d077da025ef447",
+              "asm": "je 0x12a9e93",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c09",
+              "bytes": "ffc1",
+              "sha256": "aedbc4f473d059cefc6ebce158ccfce0ba1bb56f05c19da4734d09614ead0a44",
+              "asm": "inc ecx",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c0b",
+              "bytes": "4883c238",
+              "sha256": "a9539df514db999f2f782662546823ef20a2a13c901a13703f84ad512ecd5a48",
+              "asm": "add rdx, 0x38",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c0f",
+              "bytes": "413bc8",
+              "sha256": "78d911f86f5d388cf1df2a3aa56263b9f363ef742091fc513f8bf91ab15ecf0c",
+              "asm": "cmp ecx, r8d",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c12",
+              "bytes": "72ec",
+              "sha256": "ae2925b1ae3dd752f5326eff62acbc1f79d85d80beeb76555eaf8dd428c820b0",
+              "asm": "jb 0x12a9c00",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c14",
+              "bytes": "8b051aa01d02",
+              "sha256": "32b4ca51dc802b1e9241bf987e5896a4013f34278ea4b38552d6296dbd4c7b55",
+              "asm": "mov eax, dword ptr [rip + 0x21da01a]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": [
+                "0x3483c34"
+              ]
+            },
+            {
+              "rva": "0x12a9c1a",
+              "bytes": "3b0500a01d02",
+              "sha256": "e29105b9bb2ecb5ea7ad544a843ede245ba7f84c745154061634c5df092b3dd0",
+              "asm": "cmp eax, dword ptr [rip + 0x21da000]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": [
+                "0x3483c20"
+              ]
+            },
+            {
+              "rva": "0x12a9c20",
+              "bytes": "7453",
+              "sha256": "e04fd6756c3e077c61d1d5dc69a87ac9ea7371bc7bd5890c1b306732ad63e0af",
+              "asm": "je 0x12a9c75",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c22",
+              "bytes": "458b8ad8000000",
+              "sha256": "6e1048cfaff75c021a75c413cdf6460afc1a82f5f1a09c93ffd73389191c7b7b",
+              "asm": "mov r9d, dword ptr [r10 + 0xd8]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c29",
+              "bytes": "33d2",
+              "sha256": "a843932057795ea71b924ac1dbe4196f846aa6e914088874b991473831eeb65b",
+              "asm": "xor edx, edx",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c2b",
+              "bytes": "458b9ae0000000",
+              "sha256": "4752980c51595f66f6b99a2af22dd829064543739d8171929ecc95c15fd30257",
+              "asm": "mov r11d, dword ptr [r10 + 0xe0]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c32",
+              "bytes": "440fafd8",
+              "sha256": "4280bd41d3de6d28ae64de48750401b9658b46180d32e2e6b473fed15d7adbef",
+              "asm": "imul r11d, eax",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c36",
+              "bytes": "458d71ff",
+              "sha256": "692578194396f31d26316f23dfb3c39d583ef27813ab6d363efc10efffd42d1c",
+              "asm": "lea r14d, [r9 - 1]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c3a",
+              "bytes": "4585c9",
+              "sha256": "d482d00ee7bd601d4a33dcffe4cf37cb4ee5c27f6bb7dc5901d301705a9f7a02",
+              "asm": "test r9d, r9d",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c3d",
+              "bytes": "7436",
+              "sha256": "8a37b83c96f1aa17d63d5db633defe9edaca1d3958f2eae81c94b48be948e4f6",
+              "asm": "je 0x12a9c75",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c3f",
+              "bytes": "498bbad0000000",
+              "sha256": "f378d87f5a901108792310c326fdb55e11d1b613b6bf4f09eddcfe9f07230819",
+              "asm": "mov rdi, qword ptr [r10 + 0xd0]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c46",
+              "bytes": "418bb2dc000000",
+              "sha256": "585719c854320dd85b44b19cf6a27b0c172c267003f54cf3f9c4d5b2f4a4e90e",
+              "asm": "mov esi, dword ptr [r10 + 0xdc]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c4d",
+              "bytes": "0f1f00",
+              "sha256": "019f07bfe6bd5747f9f3b65f5a095db04a0418d5f11c6feec58eaff709860b66",
+              "asm": "nop dword ptr [rax]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c50",
+              "bytes": "418bce",
+              "sha256": "b41fa5ef978467b56824b4f196378794ac3a31f29c628c9c193728e4b99721f0",
+              "asm": "mov ecx, r14d",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c53",
+              "bytes": "468d041a",
+              "sha256": "5983af3f89777bf3ee0ad060131c970a0f6ddcdf0932a39713256a17f18ce8dc",
+              "asm": "lea r8d, [rdx + r11]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c57",
+              "bytes": "4c23c1",
+              "sha256": "c7201cf8ec5b7aa5fe28b3edf29be3a807ba77570b7eb7239a696a62831424fb",
+              "asm": "and r8, rcx",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c5a",
+              "bytes": "428b0cc7",
+              "sha256": "255020d6de0896618615a83663254b2fe88d3cab21db37b32121d7174aead549",
+              "asm": "mov ecx, dword ptr [rdi + r8*8]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c5e",
+              "bytes": "3bce",
+              "sha256": "b95169b2d64305eb1ce384390adc0f2521ef45e26cbe760358d88ad308d7b852",
+              "asm": "cmp ecx, esi",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c60",
+              "bytes": "0f843d020000",
+              "sha256": "f0abaa0ed2711a5a9b9bafcf915ba24ccc1f5f1f2f5f59d5afe75eb9bd18e1d5",
+              "asm": "je 0x12a9ea3",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c66",
+              "bytes": "3bc8",
+              "sha256": "656489db5162c68c01e330bcd0d40e22deaebf16a8c369fb63229a200aee42c3",
+              "asm": "cmp ecx, eax",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c68",
+              "bytes": "0f843d020000",
+              "sha256": "f0abaa0ed2711a5a9b9bafcf915ba24ccc1f5f1f2f5f59d5afe75eb9bd18e1d5",
+              "asm": "je 0x12a9eab",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c6e",
+              "bytes": "ffc2",
+              "sha256": "22c3a91cd9096f4c7a06b0c4d8b6fecec48027edb967c225f4a772eb947f4d01",
+              "asm": "inc edx",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c70",
+              "bytes": "413bd1",
+              "sha256": "b9db77424f4038b8ee40638d29d38444affd97dd5356335b6994271fa6dc47b8",
+              "asm": "cmp edx, r9d",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c73",
+              "bytes": "72db",
+              "sha256": "0a609241043d3da62999d1b5d35cc51ae3d9e7f6e9ab3ce03ac841ec32a8b794",
+              "asm": "jb 0x12a9c50",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c75",
+              "bytes": "b8ffffffff",
+              "sha256": "ed563fef7aff90379a90ed4533db7fd90746a66497edbd943af9bae1837fa2f3",
+              "asm": "mov eax, 0xffffffff",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            }
+          ]
+        },
+        {
+          "start": "0x12a9c7a",
+          "end_exclusive": "0x12a9ccb",
+          "sha256": "882d47f629e751532c8417aa3b4e9476c1cad1220f735ba1472b15b0217e75d7",
+          "instructions": [
+            {
+              "rva": "0x12a9c7a",
+              "bytes": "8bc8",
+              "sha256": "0e72eeffe8e4ac7dfe9abd68ba709e020123e8aaf94576b6cd3f452c41e3ef4f",
+              "asm": "mov ecx, eax",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c7c",
+              "bytes": "48c1e105",
+              "sha256": "d33f9cb4e81a8d4687c9c6b259f75bd770ba2c75aa3a73c03ad176be6466e842",
+              "asm": "shl rcx, 5",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c80",
+              "bytes": "428bbc11b4030000",
+              "sha256": "834ca1885c8a2b5e00ec7d89e3d1e4e53513851d7a358c051456816539b6b71a",
+              "asm": "mov edi, dword ptr [rcx + r10 + 0x3b4]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c88",
+              "bytes": "83ff04",
+              "sha256": "83bdda336f000e754d2e6fcf2416cfcc38e1ee2529855aaa712d8a4aaafbe838",
+              "asm": "cmp edi, 4",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c8b",
+              "bytes": "7312",
+              "sha256": "9849e8e2d4d592d2fd795b54a71cb3c12a729aff0b7a5722ecbbbc95b6bc0420",
+              "asm": "jae 0x12a9c9f",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c8d",
+              "bytes": "488d0cff",
+              "sha256": "6e01b69890c6ec424de55ef6ea76c1891dda17629b5756bf374b0b23d5cf817a",
+              "asm": "lea rcx, [rdi + rdi*8]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c91",
+              "bytes": "4803c9",
+              "sha256": "94bf633da63e9b9ca667b7613711e4b03490a1fbd89fdc4c90b6aabb24175cb2",
+              "asm": "add rcx, rcx",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c94",
+              "bytes": "4180bccf24fb010000",
+              "sha256": "e2cab85aa0647fde1f8e1d98ae53d53047fef33ade0d647197ec46a51d0185e1",
+              "asm": "cmp byte ptr [r15 + rcx*8 + 0x1fb24], 0",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c9d",
+              "bytes": "7519",
+              "sha256": "f930c2b464ffe8efdfd21596ac9e48ab3061c4ba3c33a9982d3b59667c2de824",
+              "asm": "jne 0x12a9cb8",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9c9f",
+              "bytes": "498d8f08fa0100",
+              "sha256": "060be5cba4a22690268ba0f950a15cb95a9d6880bd212cfb00c07d98fadca17b",
+              "asm": "lea rcx, [r15 + 0x1fa08]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9ca6",
+              "bytes": "8bd7",
+              "sha256": "3cd38a3a73a0e823601e3c9a8883db2cca16fa376b47493446aaf1cdcab762d2",
+              "asm": "mov edx, edi",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9ca8",
+              "bytes": "4c8d4540",
+              "sha256": "cf1d92213f6c5a83bdb0775917a1f0edc44c22bffd22fe255c39c389ccf0b4fb",
+              "asm": "lea r8, [rbp + 0x40]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9cac",
+              "bytes": "e86f5782ff",
+              "sha256": "287b60747bb283d502ea47a1e26e434ef9bf9da4a27f954807809f56dcf913b1",
+              "asm": "call 0xacf420",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9cb1",
+              "bytes": "4c8b3d88c60702",
+              "sha256": "a1d51f86defd56600f8c729c1403a048904ef03f0b0be9dd514167361ccc5c18",
+              "asm": "mov r15, qword ptr [rip + 0x207c688]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": [
+                "0x3326340"
+              ]
+            },
+            {
+              "rva": "0x12a9cb8",
+              "bytes": "498d8f58fa0100",
+              "sha256": "5f0ef404f527beea2c1ce988c3925583899150e4e21247b8c0ba2e3e112153f2",
+              "asm": "lea rcx, [r15 + 0x1fa58]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9cbf",
+              "bytes": "448bc7",
+              "sha256": "54275725f1d4184c220de30860050dc53bbc4f8186c57e4c2768d82b9ceed907",
+              "asm": "mov r8d, edi",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9cc2",
+              "bytes": "488d5530",
+              "sha256": "b7f15f97d0e53a82bc913a6d553a7afa238981a2584231697c4f8046cdaf94c5",
+              "asm": "lea rdx, [rbp + 0x30]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9cc6",
+              "bytes": "e83579d5ff",
+              "sha256": "41bd34589b53d19e96cb83c5821716a64862679cb5118a91541d72ee621f669f",
+              "asm": "call 0x1001600",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            }
+          ]
+        },
+        {
+          "start": "0x12a9e93",
+          "end_exclusive": "0x12a9eb5",
+          "sha256": "87a7de0df8dd981610417e3f48fd1ac0b52b504a023c5d29af0edb9f90c2df3d",
+          "instructions": [
+            {
+              "rva": "0x12a9e93",
+              "bytes": "498b8ccae8000000",
+              "sha256": "69456625d356ef3bc47ffb2e6428d1d757c2a32f1d9661ad46fd148502f2ce5d",
+              "asm": "mov rcx, qword ptr [r10 + rcx*8 + 0xe8]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9e9b",
+              "bytes": "8b4108",
+              "sha256": "b54b51d57e99535808f5b0d1416cb1d9159e530038dedb1b9492806ff22fa332",
+              "asm": "mov eax, dword ptr [rcx + 8]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9e9e",
+              "bytes": "e977fdffff",
+              "sha256": "6f19fcf1c808c1cfed92dc9e542c53a00c86545b6a6d6393f631a9a4109fecd4",
+              "asm": "jmp 0x12a9c1a",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9ea3",
+              "bytes": "3bc8",
+              "sha256": "656489db5162c68c01e330bcd0d40e22deaebf16a8c369fb63229a200aee42c3",
+              "asm": "cmp ecx, eax",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9ea5",
+              "bytes": "0f85cafdffff",
+              "sha256": "e9467d8da3406fcd4aa90faeb832d0a065e53547c95c9fd19c018d6895e9a26a",
+              "asm": "jne 0x12a9c75",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9eab",
+              "bytes": "428b44c704",
+              "sha256": "e0b1f7e854602e2452e184bc6e001ef142d5ac20d4f2e730bda5c6b245235f8a",
+              "asm": "mov eax, dword ptr [rdi + r8*8 + 4]",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12a9eb0",
+              "bytes": "e9c5fdffff",
+              "sha256": "93b9b9241e707f77764b497b33047ab5b04dec788c896e6e2e56cede6a72d54d",
+              "asm": "jmp 0x12a9c7a",
+              "root": "0x12a98d0",
+              "rip_memory_targets": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "bounded_state_operation_false_at_four",
+      "base_provenance": "ACF420 maps parent to S=P+50. Index>=4 returns AL=0 before accessing slot storage; valid index computes slot S+80+n*90, updates vector/state fields and invokes downstream functions. The caller proceeds without testing AL, so this is operation denial, not proof of join rejection.",
+      "blocks": [
+        {
+          "start": "0xacf436",
+          "end_exclusive": "0xacf475",
+          "sha256": "c8baa4abb5fa8c381ceba2b7f4ae4a5b08cf214f2a2ef0ca7ebe6db29ec4a57a",
+          "instructions": [
+            {
+              "rva": "0xacf436",
+              "bytes": "8bfa",
+              "sha256": "f96147fafc6eea523232915741d9ba8e1f1664063a613f01beaaab8f19e788e1",
+              "asm": "mov edi, edx",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf438",
+              "bytes": "4d8bc8",
+              "sha256": "c085560dc97941f772f7c93b23bc33eb4213d2a8909cb72a17d3158a2d6f7984",
+              "asm": "mov r9, r8",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf43b",
+              "bytes": "488d7150",
+              "sha256": "f3ae2e221dd49c778b4bba828557ffafd39701a4577fd5ad70ad5c3a87a45c55",
+              "asm": "lea rsi, [rcx + 0x50]",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf43f",
+              "bytes": "83fa04",
+              "sha256": "55a4e366acc4f85057ac7f433de4b678ffbb67e8d62d4f56d4826e1bd9443d48",
+              "asm": "cmp edx, 4",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf442",
+              "bytes": "7207",
+              "sha256": "452ebb82202b7cfd898464dffc7a76bd6e2538068399ec3445330c4b34c1b195",
+              "asm": "jb 0xacf44b",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf444",
+              "bytes": "32c0",
+              "sha256": "35b660100acac77a09eed3bdd6b22a8db7b27c1e8c4c4ed44bd52d51c9084b03",
+              "asm": "xor al, al",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf446",
+              "bytes": "e918010000",
+              "sha256": "c28e9af128fb38384331bb3966445c325e8586742f12cef78118e256f3bf8ca8",
+              "asm": "jmp 0xacf563",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf44b",
+              "bytes": "48895c2460",
+              "sha256": "9d97d2fce0991788b616ee57849f05636be374f9a48de233c13fa1adbeb04aa5",
+              "asm": "mov qword ptr [rsp + 0x60], rbx",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf450",
+              "bytes": "488d0cff",
+              "sha256": "6e01b69890c6ec424de55ef6ea76c1891dda17629b5756bf374b0b23d5cf817a",
+              "asm": "lea rcx, [rdi + rdi*8]",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf454",
+              "bytes": "48c1e104",
+              "sha256": "785a0e24aa23b2ae77f224c10af683a04ba3b81d74b59943acef01802f5ee944",
+              "asm": "shl rcx, 4",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf458",
+              "bytes": "488d9e80000000",
+              "sha256": "f903ee321b4a157b90785b619d37a224247b4abbb798c0d1e0b3880c8dfcf215",
+              "asm": "lea rbx, [rsi + 0x80]",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf45f",
+              "bytes": "4803d9",
+              "sha256": "a8236ac0884db0a958bbca23e69de83bb0d59152e4bf24eb50c1640879ca2485",
+              "asm": "add rbx, rcx",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf462",
+              "bytes": "837b4800",
+              "sha256": "56c9f0e5c7009d7134cb3840df5b016dc9d8243c54adb41f502501250e52201d",
+              "asm": "cmp dword ptr [rbx + 0x48], 0",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf466",
+              "bytes": "0f85f0000000",
+              "sha256": "2d87fb406d55a24dcb4fb88d5e0b1099f8af1ed1b87ad0ac841cfad39193f976",
+              "asm": "jne 0xacf55c",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf46c",
+              "bytes": "c6434c00",
+              "sha256": "4a1f334184d7113b978cca11c860f50f3c08a452d92cadfb180f5f94bc1323f0",
+              "asm": "mov byte ptr [rbx + 0x4c], 0",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf470",
+              "bytes": "4c8d442440",
+              "sha256": "1b22cbb523e3a02f28d5f29a1674ba68ae8610d909e8b9758f04983670c87437",
+              "asm": "lea r8, [rsp + 0x40]",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            }
+          ]
+        },
+        {
+          "start": "0xacf4df",
+          "end_exclusive": "0xacf558",
+          "sha256": "0eca36ab14618b1bf65216d26026522352a9c51cfd207595d4b251f9d4778322",
+          "instructions": [
+            {
+              "rva": "0xacf4df",
+              "bytes": "f20f10442440",
+              "sha256": "107e2b47253fb79d8d14f5bb484f21834c36c203d4d7a5ca98276cc29025ce0d",
+              "asm": "movsd xmm0, qword ptr [rsp + 0x40]",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf4e5",
+              "bytes": "4c8d442440",
+              "sha256": "1b22cbb523e3a02f28d5f29a1674ba68ae8610d909e8b9758f04983670c87437",
+              "asm": "lea r8, [rsp + 0x40]",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf4ea",
+              "bytes": "8b442448",
+              "sha256": "0816fcda71cfe2355b7cc9ea72a906d713e73174f07dd315edbe24732bbfa507",
+              "asm": "mov eax, dword ptr [rsp + 0x48]",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf4ee",
+              "bytes": "f20f11433c",
+              "sha256": "c76ac9c19606aff8dc93b06b56b55e0aefcba5c254e0629ee198240a51ba86b0",
+              "asm": "movsd qword ptr [rbx + 0x3c], xmm0",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf4f3",
+              "bytes": "894344",
+              "sha256": "7abd02181a3b5e231e4cbfddc2fd59e802450221e772af1ce1ef37ec6257c2f1",
+              "asm": "mov dword ptr [rbx + 0x44], eax",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf4f6",
+              "bytes": "c6434c01",
+              "sha256": "04fe5902f7efdd5dbfe46dfaf24358cf84a8741585928f5b00a15e1b08888e02",
+              "asm": "mov byte ptr [rbx + 0x4c], 1",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf4fa",
+              "bytes": "e8f10f5300",
+              "sha256": "2c609f14791bf470a9f4b4d32a7ba2c66bebde5a8d4a87bcfc29ee16a1b4114a",
+              "asm": "call 0x10004f0",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf4ff",
+              "bytes": "41b8d5d6bc96",
+              "sha256": "e19f9f306857f5ecfda2367630d7d7d2d941ce7e310034cac4250d1379043221",
+              "asm": "mov r8d, 0x96bcd6d5",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf505",
+              "bytes": "f30f114350",
+              "sha256": "db8371b8b019821b82f71b497550d44fd62b8f2c79e87592d650db28f9dc963c",
+              "asm": "movss dword ptr [rbx + 0x50], xmm0",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf50a",
+              "bytes": "8bd7",
+              "sha256": "3cd38a3a73a0e823601e3c9a8883db2cca16fa376b47493446aaf1cdcab762d2",
+              "asm": "mov edx, edi",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf50c",
+              "bytes": "c7435400000000",
+              "sha256": "e527f237adbdb8718b1545f77155bbf03f23d2260b294479c01432fe3fc0cb9d",
+              "asm": "mov dword ptr [rbx + 0x54], 0",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf513",
+              "bytes": "488bce",
+              "sha256": "c25c11872b8bd590d25b397090797c59fae896ef2623515471167d426093a909",
+              "asm": "mov rcx, rsi",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf516",
+              "bytes": "e895235300",
+              "sha256": "cc8c9961d247a3035e47b83bebd6d4fda257014ff725f9af826a67db666ce88a",
+              "asm": "call 0x10018b0",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf51b",
+              "bytes": "8b442448",
+              "sha256": "0816fcda71cfe2355b7cc9ea72a906d713e73174f07dd315edbe24732bbfa507",
+              "asm": "mov eax, dword ptr [rsp + 0x48]",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf51f",
+              "bytes": "8bd7",
+              "sha256": "3cd38a3a73a0e823601e3c9a8883db2cca16fa376b47493446aaf1cdcab762d2",
+              "asm": "mov edx, edi",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf521",
+              "bytes": "f20f10442440",
+              "sha256": "107e2b47253fb79d8d14f5bb484f21834c36c203d4d7a5ca98276cc29025ce0d",
+              "asm": "movsd xmm0, qword ptr [rsp + 0x40]",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf527",
+              "bytes": "f20f11442430",
+              "sha256": "26003703acaa617aae8abf47ceb7034d1c3188397e9067ba705437d88f0fdd99",
+              "asm": "movsd qword ptr [rsp + 0x30], xmm0",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf52d",
+              "bytes": "89442438",
+              "sha256": "71fef67482285f78f815cd5b8a942fe6d8c29d468e22e98ff2dfe03e11eb174a",
+              "asm": "mov dword ptr [rsp + 0x38], eax",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf531",
+              "bytes": "e8ba7ab3ff",
+              "sha256": "8b8c751a0648dbdaee368a641af16194ee4a19bde80818daabe707f25ef662ac",
+              "asm": "call 0x606ff0",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf536",
+              "bytes": "f30f104350",
+              "sha256": "4c5337638e5f8d06a2d85fff430ca90e692a6f07b5b1db20d855779faf53b1d1",
+              "asm": "movss xmm0, dword ptr [rbx + 0x50]",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf53b",
+              "bytes": "4c8d442430",
+              "sha256": "0928ad2db27dd8274d06861c9cbf0f460ae564cec697c940ccca718007c0ceb7",
+              "asm": "lea r8, [rsp + 0x30]",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf540",
+              "bytes": "488bd0",
+              "sha256": "9289dc60136b57c8f8de86476e124e424269fc31f453305fa28dee3a113f1485",
+              "asm": "mov rdx, rax",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf543",
+              "bytes": "f30f11442420",
+              "sha256": "68ad6dd2439d74477e5da9eaaa107676ca3a2ae33c0fec5dad98aeebb0dd1bf0",
+              "asm": "movss dword ptr [rsp + 0x20], xmm0",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf549",
+              "bytes": "48c7c1feffffff",
+              "sha256": "0a93be46755db34642ded9d00cd98c2bfbf9b45214904b4ac24889d355b11197",
+              "asm": "mov rcx, 0xfffffffffffffffe",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf550",
+              "bytes": "0f57db",
+              "sha256": "efee06244b12f37ecc6c332d11aee5fa2019be594a22a3f8d7d7b9e518a4ae75",
+              "asm": "xorps xmm3, xmm3",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf553",
+              "bytes": "e858a41100",
+              "sha256": "e54287714f75c786db5b4368430a76cb896a99f70ee072b0326817ba58436cc5",
+              "asm": "call 0xbe99b0",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            }
+          ]
+        },
+        {
+          "start": "0xacf558",
+          "end_exclusive": "0xacf570",
+          "sha256": "cd17bc01041f86893bb3b03cb18bc89bb2c9ed2fa686ba5474e060c7b104bf7a",
+          "instructions": [
+            {
+              "rva": "0xacf558",
+              "bytes": "b001",
+              "sha256": "90ef8690a679d25d77655565ce4ad197255f49a3eaa58f9a96fc2aa903fe72a2",
+              "asm": "mov al, 1",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf55a",
+              "bytes": "eb02",
+              "sha256": "54b131319013cc574ae5cee1d8c1afe26fcee9f2bf1d15aeb30f082acd154988",
+              "asm": "jmp 0xacf55e",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf55c",
+              "bytes": "32c0",
+              "sha256": "35b660100acac77a09eed3bdd6b22a8db7b27c1e8c4c4ed44bd52d51c9084b03",
+              "asm": "xor al, al",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf55e",
+              "bytes": "488b5c2460",
+              "sha256": "7c68f80c64ee559a627d7223da637ced52c973a03a5c1737b9e6c4ed798c9b66",
+              "asm": "mov rbx, qword ptr [rsp + 0x60]",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf563",
+              "bytes": "488b4c2450",
+              "sha256": "78c4cd815d0d07eb3e4616ea6a1ec45e925c0bef328c5792f85f79b8a9b63948",
+              "asm": "mov rcx, qword ptr [rsp + 0x50]",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf568",
+              "bytes": "4833cc",
+              "sha256": "c90b4e1b639ac7f596d8f1479c26b340101fd1ef268bae45552c3550c028776e",
+              "asm": "xor rcx, rsp",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0xacf56b",
+              "bytes": "e800925b01",
+              "sha256": "1cbd5b216535d26490c27d5b36953f1f5877d8f8f9311b157dba143a57a26a0b",
+              "asm": "call 0x2088770",
+              "root": "0xacf420",
+              "rip_memory_targets": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "roster_map_to_32bit_mask_consumer",
+      "base_provenance": "1277920 looks up entity ID through the same roster map, obtains ordinal, reads record+3B4 network index, then tests that bit in dword masks from another system global33269C0. It excludes FFFFFFFF but has no four bound. Bits4..7 fit this consumer width; producer behavior remains unknown.",
+      "blocks": [
+        {
+          "start": "0x1277945",
+          "end_exclusive": "0x12779bd",
+          "sha256": "b01934b9d13477ea4b17d0d40a8c13b03d64488fb532bd4a8a870eb815a2edc6",
+          "instructions": [
+            {
+              "rva": "0x1277945",
+              "bytes": "8b420c",
+              "sha256": "e9e95709a4031d7935ed111c7c4afeda2628d5570861bcef10442a5fcb48827e",
+              "asm": "mov eax, dword ptr [rdx + 0xc]",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277948",
+              "bytes": "0f28ca",
+              "sha256": "bdfa0a66ce3b8fcca4d1e5be56f75b2193753dedf00624137eed3a34b35047eb",
+              "asm": "movaps xmm1, xmm2",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x127794b",
+              "bytes": "f30f584a10",
+              "sha256": "4475f65114cf489f86bb22db57be0f1b9f0eae282f10c096d9f21c691c643375",
+              "asm": "addss xmm1, dword ptr [rdx + 0x10]",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277950",
+              "bytes": "33db",
+              "sha256": "45f1dcfd70b34f4cf0bb2c8541d74e6ec286851628ace2c254fae48a382a590d",
+              "asm": "xor ebx, ebx",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277952",
+              "bytes": "48894c2430",
+              "sha256": "6d6d8031f3c32b3b8604cc3f9e8586dfe64d3d16799b6ff3996e9654b1551577",
+              "asm": "mov qword ptr [rsp + 0x30], rcx",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277957",
+              "bytes": "488bf2",
+              "sha256": "d2310b82831e6abdf82d006e999d72d6c0a611d6ca4b2a30a14d8ada61dd3734",
+              "asm": "mov rsi, rdx",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x127795a",
+              "bytes": "f30f114a10",
+              "sha256": "c43147d4442a736d87d9e9345ec62cbcc4d316ed3f455058b3606c9cef7a2e25",
+              "asm": "movss dword ptr [rdx + 0x10], xmm1",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x127795f",
+              "bytes": "448b0dbac22002",
+              "sha256": "8240a89b292431784786293287c8365a8b8998f1b27c46f3cbf1f76019f03ab8",
+              "asm": "mov r9d, dword ptr [rip + 0x220c2ba]",
+              "root": "0x1277920",
+              "rip_memory_targets": [
+                "0x3483c20"
+              ]
+            },
+            {
+              "rva": "0x1277966",
+              "bytes": "413bc1",
+              "sha256": "a02c793ba25166503fcf5a6ae540b6863066c01603dbe93d9044208293290064",
+              "asm": "cmp eax, r9d",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277969",
+              "bytes": "7452",
+              "sha256": "ed8c5f3746bbae191f4cb59f7f985d19ebb9f2914a36ec89597d56f8885aa22d",
+              "asm": "je 0x12779bd",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x127796b",
+              "bytes": "4c8b1df6ea0a02",
+              "sha256": "3b1bbf1d0e87984799a05d7b06df0dad8d025c3f07b7ea837572b6bdfbd4660f",
+              "asm": "mov r11, qword ptr [rip + 0x20aeaf6]",
+              "root": "0x1277920",
+              "rip_memory_targets": [
+                "0x3326468"
+              ]
+            },
+            {
+              "rva": "0x1277972",
+              "bytes": "8bd3",
+              "sha256": "25022a7edaed2210c51336bdc94452e745939ee6f9db6af570eb3a833e9e97f5",
+              "asm": "mov edx, ebx",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277974",
+              "bytes": "458b93d8000000",
+              "sha256": "911bd9a6c7e1c7334c25aca3abc250e4f63f0312e921bd4a0edbf615a0c25167",
+              "asm": "mov r10d, dword ptr [r11 + 0xd8]",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x127797b",
+              "bytes": "418bbbe0000000",
+              "sha256": "42d1f6af84d7b01d6d64be918b0b0d39a3831270d1297d604719a5f3d66babd8",
+              "asm": "mov edi, dword ptr [r11 + 0xe0]",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277982",
+              "bytes": "0faff8",
+              "sha256": "a246d9376be58979f524dfd066a1c57597eaa4f18a53dd14074a82397654da6a",
+              "asm": "imul edi, eax",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277985",
+              "bytes": "458d7aff",
+              "sha256": "23113df2d89ba85adc9802d2a38e25568ca1c86f7822c4d9536b34e5691f6d78",
+              "asm": "lea r15d, [r10 - 1]",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277989",
+              "bytes": "4585d2",
+              "sha256": "0754cea35773d844e8f51e6c94641bf8ebd3fd1f1c9044c2ba62dcf1316658ae",
+              "asm": "test r10d, r10d",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x127798c",
+              "bytes": "742f",
+              "sha256": "a2fe8952412bc49de813bb82db50d5aa497d6106b6b43c8a72cab443aa017e32",
+              "asm": "je 0x12779bd",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x127798e",
+              "bytes": "4d8bb3d0000000",
+              "sha256": "d36cef9cb706ab5a42fde5afd4f35e46e027df074a7f2a9961db7f64ae7457cc",
+              "asm": "mov r14, qword ptr [r11 + 0xd0]",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277995",
+              "bytes": "418babdc000000",
+              "sha256": "0b74629dd7a2539ba58a99668b6e91f35ffedc311040967eac8641d5d04160f7",
+              "asm": "mov ebp, dword ptr [r11 + 0xdc]",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x127799c",
+              "bytes": "0f1f4000",
+              "sha256": "eabfa5c76d1038002d4162da7eec65f68ce1fa581ec1898b6751b53ad6935a57",
+              "asm": "nop dword ptr [rax]",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12779a0",
+              "bytes": "418bcf",
+              "sha256": "a76615eabad683017324ae044fe02d7f626d297b0f1bba14fa489c661daa3996",
+              "asm": "mov ecx, r15d",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12779a3",
+              "bytes": "448d043a",
+              "sha256": "f054c2ac9610e6bd1b3f598e2f225edcee62f6a250f01f7c2b2a06defee7f9b3",
+              "asm": "lea r8d, [rdx + rdi]",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12779a7",
+              "bytes": "4c23c1",
+              "sha256": "c7201cf8ec5b7aa5fe28b3edf29be3a807ba77570b7eb7239a696a62831424fb",
+              "asm": "and r8, rcx",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12779aa",
+              "bytes": "438b0cc6",
+              "sha256": "f68eae9d123b8c46369acc0d4edcb6cbb68f06fee0ab80d64ac23c0667f708ac",
+              "asm": "mov ecx, dword ptr [r14 + r8*8]",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12779ae",
+              "bytes": "3bcd",
+              "sha256": "3fda22ff6146d3f8607e138bf663d0f2fc348a39aa0bd6ee392b513b62d7e6e1",
+              "asm": "cmp ecx, ebp",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12779b0",
+              "bytes": "741c",
+              "sha256": "7398eb6dadb34272ec109e8ff0c47caf5fcd298614d8b2cbd7a6f58cff9c6643",
+              "asm": "je 0x12779ce",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12779b2",
+              "bytes": "3bc8",
+              "sha256": "656489db5162c68c01e330bcd0d40e22deaebf16a8c369fb63229a200aee42c3",
+              "asm": "cmp ecx, eax",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12779b4",
+              "bytes": "741c",
+              "sha256": "7398eb6dadb34272ec109e8ff0c47caf5fcd298614d8b2cbd7a6f58cff9c6643",
+              "asm": "je 0x12779d2",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12779b6",
+              "bytes": "ffc2",
+              "sha256": "22c3a91cd9096f4c7a06b0c4d8b6fecec48027edb967c225f4a772eb947f4d01",
+              "asm": "inc edx",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12779b8",
+              "bytes": "413bd2",
+              "sha256": "26f61cea58b64a3bb308708c7970f95ec53e79dd940a41292063ea8e121d7378",
+              "asm": "cmp edx, r10d",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12779bb",
+              "bytes": "72e3",
+              "sha256": "db2f77482cc1223aeae17011900026cfe30db15ff0b4f738d5399fbd3c2c2eae",
+              "asm": "jb 0x12779a0",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            }
+          ]
+        },
+        {
+          "start": "0x12779ce",
+          "end_exclusive": "0x1277a3c",
+          "sha256": "3ca46ba5c91c7e8d8d91a12bb8147eb2a79ddab21da2d574ac1b0634700735a8",
+          "instructions": [
+            {
+              "rva": "0x12779ce",
+              "bytes": "3bc8",
+              "sha256": "656489db5162c68c01e330bcd0d40e22deaebf16a8c369fb63229a200aee42c3",
+              "asm": "cmp ecx, eax",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12779d0",
+              "bytes": "75eb",
+              "sha256": "f630c3aff37f1b30407157816a79b778cbefbc1706d624e6c148a083ad509909",
+              "asm": "jne 0x12779bd",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12779d2",
+              "bytes": "438b44c604",
+              "sha256": "394d591792bdc7fd1fdfea71f8e649ceda7a1c140e1cfe7492b0b83920fa861d",
+              "asm": "mov eax, dword ptr [r14 + r8*8 + 4]",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12779d7",
+              "bytes": "83f8ff",
+              "sha256": "b0c84d9c92db13d5a66ed0b53f011c7e96751990afb5eccc7deaa9cb8189433a",
+              "asm": "cmp eax, -1",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12779da",
+              "bytes": "74e1",
+              "sha256": "a426f8cebd518880653dc105bc7bb1a107e5f1d2589b570583edacfe528a8e00",
+              "asm": "je 0x12779bd",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12779dc",
+              "bytes": "8bc8",
+              "sha256": "0e72eeffe8e4ac7dfe9abd68ba709e020123e8aaf94576b6cd3f452c41e3ef4f",
+              "asm": "mov ecx, eax",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12779de",
+              "bytes": "4c89a42470010000",
+              "sha256": "016812a9ac1c13c3ae9e4d45969fb2d3ab4b5cc90cf00cbbb3e4c7e5874ff8ed",
+              "asm": "mov qword ptr [rsp + 0x170], r12",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12779e6",
+              "bytes": "486bc070",
+              "sha256": "bb9fd680849af53929c872d7e864f7355426452c802c03ce954a49d7459e98e1",
+              "asm": "imul rax, rax, 0x70",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12779ea",
+              "bytes": "0f57ed",
+              "sha256": "242712cc08aacb4a62df212f02daadb43db238ee517720cb2c4c2c7dae4ac8a7",
+              "asm": "xorps xmm5, xmm5",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12779ed",
+              "bytes": "4c89ac2478010000",
+              "sha256": "bfb45ef989c13b662a7a371905ce9b355670092d9fbd50732a9cdaac237427e1",
+              "asm": "mov qword ptr [rsp + 0x178], r13",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12779f5",
+              "bytes": "420f2fac182c010000",
+              "sha256": "f16015c5226e938e5dc8e4fc9f62380616e8bf60e2f0e2b8784a93164757d328",
+              "asm": "comiss xmm5, dword ptr [rax + r11 + 0x12c]",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x12779fe",
+              "bytes": "723c",
+              "sha256": "108585762f8beda9c30f884e26f9163351f0612491bc796e3823526f72dff05b",
+              "asm": "jb 0x1277a3c",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277a00",
+              "bytes": "48c1e105",
+              "sha256": "d33f9cb4e81a8d4687c9c6b259f75bd770ba2c75aa3a73c03ad176be6466e842",
+              "asm": "shl rcx, 5",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277a04",
+              "bytes": "8bd3",
+              "sha256": "25022a7edaed2210c51336bdc94452e745939ee6f9db6af570eb3a833e9e97f5",
+              "asm": "mov edx, ebx",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277a06",
+              "bytes": "468b8419b4030000",
+              "sha256": "c3988b72d1a70c5dad9fe52e723f5deb8a96d97f07234cdaa71eac9e65e7484d",
+              "asm": "mov r8d, dword ptr [rcx + r11 + 0x3b4]",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277a0e",
+              "bytes": "4c8b1dabef0a02",
+              "sha256": "d8ddb9801a2d2252d8ce40eb1372e88826c182ec54c2f29a73491b289b0d41da",
+              "asm": "mov r11, qword ptr [rip + 0x20aefab]",
+              "root": "0x1277920",
+              "rip_memory_targets": [
+                "0x33269c0"
+              ]
+            },
+            {
+              "rva": "0x1277a15",
+              "bytes": "458b530c",
+              "sha256": "4948cd450ec0f96878734762390c569ca9b689f07f371c0b2b6b612e96a571cc",
+              "asm": "mov r10d, dword ptr [r11 + 0xc]",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277a19",
+              "bytes": "4585d2",
+              "sha256": "0754cea35773d844e8f51e6c94641bf8ebd3fd1f1c9044c2ba62dcf1316658ae",
+              "asm": "test r10d, r10d",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277a1c",
+              "bytes": "741e",
+              "sha256": "c1532109d08ae11ad5dc89639f3b222118e429f6fdb80fd6cc91c6c06a41b941",
+              "asm": "je 0x1277a3c",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277a1e",
+              "bytes": "6690",
+              "sha256": "88174ba925c5691bff5cf2698a670490725c2f586fd946282b314ea52d9c24ce",
+              "asm": "nop ",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277a20",
+              "bytes": "4183f8ff",
+              "sha256": "cebbf2f56d90dc9ae46e006d0d806ab971d7e7b97d9489a51f4439ec589b146c",
+              "asm": "cmp r8d, -1",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277a24",
+              "bytes": "7416",
+              "sha256": "3cf2c6df00e5cd4b143bf9e6b7c6c154821d953f56d48903a62f62df66d8f2ff",
+              "asm": "je 0x1277a3c",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277a26",
+              "bytes": "498b4348",
+              "sha256": "ccd68aceb6e0c6098de90c2b008576e8ed9dea4f5356dcfcc6370a767a3041f2",
+              "asm": "mov rax, qword ptr [r11 + 0x48]",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277a2a",
+              "bytes": "8bca",
+              "sha256": "1c0c6fc54530d27dc01370b9d697dba3556168a2412bfac3567ae519ca38caa0",
+              "asm": "mov ecx, edx",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277a2c",
+              "bytes": "8b0488",
+              "sha256": "c08ef6137111fdc5b0946e616539501f0298c5ea348da1495026a0428c66dd92",
+              "asm": "mov eax, dword ptr [rax + rcx*4]",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277a2f",
+              "bytes": "440fa3c0",
+              "sha256": "112a9a92beb0e995a862d301886bf716cb6034f756a9ffca9563dfa9396e09d5",
+              "asm": "bt eax, r8d",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277a33",
+              "bytes": "7307",
+              "sha256": "3ed1b654ea0faeeb64ca3eb7c100ae4705288dc7dd1f7d27754b6c835141116f",
+              "asm": "jae 0x1277a3c",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277a35",
+              "bytes": "ffc2",
+              "sha256": "22c3a91cd9096f4c7a06b0c4d8b6fecec48027edb967c225f4a772eb947f4d01",
+              "asm": "inc edx",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277a37",
+              "bytes": "413bd2",
+              "sha256": "26f61cea58b64a3bb308708c7970f95ec53e79dd940a41292063ea8e121d7378",
+              "asm": "cmp edx, r10d",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1277a3a",
+              "bytes": "72e4",
+              "sha256": "4f10da2df889fc08353d42d1f474dd3d9c15fbbd762723f1c98f8d2eb3bac445",
+              "asm": "jb 0x1277a20",
+              "root": "0x1277920",
+              "rip_memory_targets": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "roster_map_direct_index_getter",
+      "base_provenance": "606AD0 explicitly loads global3326468 and its map, obtains ordinal, returns dword[roster+ordinal*20+3B4]. Missing map result returns FFFFFFFF; no four-index clamp appears in this getter.",
+      "blocks": [
+        {
+          "start": "0x606ae4",
+          "end_exclusive": "0x606b75",
+          "sha256": "09ae2c62ef595d0eebcd7641688b644910f03a0ba608fcd0fecaaf48ef1db1e1",
+          "instructions": [
+            {
+              "rva": "0x606ae4",
+              "bytes": "3b1536d1e702",
+              "sha256": "0fe19d972b875aa6fc6cdceaa5e1f9b2101dce61e0e99663830c38bf409637f4",
+              "asm": "cmp edx, dword ptr [rip + 0x2e7d136]",
+              "root": "0x606ad0",
+              "rip_memory_targets": [
+                "0x3483c20"
+              ]
+            },
+            {
+              "rva": "0x606aea",
+              "bytes": "4c8b1577f9d102",
+              "sha256": "6ddf7da4e4e66d30d45968e1351e3b8722fc74ac0c6abb18be896f12ba122ce8",
+              "asm": "mov r10, qword ptr [rip + 0x2d1f977]",
+              "root": "0x606ad0",
+              "rip_memory_targets": [
+                "0x3326468"
+              ]
+            },
+            {
+              "rva": "0x606af1",
+              "bytes": "744d",
+              "sha256": "f36db4ddd684fccef5fcf80355eca8ad1ca1c8d607b142a08e3870697195d35a",
+              "asm": "je 0x606b40",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606af3",
+              "bytes": "458b8ad8000000",
+              "sha256": "6e1048cfaff75c021a75c413cdf6460afc1a82f5f1a09c93ffd73389191c7b7b",
+              "asm": "mov r9d, dword ptr [r10 + 0xd8]",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606afa",
+              "bytes": "33c0",
+              "sha256": "72fb562c9d90dfcc008e5b0a391395fd2a244bb6bc231e2621a8ec6860d21fa3",
+              "asm": "xor eax, eax",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606afc",
+              "bytes": "418b9ae0000000",
+              "sha256": "6d7e72a6367152c18ce820feb7e4ab14288e73a7dac668788aecbc27915979f8",
+              "asm": "mov ebx, dword ptr [r10 + 0xe0]",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b03",
+              "bytes": "0fafda",
+              "sha256": "8381849540869bb8395d8ff0ef99d28b45e019572fceb859d27bbd406fa58bbb",
+              "asm": "imul ebx, edx",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b06",
+              "bytes": "418d69ff",
+              "sha256": "e0c70e8c2d2482be02ba22e99e55c86bfaac3ecb2160f63dfa2d6215d1c1229a",
+              "asm": "lea ebp, [r9 - 1]",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b0a",
+              "bytes": "4585c9",
+              "sha256": "d482d00ee7bd601d4a33dcffe4cf37cb4ee5c27f6bb7dc5901d301705a9f7a02",
+              "asm": "test r9d, r9d",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b0d",
+              "bytes": "7431",
+              "sha256": "628b49d96dcde97a430dd4f597705899e09a968f793491e4b704cae33a40dc02",
+              "asm": "je 0x606b40",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b0f",
+              "bytes": "498bbad0000000",
+              "sha256": "f378d87f5a901108792310c326fdb55e11d1b613b6bf4f09eddcfe9f07230819",
+              "asm": "mov rdi, qword ptr [r10 + 0xd0]",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b16",
+              "bytes": "418bb2dc000000",
+              "sha256": "585719c854320dd85b44b19cf6a27b0c172c267003f54cf3f9c4d5b2f4a4e90e",
+              "asm": "mov esi, dword ptr [r10 + 0xdc]",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b1d",
+              "bytes": "0f1f00",
+              "sha256": "019f07bfe6bd5747f9f3b65f5a095db04a0418d5f11c6feec58eaff709860b66",
+              "asm": "nop dword ptr [rax]",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b20",
+              "bytes": "8bcd",
+              "sha256": "2c9e934b88528234bbb2f24b2d8ecd5b2df0705e435b83aa85df18d824688a27",
+              "asm": "mov ecx, ebp",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b22",
+              "bytes": "448d0418",
+              "sha256": "6cfc22b9f7bb16b6eb18d00ef62070c05ba38dfc319bd8375b9529c88848fbe7",
+              "asm": "lea r8d, [rax + rbx]",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b26",
+              "bytes": "4c23c1",
+              "sha256": "c7201cf8ec5b7aa5fe28b3edf29be3a807ba77570b7eb7239a696a62831424fb",
+              "asm": "and r8, rcx",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b29",
+              "bytes": "428b0cc7",
+              "sha256": "255020d6de0896618615a83663254b2fe88d3cab21db37b32121d7174aead549",
+              "asm": "mov ecx, dword ptr [rdi + r8*8]",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b2d",
+              "bytes": "4e8d1cc7",
+              "sha256": "1ab1af319d87c1ec5d4f145c737e74462cf8da211b124003451a683856fda88a",
+              "asm": "lea r11, [rdi + r8*8]",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b31",
+              "bytes": "3bce",
+              "sha256": "b95169b2d64305eb1ce384390adc0f2521ef45e26cbe760358d88ad308d7b852",
+              "asm": "cmp ecx, esi",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b33",
+              "bytes": "7425",
+              "sha256": "e85dc0fc0be41b8e9b3f74cacd2072ca22523c7337ca93d894eee1cc88c7ed19",
+              "asm": "je 0x606b5a",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b35",
+              "bytes": "3bca",
+              "sha256": "076befd637402e8cd0d35c03d2be866d53d6102d8ba4442d622f630227017cfc",
+              "asm": "cmp ecx, edx",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b37",
+              "bytes": "7425",
+              "sha256": "e85dc0fc0be41b8e9b3f74cacd2072ca22523c7337ca93d894eee1cc88c7ed19",
+              "asm": "je 0x606b5e",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b39",
+              "bytes": "ffc0",
+              "sha256": "36cf7346f0d0c76f16dd999870c6db6c7dd76557592e00b519bcefb73f0a80f6",
+              "asm": "inc eax",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b3b",
+              "bytes": "413bc1",
+              "sha256": "a02c793ba25166503fcf5a6ae540b6863066c01603dbe93d9044208293290064",
+              "asm": "cmp eax, r9d",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b3e",
+              "bytes": "72e0",
+              "sha256": "88fcb7a143229d98afbcdaac0eee2036e0ce17332d87ce761f3a13197993d7f8",
+              "asm": "jb 0x606b20",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b40",
+              "bytes": "b8ffffffff",
+              "sha256": "ed563fef7aff90379a90ed4533db7fd90746a66497edbd943af9bae1837fa2f3",
+              "asm": "mov eax, 0xffffffff",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b45",
+              "bytes": "488b5c2408",
+              "sha256": "87a4db8970db95080b5942db104afa69b7e61d2697e9487538c90545a00fb336",
+              "asm": "mov rbx, qword ptr [rsp + 8]",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b4a",
+              "bytes": "488b6c2410",
+              "sha256": "42e62c5ecf8bcd64751ba45e6c053cd8e9f7bcf63e06ee30f972b164433f5f37",
+              "asm": "mov rbp, qword ptr [rsp + 0x10]",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b4f",
+              "bytes": "488b742418",
+              "sha256": "2dceb997232b1da608c95701343ebc1a9aaf37b0869d8f2e9b90afffa67f18cf",
+              "asm": "mov rsi, qword ptr [rsp + 0x18]",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b54",
+              "bytes": "488b7c2420",
+              "sha256": "2aa9ebb741516d93d30599187d583d1cefa39d553af4a00e79e64a6800515792",
+              "asm": "mov rdi, qword ptr [rsp + 0x20]",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b59",
+              "bytes": "c3",
+              "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+              "asm": "ret ",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b5a",
+              "bytes": "3bca",
+              "sha256": "076befd637402e8cd0d35c03d2be866d53d6102d8ba4442d622f630227017cfc",
+              "asm": "cmp ecx, edx",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b5c",
+              "bytes": "75e2",
+              "sha256": "0ccfed2db3628e21af6caaafe26fb2f30fb68fff852675a597d001c6a7d7f7b4",
+              "asm": "jne 0x606b40",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b5e",
+              "bytes": "418b4304",
+              "sha256": "ff9ce8fe491120eea7414a7899bc5ecd2e97480ca68b4d3476ab3abf8343009f",
+              "asm": "mov eax, dword ptr [r11 + 4]",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b62",
+              "bytes": "83f8ff",
+              "sha256": "b0c84d9c92db13d5a66ed0b53f011c7e96751990afb5eccc7deaa9cb8189433a",
+              "asm": "cmp eax, -1",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b65",
+              "bytes": "74d9",
+              "sha256": "97ca6575bddf5001eef5467bc040e4144529b755d77ac4121002cb32d576e60d",
+              "asm": "je 0x606b40",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b67",
+              "bytes": "48c1e005",
+              "sha256": "d542a7a083a7811bed359570427a3aa47f35397c79b144d4b4b4088a84f2097f",
+              "asm": "shl rax, 5",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b6b",
+              "bytes": "428b8410b4030000",
+              "sha256": "8fdb68d8ac868414b9b36ed2f9be0409b783c6149ce9db5c4b3d3eef519c36f5",
+              "asm": "mov eax, dword ptr [rax + r10 + 0x3b4]",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x606b73",
+              "bytes": "ebd0",
+              "sha256": "3b8feb098b1fe2f44864ff5d05000d46db0383fe33f84ed959ca9d7b88ea59e9",
+              "asm": "jmp 0x606b45",
+              "root": "0x606ad0",
+              "rip_memory_targets": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "additional_unbounded_array_writer_capacity_not_proven",
+      "base_provenance": "7275D6 reads the index from global3326468 roster loop and passes it as EDX to14335F0; the callee writes two float fields to destination+index*298+80E24 before any range test. Destination is caller RSI+4C8260. Its capacity and UI semantics are not proven, so this is retained as one concrete unresolved array consumer, not a confirmed four-slot collision.",
+      "blocks": [
+        {
+          "start": "0x72757e",
+          "end_exclusive": "0x727610",
+          "sha256": "2a03efe4cf727c7597b38a0bf8a4587704f6e60347907d5ec6d94610b129441a",
+          "instructions": [
+            {
+              "rva": "0x72757e",
+              "bytes": "488b0de3eebf02",
+              "sha256": "873bc115120c7836ec743b0a31e5a503502bcdd7501ccb4ed1a97ed1b3c7cecf",
+              "asm": "mov rcx, qword ptr [rip + 0x2bfeee3]",
+              "root": "0x725160",
+              "rip_memory_targets": [
+                "0x3326468"
+              ]
+            },
+            {
+              "rva": "0x727585",
+              "bytes": "83b98800000000",
+              "sha256": "78951bfb29c575d9bc938b2fb745b0407bce628372d5d5098fe638964196c32a",
+              "asm": "cmp dword ptr [rcx + 0x88], 0",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x72758c",
+              "bytes": "740d",
+              "sha256": "b2a2028749af082a496044f7e1e70ceb4d21b57aedc24eacb85fc7373caa7b04",
+              "asm": "je 0x72759b",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x72758e",
+              "bytes": "488b91e8000000",
+              "sha256": "f34809a2fea6404b185afdd2f99019eb012c4317dda9eb62561a0b647888942c",
+              "asm": "mov rdx, qword ptr [rcx + 0xe8]",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x727595",
+              "bytes": "4883c208",
+              "sha256": "6e457673511248d8074b1c2ac80d7af1c53e734f984d26d4f8c8081485118df9",
+              "asm": "add rdx, 8",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x727599",
+              "bytes": "eb07",
+              "sha256": "fa55f97df6b4aa5f7cf6d06e058eb46836ca682bce2704e995620ebfc663fa9c",
+              "asm": "jmp 0x7275a2",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x72759b",
+              "bytes": "488d1592c6d502",
+              "sha256": "19db58266e90e6a5fd1e6e4a740c2484d8c0b048ecb5efa4d4e7595db687ab69",
+              "asm": "lea rdx, [rip + 0x2d5c692]",
+              "root": "0x725160",
+              "rip_memory_targets": [
+                "0x3483c34"
+              ]
+            },
+            {
+              "rva": "0x7275a2",
+              "bytes": "8b12",
+              "sha256": "e46a2362a998de04d7dbe717ac2a33cb6ecc5e7a9ad41619935fd838ff2d56f2",
+              "asm": "mov edx, dword ptr [rdx]",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x7275a4",
+              "bytes": "3b158ac6d502",
+              "sha256": "8726ef9baa676969ca002ab116112ffd7d753b652676d4072f5179d4609bd48c",
+              "asm": "cmp edx, dword ptr [rip + 0x2d5c68a]",
+              "root": "0x725160",
+              "rip_memory_targets": [
+                "0x3483c34"
+              ]
+            },
+            {
+              "rva": "0x7275aa",
+              "bytes": "7410",
+              "sha256": "235a7cead254afae6a7e27318867613d5155199d01e4af6e43427d4faa69870f",
+              "asm": "je 0x7275bc",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x7275ac",
+              "bytes": "e86ff2edff",
+              "sha256": "a4a4366050498028e35be0663214eee6202852c8220db33843b75e8d8f315aa3",
+              "asm": "call 0x606820",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x7275b1",
+              "bytes": "488b0db0eebf02",
+              "sha256": "a5880d03a477773024dddc1a865515b89ce4f35146ed98f24762241c72789742",
+              "asm": "mov rcx, qword ptr [rip + 0x2bfeeb0]",
+              "root": "0x725160",
+              "rip_memory_targets": [
+                "0x3326468"
+              ]
+            },
+            {
+              "rva": "0x7275b8",
+              "bytes": "8bf8",
+              "sha256": "684765db31f3b28ef5ef4e8ee346bcefba1cab078ed6467a983f65aa84feee98",
+              "asm": "mov edi, eax",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x7275ba",
+              "bytes": "eb05",
+              "sha256": "4e48ab6b84301af8b8fa92c04373b79b5d6f0f37d207c775c98fbce001ff67fe",
+              "asm": "jmp 0x7275c1",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x7275bc",
+              "bytes": "bfffffffff",
+              "sha256": "2a68ca6c36e5dba49bafe7d05f14416151a253b1313bc0616c3db875915ede7c",
+              "asm": "mov edi, 0xffffffff",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x7275c1",
+              "bytes": "33c0",
+              "sha256": "72fb562c9d90dfcc008e5b0a391395fd2a244bb6bc231e2621a8ec6860d21fa3",
+              "asm": "xor eax, eax",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x7275c3",
+              "bytes": "8bd8",
+              "sha256": "746b256e87194e1b9ea106a2c8a809f8132c510c9c892e42e2e81f85a19ae1ae",
+              "asm": "mov ebx, eax",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x7275c5",
+              "bytes": "398184000000",
+              "sha256": "a81550846d69752c83613ab47ec9b00eb38377555515e5137ce21fc83902fe3e",
+              "asm": "cmp dword ptr [rcx + 0x84], eax",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x7275cb",
+              "bytes": "7643",
+              "sha256": "60dd9de933d1fd7d5366ec0f187d7df6b190f9dd434133bb6b4436f793926d74",
+              "asm": "jbe 0x727610",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x7275cd",
+              "bytes": "0f1f00",
+              "sha256": "019f07bfe6bd5747f9f3b65f5a095db04a0418d5f11c6feec58eaff709860b66",
+              "asm": "nop dword ptr [rax]",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x7275d0",
+              "bytes": "8bc3",
+              "sha256": "a51914475e973a2f049d7292f473d0d53f50a376607ef6c5b90e56c9fc5f0263",
+              "asm": "mov eax, ebx",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x7275d2",
+              "bytes": "48c1e005",
+              "sha256": "d542a7a083a7811bed359570427a3aa47f35397c79b144d4b4b4088a84f2097f",
+              "asm": "shl rax, 5",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x7275d6",
+              "bytes": "8b9408b4030000",
+              "sha256": "99fef035c935ba83a67815c4d26c7dc3be5b8f121e7cb059c6d13954a080b808",
+              "asm": "mov edx, dword ptr [rax + rcx + 0x3b4]",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x7275dd",
+              "bytes": "3bd7",
+              "sha256": "980115bac493414217a25d3f26a73c3910a971d2d215b7017075488178f7307a",
+              "asm": "cmp edx, edi",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x7275df",
+              "bytes": "7425",
+              "sha256": "e85dc0fc0be41b8e9b3f74cacd2072ca22523c7337ca93d894eee1cc88c7ed19",
+              "asm": "je 0x727606",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x7275e1",
+              "bytes": "f30f109c08c4030000",
+              "sha256": "5eb5a2f79450742256a5732e1391f00f376f5bf411b0ca2e6c11204c9aef9a0f",
+              "asm": "movss xmm3, dword ptr [rax + rcx + 0x3c4]",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x7275ea",
+              "bytes": "f30f109408c0030000",
+              "sha256": "673aa86a5ac760e595af271a79bbaf182358e5ce2583eda3d39fafa42b7dfb08",
+              "asm": "movss xmm2, dword ptr [rax + rcx + 0x3c0]",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x7275f3",
+              "bytes": "488d8e60824c00",
+              "sha256": "bc1f1229048552cae2f7af2157cc0ba9ae5d7daccf5f1512e6d3f5c7bbaf4574",
+              "asm": "lea rcx, [rsi + 0x4c8260]",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x7275fa",
+              "bytes": "e8f1bfd000",
+              "sha256": "562960a2ee131b39e28d09fa2d7b67feb6cdfd4b2d9860bf1b6124e0f2d07220",
+              "asm": "call 0x14335f0",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x7275ff",
+              "bytes": "488b0d62eebf02",
+              "sha256": "ef1ce51cfe3594b98ef3b68351481b35049e38189aaa1df54d21e8c4376635c1",
+              "asm": "mov rcx, qword ptr [rip + 0x2bfee62]",
+              "root": "0x725160",
+              "rip_memory_targets": [
+                "0x3326468"
+              ]
+            },
+            {
+              "rva": "0x727606",
+              "bytes": "ffc3",
+              "sha256": "6c19b79bbdc9e463cabbc0a02b3c7f1a814c141ff2f9990061b623b1faf4d90e",
+              "asm": "inc ebx",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x727608",
+              "bytes": "3b9984000000",
+              "sha256": "cb06de2dfaf938d9d4a4c39786e17c78ce72172f6ca82ae4c82edfe1d0174c69",
+              "asm": "cmp ebx, dword ptr [rcx + 0x84]",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x72760e",
+              "bytes": "72c0",
+              "sha256": "4a267317e90d3f5e293b55eddf9d277521d6ea778436baa40624d2b8c15d00cb",
+              "asm": "jb 0x7275d0",
+              "root": "0x725160",
+              "rip_memory_targets": []
+            }
+          ]
+        },
+        {
+          "start": "0x14335f0",
+          "end_exclusive": "0x143363d",
+          "sha256": "f451fc92ebcb072a23de952d2227a2863795416416f87eee386577ba549a2f84",
+          "instructions": [
+            {
+              "rva": "0x14335f0",
+              "bytes": "48895c2410",
+              "sha256": "c1680a7b1688cf4f2014559fce613b471a88c07720d0c3619fbf9a63dd55deeb",
+              "asm": "mov qword ptr [rsp + 0x10], rbx",
+              "root": "0x14335f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x14335f5",
+              "bytes": "48896c2418",
+              "sha256": "1f5a547b03fc91c2a58064598876e05b0220c84fde08af3ada8b582592758210",
+              "asm": "mov qword ptr [rsp + 0x18], rbp",
+              "root": "0x14335f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x14335fa",
+              "bytes": "56",
+              "sha256": "de5a6f78116eca62d7fc5ce159d23ae6b889b365a1739ad2cf36f925a140d0cc",
+              "asm": "push rsi",
+              "root": "0x14335f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x14335fb",
+              "bytes": "57",
+              "sha256": "fcb5f40df9be6bae66c1d77a6c15968866a9e6cbd7314ca432b019d17392f6f4",
+              "asm": "push rdi",
+              "root": "0x14335f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x14335fc",
+              "bytes": "4154",
+              "sha256": "eb5442705969dc8da5dfac8f9658dc68acdab5bb7635ba7cc551e389416ac34e",
+              "asm": "push r12",
+              "root": "0x14335f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x14335fe",
+              "bytes": "4156",
+              "sha256": "10203ae4fc14a963f9d30ab2a1d0e52f2d824b30911118a9cc5089e1e0e6c969",
+              "asm": "push r14",
+              "root": "0x14335f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1433600",
+              "bytes": "4157",
+              "sha256": "1f65c7e62e189ccf1ef96293b95b500c812a701358fd76707bda578dd9dfff2d",
+              "asm": "push r15",
+              "root": "0x14335f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1433602",
+              "bytes": "4883ec20",
+              "sha256": "e746e80a9e90a0ad65f07af5a6fa7ce141762b96cb08c37888d41c4a7155b8eb",
+              "asm": "sub rsp, 0x20",
+              "root": "0x14335f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1433606",
+              "bytes": "488b2d5b2eef01",
+              "sha256": "f31ed790496b6bbde6f07653d1f7fca2a8fd175f0ad83cd777836b3423c0d3ef",
+              "asm": "mov rbp, qword ptr [rip + 0x1ef2e5b]",
+              "root": "0x14335f0",
+              "rip_memory_targets": [
+                "0x3326468"
+              ]
+            },
+            {
+              "rva": "0x143360d",
+              "bytes": "33db",
+              "sha256": "45f1dcfd70b34f4cf0bb2c8541d74e6ec286851628ace2c254fae48a382a590d",
+              "asm": "xor ebx, ebx",
+              "root": "0x14335f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x143360f",
+              "bytes": "8bf2",
+              "sha256": "ba3c5690d208aa2c470d6c6ebb78a3ec74dbc737fe0f5f3d3a38ddfc212b13c3",
+              "asm": "mov esi, edx",
+              "root": "0x14335f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1433611",
+              "bytes": "4c8bf1",
+              "sha256": "a3854ee48daadc23ae9741ca7d47cb2cb42ad7c677e939c6fca2f2c4090fdbc1",
+              "asm": "mov r14, rcx",
+              "root": "0x14335f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1433614",
+              "bytes": "4c69e698020000",
+              "sha256": "b1d2cb8e11c75eafe9ae2eb704f008dfeb3589ca1917a0e04ebd14f9bd821e34",
+              "asm": "imul r12, rsi, 0x298",
+              "root": "0x14335f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x143361b",
+              "bytes": "f30f11542450",
+              "sha256": "edb473dc82224d2cb36df9987887ad9b2145757648e4fd69157c58f4838ebc63",
+              "asm": "movss dword ptr [rsp + 0x50], xmm2",
+              "root": "0x14335f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1433621",
+              "bytes": "f30f115c2454",
+              "sha256": "bd23e37c20c9d1b23f78fe888e62ff7c3d3d4668f1785904cd750bed01a5a272",
+              "asm": "movss dword ptr [rsp + 0x54], xmm3",
+              "root": "0x14335f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1433627",
+              "bytes": "488b442450",
+              "sha256": "976eb0c97258ac96c367ad26f216fa46e527330cc2109b430ad964960a57ac66",
+              "asm": "mov rax, qword ptr [rsp + 0x50]",
+              "root": "0x14335f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x143362c",
+              "bytes": "448bc3",
+              "sha256": "6c76d516cb86c58ca8837e4d73438369cd47460d08ca8641819ff7871fec0135",
+              "asm": "mov r8d, ebx",
+              "root": "0x14335f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x143362f",
+              "bytes": "4989840c240e0800",
+              "sha256": "405f838c7e2a4b6c1ba07f173fc1b0a706a9942eb0187126111807e44b57e392",
+              "asm": "mov qword ptr [r12 + rcx + 0x80e24], rax",
+              "root": "0x14335f0",
+              "rip_memory_targets": []
+            },
+            {
+              "rva": "0x1433637",
+              "bytes": "8bbd84000000",
+              "sha256": "b86196a05ec5cf5c4805506291242ba8fd19762db6264060db31b57734593692",
+              "asm": "mov edi, dword ptr [rbp + 0x84]",
+              "root": "0x14335f0",
+              "rip_memory_targets": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "debug_literals": [
+    {
+      "rva": "0x22549c0",
+      "text": "StateGame",
+      "bytes": "537461746547616d6500",
+      "sha256": "fc208aa0097c8871593f436dcbd9ba6054312c52cdb49cb0dc3c54246cd2ec41"
+    },
+    {
+      "rva": "0x22549d0",
+      "text": "On Enter",
+      "bytes": "4f6e20456e74657200",
+      "sha256": "7e577bc8419c1b3121b6e23992881037215e9e9b204658b25ca03e2bd156acfa"
+    },
+    {
+      "rva": "0x2254ec0",
+      "text": "on_synchronized_tasks_done",
+      "bytes": "6f6e5f73796e6368726f6e697a65645f7461736b735f646f6e6500",
+      "sha256": "9d41c8899ec7e588cae22bae4f7b754620419c5524627cd55857af20b8ca9e8e"
+    }
+  ],
+  "tag_da_capacity": {
+    "parent_tag": "0xb5",
+    "parent_debug_name": "StateGame",
+    "child_tag": "0xda",
+    "child_base": "parent+0x50",
+    "records": "child+0x80+index*0x90",
+    "initialized_record_count": 4,
+    "record_size": 144,
+    "four_records_parent_range": [
+      "0xd0",
+      "0x310"
+    ],
+    "eight_records_same_base_parent_range": [
+      "0xd0",
+      "0x550"
+    ],
+    "parallel_dword_array_child_range": [
+      "0x70",
+      "0x80"
+    ],
+    "parallel_dword_array_eight_same_base_child_range": [
+      "0x70",
+      "0x90"
+    ],
+    "index_four_collisions": [
+      {
+        "store_rva": "0xffe415",
+        "index": 4,
+        "write_width": 1,
+        "parent_offset": "0x318",
+        "value": 0,
+        "overlaps": "parent+318..31F qword"
+      },
+      {
+        "store_rva": "0xffe41e",
+        "index": 4,
+        "write_width": 4,
+        "parent_offset": "0x31c",
+        "value": "5.0f",
+        "overlaps": "parent+318..31F qword"
+      },
+      {
+        "store_rva": "0xffe42a",
+        "index": 4,
+        "write_width": 4,
+        "parent_offset": "0x320",
+        "value": 0,
+        "overlaps": "parent+320..32F bitset"
+      },
+      {
+        "store_rva": "0xffe432",
+        "index": 4,
+        "write_width": 1,
+        "parent_offset": "0x319",
+        "value": "saved boolean",
+        "overlaps": "parent+318..31F qword"
+      }
+    ],
+    "minimum_extra_payload_for_eight": 592,
+    "minimum_extra_payload_excludes": "alignment, other four-slot consumers, relocation metadata and unrelated subsystem allocations",
+    "required_design": "relocate or re-layout both arrays and update their consumers; changing cmp4 to8 in place corrupts parent fields and overlaps the parallel array with slot0",
+    "runtime_invocation_with_index_ge_four_observed": false
+  },
+  "classification": [
+    {
+      "site": "0xffe3ff ->0xffe415/41e/42a/432",
+      "kind": "confirmed static overlapping writes for index4",
+      "required_for_equivalent_eight_player_state": true
+    },
+    {
+      "site": "0x12a9c80 ->0xacf420",
+      "kind": "operation returns false for index>=4",
+      "join_rejection_proven": false,
+      "action": "extend only with storage and dependent operation audit"
+    },
+    {
+      "site": "0xaca58b ->0xacf1f0",
+      "kind": "safe bounded default vector",
+      "join_rejection_proven": false,
+      "action": "may temporarily retain fallback; per-player equivalent vector behavior needs extension",
+      "default_value_known": false
+    },
+    {
+      "site": "0x1277a06 ->0x1277a2f",
+      "kind": "32-bit register mask test",
+      "bits4_to7_representable": true,
+      "action": "no consumer-width change proven necessary; producer still unverified"
+    },
+    {
+      "site": "0x606b6b",
+      "kind": "returns network index scalar",
+      "four_limit_present": false,
+      "action": "preserve scalar behavior, update record address if roster layout moves"
+    },
+    {
+      "site": "0x7275d6 ->0x143362f",
+      "kind": "unchecked indexed two-float write",
+      "destination_capacity_proven": false,
+      "ui_semantics_proven": false,
+      "action": "one concrete remaining capacity audit; do not assert another four-slot collision"
+    }
+  ],
+  "runtime_verified": false,
+  "limitations": [
+    "The captured program was not invoked by this replay. A fifth-player execution and exact visible symptom were not observed.",
+    "StateGame is a captured debug literal associated with parent operations. No specific class name is assigned to tagDA.",
+    "The vector default at32A8E60/68 is outside the capture; its numeric value is unknown.",
+    "The mask producer and the destination capacity/semantics of14335F0 are not established here.",
+    "This is a selected proof of concrete index uses, not an exhaustive field-xref audit. Same displacements on other objects were excluded.",
+    "No join-success inference, no new probe, no game patch; callback239 wrappers and previous6054F0 palette investigation remain separate."
+  ]
+}

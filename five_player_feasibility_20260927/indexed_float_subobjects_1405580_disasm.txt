@@ -1,0 +1,35 @@
+0x1405580 mov qword ptr [rsp + 8], rbx
+0x1405585 mov qword ptr [rsp + 0x10], rsi
+0x140558a push rdi
+0x140558b sub rsp, 0x20
+0x140558f mov rdi, rcx
+0x1405592 mov rbx, rdx
+0x1405595 add rcx, 0x1c
+0x1405599 call 0x1403070
+0x140559e lea rcx, [rdi + 0x28]
+0x14055a2 mov rdx, rbx
+0x14055a5 call 0x1403070
+0x14055aa lea rsi, [rdi + 0x38]
+0x14055ae mov edi, 5
+0x14055b3 mov rbx, rsi
+0x14055b6 mov rdx, qword ptr [rbx]
+0x14055b9 test rdx, rdx
+0x14055bc je 0x14055e1
+0x14055be mov rax, qword ptr [rip + 0x1f20d43]
+0x14055c5 mov rcx, qword ptr [rip + 0x20778c4]
+0x14055cc mov r8, qword ptr [rax + 0xd0]
+0x14055d3 mov rcx, qword ptr [rcx + 0x6d38]
+0x14055da call qword ptr [r8 + 0x248]
+0x14055e1 add rbx, 8
+0x14055e5 sub rdi, 1
+0x14055e9 jne 0x14055b6
+0x14055eb mov rbx, qword ptr [rsp + 0x30]
+0x14055f0 xorps xmm0, xmm0
+0x14055f3 movups xmmword ptr [rsi], xmm0
+0x14055f6 xor eax, eax
+0x14055f8 movups xmmword ptr [rsi + 0x10], xmm0
+0x14055fc mov qword ptr [rsi + 0x20], rax
+0x1405600 mov rsi, qword ptr [rsp + 0x38]
+0x1405605 add rsp, 0x20
+0x1405609 pop rdi
+0x140560a ret 

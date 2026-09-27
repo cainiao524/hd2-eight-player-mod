@@ -1,0 +1,58 @@
+0x51bb50 mov qword ptr [rsp + 8], rbx
+0x51bb55 mov qword ptr [rsp + 0x10], rsi
+0x51bb5a push rdi
+0x51bb5b sub rsp, 0x20
+0x51bb5f mov rbx, qword ptr [rip + 0x2e0ae32]
+0x51bb66 mov rsi, rcx
+0x51bb69 mov eax, dword ptr [rbx + 4]
+0x51bb6c inc eax
+0x51bb6e cmp eax, 4
+0x51bb71 jbe 0x51bb7e
+0x51bb73 mov dword ptr [0], 0
+0x51bb7e cmp byte ptr [rdx], 0
+0x51bb81 mov eax, dword ptr [rbx + 8]
+0x51bb84 je 0x51bbc5
+0x51bb86 mov edi, dword ptr [rbx + 0xc]
+0x51bb89 cmp edi, eax
+0x51bb8b jae 0x51bb9d
+0x51bb8d mov r8d, edi
+0x51bb90 mov edx, eax
+0x51bb92 mov rcx, rbx
+0x51bb95 call 0x7af210
+0x51bb9a mov edi, dword ptr [rbx + 0xc]
+0x51bb9d lea eax, [rdi + 1]
+0x51bba0 xor edx, edx
+0x51bba2 mov dword ptr [rbx + 0xc], eax
+0x51bba5 mov r8d, 0x9928
+0x51bbab mov eax, edi
+0x51bbad imul rcx, rax, 0x9928
+0x51bbb4 add rcx, 0x88
+0x51bbbb add rcx, rbx
+0x51bbbe call 0x208aaa0
+0x51bbc3 jmp 0x51bbc7
+0x51bbc5 mov edi, eax
+0x51bbc7 xor ecx, ecx
+0x51bbc9 mov edx, edi
+0x51bbcb imul rax, rdx, 0x58
+0x51bbcf xorps xmm0, xmm0
+0x51bbd2 mov r8d, edi
+0x51bbd5 movups xmmword ptr [rax + rbx + 0x26528], xmm0
+0x51bbdd movups xmmword ptr [rax + rbx + 0x26538], xmm0
+0x51bbe5 movups xmmword ptr [rax + rbx + 0x26548], xmm0
+0x51bbed movups xmmword ptr [rax + rbx + 0x26558], xmm0
+0x51bbf5 movups xmmword ptr [rax + rbx + 0x26568], xmm0
+0x51bbfd mov qword ptr [rax + rbx + 0x26578], rcx
+0x51bc05 inc dword ptr [rbx + 8]
+0x51bc08 mov ecx, dword ptr [rbx + 8]
+0x51bc0b inc dword ptr [rbx + 4]
+0x51bc0e cmp dword ptr [rbx], ecx
+0x51bc10 cmova ecx, dword ptr [rbx]
+0x51bc13 mov dword ptr [rbx], ecx
+0x51bc15 lea rcx, [rbx + 0x50]
+0x51bc19 mov qword ptr [rbx + rdx*8 + 0x68], rsi
+0x51bc1e mov edx, dword ptr [rsi + 8]
+0x51bc21 mov rbx, qword ptr [rsp + 0x30]
+0x51bc26 mov rsi, qword ptr [rsp + 0x38]
+0x51bc2b add rsp, 0x20
+0x51bc2f pop rdi
+0x51bc30 jmp 0x172f790

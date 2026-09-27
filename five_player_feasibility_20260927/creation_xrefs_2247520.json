@@ -1,0 +1,55 @@
+{
+  "capture_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "source_sha256": {
+    "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+  },
+  "code_range": {
+    "rva": 4096,
+    "size": 34667155,
+    "label": "code",
+    "copied_bytes": 34667155,
+    "skipped_bytes": 0
+  },
+  "captured_unwind_table": {
+    "rva": "0x37d8000",
+    "size": 1832304,
+    "fragments": 152692
+  },
+  "header_exception_directory_uncaptured": {
+    "rva": "0x3fd340c",
+    "size": 1832316
+  },
+  "targets": {
+    "0x2247520": {
+      "branches": [],
+      "rip_references": [
+        {
+          "rva": "0x56e7ec",
+          "bytes": "4c8d052d8dcd01",
+          "sha256": "06aa7b24caa34b6f2d8a21429a6a5b2132437eb12dcf8263e666026a0eae31e9",
+          "asm": "lea r8, [rip + 0x1cd8d2d]",
+          "fragment": [
+            "0x56a920",
+            "0x56ffef",
+            "0x24137c8"
+          ],
+          "root": [
+            "0x56a920",
+            "0x56ffef",
+            "0x24137c8"
+          ]
+        }
+      ],
+      "absolute_pointers": [],
+      "rva_literals": []
+    }
+  },
+  "limits": [
+    "No heap or writable-data capture.",
+    "RIP reference scan recognizes REX/non-REX MOV/LEA with disp32; it does not solve arbitrary address arithmetic.",
+    "Exception-table boundary validation omits leaf or uncovered code.",
+    "Pointer/RVA literal matches alone are data occurrences, not execution edges.",
+    "No gameplay, ownership, or lifecycle inference."
+  ]
+}

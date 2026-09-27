@@ -1,0 +1,570 @@
+{
+  "investigation_status": "confirmed_count_argument_divergence_under_stated_fixture_contracts",
+  "probe_sha256": "961d96575dd07987cc96fc9675faf34df0d0a992aa1af6885551be2837f222a4",
+  "evidence_sha256": {
+    "five_player_feasibility_20260927\\roster_departure_native_evidence.json": "0280267b6f32d4a24f15c69da317d1c2c7a93adb136d4252ff93e09a8d67e609",
+    "five_player_feasibility_20260927\\roster_remove_native_evidence.json": "67563b2d12860c814096b1d45338dd271ad13975c3ba4f96169a92473ab061af",
+    "five_player_feasibility_20260927\\roster_departure_callee_evidence.json": "04e16b4b9a301ba2fbd796528df6e53f9d3d8a25626cd459cc9f1329edd5d0d0"
+  },
+  "executed_body_sha256": {
+    "0x605950": "4f0de56eb062df3180f58fcf4fd9a4e462eceba75a3077ac2bc22728500f5681",
+    "0x606820": "0ee6495101f1fbd8c4a95731144aa5dbd43289f107264c12c4d2d9aab9ffd2ce",
+    "0x540a40": "35e4c996bb1466c41df455f8e5f9df1174c8c2bb958ee127a3b7ecc59f6abcf8",
+    "0x172f8a0": "d58cc9dbb3c79864b4ca0692be1fcf3a31ec267c059f7c904063aed53d05ec4f",
+    "0xfd9c80": "0533fa336a0f696021412e722716c7de8ee2096439a98f7e8671a9ea44487eae"
+  },
+  "float_literal": {
+    "rva": "0x23c6d70",
+    "bytes_hex": "0000803f",
+    "source": "same fixed capture; independently read before probe construction"
+  },
+  "python_version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "unicorn_version": "2.1.4",
+  "fixture_synthetic": true,
+  "game_process_accessed": false,
+  "host_native_code_executed": false,
+  "candidate_emitted": false,
+  "top_level_function_executions": 6,
+  "nested_saved_getter_executions": 3,
+  "nested_saved_associated_lookup_executions": 3,
+  "nested_saved_map_delete_executions": 3,
+  "supersedes": {
+    "probe": "roster_departure_native_probe.py",
+    "probe_sha256": "5997510919cd712ea91a587d4d5d595bf71d025efbf99e7b948ee67e6e60657a",
+    "result": "roster_departure_native_probe_results.json",
+    "result_sha256": "ce63c713be2a315a57f624a8ffe05e275a4856862047f7c29e62569f80119919",
+    "reason": "v1 forced FD9C80 to return null for associated ID FFFFFFFF; v2 uses ID 7FFF and executes its real direct-null branch"
+  },
+  "cases": [
+    {
+      "name": "dense_one",
+      "t": 1,
+      "d": 1,
+      "p": 0,
+      "target_ordinal": 0,
+      "phases": [
+        {
+          "phase": "departure",
+          "entry_rva": "0x605950",
+          "outcome": "return",
+          "instructions": 174,
+          "counts_after": [
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "phase": "remove",
+          "entry_rva": "0x540a40",
+          "outcome": "return",
+          "instructions": 72,
+          "counts_after": [
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "events": [
+        {
+          "phase": "departure",
+          "kind": "actual_body_entry",
+          "rva": "0x605950",
+          "counts": [
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "phase": "departure",
+          "kind": "actual_body_entry",
+          "rva": "0x606820",
+          "counts": [
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "phase": "departure",
+          "kind": "external_contract_stub",
+          "role": "network_notification",
+          "counts": [
+            1,
+            1,
+            0
+          ],
+          "rva": "0x139c360",
+          "edx": 0,
+          "rsp_mod16": 8
+        },
+        {
+          "phase": "departure",
+          "kind": "actual_body_entry",
+          "rva": "0xfd9c80",
+          "counts": [
+            1,
+            1,
+            0
+          ],
+          "associated_id_ecx": 32767
+        },
+        {
+          "phase": "departure",
+          "kind": "actual_associated_lookup_return",
+          "rva": "0x605a6d",
+          "return_rax": 0,
+          "counts": [
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "phase": "departure",
+          "kind": "external_contract_stub",
+          "role": "ui_notification",
+          "counts": [
+            1,
+            1,
+            0
+          ],
+          "rva": "0x94c9c0",
+          "edx": 8627512,
+          "rsp_mod16": 8,
+          "count_stack_argument": 0
+        },
+        {
+          "phase": "departure",
+          "kind": "external_contract_stub",
+          "role": "count_notification",
+          "counts": [
+            1,
+            1,
+            0
+          ],
+          "rva": "0x60c2a0",
+          "edx": 0,
+          "rsp_mod16": 8
+        },
+        {
+          "phase": "departure",
+          "kind": "external_contract_stub",
+          "role": "tail_player_count",
+          "counts": [
+            1,
+            1,
+            0
+          ],
+          "rva": null,
+          "edx": 1,
+          "rsp_mod16": 8,
+          "literal": "player_count"
+        },
+        {
+          "phase": "remove",
+          "kind": "actual_body_entry",
+          "rva": "0x540a40",
+          "counts": [
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "phase": "remove",
+          "kind": "actual_body_entry",
+          "rva": "0x172f8a0",
+          "counts": [
+            1,
+            1,
+            0
+          ]
+        }
+      ],
+      "departure_roster_and_nonstack_unchanged": true,
+      "actual_associated_lookup_instruction_trace": [
+        "0xfd9c80",
+        "0xfd9c84",
+        "0xfd9c87",
+        "0xfd9c8d",
+        "0xfd9d2c",
+        "0xfd9d2e",
+        "0xfd9d32"
+      ],
+      "ui_count_argument": 0,
+      "count_notification_edx": 0,
+      "tail_player_count_edx": 1,
+      "actual_post_remove_dense": 0,
+      "notification_equals_post_remove_dense": true,
+      "tail_equals_pre_remove_dense": true,
+      "unsigned_decrement_underflow": false,
+      "real_saved_mover_executions": 0
+    },
+    {
+      "name": "pending_with_dense",
+      "t": 2,
+      "d": 1,
+      "p": 0,
+      "target_ordinal": 1,
+      "phases": [
+        {
+          "phase": "departure",
+          "entry_rva": "0x605950",
+          "outcome": "return",
+          "instructions": 197,
+          "counts_after": [
+            2,
+            1,
+            0
+          ]
+        },
+        {
+          "phase": "remove",
+          "entry_rva": "0x540a40",
+          "outcome": "return",
+          "instructions": 76,
+          "counts_after": [
+            1,
+            1,
+            0
+          ]
+        }
+      ],
+      "events": [
+        {
+          "phase": "departure",
+          "kind": "actual_body_entry",
+          "rva": "0x605950",
+          "counts": [
+            2,
+            1,
+            0
+          ]
+        },
+        {
+          "phase": "departure",
+          "kind": "actual_body_entry",
+          "rva": "0x606820",
+          "counts": [
+            2,
+            1,
+            0
+          ]
+        },
+        {
+          "phase": "departure",
+          "kind": "external_contract_stub",
+          "role": "network_notification",
+          "counts": [
+            2,
+            1,
+            0
+          ],
+          "rva": "0x139c360",
+          "edx": 1,
+          "rsp_mod16": 8
+        },
+        {
+          "phase": "departure",
+          "kind": "actual_body_entry",
+          "rva": "0xfd9c80",
+          "counts": [
+            2,
+            1,
+            0
+          ],
+          "associated_id_ecx": 32767
+        },
+        {
+          "phase": "departure",
+          "kind": "actual_associated_lookup_return",
+          "rva": "0x605a6d",
+          "return_rax": 0,
+          "counts": [
+            2,
+            1,
+            0
+          ]
+        },
+        {
+          "phase": "departure",
+          "kind": "external_contract_stub",
+          "role": "ui_notification",
+          "counts": [
+            2,
+            1,
+            0
+          ],
+          "rva": "0x94c9c0",
+          "edx": 8627512,
+          "rsp_mod16": 8,
+          "count_stack_argument": 0
+        },
+        {
+          "phase": "departure",
+          "kind": "external_contract_stub",
+          "role": "count_notification",
+          "counts": [
+            2,
+            1,
+            0
+          ],
+          "rva": "0x60c2a0",
+          "edx": 0,
+          "rsp_mod16": 8
+        },
+        {
+          "phase": "departure",
+          "kind": "external_contract_stub",
+          "role": "tail_player_count",
+          "counts": [
+            2,
+            1,
+            0
+          ],
+          "rva": null,
+          "edx": 1,
+          "rsp_mod16": 8,
+          "literal": "player_count"
+        },
+        {
+          "phase": "remove",
+          "kind": "actual_body_entry",
+          "rva": "0x540a40",
+          "counts": [
+            2,
+            1,
+            0
+          ]
+        },
+        {
+          "phase": "remove",
+          "kind": "actual_body_entry",
+          "rva": "0x172f8a0",
+          "counts": [
+            2,
+            1,
+            0
+          ]
+        }
+      ],
+      "departure_roster_and_nonstack_unchanged": true,
+      "actual_associated_lookup_instruction_trace": [
+        "0xfd9c80",
+        "0xfd9c84",
+        "0xfd9c87",
+        "0xfd9c8d",
+        "0xfd9d2c",
+        "0xfd9d2e",
+        "0xfd9d32"
+      ],
+      "ui_count_argument": 0,
+      "count_notification_edx": 0,
+      "tail_player_count_edx": 1,
+      "actual_post_remove_dense": 1,
+      "notification_equals_post_remove_dense": false,
+      "tail_equals_pre_remove_dense": true,
+      "unsigned_decrement_underflow": false,
+      "real_saved_mover_executions": 0
+    },
+    {
+      "name": "pending_without_dense",
+      "t": 1,
+      "d": 0,
+      "p": 0,
+      "target_ordinal": 0,
+      "phases": [
+        {
+          "phase": "departure",
+          "entry_rva": "0x605950",
+          "outcome": "return",
+          "instructions": 174,
+          "counts_after": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "phase": "remove",
+          "entry_rva": "0x540a40",
+          "outcome": "return",
+          "instructions": 67,
+          "counts_after": [
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "events": [
+        {
+          "phase": "departure",
+          "kind": "actual_body_entry",
+          "rva": "0x605950",
+          "counts": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "phase": "departure",
+          "kind": "actual_body_entry",
+          "rva": "0x606820",
+          "counts": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "phase": "departure",
+          "kind": "external_contract_stub",
+          "role": "network_notification",
+          "counts": [
+            1,
+            0,
+            0
+          ],
+          "rva": "0x139c360",
+          "edx": 0,
+          "rsp_mod16": 8
+        },
+        {
+          "phase": "departure",
+          "kind": "actual_body_entry",
+          "rva": "0xfd9c80",
+          "counts": [
+            1,
+            0,
+            0
+          ],
+          "associated_id_ecx": 32767
+        },
+        {
+          "phase": "departure",
+          "kind": "actual_associated_lookup_return",
+          "rva": "0x605a6d",
+          "return_rax": 0,
+          "counts": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "phase": "departure",
+          "kind": "external_contract_stub",
+          "role": "ui_notification",
+          "counts": [
+            1,
+            0,
+            0
+          ],
+          "rva": "0x94c9c0",
+          "edx": 8627512,
+          "rsp_mod16": 8,
+          "count_stack_argument": 4294967295
+        },
+        {
+          "phase": "departure",
+          "kind": "external_contract_stub",
+          "role": "count_notification",
+          "counts": [
+            1,
+            0,
+            0
+          ],
+          "rva": "0x60c2a0",
+          "edx": 4294967295,
+          "rsp_mod16": 8
+        },
+        {
+          "phase": "departure",
+          "kind": "external_contract_stub",
+          "role": "tail_player_count",
+          "counts": [
+            1,
+            0,
+            0
+          ],
+          "rva": null,
+          "edx": 0,
+          "rsp_mod16": 8,
+          "literal": "player_count"
+        },
+        {
+          "phase": "remove",
+          "kind": "actual_body_entry",
+          "rva": "0x540a40",
+          "counts": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "phase": "remove",
+          "kind": "actual_body_entry",
+          "rva": "0x172f8a0",
+          "counts": [
+            1,
+            0,
+            0
+          ]
+        }
+      ],
+      "departure_roster_and_nonstack_unchanged": true,
+      "actual_associated_lookup_instruction_trace": [
+        "0xfd9c80",
+        "0xfd9c84",
+        "0xfd9c87",
+        "0xfd9c8d",
+        "0xfd9d2c",
+        "0xfd9d2e",
+        "0xfd9d32"
+      ],
+      "ui_count_argument": 4294967295,
+      "count_notification_edx": 4294967295,
+      "tail_player_count_edx": 0,
+      "actual_post_remove_dense": 0,
+      "notification_equals_post_remove_dense": false,
+      "tail_equals_pre_remove_dense": true,
+      "unsigned_decrement_underflow": true,
+      "real_saved_mover_executions": 0
+    }
+  ],
+  "contract_stubs": {
+    "0x139c360": "observe network DWORD; preserve all nonstack state",
+    "0x94c9c0": "observe UI sixth stack argument; preserve all nonstack state",
+    "0x60c2a0": "observe EDX only; helper implementation and downstream UI callback not executed",
+    "context.vtable+0x480": "observe player_count literal and EDX; preserve all nonstack state"
+  },
+  "fixture_branch_conditions": {
+    "target_bit0": 0,
+    "prefix_count": 0,
+    "associated_entity": null,
+    "associated_id_property_dword": 32767,
+    "associated_lookup_actual_instructions": true,
+    "associated_manager_count": 0,
+    "mode": 4,
+    "ui_listener_count": 1,
+    "ui_listener_tag": "0x3e",
+    "aux_config_count": 0,
+    "original_roster_capacity": 4,
+    "map_capacity": 8
+  },
+  "limits": [
+    "External stubs deliberately exclude notifications changing roster, map, counts or globals; real callback interference remains unproven",
+    "The outer ordering is a synthetic two-call harness based on separately observed dispatch order, not execution of FDC820",
+    "The pending states are synthetic; their reachability through the real departure caller has not been established",
+    "Count argument purpose is not inferred: mismatch with actual post-remove D does not by itself justify changing its semantic value",
+    "Only unclassified, no-associated-entity path with one tag-3E UI listener is exercised; other branches and failure behavior remain untested",
+    "All three removals delete their segment-last record; original mover is not needed and is not executed",
+    "No eight-slot candidate, live process operation, installation or multiplayer verification"
+  ]
+}

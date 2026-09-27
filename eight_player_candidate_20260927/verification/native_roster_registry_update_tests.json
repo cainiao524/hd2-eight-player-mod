@@ -1,0 +1,2297 @@
+{
+  "status": "passed",
+  "test_methods_run": 8,
+  "failure_count": 0,
+  "error_count": 0,
+  "failures": [],
+  "errors": [],
+  "source_sha256": {
+    "Native/roster_registry_update.py": "1e97c7e52c6d723fe43824c599cfc27871650dea3fe4357f9fcf14dfaa2edd01",
+    "Native/roster_departure.py": "a0d9a350254955a840a6039795eb42b89ea8f48e86c3ce00b921e3b1c6f165ba",
+    "Native/roster_getter.py": "3de7432a9c1218ab98f2e92679583cb299c93d4ba8bcb739fea8aa980520ef5d",
+    "Native/roster_classify.py": "bc4508fadf17726b773ed9c4237f7693405856ccc0b57ddcac4d06e073f46153",
+    "Native/roster_remove.py": "097e34c1087f3b311ecf6c9ed85de9165fa739b416e9c99ff7a834aa021c9716",
+    "Native/roster_insert.py": "b7bfcd2184382925b4abade40c5e81f21fcdd689f1aea47a2546c055f0bbf551",
+    "Native/roster_move.py": "cc6df86a567fda45fcac9a258372df52aad085fff67a620b5f4a2d46c100c23f",
+    "Native/roster_bundle.py": "7041074e818277f45476b91611bf8a37a0a94a9244c48c321148341dac824fbf",
+    "Native/roster_property_pair.py": "5828d6a03bfce89ea63e3c8e8c49bca60825aa8b11533dd7e545570f183dba63",
+    "Native/roster_producer.py": "015b2240847019bfb62fa62a72ce8af93894f2d61b0369d5079aa40d40697a4b",
+    "Native/roster_receiver.py": "38b163fe9a0fda32db609ee94f96ab257105221e60e28ad14c4bd14676e61a27",
+    "Native/player_count.py": "d89b5cb7d8c6a574dbb4d1ef24346524c3a9d2cfeae36357a9bf8fd94967d8ab"
+  },
+  "test_sha256": "5d9bc2c41def4b85191a062b61c47f6d3dae9a378796839ec16c324986df3e4d",
+  "test_dependency_sha256": {
+    "verification\\native_roster_registry_update_addresses_synthetic.json": "9e55ffae537f449fea5ffc7a8fe63df4204963c2090acd75ccd57d0b3b0fc432",
+    "verification\\native_roster_registry_update_bundle_synthetic.json": "01925487570c19244c577f2a8664e733f64c047f9914b30428105e02ead5198c"
+  },
+  "evidence_sha256": {
+    "roster_registry_update_native_evidence.json": "7a8f289ea8ddf85d1b2010a39d9cedc4599e9846db8936b9e215cbd4a96740e1",
+    "roster_departure_native_evidence.json": "0280267b6f32d4a24f15c69da317d1c2c7a93adb136d4252ff93e09a8d67e609",
+    "roster_getter_native_evidence.json": "1360863bfe1f1f6ce640ef049776d3b31703a1cbfe2bea3f90bf20555f69e0fd",
+    "roster_classify_native_evidence.json": "f20165dad6823edc40fbcdf0434123139f1c80d9222a2b20d3f4c067768e9e33",
+    "roster_remove_native_evidence.json": "67563b2d12860c814096b1d45338dd271ad13975c3ba4f96169a92473ab061af",
+    "roster_insert_native_evidence.json": "794c357a56b2aa28cfd1061374afe27c1a3a2c06d31ce4ca736e4b783e41b497",
+    "roster_move_native_evidence.json": "115802c09eb15f840932667717731150aa347e7ae8a72245dd92e05a5e86a242",
+    "roster_property_producer_native_evidence.json": "f73ec903d06f2304f4f944c25e011a7ef86d78737cb1b197101a1c96daaabacb",
+    "roster_property_receive_evidence.json": "bad5661771df280dd5e982b765d2f4ab1c73de9ae7e86e974751af6c3c383c10",
+    "roster_player_count_native_evidence.json": "8f0fad49d9f5bc7e95ffe8735007b59c302034704707602c8d8093ad795676e3",
+    "roster_departure_callee_evidence.json": "04e16b4b9a301ba2fbd796528df6e53f9d3d8a25626cd459cc9f1329edd5d0d0"
+  },
+  "evidence_scopes": {
+    "executed_saved_bodies": "roster_registry_update_native_evidence.json",
+    "build_bundle_only": [
+      "roster_departure_native_evidence.json",
+      "roster_getter_native_evidence.json",
+      "roster_classify_native_evidence.json",
+      "roster_remove_native_evidence.json",
+      "roster_insert_native_evidence.json",
+      "roster_move_native_evidence.json",
+      "roster_property_producer_native_evidence.json",
+      "roster_property_receive_evidence.json",
+      "roster_player_count_native_evidence.json",
+      "roster_departure_callee_evidence.json"
+    ]
+  },
+  "saved_body_sha256": {
+    "0xb54e00": "8f679d31841a3cce6ee1f4d66ec47bc89aa9a347b68939bc4264ec25bf8bd783",
+    "0x606520": "ca355caa6f6c7309202c504fadbfaae2c93fff84f5c846bf8be60d839631c39e",
+    "0xfd9ba0": "d81d3d8b8d73c6301dae0432dbb840658fe113ba8a356c084da5c6d28ab51ad7"
+  },
+  "python_version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "unicorn_version": "2.1.4",
+  "capstone_version": "5.0.7",
+  "fixture_synthetic": true,
+  "game_process_accessed": false,
+  "host_native_code_executed": false,
+  "installable": false,
+  "emulator_runs": [
+    {
+      "name": "all_eight_tag69_slots",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 0,
+      "query": 2164260864,
+      "tags": [
+        105
+      ],
+      "outcome": "return",
+      "instructions": 159,
+      "actual_fd9ba0_entries": 1,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        }
+      ]
+    },
+    {
+      "name": "all_eight_tag69_slots",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [
+        105
+      ],
+      "outcome": "return",
+      "instructions": 241,
+      "actual_fd9ba0_entries": 2,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        }
+      ]
+    },
+    {
+      "name": "all_eight_tag69_slots",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 2,
+      "query": 2164260898,
+      "tags": [
+        105
+      ],
+      "outcome": "return",
+      "instructions": 325,
+      "actual_fd9ba0_entries": 3,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 293
+        }
+      ]
+    },
+    {
+      "name": "all_eight_tag69_slots",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 3,
+      "query": 2164260915,
+      "tags": [
+        105
+      ],
+      "outcome": "return",
+      "instructions": 427,
+      "actual_fd9ba0_entries": 4,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 293
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 309
+        }
+      ]
+    },
+    {
+      "name": "all_eight_tag69_slots",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 4,
+      "query": 2164260932,
+      "tags": [
+        105
+      ],
+      "outcome": "return",
+      "instructions": 537,
+      "actual_fd9ba0_entries": 5,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 293
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 309
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 325
+        }
+      ]
+    },
+    {
+      "name": "all_eight_tag69_slots",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 5,
+      "query": 2164260949,
+      "tags": [
+        105
+      ],
+      "outcome": "return",
+      "instructions": 665,
+      "actual_fd9ba0_entries": 6,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 293
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 309
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 325
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 341
+        }
+      ]
+    },
+    {
+      "name": "all_eight_tag69_slots",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 6,
+      "query": 2164260966,
+      "tags": [
+        105
+      ],
+      "outcome": "return",
+      "instructions": 795,
+      "actual_fd9ba0_entries": 7,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 293
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 309
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 325
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 341
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 357
+        }
+      ]
+    },
+    {
+      "name": "all_eight_tag69_slots",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 7,
+      "query": 2164260983,
+      "tags": [
+        105
+      ],
+      "outcome": "return",
+      "instructions": 949,
+      "actual_fd9ba0_entries": 8,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 293
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 309
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 325
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 341
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 357
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 373
+        }
+      ]
+    },
+    {
+      "name": "original_tag69_baseline",
+      "component": "root",
+      "original": true,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "target": 0,
+      "query": 2164260864,
+      "tags": [
+        105
+      ],
+      "outcome": "return",
+      "instructions": 130,
+      "actual_fd9ba0_entries": 1,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        }
+      ]
+    },
+    {
+      "name": "candidate_tag69_pair",
+      "component": "root",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "target": 0,
+      "query": 2164260864,
+      "tags": [
+        105
+      ],
+      "outcome": "return",
+      "instructions": 159,
+      "actual_fd9ba0_entries": 1,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        }
+      ]
+    },
+    {
+      "name": "original_tag69_baseline",
+      "component": "root",
+      "original": true,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [
+        105
+      ],
+      "outcome": "return",
+      "instructions": 210,
+      "actual_fd9ba0_entries": 2,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        }
+      ]
+    },
+    {
+      "name": "candidate_tag69_pair",
+      "component": "root",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [
+        105
+      ],
+      "outcome": "return",
+      "instructions": 241,
+      "actual_fd9ba0_entries": 2,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        }
+      ]
+    },
+    {
+      "name": "original_tag69_baseline",
+      "component": "root",
+      "original": true,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "target": 2,
+      "query": 2164260898,
+      "tags": [
+        105
+      ],
+      "outcome": "return",
+      "instructions": 295,
+      "actual_fd9ba0_entries": 3,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 293
+        }
+      ]
+    },
+    {
+      "name": "candidate_tag69_pair",
+      "component": "root",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "target": 2,
+      "query": 2164260898,
+      "tags": [
+        105
+      ],
+      "outcome": "return",
+      "instructions": 325,
+      "actual_fd9ba0_entries": 3,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 293
+        }
+      ]
+    },
+    {
+      "name": "original_tag69_baseline",
+      "component": "root",
+      "original": true,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "target": 3,
+      "query": 2164260915,
+      "tags": [
+        105
+      ],
+      "outcome": "return",
+      "instructions": 397,
+      "actual_fd9ba0_entries": 4,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 293
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 309
+        }
+      ]
+    },
+    {
+      "name": "candidate_tag69_pair",
+      "component": "root",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "target": 3,
+      "query": 2164260915,
+      "tags": [
+        105
+      ],
+      "outcome": "return",
+      "instructions": 427,
+      "actual_fd9ba0_entries": 4,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 293
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 309
+        }
+      ]
+    },
+    {
+      "name": "tag69_second_aslr",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 7,
+      "query": 2164260983,
+      "tags": [
+        105
+      ],
+      "outcome": "return",
+      "instructions": 949,
+      "actual_fd9ba0_entries": 8,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 293
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 309
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 325
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 341
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 357
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 373
+        }
+      ]
+    },
+    {
+      "name": "helper_all_eight_slots",
+      "component": "helper",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 0,
+      "query": 2164260864,
+      "tags": [],
+      "outcome": "return",
+      "instructions": 75,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "helper_all_eight_slots",
+      "component": "helper",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [],
+      "outcome": "return",
+      "instructions": 122,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "helper_all_eight_slots",
+      "component": "helper",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 2,
+      "query": 2164260898,
+      "tags": [],
+      "outcome": "return",
+      "instructions": 181,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "helper_all_eight_slots",
+      "component": "helper",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 3,
+      "query": 2164260915,
+      "tags": [],
+      "outcome": "return",
+      "instructions": 252,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "helper_all_eight_slots",
+      "component": "helper",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 4,
+      "query": 2164260932,
+      "tags": [],
+      "outcome": "return",
+      "instructions": 335,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "helper_all_eight_slots",
+      "component": "helper",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 5,
+      "query": 2164260949,
+      "tags": [],
+      "outcome": "return",
+      "instructions": 430,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "helper_all_eight_slots",
+      "component": "helper",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 6,
+      "query": 2164260966,
+      "tags": [],
+      "outcome": "return",
+      "instructions": 537,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "helper_all_eight_slots",
+      "component": "helper",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 7,
+      "query": 2164260983,
+      "tags": [],
+      "outcome": "return",
+      "instructions": 656,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "helper_original_candidate_baseline",
+      "component": "helper",
+      "original": true,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "target": 0,
+      "query": 2164260864,
+      "tags": [],
+      "outcome": "return",
+      "instructions": 63,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "helper_original_candidate_baseline",
+      "component": "helper",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "target": 0,
+      "query": 2164260864,
+      "tags": [],
+      "outcome": "return",
+      "instructions": 75,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "helper_original_candidate_baseline",
+      "component": "helper",
+      "original": true,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [],
+      "outcome": "return",
+      "instructions": 110,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "helper_original_candidate_baseline",
+      "component": "helper",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [],
+      "outcome": "return",
+      "instructions": 122,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "helper_original_candidate_baseline",
+      "component": "helper",
+      "original": true,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "target": 2,
+      "query": 2164260898,
+      "tags": [],
+      "outcome": "return",
+      "instructions": 169,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "helper_original_candidate_baseline",
+      "component": "helper",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "target": 2,
+      "query": 2164260898,
+      "tags": [],
+      "outcome": "return",
+      "instructions": 181,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "helper_original_candidate_baseline",
+      "component": "helper",
+      "original": true,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "target": 3,
+      "query": 2164260915,
+      "tags": [],
+      "outcome": "return",
+      "instructions": 240,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "helper_original_candidate_baseline",
+      "component": "helper",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "target": 3,
+      "query": 2164260915,
+      "tags": [],
+      "outcome": "return",
+      "instructions": 252,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "helper_ordinary_missing",
+      "component": "helper",
+      "original": false,
+      "t": 0,
+      "d": 0,
+      "p": 0,
+      "target": 0,
+      "query": 2164260864,
+      "tags": [],
+      "outcome": "return",
+      "instructions": 38,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "helper_ordinary_missing",
+      "component": "helper",
+      "original": false,
+      "t": 8,
+      "d": 3,
+      "p": 1,
+      "target": 7,
+      "query": 2164260983,
+      "tags": [],
+      "outcome": "return",
+      "instructions": 181,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "helper_ordinary_missing",
+      "component": "helper",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 7,
+      "query": 2440130929,
+      "tags": [],
+      "outcome": "return",
+      "instructions": 656,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "helper_ordinary_missing",
+      "component": "helper",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 7,
+      "query": 3497095537,
+      "tags": [],
+      "outcome": "return",
+      "instructions": 96,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "tag69_sentinel_conversion_can_match",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 0,
+      "query": 3497095537,
+      "tags": [
+        105
+      ],
+      "outcome": "return",
+      "instructions": 126,
+      "actual_fd9ba0_entries": 1,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 32767
+        }
+      ]
+    },
+    {
+      "name": "tag69_no_dense_match",
+      "component": "root",
+      "original": false,
+      "t": 0,
+      "d": 0,
+      "p": 0,
+      "target": 0,
+      "query": 2164260864,
+      "tags": [
+        105
+      ],
+      "outcome": "return",
+      "instructions": 56,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "tag69_no_dense_match",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 3,
+      "p": 1,
+      "target": 7,
+      "query": 2164260983,
+      "tags": [
+        105
+      ],
+      "outcome": "return",
+      "instructions": 255,
+      "actual_fd9ba0_entries": 3,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 293
+        }
+      ]
+    },
+    {
+      "name": "tag69_no_dense_match",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 7,
+      "query": 2440130929,
+      "tags": [
+        105
+      ],
+      "outcome": "return",
+      "instructions": 820,
+      "actual_fd9ba0_entries": 8,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 293
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 309
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 325
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 341
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 357
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 373
+        }
+      ]
+    },
+    {
+      "name": "tag69_map_capacity_only_checked_after_match",
+      "component": "root",
+      "original": false,
+      "t": 0,
+      "d": 0,
+      "p": 0,
+      "target": 0,
+      "query": 2164260864,
+      "tags": [
+        105
+      ],
+      "outcome": "return",
+      "instructions": 56,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "tag69_map_capacity_only_checked_after_match",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 7,
+      "query": 2440130929,
+      "tags": [
+        105
+      ],
+      "outcome": "return",
+      "instructions": 820,
+      "actual_fd9ba0_entries": 8,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 293
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 309
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 325
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 341
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 357
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 373
+        }
+      ]
+    },
+    {
+      "name": "helper_explicit_S_not_global_binding",
+      "component": "helper",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 7,
+      "query": 2164260983,
+      "tags": [],
+      "outcome": "return",
+      "instructions": 656,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "tag69_first_duplicate_match",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 5,
+      "query": 2164260949,
+      "tags": [
+        105
+      ],
+      "outcome": "return",
+      "instructions": 289,
+      "actual_fd9ba0_entries": 2,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 341
+        }
+      ]
+    },
+    {
+      "name": "tag73_true_helper_eighth_slot",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 7,
+      "query": 2164260983,
+      "tags": [
+        115
+      ],
+      "outcome": "return",
+      "instructions": 750,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_roster_helper"
+        },
+        {
+          "role": "tag73_record",
+          "args": {
+            "rcx": 1657958268432,
+            "rdx": 1644463362,
+            "r8": 67,
+            "r9": 4
+          }
+        }
+      ]
+    },
+    {
+      "name": "tag73_true_helper_eighth_slot",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 7,
+      "query": 2164260983,
+      "tags": [
+        115
+      ],
+      "outcome": "return",
+      "instructions": 757,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_roster_helper"
+        },
+        {
+          "role": "tag73_record",
+          "args": {
+            "rcx": 1657958268432,
+            "rdx": 1644463362,
+            "r8": 67,
+            "r9": 4
+          }
+        },
+        {
+          "role": "tag73_record",
+          "args": {
+            "rcx": 1657958268432,
+            "rdx": 1644463362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "uninitialized_prefix_preserved_hex": "a5a5a5a5a5a5a5a500a5a5a502000000"
+        }
+      ]
+    },
+    {
+      "name": "tag73_ordinary_missing",
+      "component": "root",
+      "original": false,
+      "t": 0,
+      "d": 0,
+      "p": 0,
+      "target": 0,
+      "query": 2164260864,
+      "tags": [
+        115
+      ],
+      "outcome": "return",
+      "instructions": 98,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_roster_helper"
+        }
+      ]
+    },
+    {
+      "name": "tag73_ordinary_missing",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 3,
+      "p": 1,
+      "target": 7,
+      "query": 2164260983,
+      "tags": [
+        115
+      ],
+      "outcome": "return",
+      "instructions": 241,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_roster_helper"
+        }
+      ]
+    },
+    {
+      "name": "tag73_ordinary_missing",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 7,
+      "query": 2164260983,
+      "tags": [
+        115
+      ],
+      "outcome": "return",
+      "instructions": 156,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_roster_helper"
+        }
+      ]
+    },
+    {
+      "name": "tag73_original_candidate_fallback",
+      "component": "root",
+      "original": true,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "target": 3,
+      "query": 2164260915,
+      "tags": [
+        115
+      ],
+      "outcome": "return",
+      "instructions": 327,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_roster_helper"
+        },
+        {
+          "role": "tag73_record",
+          "args": {
+            "rcx": 1657958268432,
+            "rdx": 1644463362,
+            "r8": 35,
+            "r9": 4
+          }
+        },
+        {
+          "role": "tag73_record",
+          "args": {
+            "rcx": 1657958268432,
+            "rdx": 1644463362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "uninitialized_prefix_preserved_hex": "a5a5a5a5a5a5a5a500a5a5a502000000"
+        }
+      ]
+    },
+    {
+      "name": "tag73_original_candidate_fallback",
+      "component": "root",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "target": 3,
+      "query": 2164260915,
+      "tags": [
+        115
+      ],
+      "outcome": "return",
+      "instructions": 353,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_roster_helper"
+        },
+        {
+          "role": "tag73_record",
+          "args": {
+            "rcx": 1657958268432,
+            "rdx": 1644463362,
+            "r8": 35,
+            "r9": 4
+          }
+        },
+        {
+          "role": "tag73_record",
+          "args": {
+            "rcx": 1657958268432,
+            "rdx": 1644463362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          },
+          "uninitialized_prefix_preserved_hex": "a5a5a5a5a5a5a5a500a5a5a502000000"
+        }
+      ]
+    },
+    {
+      "name": "nonroster_tags_no_binding_requirement",
+      "component": "root",
+      "original": true,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [],
+      "outcome": "return",
+      "instructions": 16,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "nonroster_tags_no_binding_requirement",
+      "component": "root",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [],
+      "outcome": "return",
+      "instructions": 16,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "nonroster_tags_no_binding_requirement",
+      "component": "root",
+      "original": true,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [
+        2457
+      ],
+      "outcome": "return",
+      "instructions": 41,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "nonroster_tags_no_binding_requirement",
+      "component": "root",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [
+        2457
+      ],
+      "outcome": "return",
+      "instructions": 41,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "nonroster_tags_no_binding_requirement",
+      "component": "root",
+      "original": true,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [
+        46,
+        277,
+        2457
+      ],
+      "outcome": "return",
+      "instructions": 109,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": [
+        {
+          "role": "tag2e",
+          "args": {
+            "rcx": 1657941262336,
+            "rdx": 2164260881,
+            "r8": 16203951459279044611,
+            "r9": 17361376563513262084
+          }
+        },
+        {
+          "role": "tag115_convert",
+          "args": {
+            "rcx": 2164260881,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "virtual_a",
+          "args": {
+            "rcx": 1658041925632,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "virtual_b",
+          "args": {
+            "rcx": 1658041937920,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        }
+      ]
+    },
+    {
+      "name": "nonroster_tags_no_binding_requirement",
+      "component": "root",
+      "original": false,
+      "t": 4,
+      "d": 4,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [
+        46,
+        277,
+        2457
+      ],
+      "outcome": "return",
+      "instructions": 109,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": [
+        {
+          "role": "tag2e",
+          "args": {
+            "rcx": 1657941262336,
+            "rdx": 2164260881,
+            "r8": 16203951459279044611,
+            "r9": 17361376563513262084
+          }
+        },
+        {
+          "role": "tag115_convert",
+          "args": {
+            "rcx": 2164260881,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "virtual_a",
+          "args": {
+            "rcx": 1658041925632,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "virtual_b",
+          "args": {
+            "rcx": 1658041937920,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        }
+      ]
+    },
+    {
+      "name": "tag115_preserved_no_matching_record",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 7,
+      "query": 2164260983,
+      "tags": [
+        277
+      ],
+      "outcome": "return",
+      "instructions": 78,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": [
+        {
+          "role": "tag115_convert",
+          "args": {
+            "rcx": 2164260983,
+            "rdx": 15046526355044827138,
+            "r8": 16203951459279044611,
+            "r9": 17361376563513262084
+          }
+        }
+      ]
+    },
+    {
+      "name": "tag115_preserved_no_matching_record",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 7,
+      "query": 2164260983,
+      "tags": [
+        277
+      ],
+      "outcome": "return",
+      "instructions": 86,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": [
+        {
+          "role": "tag115_convert",
+          "args": {
+            "rcx": 2164260983,
+            "rdx": 15046526355044827138,
+            "r8": 16203951459279044611,
+            "r9": 17361376563513262084
+          }
+        },
+        {
+          "role": "virtual_a",
+          "args": {
+            "rcx": 1658041925632,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "virtual_b",
+          "args": {
+            "rcx": 1658041937920,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        }
+      ]
+    },
+    {
+      "name": "mixed_registry_order",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 7,
+      "query": 2164260983,
+      "tags": [
+        46,
+        105,
+        115,
+        277,
+        2457
+      ],
+      "outcome": "return",
+      "instructions": 1756,
+      "actual_fd9ba0_entries": 8,
+      "contract_and_helper_events": [
+        {
+          "role": "tag2e",
+          "args": {
+            "rcx": 1657941262336,
+            "rdx": 2164260983,
+            "r8": 16203951459279044611,
+            "r9": 17361376563513262084
+          }
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 293
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 309
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 325
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 341
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 357
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 373
+        },
+        {
+          "role": "actual_roster_helper"
+        },
+        {
+          "role": "tag73_record",
+          "args": {
+            "rcx": 1657958268432,
+            "rdx": 1644463362,
+            "r8": 67,
+            "r9": 4
+          }
+        },
+        {
+          "role": "tag115_convert",
+          "args": {
+            "rcx": 2164260983,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "virtual_a",
+          "args": {
+            "rcx": 1658041925632,
+            "rdx": 14829509148000911362,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        },
+        {
+          "role": "virtual_b",
+          "args": {
+            "rcx": 1658041937920,
+            "rdx": 4660,
+            "r8": 14829509148000911363,
+            "r9": 14829509148000911364
+          }
+        }
+      ]
+    },
+    {
+      "name": "root_guard_registry_binding",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [
+        105
+      ],
+      "outcome": "reject",
+      "instructions": 39,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "root_guard_global_binding",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [
+        105
+      ],
+      "outcome": "reject",
+      "instructions": 42,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "root_guard_tracked_nine",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [
+        105
+      ],
+      "outcome": "reject",
+      "instructions": 45,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "root_guard_dense_order",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [
+        105
+      ],
+      "outcome": "reject",
+      "instructions": 47,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "root_guard_prefix_order",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [
+        105
+      ],
+      "outcome": "reject",
+      "instructions": 50,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "root_guard_null_pointer",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [
+        105
+      ],
+      "outcome": "reject",
+      "instructions": 177,
+      "actual_fd9ba0_entries": 2,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        }
+      ]
+    },
+    {
+      "name": "root_guard_empty_entity",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [
+        105
+      ],
+      "outcome": "reject",
+      "instructions": 182,
+      "actual_fd9ba0_entries": 2,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        }
+      ]
+    },
+    {
+      "name": "root_guard_invalid_entity",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [
+        105
+      ],
+      "outcome": "reject",
+      "instructions": 187,
+      "actual_fd9ba0_entries": 2,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        }
+      ]
+    },
+    {
+      "name": "root_guard_missing_full",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [
+        105
+      ],
+      "outcome": "reject",
+      "instructions": 286,
+      "actual_fd9ba0_entries": 2,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        }
+      ]
+    },
+    {
+      "name": "root_guard_missing_empty",
+      "component": "root",
+      "original": false,
+      "t": 2,
+      "d": 2,
+      "p": 0,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [
+        105
+      ],
+      "outcome": "reject",
+      "instructions": 229,
+      "actual_fd9ba0_entries": 2,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        }
+      ]
+    },
+    {
+      "name": "root_guard_ordinal_eight",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [
+        105
+      ],
+      "outcome": "reject",
+      "instructions": 218,
+      "actual_fd9ba0_entries": 2,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        }
+      ]
+    },
+    {
+      "name": "root_guard_ordinal_untracked",
+      "component": "root",
+      "original": false,
+      "t": 2,
+      "d": 2,
+      "p": 0,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [
+        105
+      ],
+      "outcome": "reject",
+      "instructions": 220,
+      "actual_fd9ba0_entries": 2,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        }
+      ]
+    },
+    {
+      "name": "root_guard_map_capacity",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [
+        105
+      ],
+      "outcome": "reject",
+      "instructions": 180,
+      "actual_fd9ba0_entries": 2,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        }
+      ]
+    },
+    {
+      "name": "root_guard_ordinal_wrong",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [
+        105
+      ],
+      "outcome": "reject",
+      "instructions": 222,
+      "actual_fd9ba0_entries": 2,
+      "contract_and_helper_events": [
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        }
+      ]
+    },
+    {
+      "name": "binding_rejection_precedes_empty_dense",
+      "component": "root",
+      "original": false,
+      "t": 0,
+      "d": 0,
+      "p": 0,
+      "target": 0,
+      "query": 2164260864,
+      "tags": [
+        105
+      ],
+      "outcome": "reject",
+      "instructions": 42,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "binding_rejection_precedes_empty_dense",
+      "component": "root",
+      "original": false,
+      "t": 0,
+      "d": 0,
+      "p": 0,
+      "target": 0,
+      "query": 2164260864,
+      "tags": [
+        115
+      ],
+      "outcome": "reject",
+      "instructions": 44,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "earlier_registry_effect_survives_late_rejection",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [
+        46,
+        105
+      ],
+      "outcome": "reject",
+      "instructions": 195,
+      "actual_fd9ba0_entries": 2,
+      "contract_and_helper_events": [
+        {
+          "role": "tag2e",
+          "args": {
+            "rcx": 1657941262336,
+            "rdx": 2164260881,
+            "r8": 16203951459279044611,
+            "r9": 17361376563513262084
+          }
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 261
+        },
+        {
+          "role": "actual_fd9ba0",
+          "associated_id": 277
+        }
+      ]
+    },
+    {
+      "name": "tag73_counts_precheck",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 1,
+      "query": 2164260881,
+      "tags": [
+        115
+      ],
+      "outcome": "reject",
+      "instructions": 50,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "helper_guard_binding",
+      "component": "helper",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 7,
+      "query": 2164260983,
+      "tags": [],
+      "outcome": "reject",
+      "instructions": 6,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "helper_guard_tracked_nine",
+      "component": "helper",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 7,
+      "query": 2164260983,
+      "tags": [],
+      "outcome": "reject",
+      "instructions": 9,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "helper_guard_dense_order",
+      "component": "helper",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 7,
+      "query": 2164260983,
+      "tags": [],
+      "outcome": "reject",
+      "instructions": 11,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "helper_guard_prefix_order",
+      "component": "helper",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 7,
+      "query": 2164260983,
+      "tags": [],
+      "outcome": "reject",
+      "instructions": 14,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "reject_rel32_boundary",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 7,
+      "query": 2164260983,
+      "tags": [
+        105
+      ],
+      "outcome": "reject",
+      "instructions": 42,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "reject_rel32_boundary",
+      "component": "root",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 7,
+      "query": 2164260983,
+      "tags": [
+        105
+      ],
+      "outcome": "reject",
+      "instructions": 42,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "reject_rel32_boundary",
+      "component": "helper",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 7,
+      "query": 2164260983,
+      "tags": [
+        105
+      ],
+      "outcome": "reject",
+      "instructions": 6,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    },
+    {
+      "name": "reject_rel32_boundary",
+      "component": "helper",
+      "original": false,
+      "t": 8,
+      "d": 8,
+      "p": 2,
+      "target": 7,
+      "query": 2164260983,
+      "tags": [
+        105
+      ],
+      "outcome": "reject",
+      "instructions": 6,
+      "actual_fd9ba0_entries": 0,
+      "contract_and_helper_events": []
+    }
+  ],
+  "execution_counts": {
+    "total": 87,
+    "original_baseline": 12,
+    "candidate": 75,
+    "original_root_return": 8,
+    "original_helper_return": 4,
+    "candidate_root_return": 32,
+    "candidate_root_reject": 20,
+    "candidate_helper_return": 17,
+    "candidate_helper_reject": 6
+  },
+  "nested_helper_entries_not_added_to_total": {
+    "actual_saved_fd9ba0": 114,
+    "original_606520_called_by_original_root": 1,
+    "candidate_606520_called_by_candidate_root": 7
+  },
+  "oracle_scope": {
+    "full_memory": "Every successful run compares all nonstack pages against independently enumerated expected changes, keeping unrelated records, registry maps, S counts, primary bytes and canaries unchanged",
+    "array_sites": "Candidate root six patches and helper two patches are checked against decoded instruction boundaries; each exercised memory operation is checked by emitted RIP, exact slot address, access width and conditional presence, including LEA-derived traversal",
+    "tag69": "Original four-slot complete pairs and all eight candidate ordinals, aux2 retained/other DWORDs become1, property flag masked only when entity bit0 is set; bit0 is deliberately independent of P, first duplicate conversion stops the search, pending beyond D is not scanned",
+    "helper": "Complete 606520 executes as captured or candidate; returns entity ID and original OUT pointer, preserves nondefault global missing value, scans only D, skips7FFF and uses explicit RCX S independently of global S",
+    "context_leaf": "Actual captured 220-byte FD9BA0 executes valid context hits and 7FFF context-default conversion, including the semantic difference from helper skipping7FFF; ordinary search misses use valid conversions unequal to the input ID",
+    "rejection": "Root restores original entry RSP/nonvolatile registers/ECX input ID; helper entry guards preserve RCX/RDX/R8 and OUT with no writes including stack. Rejection after an earlier tag2E contract-stub marker leaves that marker intact; it is not rollback",
+    "bundle": "Fifteen roster functions plus player-count plan are built, match the pinned saved sample, and share S/B; cross-component overlaps and both reject-rel32 endpoint ranges are checked; older suites are not rerun"
+  },
+  "contract_stubs": {
+    "0x7b5760": "Tag2E: check RCX entry object and EDX input ID, increment a synthetic external marker DWORD; this demonstrates an earlier opaque effect without executing real 7B5760",
+    "0xfd9af0": "Tag115 forward conversion: check ECX input ID, return chosen conversion 1234 or7FFF; this is not execution of the saved FD9AF0 body",
+    "context.interface38+8": "Check RCX global3326308 context, return an opaque context pointer for the second indirect call",
+    "context.interface40+160": "Check returned RCX and EDX conversion1234, return a synthetic object pointer; original root searches real1690h records and writes owner from distinct global3326348+10h, flag and counter",
+    "0x1731a60": "Tag73 foreign-object record: check RCX object+37D98+3*28h and EDX62048502; either return an existing correctly keyed buffer once or null then writable buffer. Original fallback preserves supplied nonzero first8 stack bytes, initializes only its stated remaining bytes and copies the complete16B payload",
+    "all_stubs": "Validate Win64 entry stack alignment, overwrite32B shadow, clobber volatile GPR/XMM0..5, preserve nonvolatiles; no registry/roster/context reentrancy or mutation beyond the explicit tag2E marker"
+  },
+  "limits": [
+    "Synthetic valid registry, S/B, entity pointers, context maps/backing and serialized lifetimes are supplied; guards do not establish OS readability, ownership or synchronization",
+    "Context zero-capacity/full-table misses, empty-key false hits or arbitrary invalid map values remain original hazards and are not claimed safe by these valid fixtures",
+    "Root late guard prevents current tag69 roster writes but cannot undo earlier opaque registry-entry effects; no rollback or general nested-helper rejection unwinder is tested",
+    "Tag73 property-record access, tag115 conversion/indirect calls and tag2E effects are declared contract stubs; real resource behavior, failures and callbacks are not executed",
+    "Tag73 fallback intentionally retains opaque stack bytes; passing this comparison does not validate their game-specific ownership or initialization contract",
+    "No new getter/removal chain was added; existing components are included only in the common artifact build and their unchanged suites were not rerun",
+    "Finite original/candidate tests do not prove runtime assets, publication/migration/cleanup, hooks, unwind, live integration, installation or five-through-eight-account mission acceptance"
+  ]
+}

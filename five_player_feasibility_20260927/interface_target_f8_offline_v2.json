@@ -1,0 +1,379 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "saved live prefix and pinned offline EXE only",
+  "probe_path": "five_player_feasibility_20260927\\interface_probe_live_20260927_1.json",
+  "probe_json_sha256": "a45e5f5b1647d808b8b7716fd750e4a894ab39a3021b52a0b10c404403a8b85f",
+  "probe_utc": "2026-09-27T04:02:53.222960+00:00",
+  "probe_build": 25480438,
+  "runtime_capture_prefix_sha256": "14e69e3aaea1ffc9bc04ed88cbf0ac1be6887485f65b5330006c0c06e6520720",
+  "disk_path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\helldivers2.exe",
+  "disk_sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+  "pe_timestamp": 1790149348,
+  "pe_image_size": 60719104,
+  "target_rva": "0x8c6730",
+  "target_section": {
+    "name": "",
+    "virtual_address": "0x1000",
+    "virtual_size": "0x13f364c",
+    "raw_size": "0x663400",
+    "raw_file_offset": "0x600",
+    "rva_delta": "0x8c5730",
+    "requested_size": 256,
+    "backed_by_raw_file_bytes": false
+  },
+  "prefix_disk_comparison": {
+    "available": false,
+    "exact_match": null,
+    "reason": "RVA extends beyond this PE section raw-data size"
+  },
+  "exception_directory": {
+    "rva": "0x31840a0",
+    "size": "0x10e984",
+    "section": {
+      "name": ".winlice",
+      "virtual_address": "0x2979000",
+      "virtual_size": "0xa28000",
+      "raw_size": "0x0",
+      "raw_file_offset": "0x7fc400",
+      "rva_delta": "0x80b0a0",
+      "requested_size": 1108356,
+      "backed_by_raw_file_bytes": false
+    },
+    "disk_unwind_entries_parseable": false
+  },
+  "saved_prefix_first_ret_rva": "0x8c67db",
+  "saved_prefix_function_instructions": [
+    {
+      "rva": "0x8c6730",
+      "bytes": "4c8bdc",
+      "sha256": "3e972bff50a811277f2ac19090cc760c21ba2c3c8a4f2d9452031acd6531e6ac",
+      "asm": "mov r11, rsp"
+    },
+    {
+      "rva": "0x8c6733",
+      "bytes": "49895b08",
+      "sha256": "2e5d0b9fc341d9628e6d627775270d4e2476fa3afb9db6486f83493a29e920d0",
+      "asm": "mov qword ptr [r11 + 8], rbx"
+    },
+    {
+      "rva": "0x8c6737",
+      "bytes": "49897310",
+      "sha256": "cf309227670e60463e7e1f433534acb674c6544c2f7774e77a66e8fb3b4cbef9",
+      "asm": "mov qword ptr [r11 + 0x10], rsi"
+    },
+    {
+      "rva": "0x8c673b",
+      "bytes": "57",
+      "sha256": "fcb5f40df9be6bae66c1d77a6c15968866a9e6cbd7314ca432b019d17392f6f4",
+      "asm": "push rdi"
+    },
+    {
+      "rva": "0x8c673c",
+      "bytes": "4883ec70",
+      "sha256": "08cb1764e67bd3fa03c27cac4d68e2433e23e1de19f09130cefbc7a35dc533b5",
+      "asm": "sub rsp, 0x70"
+    },
+    {
+      "rva": "0x8c6740",
+      "bytes": "33c0",
+      "sha256": "72fb562c9d90dfcc008e5b0a391395fd2a244bb6bc231e2621a8ec6860d21fa3",
+      "asm": "xor eax, eax"
+    },
+    {
+      "rva": "0x8c6742",
+      "bytes": "8bf1",
+      "sha256": "f7f55aeb563f96b4cba54af81ceeed57ee70e798f4823259a7b30067b3ce82e0",
+      "asm": "mov esi, ecx"
+    },
+    {
+      "rva": "0x8c6744",
+      "bytes": "498943a8",
+      "sha256": "3ada4a587757809581096a7908eaa6c76a6afb7096078bc4fc97cd6a66129735",
+      "asm": "mov qword ptr [r11 - 0x58], rax"
+    },
+    {
+      "rva": "0x8c6748",
+      "bytes": "0f57c0",
+      "sha256": "c7630204468a3500470f01d0623aed0ca994cc8431918ef6327b3f160b1f0b6c",
+      "asm": "xorps xmm0, xmm0"
+    },
+    {
+      "rva": "0x8c674b",
+      "bytes": "498943b0",
+      "sha256": "5c8a1d0e081ec0863a72e5447e7b6c9931df8f72b909828247824d0aed7460a0",
+      "asm": "mov qword ptr [r11 - 0x50], rax"
+    },
+    {
+      "rva": "0x8c674f",
+      "bytes": "0fb6fa",
+      "sha256": "b9cf66260d45287ff2dfd2ba823aa38e02c56c0d098cec1c6cac095a80ceaf67",
+      "asm": "movzx edi, dl"
+    },
+    {
+      "rva": "0x8c6752",
+      "bytes": "89442444",
+      "sha256": "a589a186a3357f37d6b67283e3a3bffcff961d341929bd8ef5e00a7ca626c9de",
+      "asm": "mov dword ptr [rsp + 0x44], eax"
+    },
+    {
+      "rva": "0x8c6756",
+      "bytes": "498d53a8",
+      "sha256": "e63b434c1062121e46ad6c641052230656c92b1731cd5ddabd53a2fe4e9d9931",
+      "asm": "lea rdx, [r11 - 0x58]"
+    },
+    {
+      "rva": "0x8c675a",
+      "bytes": "8944245c",
+      "sha256": "b50fd487c9d0db798c12153152a18f86a61ef9d844097a55444666dc3e567801",
+      "asm": "mov dword ptr [rsp + 0x5c], eax"
+    },
+    {
+      "rva": "0x8c675e",
+      "bytes": "418b4028",
+      "sha256": "d8b9a9bf81f3103aaf47c636d6c33bb18837c6dfde9a75f265910173dacd279e",
+      "asm": "mov eax, dword ptr [r8 + 0x28]"
+    },
+    {
+      "rva": "0x8c6762",
+      "bytes": "89442458",
+      "sha256": "ccca5e245ff4c6b247dcf9a3eaea8b5f59386faac9427fbc8c01b705e466bc96",
+      "asm": "mov dword ptr [rsp + 0x58], eax"
+    },
+    {
+      "rva": "0x8c6766",
+      "bytes": "498b4030",
+      "sha256": "2920df239ce5481fbbec33a2de90abcdd3587e3fae8acc7847b3a589a10c8aac",
+      "asm": "mov rax, qword ptr [r8 + 0x30]"
+    },
+    {
+      "rva": "0x8c676a",
+      "bytes": "660f7f442430",
+      "sha256": "4d0533a0aeb92ead6a931314d3d5f176e3ae8dd5181e6694bafdf8f765ad45ad",
+      "asm": "movdqa xmmword ptr [rsp + 0x30], xmm0"
+    },
+    {
+      "rva": "0x8c6770",
+      "bytes": "498943e8",
+      "sha256": "0685e9ce0213b3fbe1ff93c802943379d5d5bee5be18a2502005e51588a7ea2e",
+      "asm": "mov qword ptr [r11 - 0x18], rax"
+    },
+    {
+      "rva": "0x8c6774",
+      "bytes": "498b4038",
+      "sha256": "ca3dfa9d707f22f0c058db7ab2ea2da096c66a7d3421fd32882de7143cb2a50b",
+      "asm": "mov rax, qword ptr [r8 + 0x38]"
+    },
+    {
+      "rva": "0x8c6778",
+      "bytes": "498943f0",
+      "sha256": "19883ec7b9470c4c97db2bc0bd976bdb784800bba01fc3f371d49e4f59aafbae",
+      "asm": "mov qword ptr [r11 - 0x10], rax"
+    },
+    {
+      "rva": "0x8c677c",
+      "bytes": "418b4010",
+      "sha256": "9782ace69c71c96d1bf20ee80b58a91c8af89e3155f0d3caa0004fd326f79eb9",
+      "asm": "mov eax, dword ptr [r8 + 0x10]"
+    },
+    {
+      "rva": "0x8c6780",
+      "bytes": "89442440",
+      "sha256": "d83029c442c22473448a05c89898129c7245a26a15317d764d6d3f5d693dbef2",
+      "asm": "mov dword ptr [rsp + 0x40], eax"
+    },
+    {
+      "rva": "0x8c6784",
+      "bytes": "498b4018",
+      "sha256": "c36d12c03e7ebddf42e32712c12016115e6e1719cfe198278c7af4f840d57902",
+      "asm": "mov rax, qword ptr [r8 + 0x18]"
+    },
+    {
+      "rva": "0x8c6788",
+      "bytes": "498943d0",
+      "sha256": "abcebe86a8159b092d7cb96c903c7a4b539b7a5800b7fabbc014433f58202f80",
+      "asm": "mov qword ptr [r11 - 0x30], rax"
+    },
+    {
+      "rva": "0x8c678c",
+      "bytes": "498b4020",
+      "sha256": "3c822f6678c637e5d8e887139a5636c1cdbf53de7274de9f0bf6805d35398a95",
+      "asm": "mov rax, qword ptr [r8 + 0x20]"
+    },
+    {
+      "rva": "0x8c6790",
+      "bytes": "498943d8",
+      "sha256": "ffbdae75a36b484e35b419a4a2acb3599981f72a49d1dcd68c2514f4092eb744",
+      "asm": "mov qword ptr [r11 - 0x28], rax"
+    },
+    {
+      "rva": "0x8c6794",
+      "bytes": "488b052d7ca901",
+      "sha256": "4df0032dc9c9289c2fa48f4f59c588a97ff46ffc3974f5b9436c59cce78fac19",
+      "asm": "mov rax, qword ptr [rip + 0x1a97c2d]"
+    },
+    {
+      "rva": "0x8c679b",
+      "bytes": "488b88d0050000",
+      "sha256": "cabaa02dd49efd71e11edc03570ba06e16dbc1f2c8b91869f7027017781ba190",
+      "asm": "mov rcx, qword ptr [rax + 0x5d0]"
+    },
+    {
+      "rva": "0x8c67a2",
+      "bytes": "488b89a0000000",
+      "sha256": "4bef1c9f55be33d2a2db52c045cf055c06e651f50c2899f2cdd754b58ae5f087",
+      "asm": "mov rcx, qword ptr [rcx + 0xa0]"
+    },
+    {
+      "rva": "0x8c67a9",
+      "bytes": "488b4968",
+      "sha256": "eaf774285f03ec5486e9d5be68c326caa054f86d3639ed7ea8051364345e8572",
+      "asm": "mov rcx, qword ptr [rcx + 0x68]"
+    },
+    {
+      "rva": "0x8c67ad",
+      "bytes": "e8ee670000",
+      "sha256": "90dbd878c301758150830cd5aa71d8da7af4737b11b1047ed5349ac3fa2d27d7",
+      "asm": "call 0x8ccfa0"
+    },
+    {
+      "rva": "0x8c67b2",
+      "bytes": "8bd6",
+      "sha256": "d7a5399d3c9055384d6f15357133e20cd67da864e0b5761955411a8f435a8408",
+      "asm": "mov edx, esi"
+    },
+    {
+      "rva": "0x8c67b4",
+      "bytes": "488bd8",
+      "sha256": "235a2688762c92ca79c29859f5c06c7f464a91b1c443f806674410e373b9ecd2",
+      "asm": "mov rbx, rax"
+    },
+    {
+      "rva": "0x8c67b7",
+      "bytes": "488b4818",
+      "sha256": "dbaf6b166bfa26cae58808171abc21345908579a713ab192cc656415bde6d59f",
+      "asm": "mov rcx, qword ptr [rax + 0x18]"
+    },
+    {
+      "rva": "0x8c67bb",
+      "bytes": "897020",
+      "sha256": "f584df771b6f8f164120aeb54c99d0ffd922c922b2810af4ca5ebb8e05b4dddf",
+      "asm": "mov dword ptr [rax + 0x20], esi"
+    },
+    {
+      "rva": "0x8c67be",
+      "bytes": "40887824",
+      "sha256": "0466a8f55266760a816627a711b481e03fe24691a8ce17d65a88b0923511c559",
+      "asm": "mov byte ptr [rax + 0x24], dil"
+    },
+    {
+      "rva": "0x8c67c2",
+      "bytes": "e8a9ab0100",
+      "sha256": "1e5ef98609cbf8fae199740a3edbf97e280b1e537a0f83c5598116eb809bb2a4",
+      "asm": "call 0x8e1370"
+    },
+    {
+      "rva": "0x8c67c7",
+      "bytes": "4c8d5c2470",
+      "sha256": "1c30b7df02252d1b34634ec1385cb879c2fb71c8a0fc9c87a3b380468d4ecc17",
+      "asm": "lea r11, [rsp + 0x70]"
+    },
+    {
+      "rva": "0x8c67cc",
+      "bytes": "488bc3",
+      "sha256": "88de8531189088e84aea757958f351c870c008322498ae012d5c1e52fc597037",
+      "asm": "mov rax, rbx"
+    },
+    {
+      "rva": "0x8c67cf",
+      "bytes": "498b5b10",
+      "sha256": "b180ce2ff0e836bd85f86d2d388a2b03e5a5d98712758f22e48d8843a94eea63",
+      "asm": "mov rbx, qword ptr [r11 + 0x10]"
+    },
+    {
+      "rva": "0x8c67d3",
+      "bytes": "498b7318",
+      "sha256": "9a98fc4f13e1d8e5857cd5be4b6fcbddc70a9c8e1ac146c8a8dff08ee8e09875",
+      "asm": "mov rsi, qword ptr [r11 + 0x18]"
+    },
+    {
+      "rva": "0x8c67d7",
+      "bytes": "498be3",
+      "sha256": "f749aa7a0fd1b5c5d8dee8c2742b7f45430918f0eed2d68f780be3a1d598fe1b",
+      "asm": "mov rsp, r11"
+    },
+    {
+      "rva": "0x8c67da",
+      "bytes": "5f",
+      "sha256": "d2e2adf7177b7a8afddbc12d1634cf23ea1a71020f6a1308070a16400fb68fde",
+      "asm": "pop rdi"
+    },
+    {
+      "rva": "0x8c67db",
+      "bytes": "c3",
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "asm": "ret "
+    }
+  ],
+  "direct_calls_from_saved_prefix_function": [
+    {
+      "site": {
+        "rva": "0x8c67ad",
+        "bytes": "e8ee670000",
+        "sha256": "90dbd878c301758150830cd5aa71d8da7af4737b11b1047ed5349ac3fa2d27d7",
+        "asm": "call 0x8ccfa0"
+      },
+      "callee_rva": "0x8ccfa0",
+      "callee_section": {
+        "name": "",
+        "virtual_address": "0x1000",
+        "virtual_size": "0x13f364c",
+        "raw_size": "0x663400",
+        "raw_file_offset": "0x600",
+        "rva_delta": "0x8cbfa0",
+        "requested_size": 1,
+        "backed_by_raw_file_bytes": false
+      },
+      "callee_bytes_in_saved_probe": false
+    },
+    {
+      "site": {
+        "rva": "0x8c67c2",
+        "bytes": "e8a9ab0100",
+        "sha256": "1e5ef98609cbf8fae199740a3edbf97e280b1e537a0f83c5598116eb809bb2a4",
+        "asm": "call 0x8e1370"
+      },
+      "callee_rva": "0x8e1370",
+      "callee_section": {
+        "name": "",
+        "virtual_address": "0x1000",
+        "virtual_size": "0x13f364c",
+        "raw_size": "0x663400",
+        "raw_file_offset": "0x600",
+        "rva_delta": "0x8e0370",
+        "requested_size": 1,
+        "backed_by_raw_file_bytes": false
+      },
+      "callee_bytes_in_saved_probe": false
+    }
+  ],
+  "observed_int_arg_flow": [
+    {
+      "rva": "0x8c6742",
+      "effect": "ECX first integer argument copied to ESI"
+    },
+    {
+      "rva": "0x8c67b2",
+      "effect": "ESI copied to EDX for call at 0x8c67c2"
+    },
+    {
+      "rva": "0x8c67bb",
+      "effect": "ESI stored as dword at [returned object + 0x20]"
+    }
+  ],
+  "limits": [
+    "Only the saved 256-byte prefix was observed at runtime.",
+    "The target and both direct callees are virtual-only in the pinned disk EXE; no disk code bodies can be validated.",
+    "PE exception directory is virtual-only, so disk unwind bounds cannot be parsed.",
+    "No invocation, server acceptance, or eight-player mission was observed."
+  ]
+}

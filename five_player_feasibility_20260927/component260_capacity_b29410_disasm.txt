@@ -1,0 +1,11 @@
+0xb29410 sub rsp, 0x18
+0xb29414 mov qword ptr [rsp], rcx
+0xb29418 mov rcx, qword ptr [rip + 0x27fda49]
+0xb2941f mov dword ptr [rsp + 8], 0xb1
+0xb29427 movups xmm0, xmmword ptr [rsp]
+0xb2942b mov eax, dword ptr [rcx + 0x6c0]
+0xb29431 add rax, rax
+0xb29434 movups xmmword ptr [rcx + rax*8 + 0x6c8], xmm0
+0xb2943c inc dword ptr [rcx + 0x6c0]
+0xb29442 add rsp, 0x18
+0xb29446 ret 

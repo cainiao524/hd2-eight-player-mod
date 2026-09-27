@@ -1,0 +1,43 @@
+0x7afb50 mov qword ptr [rsp + 8], rbx
+0x7afb55 push rdi
+0x7afb56 sub rsp, 0x20
+0x7afb5a mov rdi, qword ptr [rip + 0x2b76e37]
+0x7afb61 mov rbx, rdx
+0x7afb64 mov edx, dword ptr [rdx + 8]
+0x7afb67 lea rcx, [rdi + 0x50]
+0x7afb6b call 0x172f8a0
+0x7afb70 mov r8d, dword ptr [rdi + 8]
+0x7afb74 mov ebx, dword ptr [rbx + 0x10]
+0x7afb77 mov edx, eax
+0x7afb79 cmp eax, r8d
+0x7afb7c jb 0x7afb8a
+0x7afb7e dec dword ptr [rdi + 4]
+0x7afb81 mov r8d, dword ptr [rdi + 4]
+0x7afb85 cmp edx, r8d
+0x7afb88 jmp 0x7afbc4
+0x7afb8a cmp edx, -1
+0x7afb8d je 0x7afbb7
+0x7afb8f mov rcx, qword ptr [rdi + rdx*8 + 0x68]
+0x7afb94 test byte ptr [rcx + 0x14], 1
+0x7afb98 je 0x7afbb7
+0x7afb9a add dword ptr [rdi + 0xc], -1
+0x7afb9e mov eax, dword ptr [rdi + 0xc]
+0x7afba1 je 0x7afbb5
+0x7afba3 mov r8d, eax
+0x7afba6 mov rcx, rdi
+0x7afba9 call 0x7af210
+0x7afbae mov r8d, dword ptr [rdi + 8]
+0x7afbb2 mov eax, dword ptr [rdi + 0xc]
+0x7afbb5 mov edx, eax
+0x7afbb7 dec dword ptr [rdi + 4]
+0x7afbba dec r8d
+0x7afbbd mov dword ptr [rdi + 8], r8d
+0x7afbc1 test r8d, r8d
+0x7afbc4 je 0x7afbce
+0x7afbc6 mov rcx, rdi
+0x7afbc9 call 0x7af210
+0x7afbce mov eax, ebx
+0x7afbd0 mov rbx, qword ptr [rsp + 0x30]
+0x7afbd5 add rsp, 0x20
+0x7afbd9 pop rdi
+0x7afbda ret 

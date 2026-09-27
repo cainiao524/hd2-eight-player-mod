@@ -1,0 +1,1609 @@
+{
+  "capture_identity_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "scope": "Bounded exact-build static map of verified host lifecycle read/write sites; not a complete write set or hook list.",
+  "groups": [
+    {
+      "name": "embedded_constructor",
+      "provenance": "outer=rsi; host=outer+0x159b0 in root 0x134d740.",
+      "sites": [
+        {
+          "rva": "0x134dc9e",
+          "bytes": "4c8d8eb0590100",
+          "instruction_sha256": "ea216a5f36b0d3480789a71a1fb71691b4b04106ec87671e0d6917dbc703728e",
+          "asm": "lea r9, [rsi + 0x159b0]",
+          "kind": "address",
+          "field_or_effect": "embedded host base",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_range": [
+            "0x134d9bd",
+            "0x134e15c"
+          ],
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dca8",
+          "bytes": "498931",
+          "instruction_sha256": "d5b793d237ef2327f3248e99b187c27e6e3f9fdf20d923dabfcef1216e95bb94",
+          "asm": "mov qword ptr [r9], rsi",
+          "kind": "write",
+          "field_or_effect": "host+0 owner backpointer",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_range": [
+            "0x134d9bd",
+            "0x134e15c"
+          ],
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dcb6",
+          "bytes": "41897918",
+          "instruction_sha256": "d33ce30afcc62ba534401906a98a4b4153512491ea37c1b848ea62e8466929b6",
+          "asm": "mov dword ptr [r9 + 0x18], edi",
+          "kind": "write",
+          "field_or_effect": "host+0x18 state",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_range": [
+            "0x134d9bd",
+            "0x134e15c"
+          ],
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dcba",
+          "bytes": "488d86f0590100",
+          "instruction_sha256": "c51c11fc14ea76ae70b32f66142c131ee3dd811341251827cc037260b2f17de3",
+          "asm": "lea rax, [rsi + 0x159f0]",
+          "kind": "address",
+          "field_or_effect": "peer inline clear anchor host+0x40",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_range": [
+            "0x134d9bd",
+            "0x134e15c"
+          ],
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dcd0",
+          "bytes": "488978e0",
+          "instruction_sha256": "715d26b90b71d7ee97b1c7a568a4ff0e43f9ed3ca6d3387e7645dafe28fb3831",
+          "asm": "mov qword ptr [rax - 0x20], rdi",
+          "kind": "write",
+          "field_or_effect": "peer 0 at host+0x20; unrolled four records follow",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_range": [
+            "0x134d9bd",
+            "0x134e15c"
+          ],
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dcf4",
+          "bytes": "488d80e0000000",
+          "instruction_sha256": "62caccaad750122bb511438c57a671cdc382e4741c54a0d234a796d1f84585cb",
+          "asm": "lea rax, [rax + 0xe0]",
+          "kind": "address",
+          "field_or_effect": "advance unrolled peer block by 0xe0",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_range": [
+            "0x134d9bd",
+            "0x134e15c"
+          ],
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dcfb",
+          "bytes": "83f904",
+          "instruction_sha256": "e0f8e2a8fea2f143982c5ab1163b172f31e74c40937537efff6ac915f0d96567",
+          "asm": "cmp ecx, 4",
+          "kind": "bound",
+          "field_or_effect": "one unrolled iteration of four peer records",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_range": [
+            "0x134d9bd",
+            "0x134e15c"
+          ],
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        },
+        {
+          "rva": "0x134dd07",
+          "bytes": "4c8d86c8620100",
+          "instruction_sha256": "3806cc3bf573031da0cadd0b9d43232d13851d59149c3370688d1d91c61ae50b",
+          "asm": "lea r8, [rsi + 0x162c8]",
+          "kind": "address",
+          "field_or_effect": "next sibling outer+0x162c8 = host+0x918",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_range": [
+            "0x134d9bd",
+            "0x134e15c"
+          ],
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        }
+      ]
+    },
+    {
+      "name": "start_hosting_reset",
+      "provenance": "root 0x1088a30 receives host in RCX and saves it to RDI at 0x1088a62.",
+      "sites": [
+        {
+          "rva": "0x1088a62",
+          "bytes": "488bf9",
+          "instruction_sha256": "3a513e755bcc92dc07f967959cf4f4be34e79b71b62c3aec3954f17bee488df0",
+          "asm": "mov rdi, rcx",
+          "kind": "base",
+          "field_or_effect": "host=RDI",
+          "fragment_file": "host_expansion_disasm_1088a30.json",
+          "fragment_range": [
+            "0x1088a30",
+            "0x1088d75"
+          ],
+          "fragment_sha256": "303f870ca86eecae7b0213a01514856af65ddbdfac5b412167961d1f8e8d6b6c"
+        },
+        {
+          "rva": "0x1088a7a",
+          "bytes": "c7471801000000",
+          "instruction_sha256": "0a0ccb00d69687a30c95ded8b7e9e78c8411638c3dbae6aa2d41daec27719c5d",
+          "asm": "mov dword ptr [rdi + 0x18], 1",
+          "kind": "write",
+          "field_or_effect": "host+0x18 state=1",
+          "fragment_file": "host_expansion_disasm_1088a30.json",
+          "fragment_range": [
+            "0x1088a30",
+            "0x1088d75"
+          ],
+          "fragment_sha256": "303f870ca86eecae7b0213a01514856af65ddbdfac5b412167961d1f8e8d6b6c"
+        },
+        {
+          "rva": "0x1088a87",
+          "bytes": "488d8790000000",
+          "instruction_sha256": "404e5ad53c8a09d69a904a166e9dd5d9807a257990f95f8aa7cc3c42b4388f74",
+          "asm": "lea rax, [rdi + 0x90]",
+          "kind": "address",
+          "field_or_effect": "anchor for inline four peer records",
+          "fragment_file": "host_expansion_disasm_1088a30.json",
+          "fragment_range": [
+            "0x1088a30",
+            "0x1088d75"
+          ],
+          "fragment_sha256": "303f870ca86eecae7b0213a01514856af65ddbdfac5b412167961d1f8e8d6b6c"
+        },
+        {
+          "rva": "0x1088a93",
+          "bytes": "33d2",
+          "instruction_sha256": "a843932057795ea71b924ac1dbe4196f846aa6e914088874b991473831eeb65b",
+          "asm": "xor edx, edx",
+          "kind": "value",
+          "field_or_effect": "zero fill byte passed as EDX to 0x208aaa0 later",
+          "fragment_file": "host_expansion_disasm_1088a30.json",
+          "fragment_range": [
+            "0x1088a30",
+            "0x1088d75"
+          ],
+          "fragment_sha256": "303f870ca86eecae7b0213a01514856af65ddbdfac5b412167961d1f8e8d6b6c"
+        },
+        {
+          "rva": "0x1088aa3",
+          "bytes": "0f115090",
+          "instruction_sha256": "816919ced0c60f814843394aba9f4c5060e8d6f2cc5410476e3eeb30a6b3d4d6",
+          "asm": "movups xmmword ptr [rax - 0x70], xmm2",
+          "kind": "write",
+          "field_or_effect": "first peer zeroed; three more unrolled",
+          "fragment_file": "host_expansion_disasm_1088a30.json",
+          "fragment_range": [
+            "0x1088a30",
+            "0x1088d75"
+          ],
+          "fragment_sha256": "303f870ca86eecae7b0213a01514856af65ddbdfac5b412167961d1f8e8d6b6c"
+        },
+        {
+          "rva": "0x1088af5",
+          "bytes": "488d80e0000000",
+          "instruction_sha256": "62caccaad750122bb511438c57a671cdc382e4741c54a0d234a796d1f84585cb",
+          "asm": "lea rax, [rax + 0xe0]",
+          "kind": "address",
+          "field_or_effect": "advance four-peer clear block by 0xe0",
+          "fragment_file": "host_expansion_disasm_1088a30.json",
+          "fragment_range": [
+            "0x1088a30",
+            "0x1088d75"
+          ],
+          "fragment_sha256": "303f870ca86eecae7b0213a01514856af65ddbdfac5b412167961d1f8e8d6b6c"
+        },
+        {
+          "rva": "0x1088afc",
+          "bytes": "83f904",
+          "instruction_sha256": "e0f8e2a8fea2f143982c5ab1163b172f31e74c40937537efff6ac915f0d96567",
+          "asm": "cmp ecx, 4",
+          "kind": "bound",
+          "field_or_effect": "one unrolled iteration of four peer records",
+          "fragment_file": "host_expansion_disasm_1088a30.json",
+          "fragment_range": [
+            "0x1088a30",
+            "0x1088d75"
+          ],
+          "fragment_sha256": "303f870ca86eecae7b0213a01514856af65ddbdfac5b412167961d1f8e8d6b6c"
+        },
+        {
+          "rva": "0x1088b8c",
+          "bytes": "898700010000",
+          "instruction_sha256": "15dbf24115493a33d0fbd719975abb622883fd14f3ad0f363dc3e81e0dcfe84e",
+          "asm": "mov dword ptr [rdi + 0x100], eax",
+          "kind": "write",
+          "field_or_effect": "host+0x100..0x103 flags zeroed as dword",
+          "fragment_file": "host_expansion_disasm_1088a30.json",
+          "fragment_range": [
+            "0x1088a30",
+            "0x1088d75"
+          ],
+          "fragment_sha256": "303f870ca86eecae7b0213a01514856af65ddbdfac5b412167961d1f8e8d6b6c"
+        },
+        {
+          "rva": "0x1088b95",
+          "bytes": "c684380001000001",
+          "instruction_sha256": "72425d98dc21dda09e70268fb51b3ed5dd82658651bac6b8ea0ca01ddcf956c2",
+          "asm": "mov byte ptr [rax + rdi + 0x100], 1",
+          "kind": "write",
+          "field_or_effect": "one host+0x100 indexed flag set",
+          "fragment_file": "host_expansion_disasm_1088a30.json",
+          "fragment_range": [
+            "0x1088a30",
+            "0x1088d75"
+          ],
+          "fragment_sha256": "303f870ca86eecae7b0213a01514856af65ddbdfac5b412167961d1f8e8d6b6c"
+        },
+        {
+          "rva": "0x1088bc5",
+          "bytes": "41b800070000",
+          "instruction_sha256": "16e9873501862bb49eab914794362d737adf2191b412f87bb904a253aea13548",
+          "asm": "mov r8d, 0x700",
+          "kind": "size",
+          "field_or_effect": "0x700-byte large-record reset length",
+          "fragment_file": "host_expansion_disasm_1088a30.json",
+          "fragment_range": [
+            "0x1088a30",
+            "0x1088d75"
+          ],
+          "fragment_sha256": "303f870ca86eecae7b0213a01514856af65ddbdfac5b412167961d1f8e8d6b6c"
+        },
+        {
+          "rva": "0x1088be6",
+          "bytes": "488d8f08010000",
+          "instruction_sha256": "31d0e335cb16785fcab1c2553a69483eb9e64bf23c6e35022f974e4ca3394a23",
+          "asm": "lea rcx, [rdi + 0x108]",
+          "kind": "address",
+          "field_or_effect": "host+0x108 large-record start",
+          "fragment_file": "host_expansion_disasm_1088a30.json",
+          "fragment_range": [
+            "0x1088a30",
+            "0x1088d75"
+          ],
+          "fragment_sha256": "303f870ca86eecae7b0213a01514856af65ddbdfac5b412167961d1f8e8d6b6c"
+        },
+        {
+          "rva": "0x1088bef",
+          "bytes": "e8ac1e0001",
+          "instruction_sha256": "e2ecf5fff6913de2d3985b9fe894dcc4e8a61b5e926b774cad439a220c2d8150",
+          "asm": "call 0x208aaa0",
+          "kind": "call",
+          "field_or_effect": "zero-fill host+0x108 for 0x700 bytes via 0x208aaa0",
+          "fragment_file": "host_expansion_disasm_1088a30.json",
+          "fragment_range": [
+            "0x1088a30",
+            "0x1088d75"
+          ],
+          "fragment_sha256": "303f870ca86eecae7b0213a01514856af65ddbdfac5b412167961d1f8e8d6b6c"
+        }
+      ]
+    },
+    {
+      "name": "stop_hosting_state_only",
+      "provenance": "root 0x1088f00 receives host in RCX and saves it to RBX.",
+      "limit": "This root itself does not reset arrays; it can be called within wider workflows.",
+      "sites": [
+        {
+          "rva": "0x1088f06",
+          "bytes": "83791800",
+          "instruction_sha256": "16f6119e7bd5f7c1c33e59b97319ef2a81494cc25dbb9ed540ebfe763dc3ffd7",
+          "asm": "cmp dword ptr [rcx + 0x18], 0",
+          "kind": "read",
+          "field_or_effect": "host+0x18 state",
+          "fragment_file": "host_expansion_disasm_1088f00.json",
+          "fragment_range": [
+            "0x1088f00",
+            "0x1088f2e"
+          ],
+          "fragment_sha256": "5f41a9675b34dad1dd4b4fddbfeb703b3c3b0771da13d54ba00e6c1a29083d23"
+        },
+        {
+          "rva": "0x1088f24",
+          "bytes": "48894318",
+          "instruction_sha256": "29f5ab8ab545932ea45b92a1e67e0482ae9c0fecd19b9c000912f43a2b83c195",
+          "asm": "mov qword ptr [rbx + 0x18], rax",
+          "kind": "write",
+          "field_or_effect": "host+0x18 qword cleared when nonzero",
+          "fragment_file": "host_expansion_disasm_1088f00.json",
+          "fragment_range": [
+            "0x1088f00",
+            "0x1088f2e"
+          ],
+          "fragment_sha256": "5f41a9675b34dad1dd4b4fddbfeb703b3c3b0771da13d54ba00e6c1a29083d23"
+        }
+      ]
+    },
+    {
+      "name": "host_migration_reset",
+      "provenance": "root 0x1089720 receives host in RCX, saved as R13 at 0x108973d.",
+      "sites": [
+        {
+          "rva": "0x108973d",
+          "bytes": "4c8be9",
+          "instruction_sha256": "433298f9898ffc56adf96c7301d19ad579a3104f6f288d67327842cc4b2dcd27",
+          "asm": "mov r13, rcx",
+          "kind": "base",
+          "field_or_effect": "host=R13",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x10897b1",
+          "bytes": "41c7451801000000",
+          "instruction_sha256": "fe28ddf7f9280aa8c21e0581cd9f055aadb054e037cb2491761a647bf9d47662",
+          "asm": "mov dword ptr [r13 + 0x18], 1",
+          "kind": "write",
+          "field_or_effect": "host+0x18 state=1",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x10897a3",
+          "bytes": "498d4558",
+          "instruction_sha256": "89e60bc3e9ab37a921ff99d9bce092da5e02b653f3f435a34cdc653f3624ec35",
+          "asm": "lea rax, [r13 + 0x58]",
+          "kind": "address",
+          "field_or_effect": "peer clear anchor host+0x58",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x10897c3",
+          "bytes": "33d2",
+          "instruction_sha256": "a843932057795ea71b924ac1dbe4196f846aa6e914088874b991473831eeb65b",
+          "asm": "xor edx, edx",
+          "kind": "value",
+          "field_or_effect": "zero fill byte held in EDX for later 0x208aaa0 call",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x10897d1",
+          "bytes": "0f1150c8",
+          "instruction_sha256": "c6e5276cddda8eb847f33af9cda106175568571f15033f1d1885c2e27e433e42",
+          "asm": "movups xmmword ptr [rax - 0x38], xmm2",
+          "kind": "write",
+          "field_or_effect": "peer 0 zero-fill; remaining three unrolled",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x108982c",
+          "bytes": "488d80e0000000",
+          "instruction_sha256": "62caccaad750122bb511438c57a671cdc382e4741c54a0d234a796d1f84585cb",
+          "asm": "lea rax, [rax + 0xe0]",
+          "kind": "address",
+          "field_or_effect": "advance peer clear block by 0xe0",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x1089833",
+          "bytes": "83f904",
+          "instruction_sha256": "e0f8e2a8fea2f143982c5ab1163b172f31e74c40937537efff6ac915f0d96567",
+          "asm": "cmp ecx, 4",
+          "kind": "bound",
+          "field_or_effect": "one unrolled iteration of four peers",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x1089838",
+          "bytes": "498d8d08010000",
+          "instruction_sha256": "21a14fa8f882a4dbc229ab00200165dbbb35880ece6a6258347705faef3b1c5f",
+          "asm": "lea rcx, [r13 + 0x108]",
+          "kind": "address",
+          "field_or_effect": "host+0x108 large-record start",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x108983f",
+          "bytes": "41b800070000",
+          "instruction_sha256": "16e9873501862bb49eab914794362d737adf2191b412f87bb904a253aea13548",
+          "asm": "mov r8d, 0x700",
+          "kind": "size",
+          "field_or_effect": "0x700-byte large-record reset length",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x1089845",
+          "bytes": "e856120001",
+          "instruction_sha256": "dedb349a3a1addbc728d2f10732d13e2b6057a61d1feae21b4e505dc40412d37",
+          "asm": "call 0x208aaa0",
+          "kind": "call",
+          "field_or_effect": "zero-fill four large records via 0x208aaa0",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x108984c",
+          "bytes": "41898d00010000",
+          "instruction_sha256": "74d5a0f4734872e7d723847a4224e24c91eb5f02d0d646d0dc60f52efb588e63",
+          "asm": "mov dword ptr [r13 + 0x100], ecx",
+          "kind": "write",
+          "field_or_effect": "host+0x100..0x103 flags zeroed",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x108985e",
+          "bytes": "49895520",
+          "instruction_sha256": "ab744425197297f0749ee719554b79bbf87cd441bdecf951c75e69bba2f0b075",
+          "asm": "mov qword ptr [r13 + 0x20], rdx",
+          "kind": "write",
+          "field_or_effect": "host+0x20 self peer",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x108987b",
+          "bytes": "41c7454009000000",
+          "instruction_sha256": "eb5e8e5df910b9a5e904915daa25aa86664601f640735f60cbbe9473cfadfe37",
+          "asm": "mov dword ptr [r13 + 0x40], 9",
+          "kind": "write",
+          "field_or_effect": "host+0x40 self peer state",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        }
+      ]
+    },
+    {
+      "name": "host_migration_peer_rebuild",
+      "provenance": "R13 remains host; peer reads and writes use R13+0x20 with stride 0x38. A separate outer-owner registry at +0x16390/+0x16398 can supply an index for host flags.",
+      "sites": [
+        {
+          "rva": "0x1089d2e",
+          "bytes": "498d4520",
+          "instruction_sha256": "3852cd4aeadaab633af7742b6b2a45b94dbeefcd677c263dcaae096ac02b642b",
+          "asm": "lea rax, [r13 + 0x20]",
+          "kind": "address",
+          "field_or_effect": "host+0x20 peer scan",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x1089d39",
+          "bytes": "4883c038",
+          "instruction_sha256": "94785a19fda7dd903d165071fcd403fab0a091e83005f33bc6eee270761d3ec8",
+          "asm": "add rax, 0x38",
+          "kind": "address",
+          "field_or_effect": "peer stride 0x38",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x1089d3d",
+          "bytes": "83f904",
+          "instruction_sha256": "e0f8e2a8fea2f143982c5ab1163b172f31e74c40937537efff6ac915f0d96567",
+          "asm": "cmp ecx, 4",
+          "kind": "bound",
+          "field_or_effect": "four peer scan limit",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x1089d53",
+          "bytes": "33d2",
+          "instruction_sha256": "a843932057795ea71b924ac1dbe4196f846aa6e914088874b991473831eeb65b",
+          "asm": "xor edx, edx",
+          "kind": "value",
+          "field_or_effect": "RDX=0 asks leaf to find an empty peer slot",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x1089d58",
+          "bytes": "e8c3170000",
+          "instruction_sha256": "380409d3653a73ac6edefeb816c04f668af08505d23df2e6ad5087b0839ad892",
+          "asm": "call 0x108b520",
+          "kind": "call",
+          "field_or_effect": "direct leaf 0x108b520 searches a peer slot",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x1089d60",
+          "bytes": "488918",
+          "instruction_sha256": "ee877c6acb73bf61afdbdbd8c4087220421c8d1d990f34f4f39a9e886959b6b0",
+          "asm": "mov qword ptr [rax], rbx",
+          "kind": "write",
+          "field_or_effect": "returned peer slot first qword; no local null guard",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x1089d9d",
+          "bytes": "458b8890630100",
+          "instruction_sha256": "63af8507f5aa3c05171c59f8cf71e3a235be70af2b9a8b698629dc78cf9ceeb6",
+          "asm": "mov r9d, dword ptr [r8 + 0x16390]",
+          "kind": "read",
+          "field_or_effect": "owner registry count at +0x16390, separate from host",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x1089e93",
+          "bytes": "48c1e205",
+          "instruction_sha256": "1e5d6b56701daeaec553eb5b1f42c1369b68f0d52ca1c544d0fe73fa4c3ae129",
+          "asm": "shl rdx, 5",
+          "kind": "address",
+          "field_or_effect": "owner registry stride 0x20",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x1089eab",
+          "bytes": "42c684280001000001",
+          "instruction_sha256": "ae8750f581a2287e48480827f92a5d11c15d6cd79bb4d141a3bf0fc2ae6b0683",
+          "asm": "mov byte ptr [rax + r13 + 0x100], 1",
+          "kind": "write",
+          "field_or_effect": "host+0x100 indexed flag set from registry-derived index",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x1089f7c",
+          "bytes": "e80f320000",
+          "instruction_sha256": "7d76301468a0b8f501b7d1f6a7c23809286f086dfa642ce21e13793406708d1f",
+          "asm": "call 0x108d190",
+          "kind": "call",
+          "field_or_effect": "remove-peer helper 0x108d190 during migration",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x1089fb7",
+          "bytes": "4883c138",
+          "instruction_sha256": "3f15c572b0a24208cda527dae75025aad6e251bd1465073cfa66fdafa935889e",
+          "asm": "add rcx, 0x38",
+          "kind": "address",
+          "field_or_effect": "host peer stride 0x38 in later scan",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x1089fbb",
+          "bytes": "83f804",
+          "instruction_sha256": "ec9d1a6c95187ab3425edbcdf19a43602dabed7b1d6a5c436f9d713baec3f3d1",
+          "asm": "cmp eax, 4",
+          "kind": "bound",
+          "field_or_effect": "four peer scan limit",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x1089fd7",
+          "bytes": "498d8d00010000",
+          "instruction_sha256": "c07c539d78c2618b996adddc7c92cf99d678e9f8ae8324b10fc8da0289d07c7b",
+          "asm": "lea rcx, [r13 + 0x100]",
+          "kind": "address",
+          "field_or_effect": "host+0x100 flags scan",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x1089fea",
+          "bytes": "83f804",
+          "instruction_sha256": "ec9d1a6c95187ab3425edbcdf19a43602dabed7b1d6a5c436f9d713baec3f3d1",
+          "asm": "cmp eax, 4",
+          "kind": "bound",
+          "field_or_effect": "four flag scan limit",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x1089ff4",
+          "bytes": "42c684280001000001",
+          "instruction_sha256": "ae8750f581a2287e48480827f92a5d11c15d6cd79bb4d141a3bf0fc2ae6b0683",
+          "asm": "mov byte ptr [rax + r13 + 0x100], 1",
+          "kind": "write",
+          "field_or_effect": "host+0x100 indexed flag set",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x108a02d",
+          "bytes": "41bf04000000",
+          "instruction_sha256": "1264d68d9e77fde084c62f344cb7332ed4af66c37c81beb3f6c5f86d1180b7a5",
+          "asm": "mov r15d, 4",
+          "kind": "bound",
+          "field_or_effect": "four peer transition iteration",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        },
+        {
+          "rva": "0x108a0a2",
+          "bytes": "4983c638",
+          "instruction_sha256": "a9f0f00d96e5a2325e23f11c1e00add157d2f070bf2685930edef5f3d1db0494",
+          "asm": "add r14, 0x38",
+          "kind": "address",
+          "field_or_effect": "peer stride 0x38",
+          "fragment_file": "host_expansion_disasm_1089720.json",
+          "fragment_range": [
+            "0x1089720",
+            "0x108a34a"
+          ],
+          "fragment_sha256": "4e0c0cefb163b82ede853a9d3b795f371a7769110ab561ebd8191235ca7bccff"
+        }
+      ]
+    },
+    {
+      "name": "peer_slot_lookup_leaf",
+      "provenance": "0x108b520 is a direct-call target from migration; no unwind entry. It receives host in RCX and target qword in RDX; two RETs and INT3 padding bound candidate leaf.",
+      "limit": "This leaf searches for a peer qword equal to the caller's RDX; its broader call set is not inventoried.",
+      "sites": [
+        {
+          "rva": "0x108b523",
+          "bytes": "4c8d4120",
+          "instruction_sha256": "744086853ef2f6a503b4db1c56fa979798f3b7771a686432a37270c66964e136",
+          "asm": "lea r8, [rcx + 0x20]",
+          "kind": "address",
+          "field_or_effect": "host+0x20 peer base",
+          "fragment_file": "host_expansion_disasm_108b520.json",
+          "fragment_range": [
+            "0x108b520",
+            "0x108b560"
+          ],
+          "fragment_sha256": "1b905bb5924c5103a44b338718c973093d2ef9d5d8edd86d509911611b00d3d9"
+        },
+        {
+          "rva": "0x108b530",
+          "bytes": "493910",
+          "instruction_sha256": "20d1c4f60a2055912e56f1709804682340a81d83c6cf11ed2a1e1b00b072c09f",
+          "asm": "cmp qword ptr [r8], rdx",
+          "kind": "read",
+          "field_or_effect": "peer first qword",
+          "fragment_file": "host_expansion_disasm_108b520.json",
+          "fragment_range": [
+            "0x108b520",
+            "0x108b560"
+          ],
+          "fragment_sha256": "1b905bb5924c5103a44b338718c973093d2ef9d5d8edd86d509911611b00d3d9"
+        },
+        {
+          "rva": "0x108b537",
+          "bytes": "4983c038",
+          "instruction_sha256": "3bc941c4c12ad1ff5c65bcb0beb56454831829a50d415a3d2da0c5bd3f539e77",
+          "asm": "add r8, 0x38",
+          "kind": "address",
+          "field_or_effect": "peer stride 0x38",
+          "fragment_file": "host_expansion_disasm_108b520.json",
+          "fragment_range": [
+            "0x108b520",
+            "0x108b560"
+          ],
+          "fragment_sha256": "1b905bb5924c5103a44b338718c973093d2ef9d5d8edd86d509911611b00d3d9"
+        },
+        {
+          "rva": "0x108b53b",
+          "bytes": "83f804",
+          "instruction_sha256": "ec9d1a6c95187ab3425edbcdf19a43602dabed7b1d6a5c436f9d713baec3f3d1",
+          "asm": "cmp eax, 4",
+          "kind": "bound",
+          "field_or_effect": "four peers",
+          "fragment_file": "host_expansion_disasm_108b520.json",
+          "fragment_range": [
+            "0x108b520",
+            "0x108b560"
+          ],
+          "fragment_sha256": "1b905bb5924c5103a44b338718c973093d2ef9d5d8edd86d509911611b00d3d9"
+        },
+        {
+          "rva": "0x108b540",
+          "bytes": "33c0",
+          "instruction_sha256": "72fb562c9d90dfcc008e5b0a391395fd2a244bb6bc231e2621a8ec6860d21fa3",
+          "asm": "xor eax, eax",
+          "kind": "return",
+          "field_or_effect": "zero return when no matching slot",
+          "fragment_file": "host_expansion_disasm_108b520.json",
+          "fragment_range": [
+            "0x108b520",
+            "0x108b560"
+          ],
+          "fragment_sha256": "1b905bb5924c5103a44b338718c973093d2ef9d5d8edd86d509911611b00d3d9"
+        },
+        {
+          "rva": "0x108b545",
+          "bytes": "486bc138",
+          "instruction_sha256": "efa3a1aa9f3b592163181348f990be1a22cfd757744b12f9cfe0da6f8cdc2617",
+          "asm": "imul rax, rcx, 0x38",
+          "kind": "address",
+          "field_or_effect": "index*0x38 slot address",
+          "fragment_file": "host_expansion_disasm_108b520.json",
+          "fragment_range": [
+            "0x108b520",
+            "0x108b560"
+          ],
+          "fragment_sha256": "1b905bb5924c5103a44b338718c973093d2ef9d5d8edd86d509911611b00d3d9"
+        }
+      ]
+    },
+    {
+      "name": "remove_peer_dispatch",
+      "provenance": "root 0x108d190 receives host in RCX and saves it to RSI at 0x108d1a7; peer id from RDX to R14.",
+      "sites": [
+        {
+          "rva": "0x108d1a7",
+          "bytes": "488bf1",
+          "instruction_sha256": "0f0740370df205195a82094bf53ddc4663fe6f0b8fb9dd737ce3412e7b6c7ef3",
+          "asm": "mov rsi, rcx",
+          "kind": "base",
+          "field_or_effect": "host=RSI",
+          "fragment_file": "host_expansion_disasm_108d190.json",
+          "fragment_range": [
+            "0x108d190",
+            "0x108d1dc"
+          ],
+          "fragment_sha256": "b6fe8a192f11f7c196a30fa2a223bbaf653b14ea1e435caa2ae8c2e65e7379a9"
+        },
+        {
+          "rva": "0x108d272",
+          "bytes": "e839e4ffff",
+          "instruction_sha256": "9efe9c48f9299d74528cc186f25556f7389bb2ebd32bfddecfd4db0a28a5c484",
+          "asm": "call 0x108b6b0",
+          "kind": "call",
+          "field_or_effect": "0x108b6b0 removes ID from four large records and peer/flag",
+          "fragment_file": "host_expansion_disasm_108d190.json",
+          "fragment_range": [
+            "0x108d1dc",
+            "0x108d374"
+          ],
+          "fragment_sha256": "1bc627cd3bd74aa2f00e1b1dcdd6d97b72b7ab4e0084e1d782ef23a8e5eb6175"
+        },
+        {
+          "rva": "0x108d2d4",
+          "bytes": "bf04000000",
+          "instruction_sha256": "18d6385f1c3f5a736b711917cd45156f40296b8dd997e4fd8a328ad14e4cf7c2",
+          "asm": "mov edi, 4",
+          "kind": "bound",
+          "field_or_effect": "four peer event iteration",
+          "fragment_file": "host_expansion_disasm_108d190.json",
+          "fragment_range": [
+            "0x108d1dc",
+            "0x108d374"
+          ],
+          "fragment_sha256": "1bc627cd3bd74aa2f00e1b1dcdd6d97b72b7ab4e0084e1d782ef23a8e5eb6175"
+        },
+        {
+          "rva": "0x108d2d9",
+          "bytes": "488d5e20",
+          "instruction_sha256": "f513758a6b7780876ef42d73d0bee9ff46d34d78de18f23f0a9363e8076005db",
+          "asm": "lea rbx, [rsi + 0x20]",
+          "kind": "address",
+          "field_or_effect": "host+0x20 peer base",
+          "fragment_file": "host_expansion_disasm_108d190.json",
+          "fragment_range": [
+            "0x108d1dc",
+            "0x108d374"
+          ],
+          "fragment_sha256": "1bc627cd3bd74aa2f00e1b1dcdd6d97b72b7ab4e0084e1d782ef23a8e5eb6175"
+        },
+        {
+          "rva": "0x108d349",
+          "bytes": "4883c338",
+          "instruction_sha256": "9b72e32f6853b040dd8f15d6a17df518770608e340479290972aba30684bdc43",
+          "asm": "add rbx, 0x38",
+          "kind": "address",
+          "field_or_effect": "peer stride 0x38",
+          "fragment_file": "host_expansion_disasm_108d190.json",
+          "fragment_range": [
+            "0x108d1dc",
+            "0x108d374"
+          ],
+          "fragment_sha256": "1bc627cd3bd74aa2f00e1b1dcdd6d97b72b7ab4e0084e1d782ef23a8e5eb6175"
+        },
+        {
+          "rva": "0x108d351",
+          "bytes": "758d",
+          "instruction_sha256": "34a2eb3dc41f20925d645d6c9acfa9ca180cc8a9618177b0cead1d35274b5076",
+          "asm": "jne 0x108d2e0",
+          "kind": "bound",
+          "field_or_effect": "end of four peer event iteration",
+          "fragment_file": "host_expansion_disasm_108d190.json",
+          "fragment_range": [
+            "0x108d1dc",
+            "0x108d374"
+          ],
+          "fragment_sha256": "1bc627cd3bd74aa2f00e1b1dcdd6d97b72b7ab4e0084e1d782ef23a8e5eb6175"
+        },
+        {
+          "rva": "0x108d370",
+          "bytes": "488d5e40",
+          "instruction_sha256": "016f86ef3b16f19a509987a96f19c38c5f3cbd8db1833f60b27c15de41f6ba77",
+          "asm": "lea rbx, [rsi + 0x40]",
+          "kind": "address",
+          "field_or_effect": "second four peer loop anchor",
+          "fragment_file": "host_expansion_disasm_108d190.json",
+          "fragment_range": [
+            "0x108d1dc",
+            "0x108d374"
+          ],
+          "fragment_sha256": "1bc627cd3bd74aa2f00e1b1dcdd6d97b72b7ab4e0084e1d782ef23a8e5eb6175"
+        },
+        {
+          "rva": "0x108d38c",
+          "bytes": "4883c338",
+          "instruction_sha256": "9b72e32f6853b040dd8f15d6a17df518770608e340479290972aba30684bdc43",
+          "asm": "add rbx, 0x38",
+          "kind": "address",
+          "field_or_effect": "second loop stride 0x38",
+          "fragment_file": "host_expansion_disasm_108d190.json",
+          "fragment_range": [
+            "0x108d374",
+            "0x108d39e"
+          ],
+          "fragment_sha256": "6d0af2f94437e326427864194c52600a5753b7ac63f056d57717ae4bb002f759"
+        },
+        {
+          "rva": "0x108d394",
+          "bytes": "75de",
+          "instruction_sha256": "593933a098e4cd24ae4fb3f4dc9b07207b51cc2e1d86bcc5d571968ec8ccb874",
+          "asm": "jne 0x108d374",
+          "kind": "bound",
+          "field_or_effect": "second four peer loop end",
+          "fragment_file": "host_expansion_disasm_108d190.json",
+          "fragment_range": [
+            "0x108d374",
+            "0x108d39e"
+          ],
+          "fragment_sha256": "6d0af2f94437e326427864194c52600a5753b7ac63f056d57717ae4bb002f759"
+        }
+      ]
+    },
+    {
+      "name": "remove_from_four_large_records_and_peer",
+      "provenance": "root 0x108b6b0 receives host in RCX; RBP=host at 0x108b6d7, RDI=peer id at 0x108b6d4.",
+      "sites": [
+        {
+          "rva": "0x108b6c7",
+          "bytes": "488d9908010000",
+          "instruction_sha256": "d734fb309b85bd5136e027b4c034196529afa4579443708bb38c221af867282f",
+          "asm": "lea rbx, [rcx + 0x108]",
+          "kind": "address",
+          "field_or_effect": "large record 0 host+0x108",
+          "fragment_file": "host_expansion_disasm_108b6b0.json",
+          "fragment_range": [
+            "0x108b6b0",
+            "0x108bbb4"
+          ],
+          "fragment_sha256": "8ba9b041490cc4393dbc93df6d246478df4470153056bbe5535d953f824eb3fe"
+        },
+        {
+          "rva": "0x108b6e9",
+          "bytes": "894308",
+          "instruction_sha256": "e78b77f60f9db7683037303ae4f1c81c02dcf56f6ad17a62cdfade7499809dc9",
+          "asm": "mov dword ptr [rbx + 8], eax",
+          "kind": "write",
+          "field_or_effect": "large record 0 list count at record+8",
+          "fragment_file": "host_expansion_disasm_108b6b0.json",
+          "fragment_range": [
+            "0x108b6b0",
+            "0x108bbb4"
+          ],
+          "fragment_sha256": "8ba9b041490cc4393dbc93df6d246478df4470153056bbe5535d953f824eb3fe"
+        },
+        {
+          "rva": "0x108b704",
+          "bytes": "8b4b38",
+          "instruction_sha256": "10de7db3705614b33e8e79de870c31bed3f2ee7c0c3746c34f01e0cffea8b92b",
+          "asm": "mov ecx, dword ptr [rbx + 0x38]",
+          "kind": "read",
+          "field_or_effect": "large record 0 secondary list count at record+0x38",
+          "fragment_file": "host_expansion_disasm_108b6b0.json",
+          "fragment_range": [
+            "0x108b6b0",
+            "0x108bbb4"
+          ],
+          "fragment_sha256": "8ba9b041490cc4393dbc93df6d246478df4470153056bbe5535d953f824eb3fe"
+        },
+        {
+          "rva": "0x108b724",
+          "bytes": "894338",
+          "instruction_sha256": "df189c5fe9878d31d90258470bdd08e94cf09353c5f1832c84651957093ad16a",
+          "asm": "mov dword ptr [rbx + 0x38], eax",
+          "kind": "write",
+          "field_or_effect": "large record 0 secondary count",
+          "fragment_file": "host_expansion_disasm_108b6b0.json",
+          "fragment_range": [
+            "0x108b6b0",
+            "0x108bbb4"
+          ],
+          "fragment_sha256": "8ba9b041490cc4393dbc93df6d246478df4470153056bbe5535d953f824eb3fe"
+        },
+        {
+          "rva": "0x108b768",
+          "bytes": "41b8c0010000",
+          "instruction_sha256": "92b6ec1467fe4e34ae495ea59e7131853e82d42360b0f69e626161b92cda94c6",
+          "asm": "mov r8d, 0x1c0",
+          "kind": "size",
+          "field_or_effect": "0x1c0-byte record zero-fill buffer",
+          "fragment_file": "host_expansion_disasm_108b6b0.json",
+          "fragment_range": [
+            "0x108b6b0",
+            "0x108bbb4"
+          ],
+          "fragment_sha256": "8ba9b041490cc4393dbc93df6d246478df4470153056bbe5535d953f824eb3fe"
+        },
+        {
+          "rva": "0x108b76e",
+          "bytes": "e82df3ff00",
+          "instruction_sha256": "84a1603490a18114f2bf011abe2517d7ffbc3adafa034c77da9c3a3f75181747",
+          "asm": "call 0x208aaa0",
+          "kind": "call",
+          "field_or_effect": "zero-fill temporary record buffer",
+          "fragment_file": "host_expansion_disasm_108b6b0.json",
+          "fragment_range": [
+            "0x108b6b0",
+            "0x108bbb4"
+          ],
+          "fragment_sha256": "8ba9b041490cc4393dbc93df6d246478df4470153056bbe5535d953f824eb3fe"
+        },
+        {
+          "rva": "0x108b7f1",
+          "bytes": "488d9dc8020000",
+          "instruction_sha256": "88c3713657ce322b53989957c0d1f7c726211aca6eb1d5a25c919535c940fc8d",
+          "asm": "lea rbx, [rbp + 0x2c8]",
+          "kind": "address",
+          "field_or_effect": "large record 1 host+0x2c8",
+          "fragment_file": "host_expansion_disasm_108b6b0.json",
+          "fragment_range": [
+            "0x108b6b0",
+            "0x108bbb4"
+          ],
+          "fragment_sha256": "8ba9b041490cc4393dbc93df6d246478df4470153056bbe5535d953f824eb3fe"
+        },
+        {
+          "rva": "0x108b911",
+          "bytes": "488d9d88040000",
+          "instruction_sha256": "cbc1042444067d197d53e21b88f8194496cd59732ff30fc4bc31e7af91de341a",
+          "asm": "lea rbx, [rbp + 0x488]",
+          "kind": "address",
+          "field_or_effect": "large record 2 host+0x488",
+          "fragment_file": "host_expansion_disasm_108b6b0.json",
+          "fragment_range": [
+            "0x108b6b0",
+            "0x108bbb4"
+          ],
+          "fragment_sha256": "8ba9b041490cc4393dbc93df6d246478df4470153056bbe5535d953f824eb3fe"
+        },
+        {
+          "rva": "0x108ba31",
+          "bytes": "488d9d48060000",
+          "instruction_sha256": "9b540a71529d915cdaaef874c718e2d9acbcf12b7115ada82d8c5feffb46989a",
+          "asm": "lea rbx, [rbp + 0x648]",
+          "kind": "address",
+          "field_or_effect": "large record 3 host+0x648",
+          "fragment_file": "host_expansion_disasm_108b6b0.json",
+          "fragment_range": [
+            "0x108b6b0",
+            "0x108bbb4"
+          ],
+          "fragment_sha256": "8ba9b041490cc4393dbc93df6d246478df4470153056bbe5535d953f824eb3fe"
+        },
+        {
+          "rva": "0x108bb53",
+          "bytes": "488d4d20",
+          "instruction_sha256": "7a0f4820f43aa05fcc3a1e5107c695870a1e7ecba868a3db8817d459b3f76840",
+          "asm": "lea rcx, [rbp + 0x20]",
+          "kind": "address",
+          "field_or_effect": "host+0x20 peer scan",
+          "fragment_file": "host_expansion_disasm_108b6b0.json",
+          "fragment_range": [
+            "0x108b6b0",
+            "0x108bbb4"
+          ],
+          "fragment_sha256": "8ba9b041490cc4393dbc93df6d246478df4470153056bbe5535d953f824eb3fe"
+        },
+        {
+          "rva": "0x108bb62",
+          "bytes": "83f804",
+          "instruction_sha256": "ec9d1a6c95187ab3425edbcdf19a43602dabed7b1d6a5c436f9d713baec3f3d1",
+          "asm": "cmp eax, 4",
+          "kind": "bound",
+          "field_or_effect": "four peers",
+          "fragment_file": "host_expansion_disasm_108b6b0.json",
+          "fragment_range": [
+            "0x108b6b0",
+            "0x108bbb4"
+          ],
+          "fragment_sha256": "8ba9b041490cc4393dbc93df6d246478df4470153056bbe5535d953f824eb3fe"
+        },
+        {
+          "rva": "0x108bb79",
+          "bytes": "48c70000000000",
+          "instruction_sha256": "fc06760fae139846dd8272978beca6a53cabb01ed7d3dd79d970539bbd0aca5d",
+          "asm": "mov qword ptr [rax], 0",
+          "kind": "write",
+          "field_or_effect": "matched peer first qword cleared",
+          "fragment_file": "host_expansion_disasm_108b6b0.json",
+          "fragment_range": [
+            "0x108b6b0",
+            "0x108bbb4"
+          ],
+          "fragment_sha256": "8ba9b041490cc4393dbc93df6d246478df4470153056bbe5535d953f824eb3fe"
+        },
+        {
+          "rva": "0x108bb80",
+          "bytes": "c7402000000000",
+          "instruction_sha256": "ae92a0d9f7f3065e4185362023dabd840d1791f0ebfee4d653fc4d7f782344b5",
+          "asm": "mov dword ptr [rax + 0x20], 0",
+          "kind": "write",
+          "field_or_effect": "matched peer +0x20 state cleared",
+          "fragment_file": "host_expansion_disasm_108b6b0.json",
+          "fragment_range": [
+            "0x108b6b0",
+            "0x108bbb4"
+          ],
+          "fragment_sha256": "8ba9b041490cc4393dbc93df6d246478df4470153056bbe5535d953f824eb3fe"
+        },
+        {
+          "rva": "0x108bb87",
+          "bytes": "c7401800000000",
+          "instruction_sha256": "9f9ce0ee97ae09915a69a92c414fe8bee88839578aff7dbb2ddeac4dc73b6dbd",
+          "asm": "mov dword ptr [rax + 0x18], 0",
+          "kind": "write",
+          "field_or_effect": "matched peer +0x18 field cleared",
+          "fragment_file": "host_expansion_disasm_108b6b0.json",
+          "fragment_range": [
+            "0x108b6b0",
+            "0x108bbb4"
+          ],
+          "fragment_sha256": "8ba9b041490cc4393dbc93df6d246478df4470153056bbe5535d953f824eb3fe"
+        },
+        {
+          "rva": "0x108bb93",
+          "bytes": "c684290001000000",
+          "instruction_sha256": "9752e3afee237a6092e19a985d680ab846d267b0cc5c84e6607c83650ceba605",
+          "asm": "mov byte ptr [rcx + rbp + 0x100], 0",
+          "kind": "write",
+          "field_or_effect": "host+0x100 indexed flag cleared unless prior index=-1",
+          "fragment_file": "host_expansion_disasm_108b6b0.json",
+          "fragment_range": [
+            "0x108b6b0",
+            "0x108bbb4"
+          ],
+          "fragment_sha256": "8ba9b041490cc4393dbc93df6d246478df4470153056bbe5535d953f824eb3fe"
+        }
+      ]
+    },
+    {
+      "name": "lookup_four_large_records",
+      "provenance": "root 0x108b560 receives host in RCX, peer ID in RDX; R11=host and large-record list cursor starts at host+0x110.",
+      "sites": [
+        {
+          "rva": "0x108b577",
+          "bytes": "488db110010000",
+          "instruction_sha256": "2893833ef1572ac30acd37ddc8b78a2765eee98f1e4d85941e36fc1d78bc2b72",
+          "asm": "lea rsi, [rcx + 0x110]",
+          "kind": "address",
+          "field_or_effect": "first large record sublist count host+0x110",
+          "fragment_file": "host_expansion_disasm_108b560.json",
+          "fragment_range": [
+            "0x108b560",
+            "0x108b5fe"
+          ],
+          "fragment_sha256": "75cc440e423c6ac3c64ed9cd0c55ef0abc47482f68fbfdc77c587cc238e2fd60"
+        },
+        {
+          "rva": "0x108b5a9",
+          "bytes": "4939acc318010000",
+          "instruction_sha256": "478e72a162d179db29e3f12ddc51e81ae5ebefcae925f52a389571635fcbf3a7",
+          "asm": "cmp qword ptr [r11 + rax*8 + 0x118], rbp",
+          "kind": "read",
+          "field_or_effect": "large-record sublist peer qword",
+          "fragment_file": "host_expansion_disasm_108b560.json",
+          "fragment_range": [
+            "0x108b560",
+            "0x108b5fe"
+          ],
+          "fragment_sha256": "75cc440e423c6ac3c64ed9cd0c55ef0abc47482f68fbfdc77c587cc238e2fd60"
+        },
+        {
+          "rva": "0x108b5b6",
+          "bytes": "4d8d8b08010000",
+          "instruction_sha256": "8e397224beccce9900aed4287dd07fa969cb85e6c84a25bf53d283fdae989d9a",
+          "asm": "lea r9, [r11 + 0x108]",
+          "kind": "address",
+          "field_or_effect": "host+0x108 large-record base",
+          "fragment_file": "host_expansion_disasm_108b560.json",
+          "fragment_range": [
+            "0x108b560",
+            "0x108b5fe"
+          ],
+          "fragment_sha256": "75cc440e423c6ac3c64ed9cd0c55ef0abc47482f68fbfdc77c587cc238e2fd60"
+        },
+        {
+          "rva": "0x108b5bd",
+          "bytes": "4869d0c0010000",
+          "instruction_sha256": "8b93c4ca5230d971658cb64ed5ef8f0946eb81a4932f26d55699dbe9492a893a",
+          "asm": "imul rdx, rax, 0x1c0",
+          "kind": "address",
+          "field_or_effect": "index*0x1c0",
+          "fragment_file": "host_expansion_disasm_108b560.json",
+          "fragment_range": [
+            "0x108b560",
+            "0x108b5fe"
+          ],
+          "fragment_sha256": "75cc440e423c6ac3c64ed9cd0c55ef0abc47482f68fbfdc77c587cc238e2fd60"
+        },
+        {
+          "rva": "0x108b5d5",
+          "bytes": "4881c6c0010000",
+          "instruction_sha256": "645cd29579112202db2a49d1bca66a070727ce879ac61da528c9bdcd07ec7bdd",
+          "asm": "add rsi, 0x1c0",
+          "kind": "address",
+          "field_or_effect": "large-record stride 0x1c0",
+          "fragment_file": "host_expansion_disasm_108b560.json",
+          "fragment_range": [
+            "0x108b560",
+            "0x108b5fe"
+          ],
+          "fragment_sha256": "75cc440e423c6ac3c64ed9cd0c55ef0abc47482f68fbfdc77c587cc238e2fd60"
+        },
+        {
+          "rva": "0x108b5e0",
+          "bytes": "4183fa04",
+          "instruction_sha256": "4a2ea3353425739fd0a1cd8cdc9958a7f0e1369b901a5742bb3a1e8cf70a435f",
+          "asm": "cmp r10d, 4",
+          "kind": "bound",
+          "field_or_effect": "four large records",
+          "fragment_file": "host_expansion_disasm_108b560.json",
+          "fragment_range": [
+            "0x108b560",
+            "0x108b5fe"
+          ],
+          "fragment_sha256": "75cc440e423c6ac3c64ed9cd0c55ef0abc47482f68fbfdc77c587cc238e2fd60"
+        }
+      ]
+    },
+    {
+      "name": "pending_consumer",
+      "provenance": "root 0x108a440 has R12=host; earlier pending_consumer_findings.json proves calls from owner+0x159b0.",
+      "sites": [
+        {
+          "rva": "0x108af53",
+          "bytes": "4d8db42408080000",
+          "instruction_sha256": "121f03e4e32966b7bff374fe933cf1abf5d5cb72e4d8eb2a05c74fd0d652c0a4",
+          "asm": "lea r14, [r12 + 0x808]",
+          "kind": "address",
+          "field_or_effect": "host+0x808 pending base",
+          "fragment_file": "pending_candidate_108af53.json",
+          "fragment_range": [
+            "0x108ab57",
+            "0x108b4f6"
+          ],
+          "fragment_sha256": "8b1ea84fac86ff8967a6310dae38347d48ed6b43de11e257f3262a7b29496a80"
+        },
+        {
+          "rva": "0x108af5b",
+          "bytes": "41bd04000000",
+          "instruction_sha256": "c98ca7d615aaf70ece7fc6a42f1bfbee4bf5a733de63d94b532951e92e4a18ec",
+          "asm": "mov r13d, 4",
+          "kind": "bound",
+          "field_or_effect": "four pending records",
+          "fragment_file": "pending_candidate_108af53.json",
+          "fragment_range": [
+            "0x108ab57",
+            "0x108b4f6"
+          ],
+          "fragment_sha256": "8b1ea84fac86ff8967a6310dae38347d48ed6b43de11e257f3262a7b29496a80"
+        },
+        {
+          "rva": "0x108af70",
+          "bytes": "49833e00",
+          "instruction_sha256": "d4d3c828950fd5f6e9a3225f1c61b89b827383b9fb9a418ef363dbd9b3fee931",
+          "asm": "cmp qword ptr [r14], 0",
+          "kind": "read",
+          "field_or_effect": "pending record first qword",
+          "fragment_file": "pending_candidate_108af53.json",
+          "fragment_range": [
+            "0x108ab57",
+            "0x108b4f6"
+          ],
+          "fragment_sha256": "8b1ea84fac86ff8967a6310dae38347d48ed6b43de11e257f3262a7b29496a80"
+        },
+        {
+          "rva": "0x108b245",
+          "bytes": "498d8c2408010000",
+          "instruction_sha256": "1d8632bf327e871e81710069ecae653062f126dd98ef2bd9a32dc6174e1b240f",
+          "asm": "lea rcx, [r12 + 0x108]",
+          "kind": "address",
+          "field_or_effect": "host+0x108 large-record base",
+          "fragment_file": "pending_candidate_108af53.json",
+          "fragment_range": [
+            "0x108ab57",
+            "0x108b4f6"
+          ],
+          "fragment_sha256": "8b1ea84fac86ff8967a6310dae38347d48ed6b43de11e257f3262a7b29496a80"
+        },
+        {
+          "rva": "0x108b250",
+          "bytes": "48833900",
+          "instruction_sha256": "8c7e061ce8a5f76c92ba7d4a2eaa38d5f87805cfd5cd25ca3b6b9fe54019fa19",
+          "asm": "cmp qword ptr [rcx], 0",
+          "kind": "read",
+          "field_or_effect": "large-record first qword",
+          "fragment_file": "pending_candidate_108af53.json",
+          "fragment_range": [
+            "0x108ab57",
+            "0x108b4f6"
+          ],
+          "fragment_sha256": "8b1ea84fac86ff8967a6310dae38347d48ed6b43de11e257f3262a7b29496a80"
+        },
+        {
+          "rva": "0x108b258",
+          "bytes": "4881c1c0010000",
+          "instruction_sha256": "0a70c0b60656e8de41ddfa6b8c4657bfc49f0ef7faea06d3ce2f61fbbb56fa73",
+          "asm": "add rcx, 0x1c0",
+          "kind": "address",
+          "field_or_effect": "large-record stride 0x1c0",
+          "fragment_file": "pending_candidate_108af53.json",
+          "fragment_range": [
+            "0x108ab57",
+            "0x108b4f6"
+          ],
+          "fragment_sha256": "8b1ea84fac86ff8967a6310dae38347d48ed6b43de11e257f3262a7b29496a80"
+        },
+        {
+          "rva": "0x108b25f",
+          "bytes": "83f804",
+          "instruction_sha256": "ec9d1a6c95187ab3425edbcdf19a43602dabed7b1d6a5c436f9d713baec3f3d1",
+          "asm": "cmp eax, 4",
+          "kind": "bound",
+          "field_or_effect": "four large records",
+          "fragment_file": "pending_candidate_108af53.json",
+          "fragment_range": [
+            "0x108ab57",
+            "0x108b4f6"
+          ],
+          "fragment_sha256": "8b1ea84fac86ff8967a6310dae38347d48ed6b43de11e257f3262a7b29496a80"
+        },
+        {
+          "rva": "0x108b270",
+          "bytes": "4a89842108010000",
+          "instruction_sha256": "024ebb71efb926521e1950a919777ac1623974f850b57362c8fad0149181ed12",
+          "asm": "mov qword ptr [rcx + r12 + 0x108], rax",
+          "kind": "write",
+          "field_or_effect": "copy pending first qword into large record",
+          "fragment_file": "pending_candidate_108af53.json",
+          "fragment_range": [
+            "0x108ab57",
+            "0x108b4f6"
+          ],
+          "fragment_sha256": "8b1ea84fac86ff8967a6310dae38347d48ed6b43de11e257f3262a7b29496a80"
+        },
+        {
+          "rva": "0x108b494",
+          "bytes": "410f1106",
+          "instruction_sha256": "f47f34515e1eaa27bf7b40d5cef82eb7ff36f9343d71630bb9333ae5c50e4ecf",
+          "asm": "movups xmmword ptr [r14], xmm0",
+          "kind": "write",
+          "field_or_effect": "pending record zero-fill begins, four 16-byte stores",
+          "fragment_file": "pending_candidate_108af53.json",
+          "fragment_range": [
+            "0x108ab57",
+            "0x108b4f6"
+          ],
+          "fragment_sha256": "8b1ea84fac86ff8967a6310dae38347d48ed6b43de11e257f3262a7b29496a80"
+        },
+        {
+          "rva": "0x108b4c8",
+          "bytes": "4983c640",
+          "instruction_sha256": "9b6712160601ca97ccad3ce9be17231fbba4f8e9654e4fa7a7a1860b19e48fe6",
+          "asm": "add r14, 0x40",
+          "kind": "address",
+          "field_or_effect": "pending stride 0x40",
+          "fragment_file": "pending_candidate_108af53.json",
+          "fragment_range": [
+            "0x108ab57",
+            "0x108b4f6"
+          ],
+          "fragment_sha256": "8b1ea84fac86ff8967a6310dae38347d48ed6b43de11e257f3262a7b29496a80"
+        },
+        {
+          "rva": "0x108b4cc",
+          "bytes": "4983ed01",
+          "instruction_sha256": "b65d145ab71ceeb6810ccb1f55fbf59a2c334f96b6e195ae8cfcc33f61460d3b",
+          "asm": "sub r13, 1",
+          "kind": "bound",
+          "field_or_effect": "pending iteration decrement",
+          "fragment_file": "pending_candidate_108af53.json",
+          "fragment_range": [
+            "0x108ab57",
+            "0x108b4f6"
+          ],
+          "fragment_sha256": "8b1ea84fac86ff8967a6310dae38347d48ed6b43de11e257f3262a7b29496a80"
+        }
+      ]
+    },
+    {
+      "name": "live_tail_and_adjacent_sibling",
+      "provenance": "root 0x1350680 receives outer owner in RCX and forms host=outer+0x159b0 as RBP; root 0x134d740 constructs sibling at outer+0x162c8.",
+      "sites": [
+        {
+          "rva": "0x13506ad",
+          "bytes": "488da9b0590100",
+          "instruction_sha256": "9c8c64b5a3c27f6f0f619fdcced2a43e143b35e071129b6345276bb98770d7aa",
+          "asm": "lea rbp, [rcx + 0x159b0]",
+          "kind": "address",
+          "field_or_effect": "embedded host=owner+0x159b0",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_range": [
+            "0x13506a1",
+            "0x1350856"
+          ],
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        },
+        {
+          "rva": "0x135071c",
+          "bytes": "488d8d08090000",
+          "instruction_sha256": "b62615d1fd23c8c95b2908fa8446a01b9275bbb9b1ce2e5823ffcc6442559b72",
+          "asm": "lea rcx, [rbp + 0x908]",
+          "kind": "address",
+          "field_or_effect": "host+0x908 tail qword address",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_range": [
+            "0x13506a1",
+            "0x1350856"
+          ],
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        },
+        {
+          "rva": "0x135074a",
+          "bytes": "488b8510090000",
+          "instruction_sha256": "4f7fb4c50770687e0a30c77e7f2a8f1feeecee22e545d6398b5f7cdfcc78d2c6",
+          "asm": "mov rax, qword ptr [rbp + 0x910]",
+          "kind": "read",
+          "field_or_effect": "host+0x910 tail qword",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_range": [
+            "0x13506a1",
+            "0x1350856"
+          ],
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        },
+        {
+          "rva": "0x1350764",
+          "bytes": "488b8508090000",
+          "instruction_sha256": "adb268488c666937ec78264ed8a6d17d75cd4b08217904e9165325dad6503aa4",
+          "asm": "mov rax, qword ptr [rbp + 0x908]",
+          "kind": "read",
+          "field_or_effect": "host+0x908 tail qword",
+          "fragment_file": "host_relocation_fragment_13506ad.json",
+          "fragment_range": [
+            "0x13506a1",
+            "0x1350856"
+          ],
+          "fragment_sha256": "18a50551c6936eaf2af2254989f3a3a0b205668064ac54d53801d3f6707376b8"
+        },
+        {
+          "rva": "0x134dd07",
+          "bytes": "4c8d86c8620100",
+          "instruction_sha256": "3806cc3bf573031da0cadd0b9d43232d13851d59149c3370688d1d91c61ae50b",
+          "asm": "lea r8, [rsi + 0x162c8]",
+          "kind": "address",
+          "field_or_effect": "next sibling=host+0x918",
+          "fragment_file": "host_owner_init_disasm.json",
+          "fragment_range": [
+            "0x134d9bd",
+            "0x134e15c"
+          ],
+          "fragment_sha256": "39b76eba46a239c24f1469844d4e313bad30aeb296736d4654f7899df4a60463"
+        }
+      ]
+    }
+  ],
+  "layout": {
+    "outer_host": "outer+0x159b0",
+    "owner_backpointer": "host+0x0",
+    "peer": "host+0x20, 4 x 0x38; state/index fields within each record",
+    "flags": "host+0x100..+0x103",
+    "large": "host+0x108, 4 x 0x1c0; end-exclusive host+0x808",
+    "pending": "host+0x808, 4 x 0x40; end-exclusive host+0x908",
+    "tail": "host+0x908 and +0x910 live qwords",
+    "next_sibling": "host+0x918"
+  },
+  "dependencies": [
+    {
+      "from": "constructor",
+      "to": [
+        "peer",
+        "owner_backpointer",
+        "sibling"
+      ],
+      "why": "inline embedded initialization and sibling placement"
+    },
+    {
+      "from": "start_hosting",
+      "to": [
+        "peer",
+        "flags",
+        "large"
+      ],
+      "why": "four-record clear and fixed 0x700 zero-fill"
+    },
+    {
+      "from": "migration",
+      "to": [
+        "peer",
+        "flags",
+        "large",
+        "owner registry",
+        "remove_peer"
+      ],
+      "why": "reset, four-slot rebuild, registry-derived flag index and remove call"
+    },
+    {
+      "from": "pending_consumer",
+      "to": [
+        "pending",
+        "large"
+      ],
+      "why": "four pending entries feed four large records"
+    },
+    {
+      "from": "remove_peer",
+      "to": [
+        "peer",
+        "flags",
+        "large"
+      ],
+      "why": "four explicit large record removals, then four-peer clear"
+    },
+    {
+      "from": "outer/sibling transitions",
+      "to": [
+        "host+0x18 state",
+        "tail",
+        "sibling"
+      ],
+      "why": "direct outer-relative state writes and live tail read"
+    }
+  ],
+  "architecture_assessment": {
+    "inline_eight_pending": "Contradicted by live tail at host+0x908/+0x910 and sibling at host+0x918; eight 0x40 pending entries from +0x808 end at +0xa08.",
+    "replace_host_plus_zero_with_pointer": "Contradicted by constructor and sibling paths: [host+0] is the outer owner backpointer.",
+    "move_whole_host_alone": "Would break direct owner+0x159b0/+0x159c8 and adjacent sibling+0x162c8 sites; moving the sibling would propagate offset changes to other owner fields. The full write set is not known.",
+    "sidecar_candidate": "Keeping the first four inline records and external extra storage would preserve current embedded addresses but requires new routing for every four-bound peer/flag/large/pending consumer plus owner registries and other subsystems. No complete hook set or working mod is established."
+  },
+  "limits": [
+    "Selected pins are a proven subset; computed addresses and callbacks can evade literal scans.",
+    "0x108b520 has direct-target plus RET/INT3 boundary evidence, not an unwind entry.",
+    "The 0x208aaa0 routine behaves as a byte-fill function in captured code, and callers pass zero and exact sizes; this map does not assume a C library symbol name.",
+    "No process was read and no game binary or report was modified in this pass."
+  ]
+}

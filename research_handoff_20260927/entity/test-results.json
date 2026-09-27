@@ -1,0 +1,27 @@
+{
+  "schema": "offline-entity-evidence-test-results-v1",
+  "date": "2026-09-27",
+  "normal": {
+    "command": "python -m unittest -v test_replay_entity",
+    "tests": 6,
+    "status": "PASS",
+    "exit_code": 0
+  },
+  "optimized": {
+    "command": "python -O -m unittest -v test_replay_entity",
+    "tests": 6,
+    "status": "PASS",
+    "exit_code": 0
+  },
+  "verifier_fault_injection": {
+    "method": "Set replay_entity.require = lambda *args: None in a separate Python process; run test_source_faults_are_rejected only",
+    "source_files_modified": false,
+    "normal": {"tests": 1, "failures": 3, "exit_code": 1},
+    "optimized": {"tests": 1, "failures": 3, "exit_code": 1},
+    "assessment": "Intentional verifier fault makes the tests fail in both modes."
+  },
+  "instruction_fingerprints_verified": 81,
+  "candidate_ownership_lifecycle_restore_tests": "NOT_APPLICABLE_NO_FIELD_BINDING",
+  "gameplay_fps_frametime_tests": "NOT_RUN_NO_FIELD_BINDING",
+  "mod_zip_built": false
+}

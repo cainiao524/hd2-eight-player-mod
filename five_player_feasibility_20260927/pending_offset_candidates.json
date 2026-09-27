@@ -1,0 +1,142 @@
+{
+  "scope": "Pinned capture code range 0x1070000..0x10a0000, validated against captured unwind instruction boundaries",
+  "capture_report_sha256": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+  "captured_data_sha256": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d",
+  "offsets": [
+    "0x808",
+    "0x810",
+    "0x820",
+    "0x830",
+    "0x838",
+    "0x840",
+    "0x848",
+    "0x888",
+    "0x8c8"
+  ],
+  "matches": [
+    {
+      "rva": "0x108af53",
+      "bytes": "4d8db42408080000",
+      "sha256": "121f03e4e32966b7bff374fe933cf1abf5d5cb72e4d8eb2a05c74fd0d652c0a4",
+      "asm": "lea r14, [r12 + 0x808]",
+      "displacement": "0x808",
+      "fragment": [
+        "0x108ab57",
+        "0x108b4f6",
+        "0x24da3b8"
+      ],
+      "root": [
+        "0x108a440",
+        "0x108a5a7",
+        "0x24da36c"
+      ]
+    },
+    {
+      "rva": "0x108c48d",
+      "bytes": "488d8308080000",
+      "sha256": "cb1c678601ccee46d470ae420521ddbc1a2d4979e4df6d7426f14e124979a72e",
+      "asm": "lea rax, [rbx + 0x808]",
+      "displacement": "0x808",
+      "fragment": [
+        "0x108be06",
+        "0x108c5be",
+        "0x24da468"
+      ],
+      "root": [
+        "0x108bc70",
+        "0x108bcd2",
+        "0x24da410"
+      ]
+    },
+    {
+      "rva": "0x108c4ba",
+      "bytes": "4c89841808080000",
+      "sha256": "c67aea54c538589eac8788484d67e1e42d80a988ec64f8d0553d4484d85239d0",
+      "asm": "mov qword ptr [rax + rbx + 0x808], r8",
+      "displacement": "0x808",
+      "fragment": [
+        "0x108be06",
+        "0x108c5be",
+        "0x24da468"
+      ],
+      "root": [
+        "0x108bc70",
+        "0x108bcd2",
+        "0x24da410"
+      ]
+    },
+    {
+      "rva": "0x108c4cf",
+      "bytes": "0f11841810080000",
+      "sha256": "e6eb1f954e0edc501674836ae15161f7bf0807900e6d8da142bc2d2690cd1ab7",
+      "asm": "movups xmmword ptr [rax + rbx + 0x810], xmm0",
+      "displacement": "0x810",
+      "fragment": [
+        "0x108be06",
+        "0x108c5be",
+        "0x24da468"
+      ],
+      "root": [
+        "0x108bc70",
+        "0x108bcd2",
+        "0x24da410"
+      ]
+    },
+    {
+      "rva": "0x108c4dc",
+      "bytes": "0f118c1820080000",
+      "sha256": "73ab13681b0c536bb2bd89e50969a266a7fa5691408cf80ef1134a67012936dc",
+      "asm": "movups xmmword ptr [rax + rbx + 0x820], xmm1",
+      "displacement": "0x820",
+      "fragment": [
+        "0x108be06",
+        "0x108c5be",
+        "0x24da468"
+      ],
+      "root": [
+        "0x108bc70",
+        "0x108bcd2",
+        "0x24da410"
+      ]
+    },
+    {
+      "rva": "0x108c4e4",
+      "bytes": "0f11841830080000",
+      "sha256": "56eaa8201028ba507beb7c23123a04f6e1cde23b5c2419f735e288ff1d64cedd",
+      "asm": "movups xmmword ptr [rax + rbx + 0x830], xmm0",
+      "displacement": "0x830",
+      "fragment": [
+        "0x108be06",
+        "0x108c5be",
+        "0x24da468"
+      ],
+      "root": [
+        "0x108bc70",
+        "0x108bcd2",
+        "0x24da410"
+      ]
+    },
+    {
+      "rva": "0x109533c",
+      "bytes": "c78120080000ffffffff",
+      "sha256": "24018eb321cda62195f8f0c2172b6926bd3dc65385c643e0fc8240adee4a327f",
+      "asm": "mov dword ptr [rcx + 0x820], 0xffffffff",
+      "displacement": "0x820",
+      "fragment": [
+        "0x10952b0",
+        "0x10954f7",
+        "0x24db278"
+      ],
+      "root": [
+        "0x10952b0",
+        "0x10954f7",
+        "0x24db278"
+      ]
+    }
+  ],
+  "limits": [
+    "A matching displacement alone does not establish that the base register is a HostSynchronizer.",
+    "Derived-address and register arithmetic may refer to pending records without a literal offset.",
+    "The bounded range omits functions outside 0x1070000..0x10a0000."
+  ]
+}

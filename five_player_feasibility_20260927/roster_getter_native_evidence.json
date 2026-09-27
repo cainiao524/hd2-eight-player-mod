@@ -1,0 +1,1314 @@
+{
+  "source_sha256": {
+    "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+  },
+  "capture_identity_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "replay_sha256": "ef2b9c3be43f04854cc4bdb1e8868b60d30dd4074d87124bf19953491be07c0c",
+  "bodies": {
+    "0x606ad0": {
+      "entry": "0x606ad0",
+      "end_exclusive": "0x606b75",
+      "size_bytes": 165,
+      "sha256": "96ce6884140adb9ae93688e042a2b5db7ffc1e59ffb45eb03188e6bab79abcfb",
+      "bytes_hex": "48895c240848896c2410488974241848897c24203b1536d1e7024c8b1577f9d102744d458b8ad800000033c0418b9ae00000000fafda418d69ff4585c97431498bbad0000000418bb2dc0000000f1f008bcd448d04184c23c1428b0cc74e8d1cc73bce74253bca7425ffc0413bc172e0b8ffffffff488b5c2408488b6c2410488b742418488b7c2420c33bca75e2418b430483f8ff74d948c1e005428b8410b4030000ebd0",
+      "fragments": [
+        {
+          "start": "0x606ad0",
+          "end_exclusive": "0x606b75",
+          "unwind": "0x2424c2c",
+          "size_bytes": 165,
+          "sha256": "96ce6884140adb9ae93688e042a2b5db7ffc1e59ffb45eb03188e6bab79abcfb"
+        }
+      ],
+      "abi": "Windows x64; EDX=entity ID; RCX entry unused by this body; EAX=-1 for invalid/missing ID, zero capacity, exhausted probe or map ordinal -1, otherwise EAX=property[ordinal].network_index DWORD. RBX/RBP/RSI/RDI preserved; one shared RET.",
+      "instructions": [
+        {
+          "rva": "0x606ad0",
+          "bytes": "48895c2408",
+          "sha256": "0666a96c5b537b54fb43e8d983f54c516a379f17f302825c7f047c7e9ff4cab0",
+          "asm": "mov qword ptr [rsp + 8], rbx",
+          "encoding": {
+            "rex": 72,
+            "modrm": 92,
+            "sib": 36,
+            "displacement_offset": 4,
+            "displacement_size": 1,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606ad5",
+          "bytes": "48896c2410",
+          "sha256": "a397c36bd07c707505b5b64affc8ba0d8c1bbf7a5992ffa8d2cbcc287b5860be",
+          "asm": "mov qword ptr [rsp + 0x10], rbp",
+          "encoding": {
+            "rex": 72,
+            "modrm": 108,
+            "sib": 36,
+            "displacement_offset": 4,
+            "displacement_size": 1,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606ada",
+          "bytes": "4889742418",
+          "sha256": "3f3cd94f874d3e7da94952e20f1f701b9adf0f0e17346b26da2c80431cfca999",
+          "asm": "mov qword ptr [rsp + 0x18], rsi",
+          "encoding": {
+            "rex": 72,
+            "modrm": 116,
+            "sib": 36,
+            "displacement_offset": 4,
+            "displacement_size": 1,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606adf",
+          "bytes": "48897c2420",
+          "sha256": "57663bc094be67725608e1b2760babad17124516e3182f736240c05c2599126c",
+          "asm": "mov qword ptr [rsp + 0x20], rdi",
+          "encoding": {
+            "rex": 72,
+            "modrm": 124,
+            "sib": 36,
+            "displacement_offset": 4,
+            "displacement_size": 1,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606ae4",
+          "bytes": "3b1536d1e702",
+          "sha256": "0fe19d972b875aa6fc6cdceaa5e1f9b2101dce61e0e99663830c38bf409637f4",
+          "asm": "cmp edx, dword ptr [rip + 0x2e7d136]",
+          "encoding": {
+            "rex": 0,
+            "modrm": 21,
+            "sib": 0,
+            "displacement_offset": 2,
+            "displacement_size": 4,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606aea",
+          "bytes": "4c8b1577f9d102",
+          "sha256": "6ddf7da4e4e66d30d45968e1351e3b8722fc74ac0c6abb18be896f12ba122ce8",
+          "asm": "mov r10, qword ptr [rip + 0x2d1f977]",
+          "encoding": {
+            "rex": 76,
+            "modrm": 21,
+            "sib": 0,
+            "displacement_offset": 3,
+            "displacement_size": 4,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606af1",
+          "bytes": "744d",
+          "sha256": "f36db4ddd684fccef5fcf80355eca8ad1ca1c8d607b142a08e3870697195d35a",
+          "asm": "je 0x606b40",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 1
+          }
+        },
+        {
+          "rva": "0x606af3",
+          "bytes": "458b8ad8000000",
+          "sha256": "6e1048cfaff75c021a75c413cdf6460afc1a82f5f1a09c93ffd73389191c7b7b",
+          "asm": "mov r9d, dword ptr [r10 + 0xd8]",
+          "encoding": {
+            "rex": 69,
+            "modrm": 138,
+            "sib": 0,
+            "displacement_offset": 3,
+            "displacement_size": 4,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606afa",
+          "bytes": "33c0",
+          "sha256": "72fb562c9d90dfcc008e5b0a391395fd2a244bb6bc231e2621a8ec6860d21fa3",
+          "asm": "xor eax, eax",
+          "encoding": {
+            "rex": 0,
+            "modrm": 192,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606afc",
+          "bytes": "418b9ae0000000",
+          "sha256": "6d7e72a6367152c18ce820feb7e4ab14288e73a7dac668788aecbc27915979f8",
+          "asm": "mov ebx, dword ptr [r10 + 0xe0]",
+          "encoding": {
+            "rex": 65,
+            "modrm": 154,
+            "sib": 0,
+            "displacement_offset": 3,
+            "displacement_size": 4,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606b03",
+          "bytes": "0fafda",
+          "sha256": "8381849540869bb8395d8ff0ef99d28b45e019572fceb859d27bbd406fa58bbb",
+          "asm": "imul ebx, edx",
+          "encoding": {
+            "rex": 0,
+            "modrm": 218,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606b06",
+          "bytes": "418d69ff",
+          "sha256": "e0c70e8c2d2482be02ba22e99e55c86bfaac3ecb2160f63dfa2d6215d1c1229a",
+          "asm": "lea ebp, [r9 - 1]",
+          "encoding": {
+            "rex": 65,
+            "modrm": 105,
+            "sib": 0,
+            "displacement_offset": 3,
+            "displacement_size": 1,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606b0a",
+          "bytes": "4585c9",
+          "sha256": "d482d00ee7bd601d4a33dcffe4cf37cb4ee5c27f6bb7dc5901d301705a9f7a02",
+          "asm": "test r9d, r9d",
+          "encoding": {
+            "rex": 69,
+            "modrm": 201,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606b0d",
+          "bytes": "7431",
+          "sha256": "628b49d96dcde97a430dd4f597705899e09a968f793491e4b704cae33a40dc02",
+          "asm": "je 0x606b40",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 1
+          }
+        },
+        {
+          "rva": "0x606b0f",
+          "bytes": "498bbad0000000",
+          "sha256": "f378d87f5a901108792310c326fdb55e11d1b613b6bf4f09eddcfe9f07230819",
+          "asm": "mov rdi, qword ptr [r10 + 0xd0]",
+          "encoding": {
+            "rex": 73,
+            "modrm": 186,
+            "sib": 0,
+            "displacement_offset": 3,
+            "displacement_size": 4,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606b16",
+          "bytes": "418bb2dc000000",
+          "sha256": "585719c854320dd85b44b19cf6a27b0c172c267003f54cf3f9c4d5b2f4a4e90e",
+          "asm": "mov esi, dword ptr [r10 + 0xdc]",
+          "encoding": {
+            "rex": 65,
+            "modrm": 178,
+            "sib": 0,
+            "displacement_offset": 3,
+            "displacement_size": 4,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606b1d",
+          "bytes": "0f1f00",
+          "sha256": "019f07bfe6bd5747f9f3b65f5a095db04a0418d5f11c6feec58eaff709860b66",
+          "asm": "nop dword ptr [rax]",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606b20",
+          "bytes": "8bcd",
+          "sha256": "2c9e934b88528234bbb2f24b2d8ecd5b2df0705e435b83aa85df18d824688a27",
+          "asm": "mov ecx, ebp",
+          "encoding": {
+            "rex": 0,
+            "modrm": 205,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606b22",
+          "bytes": "448d0418",
+          "sha256": "6cfc22b9f7bb16b6eb18d00ef62070c05ba38dfc319bd8375b9529c88848fbe7",
+          "asm": "lea r8d, [rax + rbx]",
+          "encoding": {
+            "rex": 68,
+            "modrm": 4,
+            "sib": 24,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606b26",
+          "bytes": "4c23c1",
+          "sha256": "c7201cf8ec5b7aa5fe28b3edf29be3a807ba77570b7eb7239a696a62831424fb",
+          "asm": "and r8, rcx",
+          "encoding": {
+            "rex": 76,
+            "modrm": 193,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606b29",
+          "bytes": "428b0cc7",
+          "sha256": "255020d6de0896618615a83663254b2fe88d3cab21db37b32121d7174aead549",
+          "asm": "mov ecx, dword ptr [rdi + r8*8]",
+          "encoding": {
+            "rex": 66,
+            "modrm": 12,
+            "sib": 199,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606b2d",
+          "bytes": "4e8d1cc7",
+          "sha256": "1ab1af319d87c1ec5d4f145c737e74462cf8da211b124003451a683856fda88a",
+          "asm": "lea r11, [rdi + r8*8]",
+          "encoding": {
+            "rex": 78,
+            "modrm": 28,
+            "sib": 199,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606b31",
+          "bytes": "3bce",
+          "sha256": "b95169b2d64305eb1ce384390adc0f2521ef45e26cbe760358d88ad308d7b852",
+          "asm": "cmp ecx, esi",
+          "encoding": {
+            "rex": 0,
+            "modrm": 206,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606b33",
+          "bytes": "7425",
+          "sha256": "e85dc0fc0be41b8e9b3f74cacd2072ca22523c7337ca93d894eee1cc88c7ed19",
+          "asm": "je 0x606b5a",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 1
+          }
+        },
+        {
+          "rva": "0x606b35",
+          "bytes": "3bca",
+          "sha256": "076befd637402e8cd0d35c03d2be866d53d6102d8ba4442d622f630227017cfc",
+          "asm": "cmp ecx, edx",
+          "encoding": {
+            "rex": 0,
+            "modrm": 202,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606b37",
+          "bytes": "7425",
+          "sha256": "e85dc0fc0be41b8e9b3f74cacd2072ca22523c7337ca93d894eee1cc88c7ed19",
+          "asm": "je 0x606b5e",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 1
+          }
+        },
+        {
+          "rva": "0x606b39",
+          "bytes": "ffc0",
+          "sha256": "36cf7346f0d0c76f16dd999870c6db6c7dd76557592e00b519bcefb73f0a80f6",
+          "asm": "inc eax",
+          "encoding": {
+            "rex": 0,
+            "modrm": 192,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606b3b",
+          "bytes": "413bc1",
+          "sha256": "a02c793ba25166503fcf5a6ae540b6863066c01603dbe93d9044208293290064",
+          "asm": "cmp eax, r9d",
+          "encoding": {
+            "rex": 65,
+            "modrm": 193,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606b3e",
+          "bytes": "72e0",
+          "sha256": "88fcb7a143229d98afbcdaac0eee2036e0ce17332d87ce761f3a13197993d7f8",
+          "asm": "jb 0x606b20",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 1
+          }
+        },
+        {
+          "rva": "0x606b40",
+          "bytes": "b8ffffffff",
+          "sha256": "ed563fef7aff90379a90ed4533db7fd90746a66497edbd943af9bae1837fa2f3",
+          "asm": "mov eax, 0xffffffff",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 4
+          }
+        },
+        {
+          "rva": "0x606b45",
+          "bytes": "488b5c2408",
+          "sha256": "87a4db8970db95080b5942db104afa69b7e61d2697e9487538c90545a00fb336",
+          "asm": "mov rbx, qword ptr [rsp + 8]",
+          "encoding": {
+            "rex": 72,
+            "modrm": 92,
+            "sib": 36,
+            "displacement_offset": 4,
+            "displacement_size": 1,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606b4a",
+          "bytes": "488b6c2410",
+          "sha256": "42e62c5ecf8bcd64751ba45e6c053cd8e9f7bcf63e06ee30f972b164433f5f37",
+          "asm": "mov rbp, qword ptr [rsp + 0x10]",
+          "encoding": {
+            "rex": 72,
+            "modrm": 108,
+            "sib": 36,
+            "displacement_offset": 4,
+            "displacement_size": 1,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606b4f",
+          "bytes": "488b742418",
+          "sha256": "2dceb997232b1da608c95701343ebc1a9aaf37b0869d8f2e9b90afffa67f18cf",
+          "asm": "mov rsi, qword ptr [rsp + 0x18]",
+          "encoding": {
+            "rex": 72,
+            "modrm": 116,
+            "sib": 36,
+            "displacement_offset": 4,
+            "displacement_size": 1,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606b54",
+          "bytes": "488b7c2420",
+          "sha256": "2aa9ebb741516d93d30599187d583d1cefa39d553af4a00e79e64a6800515792",
+          "asm": "mov rdi, qword ptr [rsp + 0x20]",
+          "encoding": {
+            "rex": 72,
+            "modrm": 124,
+            "sib": 36,
+            "displacement_offset": 4,
+            "displacement_size": 1,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606b59",
+          "bytes": "c3",
+          "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+          "asm": "ret ",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606b5a",
+          "bytes": "3bca",
+          "sha256": "076befd637402e8cd0d35c03d2be866d53d6102d8ba4442d622f630227017cfc",
+          "asm": "cmp ecx, edx",
+          "encoding": {
+            "rex": 0,
+            "modrm": 202,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606b5c",
+          "bytes": "75e2",
+          "sha256": "0ccfed2db3628e21af6caaafe26fb2f30fb68fff852675a597d001c6a7d7f7b4",
+          "asm": "jne 0x606b40",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 1
+          }
+        },
+        {
+          "rva": "0x606b5e",
+          "bytes": "418b4304",
+          "sha256": "ff9ce8fe491120eea7414a7899bc5ecd2e97480ca68b4d3476ab3abf8343009f",
+          "asm": "mov eax, dword ptr [r11 + 4]",
+          "encoding": {
+            "rex": 65,
+            "modrm": 67,
+            "sib": 0,
+            "displacement_offset": 3,
+            "displacement_size": 1,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606b62",
+          "bytes": "83f8ff",
+          "sha256": "b0c84d9c92db13d5a66ed0b53f011c7e96751990afb5eccc7deaa9cb8189433a",
+          "asm": "cmp eax, -1",
+          "encoding": {
+            "rex": 0,
+            "modrm": 248,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 2,
+            "immediate_size": 1
+          }
+        },
+        {
+          "rva": "0x606b65",
+          "bytes": "74d9",
+          "sha256": "97ca6575bddf5001eef5467bc040e4144529b755d77ac4121002cb32d576e60d",
+          "asm": "je 0x606b40",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 1
+          }
+        },
+        {
+          "rva": "0x606b67",
+          "bytes": "48c1e005",
+          "sha256": "d542a7a083a7811bed359570427a3aa47f35397c79b144d4b4b4088a84f2097f",
+          "asm": "shl rax, 5",
+          "encoding": {
+            "rex": 72,
+            "modrm": 224,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 3,
+            "immediate_size": 1
+          }
+        },
+        {
+          "rva": "0x606b6b",
+          "bytes": "428b8410b4030000",
+          "sha256": "8fdb68d8ac868414b9b36ed2f9be0409b783c6149ce9db5c4b3d3eef519c36f5",
+          "asm": "mov eax, dword ptr [rax + r10 + 0x3b4]",
+          "encoding": {
+            "rex": 66,
+            "modrm": 132,
+            "sib": 16,
+            "displacement_offset": 4,
+            "displacement_size": 4,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        {
+          "rva": "0x606b73",
+          "bytes": "ebd0",
+          "sha256": "3b8feb098b1fe2f44864ff5d05000d46db0383fe33f84ed959ca9d7b88ea59e9",
+          "asm": "jmp 0x606b45",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 1
+          }
+        }
+      ],
+      "cfg": {
+        "0x606ad0": [
+          "0x606ad5"
+        ],
+        "0x606ad5": [
+          "0x606ada"
+        ],
+        "0x606ada": [
+          "0x606adf"
+        ],
+        "0x606adf": [
+          "0x606ae4"
+        ],
+        "0x606ae4": [
+          "0x606aea"
+        ],
+        "0x606aea": [
+          "0x606af1"
+        ],
+        "0x606af1": [
+          "0x606b40",
+          "0x606af3"
+        ],
+        "0x606af3": [
+          "0x606afa"
+        ],
+        "0x606afa": [
+          "0x606afc"
+        ],
+        "0x606afc": [
+          "0x606b03"
+        ],
+        "0x606b03": [
+          "0x606b06"
+        ],
+        "0x606b06": [
+          "0x606b0a"
+        ],
+        "0x606b0a": [
+          "0x606b0d"
+        ],
+        "0x606b0d": [
+          "0x606b40",
+          "0x606b0f"
+        ],
+        "0x606b0f": [
+          "0x606b16"
+        ],
+        "0x606b16": [
+          "0x606b1d"
+        ],
+        "0x606b1d": [
+          "0x606b20"
+        ],
+        "0x606b20": [
+          "0x606b22"
+        ],
+        "0x606b22": [
+          "0x606b26"
+        ],
+        "0x606b26": [
+          "0x606b29"
+        ],
+        "0x606b29": [
+          "0x606b2d"
+        ],
+        "0x606b2d": [
+          "0x606b31"
+        ],
+        "0x606b31": [
+          "0x606b33"
+        ],
+        "0x606b33": [
+          "0x606b5a",
+          "0x606b35"
+        ],
+        "0x606b35": [
+          "0x606b37"
+        ],
+        "0x606b37": [
+          "0x606b5e",
+          "0x606b39"
+        ],
+        "0x606b39": [
+          "0x606b3b"
+        ],
+        "0x606b3b": [
+          "0x606b3e"
+        ],
+        "0x606b3e": [
+          "0x606b20",
+          "0x606b40"
+        ],
+        "0x606b40": [
+          "0x606b45"
+        ],
+        "0x606b45": [
+          "0x606b4a"
+        ],
+        "0x606b4a": [
+          "0x606b4f"
+        ],
+        "0x606b4f": [
+          "0x606b54"
+        ],
+        "0x606b54": [
+          "0x606b59"
+        ],
+        "0x606b59": [],
+        "0x606b5a": [
+          "0x606b5c"
+        ],
+        "0x606b5c": [
+          "0x606b40",
+          "0x606b5e"
+        ],
+        "0x606b5e": [
+          "0x606b62"
+        ],
+        "0x606b62": [
+          "0x606b65"
+        ],
+        "0x606b65": [
+          "0x606b40",
+          "0x606b67"
+        ],
+        "0x606b67": [
+          "0x606b6b"
+        ],
+        "0x606b6b": [
+          "0x606b73"
+        ],
+        "0x606b73": [
+          "0x606b45"
+        ]
+      },
+      "branches": [
+        {
+          "rva": "0x606af1",
+          "bytes": "744d",
+          "sha256": "f36db4ddd684fccef5fcf80355eca8ad1ca1c8d607b142a08e3870697195d35a",
+          "asm": "je 0x606b40",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 1
+          }
+        },
+        {
+          "rva": "0x606b0d",
+          "bytes": "7431",
+          "sha256": "628b49d96dcde97a430dd4f597705899e09a968f793491e4b704cae33a40dc02",
+          "asm": "je 0x606b40",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 1
+          }
+        },
+        {
+          "rva": "0x606b33",
+          "bytes": "7425",
+          "sha256": "e85dc0fc0be41b8e9b3f74cacd2072ca22523c7337ca93d894eee1cc88c7ed19",
+          "asm": "je 0x606b5a",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 1
+          }
+        },
+        {
+          "rva": "0x606b37",
+          "bytes": "7425",
+          "sha256": "e85dc0fc0be41b8e9b3f74cacd2072ca22523c7337ca93d894eee1cc88c7ed19",
+          "asm": "je 0x606b5e",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 1
+          }
+        },
+        {
+          "rva": "0x606b3e",
+          "bytes": "72e0",
+          "sha256": "88fcb7a143229d98afbcdaac0eee2036e0ce17332d87ce761f3a13197993d7f8",
+          "asm": "jb 0x606b20",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 1
+          }
+        },
+        {
+          "rva": "0x606b5c",
+          "bytes": "75e2",
+          "sha256": "0ccfed2db3628e21af6caaafe26fb2f30fb68fff852675a597d001c6a7d7f7b4",
+          "asm": "jne 0x606b40",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 1
+          }
+        },
+        {
+          "rva": "0x606b65",
+          "bytes": "74d9",
+          "sha256": "97ca6575bddf5001eef5467bc040e4144529b755d77ac4121002cb32d576e60d",
+          "asm": "je 0x606b40",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 1
+          }
+        },
+        {
+          "rva": "0x606b73",
+          "bytes": "ebd0",
+          "sha256": "3b8feb098b1fe2f44864ff5d05000d46db0383fe33f84ed959ca9d7b88ea59e9",
+          "asm": "jmp 0x606b45",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 1
+          }
+        }
+      ],
+      "external_relocations": [
+        {
+          "kind": "rip_memory",
+          "rva": "0x606ae4",
+          "target_rva": "0x3483c20",
+          "displacement_offset": 2,
+          "displacement_size": 4,
+          "instruction": {
+            "rva": "0x606ae4",
+            "bytes": "3b1536d1e702",
+            "sha256": "0fe19d972b875aa6fc6cdceaa5e1f9b2101dce61e0e99663830c38bf409637f4",
+            "asm": "cmp edx, dword ptr [rip + 0x2e7d136]",
+            "encoding": {
+              "rex": 0,
+              "modrm": 21,
+              "sib": 0,
+              "displacement_offset": 2,
+              "displacement_size": 4,
+              "immediate_offset": 0,
+              "immediate_size": 0
+            }
+          }
+        },
+        {
+          "kind": "rip_memory",
+          "rva": "0x606aea",
+          "target_rva": "0x3326468",
+          "displacement_offset": 3,
+          "displacement_size": 4,
+          "instruction": {
+            "rva": "0x606aea",
+            "bytes": "4c8b1577f9d102",
+            "sha256": "6ddf7da4e4e66d30d45968e1351e3b8722fc74ac0c6abb18be896f12ba122ce8",
+            "asm": "mov r10, qword ptr [rip + 0x2d1f977]",
+            "encoding": {
+              "rex": 76,
+              "modrm": 21,
+              "sib": 0,
+              "displacement_offset": 3,
+              "displacement_size": 4,
+              "immediate_offset": 0,
+              "immediate_size": 0
+            }
+          }
+        }
+      ],
+      "direct_calls": [],
+      "critical_sites": {
+        "input_invalid_compare": {
+          "rva": "0x606ae4",
+          "bytes": "3b1536d1e702",
+          "sha256": "0fe19d972b875aa6fc6cdceaa5e1f9b2101dce61e0e99663830c38bf409637f4",
+          "asm": "cmp edx, dword ptr [rip + 0x2e7d136]",
+          "encoding": {
+            "rex": 0,
+            "modrm": 21,
+            "sib": 0,
+            "displacement_offset": 2,
+            "displacement_size": 4,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        "roster_global_load": {
+          "rva": "0x606aea",
+          "bytes": "4c8b1577f9d102",
+          "sha256": "6ddf7da4e4e66d30d45968e1351e3b8722fc74ac0c6abb18be896f12ba122ce8",
+          "asm": "mov r10, qword ptr [rip + 0x2d1f977]",
+          "encoding": {
+            "rex": 76,
+            "modrm": 21,
+            "sib": 0,
+            "displacement_offset": 3,
+            "displacement_size": 4,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        "invalid_branch": {
+          "rva": "0x606af1",
+          "bytes": "744d",
+          "sha256": "f36db4ddd684fccef5fcf80355eca8ad1ca1c8d607b142a08e3870697195d35a",
+          "asm": "je 0x606b40",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 1
+          }
+        },
+        "capacity_zero_branch": {
+          "rva": "0x606b0d",
+          "bytes": "7431",
+          "sha256": "628b49d96dcde97a430dd4f597705899e09a968f793491e4b704cae33a40dc02",
+          "asm": "je 0x606b40",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 1
+          }
+        },
+        "bucket_key_read": {
+          "rva": "0x606b29",
+          "bytes": "428b0cc7",
+          "sha256": "255020d6de0896618615a83663254b2fe88d3cab21db37b32121d7174aead549",
+          "asm": "mov ecx, dword ptr [rdi + r8*8]",
+          "encoding": {
+            "rex": 66,
+            "modrm": 12,
+            "sib": 199,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        "bucket_address": {
+          "rva": "0x606b2d",
+          "bytes": "4e8d1cc7",
+          "sha256": "1ab1af319d87c1ec5d4f145c737e74462cf8da211b124003451a683856fda88a",
+          "asm": "lea r11, [rdi + r8*8]",
+          "encoding": {
+            "rex": 78,
+            "modrm": 28,
+            "sib": 199,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        "empty_key_branch": {
+          "rva": "0x606b33",
+          "bytes": "7425",
+          "sha256": "e85dc0fc0be41b8e9b3f74cacd2072ca22523c7337ca93d894eee1cc88c7ed19",
+          "asm": "je 0x606b5a",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 1
+          }
+        },
+        "key_found_branch": {
+          "rva": "0x606b37",
+          "bytes": "7425",
+          "sha256": "e85dc0fc0be41b8e9b3f74cacd2072ca22523c7337ca93d894eee1cc88c7ed19",
+          "asm": "je 0x606b5e",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 1
+          }
+        },
+        "full_probe_branch": {
+          "rva": "0x606b3e",
+          "bytes": "72e0",
+          "sha256": "88fcb7a143229d98afbcdaac0eee2036e0ce17332d87ce761f3a13197993d7f8",
+          "asm": "jb 0x606b20",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 1
+          }
+        },
+        "miss_return_value": {
+          "rva": "0x606b40",
+          "bytes": "b8ffffffff",
+          "sha256": "ed563fef7aff90379a90ed4533db7fd90746a66497edbd943af9bae1837fa2f3",
+          "asm": "mov eax, 0xffffffff",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 4
+          }
+        },
+        "shared_return": {
+          "rva": "0x606b59",
+          "bytes": "c3",
+          "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+          "asm": "ret ",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        "empty_key_confirm": {
+          "rva": "0x606b5a",
+          "bytes": "3bca",
+          "sha256": "076befd637402e8cd0d35c03d2be866d53d6102d8ba4442d622f630227017cfc",
+          "asm": "cmp ecx, edx",
+          "encoding": {
+            "rex": 0,
+            "modrm": 202,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        "ordinal_load": {
+          "rva": "0x606b5e",
+          "bytes": "418b4304",
+          "sha256": "ff9ce8fe491120eea7414a7899bc5ecd2e97480ca68b4d3476ab3abf8343009f",
+          "asm": "mov eax, dword ptr [r11 + 4]",
+          "encoding": {
+            "rex": 65,
+            "modrm": 67,
+            "sib": 0,
+            "displacement_offset": 3,
+            "displacement_size": 1,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        "invalid_ordinal_branch": {
+          "rva": "0x606b65",
+          "bytes": "74d9",
+          "sha256": "97ca6575bddf5001eef5467bc040e4144529b755d77ac4121002cb32d576e60d",
+          "asm": "je 0x606b40",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 1
+          }
+        },
+        "ordinal_scale": {
+          "rva": "0x606b67",
+          "bytes": "48c1e005",
+          "sha256": "d542a7a083a7811bed359570427a3aa47f35397c79b144d4b4b4088a84f2097f",
+          "asm": "shl rax, 5",
+          "encoding": {
+            "rex": 72,
+            "modrm": 224,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 3,
+            "immediate_size": 1
+          }
+        },
+        "network_index_read": {
+          "rva": "0x606b6b",
+          "bytes": "428b8410b4030000",
+          "sha256": "8fdb68d8ac868414b9b36ed2f9be0409b783c6149ce9db5c4b3d3eef519c36f5",
+          "asm": "mov eax, dword ptr [rax + r10 + 0x3b4]",
+          "encoding": {
+            "rex": 66,
+            "modrm": 132,
+            "sib": 16,
+            "displacement_offset": 4,
+            "displacement_size": 4,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        "success_join": {
+          "rva": "0x606b73",
+          "bytes": "ebd0",
+          "sha256": "3b8feb098b1fe2f44864ff5d05000d46db0383fe33f84ed959ca9d7b88ea59e9",
+          "asm": "jmp 0x606b45",
+          "encoding": {
+            "rex": 0,
+            "modrm": 0,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 1,
+            "immediate_size": 1
+          }
+        }
+      },
+      "property_site": {
+        "rva": "0x606b6b",
+        "operand_index": 1,
+        "width_bytes": 4,
+        "base_register": "rax",
+        "index_register": "r10",
+        "index_scale": 1,
+        "original_displacement": 948,
+        "displacement_offset": 4,
+        "displacement_size": 4,
+        "ordinal_scale_instruction": {
+          "rva": "0x606b67",
+          "bytes": "48c1e005",
+          "sha256": "d542a7a083a7811bed359570427a3aa47f35397c79b144d4b4b4088a84f2097f",
+          "asm": "shl rax, 5",
+          "encoding": {
+            "rex": 72,
+            "modrm": 224,
+            "sib": 0,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 3,
+            "immediate_size": 1
+          }
+        },
+        "meaning": "S+3A8h+ordinal*20h+0Ch; network index, not map ordinal"
+      },
+      "map_contract": {
+        "header": "S+D0h pointer, +D8h capacity, +DCh empty-key sentinel, +E0h multiplier",
+        "bucket_key_read": {
+          "rva": "0x606b29",
+          "bytes": "428b0cc7",
+          "sha256": "255020d6de0896618615a83663254b2fe88d3cab21db37b32121d7174aead549",
+          "asm": "mov ecx, dword ptr [rdi + r8*8]",
+          "encoding": {
+            "rex": 66,
+            "modrm": 12,
+            "sib": 199,
+            "displacement_offset": 0,
+            "displacement_size": 0,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        "bucket_value_read": {
+          "rva": "0x606b5e",
+          "bytes": "418b4304",
+          "sha256": "ff9ce8fe491120eea7414a7899bc5ecd2e97480ca68b4d3476ab3abf8343009f",
+          "asm": "mov eax, dword ptr [r11 + 4]",
+          "encoding": {
+            "rex": 65,
+            "modrm": 67,
+            "sib": 0,
+            "displacement_offset": 3,
+            "displacement_size": 1,
+            "immediate_offset": 0,
+            "immediate_size": 0
+          }
+        },
+        "no_map_mutations": true
+      },
+      "return_routes": {
+        "invalid_id": "0x606af1",
+        "capacity_zero": "0x606b0d",
+        "empty_nonmatching_key": "0x606b5c",
+        "full_probe_exhausted": "0x606b3e",
+        "invalid_map_ordinal": "0x606b65",
+        "miss_value_site": "0x606b40",
+        "success_network_read": "0x606b6b",
+        "shared_return": "0x606b59"
+      }
+    }
+  },
+  "finite_scope": "One complete unwind getter root only, with exact direct RIP reads and no callee/global xref expansion.",
+  "limits": [
+    "Static byte/CFG evidence does not prove any caller or eight-player runtime reachability.",
+    "Original getter rejects map ordinal FFFFFFFFh but does not bound a different ordinal before the property read.",
+    "Map memory validity, unique keys and stable roster lifetime are external preconditions.",
+    "No native emitter, hook, process access, or multiplayer execution in this replay."
+  ]
+}

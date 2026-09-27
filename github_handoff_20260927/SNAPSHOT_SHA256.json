@@ -1,0 +1,4623 @@
+{
+  "schema_version": 1,
+  "scope": "Frozen payload commit; excludes this manifest itself. Later upload receipt and STATE changes are administrative updates.",
+  "core_directories": [
+    "eight_player_candidate_20260927",
+    "five_player_feasibility_20260927",
+    "research_handoff_20260927",
+    "github_handoff_20260927"
+  ],
+  "extra_source_files": [
+    "FileDiver/stingray/hash.go",
+    "FileDiver/stingray/hash_test.go",
+    "FileDiver/hashes/hashes.txt",
+    "FileDiver/hashes/thinhashes.txt",
+    "FileDiver/hashes/material_textures.txt",
+    "FileDiver/hashes/cracked.txt",
+    "FileDiver/hashes/dl_type_names.txt",
+    "FileDiver/datalibrary/generated_entities.dl_bin",
+    "FileDiver/datalibrary/generated_entities.dl_bin.gz",
+    "FileDiver/datalibrary/entity_component_settings.go",
+    "FileDiver/datalibrary/entity_deltas.go",
+    "FileDiver/datalibrary/datalib_instance.go",
+    "FileDiver/datalibrary/datalib.go",
+    "FileDiver/LICENSE",
+    "FileDiver/README.md",
+    "voice_tw_integration_20260927/extract_baseline.py",
+    "loader_v18_compat_20260927/external/v18/source/README.md",
+    "pcf_four_scope_test2_v18_20260927/Source/runtime/image_windows.lua"
+  ],
+  "capture_files": [
+    "evidence/existing-code-evidence-25480438/capture-report.json",
+    "evidence/existing-code-evidence-25480438/captured-data.bin"
+  ],
+  "excluded_directory_names": [
+    ".git",
+    ".mypy_cache",
+    ".native-test-deps",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".test-deps",
+    ".venv",
+    "__pycache__"
+  ],
+  "excluded_suffixes": [
+    ".pyc",
+    ".pyo"
+  ],
+  "upstream": {
+    "filediver": {
+      "url": "https://github.com/xypwn/filediver",
+      "revision": "bf0ce329db3cf0043994eb717ea86433c303cb36"
+    }
+  },
+  "file_count": 913,
+  "total_bytes": 194076017,
+  "files": [
+    {
+      "path": ".gitattributes",
+      "size_bytes": 74,
+      "sha256": "a5e420fc5be6230c5c93ce2bd3a7c8cd9753fa905a100c6de632e54c15be29ac"
+    },
+    {
+      "path": ".gitignore",
+      "size_bytes": 2210,
+      "sha256": "e2e25feff27b823eb402ec005dd88d76daf5c9395edac4953941720984790cab"
+    },
+    {
+      "path": "FileDiver/LICENSE",
+      "size_bytes": 1480,
+      "sha256": "a22ef37ecf970411307ce0c72d89f1407d4b8bec9745eab2027d93d39863c770"
+    },
+    {
+      "path": "FileDiver/README.md",
+      "size_bytes": 5499,
+      "sha256": "a1209489d1b1b8f1bd1be30c71f3a72941e17a39e43f33dfa17e368665664279"
+    },
+    {
+      "path": "FileDiver/datalibrary/datalib.go",
+      "size_bytes": 24940,
+      "sha256": "63eff1802ac7ee8c4f43c40eb1b30371fe3cea9e1bdb08724e48708436fa097a"
+    },
+    {
+      "path": "FileDiver/datalibrary/datalib_instance.go",
+      "size_bytes": 470,
+      "sha256": "a9b3da4bc6ff40052034e8003cb4fe467057087d147f1340ab51112318bf42e8"
+    },
+    {
+      "path": "FileDiver/datalibrary/entity_component_settings.go",
+      "size_bytes": 24216,
+      "sha256": "d2aef3f6384724e51eb3e6b61a2312fb6d515947968161556fdfc113ddbf98f8"
+    },
+    {
+      "path": "FileDiver/datalibrary/entity_deltas.go",
+      "size_bytes": 6685,
+      "sha256": "32c14a7bcca62f49ed1ddbe4e640f4bd0594d53b72e42482d1ee96d8ae5d162f"
+    },
+    {
+      "path": "FileDiver/datalibrary/generated_entities.dl_bin",
+      "size_bytes": 46612588,
+      "sha256": "21377252b81fdbc670eba1e59a8ab64b170323df208f175e708992e4c1fb515e"
+    },
+    {
+      "path": "FileDiver/datalibrary/generated_entities.dl_bin.gz",
+      "size_bytes": 926619,
+      "sha256": "5f1f54c39d51ddebdd8611b86701e038cdd9ae1821e03d67ca988962a03d19c7"
+    },
+    {
+      "path": "FileDiver/hashes/cracked.txt",
+      "size_bytes": 687940,
+      "sha256": "66b15ea115e1088ee9a72c5a6246560a19aa813a38651dd9cdf296efea22b7ca"
+    },
+    {
+      "path": "FileDiver/hashes/dl_type_names.txt",
+      "size_bytes": 221269,
+      "sha256": "01eff67f430fa5df2d0677c07f72b229b61718face13cc2398f26f1f860ff750"
+    },
+    {
+      "path": "FileDiver/hashes/hashes.txt",
+      "size_bytes": 3414573,
+      "sha256": "a9ee27bff4766c07d92a713667e467fc6c6449b49ad5cad66896d2bc4a5cb63b"
+    },
+    {
+      "path": "FileDiver/hashes/material_textures.txt",
+      "size_bytes": 2986,
+      "sha256": "95ef723c7a398a67399e8bafed12f13783eaafc859fe0ae9662cc930f812d4df"
+    },
+    {
+      "path": "FileDiver/hashes/thinhashes.txt",
+      "size_bytes": 758256,
+      "sha256": "a0bdca1e94555551c825f067f718dba98454a14a7752318d5a26a34be44f5fb5"
+    },
+    {
+      "path": "FileDiver/stingray/hash.go",
+      "size_bytes": 4340,
+      "sha256": "3206b6f98f75401266f6ce374a5b41c1fa8e491d36e6b8c606df48d7b369cbd5"
+    },
+    {
+      "path": "FileDiver/stingray/hash_test.go",
+      "size_bytes": 609,
+      "sha256": "4c0b4b7b619b579264880880aaee0caca90769fef61e6697a48032d3f2cde9b1"
+    },
+    {
+      "path": "README.md",
+      "size_bytes": 2664,
+      "sha256": "69a59756962eef2426c8d2bda05a3e3b0cd03f4a522a4b9a6183a86d0721ab8b"
+    },
+    {
+      "path": "eight_player_candidate_20260927/.gitignore",
+      "size_bytes": 25,
+      "sha256": "04c4fdee40553571510fd242a9e6a63716f0e9db257481a75e04d5dc17facd02"
+    },
+    {
+      "path": "eight_player_candidate_20260927/NATIVE_PLAYER_COUNT.zh-TW.md",
+      "size_bytes": 7878,
+      "sha256": "6fb4a100c53e7ed4fe43ce724c743ad5dedd4ddbf4ffab0f22bf047028b9d78c"
+    },
+    {
+      "path": "eight_player_candidate_20260927/NATIVE_PROPERTY_PAIR.zh-TW.md",
+      "size_bytes": 7957,
+      "sha256": "088cde52cd49132ebb90db45ad54c20225632ddb185048431f7fa7f3339baed7"
+    },
+    {
+      "path": "eight_player_candidate_20260927/NATIVE_RECEIVER.zh-TW.md",
+      "size_bytes": 7270,
+      "sha256": "ebaa75d8433ed4f8924582e032aed783ac9cc0c0acb4b28b14892127d34f66ec"
+    },
+    {
+      "path": "eight_player_candidate_20260927/NATIVE_ROSTER_ARRIVAL.zh-TW.md",
+      "size_bytes": 9206,
+      "sha256": "875dc3205706a03cfdb9dc2b62ed652346f9a583d7114c48e433e75409f41114"
+    },
+    {
+      "path": "eight_player_candidate_20260927/NATIVE_ROSTER_BUNDLE.zh-TW.md",
+      "size_bytes": 7547,
+      "sha256": "9c414d7f1fc79dc378a9a6fdcb96eeb915db2444a3a6e8097122ab0ec6a0b61c"
+    },
+    {
+      "path": "eight_player_candidate_20260927/NATIVE_ROSTER_CLASSIFY.zh-TW.md",
+      "size_bytes": 9263,
+      "sha256": "fa9befa747fac1fb7db2cea4d7ffcc895a8d1e1a5a331c641d4d0256cb0754bf"
+    },
+    {
+      "path": "eight_player_candidate_20260927/NATIVE_ROSTER_DEPARTURE.zh-TW.md",
+      "size_bytes": 10720,
+      "sha256": "f053d696b5fcf47b348f61a6da1039e4e4d442dedc862d69ed8e97d89bb4f88e"
+    },
+    {
+      "path": "eight_player_candidate_20260927/NATIVE_ROSTER_GETTER.zh-TW.md",
+      "size_bytes": 8467,
+      "sha256": "d85b031c6c2f896fd06208d86c9dc3098fa1dd31ecaa5635ef66d0e43658cf2a"
+    },
+    {
+      "path": "eight_player_candidate_20260927/NATIVE_ROSTER_INSERT.zh-TW.md",
+      "size_bytes": 7833,
+      "sha256": "0f332340a14215f00fb0721a7036c04903317189015d323209adcd9d5db2e391"
+    },
+    {
+      "path": "eight_player_candidate_20260927/NATIVE_ROSTER_REGISTRY_UPDATE.zh-TW.md",
+      "size_bytes": 9565,
+      "sha256": "b461fbb6aff7eccefbec5fbe9e8c0d410ef486768d5bbb398d4bf6e3702c3460"
+    },
+    {
+      "path": "eight_player_candidate_20260927/NATIVE_ROSTER_REMOVE.zh-TW.md",
+      "size_bytes": 10093,
+      "sha256": "2bba10a1f8128078d3bb1595a11248c974a8382194fca02da5a61d5098dbf623"
+    },
+    {
+      "path": "eight_player_candidate_20260927/Native/player_count.py",
+      "size_bytes": 9224,
+      "sha256": "d89b5cb7d8c6a574dbb4d1ef24346524c3a9d2cfeae36357a9bf8fd94967d8ab"
+    },
+    {
+      "path": "eight_player_candidate_20260927/Native/roster_arrival.py",
+      "size_bytes": 16496,
+      "sha256": "2744e367accb26d022807984b8a573d95cc6e9ec15c011c5b403ee187e030771"
+    },
+    {
+      "path": "eight_player_candidate_20260927/Native/roster_bundle.py",
+      "size_bytes": 5775,
+      "sha256": "7041074e818277f45476b91611bf8a37a0a94a9244c48c321148341dac824fbf"
+    },
+    {
+      "path": "eight_player_candidate_20260927/Native/roster_classify.py",
+      "size_bytes": 21101,
+      "sha256": "bc4508fadf17726b773ed9c4237f7693405856ccc0b57ddcac4d06e073f46153"
+    },
+    {
+      "path": "eight_player_candidate_20260927/Native/roster_departure.py",
+      "size_bytes": 20923,
+      "sha256": "a0d9a350254955a840a6039795eb42b89ea8f48e86c3ce00b921e3b1c6f165ba"
+    },
+    {
+      "path": "eight_player_candidate_20260927/Native/roster_getter.py",
+      "size_bytes": 12244,
+      "sha256": "3de7432a9c1218ab98f2e92679583cb299c93d4ba8bcb739fea8aa980520ef5d"
+    },
+    {
+      "path": "eight_player_candidate_20260927/Native/roster_insert.py",
+      "size_bytes": 24246,
+      "sha256": "b7bfcd2184382925b4abade40c5e81f21fcdd689f1aea47a2546c055f0bbf551"
+    },
+    {
+      "path": "eight_player_candidate_20260927/Native/roster_move.py",
+      "size_bytes": 14397,
+      "sha256": "cc6df86a567fda45fcac9a258372df52aad085fff67a620b5f4a2d46c100c23f"
+    },
+    {
+      "path": "eight_player_candidate_20260927/Native/roster_producer.py",
+      "size_bytes": 12547,
+      "sha256": "015b2240847019bfb62fa62a72ce8af93894f2d61b0369d5079aa40d40697a4b"
+    },
+    {
+      "path": "eight_player_candidate_20260927/Native/roster_property_pair.py",
+      "size_bytes": 5598,
+      "sha256": "5828d6a03bfce89ea63e3c8e8c49bca60825aa8b11533dd7e545570f183dba63"
+    },
+    {
+      "path": "eight_player_candidate_20260927/Native/roster_receiver.py",
+      "size_bytes": 11147,
+      "sha256": "38b163fe9a0fda32db609ee94f96ab257105221e60e28ad14c4bd14676e61a27"
+    },
+    {
+      "path": "eight_player_candidate_20260927/Native/roster_registry_update.py",
+      "size_bytes": 26114,
+      "sha256": "1e97c7e52c6d723fe43824c599cfc27871650dea3fe4357f9fcf14dfaa2edd01"
+    },
+    {
+      "path": "eight_player_candidate_20260927/Native/roster_remove.py",
+      "size_bytes": 16425,
+      "sha256": "097e34c1087f3b311ecf6c9ed85de9165fa739b416e9c99ff7a834aa021c9716"
+    },
+    {
+      "path": "eight_player_candidate_20260927/OWNER_LAYOUT.zh-TW.md",
+      "size_bytes": 7198,
+      "sha256": "ee7760ea47df32c74316ac375abdd3d3c51bfe2ba9e8753732055c5f85a810bf"
+    },
+    {
+      "path": "eight_player_candidate_20260927/README.zh-TW.md",
+      "size_bytes": 23302,
+      "sha256": "fec32068699af6ed5dc9cae586b1a22442095a6ea959da2b6ceefc2497bd9579"
+    },
+    {
+      "path": "eight_player_candidate_20260927/SNAPSHOT_CONTRACT.zh-TW.md",
+      "size_bytes": 9028,
+      "sha256": "cbbaea7b0bbe5d53452fceb565140bb1aa22ea94e652eb5e242b3e38ae8e2c6b"
+    },
+    {
+      "path": "eight_player_candidate_20260927/Source/pool_owner_layout.lua",
+      "size_bytes": 11202,
+      "sha256": "5e640ff48b495ea9cb89b74eedd0ee2ed84f8e40c7682c409f064ca07b3165b4"
+    },
+    {
+      "path": "eight_player_candidate_20260927/Source/pool_preflight.lua",
+      "size_bytes": 6260,
+      "sha256": "46c47ca4a568e5541cc699c370be0b9b20f9b5d89eb21113c2bb21964937aff3"
+    },
+    {
+      "path": "eight_player_candidate_20260927/Source/pool_snapshot.lua",
+      "size_bytes": 12472,
+      "sha256": "065fa1c7d74f547e6022de492f8be9fe4d713823877ee1936db7ac347097a01c"
+    },
+    {
+      "path": "eight_player_candidate_20260927/candidate-manifest.json",
+      "size_bytes": 9046,
+      "sha256": "0ce46ba9f2c0ec7fd67787149f5998f9b8b827c29e50ca9418853d0b00776601"
+    },
+    {
+      "path": "eight_player_candidate_20260927/requirements-native-tests.txt",
+      "size_bytes": 31,
+      "sha256": "001346034da7e6c7e7b5ebf87bcff59a904e9218ae8eb7571e94be59d7e36a04"
+    },
+    {
+      "path": "eight_player_candidate_20260927/requirements-offline-tests.txt",
+      "size_bytes": 10,
+      "sha256": "582fe67677fd6b427fb722eb8849df3f4e0db46f7c65dd6fd4508f9653de0645"
+    },
+    {
+      "path": "eight_player_candidate_20260927/tests/test_native_player_count.py",
+      "size_bytes": 25301,
+      "sha256": "1de597c9788fc84394d1946c2e77a75c3d2e4271bbdef7ccee475f0e9ad30796"
+    },
+    {
+      "path": "eight_player_candidate_20260927/tests/test_native_roster_arrival.py",
+      "size_bytes": 38838,
+      "sha256": "b865db68403103fc23509de9c36fda9db06c50095740ac7244006d8f3c8fd90f"
+    },
+    {
+      "path": "eight_player_candidate_20260927/tests/test_native_roster_classify.py",
+      "size_bytes": 33260,
+      "sha256": "50ac149e11274994f4f8fa6e766e5937ff1317130eb1a16718882da7859a8593"
+    },
+    {
+      "path": "eight_player_candidate_20260927/tests/test_native_roster_departure.py",
+      "size_bytes": 47054,
+      "sha256": "f0d5a90b52a613799c33a987859717bf2c381cf20f27dd53b1a73d68345b25f0"
+    },
+    {
+      "path": "eight_player_candidate_20260927/tests/test_native_roster_getter.py",
+      "size_bytes": 24666,
+      "sha256": "f14f3b4a314e6a92ce7dea01d7e5e37b457ef7d2a2538f80a029c9dc7e86aa13"
+    },
+    {
+      "path": "eight_player_candidate_20260927/tests/test_native_roster_insert.py",
+      "size_bytes": 24648,
+      "sha256": "7763f5d6664d653816f2b9ec411ec8a8ff942bf45ca1795448f1a130549e7a64"
+    },
+    {
+      "path": "eight_player_candidate_20260927/tests/test_native_roster_move.py",
+      "size_bytes": 24051,
+      "sha256": "603259862dcc109b0be9c3227954ff771342fbfd416eb71eb9f0687e770bb687"
+    },
+    {
+      "path": "eight_player_candidate_20260927/tests/test_native_roster_pair.py",
+      "size_bytes": 5043,
+      "sha256": "b9fb2e2b4ed8251eb50d74b4488aa7423f68996b0921e2eabf3ee7861cc25d11"
+    },
+    {
+      "path": "eight_player_candidate_20260927/tests/test_native_roster_producer.py",
+      "size_bytes": 26503,
+      "sha256": "68b6d7573c219a977903e345e67fa24792e852ef234392da12c4f4ad312e7fe7"
+    },
+    {
+      "path": "eight_player_candidate_20260927/tests/test_native_roster_receiver.py",
+      "size_bytes": 27619,
+      "sha256": "6c9a4165696e0c3af43894a46cb9b328ee7a67c457771b1341047399ef11e4be"
+    },
+    {
+      "path": "eight_player_candidate_20260927/tests/test_native_roster_registry_update.py",
+      "size_bytes": 42507,
+      "sha256": "5d9bc2c41def4b85191a062b61c47f6d3dae9a378796839ec16c324986df3e4d"
+    },
+    {
+      "path": "eight_player_candidate_20260927/tests/test_native_roster_remove.py",
+      "size_bytes": 31600,
+      "sha256": "0d2795a840cdf6f5522f193cae2c5587e10d2094619454d522d37a17d9ef337b"
+    },
+    {
+      "path": "eight_player_candidate_20260927/tests/test_pool_owner_layout.py",
+      "size_bytes": 22553,
+      "sha256": "3b63e706aa4a6327f1dac955173da4c360dd984d1353bd6f619db5969ff58595"
+    },
+    {
+      "path": "eight_player_candidate_20260927/tests/test_pool_preflight.py",
+      "size_bytes": 8132,
+      "sha256": "fb9b97218a031fa74989be5179a389c1d46d6a2fd4e0d18cabe97fab0d8e9c89"
+    },
+    {
+      "path": "eight_player_candidate_20260927/tests/test_pool_snapshot.py",
+      "size_bytes": 21560,
+      "sha256": "3656468f7014648664ac70e6876b85a8c426babc2304a44d0fa681dd5b593e16"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/delivery_checks.json",
+      "size_bytes": 37860,
+      "sha256": "49543cb5ed13a64421baee652b133fbf8850101a953a7a08b93e484861216d9a"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_player_count_addresses_synthetic.json",
+      "size_bytes": 80,
+      "sha256": "ed4ccc77db381721188d81fe55dc8fbb64d5e53fba94a70d99037896199f85e7"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_player_count_review.zh-TW.md",
+      "size_bytes": 6927,
+      "sha256": "7cf2b0c940bd4e8f7f71e4c5cab1afbb735fae4c7ae92511d37b60ab72bec3d1"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_player_count_synthetic.json",
+      "size_bytes": 4654,
+      "sha256": "2d8cd58ed2c04e2fe9fc44f2f443f5673a367aa6313e729c47231aa5a7116497"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_player_count_test_review.zh-TW.md",
+      "size_bytes": 4277,
+      "sha256": "4bcc64bf9109b3479544fbd8a8dec34483120a2ae233dd7f9e67f944aaaf59a1"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_player_count_tests.json",
+      "size_bytes": 213028,
+      "sha256": "3915a4b1a06b6da4a10b70c385acc96dd284a0095cc9d07975c2fb292ced7e2f"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_arrival_addresses_synthetic.json",
+      "size_bytes": 1708,
+      "sha256": "e2ca74722a5d6eed3d2ede6eebd1b7130a2a931e9316a92333f170559fc552a6"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_arrival_bundle_synthetic.json",
+      "size_bytes": 439426,
+      "sha256": "a9268253612ad82778491308acec824e83a27afb1f9d19313994657f3dc248e0"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_arrival_review.zh-TW.md",
+      "size_bytes": 8934,
+      "sha256": "ff49c7595ba8cc431d18a7c3270941359086721c2b76f98ab000cb497015098a"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_arrival_tests.json",
+      "size_bytes": 80441,
+      "sha256": "3c9d4921951bc6ae2777c0b02f682b36df44853d89c6d58c79fcd2d3e94530ad"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_bundle_synthetic.json",
+      "size_bytes": 26972,
+      "sha256": "01aa146ac792512fd78665d1e6b4f3ee79e5453e3d60dff05de0d0631ca25f85"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_classify_addresses_synthetic.json",
+      "size_bytes": 1183,
+      "sha256": "cddb1d70549de49b3afa824153b9fb0429163fc5d6251f8e29c99b17902addad"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_classify_bundle_synthetic.json",
+      "size_bytes": 190445,
+      "sha256": "1630e6b0ca7e826be85ea2957c3b2dcfd87f3f63e67e9727e2b3fb6169927172"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_classify_review.zh-TW.md",
+      "size_bytes": 8448,
+      "sha256": "9d40e43c4e8e3be5a234627539b12ae35c0326d7f9c449b431f8094f8b65fdef"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_classify_test_review.zh-TW.md",
+      "size_bytes": 3460,
+      "sha256": "cd4ad5b5d016f1bf2dd24836d39e8a3c8caadd0e96165ff1544361a9fe22c877"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_classify_tests.json",
+      "size_bytes": 1630919,
+      "sha256": "aa444e55a0f9b0df94fbf79a4bbbb87ef62d173b809c9c80748380ef2d82687e"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_departure_addresses_synthetic.json",
+      "size_bytes": 1420,
+      "sha256": "c24a3b5cb6ce31ca8a5fae5c803de41fd06a8baafa8962b08abfa7673f36b231"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_departure_bundle_synthetic.json",
+      "size_bytes": 291172,
+      "sha256": "6df0fd14f0241426ec84a7f716c24f5d1453fa2e9f8f5747416a7ee5696cd39d"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_departure_review.zh-TW.md",
+      "size_bytes": 10689,
+      "sha256": "35291c65e99b738e153850c6fa74f530f8066372df5f9c72ad107678c76a541a"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_departure_test_review.zh-TW.md",
+      "size_bytes": 5018,
+      "sha256": "8740474638ca5154903c700571079d261a296051d1fe28eebf55fca1c5a1b1c6"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_departure_tests.json",
+      "size_bytes": 118410,
+      "sha256": "ee4c092341b2d6dccf59ec9df29e878d5ed39697dbfcc29cf5b629a28892e3ff"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_getter_addresses_synthetic.json",
+      "size_bytes": 1271,
+      "sha256": "694b37a93e38210b09f2b36170ffe017f4a48c4a219a1a78e81db9d282714d99"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_getter_bundle_synthetic.json",
+      "size_bytes": 214964,
+      "sha256": "26418f22275098fcf8378285f2c065be07c8137d0b8099ddef8687f211520bde"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_getter_review.zh-TW.md",
+      "size_bytes": 7485,
+      "sha256": "87c02c248724aa2a393e00f13edaf6ba282c73bc00e29232aa7c5e175d19ccd5"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_getter_test_review.zh-TW.md",
+      "size_bytes": 3315,
+      "sha256": "6293d45355bcbf784cf8ff322fdc2d84de02a43c8ea5e407fcd7075032ca4b4c"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_getter_tests.json",
+      "size_bytes": 30701,
+      "sha256": "8080ef58bd25d7c71bf5e5a9a6a89386a1bd50c6b466004c8388b9043832d239"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_insert_addresses_synthetic.json",
+      "size_bytes": 775,
+      "sha256": "c4b57b18838c2ff91eafa0d76ef9e30390b32c484286090f0061a84065a57e72"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_insert_bundle_synthetic.json",
+      "size_bytes": 79088,
+      "sha256": "dbd82266939d523912f91ef36b565ab5eacaeca9b8676750b359c06805b6c12a"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_insert_review.zh-TW.md",
+      "size_bytes": 4872,
+      "sha256": "59c596393eacbc476a547a223f009ad7ac346f665b67821242e797a5ab879d0b"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_insert_tests.json",
+      "size_bytes": 194670,
+      "sha256": "f2c4ffc2df9a59ccff57bd449945fb5257678c27e7e92e13bae63a3afeba69af"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_move_review.zh-TW.md",
+      "size_bytes": 4889,
+      "sha256": "1ac79782ac1676357b203a972bb1f171aa265e83fa249fcb9a6e7229fc44a0c9"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_move_tests.json",
+      "size_bytes": 27384,
+      "sha256": "42022b52384a82f7c8108f86c8ac253dbc6d542c8205e0a586c2af3325eff659"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_pair_synthetic.json",
+      "size_bytes": 12382,
+      "sha256": "cddeb09c525fd7fabd0902e7fbc3c86055bb0b66f83bb6b87b8ee15b0047f652"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_pair_tests.json",
+      "size_bytes": 1164,
+      "sha256": "1a2375fe596e1e21a5875e625837a5218446b805205e7cb95e44e04702621c0e"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_producer_review.zh-TW.md",
+      "size_bytes": 4103,
+      "sha256": "5afb34a61f2d9504cfb226ab87efe0747d52f72668da4d06ceccd8c6b91aa067"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_producer_tests.json",
+      "size_bytes": 19785,
+      "sha256": "3176b9e9e5b4cd59ca609fe810f6d3cc69e208a56991d4ee7d1b08370203a642"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_receiver_review.zh-TW.md",
+      "size_bytes": 2991,
+      "sha256": "b6b4a5d16dbfe6b115acdbdfe8bf3dc13fd682a4da4a7d5dbde6c8057404affc"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_receiver_synthetic.json",
+      "size_bytes": 3876,
+      "sha256": "1809ac73870e0a24425244624815a035c081a1e7ee65c412ef321412fdee353a"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_receiver_tests.json",
+      "size_bytes": 19908,
+      "sha256": "752cc87e8f464750b007978418189a9ef570f16bd5411bab4a05b27a6404d2da"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_registry_update_addresses_synthetic.json",
+      "size_bytes": 1618,
+      "sha256": "9e55ffae537f449fea5ffc7a8fe63df4204963c2090acd75ccd57d0b3b0fc432"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_registry_update_bundle_synthetic.json",
+      "size_bytes": 372044,
+      "sha256": "01925487570c19244c577f2a8664e733f64c047f9914b30428105e02ead5198c"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_registry_update_review.zh-TW.md",
+      "size_bytes": 10077,
+      "sha256": "9580701a4576903370ee3e2807fd4338dfbf90345768600da392b1c4c2b74a0d"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_registry_update_test_review.zh-TW.md",
+      "size_bytes": 4567,
+      "sha256": "00cef621a3a265c7ec318afba1c0b5584e5a6fc36753ff136abf7eee2a0d0e55"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_registry_update_tests.json",
+      "size_bytes": 58871,
+      "sha256": "68769e53dc8cfe4d74e78d3745f68327a72e262c9e017c43309072321f998890"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_remove_addresses_synthetic.json",
+      "size_bytes": 983,
+      "sha256": "c653b65a48b6be4eff8d5b4829b883da47e80aa54caeaaf2100dd68b663880be"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_remove_bundle_synthetic.json",
+      "size_bytes": 108420,
+      "sha256": "e57f22e651193abf3fac07b7d5e71442771e14ca9bae812a8b0794f7d302d73f"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_remove_review.zh-TW.md",
+      "size_bytes": 9015,
+      "sha256": "3f07b72a29b892ebce8cd3d3c27d5412732df19c87bfc04808b8b76ae18d18e9"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_remove_test_review.zh-TW.md",
+      "size_bytes": 3186,
+      "sha256": "7899d5cbbe5f515299a1c604441a2efccc79e6d95fb94d538c4a0dbccb0abb60"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/native_roster_remove_tests.json",
+      "size_bytes": 1211356,
+      "sha256": "ce134e2b94de2d3ca3f224fee22d0d501cb2896660c939c3e614a0300c0af82a"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/pool_owner_layout_review.zh-TW.md",
+      "size_bytes": 2364,
+      "sha256": "e7cec3636d1e95f167c6d7881f0c07d7d2763e258512b4c90aabf860c228de2e"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/pool_owner_layout_tests.json",
+      "size_bytes": 1699,
+      "sha256": "982e49b0a6ecfa06ee1dfbd279b656aff0022be527e6eefee780a96534854b16"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/pool_preflight_tests.json",
+      "size_bytes": 580,
+      "sha256": "44c26afc9ae30059695c2f055aca8ddd7411b903a8910e5fa68e471cad716a2e"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/pool_snapshot_before_free_node_fix.json",
+      "size_bytes": 1445,
+      "sha256": "c94894f24e4f4c27e519b4c1387f03f93e1f6d83cf0f29618af0b3890924536a"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/pool_snapshot_review.zh-TW.md",
+      "size_bytes": 3970,
+      "sha256": "6065168a658a81d4e43aa4aac41201709d8890f58d7a82e8c8c4eb2291d279e0"
+    },
+    {
+      "path": "eight_player_candidate_20260927/verification/pool_snapshot_tests.json",
+      "size_bytes": 1445,
+      "sha256": "b595028e6499ad677a15f132a1f07f70e36785321ca5d11e8774f78795147d0b"
+    },
+    {
+      "path": "evidence/existing-code-evidence-25480438/capture-report.json",
+      "size_bytes": 2299339,
+      "sha256": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5"
+    },
+    {
+      "path": "evidence/existing-code-evidence-25480438/captured-data.bin",
+      "size_bytes": 42153827,
+      "sha256": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/ENGINE_CALLEE_VERIFICATION.zh-TW.md",
+      "size_bytes": 2177,
+      "sha256": "835475ba4872b8047994e331bd4e7c29817a140e4e755ee42b9373b91de6e804"
+    },
+    {
+      "path": "five_player_feasibility_20260927/IMPLEMENTATION_WORKLIST.zh-TW.md",
+      "size_bytes": 16975,
+      "sha256": "060438e4238098c5c8faf11e76c9d4ddcb77a92fcaae870baed0f5efa511ef40"
+    },
+    {
+      "path": "five_player_feasibility_20260927/PLAYER_CAPACITY_VERIFICATION.zh-TW.md",
+      "size_bytes": 42042,
+      "sha256": "5e2765f443ea7daadfd9d3fb4b7c568e6041247b27f49af9f6483c030d0e653a"
+    },
+    {
+      "path": "five_player_feasibility_20260927/PLAYER_COMPONENT_RELOCATION_PLAN.zh-TW.md",
+      "size_bytes": 25811,
+      "sha256": "026f508657b21997f7c443a321b6b52b626c46443e970fe74a7cfbb5c317b3ce"
+    },
+    {
+      "path": "five_player_feasibility_20260927/REPORT.zh-TW.md",
+      "size_bytes": 90004,
+      "sha256": "6ac217aefb7b412bbaca74ca436c8115485486d8aec526363800c8c372024e53"
+    },
+    {
+      "path": "five_player_feasibility_20260927/UPSTREAM_JOIN.zh-TW.md",
+      "size_bytes": 3851,
+      "sha256": "293032142609c997eb1ab0718f81c51acaa4484ab877cbde8ab13ad840c995a4"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_expansion_1083150_fragment.json",
+      "size_bytes": 165516,
+      "sha256": "a8d8d7e043849c812a7111a9af6aed9927e179bfd8d960d8e08671c2147f4b23"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_expansion_10845b0_body0.json",
+      "size_bytes": 3496,
+      "sha256": "32b3eb8336134990263dac9250100f86a2385c47eba6f3f04d04e226be931e22"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_expansion_10845b0_prologue.json",
+      "size_bytes": 1499,
+      "sha256": "06ef64b8704e6d3297c8c78b2899d75b6177698678ccfe9bee60708a229d9809"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_expansion_10850f0_fragment.json",
+      "size_bytes": 79101,
+      "sha256": "f41944e628a5d8a891841b141db6ced96589a056406ea776a4e5dc2fd3c5e0a0"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_expansion_1087010_body.json",
+      "size_bytes": 19980,
+      "sha256": "d2c118d47f52ef1b63a3398cd6ce8dce5a526d5d81d8c07a44ec62b1c8872649"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_expansion_1087010_prelude.json",
+      "size_bytes": 1358,
+      "sha256": "75e5cff8aa58dffc3f3a896dae3b2d2e432d7ccd7386345cb233ceb5e21cd3bd"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_expansion_1087010_prologue.json",
+      "size_bytes": 2681,
+      "sha256": "5e2d281abcce484eeb51a0900860df7933057abfc4b07ad7438ccb56e5904db6"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_expansion_1087010_tail.json",
+      "size_bytes": 2728,
+      "sha256": "810242a02b334b9ab470691dd5473dddb342455d264445db673ccf9c88073872"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_expansion_1087800_fragment.json",
+      "size_bytes": 14669,
+      "sha256": "042cd6094718347bd535e343631f0260096840ed066abaf702da5a7ce44531de"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_expansion_1087da0_prologue.json",
+      "size_bytes": 3621,
+      "sha256": "c650c6d157ea6714edc518b80d75e527b1ba68d2320b5ef65b7c27de4af20886"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_expansion_b91850_fragment.json",
+      "size_bytes": 24218,
+      "sha256": "5d808a3d1c20e6d5395084b8ca65e619c9b45350213bb1547e1424d006e179ad"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_expansion_index_scan.json",
+      "size_bytes": 12924,
+      "sha256": "4a1cfb1b9e032c0f226282026cec41927467fe360fb17dd5ba67e5a29311217d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_expansion_index_scan.py",
+      "size_bytes": 1949,
+      "sha256": "b8ae0882e64d04754fdef6d2f509962d9090f33d399d3d3f0caac91dcb03cd41"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_expansion_inventory.py",
+      "size_bytes": 7494,
+      "sha256": "3e50d81c775218bc711a01396a5fead11986fcebd6e43e7ed23e0f1932716c85"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_expansion_inventory_v2.json",
+      "size_bytes": 41169,
+      "sha256": "97ff0849fc8752e2203b7ff5b7caea0cd8008f80cda606e5d14632144a608964"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_expansion_notes.md",
+      "size_bytes": 4403,
+      "sha256": "428941d38f875dc7dd4bcf1e5527406f3d17a40c2b9e3c1c85b61308ea1dee32"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_index_consumers_evidence.json",
+      "size_bytes": 54793,
+      "sha256": "f4dc8b4cd0641899777dec111a6a02a25d89300f54653f3f952d087b2e8c73c3"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_index_consumers_field_scan.json",
+      "size_bytes": 1975632,
+      "sha256": "e578c34e1dae2a0a62983c04bf15bb837c57a60b480d3b62cb28ab46724fc72a"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_index_consumers_findings.zh-TW.md",
+      "size_bytes": 5840,
+      "sha256": "1f90d8e4f695dc545058eb992d26af0682037ec1198dc3f013c3d3f1ffba5660"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_index_consumers_leaf_candidates.json",
+      "size_bytes": 112938,
+      "sha256": "73b9b7fef54b1ae4110af4b175a79c807ff146ebc097993bad574373d68f2d7f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_index_consumers_leaf_xrefs.json",
+      "size_bytes": 2516,
+      "sha256": "1056bd2cdd36bdfe23b8d2490220c0dce602d61ce633929820a5eb19914a14ed"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_index_consumers_replay.py",
+      "size_bytes": 6918,
+      "sha256": "fe9611e058ad495206d2afff75ed243276528436e9e744a05a4b5e8b179aad3a"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component238_lifecycle_evidence.json",
+      "size_bytes": 557589,
+      "sha256": "c7a4addf24b68d372218cd98b6079f8a0ecba363043939b97fa395fc8e37322b"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component238_lifecycle_evidence_v2.json",
+      "size_bytes": 557862,
+      "sha256": "ac68b8cc938dc56288c9db7fa9a41d8a64f84fdd353fee6ff3414f6c35e0424b"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component238_lifecycle_findings.zh-TW.md",
+      "size_bytes": 12135,
+      "sha256": "b52b8fbe3c7c20c78646508d4029477d03e721d4c176d7d71895e7155983f83f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component238_lifecycle_global_xrefs.json",
+      "size_bytes": 130340,
+      "sha256": "32ede102b98928af3f130b6c0754a95ad984858522cb86a972c4ab874c1141a3"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component238_lifecycle_owner_scan.json",
+      "size_bytes": 10215,
+      "sha256": "5af74a1232332fb406b37ba1ba1fd9e8d76b84c92ed99c87b93e6ae9cc72d42c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component238_lifecycle_replay.py",
+      "size_bytes": 13605,
+      "sha256": "e9a8fd5a425c6d35dbd40c731c07d8812c037adfac90461850752ae0e0efd2f1"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component238_lifecycle_review.zh-TW.md",
+      "size_bytes": 7625,
+      "sha256": "caf92f931de20d48f773f2a1e5ce69e6cfd03da119b464d2ee8f42feac814c1d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component260_capacity_544f30_disasm.txt",
+      "size_bytes": 1278,
+      "sha256": "56b1410337af484c6feac2b8ae94f848254170f7e4b203703dd5bfc039b9e45f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component260_capacity_544fd0_disasm.txt",
+      "size_bytes": 1901,
+      "sha256": "f149e57081679739b2df9b94276cd087e399b9a5cb19b10ebfc1c86a678d1259"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component260_capacity_5450a0_disasm.txt",
+      "size_bytes": 1179,
+      "sha256": "a3eaca503ced1279e78e483cd99f42e86e01d03d29b12b31a0eef77d81bfe7b7"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component260_capacity_545130_disasm.txt",
+      "size_bytes": 256,
+      "sha256": "660e03da677a3937dceb76b79d26111f5c34a5dd49059b348fd68a9782a39721"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component260_capacity_545160_disasm.txt",
+      "size_bytes": 2556,
+      "sha256": "97497eaa40f43d615f206773325aee8e4ff3f85c157034c881fa2d49e2ff530b"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component260_capacity_7992d0_disasm.txt",
+      "size_bytes": 3812,
+      "sha256": "fdeaf39abbee61e58502c2a53f876af788d90edefcbb3ce2e26febbb0985cb44"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component260_capacity_7994e0_disasm.txt",
+      "size_bytes": 5811,
+      "sha256": "6881e032bf4ffd99ebf57c2b619043e99a6711794e2b29cd8d7fa943929f9082"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component260_capacity_799790_disasm.txt",
+      "size_bytes": 2472,
+      "sha256": "1c770afa9f28dd303babc3b5ae6e0496c856268473dd4a07e4a0b2850b2cc591"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component260_capacity_7998b0_disasm.txt",
+      "size_bytes": 7409,
+      "sha256": "32f579757097d5b8aafd3e71d7b790cd58a1f1945f73025e0c39c782409b61bb"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component260_capacity_799ca0_disasm.txt",
+      "size_bytes": 4536,
+      "sha256": "3408636191c1785910fa8ade786e45762b57ab277ba10764a2e1adb80c9fe144"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component260_capacity_799ea0_disasm.txt",
+      "size_bytes": 3739,
+      "sha256": "9293383c12153635afc039573d2a7bdab1d55fabadaf7df8b290bb97813c5a64"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component260_capacity_79a420_disasm.txt",
+      "size_bytes": 12592,
+      "sha256": "813f9b8944b6cf5ec2b7a74d1d2368312731c01f7f13a466fcae647d85fe5d72"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component260_capacity_79a970_disasm.txt",
+      "size_bytes": 13049,
+      "sha256": "102db46b12a2087d5281fbc76b9b82721aea3d0688d58efe999807f286829ec8"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component260_capacity_b29410_disasm.txt",
+      "size_bytes": 387,
+      "sha256": "684309d2697cba13b1fbb1eb6c700d85ba7cc7fb78a02e7cad920eac362da10c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component260_capacity_evidence.json",
+      "size_bytes": 612742,
+      "sha256": "567cc06bda9590295bef91b61e20b6f5cb04c8c4410289e39f2c67a76fd09455"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component260_capacity_findings.zh-TW.md",
+      "size_bytes": 10662,
+      "sha256": "cca8c59ffd9b1baeffe4b360ae79cb492cc23bde5e25ec5faccc428a6c7017b6"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component260_capacity_global_xrefs.json",
+      "size_bytes": 31315,
+      "sha256": "8c6510c37cd82941411e1d1e9d50a4ebc53e5f8fd149ef3dfd58ffab5e960c55"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component260_capacity_replay.py",
+      "size_bytes": 16646,
+      "sha256": "d5286ca6f9f9e7334131ae171abd969dfd31496c7dddd2d39ed782155526d197"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component260_capacity_review.zh-TW.md",
+      "size_bytes": 2160,
+      "sha256": "36104b7a438f45d83afc1e823c069751900ef5bf073a31a68052ecf6f7106ac4"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component33_250_lifecycle_evidence.json",
+      "size_bytes": 455841,
+      "sha256": "a2ef7535597211ef2a36045161d6517665e3edb44ff72c5fa87272b1b0f64fb9"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component33_250_lifecycle_evidence_v2.json",
+      "size_bytes": 459241,
+      "sha256": "dfb125ab3edd6b9672eb725981beecb91e1768da9d44b92522e28fd971155280"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component33_250_lifecycle_findings.zh-TW.md",
+      "size_bytes": 12716,
+      "sha256": "4dedb436e5c46f7abbf60ba591e5518532a2871b4e2f3f6adbe679e9be5a0fb3"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component33_250_lifecycle_replay.py",
+      "size_bytes": 17275,
+      "sha256": "85fba45920cad1ddf3ede4888a6f53d431e1d359cb3d8d58230a17007de59931"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component33_250_lifecycle_review.zh-TW.md",
+      "size_bytes": 6324,
+      "sha256": "9dbedd981f71d475a36af89e234252b54f0515c98d61b350b1e96adeceb667c5"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component33_250_lifecycle_review_recheck.json",
+      "size_bytes": 455841,
+      "sha256": "a2ef7535597211ef2a36045161d6517665e3edb44ff72c5fa87272b1b0f64fb9"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component33_250_lifecycle_review_recheck_v2.json",
+      "size_bytes": 459241,
+      "sha256": "dfb125ab3edd6b9672eb725981beecb91e1768da9d44b92522e28fd971155280"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component3_capacity_discovery.json",
+      "size_bytes": 81983,
+      "sha256": "c61186dcc598e98ea5d7d3db30de7b4538d0fd2177f4cae7411be210d7685d0c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component3_capacity_evidence.json",
+      "size_bytes": 220228,
+      "sha256": "1ed27a70a2a1662c3e324c774da877687ae0388d54fe4320e94057f07fd14330"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component3_capacity_findings.zh-TW.md",
+      "size_bytes": 5445,
+      "sha256": "631d0b4f1781f2d5c2985bb17639196199d14e37acd5f19fcda066c8a250e095"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component3_capacity_replay.py",
+      "size_bytes": 10275,
+      "sha256": "3c2755870c6007a1fcd02f667465a8de16eb3b43c8e32fa6144f633a9ccb46da"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component3_capacity_review.zh-TW.md",
+      "size_bytes": 3982,
+      "sha256": "cb9e035bb7fa67ebc29a92e7bb54ff088e1170f5e70ca71ee7ed10a03f3552d8"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component3_capacity_review_recheck.json",
+      "size_bytes": 220228,
+      "sha256": "1ed27a70a2a1662c3e324c774da877687ae0388d54fe4320e94057f07fd14330"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component3_global_refs.json",
+      "size_bytes": 24189,
+      "sha256": "e3752d7b11e31f6c619ddad876e1d0155e4276a6b990345ad99c43b37f554f04"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component41_lifecycle_172f790_disasm.txt",
+      "size_bytes": 1051,
+      "sha256": "34de70567b09dfbe0c1d21ae704b849f34cde27a2fb925aa24cdad0624952241"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component41_lifecycle_172f8a0_disasm.txt",
+      "size_bytes": 2414,
+      "sha256": "7e8687e1a8c575da408143b7bec45c8eab901aec69277784fa5008be75cc4dac"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component41_lifecycle_51ba90_disasm.txt",
+      "size_bytes": 1402,
+      "sha256": "2ef35e3370396850ccb01a0f0af92d47aaaf43dff0d57dde2be624a9ac9eb607"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component41_lifecycle_51bb50_disasm.txt",
+      "size_bytes": 1877,
+      "sha256": "ad696db56ff2ce2717f8c9d6f2ffa8b00d52592985e24cb390a2adfa67312d18"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component41_lifecycle_51bc40_disasm.txt",
+      "size_bytes": 1124,
+      "sha256": "f506834922c12b597a75e16b634604c51a1826a7f38fd0e0746c6eebc5374bd5"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component41_lifecycle_51bcc0_disasm.txt",
+      "size_bytes": 3653,
+      "sha256": "90b24a1dda4213c4838a92ae5a5bbe8ed19b023bb20d762fa920c2c762624de3"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component41_lifecycle_51beb0_disasm.txt",
+      "size_bytes": 378,
+      "sha256": "cbdddc36e525bdfbe543f282b6d36c6f7e76c62e421346cbd9813a25018882c9"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component41_lifecycle_7af210_disasm.txt",
+      "size_bytes": 3018,
+      "sha256": "90e6fb6bed250987ad96df60afd709e9b451de051a77471498194b6b0bb03b7b"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component41_lifecycle_7af610_disasm.txt",
+      "size_bytes": 2370,
+      "sha256": "e139803fabc1454a92ee42c0077cc49c09b535247f3f62ec298e9d83196d0dc1"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component41_lifecycle_7af7a0_disasm.txt",
+      "size_bytes": 1876,
+      "sha256": "b64d5acb923ecdf4991a0acf1eac0844f2c4678d24965af73824fb8c725d56c4"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component41_lifecycle_7afb50_disasm.txt",
+      "size_bytes": 1252,
+      "sha256": "586351eaa676d8029ff460558da6d7d8083b63668b36446aee35ec5e9247f3eb"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component41_lifecycle_b389b0_disasm.txt",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component41_lifecycle_discovery.json",
+      "size_bytes": 19089,
+      "sha256": "88f92134acd968b9d6bead35d35514ed9f5e432bd2484189f9767f318853e9e3"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component41_lifecycle_evidence.json",
+      "size_bytes": 487808,
+      "sha256": "3c6da7d6cbc986d947624df1cab644296a85c4e8b0ef627d0c2aaffb952d0933"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component41_lifecycle_evidence_v2.json",
+      "size_bytes": 542882,
+      "sha256": "0f902df704cffb16992d483e099867f5e05708e6d32bdf1672128eca744721df"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component41_lifecycle_findings.zh-TW.md",
+      "size_bytes": 14830,
+      "sha256": "db70f93faaf3203d70819d01375e5bdc27c7d6c81649c0f481e9a50d7bda9f6f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component41_lifecycle_outer_fields.json",
+      "size_bytes": 4763,
+      "sha256": "6954fd260f0301a4e142d21368e95a5d105487cc94266d166b9f83b4f815b2a9"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component41_lifecycle_replay.py",
+      "size_bytes": 10533,
+      "sha256": "03929cb0fef1bd883e93234e4d7f9ed0c4bdec9e6ad071822d028bd908b3d4ef"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component41_lifecycle_review.zh-TW.md",
+      "size_bytes": 2497,
+      "sha256": "91bc2be63706dfd24a1c5da768c3135f1f6e752ba65f83fa385ff01b4e124d2a"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component43_final_consumer_disasm.json",
+      "size_bytes": 139865,
+      "sha256": "4883653bbce36b1edd5f875d5fd2dd3b68195edd8fe28d5ea3db8b2b8f5a7bd1"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component43_full_helpers_disasm.json",
+      "size_bytes": 42390,
+      "sha256": "8ad6edce71fa78abf7fe0e68e8ab1b0dd68ffd81824a233f46ac010a637abeef"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component43_inline_consumer_evidence.json",
+      "size_bytes": 217773,
+      "sha256": "f8a4a4e5ca22f490cc80614019fd683f5b532a71e8597dfb6686751c5ba069a3"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component43_inline_consumer_findings.zh-TW.md",
+      "size_bytes": 3590,
+      "sha256": "731a41bcfa9a2700ff090ea28011cef7cb8c7281420658b9e23568965fce5327"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component43_inline_consumer_replay.py",
+      "size_bytes": 9372,
+      "sha256": "dd23bfe5ae47d36f6a9cd652fd603bb6897c2bbfabe30792bb98dcba68fe6585"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component43_inline_consumer_review.zh-TW.md",
+      "size_bytes": 5642,
+      "sha256": "c0810798e8a413a251f859a642b0298647829d2f5380394f4e9b224324d73259"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component43_lifecycle_candidates.json",
+      "size_bytes": 4227,
+      "sha256": "a596dcd55a0d3f4bcb0dc64657d7148e1153993898606199f93e05f1ec667199"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component43_lifecycle_disasm.json",
+      "size_bytes": 247747,
+      "sha256": "c93fc5ac51693ea1994bd4c137b62b6fd9f9287e3f9ae711b5efad16ece83a10"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component43_lifecycle_evidence.json",
+      "size_bytes": 166534,
+      "sha256": "e0e3f9fcfec8359eb3f777a7537a2c53d8635cc1c754d1318c34938b12e22cb9"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component43_lifecycle_findings.zh-TW.md",
+      "size_bytes": 7430,
+      "sha256": "979c1db4502ee25cea65c78019a3d8fabfe7a5791c8e757156a813700dd79ad6"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component43_lifecycle_fullroot_check.json",
+      "size_bytes": 166534,
+      "sha256": "e0e3f9fcfec8359eb3f777a7537a2c53d8635cc1c754d1318c34938b12e22cb9"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component43_lifecycle_replay.py",
+      "size_bytes": 9236,
+      "sha256": "25389f7221cb073ac9e3a201c89d6a9a600ca40d34434209f591579668874991"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component43_lifecycle_review.zh-TW.md",
+      "size_bytes": 5486,
+      "sha256": "14a02a523029cacec4f231278409b59d812b7a5aaa5899333d6c91d070592054"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component43_owner_callers.json",
+      "size_bytes": 12569,
+      "sha256": "5743c895938f0d86d513c8d3bea62f07787873f7ce2f62bce1c1c027214c06fd"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component43_owner_disasm.json",
+      "size_bytes": 32982,
+      "sha256": "b8e8f51e0935eff6bc804ba3ce942a2f3c10d5a12b3f256170b4cf9adb10d2ca"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component43_owner_fields.json",
+      "size_bytes": 29415,
+      "sha256": "e2f2fc8b521522601d2981eb8717543751826a5966e90441abd3fb3deb138350"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component43_update_disasm.json",
+      "size_bytes": 26101,
+      "sha256": "e5ac2e5bf3576b56759be4aa7cc8de16b1502cddb8b61c6bc914786ef6457891"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component_map_capacity_evidence.json",
+      "size_bytes": 72959,
+      "sha256": "56de788d4f9c8a807d15e9a4fbe71f30e2ad24e31df56f13f291660cb31e400c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component_map_capacity_evidence_v2.json",
+      "size_bytes": 78699,
+      "sha256": "a0369321fd617c1381ccc4be7b5de4043cd0282c18bd729810d6289a240b52e8"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component_map_capacity_evidence_v3.json",
+      "size_bytes": 89703,
+      "sha256": "84965ea4f8fe615f04ebde961216b3ed576231a23483181240ebabcf84a0abbc"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component_map_capacity_evidence_v4.json",
+      "size_bytes": 91389,
+      "sha256": "f8918247d729a1bde957739ffa7d724ffceba831416e8d526aacc5f70e53e61b"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component_map_capacity_findings.zh-TW.md",
+      "size_bytes": 13146,
+      "sha256": "2b5ae858fd49f2c7901ddd65510fa62a7438354ec8385f0502b3d46436fda01c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component_map_capacity_replay.py",
+      "size_bytes": 30421,
+      "sha256": "6f6eba90fde65944a2f9c1a05de35febc23814c501066235b05c7d86c6a955f3"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component_map_capacity_review.zh-TW.md",
+      "size_bytes": 2949,
+      "sha256": "4fb0d241f6078625840b74225c7f94ef6d4acd0b999ea7648fad946e33a73fed"
+    },
+    {
+      "path": "five_player_feasibility_20260927/component_map_capacity_review_recheck_v4.json",
+      "size_bytes": 91389,
+      "sha256": "f8918247d729a1bde957739ffa7d724ffceba831416e8d526aacc5f70e53e61b"
+    },
+    {
+      "path": "five_player_feasibility_20260927/creation_capacity_global_xrefs.json",
+      "size_bytes": 1215182,
+      "sha256": "06f7e8734749720b974f8b07f7e8ec34518bc0fde6fd4c4e1b02c78d78e71585"
+    },
+    {
+      "path": "five_player_feasibility_20260927/creation_fragment_1091a29.json",
+      "size_bytes": 21388,
+      "sha256": "ffd2300f893ab5e4d5a25bb16083ea381cc7049fed2793b4ca70e20696574e91"
+    },
+    {
+      "path": "five_player_feasibility_20260927/creation_fragment_1094475.json",
+      "size_bytes": 131350,
+      "sha256": "6c7ca3c46b739344a6f95593943ac55840396dceafd226edd0bc41dea3428ff7"
+    },
+    {
+      "path": "five_player_feasibility_20260927/creation_fragment_1094579.json",
+      "size_bytes": 131350,
+      "sha256": "6c7ca3c46b739344a6f95593943ac55840396dceafd226edd0bc41dea3428ff7"
+    },
+    {
+      "path": "five_player_feasibility_20260927/creation_nummembers_table_xrefs.json",
+      "size_bytes": 2380,
+      "sha256": "2ed9ff0f7c8bba1cc9635c63852ee56efd3e85bfe253f1d79ede4933b5ecc2ed"
+    },
+    {
+      "path": "five_player_feasibility_20260927/creation_path_evidence.json",
+      "size_bytes": 14637,
+      "sha256": "7f9cb78e1e211b97ba5f37493613f405c02831fda1f9a7e48b70bfc01112e344"
+    },
+    {
+      "path": "five_player_feasibility_20260927/creation_path_evidence_v2.json",
+      "size_bytes": 16635,
+      "sha256": "5439045edb9c09c33c1a39e3166a5623d52a285dcbf3ce537567ac29279f0e95"
+    },
+    {
+      "path": "five_player_feasibility_20260927/creation_path_evidence_v3.json",
+      "size_bytes": 23622,
+      "sha256": "8d70f95de0a6fa6857cf55836c4ee54acfcfae05a73bebd304bb6b014d6f6b2e"
+    },
+    {
+      "path": "five_player_feasibility_20260927/creation_path_findings.zh-TW.md",
+      "size_bytes": 6457,
+      "sha256": "ec591aa7ce90fcd4e67df5181c053f0baf8b11bb9183680d23e6e43ac2bba847"
+    },
+    {
+      "path": "five_player_feasibility_20260927/creation_path_replay.py",
+      "size_bytes": 5299,
+      "sha256": "b3a570ac2f74bc1ed23d5c99b1339f8f2f06bde76786367990538873ccea88a2"
+    },
+    {
+      "path": "five_player_feasibility_20260927/creation_platform_string_xrefs.json",
+      "size_bytes": 4532,
+      "sha256": "e477bfe3941873e305759e62a738c515634335a052c27a8e151202727bedb1b1"
+    },
+    {
+      "path": "five_player_feasibility_20260927/creation_platform_update_xrefs.json",
+      "size_bytes": 6497,
+      "sha256": "991a588a614a188fced5b666c91b306b15abd81aaab7f4e160e4bb6d68c5f0f1"
+    },
+    {
+      "path": "five_player_feasibility_20260927/creation_roots_xrefs.json",
+      "size_bytes": 5320,
+      "sha256": "9d72e4102b1216febc6f64f379576183a71b7a6fd235ec8dcded17a713165fb5"
+    },
+    {
+      "path": "five_player_feasibility_20260927/creation_xrefs_1091800.json",
+      "size_bytes": 3127,
+      "sha256": "b60f3ea7847f8ade82dec6584730b13c1684fbf79e8d7085803bdd3f9baf09c2"
+    },
+    {
+      "path": "five_player_feasibility_20260927/creation_xrefs_1091D40.json",
+      "size_bytes": 1365,
+      "sha256": "bb3291cea1e91bdde4e72087b90e2af493b43d56a768cbfad1c1096308ce2e4c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/creation_xrefs_2247520.json",
+      "size_bytes": 1672,
+      "sha256": "dd122aa0257d668fe83d4d55ec9ed78bdf99aed865dbb865b7d83ae2f50e7562"
+    },
+    {
+      "path": "five_player_feasibility_20260927/eight_table_xrefs.json",
+      "size_bytes": 528178,
+      "sha256": "aa5120e23a35625a4866643378c25390be81eb95bd844bc8ed18f91ef930ad81"
+    },
+    {
+      "path": "five_player_feasibility_20260927/engine_30_callees_analyze.py",
+      "size_bytes": 10667,
+      "sha256": "59268b35accc1f14bd041b086c5181875a52236111669b2102a8d1a8e1464826"
+    },
+    {
+      "path": "five_player_feasibility_20260927/engine_30_callees_evidence.json",
+      "size_bytes": 19780,
+      "sha256": "4fd23bf03c560b29424331f14e96f8d2bd0098890986542083697c98b430325e"
+    },
+    {
+      "path": "five_player_feasibility_20260927/engine_30_callees_findings.zh-TW.md",
+      "size_bytes": 4174,
+      "sha256": "dbdb1dfee7f22ac2495d1295ad21da6a3e798534b6ddbe5360f52d15205c49bf"
+    },
+    {
+      "path": "five_player_feasibility_20260927/engine_callee_cfg_20260927.json",
+      "size_bytes": 118375,
+      "sha256": "2b9206b5b9371a5b422baba1dec32d540d670876e121aff15e26f43b019bd5f7"
+    },
+    {
+      "path": "five_player_feasibility_20260927/engine_callee_live_20260927_1.json",
+      "size_bytes": 36369,
+      "sha256": "157ddf9f9f9c04265dbc80109441af7090fcf78316e8642781857668348f129a"
+    },
+    {
+      "path": "five_player_feasibility_20260927/engine_f8_object_evidence.json",
+      "size_bytes": 15102,
+      "sha256": "290fa4a3e2118ebc132db72693115f40d3404800b3ce74c25b8c8c540f035fb6"
+    },
+    {
+      "path": "five_player_feasibility_20260927/engine_f8_object_evidence_v2.json",
+      "size_bytes": 15496,
+      "sha256": "8aea8ef8092e5ffe776ca1d3fb7e3503eece86d4991b16ffee1740444a062d71"
+    },
+    {
+      "path": "five_player_feasibility_20260927/engine_f8_object_findings.zh-TW.md",
+      "size_bytes": 4324,
+      "sha256": "20a9af65bb6724586862a45992a95aa718be67035f037355be669aa872ff7c79"
+    },
+    {
+      "path": "five_player_feasibility_20260927/engine_f8_object_replay.py",
+      "size_bytes": 7908,
+      "sha256": "a45422e12aa4800d41ad1e3e9a12319c9e3292a7cb85f067f4db94c6b1fe8c3b"
+    },
+    {
+      "path": "five_player_feasibility_20260927/engine_f8_request_analyze.py",
+      "size_bytes": 14710,
+      "sha256": "d6349ac4181f0081703da57be548c4057bc51ab48d92b3d457d22ec8dc28bfec"
+    },
+    {
+      "path": "five_player_feasibility_20260927/engine_f8_request_evidence.json",
+      "size_bytes": 18263,
+      "sha256": "231f8a0cfdd8c1b7fe93419ada9c56cb012f7f24805a4b677cb41c4aa2441e74"
+    },
+    {
+      "path": "five_player_feasibility_20260927/engine_f8_request_findings.zh-TW.md",
+      "size_bytes": 5313,
+      "sha256": "40105ba170fcbc2227b0787979ff2b44389c9477d9d70e9efb6aab4c343a8ba9"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_embedded_region_refs.json",
+      "size_bytes": 247095,
+      "sha256": "e293b3c949554b73f9f486f71cb607c2e67c287fcf5e84e502df57326ee539a6"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_event_registration_disasm.json",
+      "size_bytes": 17791,
+      "sha256": "a9319a29dba9180e58982a7f63e61be9e5e78ee7ddb8a7d4ea4f9b110258143b"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_expansion_disasm_1088a30.json",
+      "size_bytes": 40327,
+      "sha256": "44d072b1c4ad7627a40dcf95e2263921a709e544ff9940ef314277afb6ff3c49"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_expansion_disasm_1088f00.json",
+      "size_bytes": 3201,
+      "sha256": "c10d52675826b4106c171e33ed84efd0f8fcb3b14effb7b2dd5febb54418b565"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_expansion_disasm_1088f30.json",
+      "size_bytes": 4259,
+      "sha256": "515f89ac052793cd63b83139c8c2ee359c5c9378978c0bfca6ca26a7901b9db8"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_expansion_disasm_1088f80.json",
+      "size_bytes": 5342,
+      "sha256": "f84870bb990e3460521dbb051b5672dbf5dc87dfaf1bf88891a7c8f5992c17d4"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_expansion_disasm_1089400.json",
+      "size_bytes": 33022,
+      "sha256": "cf8320bec5192a45bff60c5a08337cc373c0d7c11aa5453d9fe32fffdac6d816"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_expansion_disasm_1089720.json",
+      "size_bytes": 169670,
+      "sha256": "3edfdc0c713062cd394e085276caf2b4f605dfa9dbe63613b2fdb1b6fc4199fe"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_expansion_disasm_108b520.json",
+      "size_bytes": 6889,
+      "sha256": "5266fb198bff298bc9a1f62e9173e8fdd3c485b571d1d1e71e9e3d14ff27ad8e"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_expansion_disasm_108b560.json",
+      "size_bytes": 9385,
+      "sha256": "259a5e24e52ab6cafe58b6f0bcdfd864e8d1005d6b9ce7ecaf3ea982c2f64b01"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_expansion_disasm_108b6b0.json",
+      "size_bytes": 76653,
+      "sha256": "b638419e1553583b20f7bc5fdd1f2217650b9f549977d4f90a6a4c57ae5e11b0"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_expansion_disasm_108d020.json",
+      "size_bytes": 14938,
+      "sha256": "c7b8f008ead58b7978c1a8b877e962f0563d4795ddcce1aad9c3e18ef85382fd"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_expansion_disasm_108d130.json",
+      "size_bytes": 5099,
+      "sha256": "1aeeb241f82b5d100cd4678f325fffdf59cfbc12b637129a773247f9bfea8cae"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_expansion_disasm_108d190.json",
+      "size_bytes": 27774,
+      "sha256": "9437676c1bf93c9c90350eae3c3a9bcd3b31524f8232c1aeeb94cf58a90bc953"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_expansion_disasm_108d3b0.json",
+      "size_bytes": 30292,
+      "sha256": "a55ae50df55c31e964c37ab0eceeb2c5ec971ff7dd4677fcea7f09fd8a81acdb"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_expansion_disasm_108d5e0.json",
+      "size_bytes": 13676,
+      "sha256": "2473c7f9f659fa963dc0791e1d932e5e8485cf9a248033381648f878eb569f1d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_expansion_disasm_108d9f0.json",
+      "size_bytes": 61621,
+      "sha256": "5e065ebbac9e6274ab59f486155e06fed146d1ba5e42bc3bebf22e5f5803e888"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_expansion_inventory.json",
+      "size_bytes": 66264,
+      "sha256": "9581461e0eee4c4cee1dcb90c24f73021bfc0d0bcc9a3377fbbe985457258e98"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_expansion_map.py",
+      "size_bytes": 14979,
+      "sha256": "398f4fefc2c392456c5176e76df169ce6deb9e839c00c98d99daabd429f3c805"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_expansion_scan.py",
+      "size_bytes": 3876,
+      "sha256": "2cd2580deffb75ceab3833bd2af56c69c1cb9e7d0a0770dadf4ff5048f0c55a2"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_init_helper_disasm.json",
+      "size_bytes": 5003,
+      "sha256": "d5d750b66773c39d1a74d169152e725da0eff7f1cdf6c351a7302c11b5915384"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_join_caller_xrefs.json",
+      "size_bytes": 2101,
+      "sha256": "2678292075ff934628e5b16b0226f325859c9af63b1eab4f57bd53ee6f8bfa2b"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_join_dispatch_refs.json",
+      "size_bytes": 4,
+      "sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_join_table_xrefs.json",
+      "size_bytes": 1353,
+      "sha256": "5029908f5eb89df83a7593cbf41f852f261fd1d274df9f1fc8235556428a7b82"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_join_xrefs.json",
+      "size_bytes": 2675,
+      "sha256": "4bbce5231f9b41cd62052dac85d632b957ff5914296e17bbc9e52cfd8dcf011d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_layout_inventory.json",
+      "size_bytes": 230949,
+      "sha256": "6a387a392e5919f01d272d583ddb48a40a67a95e3d0bf86dc4e976c32f2371a1"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_owner_field_refs.json",
+      "size_bytes": 124792,
+      "sha256": "aceb9f9a0388d1712ed8a8dfbf01f1be98059829d95cd1ae1231ff5f46b8a5ea"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_owner_init_disasm.json",
+      "size_bytes": 69452,
+      "sha256": "fe041e132066d16353ae94bfb73d3971faa000887d2eea3a7ec945e0a693b14f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_relocation_1083150.json",
+      "size_bytes": 31190,
+      "sha256": "bc1958956c7a8c1b495e3c7b346a1f3db401c32f4361ce57c21f2e64b283bda5"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_relocation_10845b0.json",
+      "size_bytes": 1499,
+      "sha256": "06ef64b8704e6d3297c8c78b2899d75b6177698678ccfe9bee60708a229d9809"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_relocation_134e160.json",
+      "size_bytes": 1107,
+      "sha256": "219a26c0d6e0e46520ec5562d7b8d271687515547e1e6280e0187084222ae698"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_relocation_134e400.json",
+      "size_bytes": 16722,
+      "sha256": "90b119bd91ee8682b8e5222174310ff7e32036246e93bcec1b5ef9b366f1d236"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_relocation_13500f0.json",
+      "size_bytes": 4003,
+      "sha256": "9892c24852161639bdd41cee5763ab63910d304781222b517a27340defb732c7"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_relocation_1350680.json",
+      "size_bytes": 1682,
+      "sha256": "0e2e7ec0bb050da767ee88b71ce14a2d89d58682eaae284a0dae3597091903f3"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_relocation_b99ff0.json",
+      "size_bytes": 13540,
+      "sha256": "f730ecbaed8a262d1991c370a12666f5ef7b1fc019cfd97df18eb7a3e267cce5"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_relocation_baa560.json",
+      "size_bytes": 13540,
+      "sha256": "950ccf2708297bcbe3634f4107dd93d49d2647c99ed148eb9696c48f20318824"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_relocation_ctor_root.json",
+      "size_bytes": 24039,
+      "sha256": "413e9a585af7048665ae90d9f94e92adc32987c2d5c1461a3c9c43691094e3fb"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_relocation_fragment_1083851.json",
+      "size_bytes": 165516,
+      "sha256": "a8d8d7e043849c812a7111a9af6aed9927e179bfd8d960d8e08671c2147f4b23"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_relocation_fragment_1084294.json",
+      "size_bytes": 165516,
+      "sha256": "a8d8d7e043849c812a7111a9af6aed9927e179bfd8d960d8e08671c2147f4b23"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_relocation_fragment_10845fc.json",
+      "size_bytes": 3496,
+      "sha256": "32b3eb8336134990263dac9250100f86a2385c47eba6f3f04d04e226be931e22"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_relocation_fragment_1084a83.json",
+      "size_bytes": 15453,
+      "sha256": "998c37ad890fc6601ab60f223bcfcc5a5316b5d206d5f5d33cdda6b66fa54972"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_relocation_fragment_134e1c8.json",
+      "size_bytes": 9114,
+      "sha256": "4c438e867e799e14d0c9dbbe82d9709b7dcabfab5031c44b32edbdfb474fc4bc"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_relocation_fragment_13506ad.json",
+      "size_bytes": 17689,
+      "sha256": "1492c34111460fd492f827474e62b92cd85593576de53fcbbf026605221bad37"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_relocation_inventory.json",
+      "size_bytes": 49562,
+      "sha256": "4bbd7b172b45fe55b4d432d72512fd1ca464273af19aa11651d1e61c0acebfb1"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_relocation_inventory.py",
+      "size_bytes": 11878,
+      "sha256": "f9a09ec882e47ff676670e1d63da5dd257d834d7538e1715cb91092714ed568f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/host_relocation_review_notes.md",
+      "size_bytes": 1646,
+      "sha256": "acba864348f789bc91f3c69d0f910b9f72c6693ef56906bc6b83d46b71ee189e"
+    },
+    {
+      "path": "five_player_feasibility_20260927/hosting_init_disasm.json",
+      "size_bytes": 35868,
+      "sha256": "ea95a0424482307fe34bb8a4179e74bdfc4937c8c544e3cf739f16e407ccc58a"
+    },
+    {
+      "path": "five_player_feasibility_20260927/hosting_init_xrefs.json",
+      "size_bytes": 2539,
+      "sha256": "83231c3752214c6e599248dfad55c3093a3f2135f4e9dd5e06cf406322857b95"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_slot_mapping_ctor_xrefs.json",
+      "size_bytes": 2547,
+      "sha256": "dd14b4f1cdba96e2c958e2f0b78c98a28d090d1bf009756ef7334247b00a814c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_slot_mapping_disasm_1465840.txt",
+      "size_bytes": 16983,
+      "sha256": "18f6543ae2fbaf854f75bda2c8faad5adea504b32b2404e89fdb435013ee4804"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_slot_mapping_disasm_1466170.txt",
+      "size_bytes": 31714,
+      "sha256": "380375104a06b6d27f09b85ef3309949ceee8c46e4c6f71c109b638ea73003eb"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_slot_mapping_disasm_1468320.txt",
+      "size_bytes": 60260,
+      "sha256": "b00c64899d5c456be76045e5ea269f115312e905f5789a1b173552e53c0fd54c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_slot_mapping_disasm_146c2f0.txt",
+      "size_bytes": 28036,
+      "sha256": "a0c08cc9886d056c8e0f8fc25c7965a26641fb5b0307b599e8da0f8fc5ec9812"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_slot_mapping_disasm_146e0a0.txt",
+      "size_bytes": 17422,
+      "sha256": "7a64a2f738a84f425158f9b99a31cbf7d6b3064a6954f5e61e6498ce4018d93e"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_slot_mapping_disasm_146fc40.txt",
+      "size_bytes": 18387,
+      "sha256": "de24439f0744cecc005c94c9119d5c08a220788fecf0d5810497cb937f3b54be"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_slot_mapping_disasm_1470a40.txt",
+      "size_bytes": 5613,
+      "sha256": "0ebeea0c5a34d0e471e3775ceadffc6355dea45b32406955e0af4d1d0aaef703"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_slot_mapping_disasm_14719f0.txt",
+      "size_bytes": 1994,
+      "sha256": "77a8f5a169ef41a2107a0cbed312bdf47b28a32b3254d8049f26ab824adbbf0a"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_slot_mapping_disasm_14984e0.txt",
+      "size_bytes": 35633,
+      "sha256": "ee2aefba2d67f0adc97fe0ffb1119620282590315072cfc5700fb942a1a8457c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_slot_mapping_disasm_14a17e0.txt",
+      "size_bytes": 5874,
+      "sha256": "b46e6d6d6fbe20da82d6f17620ffc0e60b9fd065f967efef0b22a3b218d0360f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_slot_mapping_disasm_1893d40.txt",
+      "size_bytes": 1605,
+      "sha256": "6f1d5585494798205efb14c776e2d953d2b9d56b47b8c087c3747f168ca97517"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_slot_mapping_disasm_b90040.txt",
+      "size_bytes": 2315,
+      "sha256": "37d914ae25529290fba63326d78da17c579369440b634c128e878a9c6dcd2c54"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_slot_mapping_disasm_b90190.txt",
+      "size_bytes": 1435,
+      "sha256": "b080e7911484765f8ec7e711d755536745cc6a3dacd3fa914c6818d94c989d47"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_slot_mapping_disasm_bb8ae0.txt",
+      "size_bytes": 1435,
+      "sha256": "76bfa44ad56016da4aaa7c595e7cf833883dc2d0324a1140f09796d2538b7804"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_slot_mapping_evidence.json",
+      "size_bytes": 81959,
+      "sha256": "df55e6ada6e82b2fe3942c90df11980db47d082170aed1e3d37e6ad45785b735"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_slot_mapping_evidence_v2.json",
+      "size_bytes": 97559,
+      "sha256": "c580109622e12a2401570dda7b9213ff04e18ad2995c86034310e83c1f62d640"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_slot_mapping_fields.json",
+      "size_bytes": 305909,
+      "sha256": "a738d1d8698d0a72ba696b9e7c959208aaae79bee06455348bbf7bf76f95e332"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_slot_mapping_findings.zh-TW.md",
+      "size_bytes": 7953,
+      "sha256": "5e699b4391a96be6f0733db2266911cb302a9201289c84a368eeef2fa3bc2217"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_slot_mapping_replay.py",
+      "size_bytes": 8994,
+      "sha256": "2bf8576dda4ad21fd17c00e794f8248c6c6271522da588aad86f87780d738e70"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_slot_mapping_storage_fields.json",
+      "size_bytes": 37630,
+      "sha256": "c2704e29acfb34452fecbc5074181fd4cf386ebf8690c7692fb6e8b5ae3410bd"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_slot_mapping_tag_candidates.json",
+      "size_bytes": 57159,
+      "sha256": "810be76cdf20c6d1f832207bc2867e66d93d00e1f4c96d66bac74f0d69f84d95"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_slot_mapping_xrefs.json",
+      "size_bytes": 7366,
+      "sha256": "a8ca1e4048a924a5ddd07dcd0e4bac8de25f1ab1a00bbb901525977ddf525532"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_storage_capacity_disasm.txt",
+      "size_bytes": 15702,
+      "sha256": "1646328f7c51f6248cd28525f889988a2b382daa831a71f2cc31a44909304568"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_storage_capacity_evidence.json",
+      "size_bytes": 100117,
+      "sha256": "978e5f1d1033f6c11872da32e53d9bb08631d92720ee514917ac3a299335469c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_storage_capacity_evidence_v2.json",
+      "size_bytes": 106685,
+      "sha256": "9515461f998514836f3a534c2b06f6385b9f4cf6e028bd18469d32d2db7ddd63"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_storage_capacity_field_scan.json",
+      "size_bytes": 108242,
+      "sha256": "4023e36b794fafad48080e41a780cec2dbd2ff56a7437a52151fb8469bac2b9e"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_storage_capacity_findings.zh-TW.md",
+      "size_bytes": 9280,
+      "sha256": "200e290386a9bd32b397f538a9945ab22722101a139f7207345602da276f00cb"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_storage_capacity_function_xrefs.json",
+      "size_bytes": 4413,
+      "sha256": "2125d4e09a6c639d70d7172cac75b6c782168c9d92b0fbab1bb437511ef101a6"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_storage_capacity_global_xrefs.json",
+      "size_bytes": 43298,
+      "sha256": "758ebe3daf709f8584c89b2d1051b0abec2de35849bc0608e728a3b18e6f7bb3"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_storage_capacity_lifecycle_scan.json",
+      "size_bytes": 194180,
+      "sha256": "332c78edaf6979d8303fc50ab1bea422af03a77317c48fa3066750c8c76c0c9e"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_storage_capacity_replay.py",
+      "size_bytes": 8692,
+      "sha256": "83242e1d7591b35a9cd04ecf0cc5f21d85cafbe6304c7fde4eaf04e119a8d295"
+    },
+    {
+      "path": "five_player_feasibility_20260927/index_storage_capacity_serializer_xrefs.json",
+      "size_bytes": 3407,
+      "sha256": "8ed29be5c98cdcec26529c4f9a05f502ca88a6467b9138851716df481c837e99"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_additional_discovery.json",
+      "size_bytes": 97601,
+      "sha256": "f1629053762b0d0804a2164fecd4d01f95bb0564fefe67b063e02d47ffec11a4"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_consumers_evidence.json",
+      "size_bytes": 1221420,
+      "sha256": "503050c1fbd198ff4e751df80a5b8fa6d349d2bf992ecb9c4a0a050a8a6b6578"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_consumers_findings.zh-TW.md",
+      "size_bytes": 15026,
+      "sha256": "9fe48343735c627efa44ea59aebf5c5fea9f7aafcff1dabe30d2cbb38939b607"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_consumers_replay.py",
+      "size_bytes": 26761,
+      "sha256": "48fb64d98808afa95d3e1e85f7b667b2f0a50d0364ea68a494f71f404ae0651f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_consumers_review.zh-TW.md",
+      "size_bytes": 8673,
+      "sha256": "fc1d599e9c662daea1bc079c649d50984cf68d071f0a7d4527ae21f554fd4bdf"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_consumers_review_caller_cfg.json",
+      "size_bytes": 5220,
+      "sha256": "b1ac8e336b754ee5ec7cc55128ddb3b5670eaf11f9419c38843a5b472cd5ef90"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_consumers_review_recheck.json",
+      "size_bytes": 1221420,
+      "sha256": "503050c1fbd198ff4e751df80a5b8fa6d349d2bf992ecb9c4a0a050a8a6b6578"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_consumers_review_table_checks.json",
+      "size_bytes": 6555,
+      "sha256": "643a85527bc1cb069105682e02583bb9b088049cffd3f288ea1fb0cd33cba798"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_double_secondary_evidence.json",
+      "size_bytes": 81473,
+      "sha256": "532e03af3a6002f775b1c7a2611676c06a21caa0ae7bd62478e316619d2888ea"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_double_secondary_findings.zh-TW.md",
+      "size_bytes": 6823,
+      "sha256": "22038b3617e199a3d16c445e40171347fb9511a6fe55b375c166c621fb8fc1f3"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_double_secondary_recheck.json",
+      "size_bytes": 81473,
+      "sha256": "532e03af3a6002f775b1c7a2611676c06a21caa0ae7bd62478e316619d2888ea"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_double_secondary_replay.py",
+      "size_bytes": 13838,
+      "sha256": "ebda230bde497bc9af37fb1894be01c90e1b661d31611994d6fb78de8e597382"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_double_secondary_review_checks.json",
+      "size_bytes": 564,
+      "sha256": "a0af7d88250eaa3a144e4fea92b8e06bd989c1e0f355cf8e9c090adca1c9cd2b"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_external_index_evidence.json",
+      "size_bytes": 764453,
+      "sha256": "c83db6d2e7c5033b3127d95227f29d24e11605415b55616d9854c2245ed4bf5d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_external_index_findings.zh-TW.md",
+      "size_bytes": 11254,
+      "sha256": "326cf56d67aa87827eb52c98650f24f504673e9407221f4f88964f2fecd3dfe8"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_external_index_replay.py",
+      "size_bytes": 20223,
+      "sha256": "07b22f7da629f73c08ebfc35f4006bc733ddf950d1a561a96eb613991d5fa175"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_external_index_root_recheck.json",
+      "size_bytes": 764453,
+      "sha256": "c83db6d2e7c5033b3127d95227f29d24e11605415b55616d9854c2245ed4bf5d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_extra_reader_xrefs_discovery.json",
+      "size_bytes": 1651,
+      "sha256": "3210360652d01e1bae4e3e3cde8631c72114706491c135a05a9ed7973b7b5e89"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_helper_boundaries_evidence.json",
+      "size_bytes": 142398,
+      "sha256": "c70e0f48ce069decf271f9b69631695da41faaa7c5a373263d0f57a315e6e5d6"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_helper_boundaries_findings.zh-TW.md",
+      "size_bytes": 5290,
+      "sha256": "95c39f6238818a40f72b368017d5c82a7928a851b703e6ed4187bf8c3eba59c4"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_helper_boundaries_replay.py",
+      "size_bytes": 9667,
+      "sha256": "cae808c0d63bc44cd19ada1a917e813d426694ee77938ef9d1c951587876e1fd"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_cache_invalidator_discovery.json",
+      "size_bytes": 4428,
+      "sha256": "293048dfaf8111ded77c601ccabfc7178d353ae1d7bc94faa020c91668b0ac84"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_cache_invalidator_xrefs_discovery.json",
+      "size_bytes": 1365,
+      "sha256": "4fa00d935b786cd809cc06f4fc495dfa3e005b048b5b2355bf59dbf1f4672893"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_counter_bounds_evidence.json",
+      "size_bytes": 683115,
+      "sha256": "aae3906ab3672a3b0f8ed631fdfddeec11bb7b636e3b5bfbb7083d3554f048d4"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_counter_bounds_findings.zh-TW.md",
+      "size_bytes": 8225,
+      "sha256": "3c78880f2bfce1f5bec5995a27cd8e5d31ef0a7d5c111e3aa550bb3053932068"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_counter_bounds_recheck.json",
+      "size_bytes": 683115,
+      "sha256": "aae3906ab3672a3b0f8ed631fdfddeec11bb7b636e3b5bfbb7083d3554f048d4"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_counter_bounds_replay.py",
+      "size_bytes": 17720,
+      "sha256": "e9416120d639a562361d5e5c12173fb50e2b43812a895df5d7c54b0b82822a37"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_counter_bounds_review_checks.json",
+      "size_bytes": 1496,
+      "sha256": "1e9418b76575c5b0b835137885ab5f88d3eb59e9666e7baba49c46d9b1b0cf79"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_counter_cache_refs_discovery.json",
+      "size_bytes": 4342,
+      "sha256": "c97c14d2a86e8bae3fbdba4fe23f1665e51ba88aec12f1729272ffdff8a78b53"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_counter_refs_discovery.json",
+      "size_bytes": 20484,
+      "sha256": "e28dbc45b885146b6c8b70aeb9a364d8078647487e10f5227d7751aadc6d83cd"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_double_records_evidence.json",
+      "size_bytes": 673924,
+      "sha256": "2e9410899206de5232319913eaf3d0d9b639f9113861862dea5ef72786827003"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_double_records_evidence_v2.json",
+      "size_bytes": 678538,
+      "sha256": "324b4d436d28b041963d5cb27db0a3496350c292a0e9b026bc885dc3bfc34650"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_double_records_findings.zh-TW.md",
+      "size_bytes": 10050,
+      "sha256": "e4a1e3841c71f4ba1071f8d709acf3bf96b9d59372877056ac025f0a011ba67b"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_double_records_recheck_v2.json",
+      "size_bytes": 678538,
+      "sha256": "324b4d436d28b041963d5cb27db0a3496350c292a0e9b026bc885dc3bfc34650"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_double_records_refs_discovery.json",
+      "size_bytes": 287960,
+      "sha256": "6fd917ff2f4d41804612a5a0b935eee22ec4c0c8413e53041a1f9f9d660a137e"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_double_records_replay.py",
+      "size_bytes": 19859,
+      "sha256": "0e93fdfcde3077d8e7f75464e1c24d3377a951baa236256d39a2a494d1ec8220"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_double_records_review_checks_v2.json",
+      "size_bytes": 896,
+      "sha256": "5ddf7271c03ba6813b0075022aec2c7fbfc46b4a9a552e5984b09ce0775a4811"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_enclosing_offsets_discovery.json",
+      "size_bytes": 35331,
+      "sha256": "3aa44b346a9b9fbcae19571c3bd4e8346f5f1f1febe6d432cd461f0fb394a865"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_init_caller_discovery.json",
+      "size_bytes": 70233,
+      "sha256": "4faf73e1acc9881326bca3634cafde1fea8f2051b14b3e9606c6e0977380719e"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_initial_zero_evidence.json",
+      "size_bytes": 1274963,
+      "sha256": "bde73bc5efde3267f812c7c2077264fd91ecec261a6054fa23b63c87b0c874e1"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_initial_zero_findings.zh-TW.md",
+      "size_bytes": 8064,
+      "sha256": "bcc41de2e20668178e266c834e15148fd058ee04a2556b649f397af04555584b"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_initial_zero_recheck.json",
+      "size_bytes": 1274963,
+      "sha256": "bde73bc5efde3267f812c7c2077264fd91ecec261a6054fa23b63c87b0c874e1"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_initial_zero_replay.py",
+      "size_bytes": 12631,
+      "sha256": "38e9946c23f846d39cb99f8a394ea7ebdc8605bed26135e8a1214ef0f77db4dc"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_initial_zero_review_checks.json",
+      "size_bytes": 686,
+      "sha256": "b867bf558bdafd982b403d1eff2f74246a878167711201c544b0180b93a89859"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_lifecycle_inventory_evidence.json",
+      "size_bytes": 426922,
+      "sha256": "7722b443b293e565b1600fccbbb8820c0ef01e281f86aac237abb1419e20fda6"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_lifecycle_inventory_findings.zh-TW.md",
+      "size_bytes": 8521,
+      "sha256": "3ef2d2bc35e226ff4f7aa2df4b02881553d829acf5b264f2ac6f8c74d30aba1a"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_lifecycle_inventory_recheck.json",
+      "size_bytes": 426922,
+      "sha256": "7722b443b293e565b1600fccbbb8820c0ef01e281f86aac237abb1419e20fda6"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_lifecycle_inventory_replay.py",
+      "size_bytes": 14613,
+      "sha256": "62fb2395dd54a31df4201ce1ab80571a78fc675b02d38e8bc5e159494addfef6"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_lifecycle_inventory_review_checks.json",
+      "size_bytes": 1768,
+      "sha256": "50fe8ef1b7d5fa2fa3e76fc292eaf4871d7c82a509b499422093d3247a597778"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_optional_members_evidence.json",
+      "size_bytes": 59122,
+      "sha256": "2f955ad49c85cf0b1e24379c2fb3d8b75e15da6b6957ddda29b250af2429f436"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_optional_members_findings.zh-TW.md",
+      "size_bytes": 8065,
+      "sha256": "5f6adb8ded0771fa461dcb691d90ffdcfe541c77109aa2e445bceeeb7f83352c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_optional_members_recheck.json",
+      "size_bytes": 59122,
+      "sha256": "2f955ad49c85cf0b1e24379c2fb3d8b75e15da6b6957ddda29b250af2429f436"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_optional_members_replay.py",
+      "size_bytes": 11743,
+      "sha256": "f45bdeb3ea56e1c98c5f7a69af8875e97dae68b8a45a6d17e6a931b381a1d730"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_optional_members_review_checks.json",
+      "size_bytes": 553,
+      "sha256": "1082badaaef3ac5f6bec46bd998890393f8edf3f06b6019e812e58cebe47d388"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_outer_global_writes_discovery.json",
+      "size_bytes": 767,
+      "sha256": "9e08025e7b0152f24ee085d67dd0edf08ac264b9f28a07a4b1572ea8cc66e9e7"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_outer_init_discovery.json",
+      "size_bytes": 46966,
+      "sha256": "ad2c92d2526ceba911a1836d8bfc3be5615ab9383328ec0412d1993140ccd0fa"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_outer_startup_xrefs_discovery.json",
+      "size_bytes": 403,
+      "sha256": "2fdfe5007e4b7facb04b604f3813788bdfa2f8858663caac4ce4ae89fa5ead01"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_owner_allocation_discovery.json",
+      "size_bytes": 784136,
+      "sha256": "dfa95ce60beb4c8610e3489c955ecb18fc9a12eb6ace99f91f5a56233322e4aa"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_owner_allocation_xrefs_discovery.json",
+      "size_bytes": 204,
+      "sha256": "eb68ec1188842766accef8c5dc6320e90ae5ab6d1ca97753a1343634ee8bbc5f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_owner_allocator_discovery.json",
+      "size_bytes": 22549,
+      "sha256": "2258849107b224939d529b8c81eab27192d1059cf49cc9c6ac2a450b2cf417e8"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_owner_construction_xrefs_discovery.json",
+      "size_bytes": 204,
+      "sha256": "1ea35841b6b7071308f92d4b7fb2fd871ccf0161adaf86152821f625964dc506"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_owner_constructor_discovery.json",
+      "size_bytes": 131809,
+      "sha256": "4aca9526b7dad18b315c26537184d7b8ef94ba021e7487e1e98008877d42de76"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_owner_inner_constructor_discovery.json",
+      "size_bytes": 332,
+      "sha256": "abe36f94833c03a586772baa26a96d779e66bf9f2b75abad231c9a9bbfb0dade"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_owner_layout_discovery.json",
+      "size_bytes": 21767,
+      "sha256": "c6f65dcdd2901c33be3d3dba8ef5a6c5ab55f980eb4d98f2d28e82d07c23ae7d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_owner_roots_discovery.json",
+      "size_bytes": 264878,
+      "sha256": "3ec0077327911df271e9ccc5ed036b2ebaf3038a84ac4f537d04057033d361ea"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_pair_helper_discovery.json",
+      "size_bytes": 19670,
+      "sha256": "d14a3e4d8c43c0e0e49b951cc01f45120ed94c7898b563ed7f60595009c26433"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_pair_secondary_discovery.json",
+      "size_bytes": 7928,
+      "sha256": "af73d5812166f423044640b60195711b6546ce355a59e917b261ad7f2bc85f1e"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_singletons_evidence.json",
+      "size_bytes": 54251,
+      "sha256": "14a55a82488020de7613ef7d6a54678784f8df934a5f4dec130aafb8f4d3c30e"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_singletons_evidence_v2.json",
+      "size_bytes": 58722,
+      "sha256": "ef6ab4a691b90add2ca50164523aa974427db985aa194bebafdcee05f1ea5701"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_singletons_evidence_v3.json",
+      "size_bytes": 60101,
+      "sha256": "379977cc2a1f193646d9ae8ab7143694c3db20676f133b7c762e6860eb2f1d41"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_singletons_findings.zh-TW.md",
+      "size_bytes": 6511,
+      "sha256": "9b789234917be159b5bad561de35130c3000341605286ff1ecbf08dd6387cb24"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_singletons_recheck_v3.json",
+      "size_bytes": 60101,
+      "sha256": "379977cc2a1f193646d9ae8ab7143694c3db20676f133b7c762e6860eb2f1d41"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_singletons_refs_discovery.json",
+      "size_bytes": 26804,
+      "sha256": "dbab53634956077e53bbe4eac811a5e61fdf061b070166582fe69195e8ffd288"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_singletons_replay.py",
+      "size_bytes": 19911,
+      "sha256": "3583f6753dbb41d3e9fe42e01da61cbbe84588d335c0f19e09d76bf598c0b948"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_singletons_review_checks_v3.json",
+      "size_bytes": 875,
+      "sha256": "3504a1135a4995c8f4f237f81c755f29737517e7d0426d67e00e515353041076"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_startup_callers_discovery.json",
+      "size_bytes": 721804,
+      "sha256": "3e004c1f6ff86fa1d84f261847455a6c956c4034d6f0d1bf2ff9526874d6c5c0"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_state_construction_xrefs_discovery.json",
+      "size_bytes": 204,
+      "sha256": "8ab37cd8b341db89dbd19cc3e0325aa38516909ca89653157bc7f8ad6aa0f019"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_state_constructor_discovery.json",
+      "size_bytes": 103063,
+      "sha256": "652b47042f18ed593f67507bb16e2503b734c13995e0e2634dbed9f02e2f8edf"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_template_discovery.json",
+      "size_bytes": 28504,
+      "sha256": "bd2c775ed238a751b3936b613697116a329d39c0b6a65c563812c07a7f08e152"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_template_roots_discovery.json",
+      "size_bytes": 1755308,
+      "sha256": "230b6252c89d851338a21668c3230c249bf111e68df560ec1d975390f455300c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_triple_members_evidence.json",
+      "size_bytes": 117051,
+      "sha256": "ef6d223d04694eadf7136735476f60d3e28c132ac84494f4514ce19be02446bb"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_triple_members_evidence_v2.json",
+      "size_bytes": 119507,
+      "sha256": "d058cc383dc48c66fbe6a1b4b0eb6e6df7e6a2ba21d8e5d800bbe41e1d923db5"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_triple_members_evidence_v3.json",
+      "size_bytes": 126704,
+      "sha256": "7a5b7ef002c671d698edd6c663b791a7306eda2b09a238b5d8f187393c04bd60"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_triple_members_findings.zh-TW.md",
+      "size_bytes": 9119,
+      "sha256": "50f417c882ff505dbf27e642fb9d178865206b0d6637dc71ed829c9433a2bb43"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_triple_members_recheck_v3.json",
+      "size_bytes": 126704,
+      "sha256": "7a5b7ef002c671d698edd6c663b791a7306eda2b09a238b5d8f187393c04bd60"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_triple_members_replay.py",
+      "size_bytes": 25249,
+      "sha256": "18952348d5a13cb2ecacfab683dccfe63cee55b4e2bcea021c68eddca0699871"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_triple_members_review_checks_v3.json",
+      "size_bytes": 1024,
+      "sha256": "b44003e6bf83f4840bf1772fb3a7d43ac66667e8ecc168ba6ed0fa5ee1173ba3"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_triple_refs_discovery.json",
+      "size_bytes": 22115,
+      "sha256": "eed4f4f30ed8ef3bb73a861575ebcae12b21172ee34bbf693772da1f15ce40e2"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_world_allocator_discovery.json",
+      "size_bytes": 28289,
+      "sha256": "1eda1d40fe6119fa5181453014e44c3f0924fc22c2d2cd3005402e35ed84ea3c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_pool_world_construction_xrefs_discovery.json",
+      "size_bytes": 204,
+      "sha256": "e34fc8cf5569a035af468464dd7a9a2f998a3a07c2b7ad2dc586d0b4c97604dd"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_rank_asset_extract.py",
+      "size_bytes": 5688,
+      "sha256": "882592f3947b8ea472a4037c190dd1819e2f0b11d4f36217e510bac6497eb725"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_rank_asset_manifest.json",
+      "size_bytes": 28366,
+      "sha256": "2f172470d8c13495536e3844b8a51b46821e5f393185cd51f2f363721a03ef01"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_rank_ids_discovery.json",
+      "size_bytes": 13636,
+      "sha256": "8a9586c2afe896da2e90b201d630cca47504cefe2954dc920662a878eb6c1fc8"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_rank_ids_evidence.json",
+      "size_bytes": 587647,
+      "sha256": "dfefbca1b590691cf498748d39554a2a020f93e5c8e7bbc6ded6a551df117461"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_rank_ids_findings.zh-TW.md",
+      "size_bytes": 6454,
+      "sha256": "01b400e911bee640c96ce9300ad70e219feb7d62957666a25d0a04f6565469eb"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_rank_ids_replay.py",
+      "size_bytes": 20004,
+      "sha256": "d63c0c155cc58fc8e255d910acc44aebf1e5c7329f3d83d0c936954ca3384853"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_rank_ids_root_recheck.json",
+      "size_bytes": 587647,
+      "sha256": "dfefbca1b590691cf498748d39554a2a020f93e5c8e7bbc6ded6a551df117461"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_remaining_review.zh-TW.md",
+      "size_bytes": 5635,
+      "sha256": "0b0587193438fcce328b9a2114bfd46c7aabb692000db619d1ec835613078878"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_remaining_root_review_checks.json",
+      "size_bytes": 1096,
+      "sha256": "65d65c02437d28d8f7896e93096680d8d8f613e719f067fe4b29a0b9081fde22"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_storage_evidence.json",
+      "size_bytes": 194977,
+      "sha256": "11e984e270540eded0e141f821ddfbb22118c0b99645237eca15e14149d42378"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_storage_findings.zh-TW.md",
+      "size_bytes": 9723,
+      "sha256": "ad18dd393e0c73613e674b27f9976b78c8f350a53748d871a81ee859363f2e65"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_storage_replay.py",
+      "size_bytes": 12639,
+      "sha256": "c2f0c986cdb97dac2a44bfbba462f86db50bef04d0a0118a198e3cb6089be00b"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_storage_review.zh-TW.md",
+      "size_bytes": 2039,
+      "sha256": "b97e7bac8c1b321d9d014ef9a03677da38c2d834065bfca92eddf1dec3906e3d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_subobjects_1405580_disasm.txt",
+      "size_bytes": 1097,
+      "sha256": "7a77eb130157ebc1bf90aa941ada5ff81a3e5daedf0426b90049835c822d098b"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_subobjects_14066a0_disasm.txt",
+      "size_bytes": 2405,
+      "sha256": "9af1d176d423c3ed0a26b3388b90f3be6f37c95c02a836854a5a756710c44c15"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_subobjects_1407960_disasm.txt",
+      "size_bytes": 3042,
+      "sha256": "1298f378680dc7e89b92a9f0987600e4583115d32f6eca5fb7387e55ce28daba"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_subobjects_1408f00_disasm.txt",
+      "size_bytes": 1233,
+      "sha256": "68c065dbbde79ba7e7e05e41ef5de4a6bd61afa40f630c78223a59e0520a98a1"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_subobjects_1408fe0_disasm.txt",
+      "size_bytes": 2042,
+      "sha256": "68a1c64f812f8477664583c424c33f244e98ef501411307c19a2993d127f894c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_subobjects_140c160_disasm.txt",
+      "size_bytes": 1555,
+      "sha256": "a109f150995aae3de3b60a777babeb9747dcd343d93796ce433013c1e413efb9"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_subobjects_140c200_disasm.txt",
+      "size_bytes": 1423,
+      "sha256": "9d19bfd1356e4d052d741463139a7266277540582310e307d45fdc3ab3260e11"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_subobjects_140c2e0_disasm.txt",
+      "size_bytes": 4528,
+      "sha256": "0f2940325fb67a0dd1fa1e502952926bd54429b9a91722a47ee6ead69ecf7f7f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_subobjects_140d710_disasm.txt",
+      "size_bytes": 3070,
+      "sha256": "60bb721e992673b1c3ff3ba6234ef468286ffca24a02b9dd05a029ead85afe22"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_subobjects_142b990_disasm.txt",
+      "size_bytes": 9016,
+      "sha256": "d8e79a1994364620a311af5213bbe0dedd9544697104ac4021ae13583a3159b9"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_subobjects_142f6e0_disasm.txt",
+      "size_bytes": 1223,
+      "sha256": "8a94cfff68d54b9016538af6f5d192f6f72b815576911aef42c972b82208c329"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_subobjects_evidence.json",
+      "size_bytes": 474520,
+      "sha256": "5468aca4b6b456c8714e0cf922fe3e473fe2de2b4dbebc2531118eb8c737bf54"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_subobjects_findings.zh-TW.md",
+      "size_bytes": 13437,
+      "sha256": "5a0a71eb4e08254c6f95226cd7349feff5ec2720705d39a6db953281ad05e90e"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_subobjects_replay.py",
+      "size_bytes": 22057,
+      "sha256": "c2082acd757144e7f524593065bef6b8ef3fe9f5e748969eba3878ef11df2292"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_subobjects_review_recheck.json",
+      "size_bytes": 474520,
+      "sha256": "5468aca4b6b456c8714e0cf922fe3e473fe2de2b4dbebc2531118eb8c737bf54"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_subobjects_root_recheck.json",
+      "size_bytes": 474520,
+      "sha256": "5468aca4b6b456c8714e0cf922fe3e473fe2de2b4dbebc2531118eb8c737bf54"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_template_budget_evidence.json",
+      "size_bytes": 1464262,
+      "sha256": "575501706ca9dd257f4cd155325b6a809ed303037736359fb4da6918ee5117bc"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_template_budget_findings.zh-TW.md",
+      "size_bytes": 9903,
+      "sha256": "44ae1f45ead6a3d90136e26ec09b42c513518569496b5297b399dfe51fed2a35"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_template_budget_recheck.json",
+      "size_bytes": 1464262,
+      "sha256": "575501706ca9dd257f4cd155325b6a809ed303037736359fb4da6918ee5117bc"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_template_budget_replay.py",
+      "size_bytes": 21121,
+      "sha256": "7de63b88d3d7ca56746851b59b2b537fe774447df1b5f7384b5e4ec636817689"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_template_budget_review_checks.json",
+      "size_bytes": 1391,
+      "sha256": "53d6fd428a845c07d93625aeb3e62e74a017ccd848424fea6408fd64743b1078"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_template_builders_discovery.json",
+      "size_bytes": 30454,
+      "sha256": "d1cd635b4cccec9b445b5326bebf4db610b484be60c9fdab96d9c2eabe372d19"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_template_helpers_full_discovery.json",
+      "size_bytes": 114036,
+      "sha256": "6b39645fd682d117c7f59c31226b4b71fb87965317090998b0184ffcd9de98fa"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_template_zero_evidence.json",
+      "size_bytes": 65227,
+      "sha256": "d44d5741d7fc0f8b5122f8285c466442f897328c5233348853f8bce53f37125d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_template_zero_findings.zh-TW.md",
+      "size_bytes": 8203,
+      "sha256": "61cb73c7f5c866f46aaf7f549a6f2e4d37a781bfe283d17cfbe98d6b17632efd"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_template_zero_recheck.json",
+      "size_bytes": 65227,
+      "sha256": "d44d5741d7fc0f8b5122f8285c466442f897328c5233348853f8bce53f37125d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_template_zero_replay.py",
+      "size_bytes": 18306,
+      "sha256": "3f0142cb8108f26bd3199383c67f2ffc3cbe520e42c4817009550ef4fa6cf0b5"
+    },
+    {
+      "path": "five_player_feasibility_20260927/indexed_float_wwise_hash_lookup_current.bin",
+      "size_bytes": 1048584,
+      "sha256": "3b34c46a17f0aa1003a30cf23a6010c5f08fddcfc5ab9a9020ffd2ef06091557"
+    },
+    {
+      "path": "five_player_feasibility_20260927/interface_initializer_4eda90.json",
+      "size_bytes": 35712,
+      "sha256": "8f8b563e3307855817d9a35159601c4cd40e72fb00d5610430f5b67756c85798"
+    },
+    {
+      "path": "five_player_feasibility_20260927/interface_initializer_xrefs.json",
+      "size_bytes": 1805,
+      "sha256": "daa7c055de98af1df2baf899073933703fdd975a5625eae863519538ed536b76"
+    },
+    {
+      "path": "five_player_feasibility_20260927/interface_plugin_api.json",
+      "size_bytes": 2592,
+      "sha256": "a16b6b13205699bf3da8ade3a94299f393e9890497a74b39d472b69e482cbc35"
+    },
+    {
+      "path": "five_player_feasibility_20260927/interface_plugin_api_full.json",
+      "size_bytes": 6293,
+      "sha256": "ee6a12c0876aa0bb6f550af8540b09fd08b00178fee1e260d190c0920122e644"
+    },
+    {
+      "path": "five_player_feasibility_20260927/interface_probe_live_20260927_1.json",
+      "size_bytes": 26222,
+      "sha256": "a45e5f5b1647d808b8b7716fd750e4a894ab39a3021b52a0b10c404403a8b85f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/interface_setup_4ee160.json",
+      "size_bytes": 46982,
+      "sha256": "8744a27318249c29049cc52fd8ad2981821790671a88a963e488ac454f7a5ed5"
+    },
+    {
+      "path": "five_player_feasibility_20260927/interface_setup_xrefs.json",
+      "size_bytes": 1364,
+      "sha256": "bb38379ef7d768b9de32f55c3fa10d3631d1a57d687f1977696884a16c2a7054"
+    },
+    {
+      "path": "five_player_feasibility_20260927/interface_source_findings.json",
+      "size_bytes": 5879,
+      "sha256": "ca38d10a267687e282ed3ef543d96ea64194afffe3fb61b8b20e84efd4ca484f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/interface_store_refs.json",
+      "size_bytes": 5405,
+      "sha256": "f6b74e0456eac0b7e03d6e62365ef37986e401a6070149732109fa453825ba3f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/interface_store_scan.py",
+      "size_bytes": 2700,
+      "sha256": "9728c8b1f4e6ff53124531221353447bbc7f080ffc0e7525a42ee74bbb876c89"
+    },
+    {
+      "path": "five_player_feasibility_20260927/interface_target_30_analysis.py",
+      "size_bytes": 9117,
+      "sha256": "0fa572d19e2c66b6498f5244b6f669a266d72b92dc6021009958dc7fef36470e"
+    },
+    {
+      "path": "five_player_feasibility_20260927/interface_target_30_evidence.json",
+      "size_bytes": 11666,
+      "sha256": "12597270ec2f4b126d99025c59c96668a3955b356d108aaae0a15382aaa0b5e8"
+    },
+    {
+      "path": "five_player_feasibility_20260927/interface_target_30_findings.zh-TW.md",
+      "size_bytes": 3249,
+      "sha256": "8a6dc39528f5b58f50f4e4e4ad931e7d5f8bf469e36590271db6a3946b32dbc9"
+    },
+    {
+      "path": "five_player_feasibility_20260927/interface_target_f8_findings.md",
+      "size_bytes": 3066,
+      "sha256": "7d1acaeeff0417e347f82544c4322caa792e43cfb78a13d58978c2ff93103cf7"
+    },
+    {
+      "path": "five_player_feasibility_20260927/interface_target_f8_offline.py",
+      "size_bytes": 6608,
+      "sha256": "0db6b09f41e294d7aa8605bb8bfb9b204b074a32b7d51b26bdf278a62dac60d7"
+    },
+    {
+      "path": "five_player_feasibility_20260927/interface_target_f8_offline_v2.json",
+      "size_bytes": 12427,
+      "sha256": "8400a92c3b4782987df2b722bf05f8f83e877017edb3fdcc402b73a2b629f6ed"
+    },
+    {
+      "path": "five_player_feasibility_20260927/join_handler_disasm.json",
+      "size_bytes": 91082,
+      "sha256": "f0e2c853fb731fecffd27ed2bbab97f9d8ed2868b076c60ee51bcdfe472e505c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/join_handler_epilogue_disasm.json",
+      "size_bytes": 1795,
+      "sha256": "d1aa0213c939998ad54046952bc5e4a8671651bf72bfcb27272559ecbf4f5253"
+    },
+    {
+      "path": "five_player_feasibility_20260927/join_handler_followup.json",
+      "size_bytes": 7084,
+      "sha256": "ada912d87263a38dcb3cff8a2efa840b535f927d699a70365ee2a55d0b2c1327"
+    },
+    {
+      "path": "five_player_feasibility_20260927/join_handler_middle2_disasm.json",
+      "size_bytes": 1514,
+      "sha256": "03242a9819235b8630d5972fc98e8df00c30f97cbcbe503eb0a2d26078ed1236"
+    },
+    {
+      "path": "five_player_feasibility_20260927/join_handler_middle3_disasm.json",
+      "size_bytes": 1135,
+      "sha256": "fff052d97954d8f9ec9415718752acff274f514b8be6ddcee64645296d07221b"
+    },
+    {
+      "path": "five_player_feasibility_20260927/join_handler_middle_disasm.json",
+      "size_bytes": 12466,
+      "sha256": "522418fb5c10326b2399f67a2e667bf2e8562dcfd302f999ee3c1853d21e9b32"
+    },
+    {
+      "path": "five_player_feasibility_20260927/join_handler_root_disasm.json",
+      "size_bytes": 5098,
+      "sha256": "89ebd93a31969569fcc5efc163f875ae0c5194e9b7860b10a60385dc1e39285f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/lobby_member_string_xrefs.json",
+      "size_bytes": 2715,
+      "sha256": "d35a34dae75c92ab4a2318d9a8cd649a0d6e0fb320532802b0103ad830a1d4a3"
+    },
+    {
+      "path": "five_player_feasibility_20260927/lobby_string_xrefs.json",
+      "size_bytes": 5889,
+      "sha256": "a7990b94745a1710d4a028c313e2316f7d95cc35690e94191d4dce78d08bced6"
+    },
+    {
+      "path": "five_player_feasibility_20260927/local_player_creation_gate_evidence.json",
+      "size_bytes": 232559,
+      "sha256": "d101ffbca1faa03318de87424acdfafee58a0d3b86f4f51e9216244a0f5c166a"
+    },
+    {
+      "path": "five_player_feasibility_20260927/local_player_creation_gate_findings.zh-TW.md",
+      "size_bytes": 8433,
+      "sha256": "9b395d8a8ba1d4c45c910d1c291a651d635b590747ab0c5522d97d6b1a486272"
+    },
+    {
+      "path": "five_player_feasibility_20260927/local_player_creation_gate_replay.py",
+      "size_bytes": 8944,
+      "sha256": "451290cdb04d156697fccab0420f10c459b41e81550848fa0697080a346f2210"
+    },
+    {
+      "path": "five_player_feasibility_20260927/local_player_creation_gate_review.zh-TW.md",
+      "size_bytes": 7498,
+      "sha256": "15714196c65f43be36fab8b4246d467488e6fd09c369655db3898dc27a4369a0"
+    },
+    {
+      "path": "five_player_feasibility_20260927/native_integration_boundary.zh-TW.md",
+      "size_bytes": 6670,
+      "sha256": "6d59be71342c06ac5d4bf673c1ac7d18d33063b4397d4afabf8a9cf02d00f4c5"
+    },
+    {
+      "path": "five_player_feasibility_20260927/peer_existing_helper_disasm.json",
+      "size_bytes": 68010,
+      "sha256": "2989290038cbede55b90491f5946b37f4b0a2fcfe8e2c7f4db723af312292ffd"
+    },
+    {
+      "path": "five_player_feasibility_20260927/pending_caller_134e432.json",
+      "size_bytes": 16722,
+      "sha256": "90b119bd91ee8682b8e5222174310ff7e32036246e93bcec1b5ef9b366f1d236"
+    },
+    {
+      "path": "five_player_feasibility_20260927/pending_caller_13f7872.json",
+      "size_bytes": 47595,
+      "sha256": "24c35a63f5f0d8c95f361d1d464f1c576b4e739dcb3b6ea65fdf3e0f97004ea4"
+    },
+    {
+      "path": "five_player_feasibility_20260927/pending_candidate_108af53.json",
+      "size_bytes": 105421,
+      "sha256": "a2029cb58de724a66b70e56f792c70fe998d133d46d380ce233b9416033c938e"
+    },
+    {
+      "path": "five_player_feasibility_20260927/pending_candidate_109533c.json",
+      "size_bytes": 16907,
+      "sha256": "cb06c2b6bc59046dde2f7afe23004ed03ad22cbdd545b6525b5afc6b8bb84b4d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/pending_consumer_epilogue.json",
+      "size_bytes": 1803,
+      "sha256": "dec972eae48a489a6b6605a87f85d4eae2d58d78ecee632128c57efba5d11fb2"
+    },
+    {
+      "path": "five_player_feasibility_20260927/pending_consumer_findings.json",
+      "size_bytes": 7611,
+      "sha256": "1f3b5bcdcda4dc1f5c4bcd2e242eb0fe10a6bc40a48e9214bf2d5cc81509be23"
+    },
+    {
+      "path": "five_player_feasibility_20260927/pending_consumer_middle.json",
+      "size_bytes": 1405,
+      "sha256": "1d28e0f9500e27eefa3470db86c2a4cbaad8ade5532fb236cc499bd841b1fee5"
+    },
+    {
+      "path": "five_player_feasibility_20260927/pending_consumer_middle2.json",
+      "size_bytes": 61095,
+      "sha256": "7970b4123a61dc31bc55089fa3ebd2a2e6d5c0106f7b8655e9da737b113dfe12"
+    },
+    {
+      "path": "five_player_feasibility_20260927/pending_consumer_root.json",
+      "size_bytes": 15552,
+      "sha256": "d2514be25a5a0cd1214d8c82c2f585107de804e1ae42be8d574fcd1df851f41f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/pending_consumer_xrefs.json",
+      "size_bytes": 2542,
+      "sha256": "7e98556ad24c5b935e842c141ad832378a7bfd90b220c29b80e45607b87a537c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/pending_host_constructor.json",
+      "size_bytes": 5003,
+      "sha256": "d5d750b66773c39d1a74d169152e725da0eff7f1cdf6c351a7302c11b5915384"
+    },
+    {
+      "path": "five_player_feasibility_20260927/pending_offset_candidates.json",
+      "size_bytes": 3836,
+      "sha256": "3e612e5b2b14664f9525bfd3429ba949ca65317b916ab88917898e564db9cdca"
+    },
+    {
+      "path": "five_player_feasibility_20260927/pending_scan.py",
+      "size_bytes": 2772,
+      "sha256": "bb8e73c5ea08f78036ab4a7544a85e436ad9c5ee61e912a29afc5ce0a15cead7"
+    },
+    {
+      "path": "five_player_feasibility_20260927/pending_start_hosting.json",
+      "size_bytes": 35716,
+      "sha256": "6862b573ee6de98d37331470302eccd5e15ddcff467e3e9f47be93ac4210c4ed"
+    },
+    {
+      "path": "five_player_feasibility_20260927/pending_tail_108d840.json",
+      "size_bytes": 5012,
+      "sha256": "8748baa041d1490a199fc87dc94d4db619551a1199fcfd229be1118700ad5372"
+    },
+    {
+      "path": "five_player_feasibility_20260927/pending_tail_108d899.json",
+      "size_bytes": 7773,
+      "sha256": "ab8403d7861b81e299a2ba019a1cab863f48aabeba97c1ecf111d799305fb24d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/pending_tail_108e8a8.json",
+      "size_bytes": 9278,
+      "sha256": "5f7bbda4cc928c88be2a12676e708ab9247c7b4afc5582ee179a8818a199ff12"
+    },
+    {
+      "path": "five_player_feasibility_20260927/platform_layout_field_scan.json",
+      "size_bytes": 382404,
+      "sha256": "49d25695385ba4ecf84918b45b1e76fcb2ae365058af81cd9e0b84241abef010"
+    },
+    {
+      "path": "five_player_feasibility_20260927/platform_member_layout_evidence.json",
+      "size_bytes": 22573,
+      "sha256": "870915bfbbd8e49fc2a34b4d78eaa7a46b84c97876e9b41d361e0981d938029c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/platform_member_layout_findings.zh-TW.md",
+      "size_bytes": 3722,
+      "sha256": "da1832387aa00f099c4d128358676b1b71f67ce9fa9564f3683da23c0f51976d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/platform_member_layout_replay.py",
+      "size_bytes": 4409,
+      "sha256": "413b11cfdd49e2a2d50248e6d13db560821c1cc7046d960c76f43012d4ff0444"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_component_capacity_disasm.json",
+      "size_bytes": 89299,
+      "sha256": "8717897cda3b805b402361d5e1b191cb8c74a96abc94c4f77018de3fbe0bb88d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_component_capacity_evidence.json",
+      "size_bytes": 125217,
+      "sha256": "4dedec98d7759d1f629500c42bb9a70ff611d0e0b73175e36f2c0306c37f8147"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_component_capacity_findings.zh-TW.md",
+      "size_bytes": 7985,
+      "sha256": "7f13445561f242245e67ed9878d465cf47664a8159a1743593616c7b1420ec2a"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_component_capacity_replay.py",
+      "size_bytes": 12293,
+      "sha256": "b8cd732941e0c2afd9a28809f562b2c0456f4c1c5db54eff7e98e254c8065f85"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_component_capacity_review.zh-TW.md",
+      "size_bytes": 4824,
+      "sha256": "ec945a955b1af04114ebd3aa6d1164215a5f8e1ddd2d29f6770e1b16be902540"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_pool_field_xrefs.json",
+      "size_bytes": 1029,
+      "sha256": "80ab77e89a3d7d44652719120e6ceb7bb15c466bd58bc52e8bc54cc4722ce523"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_pool_field_xrefs_v2.json",
+      "size_bytes": 1305,
+      "sha256": "b312b3e017789a0297c88e5e094ec553db0e7637a2934d1628b526c1fa411904"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_pool_probe.py",
+      "size_bytes": 2852,
+      "sha256": "3b285178b75eb9cb19e913c604bbc54cfe1b609fab1513783989bc22b7c70367"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_roster_constructor_fragment.json",
+      "size_bytes": 784152,
+      "sha256": "7d43cb07e2ed717c2841b6c1acf6b94a5a940ded60654cd0ec4c302224b4a25a"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_roster_evidence.json",
+      "size_bytes": 19164,
+      "sha256": "606e6cb31fc55a1abfbc82224359fc1fc776f7a3f36838779a558700380e81a6"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_roster_findings.zh-TW.md",
+      "size_bytes": 3949,
+      "sha256": "e4b147b5ba8a24a74c86aed84b851ff1cd55335c4d687b8b05484fd356697cba"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_roster_global_write_fragment.json",
+      "size_bytes": 131825,
+      "sha256": "d5d344308028d272cbca2f282709eb39865d71be3e2015c71c14a812a9ba71c0"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_roster_global_xrefs.json",
+      "size_bytes": 556046,
+      "sha256": "db918fb7de07c8d90ea041a46c42249996cefb9794b605cffb9db3acb132e46e"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_roster_insert_xrefs.json",
+      "size_bytes": 1651,
+      "sha256": "e4f03e9660d3afca60eca6210c3bddda4a41b5c831cfe48c4dcc87baa6263f54"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_roster_owner_xrefs.json",
+      "size_bytes": 1805,
+      "sha256": "ad2c4220d16bba17f1d2c77784ebf1d5ffe4da26dd143b823386238555c8f298"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_roster_replay.py",
+      "size_bytes": 5117,
+      "sha256": "344d90a8fef526a9e98689f68c89bb04ebd8075c88970deda1d8c7bdc89330b5"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_spawn_66fbf0_body.json",
+      "size_bytes": 80335,
+      "sha256": "30e2dbc577c194095f760eff19826581184ac1f88cf1397a1a416438c2cf3afa"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_spawn_ab60f9_fragment.json",
+      "size_bytes": 196271,
+      "sha256": "c142db3d90f24ebb0e6a4f069887efc23c8168427ef6f8f39bc32b3408cd7028"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_spawn_ac7be0_body.json",
+      "size_bytes": 84040,
+      "sha256": "d1210e578be83e9e4429cf36469b40791ea9f56b4538254cef90cc32b00363b7"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_spawn_acbe60_body.json",
+      "size_bytes": 116720,
+      "sha256": "472e03ea7869db6f52c3c3d939b7ad5e09b3e0be6cf56bd6d3a2a04ba926d70b"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_spawn_acbe60_full.json",
+      "size_bytes": 131276,
+      "sha256": "d553c3d1814823168dbde769026796ed4418961f60d78a3e8dcfa24390b62ddc"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_spawn_acbe60_xrefs.json",
+      "size_bytes": 2095,
+      "sha256": "e6893070c8758bb0538a5a246ae7199c792a43edd878fbfb3363153b5078dfda"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_spawn_b5ea90_body.json",
+      "size_bytes": 32495,
+      "sha256": "559070aaef6a887b119c4e8a9a80c673fb6e7e6f538b72f3e0b3210a8c0abfd9"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_spawn_evidence.json",
+      "size_bytes": 24710,
+      "sha256": "a23b8f4abb496b3560587d3afb419bd87a81b957bc5bfaad454297d729c0ebdf"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_spawn_findings.zh-TW.md",
+      "size_bytes": 5044,
+      "sha256": "5aba205baa8399d652e0016d47eb2e5dc75859bee5e2ef1a73abd1354c373278"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_spawn_replay.py",
+      "size_bytes": 4150,
+      "sha256": "7c46f0f7e2267e2ae1cb0965e58639b55e0d8cfe7b7a9d9c6f6de455d364ef47"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_spawn_string_probe.py",
+      "size_bytes": 1624,
+      "sha256": "18e4f3d72c2cd002270da52d960a07684d482ab67d8f885cde28c7394f8b4815"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_spawn_string_xrefs.json",
+      "size_bytes": 4509,
+      "sha256": "b0287e51cc574f796481d154e774c289d77e5591ecfb092b9e1e80fb75d5a244"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_spawn_strings.json",
+      "size_bytes": 1126,
+      "sha256": "dce9d6c0edbc140fe101506d353b49f8b4c7f6c30b7ab0382170f362ff89ba01"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_spawn_target_xrefs.json",
+      "size_bytes": 9491,
+      "sha256": "1d49b74019880542fd1fc65ab58af19c0874509e221d72acfcee41e9d7265368"
+    },
+    {
+      "path": "five_player_feasibility_20260927/property_dispatch_entry_xrefs.json",
+      "size_bytes": 21520,
+      "sha256": "fce7de5f35c6da32b4908f5c4db2b470f53722c5c25df0f96fec18077ceeae37"
+    },
+    {
+      "path": "five_player_feasibility_20260927/property_dispatch_evidence.json",
+      "size_bytes": 265278,
+      "sha256": "9cabca2fa61fd59e9c776230da80ad68716f947c46f56c6b9c203ba011d0d55d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/property_dispatch_findings.zh-TW.md",
+      "size_bytes": 10601,
+      "sha256": "ba0ffa99c6cccd32cfb43e27b6901f1fbe750d82806d4c3dcb7532ad06552b6f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/property_dispatch_replay.py",
+      "size_bytes": 15176,
+      "sha256": "04edc0c29310ab360fe7878f3c725a555219511ab6eb2c95415c8292f48a2a7f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/property_dispatch_review.zh-TW.md",
+      "size_bytes": 2390,
+      "sha256": "784576a137c0a8426b6e99364e99a729b57db81dee4eb8f0c1ecda8c6cf0af87"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_b5ea90_body.json",
+      "size_bytes": 30634,
+      "sha256": "acc236ddf9e6f345bfa33d4fbc06e2c1edbee2af21550bc462e1cd6313c6aa65"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_b5ea90_disasm.json",
+      "size_bytes": 2026,
+      "sha256": "f1981266b55de9a0599e5194c2c93c5760d0041d079bb9ff24da0cfb1a525822"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_b90b20_body.json",
+      "size_bytes": 37430,
+      "sha256": "77b38c1cdedce0e7d808182b2fa08316da950e0e8a66b9e61a62e41708a12cb0"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_b90b20_disasm.json",
+      "size_bytes": 3124,
+      "sha256": "2c3aca7050821bc93c26653faa7815f21074b95a9139c2407d4003f704b2c85f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_10872c0_disasm.json",
+      "size_bytes": 30557,
+      "sha256": "e68c1f7b43d636cb40cde1cb25ea499c651e9a4e75801dedc4e948cd12c07a86"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_adjacent_1084f50.json",
+      "size_bytes": 6673,
+      "sha256": "da16c65abf52c4139330d2aaa624d7f7cd3e64f70429ac6202884d3ae135707a"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_adjacent_1089400.json",
+      "size_bytes": 3397,
+      "sha256": "5b711e899a0438198f3cec67c8aa9bc6abe9b92eedfd010b779a05432a31e877"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_adjacent_caller.json",
+      "size_bytes": 1463,
+      "sha256": "6078dd3395a6c3ada4e9afe8ab192211c8943787866fda122380214fe1b01f9d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_adjacent_xrefs.json",
+      "size_bytes": 1812,
+      "sha256": "1de8af2f6d670d8564cd319205d0fc8cfc3243dcae827d0ac6eaba7889ae9298"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_array_reset.json",
+      "size_bytes": 15453,
+      "sha256": "998c37ad890fc6601ab60f223bcfcc5a5316b5d206d5f5d33cdda6b66fa54972"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_candidates_xrefs.json",
+      "size_bytes": 4866,
+      "sha256": "4777206ba9557fd48469eaf1fa694b9544356afdaad69c0833cb875f474483bd"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_consumer_1087e4c.json",
+      "size_bytes": 13030,
+      "sha256": "fbc89615898518c47e2277a3a6824d0be1093ab78e8c0be4a596d66b6f2860b0"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_consumer_b9140a.json",
+      "size_bytes": 28463,
+      "sha256": "8731ac6ec2dfa7de5dad794f15dfb2d59bf5e6e75f6d8d3628a13fd6354e06ac"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_ctor_alt.json",
+      "size_bytes": 4568,
+      "sha256": "4858f67ff117f2de8bd73ff4eac6cb6dd26d14e048d02c72e8385410c0c9ff0a"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_ctor_base_helper.json",
+      "size_bytes": 37507,
+      "sha256": "cfe22b66dd1a0adcdafbcbda96a19696e64eacf8beae6f158e5f91b21fe9a583"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_ctor_layout.json",
+      "size_bytes": 69452,
+      "sha256": "fe041e132066d16353ae94bfb73d3971faa000887d2eea3a7ec945e0a693b14f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_dispatch_alt.json",
+      "size_bytes": 3258,
+      "sha256": "4ce4550b4c84e60b26e7638587cadd5154f22acf12d48b7539ac34a0b91ca289"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_dispatch_xrefs.json",
+      "size_bytes": 2962,
+      "sha256": "3700ee3234141df6da2b883809e935b62b3fa4900b5e2bcb3d6231fa06789a82"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_helper_xrefs.json",
+      "size_bytes": 9242,
+      "sha256": "bf98f010c06201420e2d4818373b2050001bf140c42cac8f95a2f86c811b858b"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_layout_scan.json",
+      "size_bytes": 25990,
+      "sha256": "aa990eb42ddebc87b6566bd2a0c98823b8c000021b262b32caa73a1ae32923a1"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_layout_scan.py",
+      "size_bytes": 2370,
+      "sha256": "a48f6b945f685f2ae9043a00948cb79f0115db4238d7e09ac90ac620604aa354"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_layout_scan_extended.json",
+      "size_bytes": 28600,
+      "sha256": "d98ff4d1f11ceb080b62d7ee52181e3d55fc6021138c93b6828b5371c19453af"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_neighbor_scan.json",
+      "size_bytes": 32497,
+      "sha256": "98ca63564eff1a8078e84a3975da180f5b9149c8ec612a7818d214e49967cc07"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_neighbor_scan.py",
+      "size_bytes": 1837,
+      "sha256": "d98e4f365dc3a104be7a39fb6e93b786b93592c9a6bb33280677cfda00b54a76"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_remove_peer.json",
+      "size_bytes": 2860,
+      "sha256": "2fd7aa36865dec1d78fb4d78f7253f69b766ba9d83be129030654c09c44ab485"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_remove_peer_1.json",
+      "size_bytes": 5370,
+      "sha256": "0d0225af4b795193def3778b722a1ddada8bf0b46461a4640e70fcd95b41eb39"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_remove_peer_2.json",
+      "size_bytes": 5015,
+      "sha256": "56e7d111b2dc90e7c054d7db397facf3c73e595cee5b32b0fb24a34052f9408b"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_remove_peer_3.json",
+      "size_bytes": 20916,
+      "sha256": "5d99d311dbf15382cfded538d610c09cbd26743d1de83458284cc6816d3372e3"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_reset_layout.json",
+      "size_bytes": 15453,
+      "sha256": "998c37ad890fc6601ab60f223bcfcc5a5316b5d206d5f5d33cdda6b66fa54972"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_client_string_xrefs.json",
+      "size_bytes": 28011,
+      "sha256": "53beedc3a09f334b7addcf6a6d9f9d8ac5479fe652d9924320379bb03a657efa"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_confirmed_peer_sender.json",
+      "size_bytes": 7982,
+      "sha256": "1bf9a21b46bf125d2f6565ee944047b6c4af49d61e0ab88c72faf44dc4210dda"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_confirmed_peer_xrefs.json",
+      "size_bytes": 3135,
+      "sha256": "de22e39c0e626cfcdddca852a016cd7d04c4548ddb1a84cdceefc129ea91c8e7"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_host_confirm_loop_prologue.json",
+      "size_bytes": 5603,
+      "sha256": "63bd21b9fb7a20516e42ea72d6d8a860a6c0a13409ed706f369e439825385706"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_host_to_client_dispatch.json",
+      "size_bytes": 13523,
+      "sha256": "a485b4b0559181a85fa43b7fbc288edce9a278469e876218166c888c78e1c565"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_index_alloc_0.json",
+      "size_bytes": 13611,
+      "sha256": "c69a72db2dfb836da44b14dba01caec72554bdbc7d04345ef686c78c9a8b4409"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_index_alloc_1.json",
+      "size_bytes": 37643,
+      "sha256": "168b8ec25e3d70334fc40b8ca1baa90ec58b4ae5811e2d2ab43059ea3b310fef"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_index_alloc_2.json",
+      "size_bytes": 1978,
+      "sha256": "a1f0958942068a34eda4bb0b1b31bbe0645bfd3d75113e008e2ced55ae0a8e89"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_index_alloc_3.json",
+      "size_bytes": 1315,
+      "sha256": "996d8e22a2947cf72b160de0891c9ae01932dc421681988266b3e3064c71a2c1"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_index_alloc_4.json",
+      "size_bytes": 7004,
+      "sha256": "9e16c8e364caea59089623296b7aba9ec42143400e0060ac62fa299aee8879f8"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_index_alloc_5.json",
+      "size_bytes": 25922,
+      "sha256": "d0b23cc746d5177d402b0b9185ec4efdba21f16d4f7daf364d1362bee1e0c256"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_index_alloc_6.json",
+      "size_bytes": 4256,
+      "sha256": "951529b853cc03a801186e58824234f4b38fbda7b0b70b2d643094a02e8f28b3"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_index_alloc_7.json",
+      "size_bytes": 3343,
+      "sha256": "3545becada9ce744d8ee2dbb051c1de399683351197f28140609c6ff693983e1"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_index_and_wire_notes.md",
+      "size_bytes": 9791,
+      "sha256": "5da44a8c538b487b4994ba00a373ad6ff8a128393f5980cedc9356fddee68a16"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_local_index_scan.json",
+      "size_bytes": 11865,
+      "sha256": "0913eec88aef35e05a04821edeaf570025cfdcdf509684931c826e2f80363d72"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_local_index_scan.py",
+      "size_bytes": 2206,
+      "sha256": "63bfe8caf3eca0857eb59ba256531314bb4c27a8aed5e9094aab0413da5706d0"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_migration_10896a0_disasm.json",
+      "size_bytes": 5884,
+      "sha256": "7cba24dca39a20f94489b8fd237f74545a0e9f72a44dff0fd7c765fd6f0e250b"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_release_slot.json",
+      "size_bytes": 68010,
+      "sha256": "2989290038cbede55b90491f5946b37f4b0a2fcfe8e2c7f4db723af312292ffd"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_release_slot_xrefs.json",
+      "size_bytes": 6182,
+      "sha256": "97219b1feb3230dcea95efc7904541a32f3e58092bccdfab3f413b2e2994c784"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_request_dispatch_1.json",
+      "size_bytes": 6805,
+      "sha256": "fb445ce61fff91495bdf6e78b5a10de9f2dcdedb916cd38673ce633b5f2b11d5"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_request_dispatch_1_prologue.json",
+      "size_bytes": 2932,
+      "sha256": "95d1e15e0ddc5c7f40a5f3132865a53f5e630edeff567c2468d252783f90bcde"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_request_dispatch_2.json",
+      "size_bytes": 19535,
+      "sha256": "20779541b1f44c3156c1cf3d9d5e06d8354d419b61b8cf17c62227bef17ab4d4"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_slot_consumers.json",
+      "size_bytes": 21084,
+      "sha256": "cba56a8a7070786238b0853346bbd1cd17e74dce1de3412381a34197c3183c2a"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_slot_consumers.py",
+      "size_bytes": 2487,
+      "sha256": "d4a4ad40d7667bc60cd6ffe2bc4eea9cb4416aaa7d9183401a1708b5aad89bcc"
+    },
+    {
+      "path": "five_player_feasibility_20260927/protocol_status_serializer.json",
+      "size_bytes": 31819,
+      "sha256": "a3503428ecec12894701e090b4c09bcbb47da8865c2bc791b88c298cfd57bf1c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/respawn_receiver_6054f0.json",
+      "size_bytes": 43913,
+      "sha256": "d712ee074fd13a97f560487d31df81986c7deaeead681f95e32d459457b9fd00"
+    },
+    {
+      "path": "five_player_feasibility_20260927/respawn_receiver_607820.json",
+      "size_bytes": 32181,
+      "sha256": "7d8f6156fe9c0098aaad205a41daf3510a2ec7336aedde5e1b7d896585c42116"
+    },
+    {
+      "path": "five_player_feasibility_20260927/respawn_receiver_608a90.json",
+      "size_bytes": 9598,
+      "sha256": "c0c5b8d05eb58d73c8f39a16966c7ab1eed7099c01285bd19364eea75fdba2ff"
+    },
+    {
+      "path": "five_player_feasibility_20260927/respawn_receiver_608b60.json",
+      "size_bytes": 16218,
+      "sha256": "7aef82d99767f9da0e29249f29120a86340569c00dbbba9571c3c458b4bc5ef6"
+    },
+    {
+      "path": "five_player_feasibility_20260927/respawn_receiver_609210.json",
+      "size_bytes": 288969,
+      "sha256": "c433d5fa797d8905aa4f8ef3518bef2ae291a9275d808986173bf05d07f18c89"
+    },
+    {
+      "path": "five_player_feasibility_20260927/respawn_receiver_60c110.json",
+      "size_bytes": 15391,
+      "sha256": "83b5c114e35bcaa128e53fd2929727e931dc1cc7b62fad0f8f9d1ee9d5535d35"
+    },
+    {
+      "path": "five_player_feasibility_20260927/respawn_receiver_6e2c10.json",
+      "size_bytes": 51026,
+      "sha256": "e6ad8160dbaae523c3c6004650a2c187e8c1a39e982dee4db89a637359a4f4b7"
+    },
+    {
+      "path": "five_player_feasibility_20260927/respawn_receiver_ac83f0.json",
+      "size_bytes": 42357,
+      "sha256": "36c6d2e6be704c460c81450bc2bd03b4a7a51c7bbed033d8209560bb3752350b"
+    },
+    {
+      "path": "five_player_feasibility_20260927/respawn_receiver_ac8800.json",
+      "size_bytes": 273525,
+      "sha256": "19917e812a4681d34c3274a7823f2078defc5900c8e737ce07e33f85982abfbc"
+    },
+    {
+      "path": "five_player_feasibility_20260927/respawn_receiver_ad4520.json",
+      "size_bytes": 124466,
+      "sha256": "cfdfbc5637e0f2090362d6dce12269337050f99605da3f6dc31fdd30cede585b"
+    },
+    {
+      "path": "five_player_feasibility_20260927/respawn_receiver_adbb50.json",
+      "size_bytes": 131319,
+      "sha256": "8f53109b6e414506d322d3eb62a49b5c34fd5906ce70d1f230e9d6e64e73e9c9"
+    },
+    {
+      "path": "five_player_feasibility_20260927/respawn_receiver_b8e970.json",
+      "size_bytes": 8947,
+      "sha256": "43a69a70279c5782ac7b172fb355d68eb80c6d5d1ccf4718a66f08433ba2f505"
+    },
+    {
+      "path": "five_player_feasibility_20260927/respawn_receiver_evidence.json",
+      "size_bytes": 54817,
+      "sha256": "35249cb5d25e5d0b88f52e738034928a95b247a0d645e39f0cd3d1c622063262"
+    },
+    {
+      "path": "five_player_feasibility_20260927/respawn_receiver_findings.zh-TW.md",
+      "size_bytes": 6945,
+      "sha256": "8647b95a49dcc1baca61732c45f657976b2cafac8e75b70f16429f49a9d841e3"
+    },
+    {
+      "path": "five_player_feasibility_20260927/respawn_receiver_handler_xrefs.json",
+      "size_bytes": 2236,
+      "sha256": "cb4b0ea25ce631abde93f8205e20c8a6f758a62b40bd2d1970f9e81c2fa82b23"
+    },
+    {
+      "path": "five_player_feasibility_20260927/respawn_receiver_replay.py",
+      "size_bytes": 7442,
+      "sha256": "e64688cbe29be82a21d950c89a6bdc88b30feccc3f0daaf62be7594b095eafb1"
+    },
+    {
+      "path": "five_player_feasibility_20260927/respawn_receiver_spawn_calls.json",
+      "size_bytes": 202,
+      "sha256": "1cfa7cd3d250a2133243232179a562e96e865c4d440cb3d72181c887474cec0b"
+    },
+    {
+      "path": "five_player_feasibility_20260927/respawn_receiver_state_calls.json",
+      "size_bytes": 799,
+      "sha256": "2d98758df228e18dab2fa5ec398686e3bb108b45f74e211410b50355c5a78417"
+    },
+    {
+      "path": "five_player_feasibility_20260927/respawn_receiver_state_disp_scan.json",
+      "size_bytes": 212472,
+      "sha256": "9335705ffd9821096dbeab7647767c1e8a0fbabedb504f1b39ee7ee2e11e0a43"
+    },
+    {
+      "path": "five_player_feasibility_20260927/respawn_receiver_xrefs.json",
+      "size_bytes": 4123,
+      "sha256": "250edaeaec13fe8be5530c48a1988dfb9e96b4723adb251451315cdb1bbbee9d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_append_dispatch_evidence.json",
+      "size_bytes": 21001,
+      "sha256": "b5b09a88cbfb09b2244cec5280c704abbd218b5f4985886f3721ef19fd3eaa42"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_append_dispatch_findings.zh-TW.md",
+      "size_bytes": 5004,
+      "sha256": "1ce566e39b4d4944447fc7d801c0d43bd7f23650609ba8cbe6bca9b4a43f3466"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_append_dispatch_recheck.json",
+      "size_bytes": 21001,
+      "sha256": "b5b09a88cbfb09b2244cec5280c704abbd218b5f4985886f3721ef19fd3eaa42"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_append_dispatch_replay.py",
+      "size_bytes": 9898,
+      "sha256": "93e9a78d068b89676c118a0b48776bd1dc93d938282e25990a2c90ea251e4855"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_append_dispatch_review_recheck.json",
+      "size_bytes": 21001,
+      "sha256": "b5b09a88cbfb09b2244cec5280c704abbd218b5f4985886f3721ef19fd3eaa42"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_arrival_native_evidence.json",
+      "size_bytes": 239583,
+      "sha256": "c3073ba7658599bc662d980397f21bf7a003f56a2b821cdcf4c2341fe05a2e64"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_arrival_native_findings.zh-TW.md",
+      "size_bytes": 8376,
+      "sha256": "0b9a000b7128b9db6595093d442e2cefd9a76913410688ec3ebd3320bbf82fa5"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_arrival_native_prerequisites.zh-TW.md",
+      "size_bytes": 13428,
+      "sha256": "5cec87b2a7e8d1c999a52316cdef341d7d7238577813a3b9a0fe58191292915d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_arrival_native_recheck.json",
+      "size_bytes": 239583,
+      "sha256": "c3073ba7658599bc662d980397f21bf7a003f56a2b821cdcf4c2341fe05a2e64"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_arrival_native_replay.py",
+      "size_bytes": 17009,
+      "sha256": "923a68c988f5c6f1fc729dd23539da41a1a650637ea79a462b7d2ba9538e5ebe"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_classify_native_evidence.json",
+      "size_bytes": 512648,
+      "sha256": "f20165dad6823edc40fbcdf0434123139f1c80d9222a2b20d3f4c067768e9e33"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_classify_native_findings.zh-TW.md",
+      "size_bytes": 6666,
+      "sha256": "d6c0c2035ad8fb9400475962a146b1a7fc720a50e059c1abe8d9cdc6679ba5fa"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_classify_native_prerequisites.zh-TW.md",
+      "size_bytes": 12750,
+      "sha256": "d01bde4b3b814b7278bec95cfe45b15b1f5e9c546d62c277e3ec06f6434d1216"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_classify_native_recheck.json",
+      "size_bytes": 512648,
+      "sha256": "f20165dad6823edc40fbcdf0434123139f1c80d9222a2b20d3f4c067768e9e33"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_classify_native_replay.py",
+      "size_bytes": 17728,
+      "sha256": "a3ec7cd1b764a5344b64f0edb5753cfb5598a913b297d01dbadc67815e59cbbe"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_compact_counterexample.zh-TW.md",
+      "size_bytes": 6665,
+      "sha256": "58024670efe50e8e2d179945ec0551fed9affb97869d3b2ddf31eb6680018c06"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_compact_native_evidence.json",
+      "size_bytes": 87899,
+      "sha256": "7648e3bcdcbb4a58fd76b5387ee276fdd7c6b3fd8fa5630c2ea5c3a6d53c7cc3"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_compact_native_findings.zh-TW.md",
+      "size_bytes": 6195,
+      "sha256": "f0cfc496609ce58756f0f2e7745ff3295bb06af5172124cf530e7aad8860905d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_compact_native_prerequisites.zh-TW.md",
+      "size_bytes": 9975,
+      "sha256": "4f81333dc136f9414103bbfbaae83e8216e645b04aef1483bcf05d050d0e2569"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_compact_native_probe.py",
+      "size_bytes": 11879,
+      "sha256": "6b961e26ab8896ec54868f0510a727d8d476c3697d48b77b6a50e097f93132b9"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_compact_native_probe_results.json",
+      "size_bytes": 308433,
+      "sha256": "a6131b5edb7a717eb0ea9537a27cbc76a4ca518be2bfbe0280411c6211a3af85"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_compact_native_probe_review.zh-TW.md",
+      "size_bytes": 4901,
+      "sha256": "391c0b398b739a3cd026bad8eb52850ee4915aeda64bd8b4f405dacb25e36f74"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_compact_native_probe_review_recheck.json",
+      "size_bytes": 308416,
+      "sha256": "fc3e1820c7777b6b2974f1c8fa5e4a429afa22efae86fd02f2a55a5f2e5ba68a"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_compact_native_recheck.json",
+      "size_bytes": 87899,
+      "sha256": "7648e3bcdcbb4a58fd76b5387ee276fdd7c6b3fd8fa5630c2ea5c3a6d53c7cc3"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_compact_native_replay.py",
+      "size_bytes": 13781,
+      "sha256": "f77dd5d9c56bc6b54498c5d919574fd6c9c2191bf09abd222239e6a93b6cac37"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_component_binding_evidence.json",
+      "size_bytes": 51726,
+      "sha256": "5261b13987239418581d7ad6c6b73265a1f4011e6a7aad4ceb90964de375425d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_component_binding_evidence_v2.json",
+      "size_bytes": 52582,
+      "sha256": "21ff6c276e2bdb43fbfb0f96cd510730a8edd29e8eda90a66cc4b2fef26e127f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_component_binding_evidence_v3.json",
+      "size_bytes": 71478,
+      "sha256": "274833c418bfa7dec4e4097dda5031f3a11e8c69689ae4ed758e75a40481c2e2"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_component_binding_findings.zh-TW.md",
+      "size_bytes": 10570,
+      "sha256": "ffb10e4b8e9dce731802d883d17abd2a7fdb6e76b8851c5b331bb3e9b79020eb"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_component_binding_name_matches.json",
+      "size_bytes": 213,
+      "sha256": "de93b5d111653bb7e71543c03f1205d34b7a83b8ea7a5d7865443b7e3a67da1f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_component_binding_replay.py",
+      "size_bytes": 12115,
+      "sha256": "1e8fb74d678f28b4ab6d5e32917e67e05aea68e0de0d5638c9c45c9e54a2d04c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_departure_aux_evidence.json",
+      "size_bytes": 1411,
+      "sha256": "43507a33e177e0a3f43bb0afe16dce99c59a059d57a5a15ec09a7c6d105793df"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_departure_aux_replay.py",
+      "size_bytes": 2036,
+      "sha256": "253f836dbaa7f768122e65ce133a60ac8f5aabb57aaa9e7c8463e0ea8b583453"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_departure_callee_evidence.json",
+      "size_bytes": 560260,
+      "sha256": "04e16b4b9a301ba2fbd796528df6e53f9d3d8a25626cd459cc9f1329edd5d0d0"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_departure_callee_evidence_recheck.json",
+      "size_bytes": 560260,
+      "sha256": "04e16b4b9a301ba2fbd796528df6e53f9d3d8a25626cd459cc9f1329edd5d0d0"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_departure_callee_replay.py",
+      "size_bytes": 12204,
+      "sha256": "c2d7720386430b9022b3f0285a6d99c9dc74b28706627389d26b46fd0e19d0ad"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_departure_candidate_contract.zh-TW.md",
+      "size_bytes": 16298,
+      "sha256": "ba0dda76fa9ccdfedee423469233b2251c31dee903965ecf3b7f3087665d57d1"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_departure_native_evidence.json",
+      "size_bytes": 311720,
+      "sha256": "0280267b6f32d4a24f15c69da317d1c2c7a93adb136d4252ff93e09a8d67e609"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_departure_native_findings.zh-TW.md",
+      "size_bytes": 11550,
+      "sha256": "2e958a512302e9547af483b41fc1493c6f21eeb353f6956e9055d8dcd6d05d9f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_departure_native_prerequisites.zh-TW.md",
+      "size_bytes": 16890,
+      "sha256": "7048a6853045410a0d5d4770bdfd9e8a5ca54c22580d3005d6fd74a10ed99eac"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_departure_native_probe.py",
+      "size_bytes": 16358,
+      "sha256": "5997510919cd712ea91a587d4d5d595bf71d025efbf99e7b948ee67e6e60657a"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_departure_native_probe_results.json",
+      "size_bytes": 13642,
+      "sha256": "ce63c713be2a315a57f624a8ffe05e275a4856862047f7c29e62569f80119919"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_departure_native_probe_results_v2.json",
+      "size_bytes": 15556,
+      "sha256": "13c45a80d7657548d92142663dbab278f08eeffe026e32e30ba379f7e45b1874"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_departure_native_probe_review.zh-TW.md",
+      "size_bytes": 5316,
+      "sha256": "77e1c7108bb39350dd05e49ce9aca89a7bc9b130137a08c85aa4b67b0003dedf"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_departure_native_probe_v2.py",
+      "size_bytes": 18122,
+      "sha256": "961d96575dd07987cc96fc9675faf34df0d0a992aa1af6885551be2837f222a4"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_departure_native_recheck.json",
+      "size_bytes": 311720,
+      "sha256": "0280267b6f32d4a24f15c69da317d1c2c7a93adb136d4252ff93e09a8d67e609"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_departure_native_replay.py",
+      "size_bytes": 16414,
+      "sha256": "4675da78f253be7bbec626dc91806b8e33ffa052f30ac20e3723e760f84392b6"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_dispatch_evidence.json",
+      "size_bytes": 74828,
+      "sha256": "dc0770b629ec24ffc81095d080e3d716ed424d7530cc8a95fc2972027cf0384b"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_dispatch_evidence_v2.json",
+      "size_bytes": 89777,
+      "sha256": "e83d0bc3ace27f26b7e77511cd01c09b9ed3b26996abe8661a21b77ae2d47f03"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_dispatch_findings.zh-TW.md",
+      "size_bytes": 5291,
+      "sha256": "00c0949e00929be515750a496c32c7d681c5f94f3fcc480cb4f856e8d142b2dc"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_dispatch_global_writes.preliminary.json",
+      "size_bytes": 10350,
+      "sha256": "4304e2e79f849d34ee553e771dcc4d67f6e58181ed454ad50da80c8f5f7350b1"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_dispatch_inbound_candidates.json",
+      "size_bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_dispatch_registry_consumers.preliminary.json",
+      "size_bytes": 1194727,
+      "sha256": "3c557d4fdb86028592b0fbb2ee754bd7e4f13e2cbe05396ff5cbdfaf5a4a49b2"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_dispatch_registry_xrefs.json",
+      "size_bytes": 1046399,
+      "sha256": "7feef068f8b2703ae811be0760751e433b3785a069d2d037a0626241e332c63d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_dispatch_replay.py",
+      "size_bytes": 7071,
+      "sha256": "e093778642149721a76927dc20259c5ee90a4e30f0a82645a277e5fa1d31ded3"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_dispatch_specific_consumer_disasm.json",
+      "size_bytes": 91877,
+      "sha256": "7e27b172fb02ac8b8e33608318e3e9d25680cb5106bd2621e9bf4d192966761f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_getter_native_evidence.json",
+      "size_bytes": 40981,
+      "sha256": "1360863bfe1f1f6ce640ef049776d3b31703a1cbfe2bea3f90bf20555f69e0fd"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_getter_native_findings.zh-TW.md",
+      "size_bytes": 4491,
+      "sha256": "d7cb6a2b43d6a878344e241dd00c08fb1b987226357c76528bd0c73c1b921902"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_getter_native_prerequisites.zh-TW.md",
+      "size_bytes": 9352,
+      "sha256": "449110d87310c8e7f827b6c511431acf90bec1ddb2de5a2698388a6d3ce10e48"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_getter_native_recheck.json",
+      "size_bytes": 40981,
+      "sha256": "1360863bfe1f1f6ce640ef049776d3b31703a1cbfe2bea3f90bf20555f69e0fd"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_getter_native_replay.py",
+      "size_bytes": 9599,
+      "sha256": "ef2b9c3be43f04854cc4bdb1e8868b60d30dd4074d87124bf19953491be07c0c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_index_usage_candidates.json",
+      "size_bytes": 422143,
+      "sha256": "5a434219129ce6a2a91d8322064edddb83f56e096d07c3ebac5299832362d8a7"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_index_usage_ctor_xrefs.json",
+      "size_bytes": 1805,
+      "sha256": "aff1b42ddeedca98b2751649d7c02683667bd280593debfca9b76d4583789799"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_index_usage_evidence.json",
+      "size_bytes": 168245,
+      "sha256": "3a55ccd2075464af3d5e22494e01218739afa0e4d82db29459f973dda4bd6880"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_index_usage_evidence_v2.json",
+      "size_bytes": 184113,
+      "sha256": "d7098a7d698aa7daaf53e89c08b19cb01e243860f70fbba518690837baf121ee"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_index_usage_field_scan.json",
+      "size_bytes": 155807,
+      "sha256": "e145faef2979bc34a0de6e1c24b55bd109b5251ba8a86c99460f132a20c2a9af"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_index_usage_findings.zh-TW.md",
+      "size_bytes": 9519,
+      "sha256": "a65561b3dfb5c3c5754c58e7b76969bf5718c7a18e526fcf999c6eaaa41d39f6"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_index_usage_parent_xrefs.json",
+      "size_bytes": 2678,
+      "sha256": "a287c73204fdd24bd4e91b866d9c51cdec804e810d6e4e9b51155d5b71c96539"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_index_usage_replay.py",
+      "size_bytes": 13112,
+      "sha256": "de3ec06145288cde0802b2575b1a76dccbcd71bbf82671b45048be22790452f7"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_index_usage_slot_system_scan.json",
+      "size_bytes": 9689,
+      "sha256": "1b7f22de9acdb789ba152311f90b4ca3be149d010526c8038cd1bb858f35412e"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_insert_native_evidence.json",
+      "size_bytes": 202242,
+      "sha256": "794c357a56b2aa28cfd1061374afe27c1a3a2c06d31ce4ca736e4b783e41b497"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_insert_native_findings.zh-TW.md",
+      "size_bytes": 7264,
+      "sha256": "7e90250b9a940162acf0308dc7eb2b03d0844852c717578e3acea757664ba0f9"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_insert_native_prerequisites.zh-TW.md",
+      "size_bytes": 9678,
+      "sha256": "0b6b96b80cdc61bacdae55ee064fec911a907e71432d018a2e0e50ab3a814961"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_insert_native_recheck.json",
+      "size_bytes": 202242,
+      "sha256": "794c357a56b2aa28cfd1061374afe27c1a3a2c06d31ce4ca736e4b783e41b497"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_insert_native_replay.py",
+      "size_bytes": 14552,
+      "sha256": "91f70f887bcdbdd0b48abea3fa2d282b44fde6b33575536229a572b38d65a8c4"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_lifecycle_evidence.json",
+      "size_bytes": 28868,
+      "sha256": "969042e4d22464c96f510b4c06ed2af742985f96f9881fda338210368cf09ed5"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_lifecycle_findings.zh-TW.md",
+      "size_bytes": 5743,
+      "sha256": "c95553aec5c742b4de4a89169bc55be69aeb33e318f70271178ec6990e6a17c5"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_lifecycle_inline_xrefs.json",
+      "size_bytes": 1364,
+      "sha256": "985dba61b39092c2ee8629b7b78b8ef34ea6b9d9a67708a8981aaf0f9959cfa9"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_lifecycle_replay.py",
+      "size_bytes": 5871,
+      "sha256": "b30bec06ef02e5c09a854e0255f49d6c397504aebea7d1f4ae8578ecc9b068ab"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_lifecycle_wrapper_xrefs.json",
+      "size_bytes": 1651,
+      "sha256": "5ebcb4d63d94c429ef6cf484ca06bdea66877d4b7f3d12977c3d44f1f76d4c3f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_lifecycle_xrefs.json",
+      "size_bytes": 7885,
+      "sha256": "3f4172fe6bfab526e7e60a63304c6c3b478f005cee2336cddccad032cd5fa943"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_move_native_evidence.json",
+      "size_bytes": 36063,
+      "sha256": "115802c09eb15f840932667717731150aa347e7ae8a72245dd92e05a5e86a242"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_move_native_findings.zh-TW.md",
+      "size_bytes": 7902,
+      "sha256": "5c34fe030c2b6afba78f3ed3ecd631f418d86107b751e1f49f8aab364da179ce"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_move_native_prerequisites.zh-TW.md",
+      "size_bytes": 8134,
+      "sha256": "794c287f08b6b5fda59cae045a5960e024acfa67d5d249d9c057d6d5942bec77"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_move_native_recheck.json",
+      "size_bytes": 36063,
+      "sha256": "115802c09eb15f840932667717731150aa347e7ae8a72245dd92e05a5e86a242"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_move_native_replay.py",
+      "size_bytes": 8031,
+      "sha256": "e09468e6e3da6ab80e505c52287273ef530d7646467a501ccbe92480d54bde1c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_player_count_native_evidence.json",
+      "size_bytes": 293637,
+      "sha256": "8f0fad49d9f5bc7e95ffe8735007b59c302034704707602c8d8093ad795676e3"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_player_count_native_findings.zh-TW.md",
+      "size_bytes": 6029,
+      "sha256": "e1d289772d47b39ce5822b192a08ede0e6650f709f9d8c88972f1be5cc9375d2"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_player_count_native_prerequisites.zh-TW.md",
+      "size_bytes": 13115,
+      "sha256": "77decdc209bc5ccc809cd866818138c8df2440854471e05dd1256a642179c47c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_player_count_native_recheck.json",
+      "size_bytes": 293637,
+      "sha256": "8f0fad49d9f5bc7e95ffe8735007b59c302034704707602c8d8093ad795676e3"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_player_count_native_replay.py",
+      "size_bytes": 15629,
+      "sha256": "45fbf40fc48c97ab76e289b53d9463927d7429d1bede540d73cbf3dccbc03ee5"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_apply_540b60_disasm.txt",
+      "size_bytes": 1736,
+      "sha256": "ba502f290ddfc1bdea295bf01767375ad5895211ed8dd7c4c2b85368f3c43ce6"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_apply_581a80_disasm.txt",
+      "size_bytes": 1610,
+      "sha256": "7116a9046b5d2d33b910100af84f123e0269c57f5a43a142471a0ddf0824d8f9"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_apply_581c40_disasm.txt",
+      "size_bytes": 3663,
+      "sha256": "ea41d773c9a1540229e0f307f5eac709e2c46f26c42259e06b1d3f5c173918a3"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_apply_581e10_disasm.txt",
+      "size_bytes": 3481,
+      "sha256": "cb5b6099cb23c57253777e3fdc6ebd12c4b65f930cd4d9f23475232cd152b60f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_apply_605950_disasm.txt",
+      "size_bytes": 11142,
+      "sha256": "40f2f07a2aac63b55b4b333ac42dbe53e3d433d26343bd180d22a0e036cbcfe3"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_apply_60cf50_disasm.txt",
+      "size_bytes": 7020,
+      "sha256": "51690085b51221019870959fce096bfd6e1a2f915677367a2b9b56e714dee99c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_apply_60d300_disasm.txt",
+      "size_bytes": 8619,
+      "sha256": "11d06433e354db6a0ca24b63552b8717f67951d46dcb175e0b6af949cf0b57b7"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_apply_dispatch_fields.json",
+      "size_bytes": 5795,
+      "sha256": "a9437ef21cf29efee01ab8e6341917583481609642e1bf84731844cabe9a1433"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_apply_evidence.json",
+      "size_bytes": 101613,
+      "sha256": "0e8f76b6fbf7e717ce705cbb02a9cdd797b7c88cc654b3368a1315b385f1dcce"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_apply_evidence_v2.json",
+      "size_bytes": 141871,
+      "sha256": "34b7d99da6caa3a30572376fb9734c29754247430e0d2052c20b7d7002dd6ef9"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_apply_evidence_v3.json",
+      "size_bytes": 185054,
+      "sha256": "d0dd9c02db933c20801a366d9668131734a29106e46f8a8a0d0de43981a27d22"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_apply_fdbb40_disasm.txt",
+      "size_bytes": 6741,
+      "sha256": "f1631beb8079449693cf9cc243727a2792c62c521be971dd3e6f0f0308686f96"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_apply_fdc820_disasm.txt",
+      "size_bytes": 11270,
+      "sha256": "d0a54f80a8ec52bf95fb8053dc21e51d859114ac534faa1c5ad3b7dd2e64559c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_apply_findings.zh-TW.md",
+      "size_bytes": 10627,
+      "sha256": "33e8a26c9e176580adcc73fd1e34664ffafd59ed25bf034e01fca8979aa7d01a"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_apply_replay.py",
+      "size_bytes": 8250,
+      "sha256": "0e3e512129e76cf89937f9bc515f3f33bdacfe9d7e56f7c3b46b467e9da87763"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_apply_transition_xrefs.json",
+      "size_bytes": 2672,
+      "sha256": "cc76252fa4bfe2c42ff57f4cf74c1147f7f1415e3d6e8c71962fbd155698f694"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_consumers_native_findings.zh-TW.md",
+      "size_bytes": 9691,
+      "sha256": "582ff07dd083282448e91a514390e17b6d7ff2bea91164ad932b07a03bf93965"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_consumers_native_inventory.json",
+      "size_bytes": 93167,
+      "sha256": "0b664e0f65601221399bfd01ad92f248d373b30376c5e2fdac6b7a702dc93dc2"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_consumers_native_recheck.json",
+      "size_bytes": 93167,
+      "sha256": "0b664e0f65601221399bfd01ad92f248d373b30376c5e2fdac6b7a702dc93dc2"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_consumers_native_replay.py",
+      "size_bytes": 21171,
+      "sha256": "b453baa9ee438dbe91b8c82f52836063b81612951efd47dbb67b10b2b86aa86d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_consumers_native_review_checks.json",
+      "size_bytes": 687,
+      "sha256": "f2d7f9f695279f20ff271b8239874b6c62295919ca1f8559fbb77b0baefe9d1e"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_producer_native_evidence.json",
+      "size_bytes": 36839,
+      "sha256": "f73ec903d06f2304f4f944c25e011a7ef86d78737cb1b197101a1c96daaabacb"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_producer_native_findings.zh-TW.md",
+      "size_bytes": 8615,
+      "sha256": "ff088bce9f576d4fffba97b98d275de28d631c3bc70941429d5e6d529f2c2ba2"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_producer_native_recheck_v2.json",
+      "size_bytes": 36839,
+      "sha256": "f73ec903d06f2304f4f944c25e011a7ef86d78737cb1b197101a1c96daaabacb"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_producer_native_replay.py",
+      "size_bytes": 6998,
+      "sha256": "74fd3c2ecfd295843cc8149f6cf4ed66d3c1dfbefa218219650ca450eb6ff54d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_producer_native_review_checks.json",
+      "size_bytes": 828,
+      "sha256": "3aab173b5b354f0bc03930535591633d368610c448618b9c7b3775d8c1b25c31"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_receive_60c890_disasm.txt",
+      "size_bytes": 2322,
+      "sha256": "1215d404d6a1ac8fa61028d5ddfc58c8c436f875673129dd05599373704f3e02"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_receive_discovery.json",
+      "size_bytes": 2238,
+      "sha256": "6c31383f588fff3ff259da8461acccc710fad1c2630042d083b4fe5af4c4d311"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_receive_evidence.json",
+      "size_bytes": 45317,
+      "sha256": "bad5661771df280dd5e982b765d2f4ab1c73de9ae7e86e974751af6c3c383c10"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_receive_findings.zh-TW.md",
+      "size_bytes": 9950,
+      "sha256": "30ca3c72d4098007e0eb71195cb36c661294ba6016f731cca6e463978d77530a"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_receive_replay.py",
+      "size_bytes": 8362,
+      "sha256": "ecba21267a00565da2236c1620f6a257134865b0f7dd93f50c698f131c0adfb9"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_receive_review.zh-TW.md",
+      "size_bytes": 6016,
+      "sha256": "f9606f02a979958918ab67626b6afa7269c79d3ec5bfe09a12d3288018940275"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_property_receiver_native_cutpoint_findings.zh-TW.md",
+      "size_bytes": 8349,
+      "sha256": "7307df105c11c772bab8f4c74144f07ab641d49990e9f600107bab98cdbebf66"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_registry_update_native_evidence.json",
+      "size_bytes": 274090,
+      "sha256": "7a8f289ea8ddf85d1b2010a39d9cedc4599e9846db8936b9e215cbd4a96740e1"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_registry_update_native_findings.zh-TW.md",
+      "size_bytes": 7053,
+      "sha256": "845d1872732aefe79a95edb6b180cc0db9b0210d771a07cc7c70e3a2fd7e06c4"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_registry_update_native_prerequisites.zh-TW.md",
+      "size_bytes": 14159,
+      "sha256": "e1213ccb38184ba5d346ce4895ddab5b2e0d6901dbbd042eff5b3b214c37bab7"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_registry_update_native_recheck.json",
+      "size_bytes": 274090,
+      "sha256": "7a8f289ea8ddf85d1b2010a39d9cedc4599e9846db8936b9e215cbd4a96740e1"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_registry_update_native_replay.py",
+      "size_bytes": 17288,
+      "sha256": "daa6eba4c77ad7ccf0c85909960bd9056f2b0677840431881c33ba0328575223"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_remove_native_evidence.json",
+      "size_bytes": 125361,
+      "sha256": "67563b2d12860c814096b1d45338dd271ad13975c3ba4f96169a92473ab061af"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_remove_native_findings.zh-TW.md",
+      "size_bytes": 7259,
+      "sha256": "1fe45bd2d3cc701efd976bac0c257ce5c9c12286f60b71436f0e147180bbb955"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_remove_native_prerequisites.zh-TW.md",
+      "size_bytes": 11660,
+      "sha256": "1f1d47a8d28a1c6455486f41dd9192418298cced1238988c773756b34720ac21"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_remove_native_recheck.json",
+      "size_bytes": 125361,
+      "sha256": "67563b2d12860c814096b1d45338dd271ad13975c3ba4f96169a92473ab061af"
+    },
+    {
+      "path": "five_player_feasibility_20260927/roster_remove_native_replay.py",
+      "size_bytes": 13684,
+      "sha256": "aa059508d4a1d23dfd2284e376bb4f61348d044a219d9bdeffe6e0d0e93e9a1e"
+    },
+    {
+      "path": "five_player_feasibility_20260927/rpc_binding_callback_table.json",
+      "size_bytes": 1730,
+      "sha256": "70ad8d8d9b288526acea617b6b111d6bbb43f5cae4fabdd2c9585bbe15c07466"
+    },
+    {
+      "path": "five_player_feasibility_20260927/rpc_binding_callback_table.py",
+      "size_bytes": 2215,
+      "sha256": "c3db69dc8b524581c92711c033ecc5b03068d3bcb8ba0317cd1daa6a308e9050"
+    },
+    {
+      "path": "five_player_feasibility_20260927/rpc_binding_findings.md",
+      "size_bytes": 5142,
+      "sha256": "5a666ee142b882fbafab0b6e1c7a7bd5419e3fefcffb8495f2161814014a78f6"
+    },
+    {
+      "path": "five_player_feasibility_20260927/rpc_binding_hash_occurrences.json",
+      "size_bytes": 833,
+      "sha256": "e997ffafee7bf215c2acf03d94bee80444ae425b5302e4fde4c52b821d68ffe9"
+    },
+    {
+      "path": "five_player_feasibility_20260927/rpc_binding_hash_scan.py",
+      "size_bytes": 1891,
+      "sha256": "499de633f45c14a8b7bc91a476750153f846d91439ceebbdd5ff6eabc868cfcf"
+    },
+    {
+      "path": "five_player_feasibility_20260927/rpc_binding_host_peer_loop_a.json",
+      "size_bytes": 8892,
+      "sha256": "20c2fbbe8a736d2ff6961b9c7ffaea45b6aa432a4fa67fd6ff21f27f7031c0a2"
+    },
+    {
+      "path": "five_player_feasibility_20260927/rpc_binding_host_peer_loop_b.json",
+      "size_bytes": 1164,
+      "sha256": "9936d09b97160b832edd3c9058b452803e8010753b9da265daeb36ef0cd5827f"
+    },
+    {
+      "path": "five_player_feasibility_20260927/rpc_binding_host_peer_loop_c.json",
+      "size_bytes": 35120,
+      "sha256": "ad171034ded1d6f3cf8925340d1089de52f620a9bf2d0bafdadbdb6846c6d675"
+    },
+    {
+      "path": "five_player_feasibility_20260927/rpc_binding_table_base_xrefs.json",
+      "size_bytes": 1629,
+      "sha256": "0f88bda913b0f5caeefc820f79103def7b0f00e91f0d59a577209b239cab4116"
+    },
+    {
+      "path": "five_player_feasibility_20260927/rpc_binding_table_first_fn.json",
+      "size_bytes": 3195,
+      "sha256": "89c1e6b6c2b0bbdab8dcd450e99a9010eb71268288ce4b4947188176b66b8304"
+    },
+    {
+      "path": "five_player_feasibility_20260927/rpc_binding_table_refs.json",
+      "size_bytes": 471,
+      "sha256": "42cd7bb4db5193e77dd79a99cf7af713117bb60ed3c847d578281f5d93f06be2"
+    },
+    {
+      "path": "five_player_feasibility_20260927/rpc_binding_table_refs.py",
+      "size_bytes": 2077,
+      "sha256": "028e99d9b656c41885ae33012f66b51482f78231a92c48f5a8029636830a2c3d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/rpc_binding_table_refs_wide.json",
+      "size_bytes": 55240,
+      "sha256": "300712ecd82fcd2a3c20da92752ed3ba3cfee0a87a188f7844201670a9161264"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_callback_registration_constructor_xrefs.json",
+      "size_bytes": 1805,
+      "sha256": "197a9c3d51e063115a516fe219a2bb006f00677ef03dc019f62d4ee48cf49c41"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_callback_registration_entry_xrefs.json",
+      "size_bytes": 1655,
+      "sha256": "e2e8a9ef2ab832a7477fec5efd1f8a1ad3f5d3dbc4f4a5785a7e587842e87845"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_callback_registration_evidence.json",
+      "size_bytes": 28670,
+      "sha256": "15bb0ff4f7c09445554e622dd2da384d04016699c124bbe1feb3acf17dce31bf"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_callback_registration_evidence_v2.json",
+      "size_bytes": 29035,
+      "sha256": "142df92c5411697e03914be224d30e05f85a02011c2c96e00be2e2aa9b9a5109"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_callback_registration_fields.json",
+      "size_bytes": 83916,
+      "sha256": "e136c9cfc2d9c11a1e23614e08a7e238e98b3e9c80c646667e10c8a8a5cbe76a"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_callback_registration_findings.zh-TW.md",
+      "size_bytes": 6456,
+      "sha256": "ab531f80dba9c49c384fd61a7899ff24e985215a6f938313fdd8652265e70670"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_callback_registration_first_phase_fields.json",
+      "size_bytes": 863,
+      "sha256": "64ed066dd5f6496a7fae13ffcec2f885a05d9cdbe50203898e67416736adce10"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_callback_registration_owner_xrefs.json",
+      "size_bytes": 1805,
+      "sha256": "ad2c4220d16bba17f1d2c77784ebf1d5ffe4da26dd143b823386238555c8f298"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_callback_registration_pairs.json",
+      "size_bytes": 1120789,
+      "sha256": "e225d891b70405b1e9430503a4e15639c8b6986cab66de8ff088a0efe813f365"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_callback_registration_replay.py",
+      "size_bytes": 6850,
+      "sha256": "1e8e92b0849c6384c6bfb7a9696d4990c165ee1375b82af022de176cbc48b64d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_callee_availability.json",
+      "size_bytes": 6556,
+      "sha256": "3d73ede58393b345eda41cad0f17ba942dfed142962cc145a19f7a51ef104900"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_callee_availability.py",
+      "size_bytes": 5865,
+      "sha256": "cf15eb5455be4a4ba539d129456ddd99ea4cae04f02ed9a7065b7d1e4eaf6321"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_callee_availability.zh-TW.md",
+      "size_bytes": 3730,
+      "sha256": "47b16fc95d3042e61d923b28fbe0622e5e508cd7be2bab264f3d9f70edbc790a"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_interface_evidence.json",
+      "size_bytes": 3704,
+      "sha256": "8b6fd4de0b9db883cf732c972278aba12956975cb246636fcdaeb9dfdbbd0eda"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_interface_findings.zh-TW.md",
+      "size_bytes": 4802,
+      "sha256": "c1c0bc09d0c48a8c4b5b8295db67b530e8da81c1f93f2731adb2f5b170da7a94"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_interface_independent_review.zh-TW.md",
+      "size_bytes": 5058,
+      "sha256": "487065c14fe6ea4f5ebe254b0c952dcacec47a91df1319171961434053c2e4ea"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_interface_live_20260927_1.json",
+      "size_bytes": 11850,
+      "sha256": "44773c271226df2df3a93991421287cee71ea7971cbad877ed5a70275dff798a"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_interface_replay.py",
+      "size_bytes": 6040,
+      "sha256": "714cbe9c9eecfdeeb02dab5a6a2485ce5c8e932e2f0a4467cc4251f3c28de9a1"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_resource_581320_disasm.json",
+      "size_bytes": 49350,
+      "sha256": "9c3662363798b3f702c6bcceb29bc0af36c5b7156b5139a636e43f7f18cc1e4d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_resource_581780_disasm.json",
+      "size_bytes": 33309,
+      "sha256": "a8b55ca4664eb2e201b93db8d262dd94e2bb4edc14706002fb0805841fcf494c"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_resource_callback_fields.json",
+      "size_bytes": 2538,
+      "sha256": "453160c20cc8d8180e9aa0b2eab22fb5f845c0807920f81bff4f92d9f24a6edd"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_resource_identity_evidence.json",
+      "size_bytes": 23714,
+      "sha256": "60f52a1e1afcceb7af05f2dad775a54642912c09e6ffd7113597dfe50f594224"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_resource_identity_findings.zh-TW.md",
+      "size_bytes": 4662,
+      "sha256": "2ae1fa635c8718c8683a9ac5163242f5007770133da3da1d1dc84c4bf772cb58"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_resource_identity_replay.py",
+      "size_bytes": 5623,
+      "sha256": "9621804c2ea83aa6597fa9db19f3e401b7ff146ac66d55b379fafab7a07161e7"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_resource_metadata_evidence.json",
+      "size_bytes": 40207,
+      "sha256": "400bd47c3d75928695f76b64591d56c699ab725581b4d068071c5f293b07cd2a"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_resource_metadata_findings.zh-TW.md",
+      "size_bytes": 5575,
+      "sha256": "eb9afc4a3d5653d2f77f3b3e7ece9f96edf39b50cb4a8c0c7c108147354c4e52"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_resource_metadata_replay.py",
+      "size_bytes": 10624,
+      "sha256": "eddef5be3e8858050a9df99f656fe33ce80b52842c3afdfd413e1cb60843fbc1"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_resource_metadata_review.zh-TW.md",
+      "size_bytes": 4368,
+      "sha256": "c8ee1a63b64bce63a2b58154dbb968e69f76858c368f48bd17c9b27aa4c27179"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_resource_registry_fields.json",
+      "size_bytes": 170911,
+      "sha256": "66dfb0a2ec4f21f6752b290afe418b30abf0e4e26412490698d2a64d894499f8"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_resource_registry_init_disasm.json",
+      "size_bytes": 40310,
+      "sha256": "53564d3645c3b9b2a3c0cc5a7bac9f842258cd4d2f20760fbdf82f12a855e800"
+    },
+    {
+      "path": "five_player_feasibility_20260927/spawn_resource_registry_xrefs.json",
+      "size_bytes": 670590,
+      "sha256": "17244f4a8e47b375310cd8bb30d9a0db57fa967d3314bb067f00ccc136434717"
+    },
+    {
+      "path": "five_player_feasibility_20260927/status_helper_disasm.json",
+      "size_bytes": 6023,
+      "sha256": "a63aadd6eb0535e8547ad198ad0b32cd6858ba50112047743341d991913dbc87"
+    },
+    {
+      "path": "five_player_feasibility_20260927/tools/ENGINE_CALLEE_PROBE.zh-TW.md",
+      "size_bytes": 3931,
+      "sha256": "b2ef1d5a2c864149587e4079792b2ad9f076ea8c2b84f95364d8ded40268b8df"
+    },
+    {
+      "path": "five_player_feasibility_20260927/tools/INTERFACE_PROBE.zh-TW.md",
+      "size_bytes": 4396,
+      "sha256": "6c8d53ced06a304cb7907d4ed3ac3f544de5853b86dbfdcc51db4e4645442889"
+    },
+    {
+      "path": "five_player_feasibility_20260927/tools/INTERFACE_PROBE_REVIEW.zh-TW.md",
+      "size_bytes": 3184,
+      "sha256": "e12496a1e0651abb9fae2638e59a26201b724602e932b71770dfa4140738ba6b"
+    },
+    {
+      "path": "five_player_feasibility_20260927/tools/README.zh-TW.md",
+      "size_bytes": 3831,
+      "sha256": "da1f88d66327e300c6a1a1d3f0a73380f84d66cc9a2f2575a895115d03496613"
+    },
+    {
+      "path": "five_player_feasibility_20260927/tools/SPAWN_CALLEE_PROBE.zh-TW.md",
+      "size_bytes": 4569,
+      "sha256": "04e72ebe4fd5b93646907a3b41b66f775de0590521a7b38e97e3676f25466524"
+    },
+    {
+      "path": "five_player_feasibility_20260927/tools/SPAWN_INTERFACE_PROBE.zh-TW.md",
+      "size_bytes": 5224,
+      "sha256": "7549c358ab90f83c87b131ea15dd39778818a3c5bfc44c68aee35499df5b9e70"
+    },
+    {
+      "path": "five_player_feasibility_20260927/tools/engine_callee_probe.py",
+      "size_bytes": 5942,
+      "sha256": "bddab1003d7c8e1d0d7c966ca93e41051a03cb8b43263c64f3590fb01a614aab"
+    },
+    {
+      "path": "five_player_feasibility_20260927/tools/exe_capture_cfg.py",
+      "size_bytes": 5393,
+      "sha256": "e158be2701f7bba2437d457710149ae462e840b9ffeda8bc42180a17bfca7d53"
+    },
+    {
+      "path": "five_player_feasibility_20260927/tools/field_refs.py",
+      "size_bytes": 4643,
+      "sha256": "916277612b7ee05ebe0d73a3c29d71196d795b52006a393fb8896a15ae708789"
+    },
+    {
+      "path": "five_player_feasibility_20260927/tools/interface_probe.py",
+      "size_bytes": 13888,
+      "sha256": "33fe88f4b854b69d939a1e761591c9f30271d88ed8100b3eb56599ec4ba517b5"
+    },
+    {
+      "path": "five_player_feasibility_20260927/tools/layout_inventory.py",
+      "size_bytes": 5287,
+      "sha256": "af9a5d2f688cf8b0796f3f1cbc79ee5d3ff2310ae66238f57cb1525ce70bab10"
+    },
+    {
+      "path": "five_player_feasibility_20260927/tools/spawn_callee_probe.py",
+      "size_bytes": 8694,
+      "sha256": "ce9823e7bf730e4de59ff7f4b5728b062cb3a991e7a0c541203f7bc1d3340181"
+    },
+    {
+      "path": "five_player_feasibility_20260927/tools/spawn_interface_probe.py",
+      "size_bytes": 9972,
+      "sha256": "f46b0a08ff5053fc2ba83845e05b3fe85fd6a56184440f84e7079c3448987e30"
+    },
+    {
+      "path": "five_player_feasibility_20260927/tools/test_engine_callee_probe.py",
+      "size_bytes": 3631,
+      "sha256": "a3086ecc1c1a541545372956ab8f3ecda73a3828309aaacfe9b3963b13331f39"
+    },
+    {
+      "path": "five_player_feasibility_20260927/tools/test_interface_probe.py",
+      "size_bytes": 5240,
+      "sha256": "59cd6ed559ad8400b28170eabde1e8eafd6879f004f844d7618824bd9a40437d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/tools/test_spawn_callee_probe.py",
+      "size_bytes": 12485,
+      "sha256": "4384e7d496b9a45c0df7247d4b936c05957f20b530e5bcb51355f6d93a9c014d"
+    },
+    {
+      "path": "five_player_feasibility_20260927/tools/test_spawn_interface_probe.py",
+      "size_bytes": 8839,
+      "sha256": "298f7af096adcb6dce1bfa0b455607efbccbe3d3737392c6d34783d2736e6427"
+    },
+    {
+      "path": "github_handoff_20260927/GOAL_OBJECTIVE.zh-TW.md",
+      "size_bytes": 10773,
+      "sha256": "51c7f1b7fd94e0bc2aedcd9b5bf591e105dc6c5a09f28035a402ec1ecce40a0b"
+    },
+    {
+      "path": "github_handoff_20260927/HANDOFF.zh-TW.md",
+      "size_bytes": 7444,
+      "sha256": "b073e4571ff46540ec713a0f837feb7bf8ea86d90ff7e8e6d0f22b4f7d89e06e"
+    },
+    {
+      "path": "github_handoff_20260927/SETUP.zh-TW.md",
+      "size_bytes": 5758,
+      "sha256": "d02d05c0881734fcae6cb971f704fb27cbf7d9a1752325b8b1d27ceb5e578f47"
+    },
+    {
+      "path": "github_handoff_20260927/STATE.json",
+      "size_bytes": 3238,
+      "sha256": "58acc9b100a7c89202d5447208c982de897eede7536feb65365dadbc327c62fb"
+    },
+    {
+      "path": "github_handoff_20260927/verify_snapshot.py",
+      "size_bytes": 3347,
+      "sha256": "9630ae05d423f43c147843c6ef37ea09ffe7b8fc474c9b5584eaced2bf38c9fa"
+    },
+    {
+      "path": "loader_v18_compat_20260927/external/v18/source/README.md",
+      "size_bytes": 6762,
+      "sha256": "1832ccef2ac94fce86c3d349ac14cc5c75b33efe8663abe10765803b08ff7a5a"
+    },
+    {
+      "path": "pcf_four_scope_test2_v18_20260927/Source/runtime/image_windows.lua",
+      "size_bytes": 9986,
+      "sha256": "f1d288b657f45bbddb14ed0f992e81dd725c09d1b122fe3b8ffd0ec31cdd0b07"
+    },
+    {
+      "path": "research_handoff_20260927/HANDOFF.zh-TW.md",
+      "size_bytes": 16237,
+      "sha256": "805ee222e5872fd35fffd66db25355112f0908ffb685c7a4db51aa5c1a589d31"
+    },
+    {
+      "path": "research_handoff_20260927/SHA256SUMS.txt",
+      "size_bytes": 6876,
+      "sha256": "8429e6eb1474080c4c3a7790325f9ae50723d2fad8477b57c54237a606d5618d"
+    },
+    {
+      "path": "research_handoff_20260927/baseline/BASELINE_AUDIT.zh-TW.md",
+      "size_bytes": 4391,
+      "sha256": "bd22d6d0d2ad82cc32b65bcf95019816d28f99c1cf5399c5271d0456222163b0"
+    },
+    {
+      "path": "research_handoff_20260927/baseline/audit_baseline.py",
+      "size_bytes": 7508,
+      "sha256": "e9839c43ff3f0214469baa80feb92c725d5ef27617d4bbd13521c95dba2557a0"
+    },
+    {
+      "path": "research_handoff_20260927/baseline/ayakamods-version.json",
+      "size_bytes": 1188,
+      "sha256": "d4aaff89dacf9930573c461aa76d802500ed0397343f75c4aac01216185ef2de"
+    },
+    {
+      "path": "research_handoff_20260927/baseline/github-preview8.json",
+      "size_bytes": 2300,
+      "sha256": "0567a7210c40e8648e756ffb924efd9cea283341c255593dcafaaed740c9214e"
+    },
+    {
+      "path": "research_handoff_20260927/baseline/protected-assets.after.json",
+      "size_bytes": 12804,
+      "sha256": "7eeaeaefd549ce86161c0fa6f2b931f50dac89b4b016afd50721c14370d348b2"
+    },
+    {
+      "path": "research_handoff_20260927/baseline/protected-assets.before.json",
+      "size_bytes": 12914,
+      "sha256": "d2a868f04091b78775a31c5ef644ce80e54b244ae08f739a13015ec7998ac9da"
+    },
+    {
+      "path": "research_handoff_20260927/baseline/same-name-archive-comparison.json",
+      "size_bytes": 2714,
+      "sha256": "58f5290a64017e6e5ea513f24d61f0686c33f54e2fa2d0159cf84c90dade78df"
+    },
+    {
+      "path": "research_handoff_20260927/baseline/settings-findings.review-normal.json",
+      "size_bytes": 11423,
+      "sha256": "68ae1eeeb5be4b7377a902ddaf8950c19231fdf056eafb89fcde891479a05634"
+    },
+    {
+      "path": "research_handoff_20260927/baseline/settings-findings.review-optimized.json",
+      "size_bytes": 11423,
+      "sha256": "68ae1eeeb5be4b7377a902ddaf8950c19231fdf056eafb89fcde891479a05634"
+    },
+    {
+      "path": "research_handoff_20260927/checks-v2/normal-disabled-source-guard-mutation.log",
+      "size_bytes": 1307,
+      "sha256": "ef32b9df8fe6aca30b7648619f6afdf76b4f777cb0f60c19eb16ef4b1135d53c"
+    },
+    {
+      "path": "research_handoff_20260927/checks-v2/normal-test_generationall.py.log",
+      "size_bytes": 5759,
+      "sha256": "b828d62e9d57c47a960618108136456ecf00c15b55dd6fca9690286ec65502e8"
+    },
+    {
+      "path": "research_handoff_20260927/checks-v2/normal-test_projectile_verifier.py.log",
+      "size_bytes": 710,
+      "sha256": "7e24fbc7bb787f451cd6f04e97c0b52435d7fb3255d301a89a9db0db3c3ed945"
+    },
+    {
+      "path": "research_handoff_20260927/checks-v2/normal-test_referenceall.py.log",
+      "size_bytes": 10847,
+      "sha256": "4c8635f8f61772d1a6bde8e9225b5a6ec9be6eaa63fa6969d7f406a352e8436a"
+    },
+    {
+      "path": "research_handoff_20260927/checks-v2/normal-test_secondary_catalog.py.log",
+      "size_bytes": 1825,
+      "sha256": "580f85b479c7978daf0273a9fdce4cc7690c64224a8078caff1d628abcf6785b"
+    },
+    {
+      "path": "research_handoff_20260927/checks-v2/optimized-disabled-source-guard-mutation.log",
+      "size_bytes": 1307,
+      "sha256": "8aef51f6c3e3be9b54afbfc0127d2bbc9f0a39dfa707ce7fecd5265e26e68141"
+    },
+    {
+      "path": "research_handoff_20260927/checks-v2/optimized-test_generationall.py.log",
+      "size_bytes": 5759,
+      "sha256": "64f4dc674b5f198aa8373213e2a615cd3e735933ea741b2445a570f5d1ad4d9d"
+    },
+    {
+      "path": "research_handoff_20260927/checks-v2/optimized-test_projectile_verifier.py.log",
+      "size_bytes": 710,
+      "sha256": "a253c626533afeaf84dc83f79ef3bae9a59b2ed354988543956756f06766d223"
+    },
+    {
+      "path": "research_handoff_20260927/checks-v2/optimized-test_referenceall.py.log",
+      "size_bytes": 10847,
+      "sha256": "6f52e67582adf2fe1f05395561bcd567575736e7cf940b26c6b822e72133aa5e"
+    },
+    {
+      "path": "research_handoff_20260927/checks-v2/optimized-test_secondary_catalog.py.log",
+      "size_bytes": 1825,
+      "sha256": "580f85b479c7978daf0273a9fdce4cc7690c64224a8078caff1d628abcf6785b"
+    },
+    {
+      "path": "research_handoff_20260927/checks-v2/replay.log",
+      "size_bytes": 65,
+      "sha256": "56e09cafaccbc20c3e053eff4cf5974f287816f95e9e8266b97d17a6cd4aadbc"
+    },
+    {
+      "path": "research_handoff_20260927/checks-v2/results.json",
+      "size_bytes": 6277,
+      "sha256": "3adaef3533e9a4b1e3111eef948d8b07dd77960245b1788a767300ee8887c171"
+    },
+    {
+      "path": "research_handoff_20260927/checks/normal-test_generationall.py.log",
+      "size_bytes": 5759,
+      "sha256": "a19d0e54c5ed96868674777fe72879d75e8c2775a6b84ec38fc1aed1106c1c79"
+    },
+    {
+      "path": "research_handoff_20260927/compare-final/generation-comparison.json",
+      "size_bytes": 937,
+      "sha256": "3362f1d3e1dd1dbe5237be57ac73f5407e2ef3e02ddd3db891f9892b35e71037"
+    },
+    {
+      "path": "research_handoff_20260927/delivery-manifest.json",
+      "size_bytes": 12286,
+      "sha256": "1ad4237e722526deb6d0f2ad76dcbe869557b2b9f101eba5868a102954488abf"
+    },
+    {
+      "path": "research_handoff_20260927/entity/SHA256SUMS.txt",
+      "size_bytes": 515,
+      "sha256": "8d52158a58c0eb8122e219c6eaf1feca2035681a8b09764f76630a5db8e2e523"
+    },
+    {
+      "path": "research_handoff_20260927/entity/entity-evidence.json",
+      "size_bytes": 26324,
+      "sha256": "7c95007ca9ca024e46d4c886f50e14de46d64a1e17912cb43c88a616e67b1e44"
+    },
+    {
+      "path": "research_handoff_20260927/entity/entity-report.zh-TW.md",
+      "size_bytes": 9920,
+      "sha256": "d686012c7195860392b030f359e2cc21b357287cfb38e381ae152ce6dc5d90a7"
+    },
+    {
+      "path": "research_handoff_20260927/entity/inspect_entity.py",
+      "size_bytes": 3122,
+      "sha256": "c419b9952a40f08becc0e4bbb7c9bd17c188050ec691a9bdb79acef36de98eef"
+    },
+    {
+      "path": "research_handoff_20260927/entity/replay_entity.py",
+      "size_bytes": 6976,
+      "sha256": "70bf01a4816363b4b13c73e371f9f0c90f93bbff15a7fa896f0fcb6165bc8b4e"
+    },
+    {
+      "path": "research_handoff_20260927/entity/test-results.json",
+      "size_bytes": 985,
+      "sha256": "28971396fff0313d51c4c026f447d7a9f9432b8bfabb51f00817df002d911a44"
+    },
+    {
+      "path": "research_handoff_20260927/entity/test_replay_entity.py",
+      "size_bytes": 2568,
+      "sha256": "f6f3d9b8624cf832b8d25b530912d7a535a69e6a1a369dd3ad3096897990c92b"
+    },
+    {
+      "path": "research_handoff_20260927/finalize_checks.py",
+      "size_bytes": 4558,
+      "sha256": "fc76c0935ff6585570b82e8d5dcb15e4b9c8b0e33084ed322139f5594fe4d936"
+    },
+    {
+      "path": "research_handoff_20260927/indirect/INDIRECT_PATHS.zh-TW.md",
+      "size_bytes": 9007,
+      "sha256": "b6a592c61bfb512f9d826d0e9165274c89e3a13ddf906aee88ebe095d70a6809"
+    },
+    {
+      "path": "research_handoff_20260927/indirect/b86f10-disasm.json",
+      "size_bytes": 41131,
+      "sha256": "f3a2b79e0925c38ad978ad203f09367a50e10fb336671bb1655250a2e9bb43b6"
+    },
+    {
+      "path": "research_handoff_20260927/indirect/bb9950-disasm.json",
+      "size_bytes": 9520,
+      "sha256": "7b34da8eb970822eda9f64aa8d11326a88e5562b881f6479223e6c5f5574fb6b"
+    },
+    {
+      "path": "research_handoff_20260927/indirect/caller-parent-roots.json",
+      "size_bytes": 2493,
+      "sha256": "fb89700cdd0c7cb66ad96a65b71b2c98d96f60447098ca54016ad1df44ce8c6e"
+    },
+    {
+      "path": "research_handoff_20260927/indirect/caller-parent-xrefs.json",
+      "size_bytes": 29259,
+      "sha256": "aa835b95c700b5b6569e40f0502d6aaf3e627e9f9eeb6a7d424c9ad4166e1707"
+    },
+    {
+      "path": "research_handoff_20260927/indirect/caller-root-xrefs.json",
+      "size_bytes": 15442,
+      "sha256": "b3b9f781dfc0b756fe9e913f6e20e354e592a679c2ab842c24aacb65b8c5c80e"
+    },
+    {
+      "path": "research_handoff_20260927/indirect/constructor-xrefs.json",
+      "size_bytes": 27038,
+      "sha256": "639bb87b8ad18d550404675f6fc39f62537a9ccdd38c15687f4407b9412b8bcc"
+    },
+    {
+      "path": "research_handoff_20260927/indirect/dispatch-pointer-xrefs.json",
+      "size_bytes": 1507,
+      "sha256": "af5fe6c7a26214aa09164f2de5867a46eaa25a55e83d12886b1380f9d3b9b654"
+    },
+    {
+      "path": "research_handoff_20260927/indirect/dispatch-range-refs.json",
+      "size_bytes": 4,
+      "sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f"
+    },
+    {
+      "path": "research_handoff_20260927/indirect/dispatch-table-xrefs.json",
+      "size_bytes": 1215,
+      "sha256": "57c5b9f7e1e64432cffdf90875c62b7e549201548b589a8b9f60a2f01d5030f9"
+    },
+    {
+      "path": "research_handoff_20260927/indirect/indirect-findings.json",
+      "size_bytes": 2936,
+      "sha256": "074bca2dce76769b1d990b9ce4834ee913980f0b06ceab496a5142303c889217"
+    },
+    {
+      "path": "research_handoff_20260927/indirect/inspect_capture.py",
+      "size_bytes": 7317,
+      "sha256": "108b1543003f9adb56e72a59eb50f4af4f56f68a355d3879afa35220b811e63a"
+    },
+    {
+      "path": "research_handoff_20260927/indirect/option1b-cleanup-helper.json",
+      "size_bytes": 13504,
+      "sha256": "a2cb00252a9763cdb3348708be084d9220b390ab9ae0f42b360fcdff71df1e8a"
+    },
+    {
+      "path": "research_handoff_20260927/indirect/option1b-consumer.json",
+      "size_bytes": 40321,
+      "sha256": "0b169e11d3f6935b1def8469b39c4ef97c497e06cca620ddbc6b5d0403653af9"
+    },
+    {
+      "path": "research_handoff_20260927/indirect/replay/caller-parents.json",
+      "size_bytes": 29261,
+      "sha256": "9a1d60c877793752f1bb08a019b7466cc3f962421630bc5e8d20e00dcbdd2036"
+    },
+    {
+      "path": "research_handoff_20260927/indirect/replay/caller-roots.json",
+      "size_bytes": 17324,
+      "sha256": "bf9b99916eaf535f6f2ffa0896d9764663c382ee2c6b956580f95740db2e5dd8"
+    },
+    {
+      "path": "research_handoff_20260927/indirect/replay/constructor-and-manager.json",
+      "size_bytes": 48088,
+      "sha256": "31a976eebff29e3b1363cbebc69f91bab985625907146d75d46bbb79bf83d24f"
+    },
+    {
+      "path": "research_handoff_20260927/indirect/replay/displacement-3094.json",
+      "size_bytes": 1046,
+      "sha256": "8afde4e0fe0779d44a9e6a9b0051d0c926500c6afa3b08285230df3e706f6083"
+    },
+    {
+      "path": "research_handoff_20260927/indirect/reproduce_xrefs.py",
+      "size_bytes": 1983,
+      "sha256": "2061c53695c7d6b5c4562ca89299fdbd7c491157fcb5b22a869c05dbdc0b0776"
+    },
+    {
+      "path": "research_handoff_20260927/indirect/run_verification.py",
+      "size_bytes": 1261,
+      "sha256": "451c9affd2e8daf37d8331154988c0e1daf9b94d5c6c665e9fdabeec347b96a6"
+    },
+    {
+      "path": "research_handoff_20260927/indirect/settings-manager-refs.json",
+      "size_bytes": 32166,
+      "sha256": "652d069c74dde3fea3aa4751bd4b697aa832e8fbee83c32db26f0fde0f895782"
+    },
+    {
+      "path": "research_handoff_20260927/indirect/trace_dispatch.py",
+      "size_bytes": 1083,
+      "sha256": "a5e85adceaff618b9c371a2dca892e09ac047e06f106ad359530da0f021725c8"
+    },
+    {
+      "path": "research_handoff_20260927/indirect/verification-results.json",
+      "size_bytes": 8085,
+      "sha256": "41f5f6eec47bfc0f41bd18cc802196632e0fa58527e168e3ea57a4d02a32e013"
+    },
+    {
+      "path": "research_handoff_20260927/indirect/verify_indirect.py",
+      "size_bytes": 4653,
+      "sha256": "1f830fd989f5ef65c2cf894833859067afadcd3934e34419984318ba8fbcfd7c"
+    },
+    {
+      "path": "research_handoff_20260927/reference-replay/SUMMARY.zh-TW.md",
+      "size_bytes": 21073,
+      "sha256": "295fdab1fe63c8360a7ee03a4f98f6ac8987fb5b1d6536aa63402da533c108f0"
+    },
+    {
+      "path": "research_handoff_20260927/reference-replay/analysis.json",
+      "size_bytes": 30163990,
+      "sha256": "773c47ac4385f811d02e0670c44fdb9a5c74ab536289909be43c845f35781af0"
+    },
+    {
+      "path": "research_handoff_20260927/replay-final/generation-evidence.json",
+      "size_bytes": 106213,
+      "sha256": "07e89e8a6f119336cb5742fcf0df8acaaf23c3c7260d190a8966a54d8fdceb4d"
+    },
+    {
+      "path": "research_handoff_20260927/replay-final/generation-report.zh-TW.md",
+      "size_bytes": 8662,
+      "sha256": "d28bce8ed7b541693c1516eb453d370eea808a66096c9a2d698e528799c6ffff"
+    },
+    {
+      "path": "research_handoff_20260927/run_offline_checks.py",
+      "size_bytes": 3474,
+      "sha256": "729fcfebb9304db9a10ff32c6d55c82338c422da71b588141b7c2d66bda9f9da"
+    },
+    {
+      "path": "research_handoff_20260927/seal_delivery.py",
+      "size_bytes": 2298,
+      "sha256": "0cff0333a2910cf6f73ca8a8e20c18272f9ef94ffbdad408b70b4648e598bb4e"
+    },
+    {
+      "path": "research_handoff_20260927/settings-findings-optimized-v2.json",
+      "size_bytes": 11679,
+      "sha256": "35f62cb90481672f9e9c82f841af30e1ebae1f6862aba0965d00ed47ac03fac1"
+    },
+    {
+      "path": "research_handoff_20260927/settings-findings-optimized.json",
+      "size_bytes": 11423,
+      "sha256": "68ae1eeeb5be4b7377a902ddaf8950c19231fdf056eafb89fcde891479a05634"
+    },
+    {
+      "path": "research_handoff_20260927/settings-findings-v2.json",
+      "size_bytes": 11679,
+      "sha256": "35f62cb90481672f9e9c82f841af30e1ebae1f6862aba0965d00ed47ac03fac1"
+    },
+    {
+      "path": "research_handoff_20260927/settings-findings.json",
+      "size_bytes": 11423,
+      "sha256": "68ae1eeeb5be4b7377a902ddaf8950c19231fdf056eafb89fcde891479a05634"
+    },
+    {
+      "path": "research_handoff_20260927/settings_findings.py",
+      "size_bytes": 5706,
+      "sha256": "9df21914e9e20a7d1fcca57402997f3705509a08aca313f577325da8d330b5b7"
+    },
+    {
+      "path": "research_handoff_20260927/settings_inspect.py",
+      "size_bytes": 1138,
+      "sha256": "3f6f6562f4e0591dc09ffa52d8ebb745934e0690e1ca714458142f8c39d4802d"
+    },
+    {
+      "path": "research_handoff_20260927/verification-summary.json",
+      "size_bytes": 1890,
+      "sha256": "620be676fdda81d385ea4717186a25312aa7f05307058c1d460eef7b3854e41b"
+    },
+    {
+      "path": "voice_tw_integration_20260927/extract_baseline.py",
+      "size_bytes": 11859,
+      "sha256": "f20843f72d036b0df0fe28d19c4103985e2a520da04a3a944e0dc51853ea50c2"
+    }
+  ]
+}
