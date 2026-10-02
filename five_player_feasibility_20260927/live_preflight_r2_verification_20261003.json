@@ -1,0 +1,87 @@
+{
+  "schema": "hd2_live_preflight_r2_verification_v1",
+  "build": 25480438,
+  "pid": 36900,
+  "source_files": {
+    "native_sites": [
+      "live_native_sites_20261003.json",
+      "live_native_sites_20261003_r2.json"
+    ],
+    "session_sites": [
+      "live_session_member_sites_20261003.json",
+      "live_session_member_sites_20261003_r2.json"
+    ],
+    "call_edges": [
+      "live_call_edges_20261003.json",
+      "live_call_edges_20261003_r2.json"
+    ],
+    "private_registry": [
+      "live_private_registry_20261003_current.json",
+      "live_private_registry_20261003_r2.json"
+    ]
+  },
+  "checks": [
+    {
+      "name": "fixed_build",
+      "passed": true,
+      "detail": "{25480438}"
+    },
+    {
+      "name": "single_pid",
+      "passed": true,
+      "detail": "{36900}"
+    },
+    {
+      "name": "image_identity",
+      "passed": true,
+      "detail": "all pinned image hashes match"
+    },
+    {
+      "name": "native_site_hashes",
+      "passed": true,
+      "detail": "six site hashes match"
+    },
+    {
+      "name": "native_site_rereads",
+      "passed": true,
+      "detail": "second capture rereads stable"
+    },
+    {
+      "name": "session_site_hashes",
+      "passed": true,
+      "detail": "five site hashes match"
+    },
+    {
+      "name": "session_site_rereads",
+      "passed": true,
+      "detail": "second capture rereads stable"
+    },
+    {
+      "name": "call_edge_set",
+      "passed": true,
+      "detail": "first=27 second=27"
+    },
+    {
+      "name": "confirmed_peer_hash_hit",
+      "passed": true,
+      "detail": "[{'module': 'game.dll', 'address': '0x7ff829f94982', 'rva': '0xbe4982'}]"
+    },
+    {
+      "name": "private_registry_negative",
+      "passed": true,
+      "detail": "both bounded scans negative"
+    },
+    {
+      "name": "read_only",
+      "passed": true,
+      "detail": "all captures read-only"
+    }
+  ],
+  "checks_passed": 11,
+  "checks_total": 11,
+  "verification_passed": true,
+  "meaning": "A second bounded reread matches the fixed build and remains registry-negative; it does not prove peer admission, player creation, installation, or multiplayer success.",
+  "resolver_closed": false,
+  "installable": false,
+  "multiplayer_verified": false
+}

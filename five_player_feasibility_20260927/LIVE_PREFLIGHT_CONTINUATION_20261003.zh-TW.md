@@ -11,6 +11,10 @@
 - 128 MiB private registry scan 沒有找到已知 receiver、insert、member consumer/state update pointer 或 event hash；同一 PID 再擴大到 1 GiB committed `MEM_PRIVATE`，1,655 個 private regions／262,144 pages，仍為 0 hit。
 - signature scan 找到 host-join，當前狀態沒有找到 platform-member-enumerator signature；這是程序狀態的 bounded negative observation，不代表函式不存在。
 
+## 第二批 reread（同一 PID）
+
+第二批檔案 `live_native_sites_20261003_r2.json`、`live_session_member_sites_20261003_r2.json`、`live_call_edges_20261003_r2.json` 及 `live_private_registry_20261003_r2.json` 與第一批逐項比對；固定映像 hash、11 個 native/session site hash、27 條 direct edge、唯一 send-side event hash 及 128 MiB registry 負面結果均一致。`live_preflight_r2_verification_20261003.json` 的 11/11 檢查通過。這是穩定性證據，不是 runtime resolver 或多人驗收。
+
 ## 判定
 
 `live_preflight_continuation_verification_20261003.json` 的 22 項固定檢查通過，但 `resolver_closed=false`、`installable=false`、`multiplayer_verified=false` 保持不變。這批資料證明固定 build 和 native code identity 穩定，沒有提供 service-side hash→selector registry、第五個 peer 的成功加入、player creation 或角色生命週期證據。

@@ -1,5 +1,17 @@
 # 接續狀態：2026-09-28 已恢復離線工作
 
+## 2026-10-03 fixed-build live preflight reread
+
+在同一固定 build `25480438`、同一 PID `36900` 上保存第二批 bounded read-only reread：
+
+- `live_native_sites_20261003_r2.json`：六個 native site 的 code-image hash 與前一批逐項相同，六個 site 的 reread 均一致。
+- `live_session_member_sites_20261003_r2.json`：五個 session/member site 的 hash 與前一批逐項相同，五個 site 的 reread 均一致。
+- `live_call_edges_20261003_r2.json`：27 條 direct `E8` edge 集合及唯一 send-side confirmed-peer hash 命中均相同。
+- `live_private_registry_20261003_r2.json`：128 MiB bounded private scan 仍為 0 hit。
+- `live_preflight_r2_verification_20261003.json`：11/11 固定檢查通過，確認版本／PID／映像與負面 registry 觀察可重播；`resolver_closed=false`、`installable=false`、`multiplayer_verified=false` 保持不變。
+
+這批 reread 只增加固定 build 證據穩定性，沒有提供第五個 peer、player creation、native callback ABI、安裝或多人成功，也沒有呼叫、寫入、hook 或注入遊戲程序。
+
 ## 2026-10-03 live preflight continuation
 
 在使用者已授權的範圍內，固定 build `25480438` 的 PID `36900` 完成一批 bounded read-only 證據保存：
