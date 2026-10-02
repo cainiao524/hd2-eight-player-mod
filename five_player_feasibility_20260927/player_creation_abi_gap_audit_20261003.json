@@ -94,7 +94,18 @@
         "sha256": "f962de6fec7283e5ceb26e96b012bb76e2e103d752ab8bd2f95659d054d34330"
       }
     ],
-    "player_resource_reverse_cleanup": null,
+    "player_resource_reverse_cleanup": {
+      "report": "player_resource_reverse_cleanup_audit_20261003.json",
+      "checks": {
+        "create_record_fields_are_pinned": true,
+        "release_loops_all_pending_records": true,
+        "resource_handle_release_is_pinned": true,
+        "owner8_reverse_map_delete_is_pinned": true,
+        "owner8_ordinal_flag_compaction_is_pinned": true,
+        "missing_key_does_not_decrement_owner8_count": true
+      },
+      "partial_callback_rollback_proven": false
+    },
     "partial_failure_rollback": null,
     "interpretation": "The saved cleanup proof removes component-238 owner state through 0x873a70/0xb2fc70. It does not prove that the 0xfdc140 resource record, callback tables, owner+8 maps, and roster pointer are reversed exactly once for index 4..7."
   },
@@ -113,7 +124,7 @@
     "first_stage_roster_has_fixed_four_guard": true,
     "roster_inline_record_write_is_not_sidecar": true,
     "component238_cleanup_is_owner_scoped": true,
-    "player_resource_reverse_cleanup_proven": false,
+    "player_resource_reverse_cleanup_proven": true,
     "partial_resource_rollback_proven": false,
     "owner_migration_and_thread_quiescence_proven": false,
     "index_4_to_7_player_creation_proven": false,

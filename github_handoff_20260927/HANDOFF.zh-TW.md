@@ -12,6 +12,8 @@
 - [live_private_registry_20261003_1g.json](../five_player_feasibility_20260927/live_private_registry_20261003_1g.json)：同一 PID 擴大到 1 GiB committed `MEM_PRIVATE`（1,655 regions／262,144 pages），已知 receiver／insert／member／hash 仍為 0 hit。
 - [live_preflight_continuation_verification_20261003.json](../five_player_feasibility_20260927/live_preflight_continuation_verification_20261003.json) 對上述證據執行 22/22 固定檢查；[LIVE_PREFLIGHT_CONTINUATION_20261003.zh-TW.md](../five_player_feasibility_20260927/LIVE_PREFLIGHT_CONTINUATION_20261003.zh-TW.md) 說明限制與下一步。
 
+同一固定 build 的 `MenuScreenLoadout` code-image 也完成獨立 bounded 預檢：[live_loadout_layout_20261003.json](../five_player_feasibility_20260927/live_loadout_layout_20261003.json) 對 `game.dll` 的 226 個 canonical anchors 全部 first-read/reread 一致，總讀取 2,446 bytes；工具與完整收據覆核見 [LIVE_LOADOUT_LAYOUT_PREFLIGHT_20261003.zh-TW.md](../five_player_feasibility_20260927/LIVE_LOADOUT_LAYOUT_PREFLIGHT_20261003.zh-TW.md)。這只核對程式碼映像與檔案指紋，沒有讀 heap、呼叫函式、建立角色、安裝或多人驗收。
+
 同時完成 [selector cleanup xrefs](../five_player_feasibility_20260927/SELECTOR_CLEANUP_XREFS_20261003.zh-TW.md)：registration wrapper `0x1094680` 沒有 direct caller，unregistration `0x1094710` 有 3 個 direct caller，status `0x1094780` 有 3 個；三個 unregistration fragment 都可辨識 `global+0x1f028`。公開同版 Better Lobby 交叉核對把這個欄位及 wrapper 指向 lobby browser/network context，因此不能再把它當成 confirmed-peer/player-admission registry。`selector_registration_xrefs_20261003.json` 只保存 bounded static xrefs，不提供 runtime selector map。
 
 
@@ -24,11 +26,17 @@
 
 審計明確保留 `player_resource_reverse_cleanup_proven=false`、`partial_resource_rollback_proven=false`、`owner_migration_and_thread_quiescence_proven=false`、`index_4_to_7_player_creation_proven=false`；測試 1/1 通過，沒有生成 patch、呼叫程序或安裝。
 
+後續固定 capture 審計已閉合玩家 resource 的反向釋放鏈：[PLAYER_RESOURCE_REVERSE_CLEANUP_AUDIT_20261003.zh-TW.md](../five_player_feasibility_20260927/PLAYER_RESOURCE_REVERSE_CLEANUP_AUDIT_20261003.zh-TW.md) 固定 `FDC780 → FDC820 → FDDC80`、handle registry、兩張 component cleanup table 及 owner+8 map 的 last-ordinal compaction。這證明完整 cleanup 的資料契約，但 partial callback rollback、re-entry idempotence、owner quiescence 及 index `4..7` runtime record 仍未證明；報告仍 fail-closed，沒有生成 patch。
+
 ## 2026-10-03 MenuScreenLoadout 八槽布局審計
 
 新增 [LOADOUT_LAYOUT_RELOCATION_AUDIT_20261003.zh-TW.md](../five_player_feasibility_20260927/LOADOUT_LAYOUT_RELOCATION_AUDIT_20261003.zh-TW.md) 與 26/26 固定檢查。`MenuScreenLoadout` 的四筆 `0x9F0` network-index 記錄後緊接兩張四項 map；第 5 筆會覆蓋 inverse map／flags。四個 `0x1EE18` widget 若直接延伸到八項，結束於 `0x14AB38`，會與原下一物件 `0xCF2D8` 重疊 `0x7B860` bytes；內聯配置至少要到 `0x2EF230`，或改用完整 sidecar。
 
 這補上 P6 的 UI／loadout 固定四槽證據，但尚未綁定 reader、writer、transition、destructor、callback 或重連 ABI；`production_patch_ready=false`、`installable=false`、`runtime_verified=false`、`multiplayer_verified=false` 保持不變。
+
+新增 [LOADOUT_LIFECYCLE_ABI_20261003.zh-TW.md](../five_player_feasibility_20260927/LOADOUT_LIFECYCLE_ABI_20261003.zh-TW.md) 與 12/12 固定檢查：外層 entry rebuild、screen／widget constructor、兩條 release、transition callbacks 及 14 個 runtime 四槽 guards 均已配對。這仍只支持版本化 sidecar 的設計，未閉合 native object allocator、package unload、完整 reader/writer 或實機畫面同步。
+
+另修正 ClientSidecar callback adapter 的安全邊界：native confirm/create/remove 及 owner retain/release callback 現在全部為必要項；所有 network index（含 0–3）都必須經過 native create，confirm 失敗會回滾 sidecar，remove 失敗會保留記錄供重試。合成測試重新通過，這仍是隔離 sidecar，沒有真實 callback ABI、遊戲 patch 或多人成功。
 
 ## 2026-10-03 staging gate 接入離線審計
 

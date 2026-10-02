@@ -1,0 +1,254 @@
+{
+  "schema": "hd2_player_resource_reverse_cleanup_audit_v1",
+  "build": 25480438,
+  "capture_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "source_sha256": {
+    "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+  },
+  "body_anchors": {
+    "release_entry": {
+      "entry": "0xfdc780",
+      "fragment": [
+        "0xfdc780",
+        "0xfdc81f",
+        "0x24cdef4"
+      ],
+      "size_bytes": 159
+    },
+    "resource_release": {
+      "entry": "0xfdc820",
+      "fragment": [
+        "0xfdc820",
+        "0xfdc848",
+        "0x24cdf04"
+      ],
+      "size_bytes": 40
+    },
+    "owner8_key_delete": {
+      "entry": "0xfddc80",
+      "fragment": [
+        "0xfddc80",
+        "0xfddcb1",
+        "0x24ce110"
+      ],
+      "size_bytes": 49
+    },
+    "generic_map_delete": {
+      "entry": "0x172f8a0",
+      "fragment": [
+        "0x172f8a0",
+        "0x172f9a3",
+        "0x2567a5c"
+      ],
+      "size_bytes": 259
+    },
+    "roster_remove": {
+      "entry": "0x540a40",
+      "fragment": [
+        "0x540a40",
+        "0x540ae0",
+        "0x2410a84"
+      ],
+      "size_bytes": 160
+    }
+  },
+  "create_to_release_contract": {
+    "create_record": {
+      "owner_counter": "owner+0xf32f14",
+      "record_fields": {
+        "+0": "resource hash",
+        "+8": "resource handle",
+        "+0x10": "component/resource ordinal",
+        "+0x14": "creation flag"
+      }
+    },
+    "release_entry": {
+      "owner": "FDC780 RCX=context",
+      "records": "context+0xf3ef20 pointer array indexed by pending ordinal",
+      "count": "context+0xf3ef18; reset to zero after FDC820 loop",
+      "per_record": "FDC820(context, record, flag)"
+    },
+    "resource_release": {
+      "handle": "record+8; passed to handle registries and B50E60",
+      "component_ordinal": "record+0x10; 0x7fff is the unassigned sentinel",
+      "component_flag": "record+0x14 bit 0 controls one cleanup branch",
+      "callbacks": [
+        "component cleanup table +0xf0dfb0",
+        "component cleanup table +0xf0e9d0"
+      ],
+      "owner8": "[context+8] is passed as RCX to FDDC80",
+      "finalize": "record+0xc=0; record+0x10=0x7fff; B225F0(record); record+8=global sentinel; record+0x14=0"
+    },
+    "owner8_reverse_map": {
+      "map": "owner8+0xb020 entries, count at +0xb028, stride 0x10",
+      "key": "FDDC80 receives record+0x10 as EDX and removes matching map key",
+      "ordinal": "entry+4 is copied from last ordinal into removed ordinal",
+      "parallel_state": [
+        "owner8+0x1c ordinal values",
+        "owner8+0x201c flags",
+        "owner8+0x281c flags"
+      ],
+      "count": "owner8+0x18 decremented once after compaction",
+      "missing_key": "FDDC80 returns without decrement when map count is zero or key is absent"
+    }
+  },
+  "release_edges": {
+    "0xfdc820": [
+      {
+        "rva": "0xab7081",
+        "bytes": "e89a575200",
+        "sha256": "a8d545af80dc399b8652432a74034bee6f9653b35235e8343e40691f75f29963",
+        "asm": "call 0xfdc820",
+        "root": [
+          "0xab5000",
+          "0xab502c",
+          "0x24a6de8"
+        ]
+      },
+      {
+        "rva": "0xba0657",
+        "bytes": "e9c4c14300",
+        "sha256": "23b346fc420ac34dcc143bf51c526f41fa992b1a0f41367ffae366e5a68b2df3",
+        "asm": "jmp 0xfdc820",
+        "root": [
+          "0xba0590",
+          "0xba05c8",
+          "0x24b89b8"
+        ]
+      },
+      {
+        "rva": "0xfda117",
+        "bytes": "e904270000",
+        "sha256": "5a91eddec01280029020820f3d8cfefc8861af0a9176ef95333991c7698a4c0b",
+        "asm": "jmp 0xfdc820",
+        "root": [
+          "0xfda050",
+          "0xfda088",
+          "0x24cda24"
+        ]
+      },
+      {
+        "rva": "0xfdbb27",
+        "bytes": "e9f40c0000",
+        "sha256": "fdfd6c1da06753675a6203f0e0826baeb8f1576d65e4016d04cd90a09e437e93",
+        "asm": "jmp 0xfdc820",
+        "root": [
+          "0xfdba60",
+          "0xfdba98",
+          "0x24cdd1c"
+        ]
+      },
+      {
+        "rva": "0xfdc7e0",
+        "bytes": "e83b000000",
+        "sha256": "4ff9f40616a8d80b8fd81f374d8843248832c8d1436a373dcd13c4084722a33f",
+        "asm": "call 0xfdc820",
+        "root": [
+          "0xfdc780",
+          "0xfdc81f",
+          "0x24cdef4"
+        ]
+      }
+    ],
+    "0xfddc80": [
+      {
+        "rva": "0xfdcc8c",
+        "bytes": "e8ef0f0000",
+        "sha256": "0d48692e531c38b1a755af25eaea1717b606d94356d67c527b960d43067e87aa",
+        "asm": "call 0xfddc80",
+        "root": [
+          "0xfdc820",
+          "0xfdc848",
+          "0x24cdf04"
+        ]
+      }
+    ],
+    "0x172f8a0": [
+      {
+        "rva": "0xfdcc78",
+        "bytes": "e8232c7500",
+        "sha256": "f15569a152de471feb467bdf6cc3513057b10ebd4eb6a7453413e97c03345fd8",
+        "asm": "call 0x172f8a0",
+        "root": [
+          "0xfdc820",
+          "0xfdc848",
+          "0x24cdf04"
+        ]
+      },
+      {
+        "rva": "0xfdcc9b",
+        "bytes": "e8002c7500",
+        "sha256": "f4a527c5a156300ff978d2bbe062dfa46bcf03b9d23f3cf2cdf20d50f53dae5a",
+        "asm": "call 0x172f8a0",
+        "root": [
+          "0xfdc820",
+          "0xfdc848",
+          "0x24cdf04"
+        ]
+      },
+      {
+        "rva": "0xfddd6d",
+        "bytes": "e82e1b7500",
+        "sha256": "41c388c10f31da937fa95cf741967b630dd674919d7deeca8bd7dbbbf1392759",
+        "asm": "call 0x172f8a0",
+        "root": [
+          "0xfddc80",
+          "0xfddcb1",
+          "0x24ce110"
+        ]
+      },
+      {
+        "rva": "0xfdddb5",
+        "bytes": "e8e61a7500",
+        "sha256": "7dc2a7222c480144fac51da4ee8f88307b47edb76bbeef96c90d78353c50e4b0",
+        "asm": "call 0x172f8a0",
+        "root": [
+          "0xfddc80",
+          "0xfddcb1",
+          "0x24ce110"
+        ]
+      }
+    ],
+    "0xb225f0": [
+      {
+        "rva": "0xfdcd88",
+        "bytes": "e86358b4ff",
+        "sha256": "29f868958175f6a7d31fa73615e8aad61ca7473284346f2b9e90795287371bc8",
+        "asm": "call 0xb225f0",
+        "root": [
+          "0xfdc820",
+          "0xfdc848",
+          "0x24cdf04"
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "create_record_fields_are_pinned": true,
+    "release_loops_all_pending_records": true,
+    "resource_handle_release_is_pinned": true,
+    "component_ordinal_sentinel_is_pinned": true,
+    "owner8_reverse_map_delete_is_pinned": true,
+    "owner8_ordinal_flag_compaction_is_pinned": true,
+    "missing_key_does_not_decrement_owner8_count": true,
+    "partial_callback_rollback_is_complete": false,
+    "resource_release_idempotence_under_reentry": false,
+    "network_index_4_to_7_runtime_reached": false,
+    "runtime_verified": false,
+    "multiplayer_verified": false,
+    "installable": false
+  },
+  "sidecar_requirements": [
+    "Store the resource record, pending-array ordinal and owner8 reverse-map key in one generation record.",
+    "Invoke FDC820-equivalent cleanup once per acquired handle and once per component ordinal; skip unassigned 0x7fff safely.",
+    "On any callback failure, unwind prior callback tables, handle maps, owner8 map/flags/count and roster pointer before publishing success.",
+    "Use the same last-ordinal compaction rule while preserving network index inside the moved roster record.",
+    "Retain owner+8 and all registry contexts until every record cleanup returns; prove thread quiescence before freeing sidecar storage."
+  ],
+  "limits": [
+    "Static fixed-capture evidence only; no process read, function call, write, injection, installation or multiplayer test.",
+    "The reverse chain is proven for the saved native paths, but no runtime fifth-player record has been observed.",
+    "Callback failure semantics and reentrant/idempotent behavior remain unproven; the audit therefore stays fail-closed."
+  ]
+}

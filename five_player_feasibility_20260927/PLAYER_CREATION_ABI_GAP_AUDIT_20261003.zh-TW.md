@@ -21,8 +21,8 @@
 目前沒有安全證據可把 `cmp 4` 改成 `cmp 8` 後直接發布：
 
 - 沒有證明 `0xFDC140` 的 resource record、`owner+8` map/flags/count、callback table 與 roster pointer 能在 index `4..7` 以相同 generation 成功回滾。
-- 沒有 player-resource record 的 reverse cleanup/重入安全證據，也沒有每個 partial callback failure 的 idempotent unwind。
-- 已有的 component 238 cleanup 證據只證明 owner 的 `+0xe9fc98` 可經 `0x873a70/0xb2fc70` 移除；不能推廣成整條 player resource/roster cleanup。
+- `PLAYER_RESOURCE_REVERSE_CLEANUP_AUDIT_20261003` 已補上 player-resource record、handle、component callback、owner+8 reverse map 與 roster remove 的固定釋放鏈；仍沒有每個 partial callback failure 的 idempotent unwind、重入安全或 owner quiescence 證據。
+- 已有的 component 238 cleanup 證據仍只證明 owner 的 `+0xe9fc98` 可經 `0x873a70/0xb2fc70` 移除；新的 reverse cleanup 報告也沒有把 index 4..7 runtime 建立或部分失敗回滾推廣成已完成。
 - `0x800` 是 resource record 搜尋與環繞上限，不是玩家容量，不能拿來代替 8 槽契約。
 
 因此 sidecar 必須分開保存 network index、roster ordinal、resource record ordinal 與 component-map ordinal，並在 resource record、兩段 callback、roster 插入四個邊界各自記錄 generation 與 rollback owner。完成 owner migration、reconnect、thread quiescence 後，才有條件製作 native hook；本審計不產生 production patch。

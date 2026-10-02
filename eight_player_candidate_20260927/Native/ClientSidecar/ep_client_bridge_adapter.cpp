@@ -19,13 +19,25 @@ EP_BRIDGE_STATUS map_status(EP_CLIENT_STATUS status) {
 }
 
 extern "C" EP_BRIDGE_STATUS __cdecl ep_client_adapter_init(
-    EP_CLIENT_ADAPTER* a, void* owner, EP_CLIENT_NATIVE_CREATE_CB native_create) {
-    if (!a || owner != a) return EP_BRIDGE_INVALID_ARGUMENT;
+    EP_CLIENT_ADAPTER* a, void* native_owner,
+    EP_CLIENT_NATIVE_CONFIRM_CB native_confirm,
+    EP_CLIENT_NATIVE_CREATE_CB native_create,
+    EP_CLIENT_NATIVE_REMOVE_CB native_remove,
+    EP_CLIENT_NATIVE_RETAIN_CB native_retain,
+    EP_CLIENT_NATIVE_RELEASE_CB native_release) {
+    if (!a || !native_owner || !native_confirm || !native_create ||
+        !native_remove || !native_retain || !native_release)
+        return EP_BRIDGE_INVALID_ARGUMENT;
     std::memset(a, 0, sizeof(*a));
     a->magic = kMagic;
     a->version = kVersion;
-    a->owner = owner;
+    a->owner = a;
+    a->native_owner = native_owner;
+    a->native_confirm = native_confirm;
     a->native_create = native_create;
+    a->native_remove = native_remove;
+    a->native_retain = native_retain;
+    a->native_release = native_release;
     if (ep_client_init(&a->client, EP_CLIENT_SIDECAR_BUILD) != EP_CLIENT_OK) {
         std::memset(a, 0, sizeof(*a));
         return EP_BRIDGE_INVALID_CONTEXT;
@@ -48,8 +60,17 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_client_adapter_confirm(
     auto* a = as_adapter(owner);
     if (!a) return EP_BRIDGE_INVALID_CONTEXT;
     UINT32 generation = 0;
-    return map_status(ep_client_append(&a->client, peer_id, resource_handle,
-                                        network_index, &generation));
+    if (map_status(ep_client_append(&a->client, peer_id, resource_handle,
+                                    network_index, &generation)) != EP_BRIDGE_OK)
+        return EP_BRIDGE_CALLBACK_REJECTED;
+    const auto native = a->native_confirm(a->native_owner, peer_id,
+                                          resource_handle, network_index);
+    if (native != EP_BRIDGE_OK) {
+        // A failed native append must never leave a confirmed sidecar record.
+        const auto rollback = ep_client_remove(&a->client, network_index, generation);
+        return rollback == EP_CLIENT_OK ? native : EP_BRIDGE_ROLLBACK_FAILED;
+    }
+    return EP_BRIDGE_OK;
 }
 
 extern "C" EP_BRIDGE_STATUS __cdecl ep_client_adapter_create(
@@ -63,12 +84,10 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_client_adapter_create(
     const auto gate = ep_client_creation_gate(&a->client, network_index);
     if (gate == EP_CLIENT_INDEX_REJECTED || gate == EP_CLIENT_INVALID_CONTEXT)
         return EP_BRIDGE_CALLBACK_REJECTED;
-    if (network_index < 4) return EP_BRIDGE_OK;
-    // The sidecar deliberately cannot manufacture the native player.  A
-    // reviewed callback supplied by the production bridge must do it.
-    return a->native_create
-        ? a->native_create(a->owner, peer_id, resource_handle, network_index)
-        : EP_BRIDGE_CALLBACK_REJECTED;
+    // The sidecar deliberately cannot manufacture the native player.  Every
+    // index, including the original four, must pass the reviewed callback so
+    // the adapter cannot report a sidecar-only "created" player.
+    return a->native_create(a->native_owner, peer_id, resource_handle, network_index);
 }
 
 extern "C" EP_BRIDGE_STATUS __cdecl ep_client_adapter_remove(
@@ -79,12 +98,17 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_client_adapter_remove(
     if (ep_client_get(&a->client, network_index, &record) != EP_CLIENT_OK ||
         record.peer_id != peer_id || record.resource_handle != resource_handle)
         return EP_BRIDGE_CALLBACK_REJECTED;
+    const auto native = a->native_remove(a->native_owner, peer_id,
+                                         resource_handle, network_index);
+    if (native != EP_BRIDGE_OK) return native;
     return map_status(ep_client_remove(&a->client, network_index, record.generation));
 }
 
 extern "C" EP_BRIDGE_STATUS __cdecl ep_client_adapter_retain(void* owner) {
     auto* a = as_adapter(owner);
     if (!a) return EP_BRIDGE_INVALID_CONTEXT;
+    const auto status = a->native_retain(a->native_owner);
+    if (status != EP_BRIDGE_OK) return status;
     InterlockedIncrement(&a->owner_refs);
     return EP_BRIDGE_OK;
 }
@@ -95,7 +119,10 @@ extern "C" void __cdecl ep_client_adapter_release(void* owner) {
     LONG refs = a->owner_refs;
     while (refs > 0) {
         const LONG prior = InterlockedCompareExchange(&a->owner_refs, refs - 1, refs);
-        if (prior == refs) return;
+        if (prior == refs) {
+            a->native_release(a->native_owner);
+            return;
+        }
         refs = prior;
     }
 }

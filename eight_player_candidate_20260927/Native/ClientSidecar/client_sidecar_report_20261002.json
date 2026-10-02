@@ -14,6 +14,14 @@
     "game_files_modified": false,
     "reason": "isolated sidecar only; native callback ABI and patch install remain unconnected"
   },
+  "adapter_contract": {
+    "native_callbacks_required": true,
+    "native_confirm_failure_rolls_back_sidecar": true,
+    "native_create_required_for_all_indexes": true,
+    "native_remove_required_for_all_indexes": true,
+    "owner_lifetime_delegated": true,
+    "sidecar_only_player_creation_rejected": true
+  },
   "contract": {
     "capacity": 8,
     "valid_network_indexes": "0..7",
@@ -36,15 +44,15 @@
     },
     {
       "path": "ep_client_bridge_adapter.h",
-      "sha256": "c1bd803ceb0cefae7dfef49bada9933dc63f84efbf4312ac00bafc3fcecd0bdf"
+      "sha256": "70b994130d8964de0b27cb0bf946efbc80b7841ddb2552e43e719741aaaaf3a5"
     },
     {
       "path": "ep_client_bridge_adapter.cpp",
-      "sha256": "b2f62e8c2aa3a852f8a2b59873c4e3cf988c09e7e776819a433bae0c990e5ae3"
+      "sha256": "c9998f5a21a4728354eee3ce3c7cf6f2fb6b9859c023edb2eba70ac17e5c9f29"
     },
     {
       "path": "ep_client_bridge_adapter_test.cpp",
-      "sha256": "afa72d9e271b5ce046195b389a19946558f1a948ebcb332bd88c24b98817e99f"
+      "sha256": "baa0893ce333378d559772c0fafc1b1c083127c02a918f40abbd894de916fa13"
     },
     {
       "path": "build_x64.bat",
@@ -52,7 +60,7 @@
     },
     {
       "path": "README.zh-TW.md",
-      "sha256": "6258bdf69b30c2b3ea727f11cde53fdfe0c54de28394aa6df5e3e2c785e697fc"
+      "sha256": "8fe555acaa9f02f63460545b2e868394b0596dc697936e1f5586bff7288129cc"
     },
     {
       "path": "client_four_slot_patch_manifest_20261002.json",
@@ -60,19 +68,19 @@
     },
     {
       "path": "ep_client_sidecar.dll",
-      "sha256": "245771eddcb69abd7749bdbe0320977d7a07ccab93ef041228d65371581fc63d"
+      "sha256": "55ed2114c754eb8a31174312844d0934d2937da5b4d293686d3a698a28a0742a"
     },
     {
       "path": "ep_client_sidecar_test.exe",
-      "sha256": "b4ab173486163d5cb2355cfd0870175b688fb8a9577c4aed58dd64e0e9b3fdef"
+      "sha256": "ad6cc4903c445d9bbb92a8cc42d6ef00a81a8b71aaa07a4a93e84b3cfaf871a6"
     },
     {
       "path": "ep_client_bridge_adapter.dll",
-      "sha256": "70aaa40771b88606a77b36fa9fb4c1833fef9519a348fcf06c4c289985554e57"
+      "sha256": "c8187c8cd408139e5689437556aad14428827b710991cb46e446d7b4aea66a4c"
     },
     {
       "path": "ep_client_bridge_adapter_test.exe",
-      "sha256": "fc0dd442e788765bd8c0576b6b7ec9261048b6b538cebc72700611c528762ec6"
+      "sha256": "6974ab8370227eea929599207054c19b27ab97fa9dfdb9edc13f8ffeda1791ee"
     }
   ]
 }

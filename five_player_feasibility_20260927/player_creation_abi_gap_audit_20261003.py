@@ -15,6 +15,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 BUILD = 25480438
 CAPTURE_SHA = "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8"
+REVERSE_CLEANUP_REPORT = HERE / "player_resource_reverse_cleanup_audit_20261003.json"
 
 
 def load(name: str):
@@ -66,6 +67,7 @@ def build_audit() -> dict:
     lifecycle = load("component238_lifecycle_evidence_v2.json")
     resource_581320 = load("spawn_resource_581320_disasm.json")
     resource_581780 = load("spawn_resource_581780_disasm.json")
+    reverse_cleanup = json.loads(REVERSE_CLEANUP_REPORT.read_text(encoding="utf-8"))
     rows = index_rows(identity, property_dispatch, gate, binding)
     rows_581320 = index_rows(resource_581320)
     rows_581780 = index_rows(resource_581780)
@@ -74,6 +76,20 @@ def build_audit() -> dict:
         observed = doc.get("capture_identity_sha256") or doc.get("capture_sha256")
         if observed and observed != CAPTURE_SHA:
             raise AssertionError(f"{name} capture identity changed: {observed}")
+    if reverse_cleanup.get("build") != BUILD or reverse_cleanup.get("capture_sha256") != CAPTURE_SHA:
+        raise AssertionError("reverse cleanup evidence build/capture identity changed")
+    reverse_checks = reverse_cleanup.get("checks", {})
+    reverse_cleanup_proven = all(
+        reverse_checks.get(name) is True
+        for name in (
+            "create_record_fields_are_pinned",
+            "release_loops_all_pending_records",
+            "resource_handle_release_is_pinned",
+            "owner8_reverse_map_delete_is_pinned",
+            "owner8_ordinal_flag_compaction_is_pinned",
+            "missing_key_does_not_decrement_owner8_count",
+        )
+    )
 
     pins = {
         "gate_call": require(rows, "0x10868d7", "call 0xfdc140"),
@@ -148,7 +164,7 @@ def build_audit() -> dict:
         "first_stage_roster_has_fixed_four_guard": True,
         "roster_inline_record_write_is_not_sidecar": True,
         "component238_cleanup_is_owner_scoped": True,
-        "player_resource_reverse_cleanup_proven": False,
+        "player_resource_reverse_cleanup_proven": reverse_cleanup_proven,
         "partial_resource_rollback_proven": False,
         "owner_migration_and_thread_quiescence_proven": False,
         "index_4_to_7_player_creation_proven": False,
@@ -203,7 +219,18 @@ def build_audit() -> dict:
         "cleanup_evidence": {
             "component238": component238,
             "pins": cleanup_targets,
-            "player_resource_reverse_cleanup": None,
+            "player_resource_reverse_cleanup": {
+                "report": str(REVERSE_CLEANUP_REPORT.name),
+                "checks": {name: reverse_checks.get(name) for name in (
+                    "create_record_fields_are_pinned",
+                    "release_loops_all_pending_records",
+                    "resource_handle_release_is_pinned",
+                    "owner8_reverse_map_delete_is_pinned",
+                    "owner8_ordinal_flag_compaction_is_pinned",
+                    "missing_key_does_not_decrement_owner8_count",
+                )},
+                "partial_callback_rollback_proven": reverse_checks.get("partial_callback_rollback_is_complete") is True,
+            },
             "partial_failure_rollback": None,
             "interpretation": "The saved cleanup proof removes component-238 owner state through 0x873a70/0xb2fc70. It does not prove that the 0xfdc140 resource record, callback tables, owner+8 maps, and roster pointer are reversed exactly once for index 4..7.",
         },

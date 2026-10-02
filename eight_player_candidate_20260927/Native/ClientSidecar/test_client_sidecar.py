@@ -38,6 +38,10 @@ class ClientSidecarTests(unittest.TestCase):
         self.assertEqual(report["build"]["adapter_test_output"], "ep_client_bridge_adapter_synthetic_passed")
         self.assertFalse(report["production"]["executable"])
         self.assertFalse(report["production"]["multiplayer_verified"])
+        self.assertTrue(report["adapter_contract"]["native_callbacks_required"])
+        self.assertTrue(report["adapter_contract"]["native_confirm_failure_rolls_back_sidecar"])
+        self.assertTrue(report["adapter_contract"]["native_create_required_for_all_indexes"])
+        self.assertTrue(report["adapter_contract"]["owner_lifetime_delegated"])
         for artifact in report["artifacts"]:
             path = ROOT / artifact["path"]
             self.assertTrue(path.is_file(), artifact["path"])
