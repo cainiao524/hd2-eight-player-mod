@@ -1,0 +1,336 @@
+{
+  "schema": "hd2_loadout_layout_relocation_audit_v1",
+  "build": 25480438,
+  "source_evidence": "index_slot_mapping_evidence_v2.json",
+  "capture_identity_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "checks": [
+    {
+      "name": "fixed_build_source_report",
+      "passed": true,
+      "detail": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5"
+    },
+    {
+      "name": "fixed_build_source_data",
+      "passed": true,
+      "detail": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+    },
+    {
+      "name": "capture_identity",
+      "passed": true,
+      "detail": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8"
+    },
+    {
+      "name": "all_layout_groups_present",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "all_layout_groups_have_anchors",
+      "passed": true,
+      "detail": {
+        "allocation_and_four_element_construction": 30,
+        "four_slot_release_and_transition": 23,
+        "mapping_assignment_during_roster_update": 33,
+        "mapping_assignment_registered_event": 18,
+        "mapping_reset_and_local_slot_zero": 29,
+        "network_index_to_loadout_slot_consumer": 25,
+        "screen_identity_and_registration": 21,
+        "separate_network_index_records_in_same_screen": 37,
+        "subobject_ui_behavior": 11
+      }
+    },
+    {
+      "name": "layout_integer_fields",
+      "passed": true,
+      "detail": {
+        "forward_map": "0x27d8",
+        "inverse_map": "0x27e8",
+        "entries_per_map": 4,
+        "next_flags": "0x27f8",
+        "allocation_size_argument": "0x2739d0",
+        "indexed_record_base": "0x10",
+        "indexed_record_stride": "0x9f0",
+        "indexed_record_count": 4,
+        "indexed_records_end_exclusive": "0x27d0",
+        "slot_widget_base": "0x53a78",
+        "slot_widget_stride": "0x1ee18",
+        "constructed_slots": 4,
+        "slots_end_exclusive": "0xcf2d8",
+        "next_widget_base": "0xcf2d8",
+        "observed_subwidget_base": "0x620e8",
+        "observed_subwidget_offset": "0xe670",
+        "index_4_forward_address": "0x27e8",
+        "index_4_reverse_address": "0x27f8"
+      }
+    },
+    {
+      "name": "original_maps_contiguous",
+      "passed": true,
+      "detail": {
+        "forward_end": "0x27e8",
+        "inverse": "0x27e8",
+        "inverse_end": "0x27f8",
+        "flags": "0x27f8"
+      }
+    },
+    {
+      "name": "original_records_end_matches",
+      "passed": true,
+      "detail": {
+        "computed": "0x27d0",
+        "captured": "0x27d0"
+      }
+    },
+    {
+      "name": "original_widgets_end_matches_next",
+      "passed": true,
+      "detail": {
+        "computed": "0xcf2d8",
+        "next": "0xcf2d8"
+      }
+    },
+    {
+      "name": "original_four_slot_layout",
+      "passed": true,
+      "detail": {
+        "map_entries": 4,
+        "record_count": 4,
+        "widget_count": 4
+      }
+    },
+    {
+      "name": "index_four_forward_overlaps_inverse",
+      "passed": true,
+      "detail": {
+        "index_4_forward": "0x27e8",
+        "inverse": "0x27e8"
+      }
+    },
+    {
+      "name": "index_four_reverse_overlaps_flags",
+      "passed": true,
+      "detail": {
+        "index_4_reverse": "0x27f8",
+        "flags": "0x27f8"
+      }
+    },
+    {
+      "name": "eight_records_do_not_overlap_relocated_maps",
+      "passed": true,
+      "detail": {
+        "records_end": "0x4f90",
+        "map_base": "0x4f90"
+      }
+    },
+    {
+      "name": "eight_widgets_overlap_original_next_object",
+      "passed": true,
+      "detail": {
+        "eight_widget_end": "0x14ab38",
+        "original_next": "0xcf2d8",
+        "overlap_bytes": 505952
+      }
+    },
+    {
+      "name": "inline_relocation_requires_size_or_sidecar",
+      "passed": true,
+      "detail": {
+        "original_allocation": "0x2739d0",
+        "required_allocation": "0x2ef230",
+        "delta": "0x7b860"
+      }
+    },
+    {
+      "name": "anchor_0x14a17f4",
+      "passed": true,
+      "detail": {
+        "expected": "mov edi, 4",
+        "observed": "mov edi, 4"
+      }
+    },
+    {
+      "name": "anchor_0xb9014b",
+      "passed": true,
+      "detail": {
+        "expected": "cmp ecx, 4",
+        "observed": "cmp ecx, 4"
+      }
+    },
+    {
+      "name": "anchor_0xb9014e",
+      "passed": true,
+      "detail": {
+        "expected": "jae 0xb90168",
+        "observed": "jae 0xb90168"
+      }
+    },
+    {
+      "name": "anchor_0x146c3d1",
+      "passed": true,
+      "detail": {
+        "expected": "cmp r15, 4",
+        "observed": "cmp r15, 4"
+      }
+    },
+    {
+      "name": "anchor_0x146c3d5",
+      "passed": true,
+      "detail": {
+        "expected": "jae 0x146d30b",
+        "observed": "jae 0x146d30b"
+      }
+    },
+    {
+      "name": "anchor_0xb901e1",
+      "passed": true,
+      "detail": {
+        "expected": "cmp r8d, 4",
+        "observed": "cmp r8d, 4"
+      }
+    },
+    {
+      "name": "anchor_0xb901e5",
+      "passed": true,
+      "detail": {
+        "expected": "jae 0xb90241",
+        "observed": "jae 0xb90241"
+      }
+    },
+    {
+      "name": "anchor_0x146d2c0",
+      "passed": true,
+      "detail": {
+        "expected": "cmp ebp, 4",
+        "observed": "cmp ebp, 4"
+      }
+    },
+    {
+      "name": "anchor_0x1470b4f",
+      "passed": true,
+      "detail": {
+        "expected": "mov edi, 4",
+        "observed": "mov edi, 4"
+      }
+    },
+    {
+      "name": "anchor_0x146fde6",
+      "passed": true,
+      "detail": {
+        "expected": "cmp ebx, 4",
+        "observed": "cmp ebx, 4"
+      }
+    },
+    {
+      "name": "anchor_0x146fde9",
+      "passed": true,
+      "detail": {
+        "expected": "jae 0x147057e",
+        "observed": "jae 0x147057e"
+      }
+    }
+  ],
+  "checks_passed": 26,
+  "checks_total": 26,
+  "verification_passed": true,
+  "layout": {
+    "forward_map": "0x27d8",
+    "inverse_map": "0x27e8",
+    "entries_per_map": 4,
+    "next_flags": "0x27f8",
+    "allocation_size_argument": "0x2739d0",
+    "indexed_record_base": "0x10",
+    "indexed_record_stride": "0x9f0",
+    "indexed_record_count": 4,
+    "indexed_records_end_exclusive": "0x27d0",
+    "slot_widget_base": "0x53a78",
+    "slot_widget_stride": "0x1ee18",
+    "constructed_slots": 4,
+    "slots_end_exclusive": "0xcf2d8",
+    "next_widget_base": "0xcf2d8",
+    "observed_subwidget_base": "0x620e8",
+    "observed_subwidget_offset": "0xe670",
+    "index_4_forward_address": "0x27e8",
+    "index_4_reverse_address": "0x27f8"
+  },
+  "relocation_model": {
+    "eight_entries": 8,
+    "records": {
+      "base": "0x10",
+      "stride": "0x9f0",
+      "end_exclusive": "0x4f90"
+    },
+    "maps_after_records": {
+      "forward": "0x4f90",
+      "inverse": "0x4fb0",
+      "flags": "0x4fd0"
+    },
+    "widgets": {
+      "base": "0x53a78",
+      "stride": "0x1ee18",
+      "end_exclusive": "0x14ab38"
+    },
+    "old_next_widget": "0xcf2d8",
+    "inline_next_widget_overlap_bytes": 505952,
+    "minimum_inline_allocation_if_following_object_moves": "0x2ef230",
+    "sidecar_required_if_object_size_stays": true
+  },
+  "capacity_anchors": {
+    "0x14a17f4": {
+      "expected": "mov edi, 4",
+      "observed": "mov edi, 4"
+    },
+    "0xb9014b": {
+      "expected": "cmp ecx, 4",
+      "observed": "cmp ecx, 4"
+    },
+    "0xb9014e": {
+      "expected": "jae 0xb90168",
+      "observed": "jae 0xb90168"
+    },
+    "0x146c3d1": {
+      "expected": "cmp r15, 4",
+      "observed": "cmp r15, 4"
+    },
+    "0x146c3d5": {
+      "expected": "jae 0x146d30b",
+      "observed": "jae 0x146d30b"
+    },
+    "0xb901e1": {
+      "expected": "cmp r8d, 4",
+      "observed": "cmp r8d, 4"
+    },
+    "0xb901e5": {
+      "expected": "jae 0xb90241",
+      "observed": "jae 0xb90241"
+    },
+    "0x146d2c0": {
+      "expected": "cmp ebp, 4",
+      "observed": "cmp ebp, 4"
+    },
+    "0x1470b4f": {
+      "expected": "mov edi, 4",
+      "observed": "mov edi, 4"
+    },
+    "0x146fde6": {
+      "expected": "cmp ebx, 4",
+      "observed": "cmp ebx, 4"
+    },
+    "0x146fde9": {
+      "expected": "jae 0x147057e",
+      "observed": "jae 0x147057e"
+    }
+  },
+  "decision": {
+    "production_patch_ready": false,
+    "installable": false,
+    "multiplayer_verified": false,
+    "reason": "Loadout screen owns four independent network-index records, two four-entry maps and four large widgets. An inline 4-to-8 conversion overlaps adjacent fields/objects; a sidecar still needs every reader, writer, callback, destructor, UI and reconnect ABI.",
+    "next_required": [
+      "Bind all captured loadout readers/writers and indirect callbacks to one eight-slot owner or sidecar layout.",
+      "Recover constructor, transition, destructor and package-lifetime ABI before generating patch bytes.",
+      "Validate fifth-peer UI state on host and client after confirmed-peer and player creation are real."
+    ]
+  },
+  "runtime_verified": false,
+  "live_process_accessed": false
+}

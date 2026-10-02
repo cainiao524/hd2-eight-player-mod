@@ -18,11 +18,23 @@
 
 另完成 [PLAYER_CAPACITY_CHAIN_20261003.zh-TW.md](../five_player_feasibility_20260927/PLAYER_CAPACITY_CHAIN_20261003.zh-TW.md) 與其 verifier：`0x10919D1/0x10919DE` owner capacity、`0x10915DA` 初始 metadata、`0x1092E78/0x1092F31` enumerator capacity、`0x1092ECB/0x1092ED0` clamp/store、`0x1093C91/0x1093C96/0x1093D1E` state update、`0x1093A96` recreate add 都被分組核對，11/11 通過。這些是多個獨立四人假設，不能合併成單一常數 patch；`production_patch_ready=false`。
 
+## 2026-10-03 player creation ABI gap
+
+新增 [PLAYER_CREATION_ABI_GAP_AUDIT_20261003.zh-TW.md](../five_player_feasibility_20260927/PLAYER_CREATION_ABI_GAP_AUDIT_20261003.zh-TW.md) 與 43-pin 可重播審計。它把 `0x1086460 → 0xFDC140 → 0x581320/0x581780 → 0x540920` 的建立 ABI、resource record、owner+8 map/flags/count、三組 callback table 及 roster inline pointer 寫入接成一條固定鏈；`index 4..7` 仍在 gate 被導向 fallback，`0x540920` 仍有 `cmp eax,4`。
+
+審計明確保留 `player_resource_reverse_cleanup_proven=false`、`partial_resource_rollback_proven=false`、`owner_migration_and_thread_quiescence_proven=false`、`index_4_to_7_player_creation_proven=false`；測試 1/1 通過，沒有生成 patch、呼叫程序或安裝。
+
+## 2026-10-03 MenuScreenLoadout 八槽布局審計
+
+新增 [LOADOUT_LAYOUT_RELOCATION_AUDIT_20261003.zh-TW.md](../five_player_feasibility_20260927/LOADOUT_LAYOUT_RELOCATION_AUDIT_20261003.zh-TW.md) 與 26/26 固定檢查。`MenuScreenLoadout` 的四筆 `0x9F0` network-index 記錄後緊接兩張四項 map；第 5 筆會覆蓋 inverse map／flags。四個 `0x1EE18` widget 若直接延伸到八項，結束於 `0x14AB38`，會與原下一物件 `0xCF2D8` 重疊 `0x7B860` bytes；內聯配置至少要到 `0x2EF230`，或改用完整 sidecar。
+
+這補上 P6 的 UI／loadout 固定四槽證據，但尚未綁定 reader、writer、transition、destructor、callback 或重連 ABI；`production_patch_ready=false`、`installable=false`、`runtime_verified=false`、`multiplayer_verified=false` 保持不變。
+
 上述資料均為 `read_only=true`、沒有函式呼叫、寫入、hook、注入、安裝或多人驗收；`resolver_closed=false`、`installable=false`、`multiplayer_verified=false` 保持不變。下一個實作門檻回到 host/client peer admission → confirmed-peer → player creation 的真實第五人流程，selector registry 只能在取得 runtime 證據後再評估。
 
 2026-10-02使用者明確授權第四次限定擷取、遊戲程序存取、載入／注入、安裝修改與後續真實測試；後續只在固定 build、可回滾 staging 和 fail-closed gate 下使用這份授權。
 
-使用者已明確要求接續完整八帳號同任務全流程目標。6054F0 候選已完成接續oracle審查、契約、manifest、五份全域文件及本機交付收據更新，正式離線版本為 **0.14.0-offline**。原source、測試及凍結報告保持相同；只重跑6054F0五組／42次，執行紀錄完全一致。共同bundle16個roster函式／62區域，累計149組／4,314次套件執行或觀察。
+使用者已明確要求接續完整八帳號同任務全流程目標。6054F0 候選已完成接續oracle審查、契約、manifest、五份全域文件及本機交付收據更新，正式離線版本為 **0.14.0-offline**。原source、測試及凍結報告保持相同；只重跑6054F0五組／42次，執行紀錄完全一致。共同bundle16個roster函式／62區域，v0.14候選交付bundle為149組／4,314次套件執行或觀察；STATE續接審計總數另記為152組。
 
 已按工作清單完成下一個[1277920有限調查](../five_player_feasibility_20260927/roster_mask_reader_findings.zh-TW.md)：確認primary+24h與property+Ch兩處需改接，24次原前綴觀察未證明mask拒絕玩家；固定 build 的離線 reader 候選與 6 項隔離驗證已保存。完整八人目標保持未完成。
 
@@ -56,7 +68,7 @@
 
 目前來源以[STATE.json](STATE.json)、[候選契約](../eight_player_candidate_20260927/NATIVE_ROSTER_ARRIVAL.zh-TW.md)及[交付收據](../eight_player_candidate_20260927/verification/delivery_checks.json)為準。第四次擷取已獲使用者明確授權並完成；目前尚未宣稱五至八帳號任務驗收完成。
 
-以下保留2026-09-27原交接內容作歷史紀錄，其暫停／v0.13／缺少審查的敘述已由上方更新取代。原狀態另存[STATE.at_pause.json](STATE.at_pause.json)，原v0.13收據另存[delivery_checks_v0.13.json](../eight_player_candidate_20260927/verification/delivery_checks_v0.13.json)。上傳收據及快照清單仍描述原GitHub資料提交；本次本機變更尚未推送。
+以下保留2026-09-27原交接內容作歷史紀錄，其暫停／v0.13／缺少審查的敘述已由上方更新取代。原狀態另存[STATE.at_pause.json](STATE.at_pause.json)，原v0.13收據另存[delivery_checks_v0.13.json](../eight_player_candidate_20260927/verification/delivery_checks_v0.13.json)。上傳收據及快照清單仍描述原GitHub資料提交；本句保留暫停當時的狀態，後續 live preflight 變更已由 60df9c9 推送至 main。
 
 ---
 

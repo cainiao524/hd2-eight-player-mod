@@ -69,13 +69,22 @@ Sidecar配置／發布／清理、其他reader、caller／callback同步、真�
 | 優先項／成品行為 | 目前證據 | 缺口與下一個具體動作 | 停止追查／通過條件 | 外部依賴 |
 |---|---|---|---|---|
 | P1：額外帳號通過平台加入，對應A | [平台保存結果](REPORT.zh-TW.md#平台建立參數與本機列舉限制)與 [native adapter capture](NATIVE_PEER_ADMISSION_ADAPTER.zh-TW.md)：已保存10個 native roots、Party間接槽與八槽 sidecar契約；本機四槽分配仍是現行行為；通用 x64 trampoline scaffold 已在合成目標通過 | 仍需把 mid-function capacity／allocator bridge 接到 host/client sidecar、confirmed通知與PlayFab／Party非同步結果；先以第五帳號驗證，不能把 capture 當平台成功 | 有可辨識的第五人成功／拒絕路徑及其限制；最終八帳號通過 | 多人帳號與服務回應；native hook／unwind 實作 |
-| P2：第5–8名建立原生角色，對應B | [本地建立guard](local_player_creation_gate_findings.zh-TW.md)、[單一介面](spawn_interface_findings.zh-TW.md)及固定 build 的 live capture 已接到 EXE+1AE380；player-creation root 已保存 | 需完成 trampoline 的寄存器／stack contract、player creation dispatch、資源 handle 與 cleanup；目前只有合成 unwind／重定位測試，native plan `executable=false` | 第五人角色在各端可見、可控，並能完整離隊／重連，才算實測通過 | 後續載入／修改授權已給；仍需可驗證的 native executor 與多人帳號 |
+| P2：第5–8名建立原生角色，對應B | [本地建立guard](local_player_creation_gate_findings.zh-TW.md)、[單一介面](spawn_interface_findings.zh-TW.md)、[PLAYER_CREATION_ABI_GAP_AUDIT_20261003](PLAYER_CREATION_ABI_GAP_AUDIT_20261003.zh-TW.md)及固定 build 的 live capture；43個ABI pin已接通 resource record、三組callback table、owner+8副作用與0x540920 roster leaf | 仍需完成 index 4..7 的 resource／roster callback、reverse cleanup、partial rollback、owner migration、thread quiescence 與可回滾 native hook；不能只把 gate 的4改成8 | 第五人角色在各端可見、可控，並能完整離隊／重連，才算實測通過 | 後續載入／修改授權已給；仍需可驗證的 native executor 與多人帳號 |
 | P3：八份peer／roster與ID映射，對應A/B | [v0.14 十六函式共同候選](../eight_player_candidate_20260927/NATIVE_ROSTER_ARRIVAL.zh-TW.md)加入完整6054F0狀態更新，同一 B／count 計畫共同核區域；整理與真實 caller 缺口保留 | 6054F0狀態更新已納入v0.14。[1277920有限查核](roster_mask_reader_findings.zh-TW.md)已固定完整body與兩個roster讀取，mask迴圈未提供已證拒絕結果。下一動作：在原input+10h計時store前定義guard，同時保留普通missing返回，將primary+24h與property+Ch接共同B，完成原指令對照與caller／helper契約；不擴搜無關callee。 departure回呼序列化、其他讀者及配置／發布／清理、整理／caller、真實context map與資源、hook／unwind仍缺 | 完整1277920有限改接、必要契約與有界原指令對照足以形成候選，或定位具體外部缺口即停止；不當成完整生命週期 | 1277920完整body已保存，可離線分析；平台、角色、同步與多人仍需外部條件 |
 | P4：固定玩家元件及其他玩法資料八份，對應B/C/E | [儲存設計](PLAYER_COMPONENT_RELOCATION_PLAN.zh-TW.md)已區分七個固定容量與兩個可保留的動態元件 | 固定布局逐項完成大小／對齊、建立、搬移、registry副本與cleanup適配；metadata／stack／裝備／tag73／tagDA共同收束 | 每份擴充資料具備完整配套且跨元件索引一致；不以單一writer測試代替完整生命週期 | 離線可先實作／建置；hook時點與執行驗證仍需資料 |
 | P5：節點配置與資源所有權不因八人破壞，對應B生命週期/E穩定性 | owner layout、snapshot validator、preflight 已有候選；[第二S有限來源](indexed_float_double_secondary_findings.zh-TW.md)與[整合時點邊界](native_integration_boundary.zh-TW.md)已收束 | 第二S配置來源及引擎排他仍缺。保留實際占用；只有可接合的新來源／同步證據才重開這兩條支線，不再泛查callee或增加同型模型。ID0需實際count0與資源契約；update返回後只能後驗，不算preflight | 完整共存需求與轉換餘量有根據；實際operations、snapshot與executor處於同一有效執行保護，外部資源恢復可證 | 需要具體來源／scheduler／callback／生命週期證據；新的live操作另需明確授權 |
-| P6：逐玩家更新、UI、音效與rank，對應C/E | 四格stack／metadata、三項rank資源及缺local已列[設計稿](PLAYER_COMPONENT_RELOCATION_PLAN.zh-TW.md)；v0.11 已完成 count 上限8及有效四人 ranges 延伸，v0.12 已共同建置 departure 與 count 計畫 | 同時改接暫存與讀者；為0..7及缺local明確定義rank／音源。departure 的兩個預測通知已有候選政策，但 `94C9C0` 完整 context15calls／通知及真實 profile 尚未端到端執行驗證；真實資源與回呼期間狀態契約仍缺。`60C2A0` 的數值 fallback 不證明四種以外的命名資源存在，不杜撰hash；原 tech-level 權重索引不作玩家數擴容。另依[倍率線索](PEER_ADMISSION_PRIORITY.zh-TW.md)固定同build的player_count_multipliers資產與實際consumer，判斷5–8時clamp／fallback或越界；既有94BE10候選尚未證明覆蓋此欄位 | 所有已知索引路徑有八份空間與明確缺值行為；下游玩家數與資源對應在真實資料有效，音源及UI在各端實測一致 | 原始碼可離線；實際資源／音源隔離仍需驗證 |
+| P6：逐玩家更新、UI、音效與rank，對應C/E | 四格stack／metadata、三項rank資源、[PLAYER_COMPONENT_RELOCATION_PLAN](PLAYER_COMPONENT_RELOCATION_PLAN.zh-TW.md)及 [LOADOUT_LAYOUT_RELOCATION_AUDIT_20261003](LOADOUT_LAYOUT_RELOCATION_AUDIT_20261003.zh-TW.md)；MenuScreenLoadout 四筆record、雙map、flags與四個大型widget已固定 | 同時改接暫存與讀者；loadout 需搬移map／widget／flags或接完整sidecar，並補constructor、transition、destructor、callback、重連與真實資源契約；音效及player_count consumers仍未端到端驗證 | 所有已知索引路徑有八份空間與明確缺值行為；下游玩家數與資源對應在真實資料有效，音源及UI在各端實測一致 | 原始碼可離線；實際資源／音源隔離仍需驗證 |
 | P7：整合第五人原型，對應A–D | 尚無可玩的五人原型 | P1–P6達到足夠證據時整合版本guard、初始化／存取／cleanup；準備具體變更清單及診斷，再做四人基線與第五人全流程 | 加入、生成、相互可見、移動／戰鬥／互動、死亡／增援、離隊／重連、撤離／結算逐項有紀錄 | 載入及修改授權、五位玩家／帳號；目前不能安排 |
 | P8：六至八人與交付，對應A–E完整驗收 | 未開始實測 | 第五人全流程通過後逐步增加人數，驗證狀態一致性、負載、房主轉移與進度；封裝安裝／移除／恢復文件 | 八帳號同場全流程與穩定性記錄齊全；可重現建置、支援版本、安裝及恢復均可核對 | 六至八位玩家／帳號、各客戶端紀錄及執行條件 |
+
+## 2026-10-03 新增 ABI 與 UI 邊界
+
+P2／P6 已加入兩項固定 build 審計：
+
+- `PLAYER_CREATION_ABI_GAP_AUDIT_20261003`：43 個固定 pin 接成 `0x1086460 → 0xFDC140 → 0x581320/0x581780 → 0x540920`，確認第 5–8 名仍未到達 player-resource／roster 建立；resource record、owner+8 map/flags/count、callback table、inline roster pointer 的逆向清理與 partial rollback 尚未證明。
+- `LOADOUT_LAYOUT_RELOCATION_AUDIT_20261003`：MenuScreenLoadout 的四筆 network-index record、兩張 map、flags 與四個大型 widget 互相相鄰；直接擴成八筆會覆蓋 map，八個 widget 會與下一物件重疊 `0x7B860` bytes，需搬移整體配置或完整 sidecar。
+
+兩項測試分別 1/1 與 26/26 通過，均為離線固定證據，不能替代第五人實機加入、角色建立或任務驗收。
 
 ## 候選元件與成品驗收的關係
 

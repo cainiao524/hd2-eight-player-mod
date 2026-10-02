@@ -1,0 +1,433 @@
+{
+  "schema": "hd2_player_creation_abi_gap_audit_v1",
+  "build": 25480438,
+  "capture_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "abi": {
+    "gate": "0x1086460 compares the owner+0x163ac network index with 4 before 0x10868d7",
+    "caller_contract": {
+      "rcx": "rsi + 0xe49f0 (resource/creation context)",
+      "rdx": "returned resource handle in eax",
+      "r8": "player entity resource hash in rdi",
+      "r9": "stack metadata at rbp + 0x2b0"
+    },
+    "fdc140_contract": {
+      "owner": "entry rcx saved as rsi",
+      "metadata": "entry r9 saved as rbp",
+      "resource_hash": "entry r8 saved as rdi",
+      "resource_handle": "entry edx saved as ebx",
+      "record": "r14 = owner + (counter-derived record index)*8",
+      "record_fields": {
+        "+0": "resource hash",
+        "+8": "handle",
+        "+0x10": "component ordinal/sentinel",
+        "+0x14": "creation flag"
+      },
+      "dispatch": [
+        "0x581320(rcx=owner+0x40, rdx=record, r8=metadata, r9=owner+8)",
+        "0x581780(rcx=owner+0x40, rdx=record, r8=metadata)"
+      ]
+    },
+    "callback_tables": {
+      "first": "owner+0x40 + component_index*8 + 0xf0c110",
+      "second": "owner+0x40 + component_index*8 + 0xf0cb30",
+      "third": "owner+0x40 + component_index*8 + 0xf0d550",
+      "roster_component": 239
+    },
+    "roster_leaf_540920": {
+      "guard": "global roster field +0x80 cmp 4",
+      "params": "RDX points to creation parameter byte; zero skips insertion",
+      "writes": "global +0x88 count and inline pointer table at +0xe8 + ordinal*8"
+    },
+    "owner8_side_effects": {
+      "ordinal_map": "owner+8 + ordinal*4 + 0x1c",
+      "flag_a": "owner+8 + ordinal + 0x201c",
+      "flag_b": "owner+8 + ordinal + 0x281c",
+      "count": "owner+8 + 0x18",
+      "failure_sentinel": "record+0x10 = 0x7fff"
+    }
+  },
+  "cleanup_evidence": {
+    "component238": {
+      "initialization": "87BC90 clears total/active counts, sets inline map8, then tails873370 resource initializer; no complete initialization claim for8E0/8EC or all byte/property rows",
+      "move": "87B5D0(self,destination,source) copies pointer8+primary44+property40 and changes moved entity map value to destination; it does not copy the ordinal-byte flag array",
+      "remove": "540740 removes map key then decrements total/active/prefix as applicable and calls/tails87B5D0 to fill removed positions",
+      "partition_callbacks": "87C120 swaps arrays then increases prefix;87C480 decreases prefix and accesses byte flags in addition to swapping the three larger arrays",
+      "properties": "87B7B0 allocates64 bytes and emits12 descriptors;87BB30 deserializes one64-byte record by entityID map ordinal",
+      "destruction": "owner55E1F0 calls873A70 thenB2FC70; the latter removes matching object pointer from all seven registry lists",
+      "owner_aliases": "construction, destruction, resource reload, tick, batch partition, deserialize and global publishing embed owner+E9FC98; changing global alone does not redirect these"
+    },
+    "pins": [
+      {
+        "rva": "0x56534c",
+        "asm": "lea rcx, [rbx + 0xe9fc98]",
+        "root": "0x55e1f0",
+        "sha256": "7b6999d03bcfeeb029b8b1bfc29bc9b0083e4f499722f4dcbd3ec44c846c9ebf"
+      },
+      {
+        "rva": "0x565353",
+        "asm": "call 0x873a70",
+        "root": "0x55e1f0",
+        "sha256": "e0473980438c4ed7116f70a62d6b3f8f256d8f02850f0cab644a9189d99accb8"
+      },
+      {
+        "rva": "0x565358",
+        "asm": "lea rcx, [rbx + 0xe9fc98]",
+        "root": "0x55e1f0",
+        "sha256": "7b6999d03bcfeeb029b8b1bfc29bc9b0083e4f499722f4dcbd3ec44c846c9ebf"
+      },
+      {
+        "rva": "0x56535f",
+        "asm": "call 0xb2fc70",
+        "root": "0x55e1f0",
+        "sha256": "77ef2efec2a18b88bbca30684d58b7758a1255bd22b54a4dd06d95e69ea26edf"
+      },
+      {
+        "rva": "0x565364",
+        "asm": "lea rcx, [rbx + 0xea0818]",
+        "root": "0x55e1f0",
+        "sha256": "7bd3c63c3f77cc505df99f521ea802315df7c7982b6bf36f34b747943dd16f55"
+      },
+      {
+        "rva": "0x56536b",
+        "asm": "call 0xb36b50",
+        "root": "0x55e1f0",
+        "sha256": "f962de6fec7283e5ceb26e96b012bb76e2e103d752ab8bd2f95659d054d34330"
+      }
+    ],
+    "player_resource_reverse_cleanup": null,
+    "partial_failure_rollback": null,
+    "interpretation": "The saved cleanup proof removes component-238 owner state through 0x873a70/0xb2fc70. It does not prove that the 0xfdc140 resource record, callback tables, owner+8 maps, and roster pointer are reversed exactly once for index 4..7."
+  },
+  "required_sidecar_contract": [
+    "Keep network index, roster ordinal, resource record ordinal and component-map ordinal distinct.",
+    "Allocate owner-keyed records for indices 4..7 without changing the 0x800 hash-search wrap semantics.",
+    "Provide an idempotent failure unwind after each of: resource record write, 0x581320 callbacks, 0x581780 callbacks, 0x540920 roster insertion.",
+    "Reverse owner+8 ordinal/flags/count, record+0x10/+0x14, callback registration and roster inline pointer in the same generation.",
+    "Prove owner migration, reconnect and thread quiescence before exposing a native hook."
+  ],
+  "checks": {
+    "gate_rejects_index_4_to_7": true,
+    "resource_record_has_dynamic_search_counter": true,
+    "resource_record_has_handle_hash_metadata_and_flag": true,
+    "three_callback_tables_have_explicit_owner_base": true,
+    "first_stage_roster_has_fixed_four_guard": true,
+    "roster_inline_record_write_is_not_sidecar": true,
+    "component238_cleanup_is_owner_scoped": true,
+    "player_resource_reverse_cleanup_proven": false,
+    "partial_resource_rollback_proven": false,
+    "owner_migration_and_thread_quiescence_proven": false,
+    "index_4_to_7_player_creation_proven": false,
+    "runtime_verified": false,
+    "multiplayer_verified": false,
+    "installable": false
+  },
+  "pins": {
+    "gate_call": {
+      "rva": "0x10868d7",
+      "bytes": "e86458f5ff",
+      "sha256": "f425d400164175f4081c329a8cb87b321a536c3564f257824715ca173a01b47e",
+      "asm": "call 0xfdc140",
+      "root": "0x1085d70"
+    },
+    "gate_arg_rcx": {
+      "rva": "0x10868ce",
+      "bytes": "488d8ef0490e00",
+      "sha256": "8e3e53dc3aa4f6c08c64f52d24a93c8b390c4069dfe5dec67ccfaa868b383ed4",
+      "asm": "lea rcx, [rsi + 0xe49f0]",
+      "root": "0x1085d70"
+    },
+    "gate_arg_rdx": {
+      "rva": "0x10868cc",
+      "bytes": "8bd0",
+      "sha256": "646806b9f5f977d0d079c0450de6b2810d4bb4c647dd287306b9eaf3a4b05573",
+      "asm": "mov edx, eax",
+      "root": "0x1085d70"
+    },
+    "gate_arg_r8": {
+      "rva": "0x10868c9",
+      "bytes": "4c8bc7",
+      "sha256": "d7cc0537d0fca5fb88bac89ec3262c97d1c6631dbf3750ad1503afbcce350bad",
+      "asm": "mov r8, rdi",
+      "root": "0x1085d70"
+    },
+    "gate_arg_r9": {
+      "rva": "0x10868c2",
+      "bytes": "4c8d8db0020000",
+      "sha256": "72be0e56723c2e98925be5922e83a71de4bf81abe10fc86f63286c7dbbcbde6f",
+      "asm": "lea r9, [rbp + 0x2b0]",
+      "root": null
+    },
+    "fdc_owner_save": {
+      "rva": "0xfdc165",
+      "bytes": "488bf1",
+      "sha256": "0f0740370df205195a82094bf53ddc4663fe6f0b8fb9dd737ce3412e7b6c7ef3",
+      "asm": "mov rsi, rcx",
+      "root": "0xfdc140"
+    },
+    "fdc_metadata_save": {
+      "rva": "0xfdc172",
+      "bytes": "498be9",
+      "sha256": "e2dbd337b63c05382f25b0a70823063c8984082a273cfed232920ce976dff578",
+      "asm": "mov rbp, r9",
+      "root": "0xfdc140"
+    },
+    "fdc_hash_save": {
+      "rva": "0xfdc175",
+      "bytes": "498bf8",
+      "sha256": "7b9311c02f96af5d8d851f3006e1d4796fae652dae4a04ebc1762ab7f37d95ea",
+      "asm": "mov rdi, r8",
+      "root": "0xfdc140"
+    },
+    "fdc_handle_save": {
+      "rva": "0xfdc178",
+      "bytes": "8bda",
+      "sha256": "f0106d6a52b9460e243bb6955fb007088d0cc32710697949eddb6105cfdf7f3e",
+      "asm": "mov ebx, edx",
+      "root": "0xfdc140"
+    },
+    "fdc_owner_counter": {
+      "rva": "0xfdc191",
+      "bytes": "448bbe142ff300",
+      "sha256": "a1ccf97a561a20be57850ac7825ce98c396282009a4aa8230c9594cfeb3924f8",
+      "asm": "mov r15d, dword ptr [rsi + 0xf32f14]",
+      "root": "0xfdc140"
+    },
+    "fdc_record_address": {
+      "rva": "0xfdc1af",
+      "bytes": "4e8d34f6",
+      "sha256": "0f26a0fd4a92a6cacac4db6764e881b1cab08b694c534a3d3c2bea2fbfae82f5",
+      "asm": "lea r14, [rsi + r14*8]",
+      "root": "0xfdc140"
+    },
+    "fdc_record_handle": {
+      "rva": "0xfdc1bb",
+      "bytes": "41895e08",
+      "sha256": "217b69a2f2fb48d175957bfa96c640dd6957b75e5e5fcfce30e524fb6747c447",
+      "asm": "mov dword ptr [r14 + 8], ebx",
+      "root": "0xfdc140"
+    },
+    "fdc_record_hash": {
+      "rva": "0xfdc1c3",
+      "bytes": "49893e",
+      "sha256": "f22e75e338f24668a29f5cfb3ad49edbe8976fbc046679d7bf26e58961b2d52e",
+      "asm": "mov qword ptr [r14], rdi",
+      "root": "0xfdc140"
+    },
+    "fdc_record_metadata": {
+      "rva": "0xfdc1c9",
+      "bytes": "41894610",
+      "sha256": "f87c494767c52c8769677417f80131f55ff0241baa55f80aef57b8434aa52e3a",
+      "asm": "mov dword ptr [r14 + 0x10], eax",
+      "root": null
+    },
+    "fdc_record_flag": {
+      "rva": "0xfdc1d7",
+      "bytes": "41c7461401000000",
+      "sha256": "cce8e4852c5ce6a22f729cda6abfd40d3751945f132afe85bd73d76e3779d09e",
+      "asm": "mov dword ptr [r14 + 0x14], 1",
+      "root": null
+    },
+    "fdc_callback_owner": {
+      "rva": "0xfdc250",
+      "bytes": "488d4e40",
+      "sha256": "0779af0f91321d3d994ff949960dd3f9a25408fe1f5141f32570df482f0566c9",
+      "asm": "lea rcx, [rsi + 0x40]",
+      "root": "0xfdc140"
+    },
+    "fdc_callback_metadata": {
+      "rva": "0xfdc254",
+      "bytes": "4c8bc5",
+      "sha256": "aeb97bf20ac71ce814203f1e75e1d486a6ca18be7047deb90e128941ab43fd4b",
+      "asm": "mov r8, rbp",
+      "root": "0xfdc140"
+    },
+    "fdc_callback_record": {
+      "rva": "0xfdc257",
+      "bytes": "498bd6",
+      "sha256": "3c42791b569cc3883101e3ec1ac440386dc7901876b8447fc8a762cf2e052f33",
+      "asm": "mov rdx, r14",
+      "root": "0xfdc140"
+    },
+    "fdc_first_dispatch": {
+      "rva": "0xfdc25a",
+      "bytes": "e8c1505aff",
+      "sha256": "2c1d4e57e868796bfedfc3ab73844c6710fc87e5220ebddd04b8f0cff6e1683d",
+      "asm": "call 0x581320",
+      "root": "0xfdc140"
+    },
+    "fdc_second_dispatch": {
+      "rva": "0xfdc2b1",
+      "bytes": "e8ca545aff",
+      "sha256": "971a18715a68edd2cac914e05f574466816faf6ef98619dfc3f3530b3162c7b2",
+      "asm": "call 0x581780",
+      "root": "0xfdc140"
+    },
+    "dispatch_first_owner": {
+      "rva": "0x581353",
+      "bytes": "4c8be1",
+      "sha256": "e6697111fb1ea053ba1f6044e232fd1fd9eb663ad0023dcc049c5ab8d34084d2",
+      "asm": "mov r12, rcx",
+      "root": null
+    },
+    "dispatch_first_record": {
+      "rva": "0x581366",
+      "bytes": "4c8bfa",
+      "sha256": "a02e0fbbce5bea45b2d7e6ea47e4b2d0d6f2d5c75ded2b4bdee897867ad3b79a",
+      "asm": "mov r15, rdx",
+      "root": null
+    },
+    "dispatch_first_metadata": {
+      "rva": "0x581348",
+      "bytes": "498bf0",
+      "sha256": "dd99c73f4e40127be32099562c43efa9e720847a706c161d0a34b0652db91a2c",
+      "asm": "mov rsi, r8",
+      "root": null
+    },
+    "dispatch_first_table": {
+      "rva": "0x58140e",
+      "bytes": "498b84cc10c1f000",
+      "sha256": "62598ab2bcdbae2de0d0db72d3a82d1c27deca959481060fe859d71c87e4104b",
+      "asm": "mov rax, qword ptr [r12 + rcx*8 + 0xf0c110]",
+      "root": null
+    },
+    "dispatch_first_call": {
+      "rva": "0x581421",
+      "bytes": "ffd0",
+      "sha256": "491e503ba40e8d303d46b4b51b14826ae08e8c8c3ded6f1441ef1d5d53c42534",
+      "asm": "call rax",
+      "root": null
+    },
+    "dispatch_second_table": {
+      "rva": "0x581509",
+      "bytes": "498b84cc30cbf000",
+      "sha256": "8b58468c61fbd030b5c67d8fb7f730e3787b02504a5865d782be50fd33d839c7",
+      "asm": "mov rax, qword ptr [r12 + rcx*8 + 0xf0cb30]",
+      "root": null
+    },
+    "dispatch_second_call": {
+      "rva": "0x58152f",
+      "bytes": "ffd0",
+      "sha256": "491e503ba40e8d303d46b4b51b14826ae08e8c8c3ded6f1441ef1d5d53c42534",
+      "asm": "call rax",
+      "root": null
+    },
+    "dispatch_second_owner": {
+      "rva": "0x5817b0",
+      "bytes": "488bf9",
+      "sha256": "3a513e755bcc92dc07f967959cf4f4be34e79b71b62c3aec3954f17bee488df0",
+      "asm": "mov rdi, rcx",
+      "root": null
+    },
+    "dispatch_second_record": {
+      "rva": "0x5817ad",
+      "bytes": "4c8be2",
+      "sha256": "ed69af1d349988793847ab73654ee6213f05489bd8e1616a75a5d9c6d9cbb9a7",
+      "asm": "mov r12, rdx",
+      "root": null
+    },
+    "dispatch_second_metadata": {
+      "rva": "0x58180d",
+      "bytes": "410f1000",
+      "sha256": "1235414ff695c71d8de6bdae847843dd97450e0d4b05dc45438b490544559205",
+      "asm": "movups xmm0, xmmword ptr [r8]",
+      "root": null
+    },
+    "dispatch_third_table": {
+      "rva": "0x581a3b",
+      "bytes": "488b84cf50d5f000",
+      "sha256": "85a2b2edf2f2d8ec3f716f9ac4a3311f39122821b523a39a0e4df5fa14f37434",
+      "asm": "mov rax, qword ptr [rdi + rcx*8 + 0xf0d550]",
+      "root": null
+    },
+    "dispatch_third_call": {
+      "rva": "0x581a4e",
+      "bytes": "ffd0",
+      "sha256": "491e503ba40e8d303d46b4b51b14826ae08e8c8c3ded6f1441ef1d5d53c42534",
+      "asm": "call rax",
+      "root": null
+    },
+    "roster_four_guard": {
+      "rva": "0x54093c",
+      "bytes": "83f804",
+      "sha256": "ec9d1a6c95187ab3425edbcdf19a43602dabed7b1d6a5c436f9d713baec3f3d1",
+      "asm": "cmp eax, 4",
+      "root": "0x540920"
+    },
+    "roster_params_flag": {
+      "rva": "0x54094c",
+      "bytes": "803a00",
+      "sha256": "2ebe1d080b0b716c772aec17018875733302cf3460e41604407b251d5eccd69d",
+      "asm": "cmp byte ptr [rdx], 0",
+      "root": "0x540920"
+    },
+    "roster_count_read": {
+      "rva": "0x540957",
+      "bytes": "448b8388000000",
+      "sha256": "e96a3bb731986116bdf713e80bac1912e1b3606f36e9d84e40679f59dda51c90",
+      "asm": "mov r8d, dword ptr [rbx + 0x88]",
+      "root": "0x540920"
+    },
+    "roster_count_write": {
+      "rva": "0x54097b",
+      "bytes": "898388000000",
+      "sha256": "08556060e388211619800eaa904b3238ee39ae74920cf67ed507b453373ed578",
+      "asm": "mov dword ptr [rbx + 0x88], eax",
+      "root": "0x540920"
+    },
+    "roster_record_write": {
+      "rva": "0x540a24",
+      "bytes": "4889bcd3e8000000",
+      "sha256": "9feb7345bb118d6bbed3234b9441fe960d9e3d3f9826449565c0e9031324c270",
+      "asm": "mov qword ptr [rbx + rdx*8 + 0xe8], rdi",
+      "root": "0x540920"
+    },
+    "ordinal_sentinel": {
+      "rva": "0x58159b",
+      "bytes": "41c74710ff7f0000",
+      "sha256": "00dd6acf128290c68b37c8a0090a7ed6689cb30bc71c0e390a1589a7ff335886",
+      "asm": "mov dword ptr [r15 + 0x10], 0x7fff",
+      "root": null
+    },
+    "owner_ordinal_map": {
+      "rva": "0x58175a",
+      "bytes": "47894cb51c",
+      "sha256": "163b3f4dbbcda74f30b0509cfade0c0116e4f0b2d2d88bbe47aa06aee6b0a57b",
+      "asm": "mov dword ptr [r13 + r14*4 + 0x1c], r9d",
+      "root": null
+    },
+    "owner_flag_a": {
+      "rva": "0x58175f",
+      "bytes": "43c6842e1c20000000",
+      "sha256": "e5d3e8ad5f4c61f795d94744a415beed2cd47f95571aef66191b326c6520120f",
+      "asm": "mov byte ptr [r14 + r13 + 0x201c], 0",
+      "root": null
+    },
+    "owner_flag_b": {
+      "rva": "0x581768",
+      "bytes": "43c6842e1c28000000",
+      "sha256": "5c2a0af426c95686f6e117d842f3a5778ba1767bddd6b0d1529eba475d9918ed",
+      "asm": "mov byte ptr [r14 + r13 + 0x281c], 0",
+      "root": null
+    },
+    "owner_count_increment": {
+      "rva": "0x581771",
+      "bytes": "41ff4518",
+      "sha256": "0e614a0dfa238fc3e12c404643bb0e90408580f294f0b873d0f03bda616a7c98",
+      "asm": "inc dword ptr [r13 + 0x18]",
+      "root": null
+    },
+    "record_ordinal_write": {
+      "rva": "0x581775",
+      "bytes": "45894f10",
+      "sha256": "823d7aaeecbe479604ad5f89a0a4abf88df0c15abf4aa2be4fafbd99a5b693e0",
+      "asm": "mov dword ptr [r15 + 0x10], r9d",
+      "root": null
+    }
+  },
+  "limits": [
+    "Fixed saved capture only; no process query/read, game execution, patch, installation or multiplayer test.",
+    "No safe production patch is emitted. A literal cmp-4 change would leave resource, roster, callback and cleanup contracts unresolved.",
+    "The 0x800 counter/search bound is an internal resource-record wrap, not player capacity.",
+    "Component 238 cleanup evidence is owner-scoped and cannot be promoted to complete player-resource rollback."
+  ]
+}
