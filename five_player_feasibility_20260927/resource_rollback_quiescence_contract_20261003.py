@@ -36,14 +36,12 @@ class CallbackStage(str, Enum):
     FIRST = "first_callback"
     SECOND = "second_callback"
     THIRD = "third_callback"
-    ROSTER = "roster_insert"
 
 
 CALLBACK_ORDER = (
     CallbackStage.FIRST.value,
     CallbackStage.SECOND.value,
     CallbackStage.THIRD.value,
-    CallbackStage.ROSTER.value,
 )
 
 ABI_CALLBACK_TABLES = {
@@ -205,6 +203,10 @@ class ResourceRollbackContract:
         record = self._record_for(token)
         if record.state not in (TransactionState.PENDING, TransactionState.ACTIVE):
             raise ValueError("callback cannot begin for this state")
+        if record.inflight:
+            raise RuntimeError("callback already in flight for this record")
+        if len(record.applied_callbacks) == len(CALLBACK_ORDER):
+            raise ValueError("all callback stages are already complete")
         lease = CallbackLease(self._next_lease, token)
         self._next_lease += 1
         self._leases[lease.lease_id] = lease
@@ -242,15 +244,15 @@ class ResourceRollbackContract:
             raise ValueError("succeeded must be bool")
         record = self._consume_lease(lease)
         token = lease.token
-        if not succeeded:
-            receipt = self._rollback_record(record, reason or f"{stage_name} failed")
-            self.validate()
-            return receipt
         expected = CALLBACK_ORDER[len(record.applied_callbacks)]
         if stage_name != expected:
             receipt = self._rollback_record(record, f"callback order violation: expected {expected}")
             self.validate()
             raise ValueError(f"callback order violation: expected {expected}")
+        if not succeeded:
+            receipt = self._rollback_record(record, reason or f"{stage_name} failed")
+            self.validate()
+            return receipt
         record.applied_callbacks.append(stage_name)
         record.state = TransactionState.ACTIVE
         self.validate()
@@ -417,6 +419,8 @@ def _abi_callback_contract() -> dict[str, Any]:
     return {
         "callback_tables": dict(ABI_CALLBACK_TABLES),
         "roster_component": ABI_ROSTER_COMPONENT,
+        "roster_insert_phase": "first_callback",
+        "roster_insert_is_separate_native_stage": False,
         "stage_order": list(CALLBACK_ORDER),
     }
 
@@ -463,8 +467,6 @@ def synthetic_report() -> dict[str, Any]:
     model.complete_callback(lease, CallbackStage.SECOND)
     lease = model.begin_callback(post_migration)
     model.complete_callback(lease, CallbackStage.THIRD)
-    lease = model.begin_callback(post_migration)
-    model.complete_callback(lease, CallbackStage.ROSTER)
     model.publish(post_migration)
     released = model.release(post_migration)
     model.quiesce()
@@ -480,7 +482,6 @@ def synthetic_report() -> dict[str, Any]:
                 "first_callback": [],
                 "second_callback": ["first_callback"],
                 "third_callback": ["second_callback", "first_callback"],
-                "roster_insert": ["third_callback", "second_callback", "first_callback"],
             },
             "third_callback_failure_unwinds_reverse_order": failed["unwound_callbacks"] == ["second_callback", "first_callback"],
             "partial_callback_failure_unwinds_reverse_order": failed["unwound_callbacks"] == ["second_callback", "first_callback"],
@@ -501,9 +502,12 @@ def synthetic_report() -> dict[str, Any]:
         "abi_callback_contract": abi_callback_contract,
         "reentry_receipt": repeated,
         "migration_receipt": migration,
+        "complete_release_receipt": released,
         "final_snapshot": model.snapshot(),
         "limits": [
             "Only an offline state model; no process query, native call, memory write, hook, installation or multiplayer test.",
+            "Roster insertion is a component-239 leaf in the first callback table, not a fourth native stage. publish is a model-only readiness check.",
+            "Failure injection assumes the failed callback is atomic. Per-component side effects within a failed native callback are unresolved and must be journaled before integration.",
             "The model specifies rollback and quiescence obligations but does not resolve the native callback ABI or player index 4..7 gate.",
             "All production/runtime/install/multiplayer flags remain false.",
         ],

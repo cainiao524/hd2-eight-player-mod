@@ -4,7 +4,7 @@
 `player_creation_abi_gap_audit_20261003.json` 與
 `player_resource_reverse_cleanup_audit_20261003.json` 之上的離線資料模型。它把尚未被固定擷取證明的四個安全邊界，收斂成後續 native adapter 必須遵守的 fail-closed 契約：
 
-1. **部分 callback 回滾**：ABI 已固定三張 callback table（`0xf0c110`、`0xf0cb30`、`0xf0d550`），交易按 `first_callback → second_callback → third_callback → roster_insert` 順序套用。任一階段失敗時，只撤銷已套用的階段，接著移除 roster 指標、owner+8 reverse map、resource handle 與 resource record；所有動作以反向順序記錄。
+1. **部分 callback 回滾**：ABI 已固定三張 callback table（`0xf0c110`、`0xf0cb30`、`0xf0d550`），交易按 `first_callback → second_callback → third_callback` 順序套用；component `239` 的 roster leaf `0x540920` 是第一張 table 的 callback。任一階段失敗時，只撤銷已套用的階段，接著移除 roster 指標、owner+8 reverse map、resource handle 與 resource record；所有動作以反向順序記錄。
 2. **重入冪等性**：每筆記錄包含 `network_index + generation + owner_epoch`。回滾或 release 的第二次呼叫只回傳原始 tombstone receipt；重新佔用相同 index 會增加 generation，舊 token 不得清理新記錄。
 3. **owner migration**：owner 變更必須先進入 quiescence，且不能有 active resource record 或 callback lease。遷移成功時增加 `owner_epoch`，舊 owner token 隨即失效。
 4. **thread quiescence**：每個 callback 都先取得 lease；尚有 lease 時不能 rollback、quiesce 或 migration。只有 callback lease 歸零且所有記錄清除後，才能發布 quiescent owner 狀態。
@@ -14,7 +14,7 @@
 ## 固定契約
 
 - `logical_max_players = 8`，network index 僅允許 `0..7`。
-- `first_callback`、`second_callback`、`third_callback` 分別綁定 ABI 報告中的三張 owner+0x40 callback table；`roster_insert` 綁定 component `239` 的 roster leaf。ABI 報告變更時模型拒絕產生收據。
+- `first_callback`、`second_callback`、`third_callback` 分別綁定 ABI 報告中的三張 owner+0x40 callback table；第一張 table 的 component `239` callback 綁定 roster leaf `0x540920`。ABI 報告變更時模型拒絕產生收據。
 - `record_ordinal`、`resource_handle`、`component_ordinal` 與 network index 分開保存；`component_ordinal = 0x7fff` 表示未分配 sentinel。
 - 建構交易在所有 callback 完成前保持 `pending/active`，不能 `publish`。
 - callback 順序錯誤、重複 lease、錯誤 owner epoch、布林值冒充整數、越界 index 與 generation 不一致都 fail-closed。

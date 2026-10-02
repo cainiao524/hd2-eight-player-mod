@@ -8,21 +8,25 @@ support.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 from typing import Any
+
+import resource_rollback_quiescence_contract_20261003 as transaction
 
 BUILD = 25480438
 HERE = Path(__file__).resolve().parent
 ABI_REPORT = HERE / "player_creation_abi_gap_audit_20261003.json"
 REVERSE_REPORT = HERE / "player_resource_reverse_cleanup_audit_20261003.json"
+REGISTRATION_REPORT = HERE / "spawn_callback_registration_evidence_v2.json"
 
 CALLBACK_TABLES = {
     "first_callback": "owner+0x40 + component_index*8 + 0xf0c110",
     "second_callback": "owner+0x40 + component_index*8 + 0xf0cb30",
     "third_callback": "owner+0x40 + component_index*8 + 0xf0d550",
 }
-CALLBACK_ORDER = ["first_callback", "second_callback", "third_callback", "roster_insert"]
+CALLBACK_ORDER = ["first_callback", "second_callback", "third_callback"]
 REQUIRED_CLEANUP_ANCHORS = {
     "release_entry",
     "resource_release",
@@ -43,6 +47,7 @@ def _read(path: Path) -> dict[str, Any]:
 def verify() -> dict[str, Any]:
     abi = _read(ABI_REPORT)
     reverse = _read(REVERSE_REPORT)
+    registration = _read(REGISTRATION_REPORT)
     abi_section = abi.get("abi", {})
     tables = abi_section.get("callback_tables")
     roster = abi_section.get("roster_leaf_540920")
@@ -58,11 +63,23 @@ def verify() -> dict[str, Any]:
     }
     dispatch = fdc.get("dispatch") if isinstance(fdc, dict) else None
     sidecar_text = " ".join(sidecar) if isinstance(sidecar, list) else ""
+    roster_registrations = [r for r in registration.get("component_239", [])
+                            if r.get("target_rva") == "0x540920"]
+    roster_registration = roster_registrations[0] if len(roster_registrations) == 1 else {}
 
     checks = {
         "fixed_build_matches": abi.get("build") == BUILD and reverse.get("build") == BUILD,
         "callback_tables_match": observed_tables == CALLBACK_TABLES,
-        "callback_stage_order_complete": CALLBACK_ORDER == [*CALLBACK_TABLES, "roster_insert"],
+        "callback_stage_order_complete": list(transaction.CALLBACK_ORDER) == CALLBACK_ORDER,
+        "model_tables_match": transaction.ABI_CALLBACK_TABLES == observed_tables,
+        "roster_in_first_table": roster_registration.get("table_base_offset") == "0xf0c110"
+        and roster_registration.get("component_index") == 239
+        and roster_registration.get("destination_offset") == hex(0xf0c110 + 239 * 8)
+        and roster_registration.get("lea", {}).get("rva") == "0x55bfd0"
+        and roster_registration.get("lea", {}).get("bytes") == "488d054949feff"
+        and roster_registration.get("store", {}).get("rva") == "0x55bfd7"
+        and roster_registration.get("store", {}).get("bytes") == "48898188c8f000",
+        "registration_capture_matches": registration.get("capture_identity_sha256") == abi.get("capture_sha256"),
         "roster_component_matches": isinstance(tables, dict) and tables.get("roster_component") == 239,
         "roster_leaf_guard_and_writes_present": isinstance(roster, dict)
         and roster.get("guard") == "global roster field +0x80 cmp 4"
@@ -89,7 +106,14 @@ def verify() -> dict[str, Any]:
         "callback_order": CALLBACK_ORDER,
         "callback_tables": CALLBACK_TABLES,
         "roster_component": 239,
+        "roster_insert_phase": "first_callback",
+        "roster_registration": roster_registration,
         "source_reports": {
+            "callback_registration": {
+                "path": str(REGISTRATION_REPORT),
+                "sha256": hashlib.sha256(REGISTRATION_REPORT.read_bytes()).hexdigest(),
+                "capture_sha256": registration.get("capture_identity_sha256"),
+            },
             "player_creation_abi": {
                 "path": str(ABI_REPORT),
                 "schema": abi.get("schema"),
@@ -119,7 +143,8 @@ def main() -> int:
     report = verify()
     args.output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps({"schema": report["schema"], "passed": sum(v is True for v in report["checks"].values()), "installable": False}, ensure_ascii=False))
-    return 0
+    return 0 if all(value is True for name, value in report["checks"].items()
+                    if name not in ("production_patch_ready", "runtime_verified", "installable", "multiplayer_verified")) else 1
 
 
 if __name__ == "__main__":

@@ -68,11 +68,6 @@
     "third_callback": [
       "second_callback",
       "first_callback"
-    ],
-    "roster_insert": [
-      "third_callback",
-      "second_callback",
-      "first_callback"
     ]
   },
   "abi_callback_contract": {
@@ -82,11 +77,12 @@
       "third_callback": "owner+0x40 + component_index*8 + 0xf0d550"
     },
     "roster_component": 239,
+    "roster_insert_phase": "first_callback",
+    "roster_insert_is_separate_native_stage": false,
     "stage_order": [
       "first_callback",
       "second_callback",
-      "third_callback",
-      "roster_insert"
+      "third_callback"
     ]
   },
   "reentry_receipt": {
@@ -126,6 +122,33 @@
     },
     "thread_quiesced": true
   },
+  "complete_release_receipt": {
+    "status": "released",
+    "idempotent": false,
+    "token": {
+      "network_index": 5,
+      "generation": 1,
+      "owner_epoch": 2
+    },
+    "owner_key": 8192,
+    "owner_epoch": 2,
+    "reason": "release",
+    "unwound_callbacks": [
+      "third_callback",
+      "second_callback",
+      "first_callback"
+    ],
+    "cleanup_actions": [
+      "undo:third_callback",
+      "undo:second_callback",
+      "undo:first_callback",
+      "remove_roster_record",
+      "remove_owner8_reverse_map",
+      "release_resource_handle",
+      "clear_resource_record"
+    ],
+    "all_side_effects_cleared": true
+  },
   "final_snapshot": {
     "build": 25480438,
     "capacity": 8,
@@ -148,6 +171,8 @@
   },
   "limits": [
     "Only an offline state model; no process query, native call, memory write, hook, installation or multiplayer test.",
+    "Roster insertion is a component-239 leaf in the first callback table, not a fourth native stage. publish is a model-only readiness check.",
+    "Failure injection assumes the failed callback is atomic. Per-component side effects within a failed native callback are unresolved and must be journaled before integration.",
     "The model specifies rollback and quiescence obligations but does not resolve the native callback ABI or player index 4..7 gate.",
     "All production/runtime/install/multiplayer flags remain false."
   ]

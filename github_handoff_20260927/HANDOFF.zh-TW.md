@@ -62,7 +62,7 @@
 
 ## 2026-10-03 player-resource rollback 與 peer lifecycle sidecar 契約
 
-新增 [RESOURCE_ROLLBACK_QUIESCENCE_CONTRACT_20261003.zh-TW.md](../five_player_feasibility_20260927/RESOURCE_ROLLBACK_QUIESCENCE_CONTRACT_20261003.zh-TW.md)：以固定 player-creation／reverse-cleanup evidence 為輸入，離線模型覆蓋三張 ABI callback table、roster insertion、第三階段失敗的反向回滾、release/re-entry tombstone 冪等、generation／owner epoch stale 防護、callback lease 靜默及 owner migration；9 項測試通過。這只收斂後續 native adapter 必須遵守的契約，沒有產生 native patch。
+新增 [RESOURCE_ROLLBACK_QUIESCENCE_CONTRACT_20261003.zh-TW.md](../five_player_feasibility_20260927/RESOURCE_ROLLBACK_QUIESCENCE_CONTRACT_20261003.zh-TW.md)：以固定 player-creation／reverse-cleanup evidence 為輸入，離線模型覆蓋三張 ABI callback table、第一張 table 內的 component-239 roster insertion、第三階段失敗的反向回滾、release/re-entry tombstone 冪等、generation／owner epoch stale 防護、callback lease 靜默及 owner migration；9 項測試通過。這只收斂後續 native adapter 必須遵守的契約，沒有產生 native patch。
 另新增 `player_resource_callback_abi_binding_20261003.json` 與 verifier：逐項核對三張 callback table、component `239` roster leaf、`0x581320/0x581780` dispatch ABI、`0xFDC820/0xFDDC80/0x172F8A0` 反向清理邊界；9/9 靜態檢查通過。它只證明離線契約與保存的固定 build 報告一致，沒有證明第五至第八位玩家能到達 runtime 建立路徑。
 
 新增 [PEER_LIFECYCLE_SIDECAR_CONTRACT_20261003.zh-TW.md](../five_player_feasibility_20260927/PEER_LIFECYCLE_SIDECAR_CONTRACT_20261003.zh-TW.md)：分離 network index、member／peer identity、resource handle、callback lease 與 host owner，覆蓋 partial confirmed-peer rollback、pending cancel、離隊冪等、重連 generation、callback quiescence 及 host migration prepare／commit／abort；8 項測試通過。合成報告的 native owner、runtime、installable 與 multiplayer flags 仍全部為 false。

@@ -4,8 +4,7 @@
   "callback_order": [
     "first_callback",
     "second_callback",
-    "third_callback",
-    "roster_insert"
+    "third_callback"
   ],
   "callback_tables": {
     "first_callback": "owner+0x40 + component_index*8 + 0xf0c110",
@@ -13,7 +12,31 @@
     "third_callback": "owner+0x40 + component_index*8 + 0xf0d550"
   },
   "roster_component": 239,
+  "roster_insert_phase": "first_callback",
+  "roster_registration": {
+    "table_base_offset": "0xf0c110",
+    "component_index": 239,
+    "destination_offset": "0xf0c888",
+    "target_rva": "0x540920",
+    "lea": {
+      "rva": "0x55bfd0",
+      "bytes": "488d054949feff",
+      "sha256": "fb23676c767f65999b4bf11f91dca27eecfa154954a559e6a701a84dac63bb80",
+      "asm": "lea rax, [rip - 0x1b6b7]"
+    },
+    "store": {
+      "rva": "0x55bfd7",
+      "bytes": "48898188c8f000",
+      "sha256": "05e26adac7a7f3fa736a6dd21c71919c9c4eaebe5393552bee742b33585a0a88",
+      "asm": "mov qword ptr [rcx + 0xf0c888], rax"
+    }
+  },
   "source_reports": {
+    "callback_registration": {
+      "path": "E:\\File\\Codes\\0\\26.10.1\\HD2\\five_player_feasibility_20260927\\spawn_callback_registration_evidence_v2.json",
+      "sha256": "142df92c5411697e03914be224d30e05f85a02011c2c96e00be2e2aa9b9a5109",
+      "capture_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8"
+    },
     "player_creation_abi": {
       "path": "E:\\File\\Codes\\0\\26.10.1\\HD2\\five_player_feasibility_20260927\\player_creation_abi_gap_audit_20261003.json",
       "schema": "hd2_player_creation_abi_gap_audit_v1",
@@ -29,6 +52,9 @@
     "fixed_build_matches": true,
     "callback_tables_match": true,
     "callback_stage_order_complete": true,
+    "model_tables_match": true,
+    "roster_in_first_table": true,
+    "registration_capture_matches": true,
     "roster_component_matches": true,
     "roster_leaf_guard_and_writes_present": true,
     "resource_dispatch_abi_present": true,
