@@ -63,3 +63,15 @@ class AcceptanceTests(unittest.TestCase):
     def test_not_live_input_fails_closed(self):
         with self.assertRaises(acceptance.AcceptanceError):
             acceptance.verify(self.write_logs([make_log(i, live=(i != 3)) for i in range(8)]))
+
+    def test_shared_session_is_required(self):
+        logs = [make_log(i) for i in range(8)]
+        logs[7]["session_id"] = "session-other"
+        with self.assertRaises(acceptance.AcceptanceError):
+            acceptance.verify(self.write_logs(logs))
+
+    def test_resource_entity_and_roster_are_globally_unique(self):
+        logs = [make_log(i) for i in range(8)]
+        logs[7]["entity_id"] = logs[0]["entity_id"]
+        with self.assertRaises(acceptance.AcceptanceError):
+            acceptance.verify(self.write_logs(logs))
