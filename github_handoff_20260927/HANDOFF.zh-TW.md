@@ -1,5 +1,20 @@
 # 接續狀態：2026-09-28 已恢復離線工作
 
+## 2026-10-03 live preflight continuation
+
+在使用者已授權的範圍內，固定 build `25480438` 的 PID `36900` 完成一批 bounded read-only 證據保存：
+
+- [live_native_sites_20261003.json](../five_player_feasibility_20260927/live_native_sites_20261003.json)：六個 host/client allocator、migration、remove/reset、player-creation fixed sites，全部 first-read/reread 一致。
+- [live_session_member_sites_20261003.json](../five_player_feasibility_20260927/live_session_member_sites_20261003.json)：五個 host-join、platform member enumerator/consumer/leaf/state-update sites，全部一致。
+- [live_call_edges_20261003.json](../five_player_feasibility_20260927/live_call_edges_20261003.json)：22,271 個 executable pages、27 條 direct `E8` edges；`0x4804FCF4` 只在 send-side `0xBE4982` 命中。
+- [live_dispatcher_data_20261003.json](../five_player_feasibility_20260927/live_dispatcher_data_20261003.json)：`0xBDE430` 673-byte live code pin 重讀一致；固定 API/config path 與兩個 image hits 保存，但沒有 heap registry。
+- [live_interface_probe_20261003.json](../five_player_feasibility_20260927/live_interface_probe_20261003.json)、[live_signature_scan_20261003.json](../five_player_feasibility_20260927/live_signature_scan_20261003.json) 及 [live_private_registry_20261003_current.json](../five_player_feasibility_20260927/live_private_registry_20261003_current.json)：API/config fixed path、host-join signature、128 MiB private scan 保存；registry bounded scan 0 hit，member-enumerator signature 在該程序狀態 0 hit。
+- [live_preflight_continuation_verification_20261003.json](../five_player_feasibility_20260927/live_preflight_continuation_verification_20261003.json) 對上述證據執行 21/21 固定檢查；[LIVE_PREFLIGHT_CONTINUATION_20261003.zh-TW.md](../five_player_feasibility_20260927/LIVE_PREFLIGHT_CONTINUATION_20261003.zh-TW.md) 說明限制與下一步。
+
+同時完成 [selector cleanup xrefs](../five_player_feasibility_20260927/SELECTOR_CLEANUP_XREFS_20261003.zh-TW.md)：registration wrapper `0x1094680` 沒有 direct caller，unregistration `0x1094710` 有 3 個 direct caller，status `0x1094780` 有 3 個；三個 unregistration fragment 都可辨識 `global+0x1f028`。公開同版 Better Lobby 交叉核對把這個欄位及 wrapper 指向 lobby browser/network context，因此不能再把它當成 confirmed-peer/player-admission registry。`selector_registration_xrefs_20261003.json` 只保存 bounded static xrefs，不提供 runtime selector map。
+
+上述資料均為 `read_only=true`、沒有函式呼叫、寫入、hook、注入、安裝或多人驗收；`resolver_closed=false`、`installable=false`、`multiplayer_verified=false` 保持不變。下一個實作門檻回到 host/client peer admission → confirmed-peer → player creation 的真實第五人流程，selector registry 只能在取得 runtime 證據後再評估。
+
 2026-10-02使用者明確授權第四次限定擷取、遊戲程序存取、載入／注入、安裝修改與後續真實測試；後續只在固定 build、可回滾 staging 和 fail-closed gate 下使用這份授權。
 
 使用者已明確要求接續完整八帳號同任務全流程目標。6054F0 候選已完成接續oracle審查、契約、manifest、五份全域文件及本機交付收據更新，正式離線版本為 **0.14.0-offline**。原source、測試及凍結報告保持相同；只重跑6054F0五組／42次，執行紀錄完全一致。共同bundle16個roster函式／62區域，累計149組／4,314次套件執行或觀察。

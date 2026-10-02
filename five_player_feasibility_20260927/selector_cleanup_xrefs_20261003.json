@@ -1,0 +1,660 @@
+{
+  "schema": "hd2_selector_cleanup_xrefs_v1",
+  "build": 25480438,
+  "capture_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "source_sha256": {
+    "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+  },
+  "read_only": true,
+  "process_accessed": false,
+  "game_memory_written": false,
+  "hooks_installed": false,
+  "targets": {
+    "registration": "0x1094680",
+    "unregistration": "0x1094710",
+    "status": "0x1094780",
+    "zero": "0x1094700"
+  },
+  "bodies": {
+    "registration": {
+      "rva": [
+        "0x1094680",
+        "0x10946f4"
+      ],
+      "size": 116,
+      "sha256": "e560d5173d56df1231e96c16ac5db911eb7da6fc39e532b9ab9c72258facc65a"
+    },
+    "unregistration": {
+      "rva": [
+        "0x1094710",
+        "0x109477d"
+      ],
+      "size": 109,
+      "sha256": "1a3fd3c9d84714c5953b2d0d5e88df4cea7391ccd94d9709a0fd16c9c11764a5"
+    }
+  },
+  "direct_calls": {
+    "registration": [],
+    "unregistration": [
+      {
+        "call_rva": "0x133d477",
+        "instruction": {
+          "rva": "0x133d477",
+          "bytes": "e89472d5ff",
+          "asm": "call 0x1094710"
+        },
+        "fragment": [
+          "0x133d460",
+          "0x133d485",
+          "0x2508910"
+        ],
+        "root": [
+          "0x133d460",
+          "0x133d485",
+          "0x2508910"
+        ]
+      },
+      {
+        "call_rva": "0x145f2ec",
+        "instruction": {
+          "rva": "0x145f2ec",
+          "bytes": "e81f54c3ff",
+          "asm": "call 0x1094710"
+        },
+        "fragment": [
+          "0x145f0f0",
+          "0x145f466",
+          "0x251ccb0"
+        ],
+        "root": [
+          "0x145f0f0",
+          "0x145f466",
+          "0x251ccb0"
+        ]
+      },
+      {
+        "call_rva": "0x145f732",
+        "instruction": {
+          "rva": "0x145f732",
+          "bytes": "e8d94fc3ff",
+          "asm": "call 0x1094710"
+        },
+        "fragment": [
+          "0x145f640",
+          "0x145f788",
+          "0x251cce8"
+        ],
+        "root": [
+          "0x145f640",
+          "0x145f788",
+          "0x251cce8"
+        ]
+      }
+    ],
+    "status": [
+      {
+        "call_rva": "0x133c88a",
+        "instruction": {
+          "rva": "0x133c88a",
+          "bytes": "e8f17ed5ff",
+          "asm": "call 0x1094780"
+        },
+        "fragment": [
+          "0x133c702",
+          "0x133c897",
+          "0x2508894"
+        ],
+        "root": [
+          "0x133c6c0",
+          "0x133c702",
+          "0x250887c"
+        ]
+      },
+      {
+        "call_rva": "0x145f6b4",
+        "instruction": {
+          "rva": "0x145f6b4",
+          "bytes": "e8c750c3ff",
+          "asm": "call 0x1094780"
+        },
+        "fragment": [
+          "0x145f640",
+          "0x145f788",
+          "0x251cce8"
+        ],
+        "root": [
+          "0x145f640",
+          "0x145f788",
+          "0x251cce8"
+        ]
+      },
+      {
+        "call_rva": "0x145f74d",
+        "instruction": {
+          "rva": "0x145f74d",
+          "bytes": "e82e50c3ff",
+          "asm": "call 0x1094780"
+        },
+        "fragment": [
+          "0x145f640",
+          "0x145f788",
+          "0x251cce8"
+        ],
+        "root": [
+          "0x145f640",
+          "0x145f788",
+          "0x251cce8"
+        ]
+      }
+    ],
+    "zero": []
+  },
+  "cleanup_sites": [
+    {
+      "helper": "unregistration",
+      "target_rva": "0x1094710",
+      "call_rva": "0x133d477",
+      "instruction": {
+        "rva": "0x133d477",
+        "bytes": "e89472d5ff",
+        "asm": "call 0x1094710"
+      },
+      "fragment": [
+        "0x133d460",
+        "0x133d485",
+        "0x2508910"
+      ],
+      "root": [
+        "0x133d460",
+        "0x133d485",
+        "0x2508910"
+      ],
+      "context": [
+        {
+          "rva": "0x133d460",
+          "bytes": "4053",
+          "asm": "push rbx"
+        },
+        {
+          "rva": "0x133d462",
+          "bytes": "4883ec40",
+          "asm": "sub rsp, 0x40"
+        },
+        {
+          "rva": "0x133d466",
+          "bytes": "488b0d83fa1302",
+          "asm": "mov rcx, qword ptr [rip + 0x213fa83]"
+        },
+        {
+          "rva": "0x133d46d",
+          "bytes": "488bda",
+          "asm": "mov rbx, rdx"
+        },
+        {
+          "rva": "0x133d470",
+          "bytes": "4881c128f00100",
+          "asm": "add rcx, 0x1f028"
+        },
+        {
+          "rva": "0x133d477",
+          "bytes": "e89472d5ff",
+          "asm": "call 0x1094710"
+        },
+        {
+          "rva": "0x133d47c",
+          "bytes": "4885db",
+          "asm": "test rbx, rbx"
+        },
+        {
+          "rva": "0x133d47f",
+          "bytes": "0f845e010000",
+          "asm": "je 0x133d5e3"
+        }
+      ],
+      "owner_source": "global+0x1f028",
+      "owner_setup_rva": "0x133d470",
+      "owner_source_in_fragment": "global+0x1f028",
+      "owner_setup_rva_in_fragment": "0x133d470"
+    },
+    {
+      "helper": "unregistration",
+      "target_rva": "0x1094710",
+      "call_rva": "0x145f2ec",
+      "instruction": {
+        "rva": "0x145f2ec",
+        "bytes": "e81f54c3ff",
+        "asm": "call 0x1094710"
+      },
+      "fragment": [
+        "0x145f0f0",
+        "0x145f466",
+        "0x251ccb0"
+      ],
+      "root": [
+        "0x145f0f0",
+        "0x145f466",
+        "0x251ccb0"
+      ],
+      "context": [
+        {
+          "rva": "0x145f2c5",
+          "bytes": "ff9298010000",
+          "asm": "call qword ptr [rdx + 0x198]"
+        },
+        {
+          "rva": "0x145f2cb",
+          "bytes": "eb11",
+          "asm": "jmp 0x145f2de"
+        },
+        {
+          "rva": "0x145f2cd",
+          "bytes": "488b8848010000",
+          "asm": "mov rcx, qword ptr [rax + 0x148]"
+        },
+        {
+          "rva": "0x145f2d4",
+          "bytes": "488b4118",
+          "asm": "mov rax, qword ptr [rcx + 0x18]"
+        },
+        {
+          "rva": "0x145f2d8",
+          "bytes": "498bc8",
+          "asm": "mov rcx, r8"
+        },
+        {
+          "rva": "0x145f2db",
+          "bytes": "ff5048",
+          "asm": "call qword ptr [rax + 0x48]"
+        },
+        {
+          "rva": "0x145f2de",
+          "bytes": "488b0d0bdc0102",
+          "asm": "mov rcx, qword ptr [rip + 0x201dc0b]"
+        },
+        {
+          "rva": "0x145f2e5",
+          "bytes": "4881c128f00100",
+          "asm": "add rcx, 0x1f028"
+        },
+        {
+          "rva": "0x145f2ec",
+          "bytes": "e81f54c3ff",
+          "asm": "call 0x1094710"
+        },
+        {
+          "rva": "0x145f2f1",
+          "bytes": "ba01000000",
+          "asm": "mov edx, 1"
+        },
+        {
+          "rva": "0x145f2f6",
+          "bytes": "c686e80f010001",
+          "asm": "mov byte ptr [rsi + 0x10fe8], 1"
+        }
+      ],
+      "owner_source": "global+0x1f028",
+      "owner_setup_rva": "0x145f2e5",
+      "owner_source_in_fragment": "global+0x1f028",
+      "owner_setup_rva_in_fragment": "0x145f2e5"
+    },
+    {
+      "helper": "unregistration",
+      "target_rva": "0x1094710",
+      "call_rva": "0x145f732",
+      "instruction": {
+        "rva": "0x145f732",
+        "bytes": "e8d94fc3ff",
+        "asm": "call 0x1094710"
+      },
+      "fragment": [
+        "0x145f640",
+        "0x145f788",
+        "0x251cce8"
+      ],
+      "root": [
+        "0x145f640",
+        "0x145f788",
+        "0x251cce8"
+      ],
+      "context": [
+        {
+          "rva": "0x145f713",
+          "bytes": "498bc8",
+          "asm": "mov rcx, r8"
+        },
+        {
+          "rva": "0x145f716",
+          "bytes": "ff9298010000",
+          "asm": "call qword ptr [rdx + 0x198]"
+        },
+        {
+          "rva": "0x145f71c",
+          "bytes": "eb11",
+          "asm": "jmp 0x145f72f"
+        },
+        {
+          "rva": "0x145f71e",
+          "bytes": "488b8848010000",
+          "asm": "mov rcx, qword ptr [rax + 0x148]"
+        },
+        {
+          "rva": "0x145f725",
+          "bytes": "488b4118",
+          "asm": "mov rax, qword ptr [rcx + 0x18]"
+        },
+        {
+          "rva": "0x145f729",
+          "bytes": "498bc8",
+          "asm": "mov rcx, r8"
+        },
+        {
+          "rva": "0x145f72c",
+          "bytes": "ff5048",
+          "asm": "call qword ptr [rax + 0x48]"
+        },
+        {
+          "rva": "0x145f72f",
+          "bytes": "488bcb",
+          "asm": "mov rcx, rbx"
+        },
+        {
+          "rva": "0x145f732",
+          "bytes": "e8d94fc3ff",
+          "asm": "call 0x1094710"
+        },
+        {
+          "rva": "0x145f737",
+          "bytes": "41c686e80f010001",
+          "asm": "mov byte ptr [r14 + 0x10fe8], 1"
+        },
+        {
+          "rva": "0x145f73f",
+          "bytes": "41c786e40f010000000000",
+          "asm": "mov dword ptr [r14 + 0x10fe4], 0"
+        }
+      ],
+      "owner_source": "unresolved",
+      "owner_source_in_fragment": "global+0x1f028",
+      "owner_setup_rva_in_fragment": "0x145f6a5"
+    },
+    {
+      "helper": "status",
+      "target_rva": "0x1094780",
+      "call_rva": "0x133c88a",
+      "instruction": {
+        "rva": "0x133c88a",
+        "bytes": "e8f17ed5ff",
+        "asm": "call 0x1094780"
+      },
+      "fragment": [
+        "0x133c702",
+        "0x133c897",
+        "0x2508894"
+      ],
+      "root": [
+        "0x133c6c0",
+        "0x133c702",
+        "0x250887c"
+      ],
+      "context": [
+        {
+          "rva": "0x133c861",
+          "bytes": "0f2fc1",
+          "asm": "comiss xmm0, xmm1"
+        },
+        {
+          "rva": "0x133c864",
+          "bytes": "f3410f118f54bd1000",
+          "asm": "movss dword ptr [r15 + 0x10bd54], xmm1"
+        },
+        {
+          "rva": "0x133c86d",
+          "bytes": "0f823a080000",
+          "asm": "jb 0x133d0ad"
+        },
+        {
+          "rva": "0x133c873",
+          "bytes": "488bd6",
+          "asm": "mov rdx, rsi"
+        },
+        {
+          "rva": "0x133c876",
+          "bytes": "e8e50b0000",
+          "asm": "call 0x133d460"
+        },
+        {
+          "rva": "0x133c87b",
+          "bytes": "c7460401000000",
+          "asm": "mov dword ptr [rsi + 4], 1"
+        },
+        {
+          "rva": "0x133c882",
+          "bytes": "e926080000",
+          "asm": "jmp 0x133d0ad"
+        },
+        {
+          "rva": "0x133c887",
+          "bytes": "488bcb",
+          "asm": "mov rcx, rbx"
+        },
+        {
+          "rva": "0x133c88a",
+          "bytes": "e8f17ed5ff",
+          "asm": "call 0x1094780"
+        },
+        {
+          "rva": "0x133c88f",
+          "bytes": "84c0",
+          "asm": "test al, al"
+        },
+        {
+          "rva": "0x133c891",
+          "bytes": "0f8516080000",
+          "asm": "jne 0x133d0ad"
+        }
+      ],
+      "owner_source": "unresolved",
+      "owner_source_in_fragment": "unresolved",
+      "owner_setup_rva_in_fragment": null
+    },
+    {
+      "helper": "status",
+      "target_rva": "0x1094780",
+      "call_rva": "0x145f6b4",
+      "instruction": {
+        "rva": "0x145f6b4",
+        "bytes": "e8c750c3ff",
+        "asm": "call 0x1094780"
+      },
+      "fragment": [
+        "0x145f640",
+        "0x145f788",
+        "0x251cce8"
+      ],
+      "root": [
+        "0x145f640",
+        "0x145f788",
+        "0x251cce8"
+      ],
+      "context": [
+        {
+          "rva": "0x145f68d",
+          "bytes": "740a",
+          "asm": "je 0x145f699"
+        },
+        {
+          "rva": "0x145f68f",
+          "bytes": "4180beb94c000000",
+          "asm": "cmp byte ptr [r14 + 0x4cb9], 0"
+        },
+        {
+          "rva": "0x145f697",
+          "bytes": "7405",
+          "asm": "je 0x145f69e"
+        },
+        {
+          "rva": "0x145f699",
+          "bytes": "e8f2013400",
+          "asm": "call 0x179f890"
+        },
+        {
+          "rva": "0x145f69e",
+          "bytes": "488b1d4bd80102",
+          "asm": "mov rbx, qword ptr [rip + 0x201d84b]"
+        },
+        {
+          "rva": "0x145f6a5",
+          "bytes": "4881c328f00100",
+          "asm": "add rbx, 0x1f028"
+        },
+        {
+          "rva": "0x145f6ac",
+          "bytes": "488bcb",
+          "asm": "mov rcx, rbx"
+        },
+        {
+          "rva": "0x145f6af",
+          "bytes": "48895c2448",
+          "asm": "mov qword ptr [rsp + 0x48], rbx"
+        },
+        {
+          "rva": "0x145f6b4",
+          "bytes": "e8c750c3ff",
+          "asm": "call 0x1094780"
+        },
+        {
+          "rva": "0x145f6b9",
+          "bytes": "84c0",
+          "asm": "test al, al"
+        },
+        {
+          "rva": "0x145f6bb",
+          "bytes": "7514",
+          "asm": "jne 0x145f6d1"
+        }
+      ],
+      "owner_source": "global+0x1f028",
+      "owner_setup_rva": "0x145f6a5",
+      "owner_source_in_fragment": "global+0x1f028",
+      "owner_setup_rva_in_fragment": "0x145f6a5"
+    },
+    {
+      "helper": "status",
+      "target_rva": "0x1094780",
+      "call_rva": "0x145f74d",
+      "instruction": {
+        "rva": "0x145f74d",
+        "bytes": "e82e50c3ff",
+        "asm": "call 0x1094780"
+      },
+      "fragment": [
+        "0x145f640",
+        "0x145f788",
+        "0x251cce8"
+      ],
+      "root": [
+        "0x145f640",
+        "0x145f788",
+        "0x251cce8"
+      ],
+      "context": [
+        {
+          "rva": "0x145f725",
+          "bytes": "488b4118",
+          "asm": "mov rax, qword ptr [rcx + 0x18]"
+        },
+        {
+          "rva": "0x145f729",
+          "bytes": "498bc8",
+          "asm": "mov rcx, r8"
+        },
+        {
+          "rva": "0x145f72c",
+          "bytes": "ff5048",
+          "asm": "call qword ptr [rax + 0x48]"
+        },
+        {
+          "rva": "0x145f72f",
+          "bytes": "488bcb",
+          "asm": "mov rcx, rbx"
+        },
+        {
+          "rva": "0x145f732",
+          "bytes": "e8d94fc3ff",
+          "asm": "call 0x1094710"
+        },
+        {
+          "rva": "0x145f737",
+          "bytes": "41c686e80f010001",
+          "asm": "mov byte ptr [r14 + 0x10fe8], 1"
+        },
+        {
+          "rva": "0x145f73f",
+          "bytes": "41c786e40f010000000000",
+          "asm": "mov dword ptr [r14 + 0x10fe4], 0"
+        },
+        {
+          "rva": "0x145f74a",
+          "bytes": "488bcb",
+          "asm": "mov rcx, rbx"
+        },
+        {
+          "rva": "0x145f74d",
+          "bytes": "e82e50c3ff",
+          "asm": "call 0x1094780"
+        },
+        {
+          "rva": "0x145f752",
+          "bytes": "84c0",
+          "asm": "test al, al"
+        },
+        {
+          "rva": "0x145f754",
+          "bytes": "0f85b1080000",
+          "asm": "jne 0x146000b"
+        }
+      ],
+      "owner_source": "unresolved",
+      "owner_source_in_fragment": "global+0x1f028",
+      "owner_setup_rva_in_fragment": "0x145f6a5"
+    }
+  ],
+  "checks": [
+    {
+      "name": "capture_identity",
+      "passed": true
+    },
+    {
+      "name": "registration_direct_calls_absent",
+      "passed": true,
+      "count": 0
+    },
+    {
+      "name": "unregistration_direct_calls",
+      "passed": true,
+      "count": 3
+    },
+    {
+      "name": "status_direct_calls",
+      "passed": true,
+      "count": 3
+    },
+    {
+      "name": "unregistration_owner_field_binding_complete",
+      "passed": true,
+      "resolved": 3,
+      "total": 3
+    }
+  ],
+  "runtime_verified": false,
+  "installable": false,
+  "multiplayer_verified": false,
+  "findings": [
+    "The dynamic registration body has no direct E8 callers in the bounded code capture; its call path is therefore indirect or runtime-registered.",
+    "The unregistration body has three direct callers and the status helper has three; all three unregistration fragments prepare or derive global+0x1f028, while status contexts are only partly matched.",
+    "The recognized owner field is a cleanup sidecar binding candidate, but it does not prove storage capacity, callback ABI, selector mapping, or thread safety.",
+    "Public same-build Better Lobby notes identify global+0x1f028 and these wrappers as lobby-browser context; do not reuse this owner as a confirmed-peer/player-admission registry without runtime proof."
+  ],
+  "next_required": "Obtain a permitted runtime callback or service registry observation that supplies the dynamic registration key and selector, then bind that owner through the existing admission/player-creation transaction before any production hook is considered."
+}

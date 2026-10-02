@@ -1,0 +1,139 @@
+{
+  "schema": "hd2_live_preflight_continuation_verification_v1",
+  "build": 25480438,
+  "pid": 36900,
+  "source_files": {
+    "interface": "live_interface_probe_20261003.json",
+    "private": "live_private_registry_20261003_current.json",
+    "signature": "live_signature_scan_20261003.json",
+    "native": "live_native_sites_20261003.json",
+    "session": "live_session_member_sites_20261003.json",
+    "edges": "live_call_edges_20261003.json",
+    "dispatcher": "live_dispatcher_data_20261003.json"
+  },
+  "checks": [
+    {
+      "name": "fixed_build",
+      "passed": true,
+      "detail": "[25480438]"
+    },
+    {
+      "name": "exe_identity",
+      "passed": true,
+      "detail": "['f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06']"
+    },
+    {
+      "name": "game_identity",
+      "passed": true,
+      "detail": "['2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e']"
+    },
+    {
+      "name": "single_pid_continuity",
+      "passed": true,
+      "detail": "[36900]"
+    },
+    {
+      "name": "native_sites_schema",
+      "passed": true,
+      "detail": "hd2_native_site_capture_v1"
+    },
+    {
+      "name": "native_sites_count",
+      "passed": true,
+      "detail": "6"
+    },
+    {
+      "name": "native_sites_reread",
+      "passed": true,
+      "detail": "six fixed sites"
+    },
+    {
+      "name": "session_sites_schema",
+      "passed": true,
+      "detail": "hd2_session_member_site_capture_v1"
+    },
+    {
+      "name": "session_sites_count",
+      "passed": true,
+      "detail": "5"
+    },
+    {
+      "name": "session_sites_reread",
+      "passed": true,
+      "detail": "five fixed sites"
+    },
+    {
+      "name": "direct_edge_scan_schema",
+      "passed": true,
+      "detail": "hd2_live_native_call_edges_v1"
+    },
+    {
+      "name": "direct_edge_count",
+      "passed": true,
+      "detail": "27"
+    },
+    {
+      "name": "confirmed_peer_hash_send_only",
+      "passed": true,
+      "detail": "[{'module': 'game.dll', 'address': '0x7ff829f94982', 'rva': '0xbe4982'}]"
+    },
+    {
+      "name": "edge_scan_read_only",
+      "passed": true,
+      "detail": "calls/writes false"
+    },
+    {
+      "name": "dispatcher_schema",
+      "passed": true,
+      "detail": "hd2_live_dispatcher_data_capture_v1"
+    },
+    {
+      "name": "dispatcher_code_pin",
+      "passed": true,
+      "detail": "0xBDE430"
+    },
+    {
+      "name": "dispatcher_code_reread",
+      "passed": true,
+      "detail": "reread"
+    },
+    {
+      "name": "dispatcher_hash_hit",
+      "passed": true,
+      "detail": "[{'pattern': 'confirmed_peer_event_hash', 'module': 'game.dll', 'address': '0x7ff829f94982', 'rva': '0xbe4982', 'page': '0x7ff829f94000', 'page_sha256': 'eebae99706b1c2163cd225226426fe967d0e5de2fb65b31781ae41fdf5cbf4fa'}, {'pattern': 'confirmed_peer_receiver', 'module': 'game.dll', 'address': '0x7ff82b4fc820', 'rva': '0x214c820', 'page': '0x7ff82b4fc000', 'page_sha256': '7bd76095c5b112ec6dc97369b3d13df75b8e7abd5cdb19da2ac2d5156c82677d'}]"
+    },
+    {
+      "name": "private_registry_negative",
+      "passed": true,
+      "detail": "bounded private scan"
+    },
+    {
+      "name": "image_signature_host_join",
+      "passed": true,
+      "detail": "[{'name': 'host_join', 'address': '0x7ff82a43bc70', 'region': '0x7ff8293b1000', 'region_size': '0x2110000', 'signature_sha256': '8deecd0b4075eee3e436db6d5787ba68feb5ade0b9401ce1eee9814995309624'}]"
+    },
+    {
+      "name": "all_capture_flags_read_only",
+      "passed": true,
+      "detail": "all captures"
+    }
+  ],
+  "checks_passed": 21,
+  "checks_total": 21,
+  "verification_passed": true,
+  "runtime_calls_made": false,
+  "game_memory_written": false,
+  "hooks_installed": false,
+  "resolver_closed": false,
+  "installable": false,
+  "multiplayer_verified": false,
+  "decision": {
+    "status": "live_image_aligned_registry_unresolved",
+    "meaning": "The fixed build and native boundaries are stable in one process state; no service-side hash/selector registry or player creation success was observed.",
+    "next_required": [
+      "Bind the service-side event-hash to selector registry or a real callback trace.",
+      "Run a real fifth-peer session and capture confirmed-peer to player creation on host and client.",
+      "Only then construct a production hook and ladder to eight accounts."
+    ]
+  }
+}
