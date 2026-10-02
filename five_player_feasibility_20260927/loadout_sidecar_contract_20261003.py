@@ -111,6 +111,8 @@ class LoadoutSidecar:
     def move_ui(self, token: LoadoutToken, ui_slot: int) -> None:
         self._check_ui_slot(ui_slot)
         record = self._record_for(token)
+        if record.state is SlotState.RELEASING:
+            raise ValueError("releasing records cannot move UI slots")
         owner = self._ui_to_network.get(ui_slot)
         if owner is not None and owner != record.network_index:
             raise ValueError("UI slot is occupied")

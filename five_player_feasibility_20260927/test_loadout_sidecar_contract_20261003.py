@@ -35,6 +35,9 @@ def test_loadout_sidecar_rejects_stale_or_duplicate_operations():
         sidecar.confirm(token)
     with pytest.raises(ValueError, match="occupied"):
         sidecar.move_ui(token, other.network_index)
+    sidecar.begin_release(token)
+    with pytest.raises(ValueError, match="releasing"):
+        sidecar.move_ui(token, 6)
 
 
 def test_loadout_sidecar_report_is_fail_closed_and_json_safe():
