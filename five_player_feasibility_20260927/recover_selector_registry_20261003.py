@@ -103,6 +103,11 @@ def audit(evidence: Path) -> dict:
     if ptr - im.base != TARGET_RECEIVER:
         raise ValueError("selector 168 receiver mismatch")
     hash_hits = target_hits(im, struct.pack("<I", TARGET_HASH))
+    registration_call_hits = target_hits(im, REG_CALL)
+    expected_registration_rvas = sorted([DYNAMIC_REGISTRATION] + [r[0] for r in STATIC_REGISTRATIONS] + [OTHER_STATIC_REGISTRATION[0]])
+    observed_registration_rvas = sorted(int(row["rva"], 16) for row in registration_call_hits)
+    if observed_registration_rvas != expected_registration_rvas:
+        raise ValueError(f"unexpected registration call set: {observed_registration_rvas}")
     registration_body = body_summary(im, 0x1094680, 0x10946F4, "runtime_registration")
     destroy_body = body_summary(im, 0x1094710, 0x109477D, "runtime_unregistration")
     checks = [
@@ -120,6 +125,7 @@ def audit(evidence: Path) -> dict:
         "dynamic_registration_site": {"rva": hex(DYNAMIC_REGISTRATION), "call_bytes": dynamic_call.hex(), "hash_source": "caller-supplied EDX stored at [RCX+8]"},
         "dynamic_registration_body": registration_body,
         "dynamic_unregistration_body": destroy_body,
+        "all_registration_call_sites": registration_call_hits,
         "target_hash_hits": hash_hits, "checks": checks,
         "hash_to_selector_proven": False, "service_registry_captured": False, "production_hook_ready": False,
         "installable": False, "multiplayer_verified": False,

@@ -8,7 +8,7 @@
 python five_player_feasibility_20260927/recover_selector_registry_20261003.py --write --output five_player_feasibility_20260927/recover_selector_registry_20261003.json
 ```
 
-結果：7 個 `[RDX+0xB0]` registration sites、selector `168 → game.dll+0xBABA80`、固定事件雜湊 `0x4804FCF4` 在 bounded capture 只命中送端 `0xBE4981`。`hash_to_selector_proven=false`、`service_registry_captured=false`、`production_hook_ready=false`。
+結果：bounded code／unwind ranges 中共有 8 個 `[RDX+0xB0]` registration call sites，其中 7 個可由靜態 hash 或動態 EDX 來源分類；selector `168 → game.dll+0xBABA80`；固定事件雜湊 `0x4804FCF4` 在 bounded capture 只命中送端 `0xBE4981`。`hash_to_selector_proven=false`、`service_registry_captured=false`、`production_hook_ready=false`。
 
 ## 已固定的 registration 形狀
 

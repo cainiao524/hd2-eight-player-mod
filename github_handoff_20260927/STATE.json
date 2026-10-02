@@ -1103,10 +1103,10 @@
     "five_player_feasibility_20260927/player_resource_patch_boundary_verification_20261003.json": "5f27c17fe25ef9ccfacdc34bfc3f07e5d9c6dea1db044e074689990a79ef8fc2",
     "five_player_feasibility_20260927/player_resource_patch_boundary_verification_20261003_rerun.json": "5f27c17fe25ef9ccfacdc34bfc3f07e5d9c6dea1db044e074689990a79ef8fc2",
     "five_player_feasibility_20260927/verify_player_resource_patch_boundary_20261003.py": "681a22321c00d502205dc0b838227db84fb34c8fa35ae425b433a6a579bd6b18",
-    "five_player_feasibility_20260927/recover_selector_registry_20261003.py": "852d344d8d991107bd02b324e678d62c9e4ebbe447d047dfccf08a2794b47a51",
-    "five_player_feasibility_20260927/recover_selector_registry_20261003.json": "c30c1cea708f3188db9b434aa6419f19d78f022a0ff91ff131eb650a3d86ec16",
-    "five_player_feasibility_20260927/recover_selector_registry_20261003.receipt.json": "e8ce0b3badb136d0c47d52c9332ccc7d05dfb12bd5631e13f558667d1dc72706",
-    "five_player_feasibility_20260927/RECEIVE_SELECTOR_REGISTRY_BOUNDARY_20261003.zh-TW.md": "3b684136835a60f02974a60a7ed3b7ac7ba406da7c8e3faac25a842835bce3aa"
+    "five_player_feasibility_20260927/recover_selector_registry_20261003.py": "3234e2c1e6c10d36898dce4d4a5058007a59452aa29748ae36a4bfa8a9b097da",
+    "five_player_feasibility_20260927/recover_selector_registry_20261003.json": "51f4346ae4469aa030702a7265fc2c8ed4c1510dc4f83c7f933d630b2cac637f",
+    "five_player_feasibility_20260927/recover_selector_registry_20261003.receipt.json": "84d3e453ab44eb9207e26e5a9af38fc61825fb445b87d9c720aa886f9955fb06",
+    "five_player_feasibility_20260927/RECEIVE_SELECTOR_REGISTRY_BOUNDARY_20261003.zh-TW.md": "be90e7c669e0d294a3a6bcc6522f1ca47ff1caa19cca58f81f40d10dad5f6c99"
   },
   "missing_release_files": [],
   "remaining_release_work": [
@@ -1174,7 +1174,8 @@
     "Audited fixed-build PartyWin.dll and PlayFabMultiplayerWin.dll read-only: network/lobby capacity APIs are present, target event hash 0x4804FCF4 is absent from both, and service capacity is not game-native peer admission proof; installable=false and multiplayer_verified=false.",
     "Completed the fixed-build player resource/creation patch boundary audit: 18/18 static checks pass; index 4..7 fallback bypasses player-resource dispatch, component 239 reaches 0x540920 with original four-slot guards, map growth and rollback are unproven, and direct gate/sidecar/relocation production paths remain false.",
     "Completed a bounded receive selector registration audit: seven static [RDX+0xB0] registration sites and one dynamic EDX-supplied site replay cleanly; selector 168→BABA80 remains proven, but the service registry and 0x4804FCF4→168 mapping remain unobserved, so production hook/install/multiplayer flags stay false.",
-    "Extended the receive registry audit with exact 116-byte runtime registration and 109-byte unregistration bodies: EDX is stored at object+8 and service vtable +0xB0/+0xC0/+0x38 or cleanup +0xE0 is selected by runtime mode; no hash-to-selector value or eight-slot cleanup ABI is observed."
+    "Extended the receive registry audit with exact 116-byte runtime registration and 109-byte unregistration bodies: EDX is stored at object+8 and service vtable +0xB0/+0xC0/+0x38 or cleanup +0xE0 is selected by runtime mode; no hash-to-selector value or eight-slot cleanup ABI is observed.",
+    "Expanded selector registration replay to all eight bounded [RDX+0xB0] call sites; seven classify as static/dynamic registration entries and one is the 0x1094680 method itself. Exact target hash occurrence remains sender-only; service mapping is unproven."
   ],
   "next_offline_work": [
     "恢復 service-side hash/event→selector registry（或取得 selector 168 的 runtime callback trace），再閉合 owner-keyed sidecar、cleanup/exception ABI並生成可回滾 production hook；目前 BC2D10 只證明 vector ABI。",
