@@ -40,11 +40,17 @@
 
 另修正 ClientSidecar callback adapter 的安全邊界：native confirm/create/remove 及 owner retain/release callback 現在全部為必要項；所有 network index（含 0–3）都必須經過 native create，confirm 失敗會回滾 sidecar，remove 失敗會保留記錄供重試。合成測試重新通過，這仍是隔離 sidecar，沒有真實 callback ABI、遊戲 patch 或多人成功。
 
+## 2026-10-03 player-resource rollback 與 peer lifecycle sidecar 契約
+
+新增 [RESOURCE_ROLLBACK_QUIESCENCE_CONTRACT_20261003.zh-TW.md](../five_player_feasibility_20260927/RESOURCE_ROLLBACK_QUIESCENCE_CONTRACT_20261003.zh-TW.md)：以固定 player-creation／reverse-cleanup evidence 為輸入，離線模型覆蓋 partial callback 逆序回滾、release/re-entry tombstone 冪等、generation／owner epoch stale 防護、callback lease 靜默及 owner migration；8 項測試通過。這只收斂後續 native adapter 必須遵守的契約，沒有產生 native patch。
+
+新增 [PEER_LIFECYCLE_SIDECAR_CONTRACT_20261003.zh-TW.md](../five_player_feasibility_20260927/PEER_LIFECYCLE_SIDECAR_CONTRACT_20261003.zh-TW.md)：分離 network index、member／peer identity、resource handle、callback lease 與 host owner，覆蓋 partial confirmed-peer rollback、pending cancel、離隊冪等、重連 generation、callback quiescence 及 host migration prepare／commit／abort；8 項測試通過。合成報告的 native owner、runtime、installable 與 multiplayer flags 仍全部為 false。
+
 ## 2026-10-03 staging gate 接入離線審計
 
-`eight_player_candidate_20260927/Package/stage_package.py` 現在在 staging 判定前讀取並驗證上述兩份固定 build 審計：player-creation ABI 至少 43 個 pins，MenuScreenLoadout relocation 26/26 檢查；缺檔、schema、build 或 fail-closed flags 不符都會阻擋 staging。這些報告仍只是證據閘門，不能把 `production_patch_ready=false` 轉成可安裝。
+`eight_player_candidate_20260927/Package/stage_package.py` 現在在 staging 判定前讀取並驗證上述五份固定 build 審計：player-creation ABI 43 個 pins、MenuScreenLoadout relocation 26/26、player-resource reverse cleanup、rollback/quiescence sidecar 與 peer lifecycle sidecar；缺檔、schema、build、固定 pins、生命週期檢查或 fail-closed flags 不符都會阻擋 staging。這些報告仍只是證據閘門，不能把 `production_patch_ready=false` 轉成可安裝。
 
-針對固定遊戲目錄重新產生的 [diagnostics.json](../eight_player_candidate_20260927/Package/diagnostics.json) 顯示兩份 offline audit `valid=true`，但 native plan `executable=false` 且 native payload 缺失，因此整體仍 `activation_allowed=false`；沒有寫入遊戲目錄、安裝、注入或多人驗收。
+針對固定遊戲目錄重新產生的 [diagnostics.json](../eight_player_candidate_20260927/Package/diagnostics.json) 顯示五份 offline audit `valid=true`，但 native plan `executable=false` 且 native payload 缺失，因此整體仍 `activation_allowed=false`；沒有寫入遊戲目錄、安裝、注入或多人驗收。Package 測試目前 10 項通過。
 
 上述資料均為 `read_only=true`、沒有函式呼叫、寫入、hook、注入、安裝或多人驗收；`resolver_closed=false`、`installable=false`、`multiplayer_verified=false` 保持不變。下一個實作門檻回到 host/client peer admission → confirmed-peer → player creation 的真實第五人流程，selector registry 只能在取得 runtime 證據後再評估。
 

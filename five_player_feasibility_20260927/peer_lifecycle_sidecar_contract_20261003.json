@@ -1,0 +1,163 @@
+{
+  "schema": "hd2_peer_lifecycle_sidecar_contract_v1",
+  "build": 25480438,
+  "capacity": 8,
+  "checks": {
+    "partial_confirm_rollback": true,
+    "callback_lease_quiescence": true,
+    "migration_commit": true,
+    "departure_idempotence": true,
+    "pending_cancel_idempotence": true,
+    "reconnect_generation_fence": true,
+    "resource_cleanup_no_leak": true,
+    "stable_network_index": true,
+    "token_identity_type_guard": true
+  },
+  "snapshot": {
+    "schema": "hd2_peer_lifecycle_sidecar_contract_v1",
+    "build": 25480438,
+    "capacity": 8,
+    "owner_key": 8192,
+    "owner_epoch": "epoch-2",
+    "records": [
+      null,
+      null,
+      null,
+      null,
+      {
+        "member_id": "member-4",
+        "peer_id": "peer-4-reconnect",
+        "network_index": 4,
+        "generation": 2,
+        "state": "confirmed",
+        "resource_handle": "handle-4-reconnect"
+      },
+      null,
+      null,
+      null
+    ],
+    "generation": [
+      0,
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0
+    ],
+    "member_to_index": {
+      "member-4": 4
+    },
+    "peer_to_index": {
+      "peer-4-reconnect": 4
+    },
+    "callback_leases": 0,
+    "migration_in_progress": false,
+    "diagnostics": [
+      {
+        "operation": "reserve",
+        "accepted": true,
+        "reason": "pending",
+        "network_index": 4,
+        "generation": 1
+      },
+      {
+        "operation": "confirm",
+        "accepted": false,
+        "reason": "callback_failed",
+        "stage": "confirmed_dispatch",
+        "rolled_back": true
+      },
+      {
+        "operation": "confirm",
+        "accepted": true,
+        "reason": "confirmed",
+        "network_index": 4,
+        "generation": 1
+      },
+      {
+        "operation": "callback_enter",
+        "accepted": true,
+        "reason": "lease_acquired",
+        "lease_id": 1,
+        "network_index": 4,
+        "generation": 1
+      },
+      {
+        "operation": "callback_leave",
+        "accepted": true,
+        "reason": "lease_released",
+        "lease_id": 1
+      },
+      {
+        "operation": "migration_begin",
+        "accepted": true,
+        "reason": "prepared",
+        "transaction_id": 1,
+        "owner_key": 8192,
+        "owner_epoch": "epoch-2"
+      },
+      {
+        "operation": "migration_commit",
+        "accepted": true,
+        "reason": "committed",
+        "transaction_id": 1,
+        "owner_key": 8192,
+        "owner_epoch": "epoch-2"
+      },
+      {
+        "operation": "begin_release",
+        "accepted": true,
+        "reason": "releasing",
+        "network_index": 4,
+        "generation": 1
+      },
+      {
+        "operation": "finish_release",
+        "accepted": true,
+        "reason": "removed",
+        "network_index": 4,
+        "generation": 1
+      },
+      {
+        "operation": "begin_release",
+        "accepted": true,
+        "reason": "already_removed"
+      },
+      {
+        "operation": "finish_release",
+        "accepted": true,
+        "reason": "already_removed"
+      },
+      {
+        "operation": "reserve",
+        "accepted": true,
+        "reason": "pending",
+        "network_index": 4,
+        "generation": 2
+      },
+      {
+        "operation": "confirm",
+        "accepted": true,
+        "reason": "confirmed",
+        "network_index": 4,
+        "generation": 2
+      },
+      {
+        "operation": "begin_release",
+        "accepted": false,
+        "reason": "stale_or_missing"
+      },
+      {
+        "operation": "begin_release",
+        "accepted": false,
+        "reason": "stale_or_missing"
+      }
+    ]
+  },
+  "native_owner_quiescence_proven": false,
+  "runtime_verified": false,
+  "installable": false,
+  "multiplayer_verified": false
+}

@@ -21,8 +21,22 @@ class StagePackageTests(unittest.TestCase):
         self.assertTrue(audits["valid"], audits)
         self.assertEqual(audits["reports"]["player_creation_abi"]["build"], stage_package.BUILD)
         self.assertEqual(audits["reports"]["loadout_layout"]["build"], stage_package.BUILD)
+        self.assertEqual(audits["reports"]["player_resource_reverse_cleanup"]["build"], stage_package.BUILD)
+        self.assertEqual(audits["reports"]["player_resource_rollback"]["build"], stage_package.BUILD)
         self.assertFalse(audits["reports"]["player_creation_abi"]["production_flags"]["installable"])
         self.assertFalse(audits["reports"]["loadout_layout"]["production_flags"]["installable"])
+        self.assertFalse(audits["reports"]["player_resource_reverse_cleanup"]["production_flags"]["installable"])
+        self.assertFalse(audits["reports"]["player_resource_reverse_cleanup"]["production_flags"]["runtime_verified"])
+        self.assertFalse(audits["reports"]["player_resource_reverse_cleanup"]["production_flags"]["multiplayer_verified"])
+        self.assertFalse(audits["reports"]["player_resource_rollback"]["production_flags"]["production_patch_ready"])
+        self.assertFalse(audits["reports"]["player_resource_rollback"]["production_flags"]["installable"])
+        self.assertFalse(audits["reports"]["player_resource_rollback"]["production_flags"]["runtime_verified"])
+        self.assertFalse(audits["reports"]["player_resource_rollback"]["production_flags"]["multiplayer_verified"])
+        self.assertEqual(audits["reports"]["peer_lifecycle"]["build"], stage_package.BUILD)
+        self.assertFalse(audits["reports"]["peer_lifecycle"]["production_flags"]["native_owner_quiescence_proven"])
+        self.assertFalse(audits["reports"]["peer_lifecycle"]["production_flags"]["installable"])
+        self.assertFalse(audits["reports"]["peer_lifecycle"]["production_flags"]["runtime_verified"])
+        self.assertFalse(audits["reports"]["peer_lifecycle"]["production_flags"]["multiplayer_verified"])
 
     def test_missing_offline_audit_blocks(self):
         with tempfile.TemporaryDirectory() as td:
@@ -30,6 +44,69 @@ class StagePackageTests(unittest.TestCase):
             self.assertFalse(audits["valid"])
             self.assertIn("offline_audit_missing:player_creation_abi", audits["errors"])
             self.assertIn("offline_audit_missing:loadout_layout", audits["errors"])
+            self.assertIn("offline_audit_missing:player_resource_reverse_cleanup", audits["errors"])
+            self.assertIn("offline_audit_missing:player_resource_rollback", audits["errors"])
+            self.assertIn("offline_audit_missing:peer_lifecycle", audits["errors"])
+
+    def test_peer_lifecycle_checks_are_required(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td) / "five_player_feasibility_20260927"
+            root.mkdir(parents=True)
+            peer = json.loads(
+                stage_package.OFFLINE_AUDITS["peer_lifecycle"].read_text(encoding="utf-8")
+            )
+            peer["checks"]["token_identity_type_guard"] = False
+            (root / "peer_lifecycle_sidecar_contract_20261003.json").write_text(
+                json.dumps(peer), encoding="utf-8"
+            )
+            audits = stage_package.validate_offline_audits(Path(td))
+            self.assertFalse(audits["valid"])
+            self.assertIn("offline_audit_mismatch:peer_lifecycle", audits["errors"])
+
+    def test_resource_rollback_contract_checks_are_required(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td) / "five_player_feasibility_20260927"
+            root.mkdir(parents=True)
+            rollback = json.loads(
+                stage_package.OFFLINE_AUDITS["player_resource_rollback"].read_text(encoding="utf-8")
+            )
+            rollback["checks"]["thread_quiescence_gate_proven"] = False
+            (root / "resource_rollback_quiescence_contract_20261003.json").write_text(
+                json.dumps(rollback), encoding="utf-8"
+            )
+            audits = stage_package.validate_offline_audits(Path(td))
+            self.assertFalse(audits["valid"])
+            self.assertIn("offline_audit_mismatch:player_resource_rollback", audits["errors"])
+
+    def test_reverse_cleanup_audit_schema_is_required(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td) / "five_player_feasibility_20260927"
+            root.mkdir(parents=True)
+            reverse = json.loads(
+                stage_package.OFFLINE_AUDITS["player_resource_reverse_cleanup"].read_text(encoding="utf-8")
+            )
+            reverse["schema"] = "tampered"
+            (root / "player_resource_reverse_cleanup_audit_20261003.json").write_text(
+                json.dumps(reverse), encoding="utf-8"
+            )
+            audits = stage_package.validate_offline_audits(Path(td))
+            self.assertFalse(audits["valid"])
+            self.assertIn("offline_audit_mismatch:player_resource_reverse_cleanup", audits["errors"])
+
+    def test_reverse_cleanup_pinned_check_is_required(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td) / "five_player_feasibility_20260927"
+            root.mkdir(parents=True)
+            reverse = json.loads(
+                stage_package.OFFLINE_AUDITS["player_resource_reverse_cleanup"].read_text(encoding="utf-8")
+            )
+            reverse["checks"]["owner8_ordinal_flag_compaction_is_pinned"] = False
+            (root / "player_resource_reverse_cleanup_audit_20261003.json").write_text(
+                json.dumps(reverse), encoding="utf-8"
+            )
+            audits = stage_package.validate_offline_audits(Path(td))
+            self.assertFalse(audits["valid"])
+            self.assertIn("offline_audit_mismatch:player_resource_reverse_cleanup", audits["errors"])
 
     def _plan(self, *, executable=False):
         return {

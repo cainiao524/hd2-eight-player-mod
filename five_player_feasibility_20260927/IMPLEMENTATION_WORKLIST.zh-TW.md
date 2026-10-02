@@ -69,7 +69,7 @@ Sidecar配置／發布／清理、其他reader、caller／callback同步、真�
 | 優先項／成品行為 | 目前證據 | 缺口與下一個具體動作 | 停止追查／通過條件 | 外部依賴 |
 |---|---|---|---|---|
 | P1：額外帳號通過平台加入，對應A | [平台保存結果](REPORT.zh-TW.md#平台建立參數與本機列舉限制)與 [native adapter capture](NATIVE_PEER_ADMISSION_ADAPTER.zh-TW.md)：已保存10個 native roots、Party間接槽與八槽 sidecar契約；本機四槽分配仍是現行行為；通用 x64 trampoline scaffold 已在合成目標通過 | 仍需把 mid-function capacity／allocator bridge 接到 host/client sidecar、confirmed通知與PlayFab／Party非同步結果；先以第五帳號驗證，不能把 capture 當平台成功 | 有可辨識的第五人成功／拒絕路徑及其限制；最終八帳號通過 | 多人帳號與服務回應；native hook／unwind 實作 |
-| P2：第5–8名建立原生角色，對應B | [本地建立guard](local_player_creation_gate_findings.zh-TW.md)、[單一介面](spawn_interface_findings.zh-TW.md)、[PLAYER_CREATION_ABI_GAP_AUDIT_20261003](PLAYER_CREATION_ABI_GAP_AUDIT_20261003.zh-TW.md)及固定 build 的 live capture；43個ABI pin已接通 resource record、三組callback table、owner+8副作用與0x540920 roster leaf；[PLAYER_RESOURCE_REVERSE_CLEANUP_AUDIT_20261003](PLAYER_RESOURCE_REVERSE_CLEANUP_AUDIT_20261003.zh-TW.md)再固定 `FDC780→FDC820→FDDC80` 反向釋放鏈 | 仍需完成 index 4..7 的 resource／roster callback、partial rollback、owner migration、thread quiescence 與可回滾 native hook；不能只把 gate 的4改成8 | 第五人角色在各端可見、可控，並能完整離隊／重連，才算實測通過 | 後續載入／修改授權已給；仍需可驗證的 native executor 與多人帳號 |
+| P2：第5–8名建立原生角色，對應B | [本地建立guard](local_player_creation_gate_findings.zh-TW.md)、[單一介面](spawn_interface_findings.zh-TW.md)、[PLAYER_CREATION_ABI_GAP_AUDIT_20261003](PLAYER_CREATION_ABI_GAP_AUDIT_20261003.zh-TW.md)及固定 build 的 live capture；43個ABI pin已接通 resource record、三組callback table、owner+8副作用與0x540920 roster leaf；[PLAYER_RESOURCE_REVERSE_CLEANUP_AUDIT_20261003](PLAYER_RESOURCE_REVERSE_CLEANUP_AUDIT_20261003.zh-TW.md)再固定 `FDC780→FDC820→FDDC80` 反向釋放鏈；[RESOURCE_ROLLBACK_QUIESCENCE_CONTRACT_20261003](RESOURCE_ROLLBACK_QUIESCENCE_CONTRACT_20261003.zh-TW.md)與[PEER_LIFECYCLE_SIDECAR_CONTRACT_20261003](PEER_LIFECYCLE_SIDECAR_CONTRACT_20261003.zh-TW.md)補上離線回滾、重入、generation、quiescence與migration契約 | 仍需以真實 ABI 接通 index 4..7 的 resource／roster callback與可回滾 native hook；離線契約已固定 partial rollback、owner migration、thread quiescence、peer departure／reconnect，但不能只把 gate 的4改成8 | 第五人角色在各端可見、可控，並能完整離隊／重連，才算實測通過 | 後續載入／修改授權已給；仍需可驗證的 native executor 與多人帳號 |
 | P3：八份peer／roster與ID映射，對應A/B | [v0.14 十六函式共同候選](../eight_player_candidate_20260927/NATIVE_ROSTER_ARRIVAL.zh-TW.md)加入完整6054F0狀態更新，同一 B／count 計畫共同核區域；整理與真實 caller 缺口保留 | 6054F0狀態更新已納入v0.14。[1277920有限查核](roster_mask_reader_findings.zh-TW.md)已固定完整body與兩個roster讀取，mask迴圈未提供已證拒絕結果。下一動作：在原input+10h計時store前定義guard，同時保留普通missing返回，將primary+24h與property+Ch接共同B，完成原指令對照與caller／helper契約；不擴搜無關callee。 departure回呼序列化、其他讀者及配置／發布／清理、整理／caller、真實context map與資源、hook／unwind仍缺 | 完整1277920有限改接、必要契約與有界原指令對照足以形成候選，或定位具體外部缺口即停止；不當成完整生命週期 | 1277920完整body已保存，可離線分析；平台、角色、同步與多人仍需外部條件 |
 | P4：固定玩家元件及其他玩法資料八份，對應B/C/E | [儲存設計](PLAYER_COMPONENT_RELOCATION_PLAN.zh-TW.md)已區分七個固定容量與兩個可保留的動態元件 | 固定布局逐項完成大小／對齊、建立、搬移、registry副本與cleanup適配；metadata／stack／裝備／tag73／tagDA共同收束 | 每份擴充資料具備完整配套且跨元件索引一致；不以單一writer測試代替完整生命週期 | 離線可先實作／建置；hook時點與執行驗證仍需資料 |
 | P5：節點配置與資源所有權不因八人破壞，對應B生命週期/E穩定性 | owner layout、snapshot validator、preflight 已有候選；[第二S有限來源](indexed_float_double_secondary_findings.zh-TW.md)與[整合時點邊界](native_integration_boundary.zh-TW.md)已收束 | 第二S配置來源及引擎排他仍缺。保留實際占用；只有可接合的新來源／同步證據才重開這兩條支線，不再泛查callee或增加同型模型。ID0需實際count0與資源契約；update返回後只能後驗，不算preflight | 完整共存需求與轉換餘量有根據；實際operations、snapshot與executor處於同一有效執行保護，外部資源恢復可證 | 需要具體來源／scheduler／callback／生命週期證據；新的live操作另需明確授權 |
@@ -79,7 +79,7 @@ Sidecar配置／發布／清理、其他reader、caller／callback同步、真�
 
 ## 2026-10-03 新增 ABI 與 UI 邊界
 
-P2／P6 已加入兩項固定 build 審計：
+P1／P2／P6 已加入固定 build 審計與離線生命週期契約：
 
 - `PLAYER_CREATION_ABI_GAP_AUDIT_20261003`：43 個固定 pin 接成 `0x1086460 → 0xFDC140 → 0x581320/0x581780 → 0x540920`，確認第 5–8 名仍未到達 player-resource／roster 建立；resource record、owner+8 map/flags/count、callback table、inline roster pointer 的逆向清理與 partial rollback 尚未證明。
 - `LOADOUT_LAYOUT_RELOCATION_AUDIT_20261003`：MenuScreenLoadout 的四筆 network-index record、兩張 map、flags 與四個大型 widget 互相相鄰；直接擴成八筆會覆蓋 map，八個 widget 會與下一物件重疊 `0x7B860` bytes，需搬移整體配置或完整 sidecar。
@@ -87,10 +87,12 @@ P2／P6 已加入兩項固定 build 審計：
 - `PLAYER_RESOURCE_REVERSE_CLEANUP_AUDIT_20261003`：固定 `FDC780 → FDC820 → FDDC80`、handle registry、component cleanup table 與 owner+8 last-ordinal compaction；partial rollback、re-entry idempotence、owner quiescence 仍是阻礙。
 - `LOADOUT_LIFECYCLE_ABI_20261003`：12/12 固定檢查配對 entry rebuild、constructor、兩條 release、transition callbacks 與四槽 runtime guards；仍需 sidecar allocator、package unload 及真實 UI callback 接線。
 - `LOADOUT_SIDECAR_CONTRACT_20261003`：八個 stable network slots、獨立 UI slot／widget token、generation-safe hole 及 pending／confirmed／releasing 生命週期以 5 項合成測試固定；嚴格型別 identity guard 與 `cancel_pending` 拒絕／回滾路徑已覆蓋；仍未接 native callback、package 或實機 UI。
+- `RESOURCE_ROLLBACK_QUIESCENCE_CONTRACT_20261003`：8 項測試固定 callback 逆序回滾、冪等 release、generation／owner epoch stale 防護、callback lease 與空 registry migration；仍為離線模型。
+- `PEER_LIFECYCLE_SIDECAR_CONTRACT_20261003`：8 項測試固定 partial confirmed-peer rollback、pending cancel、離隊／重連 generation、callback lease 與 migration prepare／commit／abort；native owner、runtime、installable、multiplayer flags 仍為 false。
 
-兩項測試分別 1/1 與 26/26 通過，均為離線固定證據，不能替代第五人實機加入、角色建立或任務驗收。
+上述 player-creation 1/1、loadout 26/26、resource rollback 8/8、peer lifecycle 8/8 均為離線固定證據，不能替代第五人實機加入、角色建立或任務驗收。
 
-Package staging gate 已接入這兩份報告：缺少固定 build、schema、pin／檢查數或 fail-closed flags 時直接阻擋；目前實際 diagnostics 顯示 audits 有效，但 native plan `executable=false`、payload 缺失，仍不能啟用或安裝。
+Package staging gate 已接入上述五份報告：缺少固定 build、schema、pin／檢查數或 fail-closed flags 時直接阻擋；目前實際 diagnostics 顯示 audits 有效，但 native plan `executable=false`、payload 缺失，仍不能啟用或安裝。
 
 ## 候選元件與成品驗收的關係
 

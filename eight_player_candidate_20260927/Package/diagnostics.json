@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-10-02T12:31:11.048482+00:00",
+  "generated_at_utc": "2026-10-02T13:04:28.149014+00:00",
   "status": "blocked",
   "activation_allowed": false,
   "game_root": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2",
@@ -95,6 +95,50 @@
           "production_patch_ready": false,
           "installable": false,
           "multiplayer_verified": null
+        },
+        "valid": true
+      },
+      "player_resource_reverse_cleanup": {
+        "path": "E:\\File\\Codes\\0\\26.10.1\\HD2\\five_player_feasibility_20260927\\player_resource_reverse_cleanup_audit_20261003.json",
+        "present": true,
+        "sha256": "74f881e86a492018f9863cab70ef1f1040d8da283494d7e4e86b2515f191b9c6",
+        "schema": "hd2_player_resource_reverse_cleanup_audit_v1",
+        "build": 25480438,
+        "production_flags": {
+          "partial_callback_rollback_is_complete": false,
+          "resource_release_idempotence_under_reentry": false,
+          "owner_migration_and_thread_quiescence_proven": false,
+          "runtime_verified": false,
+          "multiplayer_verified": false,
+          "installable": false
+        },
+        "valid": true
+      },
+      "player_resource_rollback": {
+        "path": "E:\\File\\Codes\\0\\26.10.1\\HD2\\five_player_feasibility_20260927\\resource_rollback_quiescence_contract_20261003.json",
+        "present": true,
+        "sha256": "e6e77d8f8c92811dfd7f26f7a02174dcc2f94740efbd45c4ab02cfab7c02d25b",
+        "schema": "hd2_player_resource_rollback_quiescence_contract_v1",
+        "build": 25480438,
+        "production_flags": {
+          "production_patch_ready": false,
+          "runtime_verified": false,
+          "installable": false,
+          "multiplayer_verified": false
+        },
+        "valid": true
+      },
+      "peer_lifecycle": {
+        "path": "E:\\File\\Codes\\0\\26.10.1\\HD2\\five_player_feasibility_20260927\\peer_lifecycle_sidecar_contract_20261003.json",
+        "present": true,
+        "sha256": "75f08b98d6b217f2940d13310dd6eb0773e50564a814f36e337955bdeddcb914",
+        "schema": "hd2_peer_lifecycle_sidecar_contract_v1",
+        "build": 25480438,
+        "production_flags": {
+          "installable": false,
+          "runtime_verified": false,
+          "multiplayer_verified": false,
+          "native_owner_quiescence_proven": false
         },
         "valid": true
       }

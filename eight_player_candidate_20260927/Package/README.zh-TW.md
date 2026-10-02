@@ -7,7 +7,7 @@
 - Steam build `25480438`、EXE `1.8.46015.0` 及六份檔案 SHA-256 完全相符。
 - native admission plan 的 `executable` 為 `true`。
 - plan 宣告八個 host/client slot、trampoline unwind、指令重定位、中段 capacity bridge、allocator sidecar continuation、sidecar lifetime、confirmed-peer dispatch 和 player creation gate。
-- 固定 build 的 player-creation ABI 與 MenuScreenLoadout relocation 審計存在且通過；這些報告只證明離線 evidence 完整，仍會保留 production／multiplayer 的 false gate。
+- 固定 build 的 player-creation ABI、peer／confirmed-peer lifecycle、player-resource reverse cleanup、rollback/quiescence sidecar 與 MenuScreenLoadout relocation 審計存在且通過；staging 會核對八槽 peer map、partial callback 回滾、離隊／重連 generation、`FDC780 → FDC820 → FDDC80` cleanup 與 owner 靜默條件。這些報告只證明離線 evidence 完整，仍會保留 production／multiplayer 的 false gate。
 - `Native/Bridge` 提供已測試的 sidecar orchestration candidate，會在 callback 缺失、build/site 不符、資源建立失敗或第九個玩家時 fail-closed，並在 admission 失敗時回滾。
 - 額外提供 native bridge payload。
 

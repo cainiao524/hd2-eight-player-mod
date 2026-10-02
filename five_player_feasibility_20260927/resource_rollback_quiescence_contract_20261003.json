@@ -1,0 +1,118 @@
+{
+  "schema": "hd2_player_resource_rollback_quiescence_contract_v1",
+  "build": 25480438,
+  "capacity": 8,
+  "evidence_inputs": {
+    "player_creation_abi_gap_audit_20261003": {
+      "schema": "hd2_player_creation_abi_gap_audit_v1",
+      "build": 25480438,
+      "capture_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+      "installable": false,
+      "runtime_verified": false
+    },
+    "player_resource_reverse_cleanup_audit_20261003": {
+      "schema": "hd2_player_resource_reverse_cleanup_audit_v1",
+      "build": 25480438,
+      "capture_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+      "installable": false,
+      "runtime_verified": false
+    }
+  },
+  "checks": {
+    "partial_callback_failure_unwinds_reverse_order": true,
+    "partial_callback_failure_clears_all_side_effects": true,
+    "rollback_reentry_is_idempotent": true,
+    "stale_generation_reentry_rejected": true,
+    "owner_migration_requires_quiescence": true,
+    "owner_epoch_changes_on_migration": true,
+    "post_migration_index_works_in_offline_model": true,
+    "thread_quiescence_gate_proven": true,
+    "production_patch_ready": false,
+    "runtime_verified": false,
+    "installable": false,
+    "multiplayer_verified": false
+  },
+  "failed_callback_receipt": {
+    "status": "released",
+    "idempotent": false,
+    "token": {
+      "network_index": 4,
+      "generation": 1,
+      "owner_epoch": 1
+    },
+    "owner_key": 4096,
+    "owner_epoch": 1,
+    "reason": "second callback rejected",
+    "unwound_callbacks": [
+      "first_callback"
+    ],
+    "cleanup_actions": [
+      "undo:first_callback",
+      "remove_roster_record",
+      "remove_owner8_reverse_map",
+      "release_resource_handle",
+      "clear_resource_record"
+    ],
+    "all_side_effects_cleared": true
+  },
+  "reentry_receipt": {
+    "status": "released",
+    "idempotent": true,
+    "token": {
+      "network_index": 4,
+      "generation": 1,
+      "owner_epoch": 1
+    },
+    "owner_key": 4096,
+    "owner_epoch": 1,
+    "reason": "second callback rejected",
+    "unwound_callbacks": [
+      "first_callback"
+    ],
+    "cleanup_actions": [
+      "undo:first_callback",
+      "remove_roster_record",
+      "remove_owner8_reverse_map",
+      "release_resource_handle",
+      "clear_resource_record"
+    ],
+    "all_side_effects_cleared": true
+  },
+  "migration_receipt": {
+    "status": "migrated",
+    "old": {
+      "owner_key": 4096,
+      "owner_epoch": 1
+    },
+    "new": {
+      "owner_key": 8192,
+      "owner_epoch": 2
+    },
+    "thread_quiesced": true
+  },
+  "final_snapshot": {
+    "build": 25480438,
+    "capacity": 8,
+    "owner_key": 8192,
+    "owner_epoch": 2,
+    "quiesced": true,
+    "inflight_callbacks": 0,
+    "generation": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0
+    ],
+    "records": {},
+    "history_count": 2
+  },
+  "limits": [
+    "Only an offline state model; no process query, native call, memory write, hook, installation or multiplayer test.",
+    "The model specifies rollback and quiescence obligations but does not resolve the native callback ABI or player index 4..7 gate.",
+    "All production/runtime/install/multiplayer flags remain false."
+  ]
+}

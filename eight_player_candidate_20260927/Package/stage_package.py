@@ -43,6 +43,53 @@ REQUIRED_PLAN_FIELDS = {
 OFFLINE_AUDITS = {
     "player_creation_abi": REPO_ROOT / "five_player_feasibility_20260927" / "player_creation_abi_gap_audit_20261003.json",
     "loadout_layout": REPO_ROOT / "five_player_feasibility_20260927" / "loadout_layout_relocation_audit_20261003.json",
+    "player_resource_reverse_cleanup": REPO_ROOT / "five_player_feasibility_20260927" / "player_resource_reverse_cleanup_audit_20261003.json",
+    "player_resource_rollback": REPO_ROOT / "five_player_feasibility_20260927" / "resource_rollback_quiescence_contract_20261003.json",
+    "peer_lifecycle": REPO_ROOT / "five_player_feasibility_20260927" / "peer_lifecycle_sidecar_contract_20261003.json",
+}
+
+ROLLBACK_REQUIRED_CHECKS = {
+    "partial_callback_failure_unwinds_reverse_order",
+    "partial_callback_failure_clears_all_side_effects",
+    "rollback_reentry_is_idempotent",
+    "stale_generation_reentry_rejected",
+    "owner_migration_requires_quiescence",
+    "owner_epoch_changes_on_migration",
+    "post_migration_index_works_in_offline_model",
+    "thread_quiescence_gate_proven",
+}
+PEER_REQUIRED_CHECKS = {
+    "partial_confirm_rollback",
+    "callback_lease_quiescence",
+    "migration_commit",
+    "departure_idempotence",
+    "pending_cancel_idempotence",
+    "reconnect_generation_fence",
+    "resource_cleanup_no_leak",
+    "stable_network_index",
+    "token_identity_type_guard",
+}
+
+REVERSE_CLEANUP_REQUIRED_CHECKS = {
+    "create_record_fields_are_pinned",
+    "release_loops_all_pending_records",
+    "resource_handle_release_is_pinned",
+    "component_ordinal_sentinel_is_pinned",
+    "owner8_reverse_map_delete_is_pinned",
+    "owner8_ordinal_flag_compaction_is_pinned",
+    "missing_key_does_not_decrement_owner8_count",
+}
+REVERSE_CLEANUP_REQUIRED_ANCHORS = {
+    "release_entry",
+    "resource_release",
+    "owner8_key_delete",
+    "generic_map_delete",
+    "roster_remove",
+}
+REVERSE_CLEANUP_REQUIRED_EDGES = {"0xfdc820", "0xfddc80", "0x172f8a0"}
+REVERSE_CLEANUP_REQUIRED_REQUIREMENTS = {
+    "On any callback failure, unwind prior callback tables, handle maps, owner8 map/flags/count and roster pointer before publishing success.",
+    "Retain owner+8 and all registry contexts until every record cleanup returns; prove thread quiescence before freeing sidecar storage.",
 }
 
 
@@ -131,6 +178,30 @@ def validate_offline_audits(audit_root: Path = REPO_ROOT) -> dict[str, Any]:
             flags.setdefault("installable", report.get("decision", {}).get("installable"))
             flags.setdefault("runtime_verified", report.get("runtime_verified"))
             flags.setdefault("multiplayer_verified", report.get("multiplayer_verified"))
+        elif name == "player_resource_reverse_cleanup":
+            checks = report.get("checks", {})
+            flags.update({
+                "partial_callback_rollback_is_complete": checks.get("partial_callback_rollback_is_complete"),
+                "resource_release_idempotence_under_reentry": checks.get("resource_release_idempotence_under_reentry"),
+                "owner_migration_and_thread_quiescence_proven": checks.get("owner_migration_and_thread_quiescence_proven", False),
+                "runtime_verified": checks.get("runtime_verified"),
+                "multiplayer_verified": checks.get("multiplayer_verified"),
+                "installable": checks.get("installable"),
+            })
+        elif name == "player_resource_rollback":
+            checks = report.get("checks", {})
+            flags.update({
+                key: checks.get(key)
+                for key in ("production_patch_ready", "runtime_verified", "installable", "multiplayer_verified")
+            })
+        elif name == "peer_lifecycle":
+            checks = report.get("checks", {})
+            flags.update({
+                "native_owner_quiescence_proven": report.get("native_owner_quiescence_proven"),
+                "runtime_verified": report.get("runtime_verified"),
+                "installable": report.get("installable"),
+                "multiplayer_verified": report.get("multiplayer_verified"),
+            })
         item["production_flags"] = flags
         valid = report.get("build") == BUILD
         if name == "player_creation_abi":
@@ -142,6 +213,72 @@ def validate_offline_audits(audit_root: Path = REPO_ROOT) -> dict[str, Any]:
             valid = valid and report.get("verification_passed") is True
             valid = valid and report.get("checks_passed") == 26
             valid = valid and report.get("decision", {}).get("installable") is False
+        elif name == "player_resource_reverse_cleanup":
+            checks = report.get("checks", {})
+            anchors = report.get("body_anchors")
+            edges = report.get("release_edges")
+            source_hashes = report.get("source_sha256")
+            requirements = report.get("sidecar_requirements")
+            valid = valid and report.get("schema") == "hd2_player_resource_reverse_cleanup_audit_v1"
+            valid = valid and isinstance(report.get("capture_sha256"), str) and len(report["capture_sha256"]) == 64
+            valid = valid and isinstance(source_hashes, dict) and {
+                "capture-report.json", "captured-data.bin"
+            }.issubset(source_hashes)
+            valid = valid and all(
+                isinstance(source_hashes.get(key), str) and len(source_hashes[key]) == 64
+                for key in ("capture-report.json", "captured-data.bin")
+            )
+            valid = valid and isinstance(anchors, dict) and REVERSE_CLEANUP_REQUIRED_ANCHORS.issubset(anchors)
+            valid = valid and all(
+                isinstance(anchors[key], dict)
+                and isinstance(anchors[key].get("entry"), str)
+                and isinstance(anchors[key].get("fragment"), list)
+                and anchors[key].get("size_bytes", 0) > 0
+                for key in REVERSE_CLEANUP_REQUIRED_ANCHORS
+            )
+            valid = valid and isinstance(edges, dict) and REVERSE_CLEANUP_REQUIRED_EDGES.issubset(edges)
+            valid = valid and all(isinstance(edges[key], list) and edges[key] for key in REVERSE_CLEANUP_REQUIRED_EDGES)
+            valid = valid and all(checks.get(key) is True for key in REVERSE_CLEANUP_REQUIRED_CHECKS)
+            # A static audit may expose unresolved native/runtime work, but it
+            # must never claim that this evidence is itself installable.
+            valid = valid and checks.get("installable") is False
+            valid = valid and checks.get("runtime_verified") is False
+            valid = valid and checks.get("multiplayer_verified") is False
+            valid = valid and isinstance(requirements, list)
+            valid = valid and REVERSE_CLEANUP_REQUIRED_REQUIREMENTS.issubset(requirements)
+        elif name == "player_resource_rollback":
+            checks = report.get("checks", {})
+            evidence = report.get("evidence_inputs")
+            valid = valid and report.get("schema") == "hd2_player_resource_rollback_quiescence_contract_v1"
+            valid = valid and report.get("capacity") == 8
+            valid = valid and isinstance(evidence, dict)
+            valid = valid and all(
+                isinstance(evidence.get(key), dict)
+                and evidence[key].get("build") == BUILD
+                and isinstance(evidence[key].get("capture_sha256"), str)
+                and len(evidence[key]["capture_sha256"]) == 64
+                and evidence[key].get("installable") is False
+                and evidence[key].get("runtime_verified") is False
+                for key in ("player_creation_abi_gap_audit_20261003", "player_resource_reverse_cleanup_audit_20261003")
+            )
+            valid = valid and all(checks.get(key) is True for key in ROLLBACK_REQUIRED_CHECKS)
+            valid = valid and all(checks.get(key) is False for key in (
+                "production_patch_ready", "runtime_verified", "installable", "multiplayer_verified"
+            ))
+            valid = valid and isinstance(report.get("limits"), list)
+        elif name == "peer_lifecycle":
+            checks = report.get("checks", {})
+            valid = valid and report.get("schema") == "hd2_peer_lifecycle_sidecar_contract_v1"
+            valid = valid and report.get("build") == BUILD and report.get("capacity") == 8
+            valid = valid and isinstance(checks, dict) and PEER_REQUIRED_CHECKS.issubset(checks)
+            valid = valid and all(checks.get(key) is True for key in PEER_REQUIRED_CHECKS)
+            valid = valid and report.get("native_owner_quiescence_proven") is False
+            valid = valid and report.get("runtime_verified") is False
+            valid = valid and report.get("installable") is False
+            valid = valid and report.get("multiplayer_verified") is False
+            snapshot = report.get("snapshot")
+            valid = valid and isinstance(snapshot, dict) and snapshot.get("capacity") == 8
+            valid = valid and isinstance(snapshot.get("records"), list) and len(snapshot["records"]) == 8
         item["valid"] = bool(valid)
         if not valid:
             errors.append(f"offline_audit_mismatch:{name}")
