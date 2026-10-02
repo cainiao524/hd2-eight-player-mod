@@ -16,6 +16,21 @@ SPEC.loader.exec_module(stage_package)
 
 
 class StagePackageTests(unittest.TestCase):
+    def test_fixed_build_offline_audits_are_present_and_fail_closed(self):
+        audits = stage_package.validate_offline_audits()
+        self.assertTrue(audits["valid"], audits)
+        self.assertEqual(audits["reports"]["player_creation_abi"]["build"], stage_package.BUILD)
+        self.assertEqual(audits["reports"]["loadout_layout"]["build"], stage_package.BUILD)
+        self.assertFalse(audits["reports"]["player_creation_abi"]["production_flags"]["installable"])
+        self.assertFalse(audits["reports"]["loadout_layout"]["production_flags"]["installable"])
+
+    def test_missing_offline_audit_blocks(self):
+        with tempfile.TemporaryDirectory() as td:
+            audits = stage_package.validate_offline_audits(Path(td))
+            self.assertFalse(audits["valid"])
+            self.assertIn("offline_audit_missing:player_creation_abi", audits["errors"])
+            self.assertIn("offline_audit_missing:loadout_layout", audits["errors"])
+
     def _plan(self, *, executable=False):
         return {
             "steam_build": stage_package.BUILD,

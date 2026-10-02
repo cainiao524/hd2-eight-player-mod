@@ -21,6 +21,7 @@ from typing import Any
 
 BUILD = 25480438
 EXE_VERSION = "1.8.46015.0"
+REPO_ROOT = Path(__file__).resolve().parents[2]
 FILES = {
     "bin/helldivers2.exe": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
     "data/game/game.dll": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
@@ -38,6 +39,10 @@ REQUIRED_PLAN_FIELDS = {
     "capacity_midfunction_bridge",
     "allocator_sidecar_continuation",
     "instruction_relocation",
+}
+OFFLINE_AUDITS = {
+    "player_creation_abi": REPO_ROOT / "five_player_feasibility_20260927" / "player_creation_abi_gap_audit_20261003.json",
+    "loadout_layout": REPO_ROOT / "five_player_feasibility_20260927" / "loadout_layout_relocation_audit_20261003.json",
 }
 
 
@@ -81,6 +86,67 @@ def validate_plan(plan_path: Path) -> dict[str, Any]:
         "executable": plan.get("executable") is True,
         "errors": errors,
     }
+
+
+def validate_offline_audits(audit_root: Path = REPO_ROOT) -> dict[str, Any]:
+    """Verify the fixed-build ABI audits before any staging decision.
+
+    These reports are evidence gates, not permission to install.  A valid
+    report may still deliberately say that production and multiplayer are
+    unverified; the native plan and payload gates remain authoritative.
+    """
+    paths = {
+        name: audit_root / "five_player_feasibility_20260927" / path.name
+        for name, path in OFFLINE_AUDITS.items()
+    }
+    reports: dict[str, Any] = {}
+    errors: list[str] = []
+    for name, path in paths.items():
+        item: dict[str, Any] = {"path": str(path), "present": path.is_file()}
+        if not path.is_file():
+            errors.append(f"offline_audit_missing:{name}")
+            reports[name] = item
+            continue
+        try:
+            report = read_json(path)
+        except ValueError as exc:
+            item["error"] = str(exc)
+            errors.append(f"offline_audit_invalid:{name}")
+            reports[name] = item
+            continue
+        item["sha256"] = sha256(path)
+        item["schema"] = report.get("schema")
+        item["build"] = report.get("build")
+        flags = {
+            key: report.get(key)
+            for key in ("production_patch_ready", "installable", "runtime_verified", "multiplayer_verified")
+            if key in report
+        }
+        if name == "player_creation_abi":
+            flags.setdefault("installable", report.get("checks", {}).get("installable"))
+            flags.setdefault("runtime_verified", report.get("checks", {}).get("runtime_verified"))
+            flags.setdefault("multiplayer_verified", report.get("checks", {}).get("multiplayer_verified"))
+        elif name == "loadout_layout":
+            flags.setdefault("production_patch_ready", report.get("decision", {}).get("production_patch_ready"))
+            flags.setdefault("installable", report.get("decision", {}).get("installable"))
+            flags.setdefault("runtime_verified", report.get("runtime_verified"))
+            flags.setdefault("multiplayer_verified", report.get("multiplayer_verified"))
+        item["production_flags"] = flags
+        valid = report.get("build") == BUILD
+        if name == "player_creation_abi":
+            valid = valid and report.get("schema") == "hd2_player_creation_abi_gap_audit_v1"
+            valid = valid and len(report.get("pins", [])) >= 43
+            valid = valid and report.get("checks", {}).get("installable") is False
+        elif name == "loadout_layout":
+            valid = valid and report.get("schema") == "hd2_loadout_layout_relocation_audit_v1"
+            valid = valid and report.get("verification_passed") is True
+            valid = valid and report.get("checks_passed") == 26
+            valid = valid and report.get("decision", {}).get("installable") is False
+        item["valid"] = bool(valid)
+        if not valid:
+            errors.append(f"offline_audit_mismatch:{name}")
+        reports[name] = item
+    return {"valid": not errors, "reports": reports, "errors": errors}
 
 
 def verify_game_root(game_root: Path) -> dict[str, Any]:
@@ -143,11 +209,13 @@ def verify_game_root(game_root: Path) -> dict[str, Any]:
     return {"valid": not errors, "files": files, "exe_version": version, "errors": errors}
 
 
-def build_diagnostics(game_root: Path, plan_path: Path, native_payload: Path | None) -> dict[str, Any]:
+def build_diagnostics(game_root: Path, plan_path: Path, native_payload: Path | None,
+                      audit_root: Path = REPO_ROOT) -> dict[str, Any]:
     plan = validate_plan(plan_path)
     build = verify_game_root(game_root)
+    audits = validate_offline_audits(audit_root)
     payload_ok = bool(native_payload and native_payload.is_file())
-    errors = list(plan["errors"]) + list(build["errors"])
+    errors = list(plan["errors"]) + list(build["errors"]) + list(audits["errors"])
     if not payload_ok:
         errors.append("native_payload_missing")
     return {
@@ -159,6 +227,7 @@ def build_diagnostics(game_root: Path, plan_path: Path, native_payload: Path | N
         "target": {"steam_build": BUILD, "exe_version": EXE_VERSION, "files": FILES},
         "native_plan": plan,
         "game_files": build,
+        "offline_audits": audits,
         "native_payload": {"path": str(native_payload) if native_payload else None, "present": payload_ok},
         "errors": errors,
         "multiplayer_verified": False,

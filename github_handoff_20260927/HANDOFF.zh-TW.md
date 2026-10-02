@@ -30,6 +30,12 @@
 
 這補上 P6 的 UI／loadout 固定四槽證據，但尚未綁定 reader、writer、transition、destructor、callback 或重連 ABI；`production_patch_ready=false`、`installable=false`、`runtime_verified=false`、`multiplayer_verified=false` 保持不變。
 
+## 2026-10-03 staging gate 接入離線審計
+
+`eight_player_candidate_20260927/Package/stage_package.py` 現在在 staging 判定前讀取並驗證上述兩份固定 build 審計：player-creation ABI 至少 43 個 pins，MenuScreenLoadout relocation 26/26 檢查；缺檔、schema、build 或 fail-closed flags 不符都會阻擋 staging。這些報告仍只是證據閘門，不能把 `production_patch_ready=false` 轉成可安裝。
+
+針對固定遊戲目錄重新產生的 [diagnostics.json](../eight_player_candidate_20260927/Package/diagnostics.json) 顯示兩份 offline audit `valid=true`，但 native plan `executable=false` 且 native payload 缺失，因此整體仍 `activation_allowed=false`；沒有寫入遊戲目錄、安裝、注入或多人驗收。
+
 上述資料均為 `read_only=true`、沒有函式呼叫、寫入、hook、注入、安裝或多人驗收；`resolver_closed=false`、`installable=false`、`multiplayer_verified=false` 保持不變。下一個實作門檻回到 host/client peer admission → confirmed-peer → player creation 的真實第五人流程，selector registry 只能在取得 runtime 證據後再評估。
 
 2026-10-02使用者明確授權第四次限定擷取、遊戲程序存取、載入／注入、安裝修改與後續真實測試；後續只在固定 build、可回滾 staging 和 fail-closed gate 下使用這份授權。

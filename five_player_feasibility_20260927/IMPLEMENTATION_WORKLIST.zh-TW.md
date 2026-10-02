@@ -86,6 +86,8 @@ P2／P6 已加入兩項固定 build 審計：
 
 兩項測試分別 1/1 與 26/26 通過，均為離線固定證據，不能替代第五人實機加入、角色建立或任務驗收。
 
+Package staging gate 已接入這兩份報告：缺少固定 build、schema、pin／檢查數或 fail-closed flags 時直接阻擋；目前實際 diagnostics 顯示 audits 有效，但 native plan `executable=false`、payload 缺失，仍不能啟用或安裝。
+
 ## 候選元件與成品驗收的關係
 
 `pool_owner_layout.lua`、`pool_snapshot.lua` 與 `pool_preflight.lua` 推進 P5 的已知清單完整性、提供資料驗證、配置前決策與失敗診斷。`known_owner_addresses_complete` 限已盤點地址，不驗 bytes；`consistent_supplied_bytes` 限提供的 bytes 關係；`fits` 代表給定 snapshot 與模板數量下的算術可容納。所有結果 `executable=false`，因為一致 snapshot、引擎同步與 executor 尚未接上。版本欄位相等也不代表已讀取或驗證實際遊戲映像；即使所有 occupied node 都在清單內被認領，也未證明清單外沒有舊副本。詳見[清單契約](../eight_player_candidate_20260927/OWNER_LAYOUT.zh-TW.md)及[bytes 契約](../eight_player_candidate_20260927/SNAPSHOT_CONTRACT.zh-TW.md)。
