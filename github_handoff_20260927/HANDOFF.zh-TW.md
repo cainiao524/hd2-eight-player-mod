@@ -169,3 +169,9 @@ state update 的完整 819 指令、71 個 owner field sites 與 14 個 immediat
 live resolver 仍未閉合：`live_dispatcher_data_20261002_3.json` 新增 `0xBDE430` generic send dispatcher 673-byte code pin，重讀一致；`live_dispatcher_data_20261002_2.json` 的 image scan 仍只找到 send hash `0x4804FCF4` 和 receiver pointer `0xBABA80`，private scan 128 MiB/295 regions 為 0 hit。這些是 send-side/code identity 證據，不是 hash-to-receive callback registry；沒有呼叫、寫入、hook、注入、安裝或多人驗收。
 
 live-vs-disk 對照又保存於 `live_dispatcher_data_20261002_4.json`：`0xBDE430` live 673-byte body 兩次讀取 SHA 一致；與 PE raw section 同 RVA 不同，僅作 relocation/load 差異診斷，禁止把 raw bytes 當 patch。這仍沒有閉合 receive registry 或 resolver，也沒有任何注入、寫入、安裝或多人驗收。
+
+### 2026-10-02 confirmed-peer 外部鏈 exact evidence
+
+新增 `eight_player_candidate_20260927/Native/SessionMembers/confirmed_peer_external_chain_20261002.json` 與 `CONFIRMED_PEER_EXTERNAL_CHAIN_20261002.zh-TW.md`，把固定 build `25480438` 的 host capacity `0x108C18F`、host index allocator `0x108C3D8`、confirmed-peer sender `0x108C760`、client append `0xB90B20`、player creation gate `0x1086460` 和四條 cleanup/migration 路徑收斂成機器可核對的外部 ABI 鏈。其只讀驗證為 5 sites、2/2 tests，`installable=false`、`runtime_verified=false`、`multiplayer_verified=false`。`0xB90B20` 第五筆會寫入 `client+0x150` 鄰接 live 欄位；因此 sender-only 或單改容量仍被 fail-closed。
+
+`live_dispatcher_data_20261002_6.json` 又讀取固定 config root `game.dll+0x3326340` 的 root page 及 64 KiB/16 pages 限定範圍；目標函式與 event hash pattern 0 命中。這只收窄 writable registry 未出現在已知 config path 的結論，沒有把 config root 當作 receive resolver，也沒有呼叫、寫入或安裝。

@@ -127,7 +127,9 @@ def scan(pid: int, output: Path) -> dict:
         # Read the already known API root and its immediate tables.  We do not
         # follow any newly discovered pointer beyond these fixed paths.
         api_field = read_qword(reader, game_base + 0x3326308, "game_api_global")
+        config_field = read_qword(reader, game_base + 0x3326340, "game_config_global")
         api_root = int(api_field["value"], 16)
+        config_root = int(config_field["value"], 16)
         fixed_fields = [api_field]
         for offset, label in ((0x00, "api_root+0x00"), (0x30, "api_root+0x30"),
                               (0x38, "api_root+0x38"), (0xF8, "api_root+0xF8"),
@@ -181,6 +183,45 @@ def scan(pid: int, output: Path) -> dict:
                 followed.append({"value": hex(value), "sha256_64_bytes": digest(probe),
                                  "first_qword": hex(int.from_bytes(probe[:8], "little"))})
 
+        # The existing probe also exposes a configuration-root pointer. Read
+        # only its page and a bounded 64 KiB neighborhood; this is the one
+        # private object path justified by saved evidence, and is where a
+        # writable runtime registry would most plausibly be referenced.
+        config_page = config_root & ~(PAGE - 1)
+        config_neighborhood_hits = []
+        config_pages_read = 0
+        config_start = config_page
+        config_end = config_page + 0x10000
+        config_root_raw = reader.read(config_page, PAGE, executable=False)
+        config_root_qwords = []
+        for offset in range(0, PAGE, 8):
+            value = int.from_bytes(config_root_raw[offset:offset + 8], "little")
+            if 0x10000 <= value < 0x800000000000:
+                config_root_qwords.append({"offset": hex(offset), "value": hex(value),
+                                           "owner": owner_name(value)})
+        config_patterns = {name: struct.pack("<Q", game_base + rva)
+                           for name, rva in TARGETS.items()}
+        config_patterns["confirmed_peer_event_hash"] = struct.pack("<I", EVENT_HASH)
+        cursor = config_start
+        while cursor < config_end:
+            try:
+                raw = reader.read(cursor, PAGE, executable=False)
+            except (ValueError, OSError):
+                cursor += PAGE
+                continue
+            config_pages_read += 1
+            for name, pattern in config_patterns.items():
+                offset = 0
+                while True:
+                    found = raw.find(pattern, offset)
+                    if found < 0:
+                        break
+                    config_neighborhood_hits.append({"pattern": name,
+                                                     "address": hex(cursor + found),
+                                                     "page": hex(cursor)})
+                    offset = found + 1
+            cursor += PAGE
+
         patterns = {name: struct.pack("<Q", game_base + rva)
                     for name, rva in TARGETS.items()}
         patterns["confirmed_peer_event_hash"] = struct.pack("<I", EVENT_HASH)
@@ -209,12 +250,22 @@ def scan(pid: int, output: Path) -> dict:
             "fixed_api_path": {
                 "global_rva": "0x3326308",
                 "api_root": hex(api_root),
+                "config_global_rva": "0x3326340",
+                "config_root": hex(config_root),
                 "fields": fixed_fields,
                 "table_fields": table_fields,
                 "root_page": hex(root_page),
                 "root_page_sha256": digest(root_raw),
                 "api_object_qwords": api_object_qwords,
                 "outside_image_pointer_probes": followed,
+                "config_neighborhood": {
+                    "start": hex(config_start), "end": hex(config_end),
+                    "pages_read": config_pages_read,
+                    "root_page": hex(config_page),
+                    "root_page_sha256": digest(config_root_raw),
+                    "root_qwords": config_root_qwords,
+                    "pattern_hits": config_neighborhood_hits,
+                },
             },
             "generic_send_dispatcher_code": dispatcher_code,
             "target_functions": {name: {"module": "game.dll", "rva": hex(rva),

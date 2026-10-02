@@ -34,3 +34,9 @@
 ## 尚未可安裝
 
 這是原生資料流候選，不是可用 Mod。resolver／consumer 的遊戲內身份與完整 ABI 尚未找到，`0x1093590` 及其他平台成員 reader/writer、client confirmed-peer、角色建立、hook／unwind、owner lifetime、服務端接受和真人多人驗收仍未閉合。此目錄沒有存取或修改遊戲程序，也不會把合成執行結果標記為多人成功。
+
+## Confirmed-peer 外部鏈 exact evidence（2026-10-02）
+
+`confirmed_peer_external_chain_20261002.json` 將 host capacity `0x108C18F`、host index allocator `0x108C3D8`、host sender `0x108C760`、client append `0xB90B20` 和 player creation gate `0x1086460` 綁定到固定 build 的只讀 capture，並列出 host cleanup、host migration、client remove/reset 四條必須同時閉合的生命週期。`CONFIRMED_PEER_EXTERNAL_CHAIN_20261002.zh-TW.md` 說明第五筆 client record 會從 `+0x150` 開始、與鄰接 live 欄位衝突，因此 sender-only 或單改 capacity 不能成為八槽 patch。
+
+`verify_confirmed_peer_external_chain.py` 與 `test_confirmed_peer_external_chain.py` 的結果為 5 個 site、2/2 tests；所有旗標保持 `installable=false`、`runtime_verified=false`、`multiplayer_verified=false`。
