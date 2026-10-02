@@ -1,0 +1,123 @@
+{
+  "schema": "hd2_receiver_binding_boundary_verification_v1",
+  "build": 25480438,
+  "capture_identity_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "static_boundary": "passed",
+  "production_gate": "blocked_receiver_registry_unresolved",
+  "installable": false,
+  "runtime_invoked": false,
+  "game_memory_written": false,
+  "multiplayer_verified": false,
+  "checks": [
+    {
+      "name": "capture_identity_consistent",
+      "passed": true,
+      "detail": "['5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8', '5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8', '5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8']"
+    },
+    {
+      "name": "fixed_game_dll_identity",
+      "passed": true,
+      "detail": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e"
+    },
+    {
+      "name": "receiver_range",
+      "passed": true,
+      "detail": "['0xbaba80', '0xbabab9']"
+    },
+    {
+      "name": "receiver_body_sha",
+      "passed": true,
+      "detail": "ba32ef6ab9e0e9f3ff109f9c5beeb68a2f931faaf9f6f74b92b65fbb3a768ab8"
+    },
+    {
+      "name": "receiver_calls_insert",
+      "passed": true,
+      "detail": "receiver call edge"
+    },
+    {
+      "name": "receiver_decodes_five_fields",
+      "passed": true,
+      "detail": "descriptor offsets +8/+18/+28/+38/+48"
+    },
+    {
+      "name": "insert_prologue_body_contiguous",
+      "passed": true,
+      "detail": "(['0xb90b20', '0xb90b59'], ['0xb90b59', '0xb90e92'])"
+    },
+    {
+      "name": "insert_stores_fifth_argument_at_record_14",
+      "passed": true,
+      "detail": "record+0x14"
+    },
+    {
+      "name": "insert_has_no_index_clamp_before_store",
+      "passed": true,
+      "detail": "no cmp/mask at fifth-argument store"
+    },
+    {
+      "name": "sender_embeds_confirmed_peer_hash",
+      "passed": true,
+      "detail": "{'rva': '0xbe4981', 'bytes': 'b9f4fc0448', 'sha256': '7c68e2fada58bf556535914c97baf785e3981d33d878430c477fe99e9533c1b3', 'asm': 'mov ecx, 0x4804fcf4'}"
+    },
+    {
+      "name": "host_direct_insert_call",
+      "passed": true,
+      "detail": "{'rva': '0x108c960', 'bytes': 'e8bb41b0ff', 'sha256': '52522cc98b4c5cb1b1d37d085a68420fc928bf22fbab5e1a550e68a464f54b57', 'asm': 'call 0xb90b20'}"
+    },
+    {
+      "name": "receiver_xref_is_real_direct_call",
+      "passed": true,
+      "detail": "receiver->insert"
+    },
+    {
+      "name": "static_pointer_run_contains_receiver",
+      "passed": true,
+      "detail": "('0xbaba80', [168])"
+    },
+    {
+      "name": "hash_scan_only_sender_immediate",
+      "passed": true,
+      "detail": "[{'rva': '0xbe4982', 'range': 'code', 'containing_instruction': {'rva': '0xbe4981', 'bytes': 'b9f4fc0448', 'sha256': '7c68e2fada58bf556535914c97baf785e3981d33d878430c477fe99e9533c1b3', 'asm': 'mov ecx, 0x4804fcf4'}}]"
+    },
+    {
+      "name": "live_image_matches_fixed_build",
+      "passed": true,
+      "detail": "25480438"
+    },
+    {
+      "name": "live_edges_include_receiver_call",
+      "passed": true,
+      "detail": "no direct E8 caller to receiver was reported; receiver is table-dispatched"
+    }
+  ],
+  "blocking_gates": [
+    {
+      "gate": "hash_to_receiver_runtime_registry",
+      "status": "unresolved",
+      "reason": "captured callback pointer run has no per-entry hashes and no writable dispatch registry"
+    },
+    {
+      "gate": "receive_dispatcher_abi",
+      "status": "unresolved",
+      "reason": "0xBDE430 is a send-side generic dispatcher; receiver-side lookup and argument owner are not captured"
+    },
+    {
+      "gate": "owner_storage_and_cleanup_abi",
+      "status": "unresolved",
+      "reason": "client +0xD0 inline four-record storage collides at +0x150; relocation aliases, cleanup and unwind are incomplete"
+    },
+    {
+      "gate": "installable_patch",
+      "status": "rejected",
+      "reason": "fail-closed until all previous gates are closed"
+    }
+  ],
+  "evidence": {
+    "hash": "0x4804fcf4",
+    "receiver": "0xbaba80",
+    "insert": "0xb90b20",
+    "sender": "0xbe4910",
+    "generic_send_dispatcher": "0xbde430",
+    "receiver_pointer_run_index": 168
+  }
+}

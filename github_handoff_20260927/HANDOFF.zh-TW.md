@@ -185,3 +185,17 @@ live-vs-disk 對照又保存於 `live_dispatcher_data_20261002_4.json`：`0xBDE4
 新增 [PLAYER_CREATION_CHAIN_AUDIT_20261002.zh-TW.md](../five_player_feasibility_20260927/PLAYER_CREATION_CHAIN_AUDIT_20261002.zh-TW.md) 與可重播 JSON：固定 `0x1086460` gate 明確拒絕 index `>=4`；index `0..3` 才進 dummy/player resource、`0xFDC140` component dispatch 與 `0x608B60` roster 路徑，`4..7` 進 fallback ring 而沒有 player-resource dispatch。另核對 `0xB9014B`、`0x13951A9`、session update 四站及七個 player component 的四人護欄。測試 4/4 通過，但這是靜態鏈審計，未生成 executable patch，`runtime_verified=false`、`multiplayer_verified=false`。
 
 Player-chain 審計又補進三個 client layout 固定四人位點：`0x1087122` adjacent lookup bound，以及 `0x10849F7..0x1084A28`、`0x1087260..0x1087298` 的四筆 confirmed-peer reset 清除範圍。重播輸出目前列出 11 個 fixed-four sites、7 個 component guards；測試仍 4/4 通過，這些仍只是靜態證據，不是 patch 或實機驗收。
+
+
+## 2026-10-03 receive vector 與擴大 registry 掃描
+
+固定 capture 的無 unwind leaf `0xBC2D10` 已被精確重播：`R8D` 是 selector、`R9` 的 descriptor 轉到 `RDX`、`RCX` 保持 owner/context，callback vector 位於 `0x214C2E0`，entry 168 指向 `0xBABA80`。`0x134D5AC` constructor 會把同一 leaf 寫到 owner `+0xB3F8`；另保存六個 service vector consumers。這收窄了 receive ABI，但不等同 hash→selector registry；`0x4804FCF4` 仍只找到送端 literal。機器收據為 `five_player_feasibility_20260927/receive_dispatch_entry_verification_20261002.json`，`hash_to_selector_proven=false`、`production_hook_ready=false`。
+
+同一固定 build 的已授權程序只讀 registry 搜尋由 128 MiB 擴大至 512 MiB，再至 1 GiB 可讀 `MEM_PRIVATE` 前綴，分別讀取 536,870,912 與 1,073,741,824 bytes，目標 pointer/hash 命中均為 0。工具新增可重播 `--limit-mib/--max-read-mib`，沒有呼叫、寫入、跟隨指標、安裝或注入。收據為 `private_registry_expansion_verification_20261003_1024m.json`，因此仍不能把負面掃描升格為不存在證明。
+
+新增固定版本的 receiver entry xrefs、field xrefs、registration body 與 selector-168 producer scan；producer scan 的整數常數命中不被當作 hash mapping。所有輸出仍維持 `installable=false`、`multiplayer_verified=false`。
+
+
+## 2026-10-03 public runtime entry audit
+
+新增 `five_player_feasibility_20260927/public_runtime_entry_audit_20261003.py`、`public_runtime_entry_audit_20261003.json` 與中文說明，核對 HD2Runtime package request/release（`0x12FE350`／`0x12FE4E0`）的 exact bytes、Bingus loader、Better Lobby、CChusky 與 RawData。公開入口可重用的只有本機 package residency、Lua discovery/require 和觀察能力；RawData 也證明 logical player resource 只有 9 components，而 Player Clone/Avatar 是 49 components，不能混為同一 admission 結構。報告固定為沒有 public peer admission/player writer/network spawn writer，`eight_player_status=unverified`。

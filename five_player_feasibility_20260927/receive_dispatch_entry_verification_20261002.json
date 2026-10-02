@@ -1,0 +1,126 @@
+{
+  "schema": "hd2_receive_dispatch_entry_verification_v1",
+  "capture_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "dispatch_leaf": {
+    "rva": "0xbc2d10",
+    "bytes": "418bc0498bd14c8d05c395580149ff24c0",
+    "table_rva": "0x214c2e0",
+    "table_entry_index": 168,
+    "receiver_rva": "0xbaba80"
+  },
+  "constructor": {
+    "rva": "0x134d470",
+    "store_offset": "0xb3f8",
+    "dispatch_rva": "0xbc2d10"
+  },
+  "vector_consumers": {
+    "0xb99f22": {
+      "vector": "rsi+0xb3c0",
+      "service_call": "0xb99f39",
+      "service_slot": "0x138"
+    },
+    "0xbbfae2": {
+      "vector": "rsi+0xb3c0",
+      "service_call": "0xbbfaf9",
+      "service_slot": "0x138"
+    },
+    "0x1089602": {
+      "vector": "r14+0xb3c0",
+      "service_call": "0x108960d",
+      "service_slot": "0x138"
+    },
+    "0x108fe13": {
+      "vector": "r8+0xb3c0",
+      "service_call": "0x108fe25",
+      "service_slot": "0x138"
+    },
+    "0x134f487": {
+      "vector": "r13+0xb3c0",
+      "service_call": "0x134f4a0",
+      "service_slot": "0x140"
+    },
+    "0x134f511": {
+      "vector": "rbx+0xb3c0",
+      "service_call": "0x134f528",
+      "service_slot": "0x138"
+    }
+  },
+  "checks": [
+    {
+      "name": "dispatch_transform",
+      "passed": true,
+      "detail": "R8D selector -> EAX; R9 -> RDX; table base -> R8; jmp [R8+RAX*8]"
+    },
+    {
+      "name": "constructor_vector_wiring",
+      "passed": true,
+      "detail": "0x134D5AC LEA -> 0xBC2D10; store at owner+0xB3F8"
+    },
+    {
+      "name": "receiver_slot_168",
+      "passed": true,
+      "detail": "table+168*8 -> 0xBABA80"
+    },
+    {
+      "name": "vector_consumers",
+      "passed": true,
+      "detail": {
+        "0xb99f22": {
+          "vector": "rsi+0xb3c0",
+          "service_call": "0xb99f39",
+          "service_slot": "0x138"
+        },
+        "0xbbfae2": {
+          "vector": "rsi+0xb3c0",
+          "service_call": "0xbbfaf9",
+          "service_slot": "0x138"
+        },
+        "0x1089602": {
+          "vector": "r14+0xb3c0",
+          "service_call": "0x108960d",
+          "service_slot": "0x138"
+        },
+        "0x108fe13": {
+          "vector": "r8+0xb3c0",
+          "service_call": "0x108fe25",
+          "service_slot": "0x138"
+        },
+        "0x134f487": {
+          "vector": "r13+0xb3c0",
+          "service_call": "0x134f4a0",
+          "service_slot": "0x140"
+        },
+        "0x134f511": {
+          "vector": "rbx+0xb3c0",
+          "service_call": "0x134f528",
+          "service_slot": "0x138"
+        }
+      }
+    },
+    {
+      "name": "hash_mapping_not_closed",
+      "passed": true,
+      "detail": "hash 0x4804FCF4 occurs only at ['0xbe4982']; no hash->selector table was captured"
+    },
+    {
+      "name": "send_dispatcher_not_receiver",
+      "passed": true,
+      "detail": "0xBDE430 is only a send-side call target in saved evidence"
+    }
+  ],
+  "receive_abi": {
+    "entry": "BC2D10",
+    "input_registers": {
+      "RCX": "opaque callback owner/context",
+      "RDX": "preserved by leaf only via R9->RDX; actual descriptor supplied by service",
+      "R8D": "selector/index",
+      "R9": "decoded descriptor pointer"
+    },
+    "selected_receiver": "BABA80 receives RCX, RDX=original R9 descriptor, R8=vector base"
+  },
+  "runtime_invoked": false,
+  "game_memory_written": false,
+  "hash_to_selector_proven": false,
+  "production_hook_ready": false,
+  "next_required": "capture/resolve the service-side hash/event registry or a runtime callback trace that supplies selector 168 for hash 0x4804FCF4"
+}

@@ -43,8 +43,13 @@ def digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def scan(pid: int, output: Path) -> dict:
-    base.READ_BUDGET = MAX_READ
+def scan(pid: int, output: Path, *, scan_limit: int = SCAN_LIMIT,
+         max_read: int = MAX_READ) -> dict:
+    if scan_limit <= 0:
+        raise ValueError("scan_limit must be positive")
+    if max_read < scan_limit:
+        raise ValueError("max_read must be >= scan_limit")
+    base.READ_BUDGET = max_read
     reader = base.WindowsReader(pid)
     try:
         executable = reader.executable()
@@ -68,7 +73,7 @@ def scan(pid: int, output: Path) -> dict:
         regions = 0
         pages = 0
         hits: list[dict] = []
-        while address < 0x800000000000 and consumed < SCAN_LIMIT:
+        while address < 0x800000000000 and consumed < scan_limit:
             info = MEMORY_BASIC_INFORMATION()
             size = kernel.VirtualQueryEx(reader.handle, C.c_void_p(address), C.byref(info), C.sizeof(info))
             if size != C.sizeof(info) or not info.size:
@@ -78,8 +83,8 @@ def scan(pid: int, output: Path) -> dict:
             if info.state == MEM_COMMIT and info.kind == MEM_PRIVATE and (info.protect & 0xFF) in READABLE and not (info.protect & 0x100):
                 regions += 1
                 cursor = base_addr
-                while cursor < end and consumed < SCAN_LIMIT:
-                    amount = min(PAGE, end - cursor, SCAN_LIMIT - consumed)
+                while cursor < end and consumed < scan_limit:
+                    amount = min(PAGE, end - cursor, scan_limit - consumed)
                     try:
                         raw = reader.read(cursor, amount, executable=False)
                     except (ValueError, OSError):
@@ -124,8 +129,8 @@ def scan(pid: int, output: Path) -> dict:
             "hits": hits,
             "stable_hit_pages": stable,
             "scan_stats": {"private_regions": regions, "pages_read": pages,
-                            "memory_bytes_read": consumed, "limit_bytes": SCAN_LIMIT,
-                            "truncated": consumed >= SCAN_LIMIT},
+                            "memory_bytes_read": consumed, "limit_bytes": scan_limit,
+                            "truncated": consumed >= scan_limit},
             "read_only": True,
             "calls_made": False,
             "writes_made": False,
@@ -133,7 +138,7 @@ def scan(pid: int, output: Path) -> dict:
             "resolver_closed": False,
             "eight_player_verified": False,
             "limitations": [
-                "The bounded scan covers only the first 128 MiB of readable private regions in VirtualQueryEx address order.",
+                f"The bounded scan covers at most {scan_limit // (1024 * 1024)} MiB of readable private regions in VirtualQueryEx address order.",
                 "A pointer/hash hit is not a registration proof without table ownership and dispatch ABI evidence.",
                 "No function was invoked and no network/player lifecycle was exercised.",
             ],
@@ -148,10 +153,14 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--pid", type=int, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--limit-mib", type=int, default=SCAN_LIMIT // (1024 * 1024))
+    parser.add_argument("--max-read-mib", type=int, default=MAX_READ // (1024 * 1024))
     args = parser.parse_args()
     if args.output.exists():
         raise SystemExit("refusing to overwrite output")
-    result = scan(args.pid, args.output)
+    result = scan(args.pid, args.output,
+                  scan_limit=args.limit_mib * 1024 * 1024,
+                  max_read=args.max_read_mib * 1024 * 1024)
     counts = {}
     for row in result["hits"]:
         counts[row["pattern"]] = counts.get(row["pattern"], 0) + 1

@@ -1,0 +1,336 @@
+{
+  "build": {
+    "exe_sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+    "exe_version": "1.8.46015.0",
+    "game_dll_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+    "mod_installed": false,
+    "multiplayer_verified": false,
+    "runtime_process_accessed": false,
+    "steam_build": 25480438
+  },
+  "claims": [
+    {
+      "claim": "HD2Runtime exposes a build-pinned reader for the current player list and resolves avatar network IDs; its generated profile rejects count > 4.",
+      "does_not_prove": [
+        "peer admission",
+        "player-slot insertion",
+        "confirmed-peer creation",
+        "network entity spawn"
+      ],
+      "evidence": [
+        "public_research_20261002/_clones/HD2Runtime/domains/event_natives.lua",
+        "public_research_20261002/_clones/HD2Runtime/runtime/event_world.lua",
+        "public_research_20261002/_clones/HD2Runtime/docs/events.md"
+      ],
+      "id": "runtime_player_reader",
+      "status": "supported_observation_only"
+    },
+    {
+      "claim": "The exact request/release byte pins and typed FFI call are reproducible against the existing capture, but the ABI requests/releases local RefcountedPackageSystem loadout packages.",
+      "does_not_prove": [
+        "Party/PlayFab admission",
+        "peer index 4..7",
+        "remote player entity replication"
+      ],
+      "evidence": [
+        "public_research_20261002/_clones/HD2Runtime/runtime/windows_write.lua",
+        "public_research_20261002/_clones/HD2Runtime/core/assets.lua",
+        "public_research_20261002/_clones/HD2Runtime/research/package-residency-F5FEE03DCFDB.json",
+        "evidence/existing-code-evidence-25480438/captured-data.bin"
+      ],
+      "id": "public_package_native_abi",
+      "status": "supported_local_asset_only"
+    },
+    {
+      "claim": "Better Lobby Management documents a four-entry roster and MAX_PEERS=4; its public native wrappers kick or initiate normal joins, not append confirmed peers.",
+      "does_not_prove": [
+        "capacity expansion",
+        "safe fifth-player insertion",
+        "host migration with extra peers"
+      ],
+      "evidence": [
+        "public_research_20261002/_clones/BetterLobbyManagement/src/game.lua",
+        "public_research_20261002/_clones/BetterLobbyManagement/docs/TECHNICAL.md"
+      ],
+      "id": "better_lobby_boundary",
+      "status": "supported_four_slot_reader"
+    },
+    {
+      "claim": "Bingus Shared Loader discovers Lua resources and requires modules; its own technical notes state it performs no process-memory writes and cannot establish multiplayer compatibility.",
+      "does_not_prove": [
+        "session admission",
+        "peer allocation",
+        "roster mutation"
+      ],
+      "evidence": [
+        "public_research_20261002/BingusSharedLoader/src/shared_loader.lua",
+        "public_research_20261002/BingusSharedLoader/docs/TECHNICAL.md"
+      ],
+      "id": "loader_boundary",
+      "status": "supported_loader_only"
+    },
+    {
+      "claim": "CChusky hd2-tools exposes entity/raycast capture over shared memory, while its watcher/injector source uses process injection; no public peer/roster admission API is present in the checked snapshot.",
+      "does_not_prove": [
+        "admission ABI",
+        "safe production hook",
+        "eight-player success"
+      ],
+      "evidence": [
+        "public_research_20261002/CChusky_hd2_tools/README.md",
+        "public_research_20261002/CChusky_hd2_tools/hook/watcher.c",
+        "public_research_20261002/CChusky_hd2_tools/hook/dll_injector.c"
+      ],
+      "id": "observer_hook_boundary",
+      "status": "observer_with_injection_hazard"
+    },
+    {
+      "claim": "Current RawData separates the logical content/entities/player resource (9 components) from Player Clone (Avatar) (49 components); historical maps also list different component IDs. They must not be treated as one admission structure.",
+      "does_not_prove": [
+        "dynamic peer admission",
+        "network entity replication capacity"
+      ],
+      "evidence": [
+        "public_research_20261002/Darctor_Helldivers2_RawData/Data/settings/EntityComponentMap.json",
+        "public_research_20261002/Darctor_Helldivers2_RawData/Data/entities/AvatarComponentData.json",
+        "public_research_20261002/shalzuth_HelldiversData/data/entities/EntityComponentMap.json",
+        "public_research_20261002/shalzuth_HelldiversData/data/components/EntityNetworkData.json",
+        "public_research_20261002/shalzuth_HelldiversData/data/components/EntityNetworkDataArray.json",
+        "public_research_20261002/shalzuth_HelldiversData/data/components/NetworkOverrideComponent.json"
+      ],
+      "id": "rawdata_player_avatar_distinction",
+      "measurements": {
+        "avatar_component_count": 49,
+        "avatar_hash": "5556372446766824087",
+        "historical_avatar_component_ids": [
+          0,
+          3,
+          18,
+          34,
+          35,
+          36,
+          48,
+          64,
+          69,
+          77,
+          88,
+          89,
+          90,
+          92,
+          99,
+          125,
+          127,
+          130,
+          132,
+          138,
+          152,
+          160,
+          167,
+          168,
+          200,
+          203,
+          206,
+          209,
+          210,
+          213,
+          214,
+          216,
+          219,
+          220,
+          235,
+          237,
+          247,
+          250,
+          251,
+          254,
+          255,
+          260,
+          262,
+          268,
+          279,
+          280,
+          281,
+          282,
+          286
+        ],
+        "historical_logical_component_ids": [
+          3,
+          17,
+          29,
+          37,
+          207,
+          222,
+          227,
+          229,
+          234
+        ],
+        "logical_player_component_count": 9,
+        "logical_player_hash": "14826404319954434690"
+      },
+      "status": "schema_only"
+    }
+  ],
+  "conclusion": {
+    "eight_player_status": "unverified",
+    "public_network_spawn_writer_found": false,
+    "public_peer_admission_abi_found": false,
+    "public_player_creation_writer_found": false,
+    "recommended_entry": "Use the package ABI only as a local resource-residency helper. The next real implementation gate is an authorized, version-pinned Session/Party/peer-admission and player-creation path; no checked public snapshot supplies it."
+  },
+  "generated_by": "public_runtime_entry_audit_20261003.py",
+  "package_abi_proof": {
+    "abi": {
+      "engine_load_vtable_slot_hex": "0x2F0",
+      "engine_unload_vtable_slot_hex": "0x300",
+      "instance_global_rva_hex": "0x347CEB0",
+      "refcount_map": {
+        "capacity": 8,
+        "emptyKey": 16,
+        "entries": 0,
+        "entryStride": 16,
+        "multiplier": 24,
+        "refcount": 8
+      },
+      "release": "void(instance, const uint64_t*, uint32_t count)",
+      "request": "void(instance, const uint64_t*, uint32_t count)",
+      "scope": "local package residency/loadout assets only"
+    },
+    "build": "F5FEE03DCFDB",
+    "capture_payload": {
+      "bytes": 42153827,
+      "path": "evidence/existing-code-evidence-25480438/captured-data.bin",
+      "sha256": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d",
+      "sha256_pinned": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+    },
+    "capture_report": {
+      "bytes": 2299339,
+      "path": "evidence/existing-code-evidence-25480438/capture-report.json",
+      "sha256": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5"
+    },
+    "release": {
+      "capture_matches": true,
+      "captured_sha256": "52324b557e43c57e44755fee04b67a875c4815471a1015bdcab25d25b6e1a0a9",
+      "proof_bytes": 384,
+      "proof_sha256": "52324b557e43c57e44755fee04b67a875c4815471a1015bdcab25d25b6e1a0a9",
+      "rva": 19916000,
+      "rva_hex": "0x12FE4E0"
+    },
+    "request": {
+      "capture_matches": true,
+      "captured_sha256": "0739e73c454ebe80865b060195b8387791cf38ca3cbfc059d8322675b384abd2",
+      "proof_bytes": 384,
+      "proof_sha256": "0739e73c454ebe80865b060195b8387791cf38ca3cbfc059d8322675b384abd2",
+      "rva": 19915600,
+      "rva_hex": "0x12FE350"
+    },
+    "source_spec": {
+      "bytes": 150581,
+      "path": "public_research_20261002/_clones/HD2Runtime/research/package-residency-F5FEE03DCFDB.json",
+      "sha256": "8887b6548bba54a187e3bbbcd505a6e010a6abea008bd91feb55d17aba5b74aa"
+    }
+  },
+  "schema": "public-runtime-entry-audit/1",
+  "scope": "offline public-source and existing-capture audit",
+  "sources": [
+    {
+      "bytes": 10181,
+      "path": "public_research_20261002/BingusSharedLoader/docs/TECHNICAL.md",
+      "sha256": "15ad67a49bc36fb1f1a9b6b440f6924fd2a573b84792d40b673e5fbfb05bef11"
+    },
+    {
+      "bytes": 5260,
+      "path": "public_research_20261002/BingusSharedLoader/src/shared_loader.lua",
+      "sha256": "75be7a844d1bc4efb72329dc011597fc0fd44fa6b83fac5c014f190f7eaef2f6"
+    },
+    {
+      "bytes": 4326,
+      "path": "public_research_20261002/CChusky_hd2_tools/README.md",
+      "sha256": "bb6b2428c0803d201490b33a0b6eb0e8f38c89ac9bc8b1938d297ece79866402"
+    },
+    {
+      "bytes": 5420,
+      "path": "public_research_20261002/CChusky_hd2_tools/hook/dll_injector.c",
+      "sha256": "ce02048ffbf172dd65124adddd005cdc23707137757bc617d539e2405301e919"
+    },
+    {
+      "bytes": 14435,
+      "path": "public_research_20261002/CChusky_hd2_tools/hook/watcher.c",
+      "sha256": "1585ec5e4875c02d5450ac418d049f3e30b65405c355d50e32e0c2039b562846"
+    },
+    {
+      "bytes": 14415,
+      "path": "public_research_20261002/Darctor_Helldivers2_RawData/Data/entities/AvatarComponentData.json",
+      "sha256": "dfab363ec067855f8e6581c09c77e76ed0c499179bc66dda379bdad02d39bbdb"
+    },
+    {
+      "bytes": 2428938,
+      "path": "public_research_20261002/Darctor_Helldivers2_RawData/Data/settings/EntityComponentMap.json",
+      "sha256": "3ff06aca3068a0d7c70d95ede52f6eda793244e963e274d85cae080d432133a6"
+    },
+    {
+      "bytes": 28062,
+      "path": "public_research_20261002/_clones/BetterLobbyManagement/docs/TECHNICAL.md",
+      "sha256": "83b9cac4913c3bb87ab5486ae05756906cbd639c0cc354f5b4808a03865d2ad3"
+    },
+    {
+      "bytes": 12327,
+      "path": "public_research_20261002/_clones/BetterLobbyManagement/src/game.lua",
+      "sha256": "23e3ed0195196aeaab63610fb8d8453d57e2c1569e7e1cd2ac8914abb2a681f1"
+    },
+    {
+      "bytes": 12995,
+      "path": "public_research_20261002/_clones/HD2Runtime/api/hd2.lua",
+      "sha256": "b617824baf88729dea883ec06a14ff4acdc770d0947ce48b7bfe4e3da383041e"
+    },
+    {
+      "bytes": 11647,
+      "path": "public_research_20261002/_clones/HD2Runtime/core/assets.lua",
+      "sha256": "c4dcf288b1d078325631b1bcf16e9683dd257baa2208aaf86eeb87c89a5b6e2d"
+    },
+    {
+      "bytes": 43249,
+      "path": "public_research_20261002/_clones/HD2Runtime/docs/events.md",
+      "sha256": "99edced1fa2256b967853675035047b810dcbf03b5e11a3e182a94f3f0ffeb6b"
+    },
+    {
+      "bytes": 27041,
+      "path": "public_research_20261002/_clones/HD2Runtime/domains/event_natives.lua",
+      "sha256": "7cb6f2c01d1d17c8ac02cd9b47c7649f108a6fca67dcd9403eb4a784dceb8016"
+    },
+    {
+      "bytes": 32869,
+      "path": "public_research_20261002/_clones/HD2Runtime/runtime/event_world.lua",
+      "sha256": "51f0d8456eb95451c8a28364fdb0c46c2e61ed078286b6faa44145b8ebd2b238"
+    },
+    {
+      "bytes": 7981,
+      "path": "public_research_20261002/_clones/HD2Runtime/runtime/windows_write.lua",
+      "sha256": "bac9a7322a08072da351188f6df4e14d813e3b8a23b388f2cfb2f6493b168ae9"
+    },
+    {
+      "bytes": 126,
+      "path": "public_research_20261002/shalzuth_HelldiversData/data/components/EntityNetworkData.json",
+      "sha256": "8ff9ee254d9fd0a877015ed330cb83dc206797f614ecc9a7be20f281d764242b"
+    },
+    {
+      "bytes": 106,
+      "path": "public_research_20261002/shalzuth_HelldiversData/data/components/EntityNetworkDataArray.json",
+      "sha256": "958949873bbdb754b63ac0b294adcaa7e83a88816f763128cd64e8838b9eab6e"
+    },
+    {
+      "bytes": 99,
+      "path": "public_research_20261002/shalzuth_HelldiversData/data/components/NetworkOverrideComponent.json",
+      "sha256": "facadc2c841ba690f7fc661a5fc6f42a2fdbc6d83255b0bad4639fd0f6a4ba9a"
+    },
+    {
+      "bytes": 384,
+      "path": "public_research_20261002/shalzuth_HelldiversData/data/components/ShipTeleporterComponent.json",
+      "sha256": "732513a317434e6246ddaadad828f8d1b453e4bdc655a70576bd94ce7b9863b3"
+    },
+    {
+      "bytes": 197793,
+      "path": "public_research_20261002/shalzuth_HelldiversData/data/entities/EntityComponentMap.json",
+      "sha256": "50c57f774ab2a7a89f75e17d3e9d6616202f78a12e3ad712a5109efa2cd87055"
+    }
+  ]
+}

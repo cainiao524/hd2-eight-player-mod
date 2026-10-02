@@ -1,0 +1,71 @@
+{
+  "schema": "hd2_live_private_registry_scan_v1",
+  "build": 25480438,
+  "pid": 38588,
+  "captured_at_utc": "2026-10-02T10:16:40.564913+00:00",
+  "scope": "authorized read-only bounded MEM_PRIVATE scan; no calls, writes, hooks, install, or pointer following",
+  "pinned_images": {
+    "helldivers2.exe": {
+      "base": 140702590631936,
+      "size": 60719104,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\helldivers2.exe",
+      "sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+      "pe_identity": {
+        "timestamp": 1790149348,
+        "image_size": 60719104
+      }
+    },
+    "game.dll": {
+      "base": 140734444797952,
+      "size": 74727424,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\data\\game\\game.dll",
+      "sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+      "pe_identity": {
+        "timestamp": 1790161983,
+        "image_size": 74727424
+      }
+    }
+  },
+  "patterns": {
+    "confirmed_peer_receiver": {
+      "length": 8,
+      "sha256": "941c7320476644112ecf946df9b5c687044726716b3f73d26d49386f85c6f9f6"
+    },
+    "confirmed_peer_insert": {
+      "length": 8,
+      "sha256": "8444ed985b92bfae2010cfa63da7b5fecd0384ed6363659b1ff3d39e5a46b86f"
+    },
+    "platform_member_consumer": {
+      "length": 8,
+      "sha256": "24b7e21e5b6c4b79ea180bdf42787082fd785eecbab814c86df77108a8893507"
+    },
+    "platform_member_state_update": {
+      "length": 8,
+      "sha256": "d2b7f5e1e1dfa8ac794ab776f91559f81ccfa7f246bb686c60c2aa16c4e36437"
+    },
+    "confirmed_peer_event_hash": {
+      "length": 4,
+      "sha256": "22e65032d2b4ec7e879b6119cfeb1bb9f03bbfbe1337d08aa83d0dfc792c2552"
+    }
+  },
+  "hits": [],
+  "stable_hit_pages": [],
+  "scan_stats": {
+    "private_regions": 2113,
+    "pages_read": 262144,
+    "memory_bytes_read": 1073741824,
+    "limit_bytes": 1073741824,
+    "truncated": true
+  },
+  "read_only": true,
+  "calls_made": false,
+  "writes_made": false,
+  "hooks_installed": false,
+  "resolver_closed": false,
+  "eight_player_verified": false,
+  "limitations": [
+    "The bounded scan covers at most 1024 MiB of readable private regions in VirtualQueryEx address order.",
+    "A pointer/hash hit is not a registration proof without table ownership and dispatch ABI evidence.",
+    "No function was invoked and no network/player lifecycle was exercised."
+  ]
+}
