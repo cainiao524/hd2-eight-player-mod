@@ -86,7 +86,7 @@
 
 另新增 [Host Join Runtime Probe](../eight_player_candidate_20260927/Native/RuntimeProbe/README.zh-TW.md)：只保存外部觀測器複製後傳入的 `0x108BC70` 入口 frame，固定 32 筆 ring、最多 16 個 stack word，並有 build/site、停止、滿載和 profile fail-closed。合成 harness 通過，但沒有 game RVA installer，也未注入或呼叫遊戲函式。
 
-另外新增 [八帳號 live acceptance verifier](../eight_player_candidate_20260927/Integration/verify_multiplayer_acceptance.py)：驗收輸入必須是八個獨立 account/client、同一 mission/build、index `0..7`、唯一 peer/resource/entity/roster，以及完整死亡、增援、離隊、重連、撤離、結算和 host migration 事件；少於八份、重複 index、非 live input 或缺欄位都會拒絕。
+另外新增 [八帳號 live acceptance verifier](../eight_player_candidate_20260927/Integration/verify_multiplayer_acceptance.py)：驗收輸入必須是八個獨立 account/client、同一 mission/session/build、index `0..7`、唯一 peer/resource/entity/roster，以及完整死亡、增援、離隊、重連、撤離、結算和 host migration 事件；少於八份、重複識別、非 live input 或缺欄位都會拒絕。
 
 已完成 [native Peer Admission Adapter](../five_player_feasibility_20260927/NATIVE_PEER_ADMISSION_ADAPTER.zh-TW.md) 與 [live build preflight](../eight_player_candidate_20260927/Integration/LIVE_BUILD_PREFLIGHT.zh-TW.md)。六份 build 檔案核對成功、程序停止、native plan schema 有效，但 plan 仍為 `executable=false`；因此未安裝、未注入，也未宣稱多人成功。Integration 測試目前 10/10 通過。
 

@@ -70,9 +70,15 @@ def verify(paths: list[Path]) -> dict[str, Any]:
     mission_ids = {str(log.get("mission_id", "")) for log in logs}
     if len(mission_ids) != 1 or "" in mission_ids:
         raise AcceptanceError("mission_id_mismatch")
+    session_ids = {str(log.get("session_id", "")) for log in logs}
+    if len(session_ids) != 1 or "" in session_ids:
+        raise AcceptanceError("session_id_mismatch")
 
     indexes: list[int] = []
-    identities: set[tuple[str, str]] = set()
+    peer_ids: set[str] = set()
+    resource_handles: set[str] = set()
+    entity_ids: set[str] = set()
+    roster_ordinals: set[int] = set()
     rows: list[dict[str, Any]] = []
     for log in logs:
         peer = str(log.get("peer_id", ""))
@@ -84,9 +90,20 @@ def verify(paths: list[Path]) -> dict[str, Any]:
             raise AcceptanceError("missing_peer_resource_entity_roster")
         if not isinstance(index, int) or index < 0 or index > 7:
             raise AcceptanceError("network_index_out_of_range")
-        if (peer, resource) in identities:
-            raise AcceptanceError("duplicate_peer_resource")
-        identities.add((peer, resource))
+        if roster < 0 or roster > 7:
+            raise AcceptanceError("roster_ordinal_out_of_range")
+        if peer in peer_ids:
+            raise AcceptanceError("duplicate_peer_id")
+        if resource in resource_handles:
+            raise AcceptanceError("duplicate_resource_handle")
+        if entity in entity_ids:
+            raise AcceptanceError("duplicate_entity_id")
+        if roster in roster_ordinals:
+            raise AcceptanceError("duplicate_roster_ordinal")
+        peer_ids.add(peer)
+        resource_handles.add(resource)
+        entity_ids.add(entity)
+        roster_ordinals.add(roster)
         indexes.append(index)
         events = log.get("events")
         if not isinstance(events, list):
@@ -125,6 +142,7 @@ def verify(paths: list[Path]) -> dict[str, Any]:
         "steam_build": BUILD,
         "exe_version": EXE_VERSION,
         "mission_id": next(iter(mission_ids)),
+        "session_id": next(iter(session_ids)),
         "account_count": 8,
         "client_count": 8,
         "network_indexes": sorted(indexes),

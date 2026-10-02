@@ -23,6 +23,7 @@ def make_log(index: int, *, live: bool = True) -> dict:
         "steam_build": acceptance.BUILD,
         "exe_version": acceptance.EXE_VERSION,
         "mission_id": "mission-1",
+        "session_id": "session-1",
         "network_index": index,
         "peer_id": f"peer-{index}",
         "resource_handle": f"resource-{index}",
