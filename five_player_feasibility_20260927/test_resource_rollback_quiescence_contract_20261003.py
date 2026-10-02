@@ -35,6 +35,18 @@ def test_partial_callback_failure_rolls_back_reverse_and_is_idempotent():
     assert repeat["cleanup_actions"] == receipt["cleanup_actions"]
 
 
+def test_third_callback_failure_unwinds_first_and_second_tables():
+    model = ResourceRollbackContract(0x1000)
+    token = model.begin(4, record_ordinal=0, resource_handle=11, resource_hash=22, component_ordinal=239)
+    for stage in (CallbackStage.FIRST, CallbackStage.SECOND):
+        lease = model.begin_callback(token)
+        model.complete_callback(lease, stage)
+    lease = model.begin_callback(token)
+    receipt = model.complete_callback(lease, CallbackStage.THIRD, succeeded=False, reason="reject")
+    assert receipt["unwound_callbacks"] == ["second_callback", "first_callback"]
+    assert receipt["all_side_effects_cleared"] is True
+
+
 def test_reentry_stale_generation_cannot_touch_replacement():
     model = ResourceRollbackContract(0x1000)
     old = model.begin(6, record_ordinal=0, resource_handle=61, resource_hash=62)
@@ -117,6 +129,8 @@ def test_synthetic_report_is_fail_closed():
     assert report["build"] == BUILD
     assert report["capacity"] == 8
     checks = report["checks"]
+    assert checks["abi_callback_tables_match"] is True
+    assert checks["third_callback_failure_unwinds_reverse_order"] is True
     assert checks["partial_callback_failure_unwinds_reverse_order"] is True
     assert checks["partial_callback_failure_clears_all_side_effects"] is True
     assert checks["rollback_reentry_is_idempotent"] is True

@@ -35,10 +35,23 @@ class TransactionState(str, Enum):
 class CallbackStage(str, Enum):
     FIRST = "first_callback"
     SECOND = "second_callback"
+    THIRD = "third_callback"
     ROSTER = "roster_insert"
 
 
-CALLBACK_ORDER = (CallbackStage.FIRST.value, CallbackStage.SECOND.value, CallbackStage.ROSTER.value)
+CALLBACK_ORDER = (
+    CallbackStage.FIRST.value,
+    CallbackStage.SECOND.value,
+    CallbackStage.THIRD.value,
+    CallbackStage.ROSTER.value,
+)
+
+ABI_CALLBACK_TABLES = {
+    CallbackStage.FIRST.value: "owner+0x40 + component_index*8 + 0xf0c110",
+    CallbackStage.SECOND.value: "owner+0x40 + component_index*8 + 0xf0cb30",
+    CallbackStage.THIRD.value: "owner+0x40 + component_index*8 + 0xf0d550",
+}
+ABI_ROSTER_COMPONENT = 239
 
 
 @dataclass(frozen=True)
@@ -386,14 +399,39 @@ def _input_identity() -> dict[str, Any]:
     return result
 
 
+def _abi_callback_contract() -> dict[str, Any]:
+    """Bind the transaction stages to all callback tables in the ABI report."""
+    data = json.loads(ABI_REPORT.read_text(encoding="utf-8"))
+    tables = data.get("abi", {}).get("callback_tables")
+    if not isinstance(tables, dict):
+        raise AssertionError("ABI callback table contract is missing")
+    observed = {
+        CallbackStage.FIRST.value: tables.get("first"),
+        CallbackStage.SECOND.value: tables.get("second"),
+        CallbackStage.THIRD.value: tables.get("third"),
+    }
+    if observed != ABI_CALLBACK_TABLES:
+        raise AssertionError("ABI callback table contract changed")
+    if tables.get("roster_component") != ABI_ROSTER_COMPONENT:
+        raise AssertionError("ABI roster component changed")
+    return {
+        "callback_tables": dict(ABI_CALLBACK_TABLES),
+        "roster_component": ABI_ROSTER_COMPONENT,
+        "stage_order": list(CALLBACK_ORDER),
+    }
+
+
 def synthetic_report() -> dict[str, Any]:
     evidence = _input_identity()
+    abi_callback_contract = _abi_callback_contract()
     model = ResourceRollbackContract(0x1000)
     token = model.begin(4, record_ordinal=0, resource_handle=0xA004, resource_hash=0xB004, component_ordinal=239)
     lease = model.begin_callback(token)
     model.complete_callback(lease, CallbackStage.FIRST)
     lease = model.begin_callback(token)
-    failed = model.complete_callback(lease, CallbackStage.SECOND, succeeded=False, reason="second callback rejected")
+    model.complete_callback(lease, CallbackStage.SECOND)
+    lease = model.begin_callback(token)
+    failed = model.complete_callback(lease, CallbackStage.THIRD, succeeded=False, reason="third callback rejected")
     repeated = model.rollback(token, "re-entered rollback")
     stale_rejected = False
     try:
@@ -408,6 +446,8 @@ def synthetic_report() -> dict[str, Any]:
     lease = model.begin_callback(post_migration)
     model.complete_callback(lease, CallbackStage.SECOND)
     lease = model.begin_callback(post_migration)
+    model.complete_callback(lease, CallbackStage.THIRD)
+    lease = model.begin_callback(post_migration)
     model.complete_callback(lease, CallbackStage.ROSTER)
     model.publish(post_migration)
     released = model.release(post_migration)
@@ -419,7 +459,9 @@ def synthetic_report() -> dict[str, Any]:
         "capacity": CAPACITY,
         "evidence_inputs": evidence,
         "checks": {
-            "partial_callback_failure_unwinds_reverse_order": failed["unwound_callbacks"] == ["first_callback"],
+            "abi_callback_tables_match": abi_callback_contract["stage_order"] == list(CALLBACK_ORDER),
+            "third_callback_failure_unwinds_reverse_order": failed["unwound_callbacks"] == ["second_callback", "first_callback"],
+            "partial_callback_failure_unwinds_reverse_order": failed["unwound_callbacks"] == ["second_callback", "first_callback"],
             "partial_callback_failure_clears_all_side_effects": failed["all_side_effects_cleared"] is True,
             "rollback_reentry_is_idempotent": repeated["idempotent"] is True and repeated["cleanup_actions"] == failed["cleanup_actions"],
             "stale_generation_reentry_rejected": stale_rejected,
@@ -433,6 +475,7 @@ def synthetic_report() -> dict[str, Any]:
             "multiplayer_verified": False,
         },
         "failed_callback_receipt": failed,
+        "abi_callback_contract": abi_callback_contract,
         "reentry_receipt": repeated,
         "migration_receipt": migration,
         "final_snapshot": model.snapshot(),

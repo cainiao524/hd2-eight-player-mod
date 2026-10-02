@@ -93,7 +93,7 @@ P1／P2／P6 已加入固定 build 審計與離線生命週期契約：
 - `PLAYER_RESOURCE_REVERSE_CLEANUP_AUDIT_20261003`：固定 `FDC780 → FDC820 → FDDC80`、handle registry、component cleanup table 與 owner+8 last-ordinal compaction；partial rollback、re-entry idempotence、owner quiescence 仍是阻礙。
 - `LOADOUT_LIFECYCLE_ABI_20261003`：12/12 固定檢查配對 entry rebuild、constructor、兩條 release、transition callbacks 與四槽 runtime guards；仍需 sidecar allocator、package unload 及真實 UI callback 接線。
 - `LOADOUT_SIDECAR_CONTRACT_20261003`：八個 stable network slots、獨立 UI slot／widget token、generation-safe hole 及 pending／confirmed／releasing 生命週期以 5 項合成測試固定；嚴格型別 identity guard 與 `cancel_pending` 拒絕／回滾路徑已覆蓋；仍未接 native callback、package 或實機 UI。
-- `RESOURCE_ROLLBACK_QUIESCENCE_CONTRACT_20261003`：8 項測試固定 callback 逆序回滾、冪等 release、generation／owner epoch stale 防護、callback lease 與空 registry migration；仍為離線模型。
+- `RESOURCE_ROLLBACK_QUIESCENCE_CONTRACT_20261003`：9 項測試固定三張 ABI callback table、第三階段失敗的 callback 逆序回滾、冪等 release、generation／owner epoch stale 防護、callback lease 與空 registry migration；仍為離線模型。
 - `PEER_LIFECYCLE_SIDECAR_CONTRACT_20261003`：8 項測試固定 partial confirmed-peer rollback、pending cancel、離隊／重連 generation、callback lease 與 migration prepare／commit／abort；native owner、runtime、installable、multiplayer flags 仍為 false。
 
 上述 player-creation 1/1、loadout 26/26、resource rollback 8/8、peer lifecycle 8/8 均為離線固定證據，不能替代第五人實機加入、角色建立或任務驗收。

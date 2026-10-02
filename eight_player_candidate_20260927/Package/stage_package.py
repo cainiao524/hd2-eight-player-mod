@@ -49,6 +49,8 @@ OFFLINE_AUDITS = {
 }
 
 ROLLBACK_REQUIRED_CHECKS = {
+    "abi_callback_tables_match",
+    "third_callback_failure_unwinds_reverse_order",
     "partial_callback_failure_unwinds_reverse_order",
     "partial_callback_failure_clears_all_side_effects",
     "rollback_reentry_is_idempotent",

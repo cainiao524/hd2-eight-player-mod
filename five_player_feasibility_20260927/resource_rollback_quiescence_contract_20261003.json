@@ -19,6 +19,8 @@
     }
   },
   "checks": {
+    "abi_callback_tables_match": true,
+    "third_callback_failure_unwinds_reverse_order": true,
     "partial_callback_failure_unwinds_reverse_order": true,
     "partial_callback_failure_clears_all_side_effects": true,
     "rollback_reentry_is_idempotent": true,
@@ -42,11 +44,13 @@
     },
     "owner_key": 4096,
     "owner_epoch": 1,
-    "reason": "second callback rejected",
+    "reason": "third callback rejected",
     "unwound_callbacks": [
+      "second_callback",
       "first_callback"
     ],
     "cleanup_actions": [
+      "undo:second_callback",
       "undo:first_callback",
       "remove_roster_record",
       "remove_owner8_reverse_map",
@@ -54,6 +58,20 @@
       "clear_resource_record"
     ],
     "all_side_effects_cleared": true
+  },
+  "abi_callback_contract": {
+    "callback_tables": {
+      "first_callback": "owner+0x40 + component_index*8 + 0xf0c110",
+      "second_callback": "owner+0x40 + component_index*8 + 0xf0cb30",
+      "third_callback": "owner+0x40 + component_index*8 + 0xf0d550"
+    },
+    "roster_component": 239,
+    "stage_order": [
+      "first_callback",
+      "second_callback",
+      "third_callback",
+      "roster_insert"
+    ]
   },
   "reentry_receipt": {
     "status": "released",
@@ -65,11 +83,13 @@
     },
     "owner_key": 4096,
     "owner_epoch": 1,
-    "reason": "second callback rejected",
+    "reason": "third callback rejected",
     "unwound_callbacks": [
+      "second_callback",
       "first_callback"
     ],
     "cleanup_actions": [
+      "undo:second_callback",
       "undo:first_callback",
       "remove_roster_record",
       "remove_owner8_reverse_map",
