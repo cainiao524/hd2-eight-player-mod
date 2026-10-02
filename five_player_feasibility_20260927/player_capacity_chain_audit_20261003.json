@@ -1,0 +1,176 @@
+{
+  "schema": "hd2_player_capacity_chain_audit_v1",
+  "build": 25480438,
+  "capture_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "source_evidence": "creation_path_evidence_v3.json",
+  "checks": [
+    {
+      "name": "fixed_build",
+      "passed": true,
+      "detail": 25480438
+    },
+    {
+      "name": "capture_identity",
+      "passed": true,
+      "detail": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8"
+    },
+    {
+      "name": "captured_data_identity",
+      "passed": true,
+      "detail": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+    },
+    {
+      "name": "capacity_source_default_four",
+      "passed": true,
+      "detail": {
+        "rva": "0x10919d1",
+        "bytes": "b904000000",
+        "sha256": "a1afc0d562a7b083caaff01fe7a397fd5241cfd7dcb827e5beafe15095b80329",
+        "asm": "mov ecx, 4",
+        "root": "0x1091980"
+      }
+    },
+    {
+      "name": "capacity_source_stores_owner_1b90",
+      "passed": true,
+      "detail": {
+        "rva": "0x10919de",
+        "bytes": "898b901b0000",
+        "sha256": "875a83963157aae2f414dc483e7b32eece3b0a95e7e3d32ffe9ade7bd5d0bdaa",
+        "asm": "mov dword ptr [rbx + 0x1b90], ecx",
+        "root": "0x1091980"
+      }
+    },
+    {
+      "name": "initial_member_metadata_four",
+      "passed": true,
+      "detail": {
+        "rva": "0x10915da",
+        "bytes": "ba04000000",
+        "sha256": "226a05287e9447c3e065ff4b6fc3eec0111874370f69b6e9e642ec5c914ca746",
+        "asm": "mov edx, 4",
+        "root": "0x1091560"
+      }
+    },
+    {
+      "name": "enumerator_capacity_arguments",
+      "passed": true,
+      "detail": [
+        {
+          "rva": "0x1092e78",
+          "bytes": "41b804000000",
+          "sha256": "56a8dc4971f8c1a86f125c0fa01d3c4b602b6aba306e8d86579def8f257d5f0e",
+          "asm": "mov r8d, 4",
+          "root": "0x1092e60"
+        },
+        {
+          "rva": "0x1092f31",
+          "bytes": "41b804000000",
+          "sha256": "56a8dc4971f8c1a86f125c0fa01d3c4b602b6aba306e8d86579def8f257d5f0e",
+          "asm": "mov r8d, 4",
+          "root": "0x1092e60"
+        }
+      ]
+    },
+    {
+      "name": "enumerator_four_clamp_and_store",
+      "passed": true,
+      "detail": [
+        {
+          "rva": "0x1092ecb",
+          "bytes": "83f804",
+          "sha256": "ec9d1a6c95187ab3425edbcdf19a43602dabed7b1d6a5c436f9d713baec3f3d1",
+          "asm": "cmp eax, 4",
+          "root": "0x1092e60"
+        },
+        {
+          "rva": "0x1092ed0",
+          "bytes": "c783b01b000004000000",
+          "sha256": "7b449b1d051baa1aabab12e009a4a8bd9a3d719553db70f38acdde6d55f9bcc0",
+          "asm": "mov dword ptr [rbx + 0x1bb0], 4",
+          "root": "0x1092e60"
+        }
+      ]
+    },
+    {
+      "name": "state_update_four_clamp_and_store",
+      "passed": true,
+      "detail": [
+        {
+          "rva": "0x1093c91",
+          "bytes": "83f804",
+          "sha256": "ec9d1a6c95187ab3425edbcdf19a43602dabed7b1d6a5c436f9d713baec3f3d1",
+          "asm": "cmp eax, 4",
+          "root": "0x10937a0"
+        },
+        {
+          "rva": "0x1093c96",
+          "bytes": "c787b01b000004000000",
+          "sha256": "5aa3158a39f17a9f55373fa54fc7b171f93de55d212e97c218b445b675f48c9e",
+          "asm": "mov dword ptr [rdi + 0x1bb0], 4",
+          "root": "0x10937a0"
+        }
+      ]
+    },
+    {
+      "name": "state_update_capacity_argument",
+      "passed": true,
+      "detail": {
+        "rva": "0x1093d1e",
+        "bytes": "41b804000000",
+        "sha256": "56a8dc4971f8c1a86f125c0fa01d3c4b602b6aba306e8d86579def8f257d5f0e",
+        "asm": "mov r8d, 4",
+        "root": "0x10937a0"
+      }
+    },
+    {
+      "name": "recreate_adds_four",
+      "passed": true,
+      "detail": {
+        "rva": "0x1093a96",
+        "bytes": "83c104",
+        "sha256": "de40bc59184915c29d06f2d83944a51da12276621488d3ec285b94502f419126",
+        "asm": "add ecx, 4",
+        "root": "0x10937a0"
+      }
+    }
+  ],
+  "checks_passed": 11,
+  "checks_total": 11,
+  "verification_passed": true,
+  "capacity_groups": {
+    "owner_capacity_source": [
+      "0x10919d1",
+      "0x10919de"
+    ],
+    "initial_member_metadata": [
+      "0x10915da"
+    ],
+    "enumerator": [
+      "0x1092e78",
+      "0x1092ecb",
+      "0x1092ed0",
+      "0x1092f31"
+    ],
+    "state_update": [
+      "0x1093c91",
+      "0x1093c96",
+      "0x1093d1e"
+    ],
+    "recreate": [
+      "0x1093a96"
+    ]
+  },
+  "decision": {
+    "production_patch_ready": false,
+    "meaning": "The fixed build contains several separate four-player assumptions across capacity initialization, member metadata, enumeration, state update and recreate. They must be patched as one owner/sidecar contract; no single literal is sufficient.",
+    "next_required": [
+      "Bind owner+0x1b90/0x1bb0 and callback arguments to the real peer/player creation ABI.",
+      "Prove an 8-slot backing and rollback for enumeration, recreate, departure and migration.",
+      "Capture a real fifth-peer run before enabling any production patch."
+    ]
+  },
+  "runtime_verified": false,
+  "installable": false,
+  "multiplayer_verified": false
+}

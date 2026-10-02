@@ -996,7 +996,7 @@
     "five_player_feasibility_20260927/verification/native_peer_admission_bridge_boundary_verification_20261002.json": "f30a4b9517d3add9050cd24ff3fcd010d9ea1a72cb937bdddb6db250384abad0",
     "five_player_feasibility_20260927/verification/peer_admission_adapter_verification.json": "0b4f84491adeff2b424d02e6fa614c3630381dc12eaf4bc20af39914ff4319fc",
     "five_player_feasibility_20260927/verify_native_peer_admission_bridge_boundary.py": "6cf6d5d4e9898fab0083ea135f8ea13dbc129ff0f1d68d4e83f1c8bd34214ad7",
-    "github_handoff_20260927/HANDOFF.zh-TW.md": "9e3362bf09f69f362194fbbc462c051443c3700cfd9f2517dc867225f62ec14b",
+    "github_handoff_20260927/HANDOFF.zh-TW.md": "c0373fbb71bff5877254b6d4ddb671d3a2c16f4ce36b047c92cb0f6357bef6cd",
     "github_handoff_20260927/SETUP.zh-TW.md": "1c362594a6a8e70fe5fb9fce5f0d23dcf6d160a6338345f2f4b717d538d8003b",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_disasm_20261002.json": "48f504badebad800a8439494bc386e3dff61e1818168a40916d8cffd618790c9",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_patch.py": "9808f073e958fdc464d47bc10a459f328d14ebde9a765f429e13153786a5734a",
@@ -1122,7 +1122,11 @@
     "five_player_feasibility_20260927/verify_live_preflight_continuation_20261003.py": "efacc31b51a961e760137364e6ef728c1bceec543048d222e16c4a4e2c090a12",
     "five_player_feasibility_20260927/live_preflight_continuation_verification_20261003.json": "f33082d5981c6f923375f342721a219466d0ec7a5e1a6022cf2ae2a62d168083",
     "five_player_feasibility_20260927/LIVE_PREFLIGHT_CONTINUATION_20261003.zh-TW.md": "ec4d5373ad794b78d6ec3a34dc2731d47d7928c0366efd08cc32ad9124f25006",
-    "five_player_feasibility_20260927/test_live_preflight_continuation_20261003.py": "ba884b0efa15fd75fd259f0faecc83332ead7134c2ff88822527677809f47f03"
+    "five_player_feasibility_20260927/test_live_preflight_continuation_20261003.py": "ba884b0efa15fd75fd259f0faecc83332ead7134c2ff88822527677809f47f03",
+    "five_player_feasibility_20260927/audit_player_capacity_chain_20261003.py": "9a3aa25f149c9f49f2d973783f3e2714a1da4639349bb3548e91f6b2f0064f98",
+    "five_player_feasibility_20260927/player_capacity_chain_audit_20261003.json": "3eacb72cdaa7c654b45f99a92cd17d52e78584ac1c677853b24a6259c92c8a46",
+    "five_player_feasibility_20260927/PLAYER_CAPACITY_CHAIN_20261003.zh-TW.md": "8fc7ae5f628736cc169b61faddcac043d83894fba8fe77e58657b5b7736b912a",
+    "five_player_feasibility_20260927/test_player_capacity_chain_20261003.py": "773fee2b22cdd8aa5431a19fee410e9d7e96a5151dd1d0497c1413c1d8d9d7c8"
   },
   "missing_release_files": [],
   "remaining_release_work": [
@@ -1195,7 +1199,8 @@
     "Completed PID 36900 fixed-build read-only native/session live preflight: six native sites, five session sites, 27 direct call edges, dispatcher/config scan and bounded private registry scan; no calls, writes, hooks, injection or multiplayer acceptance",
     "Verified the 2026-10-03 live preflight bundle 21/21 checks with build and image identity continuity; installable, resolver_closed and multiplayer_verified remain false",
     "Audited selector cleanup xrefs: registration wrapper has 0 direct callers, unregistration has 3, status has 3; all unregistration fragments bind global+0x1f028, which same-build public notes identify as lobby-browser context rather than confirmed-peer admission",
-    "Saved selector registration xrefs and cleanup verifier/test artifacts; preserved static-only scope and downgraded selector registry as a player-admission lead until runtime evidence exists"
+    "Saved selector registration xrefs and cleanup verifier/test artifacts; preserved static-only scope and downgraded selector registry as a player-admission lead until runtime evidence exists",
+    "Completed offline player/member capacity-chain audit: 11/11 checks group owner+0x1B90 capacity, initial metadata, enumerator, state-update and recreate four-player assumptions; production_patch_ready remains false."
   ],
   "next_offline_work": [
     "Recover a permitted runtime callback or service-side event-hash to selector trace; keep the lobby-browser owner separate from confirmed-peer/player admission and do not reuse global+0x1f028 as a player registry.",
@@ -1232,7 +1237,7 @@
   },
   "latest_research_update_date": "2026-10-03",
   "priority_assessment": "five_player_feasibility_20260927/PEER_ADMISSION_PRIORITY.zh-TW.md",
-  "last_update_scope": "fixed build 25480438: PID 36900 read-only continuation matched six native sites, five session/member sites and the 0xBDE430 dispatcher across 27 direct call edges; confirmed-peer hash remains send-side only and bounded private registry has no receiver/selector hit. Selector cleanup xrefs identify 0x1094680/0x1094710/0x1094780 as an indirect lobby-browser context candidate, not a proven player-admission registry. No production patch, injection, installation, or multiplayer acceptance.",
+  "last_update_scope": "fixed build 25480438: live image and selector cleanup evidence are preserved; offline capacity-chain audit now groups owner+0x1B90/0x1BB0, metadata, enumerator, state-update and recreate four-player assumptions. No single constant is a safe patch; no production patch, injection, installation or multiplayer acceptance.",
   "live_preflight_20261003": {
     "pid": 36900,
     "build": 25480438,

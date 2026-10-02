@@ -13,6 +13,10 @@
 
 同時完成 [selector cleanup xrefs](../five_player_feasibility_20260927/SELECTOR_CLEANUP_XREFS_20261003.zh-TW.md)：registration wrapper `0x1094680` 沒有 direct caller，unregistration `0x1094710` 有 3 個 direct caller，status `0x1094780` 有 3 個；三個 unregistration fragment 都可辨識 `global+0x1f028`。公開同版 Better Lobby 交叉核對把這個欄位及 wrapper 指向 lobby browser/network context，因此不能再把它當成 confirmed-peer/player-admission registry。`selector_registration_xrefs_20261003.json` 只保存 bounded static xrefs，不提供 runtime selector map。
 
+
+
+另完成 [PLAYER_CAPACITY_CHAIN_20261003.zh-TW.md](../five_player_feasibility_20260927/PLAYER_CAPACITY_CHAIN_20261003.zh-TW.md) 與其 verifier：`0x10919D1/0x10919DE` owner capacity、`0x10915DA` 初始 metadata、`0x1092E78/0x1092F31` enumerator capacity、`0x1092ECB/0x1092ED0` clamp/store、`0x1093C91/0x1093C96/0x1093D1E` state update、`0x1093A96` recreate add 都被分組核對，11/11 通過。這些是多個獨立四人假設，不能合併成單一常數 patch；`production_patch_ready=false`。
+
 上述資料均為 `read_only=true`、沒有函式呼叫、寫入、hook、注入、安裝或多人驗收；`resolver_closed=false`、`installable=false`、`multiplayer_verified=false` 保持不變。下一個實作門檻回到 host/client peer admission → confirmed-peer → player creation 的真實第五人流程，selector registry 只能在取得 runtime 證據後再評估。
 
 2026-10-02使用者明確授權第四次限定擷取、遊戲程序存取、載入／注入、安裝修改與後續真實測試；後續只在固定 build、可回滾 staging 和 fail-closed gate 下使用這份授權。
