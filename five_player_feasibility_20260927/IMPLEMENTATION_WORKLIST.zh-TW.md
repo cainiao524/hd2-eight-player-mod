@@ -86,6 +86,7 @@ P2／P6 已加入兩項固定 build 審計：
 - `live_loadout_layout_20261003.json`：同一固定 build 的 `game.dll` 226 個 code anchors 均 first-read/reread 一致；這只閉合映像版本預檢，尚未閉合 loadout 的 runtime constructor/reader/writer/destructor/callback ABI。
 - `PLAYER_RESOURCE_REVERSE_CLEANUP_AUDIT_20261003`：固定 `FDC780 → FDC820 → FDDC80`、handle registry、component cleanup table 與 owner+8 last-ordinal compaction；partial rollback、re-entry idempotence、owner quiescence 仍是阻礙。
 - `LOADOUT_LIFECYCLE_ABI_20261003`：12/12 固定檢查配對 entry rebuild、constructor、兩條 release、transition callbacks 與四槽 runtime guards；仍需 sidecar allocator、package unload 及真實 UI callback 接線。
+- `LOADOUT_SIDECAR_CONTRACT_20261003`：八個 stable network slots、獨立 UI slot／widget token、generation-safe hole 及 pending／confirmed／releasing 生命週期以 3 項合成測試固定；仍未接 native callback、package 或實機 UI。
 
 兩項測試分別 1/1 與 26/26 通過，均為離線固定證據，不能替代第五人實機加入、角色建立或任務驗收。
 
