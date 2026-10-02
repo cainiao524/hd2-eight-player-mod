@@ -213,3 +213,9 @@ Player-chain 審計又補進三個 client layout 固定四人位點：`0x1087122
 新增 [PLAYER_RESOURCE_PATCH_BOUNDARY_20261003.zh-TW.md](../five_player_feasibility_20260927/PLAYER_RESOURCE_PATCH_BOUNDARY_20261003.zh-TW.md) 與固定證據 verifier。18/18 項靜態核對通過：`0x1086460` 對 network index `4..7` 走 fallback，不能到達 `0xFDC140`／`0x608B60` 的 player-resource／roster 建立；player resource 的 component index 239 會進已確認的 `0x540920`，但該插入家族仍是原四槽 guard，map helper 不會配置或擴容，滿表／null bucket 時也沒有可證回滾。property `+0x3B4` 保存 network index，不能用 roster ordinal 代換。
 
 這次核對明確把 `direct_gate_literal_patch_safe=false`、`four_to_seven_sidecar_ready=false`、`relocation_path_ready=false` 固定下來；現有八槽 sidecar 沒有 live player-creation callback，`runtime_verified=false`、`multiplayer_verified=false`。這排除了只改 gate 常數或只掛現有 sidecar 的捷徑，下一個需要的是實際 creation callback ABI、owner-keyed backing、map／cleanup／unwind，以及第五名 peer 的實機呼叫鏈。
+
+## 2026-10-03 receive selector registry 邊界
+
+新增 `five_player_feasibility_20260927/recover_selector_registry_20261003.py`、JSON 與 receipt，重播固定 capture 的 7 個 `[RDX+0xB0]` registration sites。`0x134D69E` 起的六個 constructor registration 與 `0x14EE278` 的另一個 registration 使用靜態 hash；`0x10946A4` 同形 registration 則由 caller 透過 `EDX` 提供 runtime 值。`0xBC2D10` callback vector 仍逐 byte 核對為 table `0x214C2E0`、selector 168→`0xBABA80`，而 `0x4804FCF4` 在 bounded capture 只命中 `0xBE4981` 送端。
+
+這縮小了 registry 缺口，但沒有取得 service heap、runtime callback state 或 hash→selector 實際 trace；`hash_to_selector_proven=false`、`service_registry_captured=false`、`production_hook_ready=false`、`installable=false`、`multiplayer_verified=false` 保持不變。不能把 registration ABI 形狀當成可安裝 hook。
