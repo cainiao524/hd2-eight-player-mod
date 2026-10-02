@@ -996,7 +996,7 @@
     "five_player_feasibility_20260927/verification/native_peer_admission_bridge_boundary_verification_20261002.json": "f30a4b9517d3add9050cd24ff3fcd010d9ea1a72cb937bdddb6db250384abad0",
     "five_player_feasibility_20260927/verification/peer_admission_adapter_verification.json": "0b4f84491adeff2b424d02e6fa614c3630381dc12eaf4bc20af39914ff4319fc",
     "five_player_feasibility_20260927/verify_native_peer_admission_bridge_boundary.py": "6cf6d5d4e9898fab0083ea135f8ea13dbc129ff0f1d68d4e83f1c8bd34214ad7",
-    "github_handoff_20260927/HANDOFF.zh-TW.md": "b6ad92dd03a95f3dec464fc25507cdc987e277064708f0c322d474c50631ab76",
+    "github_handoff_20260927/HANDOFF.zh-TW.md": "95255f270ae394c03b86a97a78f0c9da743cf59edefe66ebf8671c23146c9510",
     "github_handoff_20260927/SETUP.zh-TW.md": "1c362594a6a8e70fe5fb9fce5f0d23dcf6d160a6338345f2f4b717d538d8003b",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_disasm_20261002.json": "48f504badebad800a8439494bc386e3dff61e1818168a40916d8cffd618790c9",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_patch.py": "9808f073e958fdc464d47bc10a459f328d14ebde9a765f429e13153786a5734a",
@@ -1093,7 +1093,12 @@
     "five_player_feasibility_20260927/PUBLIC_RUNTIME_ENTRY_AUDIT_20261003.zh-TW.md": "e3976d9815536037b5eff0d0f9d4f9c9beb2f35da142547ea38fcebec1d440d0",
     "five_player_feasibility_20260927/public_runtime_entry_audit_20261003.json": "001577ee72ceeae596880dd4532ee73c0294eb11011d043fed7ec9e9e7d885dc",
     "five_player_feasibility_20260927/public_runtime_entry_audit_20261003.py": "653fe55fb1480a2421fe4328e006ad314d5865fa5781cc3cc21526cb8e21df9c",
-    "five_player_feasibility_20260927/public_runtime_entry_audit_20261003.receipt.json": "048ca4d3e059fa45f0dff53e05a9e5df2333750881aeff5723639e24cbda9d3b"
+    "five_player_feasibility_20260927/public_runtime_entry_audit_20261003.receipt.json": "048ca4d3e059fa45f0dff53e05a9e5df2333750881aeff5723639e24cbda9d3b",
+    "five_player_feasibility_20260927/external_party_playfab_capacity_audit_20261003.py": "bc81961abd15a4c596238dfc4ec89daef7842be06285f9291a0325cb9e3261b3",
+    "five_player_feasibility_20260927/external_party_playfab_capacity_audit_20261003.json": "4db637aad3aecb73332057a8316cec7bfe1b202d18502f41eabab39e781940fc",
+    "five_player_feasibility_20260927/EXTERNAL_PARTY_PLAYFAB_CAPACITY_20261003.zh-TW.md": "dbe700cfe5f0a8c559458a5065b5c76222bf47c358490489f34367defeee0168",
+    "five_player_feasibility_20260927/verify_external_party_playfab_capacity_20261003.py": "277ceaa3b8f25755bd5afa92444acb26ee948b1a2ce01feeb40b844d584be1b7",
+    "five_player_feasibility_20260927/external_party_playfab_capacity_audit_20261003.receipt.json": "ce93fcefa2e49bf57afccf3474ee684b464df450e8923d19d5e77f53734990f0"
   },
   "missing_release_files": [],
   "remaining_release_work": [
@@ -1157,7 +1162,8 @@
     "完成固定 build 25480438 receiver callback-vector 入口審計：BC2D10 的 selector/descriptor/owner ABI、table 0x214C2E0、entry 168→BABA80 及 constructor wiring 已 machine-verified；hash→selector producer 仍未閉合，未生成 production hook。",
     "完成已授權程序的接收 registry 擴大只讀掃描：128 MiB 基線、512 MiB 與 1 GiB MEM_PRIVATE 掃描目標 pointer/hash 均 0 命中；工具保留可重播上限參數，沒有呼叫、寫入、跟隨指標、安裝或注入。",
     "新增 receiver entry/field xrefs、registration body 與 selector-168 producer scan；整數常數命中不被錯認為 hash mapping。",
-    "完成公開 runtime/loader 入口 machine audit：package residency ABI bytes 逐 byte 核對；RawData logical player（9 components）與 Player Clone/Avatar（49 components）分離；公開 snapshot 仍沒有 peer admission、player writer 或 network spawn writer。"
+    "完成公開 runtime/loader 入口 machine audit：package residency ABI bytes 逐 byte 核對；RawData logical player（9 components）與 Player Clone/Avatar（49 components）分離；公開 snapshot 仍沒有 peer admission、player writer 或 network spawn writer。",
+    "Audited fixed-build PartyWin.dll and PlayFabMultiplayerWin.dll read-only: network/lobby capacity APIs are present, target event hash 0x4804FCF4 is absent from both, and service capacity is not game-native peer admission proof; installable=false and multiplayer_verified=false."
   ],
   "next_offline_work": [
     "恢復 service-side hash/event→selector registry（或取得 selector 168 的 runtime callback trace），再閉合 owner-keyed sidecar、cleanup/exception ABI並生成可回滾 production hook；目前 BC2D10 只證明 vector ABI。",
@@ -1192,5 +1198,5 @@
   },
   "latest_research_update_date": "2026-10-03",
   "priority_assessment": "five_player_feasibility_20260927/PEER_ADMISSION_PRIORITY.zh-TW.md",
-  "last_update_scope": "fixed build 25480438: receive callback-vector ABI is machine-verified (BC2D10, table 0x214C2E0, selector 168→BABA80); public runtime/package entry audit is reproducible but local-asset/observer only; hash→selector registry, player index 4..7 resource dispatch, owner cleanup/unwind and Party acceptance remain unresolved. Authorized read-only private scans through 1 GiB found zero target pointer/hash hits. No production patch, injection, installation, or multiplayer acceptance."
+  "last_update_scope": "fixed build 25480438: receiver callback-vector ABI is machine-verified (BC2D10, table 0x214C2E0, selector 168→BABA80); public runtime/package audit and external Party/PlayFab DLL audit are reproducible but local-asset/observer/service-capacity evidence only; hash→selector registry, player index 4..7 resource dispatch, owner cleanup/unwind and game-native Party acceptance remain unresolved. Authorized read-only private scans through 1 GiB found zero target pointer/hash hits. No production patch, injection, installation, or multiplayer acceptance."
 }

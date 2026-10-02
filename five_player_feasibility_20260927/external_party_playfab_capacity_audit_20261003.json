@@ -1,0 +1,134 @@
+{
+  "schema": "hd2_external_party_playfab_capacity_audit_v1",
+  "build": "25480438",
+  "read_only": true,
+  "dlls_loaded": false,
+  "process_accessed": false,
+  "writes_made": false,
+  "hooks_installed": false,
+  "libraries": {
+    "PartyWin.dll": {
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\PartyWin.dll",
+      "role": "party_network",
+      "size": 4031520,
+      "sha256": "de34667c2f7084013d9c03cd5d1cb5dc3321bc36bb616a845e35534e4e7995e0",
+      "string_hits": {
+        "PartyNetworkGetNetworkConfiguration": [
+          3257792,
+          3535777,
+          3537096,
+          3538382,
+          3817549
+        ],
+        "PartyNetworkGetLocalUsers": [
+          3257720,
+          3535716,
+          3537035,
+          3538321,
+          3817523
+        ],
+        "PartyNetworkGetEndpoints": [
+          3257616,
+          3262136,
+          3535622,
+          3536941,
+          3538227,
+          3552911,
+          3553493,
+          3554042,
+          3817436,
+          3817461
+        ],
+        "PartyNetworkCreateEndpoint": [
+          3257520,
+          3535539,
+          3536858,
+          3538144,
+          3817159
+        ],
+        "PartyNetworkAuthenticateLocalUser": [
+          3257448,
+          3535475,
+          3536794,
+          3538080,
+          3817094
+        ],
+        "PartyNetworkConnect": [
+          3259704,
+          3543744,
+          3545035,
+          3546293,
+          3817128
+        ]
+      },
+      "target_event_hash_little_endian_offsets": [],
+      "target_event_hash_text_offsets": []
+    },
+    "PlayFabMultiplayerWin.dll": {
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\PlayFabMultiplayerWin.dll",
+      "role": "playfab_lobby",
+      "size": 1878048,
+      "sha256": "95bc5f958e519f612b479de4227f3bdffaba9b2b8de987eb3f7991960b8ced17",
+      "string_hits": {
+        "PFLobbyGetMaxMemberCount": [
+          1404072,
+          1534510,
+          1537323,
+          1540103,
+          1759462
+        ],
+        "PFLobbyGetMembers": [
+          1404176,
+          1404240,
+          1534609,
+          1534663,
+          1537422,
+          1537476,
+          1540202,
+          1540256,
+          1759574,
+          1759592
+        ],
+        "PFLobbyAddMember": [
+          1405136,
+          1406040,
+          1535480,
+          1536323,
+          1538293,
+          1539136,
+          1541073,
+          1541916,
+          1758494,
+          1759276
+        ],
+        "provided max member count": [
+          1394036
+        ],
+        "Lobby state change": [
+          1395069,
+          1395125
+        ]
+      },
+      "target_event_hash_little_endian_offsets": [],
+      "target_event_hash_text_offsets": []
+    }
+  },
+  "target_event_hash": "0x4804FCF4",
+  "target_event_hash_hits": [],
+  "party_api_exposes_network_configuration": true,
+  "party_api_exposes_local_users_and_endpoints": true,
+  "playfab_lobby_exposes_max_member_count": true,
+  "documented_service_capacity_is_not_game_admission_proof": true,
+  "external_service_is_not_proven_four_player_bottleneck": true,
+  "game_native_peer_admission_resolved": false,
+  "game_native_player_creation_resolved": false,
+  "game_native_clamp_still_unresolved": true,
+  "installable": false,
+  "multiplayer_verified": false,
+  "official_references": [
+    "https://learn.microsoft.com/en-us/xbox/playfab/multiplayer/networking/reference/structs/partynetworkconfiguration",
+    "https://learn.microsoft.com/en-us/gaming/playfab/sdks/unified-sdk/quickstart-windows-party",
+    "https://learn.microsoft.com/en-us/xbox/playfab/multiplayer/networking/reference/classes/partymanager/methods/partymanager_createnewnetwork",
+    "https://learn.microsoft.com/en-us/xbox/playfab/multiplayer/lobby/unity-multiplayer-api-reference/playfab.multiplayer/lobby/maxmembercount"
+  ]
+}

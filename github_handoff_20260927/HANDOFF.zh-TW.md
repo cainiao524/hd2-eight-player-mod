@@ -199,3 +199,11 @@ Player-chain 審計又補進三個 client layout 固定四人位點：`0x1087122
 ## 2026-10-03 public runtime entry audit
 
 新增 `five_player_feasibility_20260927/public_runtime_entry_audit_20261003.py`、`public_runtime_entry_audit_20261003.json` 與中文說明，核對 HD2Runtime package request/release（`0x12FE350`／`0x12FE4E0`）的 exact bytes、Bingus loader、Better Lobby、CChusky 與 RawData。公開入口可重用的只有本機 package residency、Lua discovery/require 和觀察能力；RawData 也證明 logical player resource 只有 9 components，而 Player Clone/Avatar 是 49 components，不能混為同一 admission 結構。報告固定為沒有 public peer admission/player writer/network spawn writer，`eight_player_status=unverified`。
+
+## 2026-10-03 Party／PlayFab 外部容量邊界
+
+新增 `five_player_feasibility_20260927/external_party_playfab_capacity_audit_20261003.py`、JSON 收據、驗證器與 [EXTERNAL_PARTY_PLAYFAB_CAPACITY_20261003.zh-TW.md](../five_player_feasibility_20260927/EXTERNAL_PARTY_PLAYFAB_CAPACITY_20261003.zh-TW.md)。只讀審計固定 build `25480438` 的 `PartyWin.dll`（4,031,520 bytes，SHA-256 `de34667c2f7084013d9c03cd5d1cb5dc3321bc36bb616a845e35534e4e7995e0`）與 `PlayFabMultiplayerWin.dll`（1,878,048 bytes，SHA-256 `95bc5f958e519f612b479de4227f3bdffaba9b2b8de987eb3f7991960b8ced17`）。
+
+`PartyWin.dll` 公開 network configuration、local users、endpoints、endpoint creation、local-user authentication 與 connect API 名稱；`PlayFabMultiplayerWin.dll` 公開 `PFLobbyGetMaxMemberCount`、members/add-member 與 max-member 驗證文字。兩個外部 DLL 都沒有固定事件 `0x4804FCF4` 的 little-endian bytes 或 ASCII 文字命中。官方 Party 文件也描述 user/device 容量可獨立指定，Windows quickstart 有 8 名成員的設定範例；這只支持服務 SDK 與遊戲 native admission 是不同層級，不構成第五至第八個 peer 已建立的證明。
+
+外部服務容量不是目前可安全修改的遊戲入口；`game_native_peer_admission_resolved=false`、`game_native_player_creation_resolved=false`、`installable=false`、`multiplayer_verified=false` 保持不變。下一個必要閘門仍是同一 build 的 hash/event 到 receive selector、`player index=4..7` 建立、所有 client replication 及 cleanup/unwind 的實際 native 呼叫鏈。
