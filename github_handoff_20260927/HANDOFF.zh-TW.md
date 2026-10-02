@@ -207,3 +207,9 @@ Player-chain 審計又補進三個 client layout 固定四人位點：`0x1087122
 `PartyWin.dll` 公開 network configuration、local users、endpoints、endpoint creation、local-user authentication 與 connect API 名稱；`PlayFabMultiplayerWin.dll` 公開 `PFLobbyGetMaxMemberCount`、members/add-member 與 max-member 驗證文字。兩個外部 DLL 都沒有固定事件 `0x4804FCF4` 的 little-endian bytes 或 ASCII 文字命中。官方 Party 文件也描述 user/device 容量可獨立指定，Windows quickstart 有 8 名成員的設定範例；這只支持服務 SDK 與遊戲 native admission 是不同層級，不構成第五至第八個 peer 已建立的證明。
 
 外部服務容量不是目前可安全修改的遊戲入口；`game_native_peer_admission_resolved=false`、`game_native_player_creation_resolved=false`、`installable=false`、`multiplayer_verified=false` 保持不變。下一個必要閘門仍是同一 build 的 hash/event 到 receive selector、`player index=4..7` 建立、所有 client replication 及 cleanup/unwind 的實際 native 呼叫鏈。
+
+## 2026-10-03 player resource／creation patch boundary
+
+新增 [PLAYER_RESOURCE_PATCH_BOUNDARY_20261003.zh-TW.md](../five_player_feasibility_20260927/PLAYER_RESOURCE_PATCH_BOUNDARY_20261003.zh-TW.md) 與固定證據 verifier。18/18 項靜態核對通過：`0x1086460` 對 network index `4..7` 走 fallback，不能到達 `0xFDC140`／`0x608B60` 的 player-resource／roster 建立；player resource 的 component index 239 會進已確認的 `0x540920`，但該插入家族仍是原四槽 guard，map helper 不會配置或擴容，滿表／null bucket 時也沒有可證回滾。property `+0x3B4` 保存 network index，不能用 roster ordinal 代換。
+
+這次核對明確把 `direct_gate_literal_patch_safe=false`、`four_to_seven_sidecar_ready=false`、`relocation_path_ready=false` 固定下來；現有八槽 sidecar 沒有 live player-creation callback，`runtime_verified=false`、`multiplayer_verified=false`。這排除了只改 gate 常數或只掛現有 sidecar 的捷徑，下一個需要的是實際 creation callback ABI、owner-keyed backing、map／cleanup／unwind，以及第五名 peer 的實機呼叫鏈。
