@@ -6,7 +6,7 @@
 
 - network index 固定為 `0..7`，刪除保留洞位，不壓實網路索引。
 - UI slot、widget token、network index 和 generation 分開保存；forward／inverse map 必須完全一致。
-- `reserve → confirm → begin_release → finish_release` 是唯一成功生命週期；釋放失敗可 `abort_release` 回到 confirmed。
+- `reserve → confirm → begin_release → finish_release` 是唯一成功生命週期；資源／widget 建構被拒絕時可用 `cancel_pending` 解開 pending reservation，釋放失敗可 `abort_release` 回到 confirmed。
 - 每次重新佔用同一 network index 都增加 generation；舊 token 不能清理新 record。
 - 重複 index、UI slot、widget token、越界 index、generation 不一致與版本不符都 fail-closed。
 

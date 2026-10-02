@@ -36,7 +36,7 @@
 
 新增 [LOADOUT_LIFECYCLE_ABI_20261003.zh-TW.md](../five_player_feasibility_20260927/LOADOUT_LIFECYCLE_ABI_20261003.zh-TW.md) 與 12/12 固定檢查：外層 entry rebuild、screen／widget constructor、兩條 release、transition callbacks 及 14 個 runtime 四槽 guards 均已配對。這仍只支持版本化 sidecar 的設計，未閉合 native object allocator、package unload、完整 reader/writer 或實機畫面同步。
 
-已將這個下一步實作成 [LOADOUT_SIDECAR_CONTRACT_20261003.zh-TW.md](../five_player_feasibility_20260927/LOADOUT_SIDECAR_CONTRACT_20261003.zh-TW.md)：八個 stable network slots、獨立 UI slot／widget token、generation-safe hole、pending／confirmed／releasing 生命週期與 forward／inverse map invariant 均有 3 項合成測試。它仍是離線 sidecar；沒有 native callback、UI package、遊戲程序或多人驗收，所有 production/runtime/install/multiplayer flags 仍為 false。
+已將這個下一步實作成 [LOADOUT_SIDECAR_CONTRACT_20261003.zh-TW.md](../five_player_feasibility_20260927/LOADOUT_SIDECAR_CONTRACT_20261003.zh-TW.md)：八個 stable network slots、獨立 UI slot／widget token、generation-safe hole、pending／confirmed／releasing 生命週期與 forward／inverse map invariant 均有 5 項合成測試；新增嚴格型別 identity guard，並以 `cancel_pending` 完成被拒絕的 widget／資源建構回滾。它仍是離線 sidecar；沒有 native callback、UI package、遊戲程序或多人驗收，所有 production/runtime/install/multiplayer flags 仍為 false。
 
 另修正 ClientSidecar callback adapter 的安全邊界：native confirm/create/remove 及 owner retain/release callback 現在全部為必要項；所有 network index（含 0–3）都必須經過 native create，confirm 失敗會回滾 sidecar，remove 失敗會保留記錄供重試。合成測試重新通過，這仍是隔離 sidecar，沒有真實 callback ABI、遊戲 patch 或多人成功。
 

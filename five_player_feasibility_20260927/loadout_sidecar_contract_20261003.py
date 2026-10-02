@@ -43,9 +43,12 @@ class LoadoutSidecar:
     """Stable eight-slot record and lifecycle model for native integration."""
 
     def __init__(self, owner_key: int, build: int = BUILD) -> None:
-        if owner_key <= 0:
+        # ``bool`` is an ``int`` subclass in Python; accepting it here would
+        # alias True to native pointer 1 and could bind the sidecar to an
+        # invalid owner.  Native identity fields must be exact integers.
+        if type(owner_key) is not int or owner_key <= 0:
             raise ValueError("owner_key must be non-zero")
-        if build != BUILD:
+        if type(build) is not int or build != BUILD:
             raise ValueError("unsupported build")
         self.owner_key = owner_key
         self.build = build
@@ -56,22 +59,24 @@ class LoadoutSidecar:
 
     @staticmethod
     def _check_index(index: int) -> None:
-        if not isinstance(index, int) or not 0 <= index < CAPACITY:
+        if type(index) is not int or not 0 <= index < CAPACITY:
             raise ValueError("network index must be in 0..7")
 
     @staticmethod
     def _check_ui_slot(ui_slot: int) -> None:
-        if not isinstance(ui_slot, int) or not 0 <= ui_slot < CAPACITY:
+        if type(ui_slot) is not int or not 0 <= ui_slot < CAPACITY:
             raise ValueError("UI slot must be in 0..7")
 
     @staticmethod
     def _check_widget(widget_token: int) -> None:
-        if not isinstance(widget_token, int) or widget_token <= 0:
+        if type(widget_token) is not int or widget_token <= 0:
             raise ValueError("widget token must be non-zero")
 
     def _record_for(self, token: LoadoutToken) -> LoadoutRecord:
+        if type(token) is not LoadoutToken:
+            raise ValueError("invalid loadout token")
         self._check_index(token.network_index)
-        if not isinstance(token.generation, int) or token.generation <= 0:
+        if type(token.generation) is not int or token.generation <= 0:
             raise ValueError("invalid generation")
         record = self._records[token.network_index]
         if record is None or record.generation != token.generation:
@@ -106,6 +111,23 @@ class LoadoutSidecar:
         if record.state is not SlotState.PENDING:
             raise ValueError("only pending records can be confirmed")
         record.state = SlotState.CONFIRMED
+        self.validate()
+
+    def cancel_pending(self, token: LoadoutToken) -> None:
+        """Unwind a reservation when widget/resource creation is rejected.
+
+        A pending record owns both lookup keys even though it has no confirmed
+        resource yet.  Releasing those keys on the reject path prevents a
+        failed native allocation from permanently consuming a UI slot or
+        network index.  The generation counter is intentionally retained so a
+        stale pending token cannot affect a later reservation.
+        """
+        record = self._record_for(token)
+        if record.state is not SlotState.PENDING:
+            raise ValueError("only pending records can be cancelled")
+        del self._ui_to_network[record.ui_slot]
+        del self._widget_to_network[record.widget_token]
+        self._records[record.network_index] = None
         self.validate()
 
     def move_ui(self, token: LoadoutToken, ui_slot: int) -> None:

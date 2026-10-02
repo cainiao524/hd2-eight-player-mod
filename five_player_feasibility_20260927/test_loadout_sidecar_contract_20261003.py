@@ -40,6 +40,40 @@ def test_loadout_sidecar_rejects_stale_or_duplicate_operations():
         sidecar.move_ui(token, 6)
 
 
+def test_loadout_sidecar_rejects_bool_identity_fields():
+    with pytest.raises(ValueError, match="owner_key"):
+        LoadoutSidecar(True)
+    with pytest.raises(ValueError, match="unsupported build"):
+        LoadoutSidecar(0x1000, True)
+
+    sidecar = LoadoutSidecar(0x1000)
+    for args, message in (
+        ((True, 0, 900), "network index"),
+        ((0, True, 901), "UI slot"),
+        ((0, 0, True), "widget token"),
+    ):
+        with pytest.raises(ValueError, match=message):
+            sidecar.reserve(*args)
+
+    token = sidecar.reserve(0, 0, 900)
+    with pytest.raises(ValueError, match="network index"):
+        sidecar.confirm(LoadoutToken(True, token.generation))
+
+
+def test_loadout_sidecar_can_unwind_rejected_pending_reservation():
+    sidecar = LoadoutSidecar(0x1000)
+    pending = sidecar.reserve(6, 6, 606)
+    sidecar.cancel_pending(pending)
+    assert sidecar.get(6) is None
+    assert sidecar.by_widget(606) is None
+
+    replacement = sidecar.reserve(6, 6, 607)
+    assert replacement.generation == pending.generation + 1
+    sidecar.confirm(replacement)
+    with pytest.raises(ValueError, match="pending"):
+        sidecar.cancel_pending(replacement)
+
+
 def test_loadout_sidecar_report_is_fail_closed_and_json_safe():
     report = synthetic_report()
     assert report["schema"] == "hd2_loadout_sidecar_contract_v1"
