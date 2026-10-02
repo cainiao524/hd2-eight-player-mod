@@ -130,6 +130,7 @@ def test_synthetic_report_is_fail_closed():
     assert report["capacity"] == 8
     checks = report["checks"]
     assert checks["abi_callback_tables_match"] is True
+    assert checks["callback_failure_matrix_complete"] is True
     assert checks["third_callback_failure_unwinds_reverse_order"] is True
     assert checks["partial_callback_failure_unwinds_reverse_order"] is True
     assert checks["partial_callback_failure_clears_all_side_effects"] is True

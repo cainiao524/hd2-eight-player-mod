@@ -424,6 +424,22 @@ def _abi_callback_contract() -> dict[str, Any]:
 def synthetic_report() -> dict[str, Any]:
     evidence = _input_identity()
     abi_callback_contract = _abi_callback_contract()
+    failure_matrix: dict[str, list[str]] = {}
+    for failure_index, failure_stage in enumerate(CALLBACK_ORDER):
+        probe = ResourceRollbackContract(0x3000 + failure_index)
+        probe_token = probe.begin(0, record_ordinal=0, resource_handle=0xC000 + failure_index, resource_hash=0xD000 + failure_index)
+        for prior_stage in CALLBACK_ORDER[:failure_index]:
+            probe_lease = probe.begin_callback(probe_token)
+            probe.complete_callback(probe_lease, prior_stage)
+        probe_lease = probe.begin_callback(probe_token)
+        probe_receipt = probe.complete_callback(
+            probe_lease,
+            failure_stage,
+            succeeded=False,
+            reason=f"{failure_stage} rejected",
+        )
+        failure_matrix[failure_stage] = probe_receipt["unwound_callbacks"]
+        probe.validate()
     model = ResourceRollbackContract(0x1000)
     token = model.begin(4, record_ordinal=0, resource_handle=0xA004, resource_hash=0xB004, component_ordinal=239)
     lease = model.begin_callback(token)
@@ -460,6 +476,12 @@ def synthetic_report() -> dict[str, Any]:
         "evidence_inputs": evidence,
         "checks": {
             "abi_callback_tables_match": abi_callback_contract["stage_order"] == list(CALLBACK_ORDER),
+            "callback_failure_matrix_complete": failure_matrix == {
+                "first_callback": [],
+                "second_callback": ["first_callback"],
+                "third_callback": ["second_callback", "first_callback"],
+                "roster_insert": ["third_callback", "second_callback", "first_callback"],
+            },
             "third_callback_failure_unwinds_reverse_order": failed["unwound_callbacks"] == ["second_callback", "first_callback"],
             "partial_callback_failure_unwinds_reverse_order": failed["unwound_callbacks"] == ["second_callback", "first_callback"],
             "partial_callback_failure_clears_all_side_effects": failed["all_side_effects_cleared"] is True,
@@ -475,6 +497,7 @@ def synthetic_report() -> dict[str, Any]:
             "multiplayer_verified": False,
         },
         "failed_callback_receipt": failed,
+        "callback_failure_matrix": failure_matrix,
         "abi_callback_contract": abi_callback_contract,
         "reentry_receipt": repeated,
         "migration_receipt": migration,

@@ -20,6 +20,7 @@
   },
   "checks": {
     "abi_callback_tables_match": true,
+    "callback_failure_matrix_complete": true,
     "third_callback_failure_unwinds_reverse_order": true,
     "partial_callback_failure_unwinds_reverse_order": true,
     "partial_callback_failure_clears_all_side_effects": true,
@@ -58,6 +59,21 @@
       "clear_resource_record"
     ],
     "all_side_effects_cleared": true
+  },
+  "callback_failure_matrix": {
+    "first_callback": [],
+    "second_callback": [
+      "first_callback"
+    ],
+    "third_callback": [
+      "second_callback",
+      "first_callback"
+    ],
+    "roster_insert": [
+      "third_callback",
+      "second_callback",
+      "first_callback"
+    ]
   },
   "abi_callback_contract": {
     "callback_tables": {
