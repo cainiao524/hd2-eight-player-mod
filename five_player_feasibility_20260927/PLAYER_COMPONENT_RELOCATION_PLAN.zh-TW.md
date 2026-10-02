@@ -1,5 +1,15 @@
 # 八槽儲存設計約束：玩家元件與索引下游
 
+## `0.14.0-offline`：6054F0 狀態更新接入共同八格儲存
+
+[狀態更新候選](../eight_player_candidate_20260927/NATIVE_ROSTER_ARRIVAL.zh-TW.md)已完成離線交付收尾：完整 1111-byte 原 body 產生 1917-byte 候選，19 個 pointer／primary／aux／property 位點改接共同 B；入口檢 binding、counts、map、ordinal、target 與 caller-state。原四列 palette 及 network index≥4 的白色 fallback、三處 current-D 通知、frame／cookie／calls 保留。`arrival` 只是檔名，此函式沒有 append 或 count 遞增的證據。
+
+[5 組／42 次指令驗證](../eight_player_candidate_20260927/verification/native_roster_arrival_tests.json)包含原版完整返回4、候選完整返回21、入口拒絕17；巢狀 FD9AF0 的25次另列。19處靜態核對、17處有效域動態檢查，6056C8／6056D6只有靜態覆蓋。[Source審查](../eight_player_candidate_20260927/verification/native_roster_arrival_review.zh-TW.md)及[接續 oracle 審查](../eight_player_candidate_20260927/verification/native_roster_arrival_test_review.zh-TW.md)已保存；接續重跑42筆紀錄與凍結報告相同。
+
+共同 bundle 為 **16個 roster 函式＋原 player_count 計畫、62個已知區域**，內嵌 v0.13 產物相同。累計 **149組／4,314次套件執行或觀察**，包含原版、拒絕、前綴觀察與預期反例，不能稱為候選成功次數；重跑與巢狀helper不重複計數。15個既有來源與14份舊報告未改，舊套件未重跑。
+
+Sidecar配置／發布／清理、其他reader、caller／callback同步、真實資源、reject handler、hook／Windows unwind仍缺；目前不可安裝，五至八帳號同場任務未驗證。後續P3的[1277920有限調查](roster_mask_reader_findings.zh-TW.md)已固定兩個roster讀取與mask前綴：primary+24h和property+Ch都需改接B；24次原前綴觀察未見mask分支造成後續狀態差異，不列入交付套件數。下一步是明確入口guard／普通missing政策並實作完整reader候選。
+
 ## 狀態與工作方向
 
 這份文件把元件 33、41、43、238、250 已核對的布局與生命週期整理成實作約束，並補充共用 map、元件 3／260 與索引下游的決策。它是**離線設計稿**；尚未形成完整原生補丁，沒有配置遊戲記憶體、修改指標或驗證八人執行。
@@ -167,7 +177,7 @@ Guard 根據已知 caller 的過渡旗標判斷，沒有改變 entity bit 或派
 
 [v0.13 registry更新候選](../eight_player_candidate_20260927/NATIVE_ROSTER_REGISTRY_UPDATE.zh-TW.md)已完成 B54E00 六處 array 基址及必要606520兩處共同 B 改接。root的registry S與global S須同一綁定；property迭代ordinal與map結果另驗相同，map miss／invalid不再進aux寫入。guard限定於tag69及tag73使用roster前，保留其他tags、D範圍及原flag判斷；606520返回entityID而非network index。新共同產物十五個roster函式、59個已知區域；player_count計畫及內嵌v0.12保持不變。晚拒絕不能回復前面registry entries副作用，context map零容量／full miss的原null缺口、資源與同步仍為整合前提。
 
-下一個有限離線切點是既有 consumer 清單的完整 `6054F0..605947`：核清 network-index property 讀取、其他 roster 陣列、palette／玩家數通知與必要 helper 契約，再接共同 B。足以形成候選或定位具體外部缺口便停止；不展開無關 callee，也不重查已收束的 B54E00／606520。
+6054F0狀態更新已納入v0.14。[1277920有限查核](roster_mask_reader_findings.zh-TW.md)已固定完整body與兩個roster讀取，mask迴圈未提供已證拒絕結果。下一動作：在原input+10h計時store前定義guard，同時保留普通missing返回，將primary+24h與property+Ch接共同B，完成原指令對照與caller／helper契約；不擴搜無關callee。
 
 ## 6. 產生補丁前仍需取得的證據
 
@@ -177,4 +187,4 @@ Guard 根據已知 caller 的過渡旗標判斷，沒有改變 entity bit 或派
 - **執行期邊界：** 已定位的 `EXE+1AE380` 尚缺載入後程式；第四次限定擷取仍待授權，本輪沒有執行。
 - **多人驗證：** 沒有五位可同時測試的玩家／帳號，也沒有第五人生成、同步、任務生命週期與八人負載結果。
 
-下一個有限離線切點依上節處理完整 `6054F0`；departure的真實caller、跨回呼序列化、資源契約與Windows unwind保留為整合缺口，不把v0.12／v0.13有界測試當完整生命週期驗證。平台加入與原生角色建立仍是整體可行性優先缺口。其餘固定陣列、配置／清理、template等同性與rank音效配套仍列在完整範圍內；已收束支線需具體新來源才重開。先前的`72F780`／`730230`仍缺caller的RCX身分，不能列為已完成改接。第四次capture繼續待答覆，不重問、不執行；目前無五位玩家／帳號驗收條件。原生整合及多人實測完成之前，八人Mod的目標保持未完成。
+下一個有限離線切點依上節處理完整 `1277920`；departure的真實caller、跨回呼序列化、資源契約與Windows unwind保留為整合缺口，不把v0.12／v0.13有界測試當完整生命週期驗證。平台加入與原生角色建立仍是整體可行性優先缺口。其餘固定陣列、配置／清理、template等同性與rank音效配套仍列在完整範圍內；已收束支線需具體新來源才重開。先前的`72F780`／`730230`仍缺caller的RCX身分，不能列為已完成改接。第四次capture繼續待答覆，不重問、不執行；目前無五位玩家／帳號驗收條件。原生整合及多人實測完成之前，八人Mod的目標保持未完成。

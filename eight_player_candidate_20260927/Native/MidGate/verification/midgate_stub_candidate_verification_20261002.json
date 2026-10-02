@@ -1,0 +1,107 @@
+{
+  "schema": "hd2_midgate_machine_stub_candidate_v1",
+  "steam_build": 25480438,
+  "module": "game.dll",
+  "game_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+  "disassembly_source": "E:\\File\\Codes\\0\\26.10.1\\HD2\\five_player_feasibility_20260927\\join_handler_disasm.json",
+  "disassembly_sha256": "f0e2c853fb731fecffd27ed2bbab97f9d8ed2868b076c60ee51bcdfe472e505c",
+  "status": {
+    "machine_code_emitted": true,
+    "patch_record_reversible": true,
+    "windows_unwind_layout_emitted": true,
+    "process_accessed": false,
+    "game_module_modified": false,
+    "install_game_rva": false,
+    "executable": false,
+    "multiplayer_verified": false
+  },
+  "sites": [
+    {
+      "name": "host_capacity_midgate",
+      "rva": "0x108c18f",
+      "span_end_exclusive": "0x108c1b5",
+      "span_length": 38,
+      "continuation": "0x108c1ba",
+      "expected_bytes": "418bc6493941580f95c0ffc04d39b1900000008d48010f44c84d39b1c80000008d41010f44c1",
+      "expected_sha256": "5b7c27828481ebba72145a0b2dcf1e18a7add8b9893cbf8ac45a8d5a36959d19",
+      "patch_template_bytes": "ff25000000002222222211111111909090909090909090909090909090909090909090909090",
+      "patch_sha256": "9009b4ab8f7446b1cd273504866b8d836d1a8846404a767b109d9bec6343bb4c",
+      "stub_template_address": "0x1111111122222222",
+      "helper_template_address": "0x5555555566666666",
+      "stub_bytes": "41514154415541564157554883ec204c8bc9448bd648b86666666655555555ffd04883c4205d415f415e415d415c415983f8087605b808000000b908000000ff25000000008888888877777777",
+      "stub_sha256": "c3ff1558bda60fd87d769a9f71bdc074f66eabce68aec63d67933299c09a73ec",
+      "unwind_info_bytes": "010f07000f320b500af008e006d004c002900000",
+      "unwind_sha256": "c7199b557b059fdb7328ec424d204349369c5536a808c9bb0f753096a024a477",
+      "unwind_prolog_size": 15,
+      "preserved_registers": [
+        "r9",
+        "r12",
+        "r13",
+        "r14",
+        "r15",
+        "rbp"
+      ],
+      "runtime_function": {
+        "begin_address": 0,
+        "end_address": 77,
+        "unwind_data": 80,
+        "alignment": "runtime allocation must be DWORD aligned"
+      }
+    },
+    {
+      "name": "host_index_allocator_midloop",
+      "rva": "0x108c3d8",
+      "span_end_exclusive": "0x108c3e7",
+      "span_length": 15,
+      "continuation": "0x108c3f7",
+      "expected_bytes": "443830740cffc148ffc083f90472f1",
+      "expected_sha256": "36c77766915a74495832cb2dc80a2ec27c1b80cfeb3039ca3fbc4310b270ee49",
+      "patch_template_bytes": "ff2500000000444444443333333390",
+      "patch_sha256": "5ddffe27bd532e4ba6e42bae6be5bba293d7bbc8299e5a2013532e2e47862fb7",
+      "stub_template_address": "0x3333333344444444",
+      "helper_template_address": "0x5555555566666666",
+      "stub_bytes": "4151524883ec204c8bc9448bd648b86666666655555555ffd04883c4205a415983f808720a83f8ff7405b8ffffffff448bc049bbbbbbaaaa9999999941ffe3",
+      "stub_sha256": "9e442f696b2d818911471426d496cedce040bac24a13e61cc0676fe1a9d64301",
+      "unwind_info_bytes": "010703000732032002900000",
+      "unwind_sha256": "77e7d99e32b8399d51cda89ba7fbfbf1d43e3cb56f7205e3f86e1f669473b282",
+      "unwind_prolog_size": 7,
+      "preserved_registers": [
+        "r9",
+        "rdx"
+      ],
+      "runtime_function": {
+        "begin_address": 0,
+        "end_address": 63,
+        "unwind_data": 64,
+        "alignment": "runtime allocation must be DWORD aligned"
+      }
+    }
+  ],
+  "rollback": {
+    "method": "restore_exact_expected_bytes_then_flush_instruction_cache",
+    "capacity_original_sha256": "5b7c27828481ebba72145a0b2dcf1e18a7add8b9893cbf8ac45a8d5a36959d19",
+    "allocator_original_sha256": "36c77766915a74495832cb2dc80a2ec27c1b80cfeb3039ca3fbc4310b270ee49",
+    "quiescence_required": true,
+    "unwind_delete_before_stub_free": true
+  },
+  "abi_status": {
+    "capacity_helper_signature": "uint32_t helper(void* host_owner, uint32_t native_base_index)",
+    "allocator_helper_signature": "int32_t helper(void* host_owner, uint32_t start_index)",
+    "owner_lifetime_closed": false,
+    "confirmed_peer_dispatch_closed": false,
+    "player_creation_closed": false,
+    "midfunction_live_execution_verified": false,
+    "reason_blocked": [
+      "helper addresses are template values and have no production owner binding",
+      "host/client sidecar lifetime and reentrancy are not proven",
+      "confirmed-peer receiver and player-creation callbacks remain unresolved",
+      "only saved bytes and synthetic template checks exist; no live patch was installed"
+    ]
+  },
+  "verification": {
+    "status": "passed_static_stub_and_patch_checks",
+    "installer_invoked": false,
+    "process_accessed": false,
+    "game_module_modified": false
+  }
+}

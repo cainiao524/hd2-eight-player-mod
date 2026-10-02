@@ -1,0 +1,80 @@
+{
+  "status": "recovered_exact_consumer_abi",
+  "steam_build": 25480438,
+  "entry": {
+    "rva": "0x1093590",
+    "end_exclusive": "0x10936df",
+    "captured_body_bytes": 335,
+    "captured_body_sha256": "940aa51124b7e6cab994cd4916165e4197ea2baf1df9427c642e7e67a1693c88",
+    "capture_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+    "source_files": {
+      "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+      "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+    }
+  },
+  "abi": {
+    "calling_convention": "Windows x64",
+    "input": {
+      "RCX": "owner/platform state pointer"
+    },
+    "output": {
+      "EAX": "-1 when readiness or member-set validation fails; otherwise 0 or 1"
+    },
+    "register_contract": {
+      "RBX": "nonvolatile and restored",
+      "R12": "nonvolatile and restored",
+      "R14": "owner copy and restored",
+      "R15": "successful non-local counter and restored",
+      "RSI": "mode predicate and restored"
+    }
+  },
+  "owner_layout": {
+    "+0x00": "platform object/handle; null takes the mode-predicate return path",
+    "+0x1ba6": "ready byte; zero returns -1 when platform object is present",
+    "+0x1b58": "inline member IDs, uint64 stride 8, original four-entry storage",
+    "+0x1bb0": "member count consumed by the original reader",
+    "local_id": "global object +0xb398, compared against each member ID"
+  },
+  "sidecar_contract": {
+    "member_ids": "uint64[0..7]",
+    "count": "0..8",
+    "preserved_predicate": "exactly one local ID and every other non-local lookup returns a non-null token",
+    "validation": "non-null token is passed to 0x20bde78; status zero keeps the mode predicate true",
+    "reject": "count > 8, count == 0, missing local ID, duplicate local ID, or missing lookup token",
+    "result": "-1 on reject; otherwise 0/1 matching the captured mode predicate"
+  },
+  "captured_dependencies": {
+    "mode_flag_rip_target": "0x3326340",
+    "mode_flag_offset": "0xac4d9",
+    "mode_enum_rip_target": "0x3326e48",
+    "mode_enum_offset": "0x04",
+    "api_root_rip_target": "0x3326308",
+    "api_root_offset": "0xf8",
+    "member_lookup_vtable_offset": "0x118",
+    "lookup_context_rip_target": "0x2264209",
+    "status_helper": "0x20bde78"
+  },
+  "callers": [
+    {"rva": "0x1092f4e", "root": "0x1092e60", "use": "enumeration result gate and owner+0x1b78 write"},
+    {"rva": "0x10944fc", "root": "0x10937a0", "use": "platform update result and status dispatch"}
+  ],
+  "semantics": {
+    "counter": "r15d starts at 1 and increments only after a non-local ID returns a non-null lookup token",
+    "local_id": "a local ID bypasses platform lookup and therefore supplies the required initial counter unit",
+    "mode_mapping": {"flag_nonzero": true, "flag_zero_enum_0": 2, "flag_zero_enum_1": 1, "flag_zero_enum_2": 4, "flag_zero_enum_3": 5, "flag_zero_enum_4": 3, "flag_zero_enum_ge_5": 5},
+    "no_platform_object": "returns the mode predicate without scanning members"
+  },
+  "verification": {
+    "reference_model": "platform_member_consumer.py",
+    "tests": "test_platform_member_consumer.py",
+    "runtime_verified": false,
+    "installable": false,
+    "multiplayer_verified": false
+  },
+  "limits": [
+    "The captured internal API method identity and service response type remain unresolved.",
+    "This ABI recovery does not prove that the platform or lobby accepts eight users.",
+    "A production hook still needs an owner-lifetime-safe sidecar resolver and a verified unwind record.",
+    "No game process was written, called, injected, or modified."
+  ]
+}

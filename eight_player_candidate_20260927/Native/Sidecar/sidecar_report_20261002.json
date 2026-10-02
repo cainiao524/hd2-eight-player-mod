@@ -1,0 +1,82 @@
+{
+  "schema": "native-sidecar-report/v1",
+  "candidate": "eight-slot-native-sidecar",
+  "build": {
+    "target_arch": "x64",
+    "toolchain": "MSVC BuildTools 18.8.2 / MSVC 14.51.36231",
+    "command": "call build_x64.bat",
+    "game_root_touched": false,
+    "test_exit_code": 0,
+    "test_output": "ep_sidecar_synthetic_passed"
+  },
+  "contract": {
+    "capacity": 8,
+    "valid_network_indexes": "0..7",
+    "states": [
+      "FREE",
+      "PENDING",
+      "CONFIRMED"
+    ],
+    "generation_safe": true,
+    "hole_preserving": true,
+    "duplicate_peer_rejected": true,
+    "duplicate_resource_rejected": true,
+    "stale_token_rejected": true,
+    "generation_exhaustion_fail_closed": true
+  },
+  "scenarios": [
+    "reserve and confirm all eight stable slots",
+    "reject ninth reservation",
+    "reject duplicate peer and duplicate resource",
+    "remove without compacting neighboring slots",
+    "reuse a hole with an incremented generation",
+    "reject stale token after replacement and reconnect",
+    "reconnect active identity without changing ordinal",
+    "reject exhausted generation",
+    "destroy and reject subsequent operations",
+    "validate counts, identities, handles, and state invariants"
+  ],
+  "artifacts": [
+    {
+      "path": "ep_sidecar.h",
+      "sha256": "93450fd16d8d96fcce918fa51c9827bbfa14d5724bc74457a281f50efcb50514"
+    },
+    {
+      "path": "ep_sidecar.cpp",
+      "sha256": "02aaca9f1a59ee09d5d3454318e868f765cee2e344eb474c8e66fc5d31cf8e21"
+    },
+    {
+      "path": "ep_sidecar_test.cpp",
+      "sha256": "facf93f24c7242ad5c87a1bad0cf9a776506f8b92ce692630071a1b0957a379c"
+    },
+    {
+      "path": "build_x64.bat",
+      "sha256": "78d2b69791cb65cf24c714b3b69bdf35adaefd74e26fc7efc61345d9ab9aea33"
+    },
+    {
+      "path": "README.zh-TW.md",
+      "sha256": "7456ad4775901b1c0a56aa4691055f6c3ea534a109ae614514e642571d8164b9"
+    },
+    {
+      "path": "test_sidecar_report.py",
+      "sha256": "2181db7ac286e470af90b0b9836fc0d9758343b6b193cb4a594900803308c501"
+    },
+    {
+      "path": "ep_sidecar.dll",
+      "sha256": "90ff8a5a6d70c71968fbf8f0d33f255cef49da3abc580f041eed3f044fe5202e"
+    },
+    {
+      "path": "ep_sidecar_test.exe",
+      "sha256": "214b6fdbd753e705a24aaa62d537448567027fd29ea68e5c24cb5107c2999708"
+    }
+  ],
+  "production": {
+    "executable": false,
+    "multiplayer_verified": false,
+    "reason": [
+      "sidecar is not wired to Session/Party or player creation native call sites",
+      "no game module patch or process injection is performed",
+      "host/client lifetime and confirmed-peer dispatch remain outside this isolated table"
+    ]
+  }
+}

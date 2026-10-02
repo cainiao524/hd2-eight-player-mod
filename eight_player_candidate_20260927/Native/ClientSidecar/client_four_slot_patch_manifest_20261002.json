@@ -1,0 +1,482 @@
+{
+  "schema_version": 1,
+  "kind": "client_fixed_four_to_eight_patch_manifest",
+  "status": "design_only",
+  "production_executable": false,
+  "multiplayer_verified": false,
+  "game_files_modified": false,
+  "build": {
+    "steam_build": 25480438,
+    "module": "game.dll",
+    "module_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+    "source_capture": "five_player_feasibility_20260927/client_expansion_inventory_v2.json",
+    "source_capture_sha256": "97ff0849fc8752e2203b7ff5b7caea0cd8008f80cda606e5d14632144a608964"
+  },
+  "capacity_contract": {
+    "logical_max_players": 8,
+    "valid_network_indexes": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "invalid_network_index_min": 8,
+    "stable_network_index": true,
+    "holes_preserved_on_remove": true,
+    "compact_ordinal_is_not_network_index": true,
+    "fail_closed_on_unknown_site_or_abi": true
+  },
+  "observed_client_layout": {
+    "client_object_base": "owner+0x162c8",
+    "confirmed_peer_count": "0xc8",
+    "confirmed_peer_records": {
+      "base": "0xd0",
+      "stride": 32,
+      "observed_capacity": 4,
+      "player_index_offset": 20,
+      "replacement": "sidecar.records[network_index]"
+    },
+    "adjacent_arrays": [
+      {
+        "name": "adjacent_8",
+        "count_offset": "0x10",
+        "base_offset": "0x18",
+        "stride": 8,
+        "observed_capacity": 4,
+        "replacement": "sidecar.adjacent_8"
+      },
+      {
+        "name": "adjacent_16",
+        "count_offset": "0x38",
+        "base_offset": "0x40",
+        "stride": 16,
+        "observed_capacity": 4,
+        "replacement": "sidecar.adjacent_16"
+      },
+      {
+        "name": "adjacent_16b",
+        "count_offset": "0x80",
+        "base_offset": "0x88",
+        "stride": 16,
+        "observed_capacity": 4,
+        "replacement": "sidecar.adjacent_16b"
+      },
+      {
+        "name": "confirmed_32",
+        "count_offset": "0xc8",
+        "base_offset": "0xd0",
+        "stride": 32,
+        "observed_capacity": 4,
+        "replacement": "sidecar.confirmed_32"
+      },
+      {
+        "name": "peer_keyed",
+        "count_offset": null,
+        "base_offset": "0x150",
+        "stride": 16,
+        "observed_capacity": 4,
+        "replacement": "sidecar.peer_keyed",
+        "one_to_one_with_confirmed": false
+      }
+    ]
+  },
+  "patch_sites": [
+    {
+      "id": "append_registry",
+      "rva": "0xb90b20",
+      "root": "0xb90b20",
+      "kind": "writer_and_count",
+      "fixed_capacity": 4,
+      "anchors": [
+        {
+          "rva": "0xb90b98",
+          "asm": "mov edx, dword ptr [rbx + 0xc8]",
+          "bytes": "8b93c8000000",
+          "sha256": "c899337b097b8b197ed496d516851656a51839b5cd5cdb9803ed8006e9ad5848"
+        },
+        {
+          "rva": "0xb90c03",
+          "asm": "mov dword ptr [rbx + 0xc8], eax",
+          "bytes": "8983c8000000",
+          "sha256": "4c9d6c11cbdbe894ad883cf62f259c11387efd7642abab3feb79e102c16bb01e"
+        },
+        {
+          "rva": "0xb90c12",
+          "asm": "mov dword ptr [rdx + 0x14], eax",
+          "bytes": "894214",
+          "sha256": "32f43d96a2bf9e502d8dcb79ac8dd52c7cf9fbaebe5b3e03b27d458c342420f8"
+        }
+      ],
+      "sidecar_operation": "ep_client_append",
+      "required": [
+        "client_owner_lifetime",
+        "confirmed_peer_dispatch",
+        "record_storage_redirect"
+      ]
+    },
+    {
+      "id": "append_direct",
+      "rva": "0x10872c0",
+      "root": "0x10872c0",
+      "kind": "writer_and_count",
+      "fixed_capacity": 4,
+      "anchors": [
+        {
+          "rva": "0x10872f1",
+          "asm": "mov ecx, dword ptr [rcx + 0xc8]",
+          "bytes": "8b89c8000000",
+          "sha256": "37cd317f2f44a0ee89982cd7ddd9e141d98dd3c5a479979ff205d42300ec04da"
+        },
+        {
+          "rva": "0x108734c",
+          "asm": "mov dword ptr [rdi + 0xc8], eax",
+          "bytes": "8987c8000000",
+          "sha256": "a440c3274076244794ad4b0852234fe0d44b5ae6234ff131b6f13496cd1a2550"
+        },
+        {
+          "rva": "0x108736a",
+          "asm": "mov dword ptr [rdx + 0x14], eax",
+          "bytes": "894214",
+          "sha256": "32f43d96a2bf9e502d8dcb79ac8dd52c7cf9fbaebe5b3e03b27d458c342420f8"
+        }
+      ],
+      "sidecar_operation": "ep_client_append",
+      "required": [
+        "client_owner_lifetime",
+        "record_storage_redirect"
+      ]
+    },
+    {
+      "id": "remove_and_compact",
+      "rva": "0x1087540",
+      "root": "0x1087540",
+      "kind": "reader_writer_cleanup",
+      "fixed_capacity": 4,
+      "anchors": [
+        {
+          "rva": "0x10875d0",
+          "asm": "mov edx, dword ptr [rbx + 0xc8]",
+          "bytes": "8b93c8000000",
+          "sha256": "c899337b097b8b197ed496d516851656a51839b5cd5cdb9803ed8006e9ad5848"
+        },
+        {
+          "rva": "0x10875f8",
+          "asm": "cmp qword ptr [rax + rbx + 0xd0], rdi",
+          "bytes": "4839bc18d0000000",
+          "sha256": "69fc34b7e0a9537fa2d899e3c524c593ffaefb7eafa764f3c2fd65951e9f559e"
+        },
+        {
+          "rva": "0x1087612",
+          "asm": "dec dword ptr [rbx + 0xc8]",
+          "bytes": "ff8bc8000000",
+          "sha256": "23f9cf7b05b5ade6e55f275b512d97c251c88d0fdd036781508ea99e83a75a75"
+        },
+        {
+          "rva": "0x1087626",
+          "asm": "movups xmm0, xmmword ptr [rax + rbx + 0xd0]",
+          "bytes": "0f108418d0000000",
+          "sha256": "329c7a561b775325bafbb824f039b9779c828b9789ddfb831504d6489e8262f1"
+        },
+        {
+          "rva": "0x1087730",
+          "bytes": "83f804",
+          "asm": "cmp eax, 4",
+          "sha256": "ec9d1a6c95187ab3425edbcdf19a43602dabed7b1d6a5c436f9d713baec3f3d1"
+        }
+      ],
+      "sidecar_operation": "ep_client_remove",
+      "required": [
+        "stable_network_index",
+        "hole_preserving_remove",
+        "cleanup_all_adjacent_arrays"
+      ]
+    },
+    {
+      "id": "reset_primary",
+      "rva": "0x10845b0",
+      "root": "0x10845b0",
+      "kind": "reader_and_fixed_clear",
+      "fixed_capacity": 4,
+      "anchors": [
+        {
+          "rva": "0x10849bd",
+          "asm": "cmp dword ptr [rdi + 0xc8], r12d",
+          "bytes": "4439a7c8000000",
+          "sha256": "019adb6a1ddc51b8f75ea7c8e94a3031a0a87d7659328b87415c45f104bc633e"
+        },
+        {
+          "rva": "0x10849d6",
+          "asm": "mov rcx, qword ptr [rcx + rdi + 0xd0]",
+          "bytes": "488b8c39d0000000",
+          "sha256": "7f6e48ba8fee9c28f991d4b8f25cad937b6dac5be010a4967c6c9a3582fb6aef"
+        },
+        {
+          "rva": "0x10849ed",
+          "asm": "mov dword ptr [rdi + 0xc8], r12d",
+          "bytes": "4489a7c8000000",
+          "sha256": "a4e79035f4c094ca426f78c06eed4a5113c25dcd8ea7edb40ce5c1bec6485eb2"
+        },
+        {
+          "rva": "0x10849f7",
+          "asm": "movups xmmword ptr [rdi + 0xd0], xmm0",
+          "bytes": "0f1187d0000000",
+          "sha256": "109763881ae0f347abb997192087c2b56f41d4f8edc6feaf8bf1e6bb2a728d51"
+        },
+        {
+          "rva": "0x1084a28",
+          "asm": "movups xmmword ptr [rdi + 0x140], xmm0",
+          "bytes": "0f118740010000",
+          "sha256": "8a714ec70bf0909d12f298bae225c16bb664fb8eea74c3e78fda17703757d7fd"
+        }
+      ],
+      "sidecar_operation": "ep_client_reset",
+      "required": [
+        "record_reader_redirect",
+        "all_eight_slots_cleared",
+        "owner_lifetime"
+      ]
+    },
+    {
+      "id": "reset_secondary",
+      "rva": "0x1087010",
+      "root": "0x1087010",
+      "kind": "reader_and_fixed_clear",
+      "fixed_capacity": 4,
+      "anchors": [
+        {
+          "rva": "0x1087066",
+          "asm": "cmp dword ptr [rcx + 0xc8], r13d",
+          "bytes": "4439a9c8000000",
+          "sha256": "c4900abe45d51bfd0582b4c3cf119f9ef239b449620691ec274cc32c2f621064"
+        },
+        {
+          "rva": "0x10870a4",
+          "asm": "mov rdi, qword ptr [rax + r15 + 0xd0]",
+          "bytes": "4a8bbc38d0000000",
+          "sha256": "9041c5aa85ec4cfa6415920f362ec2ef976767c50fd3871f0e7b1652d18e459f"
+        },
+        {
+          "rva": "0x1087251",
+          "asm": "mov dword ptr [r15 + 0xc8], r13d",
+          "bytes": "4589afc8000000",
+          "sha256": "cccee191fd4ad6a3bdd007b6b42586d7e73ace1406217981dabbbc66041cc8fe"
+        },
+        {
+          "rva": "0x1087260",
+          "asm": "movups xmmword ptr [r15 + 0xd0], xmm0",
+          "bytes": "410f1187d0000000",
+          "sha256": "8eb65b6e794734b700e550ddd0abfc2fb60563a9766721af1d04281507f5f631"
+        },
+        {
+          "rva": "0x1087298",
+          "asm": "movups xmmword ptr [r15 + 0x140], xmm0",
+          "bytes": "410f118740010000",
+          "sha256": "0354cf0795bdc0d5d696171f6dad1079f0508ee1e2008d57c64950fe39d331a1"
+        }
+      ],
+      "sidecar_operation": "ep_client_reset",
+      "required": [
+        "record_reader_redirect",
+        "all_eight_slots_cleared",
+        "owner_lifetime"
+      ]
+    },
+    {
+      "id": "peer_keyed_adjacent_search",
+      "rva": "0x1084f50",
+      "root": "0x1084f50",
+      "kind": "reader_and_writer",
+      "fixed_capacity": 4,
+      "anchors": [
+        {
+          "rva": "0x1084f59",
+          "asm": "lea rax, [rcx + 0x150]",
+          "bytes": "488d8150010000",
+          "sha256": "08838b81f631ec919a69f69f6953b60264ef3bfea7bfba8cf6d6fd03ac1f6806"
+        },
+        {
+          "rva": "0x1084f83",
+          "bytes": "83fa04",
+          "asm": "cmp edx, 4",
+          "sha256": "55a4e366acc4f85057ac7f433de4b678ffbb67e8d62d4f56d4826e1bd9443d48"
+        },
+        {
+          "rva": "0x1084f8e",
+          "asm": "mov qword ptr [rax], rbx",
+          "bytes": "488918",
+          "sha256": "ee877c6acb73bf61afdbdbd8c4087220421c8d1d990f34f4f39a9e886959b6b0"
+        }
+      ],
+      "sidecar_operation": "sidecar.peer_keyed",
+      "required": [
+        "separate_mapping_owner",
+        "cleanup_on_departure"
+      ]
+    },
+    {
+      "id": "kicked_path",
+      "rva": "0xb91320",
+      "root": "0xb91320",
+      "kind": "departure_dispatch",
+      "fixed_capacity": 4,
+      "anchors": [
+        {
+          "rva": "0xb9140a",
+          "asm": "cmp dword ptr [rbx + 0xc8], r15d",
+          "bytes": "4439bbc8000000",
+          "sha256": "b7aad6c9c142d76a8f1ede421b9e3650f22ba5ea93bf6b64bcd10ec9e84bc3a9"
+        },
+        {
+          "rva": "0xb91426",
+          "asm": "mov r8, qword ptr [rax + rbx + 0xd0]",
+          "bytes": "4c8b8418d0000000",
+          "sha256": "77c4e9809ebd1811aa0777363b825be36f10b60275379a6c426d5da6dd5002e9"
+        },
+        {
+          "rva": "0xb91446",
+          "asm": "call 0x1087540",
+          "bytes": "e8f5604f00",
+          "sha256": "08101056541c08fd643c9704e718ffc800a3db5e2c83ef0655cf59b7e03b3782"
+        },
+        {
+          "rva": "0xb9159d",
+          "asm": "call 0x1089720",
+          "bytes": "e87e814f00",
+          "sha256": "c9f17a1465a340d37688c2864503170a1bb838d55b8184bf26503ec491870715"
+        }
+      ],
+      "sidecar_operation": "ep_client_remove_then_host_migration_rebuild",
+      "required": [
+        "remove_player_callback",
+        "host_migration_sidecar",
+        "owner_lifetime"
+      ]
+    },
+    {
+      "id": "player_creation_gate",
+      "rva": "0x1086460",
+      "root": "0x1085d70",
+      "kind": "reader_and_branch",
+      "fixed_capacity": 4,
+      "anchors": [
+        {
+          "rva": "0x1086460",
+          "bytes": "4283bc02ac63010004",
+          "sha256": "15f59c1d1dff2ee20cbdce10e7d1f8e781bb44d0963549ac249ba6ea7c99c118",
+          "asm": "cmp dword ptr [rdx + r8 + 0x163ac], 4"
+        },
+        {
+          "rva": "0x1086469",
+          "bytes": "0f83defdffff",
+          "sha256": "6968d7ff6d15c356dcbbc5c0a38a1d0844d48e191d0b887aa3d257c4976f3e51",
+          "asm": "jae 0x108624d"
+        },
+        {
+          "rva": "0x10868d7",
+          "bytes": "e86458f5ff",
+          "sha256": "f425d400164175f4081c329a8cb87b321a536c3564f257824715ca173a01b47e",
+          "asm": "call 0xfdc140"
+        }
+      ],
+      "sidecar_operation": "ep_client_creation_gate_then_create_player_callback",
+      "required": [
+        "index_4_to_7_creation_path",
+        "create_player_callback",
+        "resource_handle_validation",
+        "rollback_on_failure"
+      ],
+      "safety": "Do not replace the branch with an unconditional jump; preserve unsigned sentinel rejection and fail closed on unknown index."
+    },
+    {
+      "id": "index_to_roster_mapping",
+      "rva": "0xb90040",
+      "root": "0xb90040",
+      "kind": "reader_and_branch",
+      "fixed_capacity": 4,
+      "anchors": [
+        {
+          "rva": "0xb9014b",
+          "bytes": "83f904",
+          "sha256": "e0f8e2a8fea2f143982c5ab1163b172f31e74c40937537efff6ac915f0d96567",
+          "asm": "cmp ecx, 4"
+        }
+      ],
+      "sidecar_operation": "roster_ordinal_map_with_explicit_0_to_7_table",
+      "required": [
+        "network_index_distinct_from_ordinal",
+        "registry_capacity_8",
+        "cleanup_mapping"
+      ],
+      "safety": "The compared value is the mapped result, not proven to be network_index; ABI and table capacity must be recovered before patching."
+    }
+  ],
+  "required_callbacks": [
+    "client_owner_retain",
+    "client_owner_release",
+    "confirmed_peer_insert",
+    "confirmed_peer_remove",
+    "confirmed_peer_reset",
+    "player_creation",
+    "player_cleanup",
+    "host_migration_rebuild",
+    "roster_index_map"
+  ],
+  "fail_closed_conditions": [
+    "build_or_module_hash_mismatch",
+    "site_bytes_mismatch",
+    "missing_callback_abi",
+    "unknown_client_object_size_or_downstream_offset",
+    "network_index_out_of_range",
+    "duplicate_peer_or_resource",
+    "stale_generation_or_missing_handle",
+    "partial_reset_or_cleanup",
+    "host_migration_mapping_not_recovered"
+  ],
+  "evidence": [
+    {
+      "path": "five_player_feasibility_20260927/client_expansion_notes.md",
+      "scope": "client layout and fixed-four cleanup",
+      "sha256": "428941d38f875dc7dd4bcf1e5527406f3d17a40c2b9e3c1c85b61308ea1dee32"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_expansion_inventory_v2.json",
+      "scope": "instruction anchors and source bytes",
+      "sha256": "97ff0849fc8752e2203b7ff5b7caea0cd8008f80cda606e5d14632144a608964"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_index_consumers_findings.zh-TW.md",
+      "scope": "owner index readers and player gate",
+      "sha256": "1f90d8e4f695dc545058eb992d26af0682037ec1198dc3f013c3d3f1ffba5660"
+    },
+    {
+      "path": "five_player_feasibility_20260927/local_player_creation_gate_review.zh-TW.md",
+      "scope": "CFG and accepted creation path",
+      "sha256": "15714196c65f43be36fab8b4246d467488e6fd09c369655db3898dc27a4369a0"
+    }
+  ],
+  "validation": {
+    "synthetic_sidecar_required": true,
+    "real_game_install_required": true,
+    "real_multiplayer_acceptance_required": true,
+    "minimum_acceptance_accounts": 8,
+    "lifecycle": [
+      "join",
+      "mission",
+      "death",
+      "reinforcement",
+      "departure",
+      "reconnect",
+      "host_migration",
+      "extraction",
+      "settlement"
+    ]
+  },
+  "review_limits": {
+    "missing_exact_anchor_bytes": [],
+    "note": "An anchor without bytes is a semantic handoff dependency and cannot be patched until exact bytes are recovered."
+  }
+}

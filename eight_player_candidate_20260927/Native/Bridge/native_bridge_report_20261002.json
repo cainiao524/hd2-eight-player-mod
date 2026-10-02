@@ -1,0 +1,87 @@
+{
+  "schema": "ep-native-bridge-report/v2",
+  "candidate": "eight-slot-native-bridge-orchestration",
+  "build": {
+    "steam_build": 25480438,
+    "target_arch": "x64",
+    "toolchain": "MSVC BuildTools 18.8.2 / MSVC 14.51.36231",
+    "command": "call build_x64.bat",
+    "game_root_touched": false,
+    "test_exit_code": 0,
+    "test_output": "ep_native_bridge_synthetic_passed"
+  },
+  "contract": {
+    "capacity": 8,
+    "valid_network_indexes": "0..7",
+    "preflight": "build/site/callback guarded",
+    "admission": "reserve-confirm-create with rollback",
+    "departure": "cleanup callback then sidecar remove",
+    "reconnect": "hole preserving, generation safe",
+    "ninth_player": "rejected",
+    "owner_lifetime": "retain before callback transaction, release after confirm/create/remove or rollback; unbalanced leases fail the synthetic harness",
+    "failure_cleanup": "failed remove/sidecar cleanup retains slot and owner lease; explicit retry required",
+    "concurrency": "single synchronous operation guard; busy returns fail-closed",
+    "destroy": "refuses while active slots or cleanup records remain"
+  },
+  "artifacts": [
+    {
+      "path": "ep_native_bridge.h",
+      "sha256": "a79b503f79acc795ffab8ac37df9d9c28046177ad77af3042fe2946c5849a7ce"
+    },
+    {
+      "path": "ep_native_bridge.cpp",
+      "sha256": "7c896eddbc2a6c253fbf8bd0024ca56ad1be0bbce9d98b955a362af0c4a94e13"
+    },
+    {
+      "path": "ep_native_bridge_test.cpp",
+      "sha256": "6f125562001f6ad9aeb38e89bdecd7638a2bfece7e1965c2a8d73104483dc60e"
+    },
+    {
+      "path": "build_x64.bat",
+      "sha256": "7ab5d67af5c3f91926a7d06852b0574a4dc7ffe2ab9309a10a69a41b8b0b1340"
+    },
+    {
+      "path": "README.zh-TW.md",
+      "sha256": "7898afd0202f5d51ef5cb024299b00f779fa87702cde3518159a40043c98833e"
+    },
+    {
+      "path": "test_native_bridge.py",
+      "sha256": "e2f07c2ffc881cb96b992c7422f662d1a4e07b577e37794e7def529d69954e7e"
+    },
+    {
+      "path": "ep_native_bridge.dll",
+      "sha256": "d764f7edc369f8df0ab3180d889af95fe1105e077194a61fd3933ae4caffda1c"
+    },
+    {
+      "path": "ep_native_bridge_test.exe",
+      "sha256": "8bd9c5ae75e86dd3bc88ec2aee8ef048b650fd61eccd9666bee4e23ea2aad279"
+    },
+    {
+      "path": "ep_native_bridge.lib",
+      "sha256": "9bda913dc2208a35150f7aa7fe9ee0459d65afa7c7bf1c2e41de19400f595839"
+    },
+    {
+      "path": "ep_native_bridge.exp",
+      "sha256": "4772f50b1fb9f2f1724ef3e43f951581c9e8f3d86ccb1ab94e8b9aa90a10cd51"
+    },
+    {
+      "path": "ep_native_bridge.obj",
+      "sha256": "f773c74ad0598663bc1a33c03766ea81b956c55db19f0a1081778bdc6ac93bf1"
+    },
+    {
+      "path": "ep_native_bridge_test.obj",
+      "sha256": "a87af501070f677de86bdb45cfea0c6050ff089f32b721ad0e686a184ae6aa03"
+    }
+  ],
+  "production": {
+    "executable": false,
+    "multiplayer_verified": false,
+    "blockers": [
+      "real game callback ABI is not wired",
+      "mid-function capacity and allocator continuation remain template-only and uninstalled",
+      "no game module patch or process injection",
+      "host/client owner lifetime callback is synthetic; no migration/reentrancy evidence",
+      "five-to-eight account acceptance is pending"
+    ]
+  }
+}

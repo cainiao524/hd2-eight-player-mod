@@ -1,0 +1,1984 @@
+{
+  "schema": "hd2_live_dispatcher_data_capture_v1",
+  "build": 25480438,
+  "pid": 38588,
+  "captured_at_utc": "2026-10-02T09:45:59.595502+00:00",
+  "scope": "authorized read-only fixed-path API/data scan; no calls, writes, hooks, install, or pointer-following outside listed paths",
+  "pinned_images": {
+    "helldivers2.exe": {
+      "base": 140702590631936,
+      "size": 60719104,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\helldivers2.exe",
+      "sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+      "pe_identity": {
+        "timestamp": 1790149348,
+        "image_size": 60719104
+      }
+    },
+    "game.dll": {
+      "base": 140734444797952,
+      "size": 74727424,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\data\\game\\game.dll",
+      "sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+      "pe_identity": {
+        "timestamp": 1790161983,
+        "image_size": 74727424
+      }
+    }
+  },
+  "fixed_api_path": {
+    "global_rva": "0x3326308",
+    "api_root": "0x7ff7e26b8d80",
+    "fields": [
+      {
+        "label": "game_api_global",
+        "address": "0x7fff4dc96308",
+        "bytes": "808d6be2f77f0000",
+        "value": "0x7ff7e26b8d80"
+      },
+      {
+        "label": "api_root+0x00",
+        "address": "0x7ff7e26b8d80",
+        "bytes": "809a6be2f77f0000",
+        "value": "0x7ff7e26b9a80"
+      },
+      {
+        "label": "api_root+0x30",
+        "address": "0x7ff7e26b8db0",
+        "bytes": "30ba6be2f77f0000",
+        "value": "0x7ff7e26bba30"
+      },
+      {
+        "label": "api_root+0x38",
+        "address": "0x7ff7e26b8db8",
+        "bytes": "30be6be2f77f0000",
+        "value": "0x7ff7e26bbe30"
+      },
+      {
+        "label": "api_root+0xF8",
+        "address": "0x7ff7e26b8e78",
+        "bytes": "70de6be2f77f0000",
+        "value": "0x7ff7e26bde70"
+      },
+      {
+        "label": "api_root+0x100",
+        "address": "0x7ff7e26b8e80",
+        "bytes": "98b66be2f77f0000",
+        "value": "0x7ff7e26bb698"
+      },
+      {
+        "label": "api_root+0xC0",
+        "address": "0x7ff7e26b8e40",
+        "bytes": "509a6be2f77f0000",
+        "value": "0x7ff7e26b9a50"
+      }
+    ],
+    "table_fields": [
+      {
+        "label": "api+0x30.table+0x18",
+        "address": "0x7ff7e26bba48",
+        "bytes": "b09423e0f77f0000",
+        "value": "0x7ff7e02394b0"
+      },
+      {
+        "label": "api+0x30.table+0x38",
+        "address": "0x7ff7e26bba68",
+        "bytes": "d09623e0f77f0000",
+        "value": "0x7ff7e02396d0"
+      },
+      {
+        "label": "api+0x30.table+0x40",
+        "address": "0x7ff7e26bba70",
+        "bytes": "b09723e0f77f0000",
+        "value": "0x7ff7e02397b0"
+      },
+      {
+        "label": "api+0xF8.table+0xA0",
+        "address": "0x7ff7e26bdf10",
+        "bytes": "30677be0f77f0000",
+        "value": "0x7ff7e07b6730"
+      },
+      {
+        "label": "api+0xF8.table+0xA8",
+        "address": "0x7ff7e26bdf18",
+        "bytes": "e0677be0f77f0000",
+        "value": "0x7ff7e07b67e0"
+      }
+    ],
+    "root_page": "0x7ff7e26b8000",
+    "root_page_sha256": "338e34705c09e7bddeef83b0f05a7899cbdd9b3048d2f0381e446550616ba8b3",
+    "api_object_qwords": [
+      {
+        "offset": "0xb0",
+        "address": "0x7ff7e26b80b0",
+        "value": "0x7ff7dff91c20",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xb8",
+        "address": "0x7ff7e26b80b8",
+        "value": "0x7ff7dff91c40",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xc0",
+        "address": "0x7ff7e26b80c0",
+        "value": "0x7ff7dff91c60",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xc8",
+        "address": "0x7ff7e26b80c8",
+        "value": "0x7ff7dff91c80",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xd0",
+        "address": "0x7ff7e26b80d0",
+        "value": "0x7ff7dff91cc0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xd8",
+        "address": "0x7ff7e26b80d8",
+        "value": "0x7ff7dff91d20",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xe0",
+        "address": "0x7ff7e26b80e0",
+        "value": "0x7ff7dff91db0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xe8",
+        "address": "0x7ff7e26b80e8",
+        "value": "0x7ff7dff91df0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xf0",
+        "address": "0x7ff7e26b80f0",
+        "value": "0x7ff7dff91e70",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xf8",
+        "address": "0x7ff7e26b80f8",
+        "value": "0x7ff7dff91eb0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x100",
+        "address": "0x7ff7e26b8100",
+        "value": "0x7ff7dff91f00",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x200",
+        "address": "0x7ff7e26b8200",
+        "value": "0x7ff7dff8f460",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x208",
+        "address": "0x7ff7e26b8208",
+        "value": "0x7ff7dff8f4e0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x210",
+        "address": "0x7ff7e26b8210",
+        "value": "0x7ff7dff8f550",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x218",
+        "address": "0x7ff7e26b8218",
+        "value": "0x7ff7dff8f580",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x220",
+        "address": "0x7ff7e26b8220",
+        "value": "0x7ff7dff8f5a0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x228",
+        "address": "0x7ff7e26b8228",
+        "value": "0x7ff7dff8f5d0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x230",
+        "address": "0x7ff7e26b8230",
+        "value": "0x7ff7dff8f5f0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x238",
+        "address": "0x7ff7e26b8238",
+        "value": "0x7ff7dff8f670",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x240",
+        "address": "0x7ff7e26b8240",
+        "value": "0x7ff7dff8f690",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x248",
+        "address": "0x7ff7e26b8248",
+        "value": "0x7ff7dff8f6c0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x250",
+        "address": "0x7ff7e26b8250",
+        "value": "0x7ff7dff8f6e0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x258",
+        "address": "0x7ff7e26b8258",
+        "value": "0x7ff7dff8f6f0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x260",
+        "address": "0x7ff7e26b8260",
+        "value": "0x7ff7dff8f700",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x268",
+        "address": "0x7ff7e26b8268",
+        "value": "0x7ff7dff8f7d0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x270",
+        "address": "0x7ff7e26b8270",
+        "value": "0x7ff7dff8f9b0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x278",
+        "address": "0x7ff7e26b8278",
+        "value": "0x7fff55eb6d00",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x280",
+        "address": "0x7ff7e26b8280",
+        "value": "0x7fff55e96710",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x288",
+        "address": "0x7ff7e26b8288",
+        "value": "0x7fff55e740e0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x290",
+        "address": "0x7ff7e26b8290",
+        "value": "0x7fff55e75000",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x298",
+        "address": "0x7ff7e26b8298",
+        "value": "0x7fff55e748e0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x2a0",
+        "address": "0x7ff7e26b82a0",
+        "value": "0x7fff55e74b60",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x2a8",
+        "address": "0x7ff7e26b82a8",
+        "value": "0x7fff55e74160",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x2b0",
+        "address": "0x7ff7e26b82b0",
+        "value": "0x7fff55e74bc0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x2b8",
+        "address": "0x7ff7e26b82b8",
+        "value": "0x7fff55e739b0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x2c0",
+        "address": "0x7ff7e26b82c0",
+        "value": "0x7fff55e75480",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x2c8",
+        "address": "0x7ff7e26b82c8",
+        "value": "0x7fff55e741f0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x2d0",
+        "address": "0x7ff7e26b82d0",
+        "value": "0x7fff55e74230",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x2d8",
+        "address": "0x7ff7e26b82d8",
+        "value": "0x7fff55e741c0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x2e0",
+        "address": "0x7ff7e26b82e0",
+        "value": "0x7fff55e74260",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x2e8",
+        "address": "0x7ff7e26b82e8",
+        "value": "0x7fff55e75370",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x2f0",
+        "address": "0x7ff7e26b82f0",
+        "value": "0x7fff55e753e0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x2f8",
+        "address": "0x7ff7e26b82f8",
+        "value": "0x7fff55e73ba0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x300",
+        "address": "0x7ff7e26b8300",
+        "value": "0x7fff55e74970",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x308",
+        "address": "0x7ff7e26b8308",
+        "value": "0x7fff55e74290",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x310",
+        "address": "0x7ff7e26b8310",
+        "value": "0x7fff55e75290",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x318",
+        "address": "0x7ff7e26b8318",
+        "value": "0x7fff55e75190",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x320",
+        "address": "0x7ff7e26b8320",
+        "value": "0x7fff55e75140",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x328",
+        "address": "0x7ff7e26b8328",
+        "value": "0x7fff55e751e0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x330",
+        "address": "0x7ff7e26b8330",
+        "value": "0x7fff55e74490",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x338",
+        "address": "0x7ff7e26b8338",
+        "value": "0x7fff55e75160",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x340",
+        "address": "0x7ff7e26b8340",
+        "value": "0x7fff55e75320",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x348",
+        "address": "0x7ff7e26b8348",
+        "value": "0x7fff55e75300",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x350",
+        "address": "0x7ff7e26b8350",
+        "value": "0x7fff55e752e0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x358",
+        "address": "0x7ff7e26b8358",
+        "value": "0x7fff55e747b0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x360",
+        "address": "0x7ff7e26b8360",
+        "value": "0x7fff55e747d0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x368",
+        "address": "0x7ff7e26b8368",
+        "value": "0x7fff55e746c0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x370",
+        "address": "0x7ff7e26b8370",
+        "value": "0x7fff55e74740",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x378",
+        "address": "0x7ff7e26b8378",
+        "value": "0x7fff55e74810",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x380",
+        "address": "0x7ff7e26b8380",
+        "value": "0x7fff55e74920",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x388",
+        "address": "0x7ff7e26b8388",
+        "value": "0x7fff55e74670",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x390",
+        "address": "0x7ff7e26b8390",
+        "value": "0x7fff55e745c0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x398",
+        "address": "0x7ff7e26b8398",
+        "value": "0x7fff55e74590",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x3a0",
+        "address": "0x7ff7e26b83a0",
+        "value": "0x7fff55e746f0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x3a8",
+        "address": "0x7ff7e26b83a8",
+        "value": "0x7fff55e748a0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x3b0",
+        "address": "0x7ff7e26b83b0",
+        "value": "0x7fff55e74080",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x3b8",
+        "address": "0x7ff7e26b83b8",
+        "value": "0x7fff55e73f30",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x3c0",
+        "address": "0x7ff7e26b83c0",
+        "value": "0x7fff55e749c0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x3c8",
+        "address": "0x7ff7e26b83c8",
+        "value": "0x7fff55e74a00",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x3d0",
+        "address": "0x7ff7e26b83d0",
+        "value": "0x7fff55e73b30",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x3d8",
+        "address": "0x7ff7e26b83d8",
+        "value": "0x7fff55e743a0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x3e0",
+        "address": "0x7ff7e26b83e0",
+        "value": "0x7fff55e73fe0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x3e8",
+        "address": "0x7ff7e26b83e8",
+        "value": "0x7fff55e73ea0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x3f0",
+        "address": "0x7ff7e26b83f0",
+        "value": "0x7fff55e74f90",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x3f8",
+        "address": "0x7ff7e26b83f8",
+        "value": "0x7fff55e74da0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x400",
+        "address": "0x7ff7e26b8400",
+        "value": "0x7fff55e74a70",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x408",
+        "address": "0x7ff7e26b8408",
+        "value": "0x7fff55e74ae0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x410",
+        "address": "0x7ff7e26b8410",
+        "value": "0x7fff55e74e50",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x418",
+        "address": "0x7ff7e26b8418",
+        "value": "0x7fff55e74d20",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x420",
+        "address": "0x7ff7e26b8420",
+        "value": "0x7fff55e73990",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x428",
+        "address": "0x7ff7e26b8428",
+        "value": "0x7fff55e74500",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x430",
+        "address": "0x7ff7e26b8430",
+        "value": "0x7fff55e73af0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x438",
+        "address": "0x7ff7e26b8438",
+        "value": "0x7fff55e9f4f0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x440",
+        "address": "0x7ff7e26b8440",
+        "value": "0x7fff55e9f4a0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x448",
+        "address": "0x7ff7e26b8448",
+        "value": "0x7fff55e75510",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x450",
+        "address": "0x7ff7e26b8450",
+        "value": "0x7fff55e74c90",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x458",
+        "address": "0x7ff7e26b8458",
+        "value": "0x7fff55e75130",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x460",
+        "address": "0x7ff7e26b8460",
+        "value": "0x7fff55e73cc0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x468",
+        "address": "0x7ff7e26b8468",
+        "value": "0x7fff55e96730",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x470",
+        "address": "0x7ff7e26b8470",
+        "value": "0x7fff55e74430",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x478",
+        "address": "0x7ff7e26b8478",
+        "value": "0x7fff55e73a10",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x480",
+        "address": "0x7ff7e26b8480",
+        "value": "0x7fff55e94a20",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x488",
+        "address": "0x7ff7e26b8488",
+        "value": "0x7fff55e94970",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x490",
+        "address": "0x7ff7e26b8490",
+        "value": "0x7fff55e94980",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x498",
+        "address": "0x7ff7e26b8498",
+        "value": "0x7fff55e94ae0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x4a0",
+        "address": "0x7ff7e26b84a0",
+        "value": "0x7fff55e740f0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x4a8",
+        "address": "0x7ff7e26b84a8",
+        "value": "0x7fff55e750a0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x4b0",
+        "address": "0x7ff7e26b84b0",
+        "value": "0x7fff55e958a0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x4b8",
+        "address": "0x7ff7e26b84b8",
+        "value": "0x7fff55e95870",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x4c0",
+        "address": "0x7ff7e26b84c0",
+        "value": "0x7fff55e95890",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x4c8",
+        "address": "0x7ff7e26b84c8",
+        "value": "0x7fff55e95880",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x4d0",
+        "address": "0x7ff7e26b84d0",
+        "value": "0x7fff55ec0a70",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x4d8",
+        "address": "0x7ff7e26b84d8",
+        "value": "0x7fff55ec0d90",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x4e0",
+        "address": "0x7ff7e26b84e0",
+        "value": "0x7fff55e73660",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x4e8",
+        "address": "0x7ff7e26b84e8",
+        "value": "0x7fff55e731d0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x4f0",
+        "address": "0x7ff7e26b84f0",
+        "value": "0x7fff55e966c0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x4f8",
+        "address": "0x7ff7e26b84f8",
+        "value": "0x7fff55e96680",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x500",
+        "address": "0x7ff7e26b8500",
+        "value": "0x7fff55e73300",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x508",
+        "address": "0x7ff7e26b8508",
+        "value": "0x7fff55e73840",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x510",
+        "address": "0x7ff7e26b8510",
+        "value": "0x7fff55e733a0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x518",
+        "address": "0x7ff7e26b8518",
+        "value": "0x7fff55e73910",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x520",
+        "address": "0x7ff7e26b8520",
+        "value": "0x7fff55e73280",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x528",
+        "address": "0x7ff7e26b8528",
+        "value": "0x7fff55e737b0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x530",
+        "address": "0x7ff7e26b8530",
+        "value": "0x7fff55e73530",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x538",
+        "address": "0x7ff7e26b8538",
+        "value": "0x7fff55e73590",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x540",
+        "address": "0x7ff7e26b8540",
+        "value": "0x7fff55e73240",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x548",
+        "address": "0x7ff7e26b8548",
+        "value": "0x7fff55e736e0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x550",
+        "address": "0x7ff7e26b8550",
+        "value": "0x7fff55e735d0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x558",
+        "address": "0x7ff7e26b8558",
+        "value": "0x7fff55e966d0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x560",
+        "address": "0x7ff7e26b8560",
+        "value": "0x7fff55e96690",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x568",
+        "address": "0x7ff7e26b8568",
+        "value": "0x7fff55e73410",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x570",
+        "address": "0x7ff7e26b8570",
+        "value": "0x7fff55ec0cd0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x578",
+        "address": "0x7ff7e26b8578",
+        "value": "0x7fff55ec0da0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x580",
+        "address": "0x7ff7e26b8580",
+        "value": "0x7fff55e9f280",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x588",
+        "address": "0x7ff7e26b8588",
+        "value": "0x7fff55e9f190",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x590",
+        "address": "0x7ff7e26b8590",
+        "value": "0x7fff55e9f470",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x598",
+        "address": "0x7ff7e26b8598",
+        "value": "0x7ff7dff8f930",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x5a0",
+        "address": "0x7ff7e26b85a0",
+        "value": "0x7fff55ec05e0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x5a8",
+        "address": "0x7ff7e26b85a8",
+        "value": "0x7fff55ec04b0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x5b0",
+        "address": "0x7ff7e26b85b0",
+        "value": "0x7fff55ec58c0",
+        "owner": "lua51.dll"
+      },
+      {
+        "offset": "0x5b8",
+        "address": "0x7ff7e26b85b8",
+        "value": "0x7ff7dff8fa80",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x5c0",
+        "address": "0x7ff7e26b85c0",
+        "value": "0x7ff7dff8faa0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x5c8",
+        "address": "0x7ff7e26b85c8",
+        "value": "0x7ff7dff8fab0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x5d0",
+        "address": "0x7ff7e26b85d0",
+        "value": "0x7ff7dff8fad0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x5d8",
+        "address": "0x7ff7e26b85d8",
+        "value": "0x7ff7dff8fb10",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x5e0",
+        "address": "0x7ff7e26b85e0",
+        "value": "0x7ff7dff8fbc0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x5e8",
+        "address": "0x7ff7e26b85e8",
+        "value": "0x7ff7dff8fc70",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x5f0",
+        "address": "0x7ff7e26b85f0",
+        "value": "0x7ff7dff8fd00",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x5f8",
+        "address": "0x7ff7e26b85f8",
+        "value": "0x7ff7dff8fd90",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x600",
+        "address": "0x7ff7e26b8600",
+        "value": "0x7ff7dff8fe80",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x608",
+        "address": "0x7ff7e26b8608",
+        "value": "0x7ff7dff8fea0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x610",
+        "address": "0x7ff7e26b8610",
+        "value": "0x7ff7dff8fec0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x618",
+        "address": "0x7ff7e26b8618",
+        "value": "0x7ff7dff8fee0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x620",
+        "address": "0x7ff7e26b8620",
+        "value": "0x7ff7dff8ff00",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x628",
+        "address": "0x7ff7e26b8628",
+        "value": "0x7ff7dff8ff20",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x630",
+        "address": "0x7ff7e26b8630",
+        "value": "0x7ff7dff8fae0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x638",
+        "address": "0x7ff7e26b8638",
+        "value": "0x7ff7dff8ff40",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x640",
+        "address": "0x7ff7e26b8640",
+        "value": "0x7ff7dff8ff60",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x648",
+        "address": "0x7ff7e26b8648",
+        "value": "0x7ff7dff8ffb0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x650",
+        "address": "0x7ff7e26b8650",
+        "value": "0x7ff7dff90000",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x658",
+        "address": "0x7ff7e26b8658",
+        "value": "0x7ff7dff90050",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x660",
+        "address": "0x7ff7e26b8660",
+        "value": "0x7ff7dff900a0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x668",
+        "address": "0x7ff7e26b8668",
+        "value": "0x7ff7dff90100",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x670",
+        "address": "0x7ff7e26b8670",
+        "value": "0x7ff7dff900f0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x678",
+        "address": "0x7ff7e26b8678",
+        "value": "0x7ff7dff8faf0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x680",
+        "address": "0x7ff7e26b8680",
+        "value": "0x7ff7dff8fb00",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x790",
+        "address": "0x7ff7e26b8790",
+        "value": "0x7ff7dff93cb0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x798",
+        "address": "0x7ff7e26b8798",
+        "value": "0x7ff7dff93d80",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x7a0",
+        "address": "0x7ff7e26b87a0",
+        "value": "0x7ff7dff93e10",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x7a8",
+        "address": "0x7ff7e26b87a8",
+        "value": "0x7ff7dff93e90",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x7b0",
+        "address": "0x7ff7e26b87b0",
+        "value": "0x7ff7dff93e30",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x7b8",
+        "address": "0x7ff7e26b87b8",
+        "value": "0x7ff7dff93eb0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x7c0",
+        "address": "0x7ff7e26b87c0",
+        "value": "0x7ff7dff93f10",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x7c8",
+        "address": "0x7ff7e26b87c8",
+        "value": "0x7ff7dff93f80",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x7d0",
+        "address": "0x7ff7e26b87d0",
+        "value": "0x7ff7dff93f90",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x7d8",
+        "address": "0x7ff7e26b87d8",
+        "value": "0x7ff7dff93fe0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x7e0",
+        "address": "0x7ff7e26b87e0",
+        "value": "0x7ff7dff94000",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x7e8",
+        "address": "0x7ff7e26b87e8",
+        "value": "0x7ff7dff94010",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x7f0",
+        "address": "0x7ff7e26b87f0",
+        "value": "0x7ff7dff94030",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x7f8",
+        "address": "0x7ff7e26b87f8",
+        "value": "0x7ff7dff94070",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x800",
+        "address": "0x7ff7e26b8800",
+        "value": "0x7ff7dff940b0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x808",
+        "address": "0x7ff7e26b8808",
+        "value": "0x7ff7dff940c0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x810",
+        "address": "0x7ff7e26b8810",
+        "value": "0x7ff7dff940d0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x818",
+        "address": "0x7ff7e26b8818",
+        "value": "0x7ff7dff940f0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x820",
+        "address": "0x7ff7e26b8820",
+        "value": "0x7ff7dff944e0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x828",
+        "address": "0x7ff7e26b8828",
+        "value": "0x7ff7dff94990",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x830",
+        "address": "0x7ff7e26b8830",
+        "value": "0x7ff7dff949c0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x838",
+        "address": "0x7ff7e26b8838",
+        "value": "0x7ff7e04a7860",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x840",
+        "address": "0x7ff7e26b8840",
+        "value": "0x7ff7e04a7890",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x848",
+        "address": "0x7ff7e26b8848",
+        "value": "0x7ff7dff949f0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x850",
+        "address": "0x7ff7e26b8850",
+        "value": "0x7ff7dff96720",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x858",
+        "address": "0x7ff7e26b8858",
+        "value": "0x7ff7dff94a10",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x860",
+        "address": "0x7ff7e26b8860",
+        "value": "0x7ff7dff93e50",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x868",
+        "address": "0x7ff7e26b8868",
+        "value": "0x7ff7dff94a20",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x870",
+        "address": "0x7ff7e26b8870",
+        "value": "0x7ff7dff94a40",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x878",
+        "address": "0x7ff7e26b8878",
+        "value": "0x7ff7dff948a0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x930",
+        "address": "0x7ff7e26b8930",
+        "value": "0x7ff7dff939f0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x938",
+        "address": "0x7ff7e26b8938",
+        "value": "0x7ff7dff93a00",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x940",
+        "address": "0x7ff7e26b8940",
+        "value": "0x7ff7dff93a10",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x948",
+        "address": "0x7ff7e26b8948",
+        "value": "0x7ff7dff966a0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x950",
+        "address": "0x7ff7e26b8950",
+        "value": "0x7ff7dff966d0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0x958",
+        "address": "0x7ff7e26b8958",
+        "value": "0x7ff7dff939e0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xa60",
+        "address": "0x7ff7e26b8a60",
+        "value": "0x7ff7e00b8ca0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xa68",
+        "address": "0x7ff7e26b8a68",
+        "value": "0x7ff7e00b8d30",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xa70",
+        "address": "0x7ff7e26b8a70",
+        "value": "0x7ff7e00b8e80",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xa78",
+        "address": "0x7ff7e26b8a78",
+        "value": "0x7ff7e00b8f20",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xa80",
+        "address": "0x7ff7e26b8a80",
+        "value": "0x7ff7e00b97e0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xa88",
+        "address": "0x7ff7e26b8a88",
+        "value": "0x7ff7e00b9900",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xa90",
+        "address": "0x7ff7e26b8a90",
+        "value": "0x7ff7e00b9950",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xa98",
+        "address": "0x7ff7e26b8a98",
+        "value": "0x7ff7e00b9400",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xaa0",
+        "address": "0x7ff7e26b8aa0",
+        "value": "0x7ff7e00b9170",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xaa8",
+        "address": "0x7ff7e26b8aa8",
+        "value": "0x7ff7e00b9250",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xab0",
+        "address": "0x7ff7e26b8ab0",
+        "value": "0x7ff7e00b9330",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xab8",
+        "address": "0x7ff7e26b8ab8",
+        "value": "0x7ff7e00b9060",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xac0",
+        "address": "0x7ff7e26b8ac0",
+        "value": "0x7ff7e00b99d0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xac8",
+        "address": "0x7ff7e26b8ac8",
+        "value": "0x7ff7e00b9a60",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xad0",
+        "address": "0x7ff7e26b8ad0",
+        "value": "0x7ff7e00b9ae0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xad8",
+        "address": "0x7ff7e26b8ad8",
+        "value": "0x7ff7e00b9b70",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xbe0",
+        "address": "0x7ff7e26b8be0",
+        "value": "0x8000000a",
+        "owner": "outside_loaded_images"
+      },
+      {
+        "offset": "0xc00",
+        "address": "0x7ff7e26b8c00",
+        "value": "0xbf800000",
+        "owner": "outside_loaded_images"
+      },
+      {
+        "offset": "0xc18",
+        "address": "0x7ff7e26b8c18",
+        "value": "0x23f800000",
+        "owner": "outside_loaded_images"
+      },
+      {
+        "offset": "0xc30",
+        "address": "0x7ff7e26b8c30",
+        "value": "0x4bf800000",
+        "owner": "outside_loaded_images"
+      },
+      {
+        "offset": "0xc48",
+        "address": "0x7ff7e26b8c48",
+        "value": "0xbf800000",
+        "owner": "outside_loaded_images"
+      },
+      {
+        "offset": "0xc58",
+        "address": "0x7ff7e26b8c58",
+        "value": "0x3f800000",
+        "owner": "outside_loaded_images"
+      },
+      {
+        "offset": "0xc70",
+        "address": "0x7ff7e26b8c70",
+        "value": "0x3f800000",
+        "owner": "outside_loaded_images"
+      },
+      {
+        "offset": "0xca0",
+        "address": "0x7ff7e26b8ca0",
+        "value": "0x3f800000",
+        "owner": "outside_loaded_images"
+      },
+      {
+        "offset": "0xcb0",
+        "address": "0x7ff7e26b8cb0",
+        "value": "0xbf800000",
+        "owner": "outside_loaded_images"
+      },
+      {
+        "offset": "0xcd0",
+        "address": "0x7ff7e26b8cd0",
+        "value": "0x3f800000",
+        "owner": "outside_loaded_images"
+      },
+      {
+        "offset": "0xce0",
+        "address": "0x7ff7e26b8ce0",
+        "value": "0x3f800000",
+        "owner": "outside_loaded_images"
+      },
+      {
+        "offset": "0xd08",
+        "address": "0x7ff7e26b8d08",
+        "value": "0xbf800000",
+        "owner": "outside_loaded_images"
+      },
+      {
+        "offset": "0xd18",
+        "address": "0x7ff7e26b8d18",
+        "value": "0x3f800000",
+        "owner": "outside_loaded_images"
+      },
+      {
+        "offset": "0xd80",
+        "address": "0x7ff7e26b8d80",
+        "value": "0x7ff7e26b9a80",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xd88",
+        "address": "0x7ff7e26b8d88",
+        "value": "0x7ff7e26bab40",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xd90",
+        "address": "0x7ff7e26b8d90",
+        "value": "0x7ff7e26b9e60",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xd98",
+        "address": "0x7ff7e26b8d98",
+        "value": "0x7ff7e26b8f10",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xda0",
+        "address": "0x7ff7e26b8da0",
+        "value": "0x7ff7e26b9820",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xda8",
+        "address": "0x7ff7e26b8da8",
+        "value": "0x7ff7e26b9950",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xdb0",
+        "address": "0x7ff7e26b8db0",
+        "value": "0x7ff7e26bba30",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xdb8",
+        "address": "0x7ff7e26b8db8",
+        "value": "0x7ff7e26bbe30",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xdc0",
+        "address": "0x7ff7e26b8dc0",
+        "value": "0x7ff7e26bbb90",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xdc8",
+        "address": "0x7ff7e26b8dc8",
+        "value": "0x7ff7e26ba9e8",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xdd0",
+        "address": "0x7ff7e26b8dd0",
+        "value": "0x7ff7e26ba7f0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xdd8",
+        "address": "0x7ff7e26b8dd8",
+        "value": "0x7ff7e26bb300",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xe38",
+        "address": "0x7ff7e26b8e38",
+        "value": "0x7ff7e26baa78",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xe40",
+        "address": "0x7ff7e26b8e40",
+        "value": "0x7ff7e26b9a50",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xe48",
+        "address": "0x7ff7e26b8e48",
+        "value": "0x7ff7e26bbd10",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xe50",
+        "address": "0x7ff7e26b8e50",
+        "value": "0x7ff7e26bb340",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xe58",
+        "address": "0x7ff7e26b8e58",
+        "value": "0x7ff7e26bb9f0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xe60",
+        "address": "0x7ff7e26b8e60",
+        "value": "0x7ff7e26bab00",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xe68",
+        "address": "0x7ff7e26b8e68",
+        "value": "0x7ff7e26bb6b0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xe70",
+        "address": "0x7ff7e26b8e70",
+        "value": "0x7ff7e26ba5b0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xe78",
+        "address": "0x7ff7e26b8e78",
+        "value": "0x7ff7e26bde70",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xe80",
+        "address": "0x7ff7e26b8e80",
+        "value": "0x7ff7e26bb698",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xe88",
+        "address": "0x7ff7e26b8e88",
+        "value": "0x7ff7e26b64e8",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xe90",
+        "address": "0x7ff7e26b8e90",
+        "value": "0x7ff7e26bb9a0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xe98",
+        "address": "0x7ff7e26b8e98",
+        "value": "0x7ff7e26bbf70",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xea0",
+        "address": "0x7ff7e26b8ea0",
+        "value": "0x7ff7e26bbb60",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xea8",
+        "address": "0x7ff7e26b8ea8",
+        "value": "0x7ff7e26bb7a0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xeb0",
+        "address": "0x7ff7e26b8eb0",
+        "value": "0x7ff7e26bbd80",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xeb8",
+        "address": "0x7ff7e26b8eb8",
+        "value": "0x7ff7e26b9cd0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xec0",
+        "address": "0x7ff7e26b8ec0",
+        "value": "0x7ff7e26b9b50",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xec8",
+        "address": "0x7ff7e26b8ec8",
+        "value": "0x7ff7e26bd1e0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xed8",
+        "address": "0x7ff7e26b8ed8",
+        "value": "0x7ff7e26bb770",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xee0",
+        "address": "0x7ff7e26b8ee0",
+        "value": "0x7ff7e26b9720",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xee8",
+        "address": "0x7ff7e26b8ee8",
+        "value": "0x7ff7e26b9c40",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xef0",
+        "address": "0x7ff7e26b8ef0",
+        "value": "0x7ff7e26baad8",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xef8",
+        "address": "0x7ff7e26b8ef8",
+        "value": "0x7ff7e26bcc60",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xf00",
+        "address": "0x7ff7e26b8f00",
+        "value": "0x7ff7e26bccb0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xf08",
+        "address": "0x7ff7e26b8f08",
+        "value": "0x7ff7e26bcd78",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xf10",
+        "address": "0x7ff7e26b8f10",
+        "value": "0x7ff7e00ec450",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xf18",
+        "address": "0x7ff7e26b8f18",
+        "value": "0x7ff7e00ec490",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xf20",
+        "address": "0x7ff7e26b8f20",
+        "value": "0x7ff7e00ec4e0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xf28",
+        "address": "0x7ff7e26b8f28",
+        "value": "0x7ff7e00ec520",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xf30",
+        "address": "0x7ff7e26b8f30",
+        "value": "0x7ff7e00ec550",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xf38",
+        "address": "0x7ff7e26b8f38",
+        "value": "0x7ff7e00ec600",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xf40",
+        "address": "0x7ff7e26b8f40",
+        "value": "0x7ff7e00ec650",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xf48",
+        "address": "0x7ff7e26b8f48",
+        "value": "0x7ff7e00ec720",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xf50",
+        "address": "0x7ff7e26b8f50",
+        "value": "0x7ff7e00ec7a0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xf58",
+        "address": "0x7ff7e26b8f58",
+        "value": "0x7ff7e00ec880",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xf60",
+        "address": "0x7ff7e26b8f60",
+        "value": "0x7ff7e00ec8f0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xf68",
+        "address": "0x7ff7e26b8f68",
+        "value": "0x7ff7e00ec990",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xf70",
+        "address": "0x7ff7e26b8f70",
+        "value": "0x7ff7e00ecad0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xf78",
+        "address": "0x7ff7e26b8f78",
+        "value": "0x7ff7e00eca10",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xf80",
+        "address": "0x7ff7e26b8f80",
+        "value": "0x7ff7e00ecb80",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xf88",
+        "address": "0x7ff7e26b8f88",
+        "value": "0x7ff7e00ecd00",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xf90",
+        "address": "0x7ff7e26b8f90",
+        "value": "0x7ff7e00ecd40",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xf98",
+        "address": "0x7ff7e26b8f98",
+        "value": "0x7ff7e00ed190",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xfa0",
+        "address": "0x7ff7e26b8fa0",
+        "value": "0x7ff7e00ed220",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xfa8",
+        "address": "0x7ff7e26b8fa8",
+        "value": "0x7ff7e00ed250",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xfb0",
+        "address": "0x7ff7e26b8fb0",
+        "value": "0x7ff7e00ed290",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xfb8",
+        "address": "0x7ff7e26b8fb8",
+        "value": "0x7ff7e00ed310",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xfc0",
+        "address": "0x7ff7e26b8fc0",
+        "value": "0x7ff7e00ed1d0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xfc8",
+        "address": "0x7ff7e26b8fc8",
+        "value": "0x7ff7e00eefe0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xfd0",
+        "address": "0x7ff7e26b8fd0",
+        "value": "0x7ff7e00ed3f0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xfd8",
+        "address": "0x7ff7e26b8fd8",
+        "value": "0x7ff7e00ed4f0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xfe0",
+        "address": "0x7ff7e26b8fe0",
+        "value": "0x7ff7e00ed570",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xfe8",
+        "address": "0x7ff7e26b8fe8",
+        "value": "0x7ff7e00ed680",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xff0",
+        "address": "0x7ff7e26b8ff0",
+        "value": "0x7ff7e00ed7a0",
+        "owner": "helldivers2.exe"
+      },
+      {
+        "offset": "0xff8",
+        "address": "0x7ff7e26b8ff8",
+        "value": "0x7ff7e00ed7d0",
+        "owner": "helldivers2.exe"
+      }
+    ],
+    "outside_image_pointer_probes": []
+  },
+  "generic_send_dispatcher_code": {
+    "rva": "0xBDE430",
+    "address": "0x7fff4b54e430",
+    "size": 673,
+    "sha256": "ab22276e39bd854e07e369533ff043f1b8c5b9afd03d2da4a81c0b5d219861c5",
+    "reread_sha256": "ab22276e39bd854e07e369533ff043f1b8c5b9afd03d2da4a81c0b5d219861c5",
+    "unchanged_on_reread": true,
+    "expected_saved_sha256": "ab22276e39bd854e07e369533ff043f1b8c5b9afd03d2da4a81c0b5d219861c5"
+  },
+  "target_functions": {
+    "confirmed_peer_receiver": {
+      "module": "game.dll",
+      "rva": "0xbaba80",
+      "live_address": "0x7fff4b51ba80"
+    },
+    "confirmed_peer_insert": {
+      "module": "game.dll",
+      "rva": "0xb90b20",
+      "live_address": "0x7fff4b500b20"
+    },
+    "platform_member_consumer": {
+      "module": "game.dll",
+      "rva": "0x1093590",
+      "live_address": "0x7fff4ba03590"
+    },
+    "platform_member_leaf_reader": {
+      "module": "game.dll",
+      "rva": "0x10936e0",
+      "live_address": "0x7fff4ba036e0"
+    },
+    "platform_member_state_update": {
+      "module": "game.dll",
+      "rva": "0x10937a0",
+      "live_address": "0x7fff4ba037a0"
+    },
+    "player_creation_gate": {
+      "module": "game.dll",
+      "rva": "0x1086460",
+      "live_address": "0x7fff4b9f6460"
+    },
+    "host_join_root": {
+      "module": "game.dll",
+      "rva": "0x108bc70",
+      "live_address": "0x7fff4b9fbc70"
+    },
+    "host_confirmed_peer_sender": {
+      "module": "game.dll",
+      "rva": "0x108c760",
+      "live_address": "0x7fff4b9fc760"
+    }
+  },
+  "patterns": {
+    "confirmed_peer_receiver": {
+      "length": 8,
+      "sha256": "941c7320476644112ecf946df9b5c687044726716b3f73d26d49386f85c6f9f6"
+    },
+    "confirmed_peer_insert": {
+      "length": 8,
+      "sha256": "8444ed985b92bfae2010cfa63da7b5fecd0384ed6363659b1ff3d39e5a46b86f"
+    },
+    "platform_member_consumer": {
+      "length": 8,
+      "sha256": "24b7e21e5b6c4b79ea180bdf42787082fd785eecbab814c86df77108a8893507"
+    },
+    "platform_member_leaf_reader": {
+      "length": 8,
+      "sha256": "ce9fa6aa5fdf481f2882a810aad822d28ff4797ddb2270cf846c313bb4b17453"
+    },
+    "platform_member_state_update": {
+      "length": 8,
+      "sha256": "d2b7f5e1e1dfa8ac794ab776f91559f81ccfa7f246bb686c60c2aa16c4e36437"
+    },
+    "player_creation_gate": {
+      "length": 8,
+      "sha256": "86e1629af3e857feeab2f3739d71925d4d8d81ab515bd121e69dfb11c868d96b"
+    },
+    "host_join_root": {
+      "length": 8,
+      "sha256": "f080bcc6abc70d8cf79be03b73c1ad72fd15cb3019feab1619abd58994dd1414"
+    },
+    "host_confirmed_peer_sender": {
+      "length": 8,
+      "sha256": "94c139ce1f2b4e9093ccfdfc1a72dc8884edbcbd78562185cb2f93c6162aca85"
+    },
+    "confirmed_peer_event_hash": {
+      "length": 4,
+      "sha256": "22e65032d2b4ec7e879b6119cfeb1bb9f03bbfbe1337d08aa83d0dfc792c2552"
+    }
+  },
+  "hits": [
+    {
+      "pattern": "confirmed_peer_event_hash",
+      "module": "game.dll",
+      "address": "0x7fff4b554982",
+      "rva": "0xbe4982",
+      "page": "0x7fff4b554000",
+      "page_sha256": "eebae99706b1c2163cd225226426fe967d0e5de2fb65b31781ae41fdf5cbf4fa"
+    },
+    {
+      "pattern": "confirmed_peer_receiver",
+      "module": "game.dll",
+      "address": "0x7fff4cabc820",
+      "rva": "0x214c820",
+      "page": "0x7fff4cabc000",
+      "page_sha256": "2e6048be28582847fc6a482f59b60f04df7008bccaab3ea0f4e84d931f76dac7"
+    }
+  ],
+  "stable_hit_pages": [
+    {
+      "module": "game.dll",
+      "page": "0x7fff4b554000",
+      "sha256_reread": "eebae99706b1c2163cd225226426fe967d0e5de2fb65b31781ae41fdf5cbf4fa"
+    },
+    {
+      "module": "game.dll",
+      "page": "0x7fff4cabc000",
+      "sha256_reread": "2e6048be28582847fc6a482f59b60f04df7008bccaab3ea0f4e84d931f76dac7"
+    }
+  ],
+  "scan_stats": {
+    "pages_read": 33068,
+    "hit_pages": 2,
+    "memory_bytes_read": 135477698
+  },
+  "read_only": true,
+  "calls_made": false,
+  "writes_made": false,
+  "hooks_installed": false,
+  "resolver_closed": false,
+  "eight_player_verified": false,
+  "limitations": [
+    "The fixed API fields are observed but not invoked; their ABI and service semantics are not proved.",
+    "A pointer to 0xBABA80 in a static callback run does not prove hash-to-receiver registration.",
+    "Only pinned executable image ranges were scanned; heap/private writable registries may be outside this capture.",
+    "No player creation, Party/PlayFab result, network frame, or multiplayer mission was tested."
+  ]
+}

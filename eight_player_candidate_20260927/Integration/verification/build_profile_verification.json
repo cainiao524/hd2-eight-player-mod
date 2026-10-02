@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "report_kind": "offline_build_profile_gate_verification",
+  "tool": "Integration/build_profile.py",
+  "profile": "Integration/profile_template.json",
+  "test_runner": "python -m unittest discover -s eight_player_candidate_20260927/Integration -p test_*.py -v",
+  "tests": {
+    "count": 7,
+    "passed": 7,
+    "failed": 0
+  },
+  "candidate_manifest": {
+    "path": "candidate-manifest.json",
+    "sha256": "b6a7e821233ddf5cceea2675a3f37d267c4d3dff28bfc9303849e38dce94f9fe",
+    "verified": true,
+    "file_count": 16
+  },
+  "pinned_fingerprints": {
+    "exe": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+    "game_dll": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e"
+  },
+  "unresolved_required_fingerprints": [
+    "playfab_multiplayer",
+    "party",
+    "data_typelib",
+    "data_entities"
+  ],
+  "gate_result": {
+    "package_integrity_verified": true,
+    "required_fingerprints_verified": false,
+    "pre_install_gate_passed": false,
+    "live_ready": false,
+    "installation_authorized": false,
+    "multiplayer_verified": false,
+    "process_accessed": false,
+    "installation_discovery_performed": false
+  },
+  "policy_checks": [
+    "Observed hashes never update trusted fingerprints (no TOFU).",
+    "Version/build strings are metadata, not identity proof.",
+    "Every supplied path is explicit, relative to its selected root, and escape/reparse guarded.",
+    "Missing or unresolved required fingerprints block readiness.",
+    "Disk hashes do not prove loaded image identity, hooks, unwind/lifetime safety, or multiplayer success."
+  ],
+  "errors": [],
+  "artifact_sha256": {
+    "Integration/build_profile.py": "f21182098c08239b0be4a0352f09febb481f222a6a1f8411687519b853479cbe",
+    "Integration/test_build_profile.py": "d6bfd2108c65840254042f8d3e54b4b190d671dbe2c4164384973aac615a2bde",
+    "Integration/profile_template.json": "c88ed0624def963c463fd29d39324f89dba58c3c58caf426abb5b4247aaf92bf"
+  }
+}

@@ -1,0 +1,104 @@
+from __future__ import annotations
+
+import importlib.util
+import json
+import tempfile
+import unittest
+from pathlib import Path
+from unittest.mock import patch
+
+
+HERE = Path(__file__).parent
+SPEC = importlib.util.spec_from_file_location("stage_package", HERE / "stage_package.py")
+assert SPEC and SPEC.loader
+stage_package = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(stage_package)
+
+
+class StagePackageTests(unittest.TestCase):
+    def _plan(self, *, executable=False):
+        return {
+            "steam_build": stage_package.BUILD,
+            "sidecar": {"host_peer_slots": 8, "client_confirmed_slots": 8},
+            "executable": executable,
+            "multiplayer_verified": False,
+            "requires": sorted(stage_package.REQUIRED_PLAN_FIELDS),
+        }
+
+    def test_non_executable_plan_blocks_and_does_not_create_stage(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            plan = root / "plan.json"
+            plan.write_text(json.dumps(self._plan()), encoding="utf-8")
+            diagnostics = root / "diagnostics.json"
+            output = root / "stage"
+            rc = stage_package.main([
+                "--game-root", str(root / "game"),
+                "--native-plan", str(plan),
+                "--diagnostics", str(diagnostics),
+                "--stage-output", str(output),
+            ])
+            self.assertEqual(rc, 2)
+            self.assertFalse(output.exists())
+            saved = json.loads(diagnostics.read_text(encoding="utf-8"))
+            self.assertFalse(saved["activation_allowed"])
+            self.assertIn("native_plan_not_executable", saved["errors"])
+
+    def test_exact_hashes_and_payload_are_required_before_stage(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            game = root / "game"
+            for rel, digest in stage_package.FILES.items():
+                path = game / rel
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(b"fixture")
+            # Replace the expected profile only inside this test; production constants stay pinned.
+            expected = {rel: stage_package.sha256(game / rel) for rel in stage_package.FILES}
+            plan = root / "plan.json"
+            plan.write_text(json.dumps(self._plan(executable=True)), encoding="utf-8")
+            payload = root / "bridge.dll"
+            payload.write_bytes(b"native-payload-fixture")
+            with patch.object(stage_package, "FILES", expected):
+                diagnostics = stage_package.build_diagnostics(game, plan, payload)
+                self.assertTrue(diagnostics["activation_allowed"], diagnostics)
+                output = root / "stage"
+                stage_package.stage(HERE, output, diagnostics, payload)
+                self.assertTrue((output / "manifest.json").is_file())
+                self.assertTrue((output / "native" / "bridge.dll").is_file())
+                self.assertEqual(json.loads((output / "rollback.json").read_text())["installed_files"], [])
+            # Staging never writes into the game root.
+            self.assertEqual(sorted(p.relative_to(game).as_posix() for p in game.rglob("*") if p.is_file()), sorted(stage_package.FILES))
+
+    def test_plan_build_mismatch_is_fail_closed(self):
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "plan.json"
+            plan = self._plan(executable=True)
+            plan["steam_build"] = stage_package.BUILD + 1
+            path.write_text(json.dumps(plan), encoding="utf-8")
+            result = stage_package.validate_plan(path)
+            self.assertFalse(result["valid"])
+            self.assertIn("native_plan_build_mismatch", result["errors"])
+
+    def test_stage_refuses_output_inside_game_root(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            game = root / "game"
+            game.mkdir()
+            for rel in stage_package.FILES:
+                path = game / rel
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(b"fixture")
+            plan = root / "plan.json"
+            plan.write_text(json.dumps(self._plan(executable=True)), encoding="utf-8")
+            payload = root / "bridge.dll"
+            payload.write_bytes(b"payload")
+            expected = {rel: stage_package.sha256(game / rel) for rel in stage_package.FILES}
+            with patch.object(stage_package, "FILES", expected):
+                diagnostics = stage_package.build_diagnostics(game, plan, payload)
+                self.assertTrue(diagnostics["activation_allowed"])
+                with self.assertRaisesRegex(RuntimeError, "inside the game installation"):
+                    stage_package.stage(HERE, game / "staging", diagnostics, payload)
+
+
+if __name__ == "__main__":
+    unittest.main()

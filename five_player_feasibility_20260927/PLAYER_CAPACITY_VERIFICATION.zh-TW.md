@@ -1,5 +1,15 @@
 # 玩家元件、建立 guard 與索引下游：離線交付核對
 
+## `0.14.0-offline`：6054F0 狀態更新接入共同八格儲存
+
+[狀態更新候選](../eight_player_candidate_20260927/NATIVE_ROSTER_ARRIVAL.zh-TW.md)已完成離線交付收尾：完整 1111-byte 原 body 產生 1917-byte 候選，19 個 pointer／primary／aux／property 位點改接共同 B；入口檢 binding、counts、map、ordinal、target 與 caller-state。原四列 palette 及 network index≥4 的白色 fallback、三處 current-D 通知、frame／cookie／calls 保留。`arrival` 只是檔名，此函式沒有 append 或 count 遞增的證據。
+
+[5 組／42 次指令驗證](../eight_player_candidate_20260927/verification/native_roster_arrival_tests.json)包含原版完整返回4、候選完整返回21、入口拒絕17；巢狀 FD9AF0 的25次另列。19處靜態核對、17處有效域動態檢查，6056C8／6056D6只有靜態覆蓋。[Source審查](../eight_player_candidate_20260927/verification/native_roster_arrival_review.zh-TW.md)及[接續 oracle 審查](../eight_player_candidate_20260927/verification/native_roster_arrival_test_review.zh-TW.md)已保存；接續重跑42筆紀錄與凍結報告相同。
+
+共同 bundle 為 **16個 roster 函式＋原 player_count 計畫、62個已知區域**，內嵌 v0.13 產物相同。累計 **149組／4,314次套件執行或觀察**，包含原版、拒絕、前綴觀察與預期反例，不能稱為候選成功次數；重跑與巢狀helper不重複計數。15個既有來源與14份舊報告未改，舊套件未重跑。
+
+Sidecar配置／發布／清理、其他reader、caller／callback同步、真實資源、reject handler、hook／Windows unwind仍缺；目前不可安裝，五至八帳號同場任務未驗證。後續P3的[1277920有限調查](roster_mask_reader_findings.zh-TW.md)已固定兩個roster讀取與mask前綴：primary+24h和property+Ch都需改接B；24次原前綴觀察未見mask分支造成後續狀態差異，不列入交付套件數。下一步是明確入口guard／普通missing政策並實作完整reader候選。
+
 本記錄涵蓋玩家元件、生命週期，以及後續的接收／分派／索引儲存離線研究。使用固定 build 25480438 的既有 code／readonly／unwind capture；這些續查沒有查詢或讀取活程序，也沒有修改、安裝或執行 Mod。
 
 ## `0.13.0` Registry 更新與關聯 ID reader 共用 B
@@ -8,9 +18,9 @@
 
 [8 組／87 次頂層測試](../eight_player_candidate_20260927/verification/native_roster_registry_update_tests.json)分為 **12 次原版完整基準**（root8、helper4）、**49 次候選完整返回**（root32、helper17）及 **26 次候選拒絕**（root20、helper6）。tag69 實際執行保存的 FD9BA0；tag73 實際進入原版或新606520。其他tags的資源calls由明示 ABI／順序／副作用替身提供。全部八格、dense-only／普通miss、aux狀態保留、bit旗標、其他tag、混合registry、拒絕恢復、地址與rel32邊界均有有界案例；沒有新增remove/getter串接執行。巢狀helper不重複加入頂層數。
 
-目前累計 **144 組／4,272 次套件觀測**；總量保留舊版26次context prefix、原版基準、拒絕與預期原反例，並非4,272次候選成功。[Source審查](../eight_player_candidate_20260927/verification/native_roster_registry_update_review.zh-TW.md)及[oracle審查](../eight_player_candidate_20260927/verification/native_roster_registry_update_test_review.zh-TW.md)各自記錄範圍。原14個候選來源及13份報告保持原指紋，未重跑舊套件；新CLI建置逐byte等同保存的完整bundle。
+v0.13當時累計 **144 組／4,272 次套件觀測**；總量保留舊版26次context prefix、原版基準、拒絕與預期原反例，並非4,272次候選成功。[Source審查](../eight_player_candidate_20260927/verification/native_roster_registry_update_review.zh-TW.md)及[oracle審查](../eight_player_candidate_20260927/verification/native_roster_registry_update_test_review.zh-TW.md)各自記錄範圍。原14個候選來源及13份報告保持原指紋，未重跑舊套件；新CLI建置逐byte等同保存的完整bundle。
 
-這不提供引擎同步、有效context map／backing／resource、hook／unwind或nested reject handler。較早registry entries可在較晚拒絕前產生副作用；零容量／full-miss context map的原null缺口亦保留，不能視為任意輸入皆安全。下一有限離線切點是既有完整 `6054F0..605947` 的八格讀取與palette／玩家數通知，固定全部array／必要helper後收束；本輪不啟動該追查。平台加入、角色建立與五至八帳號任務全流程仍未驗證。
+這不提供引擎同步、有效context map／backing／resource、hook／unwind或nested reject handler。較早registry entries可在較晚拒絕前產生副作用；零容量／full-miss context map的原null缺口亦保留，不能視為任意輸入皆安全。該輪6054F0切點已由上述v0.14接入；後續reader見最新工作清單。平台加入、角色建立與五至八帳號任務全流程仍未驗證。
 
 ## 歷史：`0.12.0` 移除前處理與共同八格候選
 

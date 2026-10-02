@@ -1,0 +1,47 @@
+{
+  "status": "native_platform_member_sidecar_candidate",
+  "steam_build": 25480438,
+  "entry_address": 140694807117824,
+  "size_bytes": 426,
+  "code_hex": "534883ec304885c90f8491010000488bd948b800000210f67f0000ffd04885c00f84790100004889442428488b0b4885c90f843500000048b808633203f67f0000488b0041b808000000488b90f8000000488b82380100004c8b5c242841c6434800498d13ffd0e9980000004c8b53084d85d20f84260100004c8954242048b8406e3203f67f0000488b008078080048b808633203f67f00000f8424000000488b00488b5030488b82800000004c8b5c242841c6434801488b4c2420ffd0e94100000048b808633203f67f0000488b00488b88480100004c8b5c2428498d1341b808000000488b41104c8b48584c8b5c242841c6434800488b4c242041ffd1e90000000083f8080f8605000000b8080000008983b01b00004c8b5c24284189434041807b48000f844200000033ff4c8b5c2428413b7b400f833100000048b808633203f67f0000488b00488b5030488b8288000000488b4c242089faffd04c8b5c2428498904fbffc7e9c0ffffff4c8b5c2428488bcb498bd3448b83b01b000048b800100210f67f0000ffd085c00f88100000008983781b0000e905000000b8ffffffff4883c4305bc3",
+  "code_sha256": "5e3a604dc4b3851daf504683ba4cb7a574bdf533e6d6b53393da4a262cab8c1c",
+  "source": {
+    "entry": "0x1092e60",
+    "end_exclusive": "0x1092f63",
+    "body_sha256": "337667006beecb7e40e381a76ffdcb10ebd4e539c4330e43494febd49d965abf"
+  },
+  "capacity": {
+    "original": 4,
+    "candidate": 8,
+    "count_field": "owner+0x1bb0",
+    "sidecar_ids": "sidecar+0x00",
+    "sidecar_count": "sidecar+0x40",
+    "alternate_path_marker": "sidecar+0x48"
+  },
+  "callbacks": {
+    "resolve": {
+      "address": "0x7ff610020000",
+      "abi": "RCX=owner; RAX=sidecar or 0"
+    },
+    "consume": {
+      "address": "0x7ff610021000",
+      "abi": "RCX=owner; RDX=sidecar; R8D=count; EAX=signed status"
+    }
+  },
+  "platform_api": {
+    "global_api": "0x7ff603326308",
+    "global_flag": "0x7ff603326e40",
+    "branch_true": "API+0x30 table +0x80 count, +0x88 member-at-index",
+    "branch_false": "API+0x148 object +0x10 callback table +0x58 enumerator"
+  },
+  "installable": false,
+  "game_execution": false,
+  "multiplayer_verified": false,
+  "limits": [
+    "The resolver and consumer ABIs are new external contracts; no game callback has been identified for them.",
+    "The original four-entry reader 0x1093590 is bypassed and must be replaced by a sidecar-aware production consumer.",
+    "The platform service response, owner lifetime, hook/unwind, installation and client roster are not solved.",
+    "The alternate path's callback must honor the expanded destination capacity; this candidate cannot force a service-side limit."
+  ],
+  "evidence_sha256": "3ad0f0697dc08b777ef2d1d2e8562c7822b30af7d916e81f88c924559b9e3ba0"
+}

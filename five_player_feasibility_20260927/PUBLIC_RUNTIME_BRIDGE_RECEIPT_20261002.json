@@ -1,0 +1,110 @@
+{
+  "schema": "hd2_public_runtime_bridge_receipt_v1",
+  "research_date": "2026-10-02",
+  "target_build": {
+    "steam_build": 25480438,
+    "exe_version": "1.8.46015.0",
+    "exe_sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+    "game_dll_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e"
+  },
+  "scope": "Public source review only. No source was copied into the Mod payload; no game-file modification, injection or multiplayer claim.",
+  "repositories": [
+    {
+      "priority": "S",
+      "name": "SkyeShade/HD2Runtime",
+      "url": "https://github.com/SkyeShade/HD2Runtime",
+      "commit": "96ab2d258d867a5df4f22bb7b3321d84d28de21d",
+      "tag": "v0.28.1",
+      "license": "Not established in this checkout; source is referenced only, not copied.",
+      "current_build_evidence": {
+        "game_dll_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+        "exe_sha256": null,
+        "exe_image_size": 60719104,
+        "source": "domains/event_natives.lua source.gameDllSha256, source.imageSize and source.exeImageSize; this file does not carry an EXE SHA-256"
+      },
+      "key_files": [
+        {"path": "domains/event_natives.lua", "sha256": "7cb6f2c01d1d17c8ac02cd9b47c7649f108a6fca67dcd9403eb4a784dceb8016", "bytes": 27041},
+        {"path": "runtime/event_world.lua", "sha256": "51f0d8456eb95451c8a28364fdb0c46c2e61ed078286b6faa44145b8ebd2b238", "bytes": 32869},
+        {"path": "runtime/windows_write.lua", "sha256": "bac9a7322a08072da351188f6df4e14d813e3b8a23b388f2cfb2f6493b168ae9", "bytes": 7981},
+        {"path": "api/hd2.lua", "sha256": "b617824baf88729dea883ec06a14ff4acdc770d0947ce48b7bfe4e3da383041e", "bytes": 12995},
+        {"path": "docs/events.md", "sha256": "99edced1fa2256b967853675035047b810dcbf03b5e11a3e182a94f3f0ffeb6b", "bytes": 43249}
+      ],
+      "findings": {
+        "player_layout": "domains/event_natives.lua sets players.global=0x3326340, count=0x84, peers=0x2C8, peerStride=0x38, maxPlayers=4; stats.maxPlayers=4.",
+        "player_reader": "runtime/event_world.lua players() rejects count > maxPlayers and reads peer ids, lifecycle, descriptors and avatar network ids read-only.",
+        "writer_boundary": "runtime/windows_write.lua provides guarded writes and reviewed heal/explosion/projectile/status calls only; no Session, Party, peer admission, confirmed-peer, player creation or cleanup bridge.",
+        "spawn_boundary": "api/hd2.lua reports generic spawn_entity as blocked because network replication is not proven.",
+        "value_to_project": "Reusable same-build read-only player/event observer and native call guard; not an 8-player bridge."
+      }
+    },
+    {
+      "priority": "S",
+      "name": "CowboyBingus/BetterLobbyManagement",
+      "url": "https://github.com/CowboyBingus/BetterLobbyManagement",
+      "commit": "5294433adf83c8bcf7e0c131ea8344df727ae2ca",
+      "tag": "v1.1",
+      "license": "No repository-wide license established in checkout; source is referenced only, not copied.",
+      "current_build_evidence": {
+        "game_dll_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+        "exe_sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+        "source": "scripts/entry.py exact module hashes"
+      },
+      "key_files": [
+        {"path": "src/game.lua", "sha256": "23e3ed0195196aeaab63610fb8d8453d57e2c1569e7e1cd2ac8914abb2a681f1", "bytes": 12327},
+        {"path": "src/windows_api.lua", "sha256": "c6c1fd134187b737e676476105d6fc52c3fa9a5698a03b1ef283d318ba7925e8", "bytes": 14837},
+        {"path": "src/addon.lua", "sha256": "e3946cebf7c165bdfc4b72a518f4de63228d1637c5403e030f5e13915a04c354", "bytes": 23018},
+        {"path": "docs/TECHNICAL.md", "sha256": "83b9cac4913c3bb87ab5486ae05756906cbd639c0cc354f5b4808a03865d2ad3", "bytes": 28062}
+      ],
+      "findings": {
+        "session_layout": "src/game.lua declares CONTEXT_PTR=0x347cef0, PEER_COUNT=0x16390, PEERS=0x16398, PEER_STRIDE=32, PEER_INDEX=20, MAX_PEERS=4.",
+        "roster_layout": "src/game.lua declares ROSTER_PTR=0x347ced8 with four 0xC0-byte persona records.",
+        "call_boundary": "src/windows_api.lua can cast known function addresses through api.native and write only existing private data after VirtualQuery; it has no confirmed-peer/player-creation ABI.",
+        "value_to_project": "Same-build offsets, byte gates, native-call type pattern, diagnostics and logs can inform a probe; four-slot constants cannot be expanded by this source alone."
+      }
+    },
+    {
+      "priority": "A",
+      "name": "CowboyBingus/ReinforcementBeaconsFixed",
+      "url": "https://github.com/CowboyBingus/ReinforcementBeaconsFixed",
+      "commit": "daec6559a28bf287d716ee4dc3afe5d2e1f314b6",
+      "license": "No repository-wide license established in checkout; source is referenced only, not copied.",
+      "key_files": [
+        {"path": "src/spawn_data.lua", "sha256": "28164b122e03bd2bb1fa48fe8e86fafee8c36f99792c51088b1cdc911d128b77", "bytes": 13754},
+        {"path": "src/windows_api.lua", "sha256": "1e3a10af3a34563fd798cf5b9b479d641ba3e9dfbdfe91c531b3f0ef018eec5e", "bytes": 6756}
+      ],
+      "findings": {
+        "four_slot_guard": "src/spawn_data.lua asserts player manager count and available <=4.",
+        "value_to_project": "Demonstrates current-build snapshot/recheck/write/verify/rollback discipline; confirms gameplay data mod is not a session bridge."
+      }
+    },
+    {
+      "priority": "S",
+      "name": "CowboyBingus/BingusSharedLoader",
+      "url": "https://github.com/CowboyBingus/BingusSharedLoader",
+      "commit": "3d7e3a120828178573ef1ee0a5c7eeae4a951865",
+      "tag": "v18",
+      "license": "No repository-wide license established in checkout; source is referenced only, not copied.",
+      "key_files": [
+        {"path": "docs/TECHNICAL.md", "sha256": "15ad67a49bc36fb1f1a9b6b440f6924fd2a573b84792d40b673e5fbfb05bef11", "bytes": 10181}
+      ],
+      "findings": {
+        "loader_boundary": "API 1, addon discovery, logging and failure isolation; the loader itself performs no process-memory writes and exposes no peer/session API.",
+        "value_to_project": "Potential package/diagnostic envelope only; native payload needs a separate, versioned bridge and install path."
+      }
+    }
+  ],
+  "mapping_to_native_plan": {
+    "host_capacity_gate_0x108c18f": {"public_bridge": false, "reason": "No reviewed public source patches this mid-function or supplies continuation/unwind."},
+    "host_index_allocator_0x108c3d8": {"public_bridge": false, "reason": "Public loaders only read/write data and call already-known functions; no allocator contract."},
+    "confirmed_peer_sender_0x108c760": {"public_bridge": false, "reason": "No public source binds event hash 0x4804FCF4 to a production 8-slot sender."},
+    "client_confirmed_peer_insert_0xb90b20": {"public_bridge": false, "reason": "HD2Runtime and BetterLobby expose read-only player/session readers; client append remains four-record in-object storage."},
+    "player_creation_gate_0x1086460": {"public_bridge": false, "reason": "HD2Runtime explicitly blocks generic network spawn; no public ABI for the missing index 4..7 resource path."},
+    "departure_cleanup_host_migration": {"public_bridge": false, "reason": "BetterLobby uses the game's own kick/host migration; no 8-slot cleanup or resource-handle lifetime bridge."}
+  },
+  "decision": {
+    "executable_bridge_found": false,
+    "reusable_public_source": "HD2Runtime read-only player/event observer, BetterLobby same-build fingerprints and native-call type pattern, Bingus loader packaging/logging",
+    "native_plan_remains": "executable=false; live_ready=false; multiplayer_verified=false",
+    "next_strong_evidence": "A fixed-build diagnostics run must observe a real fifth peer/index through host sender, client insert, player creation and cleanup; public source alone cannot close these contracts."
+  }
+}

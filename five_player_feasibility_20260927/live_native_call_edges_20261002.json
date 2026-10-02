@@ -1,0 +1,404 @@
+{
+  "schema": "hd2_live_native_call_edges_v1",
+  "build": 25480438,
+  "pid": 38588,
+  "captured_at_utc": "2026-10-02T09:32:01.632129+00:00",
+  "scope": "authorized read-only live executable-image scan; E8 rel32 calls and confirmed-peer hash only",
+  "pinned_images": {
+    "helldivers2.exe": {
+      "base": 140702590631936,
+      "size": 60719104,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\helldivers2.exe",
+      "sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+      "pe_identity": {
+        "timestamp": 1790149348,
+        "image_size": 60719104
+      }
+    },
+    "game.dll": {
+      "base": 140734444797952,
+      "size": 74727424,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\data\\game\\game.dll",
+      "sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+      "pe_identity": {
+        "timestamp": 1790161983,
+        "image_size": 74727424
+      }
+    }
+  },
+  "targets": {
+    "host_join_root": {
+      "module": "game.dll",
+      "rva": "0x108bc70"
+    },
+    "host_capacity_gate": {
+      "module": "game.dll",
+      "rva": "0x108c18f"
+    },
+    "host_index_allocator": {
+      "module": "game.dll",
+      "rva": "0x108c3d8"
+    },
+    "host_confirmed_peer_sender": {
+      "module": "game.dll",
+      "rva": "0x108c760"
+    },
+    "host_migration_rebuild": {
+      "module": "game.dll",
+      "rva": "0x1089720"
+    },
+    "host_peer_remove": {
+      "module": "game.dll",
+      "rva": "0x108d190"
+    },
+    "platform_member_enumerator": {
+      "module": "game.dll",
+      "rva": "0x1092e60"
+    },
+    "platform_member_consumer": {
+      "module": "game.dll",
+      "rva": "0x1093590"
+    },
+    "platform_member_leaf_reader": {
+      "module": "game.dll",
+      "rva": "0x10936e0"
+    },
+    "platform_member_state_update": {
+      "module": "game.dll",
+      "rva": "0x10937a0"
+    },
+    "client_confirmed_peer_insert": {
+      "module": "game.dll",
+      "rva": "0xb90b20"
+    },
+    "client_confirmed_peer_receive": {
+      "module": "game.dll",
+      "rva": "0xbaba80"
+    },
+    "client_player_creation_gate": {
+      "module": "game.dll",
+      "rva": "0x1086460"
+    }
+  },
+  "calls": [
+    {
+      "target": {
+        "name": "host_migration_rebuild",
+        "module": "game.dll",
+        "rva": "0x1089720"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4b50159d",
+      "caller_rva": "0xb9159d",
+      "instruction": "e87e814f00"
+    },
+    {
+      "target": {
+        "name": "host_join_root",
+        "module": "game.dll",
+        "rva": "0x108bc70"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4b503406",
+      "caller_rva": "0xb93406",
+      "instruction": "e865884f00"
+    },
+    {
+      "target": {
+        "name": "host_confirmed_peer_sender",
+        "module": "game.dll",
+        "rva": "0x108c760"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4b503557",
+      "caller_rva": "0xb93557",
+      "instruction": "e804924f00"
+    },
+    {
+      "target": {
+        "name": "host_peer_remove",
+        "module": "game.dll",
+        "rva": "0x108d190"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4b50426f",
+      "caller_rva": "0xb9426f",
+      "instruction": "e81c8f4f00"
+    },
+    {
+      "target": {
+        "name": "host_peer_remove",
+        "module": "game.dll",
+        "rva": "0x108d190"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4b50a0e5",
+      "caller_rva": "0xb9a0e5",
+      "instruction": "e8a6304f00"
+    },
+    {
+      "target": {
+        "name": "host_join_root",
+        "module": "game.dll",
+        "rva": "0x108bc70"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4b518e13",
+      "caller_rva": "0xba8e13",
+      "instruction": "e8582e4e00"
+    },
+    {
+      "target": {
+        "name": "host_peer_remove",
+        "module": "game.dll",
+        "rva": "0x108d190"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4b51a655",
+      "caller_rva": "0xbaa655",
+      "instruction": "e8362b4e00"
+    },
+    {
+      "target": {
+        "name": "client_confirmed_peer_insert",
+        "module": "game.dll",
+        "rva": "0xb90b20"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4b51baaf",
+      "caller_rva": "0xbabaaf",
+      "instruction": "e86c50feff"
+    },
+    {
+      "target": {
+        "name": "host_confirmed_peer_sender",
+        "module": "game.dll",
+        "rva": "0x108c760"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4b52de78",
+      "caller_rva": "0xbbde78",
+      "instruction": "e8e3e84c00"
+    },
+    {
+      "target": {
+        "name": "host_peer_remove",
+        "module": "game.dll",
+        "rva": "0x108d190"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4b52e5cf",
+      "caller_rva": "0xbbe5cf",
+      "instruction": "e8bceb4c00"
+    },
+    {
+      "target": {
+        "name": "host_migration_rebuild",
+        "module": "game.dll",
+        "rva": "0x1089720"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4b9f3822",
+      "caller_rva": "0x1083822",
+      "instruction": "e8f95e0000"
+    },
+    {
+      "target": {
+        "name": "host_migration_rebuild",
+        "module": "game.dll",
+        "rva": "0x1089720"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4b9f7fdc",
+      "caller_rva": "0x1087fdc",
+      "instruction": "e83f170000"
+    },
+    {
+      "target": {
+        "name": "host_peer_remove",
+        "module": "game.dll",
+        "rva": "0x108d190"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4b9f9f7c",
+      "caller_rva": "0x1089f7c",
+      "instruction": "e80f320000"
+    },
+    {
+      "target": {
+        "name": "host_peer_remove",
+        "module": "game.dll",
+        "rva": "0x108d190"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4b9fa591",
+      "caller_rva": "0x108a591",
+      "instruction": "e8fa2b0000"
+    },
+    {
+      "target": {
+        "name": "host_peer_remove",
+        "module": "game.dll",
+        "rva": "0x108d190"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4b9fa7cc",
+      "caller_rva": "0x108a7cc",
+      "instruction": "e8bf290000"
+    },
+    {
+      "target": {
+        "name": "host_peer_remove",
+        "module": "game.dll",
+        "rva": "0x108d190"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4b9fa8ce",
+      "caller_rva": "0x108a8ce",
+      "instruction": "e8bd280000"
+    },
+    {
+      "target": {
+        "name": "host_peer_remove",
+        "module": "game.dll",
+        "rva": "0x108d190"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4b9fa93b",
+      "caller_rva": "0x108a93b",
+      "instruction": "e850280000"
+    },
+    {
+      "target": {
+        "name": "host_peer_remove",
+        "module": "game.dll",
+        "rva": "0x108d190"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4b9fa9eb",
+      "caller_rva": "0x108a9eb",
+      "instruction": "e8a0270000"
+    },
+    {
+      "target": {
+        "name": "host_confirmed_peer_sender",
+        "module": "game.dll",
+        "rva": "0x108c760"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4b9fae8c",
+      "caller_rva": "0x108ae8c",
+      "instruction": "e8cf180000"
+    },
+    {
+      "target": {
+        "name": "client_confirmed_peer_insert",
+        "module": "game.dll",
+        "rva": "0xb90b20"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4b9fc960",
+      "caller_rva": "0x108c960",
+      "instruction": "e8bb41b0ff"
+    },
+    {
+      "target": {
+        "name": "host_peer_remove",
+        "module": "game.dll",
+        "rva": "0x108d190"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4b9fd0eb",
+      "caller_rva": "0x108d0eb",
+      "instruction": "e8a0000000"
+    },
+    {
+      "target": {
+        "name": "platform_member_state_update",
+        "module": "game.dll",
+        "rva": "0x10937a0"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4b9ff078",
+      "caller_rva": "0x108f078",
+      "instruction": "e823470000"
+    },
+    {
+      "target": {
+        "name": "platform_member_consumer",
+        "module": "game.dll",
+        "rva": "0x1093590"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4ba02f4e",
+      "caller_rva": "0x1092f4e",
+      "instruction": "e83d060000"
+    },
+    {
+      "target": {
+        "name": "platform_member_consumer",
+        "module": "game.dll",
+        "rva": "0x1093590"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4ba044fc",
+      "caller_rva": "0x10944fc",
+      "instruction": "e88ff0ffff"
+    },
+    {
+      "target": {
+        "name": "platform_member_state_update",
+        "module": "game.dll",
+        "rva": "0x10937a0"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4bcbe44a",
+      "caller_rva": "0x134e44a",
+      "instruction": "e85153d4ff"
+    },
+    {
+      "target": {
+        "name": "platform_member_state_update",
+        "module": "game.dll",
+        "rva": "0x10937a0"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4bd6788a",
+      "caller_rva": "0x13f788a",
+      "instruction": "e811bfc9ff"
+    },
+    {
+      "target": {
+        "name": "host_peer_remove",
+        "module": "game.dll",
+        "rva": "0x108d190"
+      },
+      "caller_module": "game.dll",
+      "caller_address": "0x7fff4c2679da",
+      "caller_rva": "0x18f79da",
+      "instruction": "e8b15779ff"
+    }
+  ],
+  "confirmed_peer_event_hash_hits": [
+    {
+      "module": "game.dll",
+      "address": "0x7fff4b554982",
+      "rva": "0xbe4982"
+    }
+  ],
+  "scan_stats": {
+    "executable_pages_read": 22271,
+    "memory_bytes_read": 91222016,
+    "target_call_count": 27
+  },
+  "read_only": true,
+  "calls_made": false,
+  "writes_made": false,
+  "hooks_installed": false,
+  "eight_player_verified": false,
+  "limitations": [
+    "Only direct E8 rel32 calls are reported; indirect calls, tail calls and dispatcher table entries require separate evidence.",
+    "A call edge does not establish callback registration, argument ABI, owner lifetime or successful player creation.",
+    "No function was invoked and no memory was changed; absence of a hit is process-state evidence only."
+  ]
+}

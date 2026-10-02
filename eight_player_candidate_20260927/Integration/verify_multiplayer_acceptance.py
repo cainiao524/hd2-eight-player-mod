@@ -1,0 +1,155 @@
+"""Fail-closed verifier for the real five-to-eight account acceptance logs.
+
+The verifier consumes caller-supplied JSON logs only.  It never starts the
+game, contacts Steam/Party/PlayFab, or treats synthetic fixtures as success.
+Each log must describe one independent account/client and include the same
+mission id, build fingerprint, peer/index/entity/roster fields, and the full
+mission lifecycle.
+"""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+from pathlib import Path
+from typing import Any
+
+
+BUILD = 25480438
+EXE_VERSION = "1.8.46015.0"
+REQUIRED_EVENTS = (
+    "ship_join",
+    "mission_join",
+    "combat",
+    "death",
+    "reinforcement",
+    "departure",
+    "reconnect",
+    "extraction",
+    "settlement",
+)
+GLOBAL_EVENTS = ("host_migration",)
+
+
+class AcceptanceError(ValueError):
+    pass
+
+
+def _load(path: Path) -> dict[str, Any]:
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        raise AcceptanceError(f"cannot_read:{path}") from exc
+    if not isinstance(value, dict):
+        raise AcceptanceError(f"root_not_object:{path}")
+    return value
+
+
+def _digest(paths: list[Path]) -> str:
+    h = hashlib.sha256()
+    for path in paths:
+        h.update(path.read_bytes())
+    return h.hexdigest()
+
+
+def verify(paths: list[Path]) -> dict[str, Any]:
+    if len(paths) != 8:
+        raise AcceptanceError("exactly_eight_logs_required")
+    logs = [_load(path) for path in paths]
+    account_ids = [str(log.get("account_id", "")) for log in logs]
+    client_ids = [str(log.get("client_id", "")) for log in logs]
+    if any(not value for value in account_ids) or len(set(account_ids)) != 8:
+        raise AcceptanceError("account_ids_must_be_eight_unique_nonempty")
+    if any(not value for value in client_ids) or len(set(client_ids)) != 8:
+        raise AcceptanceError("client_ids_must_be_eight_unique_nonempty")
+    for log in logs:
+        if log.get("steam_build") != BUILD or log.get("exe_version") != EXE_VERSION:
+            raise AcceptanceError("build_mismatch")
+        if log.get("multiplayer_verified") is not True:
+            raise AcceptanceError("input_log_not_marked_live_multiplayer")
+    mission_ids = {str(log.get("mission_id", "")) for log in logs}
+    if len(mission_ids) != 1 or "" in mission_ids:
+        raise AcceptanceError("mission_id_mismatch")
+
+    indexes: list[int] = []
+    identities: set[tuple[str, str]] = set()
+    rows: list[dict[str, Any]] = []
+    for log in logs:
+        peer = str(log.get("peer_id", ""))
+        resource = str(log.get("resource_handle", ""))
+        entity = str(log.get("entity_id", ""))
+        roster = log.get("roster_ordinal")
+        index = log.get("network_index")
+        if not peer or not resource or not entity or not isinstance(roster, int):
+            raise AcceptanceError("missing_peer_resource_entity_roster")
+        if not isinstance(index, int) or index < 0 or index > 7:
+            raise AcceptanceError("network_index_out_of_range")
+        if (peer, resource) in identities:
+            raise AcceptanceError("duplicate_peer_resource")
+        identities.add((peer, resource))
+        indexes.append(index)
+        events = log.get("events")
+        if not isinstance(events, list):
+            raise AcceptanceError("events_not_array")
+        event_names = [item.get("name") for item in events if isinstance(item, dict)]
+        missing = [name for name in REQUIRED_EVENTS if name not in event_names]
+        if missing:
+            raise AcceptanceError("lifecycle_missing:" + ",".join(missing))
+        positions = [event_names.index(name) for name in REQUIRED_EVENTS]
+        if positions != sorted(positions):
+            raise AcceptanceError("lifecycle_order_invalid")
+        rows.append({
+            "account_id": log["account_id"],
+            "client_id": log["client_id"],
+            "network_index": index,
+            "peer_id": peer,
+            "resource_handle": resource,
+            "entity_id": entity,
+            "roster_ordinal": roster,
+            "event_count": len(events),
+        })
+    if sorted(indexes) != list(range(8)):
+        raise AcceptanceError("network_indexes_must_be_exactly_0_to_7")
+    global_events = {
+        event.get("name")
+        for log in logs
+        for event in log.get("events", [])
+        if isinstance(event, dict)
+    }
+    missing_global = [name for name in GLOBAL_EVENTS if name not in global_events]
+    if missing_global:
+        raise AcceptanceError("global_lifecycle_missing:" + ",".join(missing_global))
+    return {
+        "schema": "hd2_eight_player_multiplayer_acceptance_v1",
+        "status": "passed_live_multiplayer_acceptance",
+        "steam_build": BUILD,
+        "exe_version": EXE_VERSION,
+        "mission_id": next(iter(mission_ids)),
+        "account_count": 8,
+        "client_count": 8,
+        "network_indexes": sorted(indexes),
+        "rows": sorted(rows, key=lambda row: row["network_index"]),
+        "input_sha256": _digest(paths),
+        "multiplayer_verified": True,
+        "synthetic": False,
+    }
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--log", type=Path, action="append", required=True,
+                        help="one live client JSON log; pass exactly eight times")
+    parser.add_argument("--output", type=Path, required=True)
+    args = parser.parse_args()
+    try:
+        result = verify(args.log)
+    except (AcceptanceError, OSError) as exc:
+        print(json.dumps({"status": "blocked", "error": str(exc)}, ensure_ascii=False))
+        return 2
+    args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(json.dumps({"status": result["status"], "output": str(args.output)}, ensure_ascii=False))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

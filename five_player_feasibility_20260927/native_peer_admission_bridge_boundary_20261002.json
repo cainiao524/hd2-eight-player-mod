@@ -1,0 +1,233 @@
+{
+  "schema": "hd2_native_peer_admission_bridge_boundary_v1",
+  "steam_build": 25480438,
+  "capture_identity_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "scope": "Static exact-build boundary and ABI review from saved capture/disassembly only; no process access, writes, hooks, install, or network test.",
+  "status": {
+    "executable": false,
+    "live_ready": false,
+    "multiplayer_verified": false,
+    "safe_to_apply_patch": false
+  },
+  "chain": [
+    {
+      "stage": "host_join_entry",
+      "rva": "0x108bc70",
+      "role": "join handler root",
+      "evidence": {
+        "source": "host_layout_inventory.json",
+        "source_file_sha256": "6a387a392e5919f01d272d583ddb48a40a67a95e3d0bf86dc4e976c32f2371a1",
+        "fragments": [
+          ["0x108bc70", "0x108bcd2"],
+          ["0x108bcd2", "0x108bdd6"],
+          ["0x108bdd6", "0x108bdf2"],
+          ["0x108bdf2", "0x108be06"],
+          ["0x108be06", "0x108c5be"],
+          ["0x108c5be", "0x108c5d7"]
+        ],
+        "input_shape": "RDX points to a join record whose count is read at +0x18 and whose member identifiers are qwords from +0x08; the bounded callback copies 48 bytes before calling this root.",
+        "owner_register": "RCX is a host/owner candidate in the saved static map; caller ownership is not fully closed and must remain an explicit unresolved ABI item."
+      },
+      "patch_boundary": {
+        "kind": "ordinary_entry_then_mid_function",
+        "entry_trampoline_candidate_bytes": 18,
+        "capacity_continuation": "0x108c1b5",
+        "safe_action": "Require exact stolen-length disassembly and owner lifetime before detour. Do not patch the capacity gate with a normal entry detour."
+      }
+    },
+    {
+      "stage": "host_capacity_gate",
+      "rva": "0x108c18f",
+      "role": "remaining-capacity mid-function gate",
+      "evidence": {
+        "source": "midgate_bridge_plan_20261002.json",
+        "source_file_sha256": "edb857c043188b786fdb5f5052ca3a40298313269c04d09a249752a193c9e968",
+        "prefix_bytes": "418bc6493941580f95c0ffc04d39b1900000008d48010f44c84d39b1c8000000",
+        "prefix_length": 32,
+        "four_constant": {
+          "rva": "0x108c1b5",
+          "bytes": "b904000000",
+          "meaning": "mov ecx,4"
+        },
+        "branch": {
+          "compare_rva": "0x108c1ba",
+          "branch_rva": "0x108c1bf",
+          "taken": "0x108c1db",
+          "fallthrough": "0x108c1c1"
+        }
+      },
+      "required_abi": [
+        "preserve r12/r13/r14/rbp/r9 and live stack locals",
+        "obtain sidecar capacity using the current owner and count in eax",
+        "set ecx=sidecar_capacity-eax and reproduce cmp ecx,r13d",
+        "branch to the original taken or fallthrough continuation",
+        "preserve return, exception, and unwind behavior"
+      ],
+      "patch_decision": "A cmp/immediate edit is unsafe; this is a custom register-preserving continuation stub."
+    },
+    {
+      "stage": "host_index_allocator",
+      "rva": "0x108c3d8",
+      "role": "four-flag network-index allocator",
+      "evidence": {
+        "source": "protocol_index_and_wire_notes.md",
+        "source_file_sha256": {
+          "protocol_index_and_wire_notes.md": "5da44a8c538b487b4994ba00a373ad6ff8a128393f5980cedc9356fddee68a16"
+        },
+        "exact_allocator_capture": {
+          "source": "protocol_host_confirm_loop_prologue.json",
+          "source_file_sha256": "63bd21b9fb7a20516e42ea72d6d8a860a6c0a13409ed706f369e439825385706",
+          "range": ["0x108c760", "0x108c7d2"],
+          "sha256": "6f90def14792ebec5263f746d67d8155b76b85f97eddcdd1e142816296c92674"
+        },
+        "slot_sentinel": "0x108c3d1 writes dword [rdx+0x14]=0xffffffff",
+        "scan": "0x108c3d8..0x108c3e5 scans host+0x100 byte flags and compares loop index with 4",
+        "reserve": "0x108c3ee writes host+0x100+index flag=1",
+        "publish": "0x108c3fb writes the selected 32-bit index to [rdx+0x14]"
+      },
+      "inferred_live_values": {
+        "rdx": "member slot receiving +0x14 index",
+        "r9": "host base candidate used by host+0x100 flag addressing",
+        "ecx": "allocator loop index",
+        "rax": "current flag address",
+        "r8d": "selected index value consumed by the write"
+      },
+      "required_abi": [
+        "allocate 0..7 in sidecar while preserving native index publication",
+        "write the selected index before the original continuation observes the slot",
+        "preserve holes and reject duplicate generation",
+        "provide exact continuation and failure return for the full loop"
+      ],
+      "patch_decision": "Mid-function loop contract and failure continuation are not fully recovered; a constant 4-to-8 edit is unsafe."
+    },
+    {
+      "stage": "confirmed_peer_send",
+      "rva": "0x108c760",
+      "role": "host confirmed-peer notification",
+      "evidence": {
+        "source": "protocol_index_and_wire_notes.md; rpc_binding_findings.md",
+        "source_file_sha256": {
+          "protocol_index_and_wire_notes.md": "5da44a8c538b487b4994ba00a373ad6ff8a128393f5980cedc9356fddee68a16",
+          "rpc_binding_findings.md": "5a666ee142b882fbafab0b6e1c7a7bd5419e3fefcffb8495f2161814014a78f6"
+        },
+        "exact_sender_capture": {
+          "source": "protocol_confirmed_peer_sender.json",
+          "source_file_sha256": "1bf9a21b46bf125d2f6565ee944047b6c4af49d61e0ab88c72faf44dc4210dda",
+          "range": ["0xbe4910", "0xbe49d2"],
+          "sha256": "26b2e23f853464c9f2b229aa3cc0d2a753e84e49698d8d7471233c5ec95d1f76"
+        },
+        "slot_layout": "host+0x20, four records, stride 0x38",
+        "field_reads": ["slot+0x10 dword", "slot+0x14 player-index dword", "member identifier", "state byte"],
+        "wrapper_call": "0x108c923 calls 0xbe4910",
+        "event_hash": "0x4804fcf4",
+        "descriptor_shape": "five fields: two 8-byte identifiers, two 4-byte integer fields including player index, one 4-byte status/boolean"
+      },
+      "required_abi": [
+        "route all eight sidecar host records into the existing wrapper shape",
+        "preserve equal-local-peer direct 0xb90b20 branch and remote 0xbe4910 branch semantics",
+        "retain status and sender ordering across the asynchronous callback"
+      ],
+      "missing_edge": "The saved capture does not close the runtime hash-to-receiver registration for 0x4804fcf4."
+    },
+    {
+      "stage": "client_confirmed_peer_receive",
+      "rva": "0xbaba80",
+      "role": "five-field receiver wrapper into client append",
+      "evidence": {
+        "source": "protocol_index_and_wire_notes.md; rpc_binding_findings.md",
+        "source_file_sha256": {
+          "protocol_index_and_wire_notes.md": "5da44a8c538b487b4994ba00a373ad6ff8a128393f5980cedc9356fddee68a16",
+          "rpc_binding_findings.md": "5a666ee142b882fbafab0b6e1c7a7bd5419e3fefcffb8495f2161814014a78f6"
+        },
+        "exact_receiver_capture": {
+          "source": "protocol_client_dispatch_alt.json",
+          "source_file_sha256": "4ce4550b4c84e60b26e7638587cadd5154f22acf12d48b7539ac34a0b91ca289",
+          "range": ["0xbaba80", "0xbabab9"],
+          "sha256": "ba32ef6ab9e0e9f3ff109f9c5beeb68a2f931faaf9f6f74b92b65fbb3a768ab8"
+        },
+        "input_offsets": ["+0x08", "+0x18", "+0x28", "+0x38", "+0x48"],
+        "callee": "0xb90b20",
+        "callee_arg_shape": "the fourth decoded dword is passed as the player-index argument"
+      },
+      "required_abi": [
+        "resolve the runtime dispatcher binding before routing real callbacks",
+        "copy fields into sidecar storage before any native inline write",
+        "rollback sidecar reservation if decode or append fails"
+      ],
+      "missing_edge": "The callback table pointer run narrows a candidate but does not prove hash-to-callback registration."
+    },
+    {
+      "stage": "client_confirmed_peer_insert",
+      "rva": "0xb90b20",
+      "role": "client confirmed-peer append",
+      "evidence": {
+        "source": "client_expansion_inventory_v2.json; protocol_index_and_wire_notes.md",
+        "source_file_sha256": {
+          "client_expansion_inventory_v2.json": "97ff0849fc8752e2203b7ff5b7caea0cd8008f80cda606e5d14632144a608964",
+          "protocol_index_and_wire_notes.md": "5da44a8c538b487b4994ba00a373ad6ff8a128393f5980cedc9356fddee68a16"
+        },
+        "exact_insert_capture": {
+          "source": "protocol_b90b20_body.json",
+          "source_file_sha256": "77b38c1cdedce0e7d808182b2fa08316da950e0e8a66b9e61a62e41708a12cb0",
+          "range": ["0xb90b59", "0xb90e92"],
+          "sha256": "a950aabfced3233ed5561b7eed67505bdab5130e05ddcfe06974aa4323572beb"
+        },
+        "count": "client+0xc8",
+        "record_base": "client+0xd0",
+        "record_stride": "0x20",
+        "index_field": "record+0x14",
+        "current_capacity": 4,
+        "fifth_record_address": "client+0x150, which is an adjacent live structure"
+      },
+      "required_abi": [
+        "replace count-driven inline append with eight-slot sidecar routing",
+        "keep index DWORD full-width and preserve missing/sentinel behavior",
+        "adapt remove/reset and all owner-relative index readers together"
+      ],
+      "patch_decision": "A fifth append without relocation overwrites client+0x150; increasing the count alone is unsafe."
+    },
+    {
+      "stage": "local_player_creation",
+      "rva": "0x1086460",
+      "role": "local player resource creation gate",
+      "evidence": {
+        "source": "local_player_creation_gate_findings.zh-TW.md",
+        "entry_root": "0x1085d70",
+        "comparison": "0x1086460 compares dword [rdx+r8+0x163ac] with 4 using unsigned jae at 0x1086469",
+        "fallback": "0x108624d writes a type-3 ring record and skips accepted creation",
+        "accepted": "0x108646f reaches handle/resource calls at 0x10868bf and 0x10868d7"
+      },
+      "required_abi": [
+        "permit only validated network indexes 0..7, including sentinel rejection",
+        "route index 4..7 to an equivalent resource creation path",
+        "preserve handle, FDC140, 608B60, roster binding, and cleanup contracts"
+      ],
+      "patch_decision": "Changing jae threshold alone is insufficient because accepted code immediately touches other four-slot state."
+    },
+    {
+      "stage": "departure_and_migration",
+      "rvas": ["0x108d190", "0x1089720", "0x1087540", "0x10845b0"],
+      "role": "host removal/migration and client remove/reset",
+      "evidence": {
+        "source": "host_expansion_inventory.json; client_expansion_inventory_v2.json",
+        "host": "peer, flags, four large records and four pending records are all inline or fixed-bound",
+        "client": "remove swaps 0x20-byte records by count; reset clears 0x80 bytes at +0xd0"
+      },
+      "required_abi": [
+        "preserve stable index holes and generation checks",
+        "release sidecar resources before native callback observes removal",
+        "adapt host migration and all callback reentry paths"
+      ],
+      "patch_decision": "No complete production cleanup/lifetime hook set is established."
+    }
+  ],
+  "production_blockers": [
+    "No verified runtime PlayFab/Party acceptance result for a fifth account.",
+    "No closed hash-to-receiver dispatcher binding for confirmed-peer event 0x4804fcf4.",
+    "No complete register/stack/unwind/continuation ABI for the host capacity and allocator mid-function sites.",
+    "No proven owner lifetime, reentrancy, rollback, migration, and cleanup contract for host/client sidecars.",
+    "No production player-creation callback/resource lifetime contract for network indexes 4..7.",
+    "No fifth-account same-mission test; all current bridge and sidecar tests are synthetic/offline."
+  ],
+  "allowed_next_step": "Implement and review sidecar orchestration against these boundaries, then obtain explicit authorization for a staged fixed-build bridge test. Keep install/live readiness blocked until every production blocker has evidence."
+}

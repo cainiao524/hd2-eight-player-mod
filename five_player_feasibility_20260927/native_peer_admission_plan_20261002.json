@@ -1,0 +1,118 @@
+{
+  "steam_build": 25480438,
+  "capture_pid": 40552,
+  "scope": "authorized read-only live process memory capture; no writes or hooks",
+  "sites": [
+    {
+      "module": "game",
+      "rva": 17349744,
+      "name": "host_join_root",
+      "four_slot_effect": "host peer, pending, flags and large record roots",
+      "action": "trampoline_to_host_sidecar"
+    },
+    {
+      "module": "game",
+      "rva": 17351055,
+      "name": "host_capacity_gate",
+      "four_slot_effect": "remaining-capacity calculation",
+      "action": "replace_with_sidecar_count"
+    },
+    {
+      "module": "game",
+      "rva": 17351640,
+      "name": "host_index_allocator",
+      "four_slot_effect": "host+0x100 byte flags and index 0..3 scan",
+      "action": "sidecar_index_allocator"
+    },
+    {
+      "module": "game",
+      "rva": 17352544,
+      "name": "confirmed_peer_sender",
+      "four_slot_effect": "four inline host slots",
+      "action": "sidecar_confirmed_peer_emit"
+    },
+    {
+      "module": "game",
+      "rva": 17340192,
+      "name": "host_migration_rebuild",
+      "four_slot_effect": "migration peer/flag scans",
+      "action": "sidecar_migration_rebuild"
+    },
+    {
+      "module": "game",
+      "rva": 17355152,
+      "name": "host_peer_remove",
+      "four_slot_effect": "peer, flag and four large-record cleanup",
+      "action": "sidecar_remove_and_release"
+    },
+    {
+      "module": "game",
+      "rva": 12127008,
+      "name": "client_confirmed_peer_insert",
+      "four_slot_effect": "client+0xD0 record array overlaps +0x150 on entry 5",
+      "action": "sidecar_client_confirmed_insert"
+    },
+    {
+      "module": "game",
+      "rva": 17331520,
+      "name": "client_confirmed_peer_remove",
+      "four_slot_effect": "count/stride removal over inline records",
+      "action": "sidecar_client_confirmed_remove"
+    },
+    {
+      "module": "game",
+      "rva": 17319344,
+      "name": "client_confirmed_peer_reset",
+      "four_slot_effect": "128-byte inline reset",
+      "action": "sidecar_client_confirmed_reset"
+    },
+    {
+      "module": "game",
+      "rva": 17327200,
+      "name": "player_creation_gate",
+      "four_slot_effect": "network index < 4 branch skips player resource call",
+      "action": "sidecar_player_creation_dispatch"
+    }
+  ],
+  "sidecar": {
+    "host_peer_slots": 8,
+    "client_confirmed_slots": 8,
+    "stable_network_indexes": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "hole_preserving": true
+  },
+  "executable": false,
+  "requires": [
+    "trampoline_unwind_registration",
+    "host_sidecar_lifetime",
+    "client_sidecar_lifetime",
+    "confirmed_peer_dispatch",
+    "player_creation_gate",
+    "capacity_midfunction_bridge",
+    "allocator_sidecar_continuation",
+    "instruction_relocation"
+  ],
+  "midfunction_bridge_plan": {
+    "path": "five_player_feasibility_20260927/midgate_bridge_plan_20261002.json",
+    "status": "design_only",
+    "executable": false
+  },
+  "party_network_capacity_evidence": {
+    "source": "five_player_feasibility_20260927/engine_f8_request_evidence.json",
+    "live_target_capture": "five_player_feasibility_20260927/interface_probe_live_20261002.json",
+    "candidate_method": "PartyManager::CreateNewNetwork",
+    "observed_configuration": [8, 8, 1, 1, 1, 15],
+    "confidence": "high_inference",
+    "service_acceptance_verified": false,
+    "meaning": "The saved fixed-build call shape matches PartyNetworkConfiguration and requests eight users/devices; it does not prove server acceptance or playable eight-player roster creation."
+  },
+  "multiplayer_verified": false
+}

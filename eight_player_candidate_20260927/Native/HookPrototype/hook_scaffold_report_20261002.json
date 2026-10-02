@@ -1,0 +1,123 @@
+{
+  "schema": "ep_hook_scaffold_report_v1",
+  "steam_build": 25480438,
+  "scope": "synthetic target only; no game module patch or process injection",
+  "compiler": "C:\\Program Files (x86)\\Microsoft Visual Studio\\18\\BuildTools\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\cl.exe",
+  "toolchain": "MSVC 14.51.36231 / Visual Studio BuildTools 18.8.2 / x64",
+  "build_command": "build_x64.bat",
+  "test_command": "native_hook_test.exe",
+  "test_result": {
+    "passed": true,
+    "exit_code": 0,
+    "marker": "native_hook_scaffold_synthetic_passed"
+  },
+  "hook_model": {
+    "jump": "FF 25 00 00 00 00 + uint64 destination",
+    "minimum_stolen_bytes": 14,
+    "production_candidate": {
+      "module": "game",
+      "rva": "0x108bc70",
+      "stolen_length": 18,
+      "prologue_sha256": "8deecd0b4075eee3e436db6d5787ba68feb5ade0b9401ce1eee9814995309624",
+      "role": "host_join_root"
+    },
+    "capacity_gate": {
+      "module": "game",
+      "rva": "0x108c18f",
+      "status": "mid_function; standard ABI detour rejected"
+    },
+    "unwind": {
+      "dynamic_registration": "RtlAddFunctionTable",
+      "unwind_info_version": 1,
+      "flags": 0,
+      "count_of_codes": 0,
+      "metadata_bytes": "01000000",
+      "runtime_function_alignment": "DWORD",
+      "unwind_data_offset": "align4(trampoline_length)",
+      "code_end": "trampoline_length (padding excluded)"
+    }
+  },
+  "reversible_steps": [
+    "save original bytes",
+    "VirtualProtect + patch",
+    "FlushInstructionCache",
+    "restore original bytes after caller quiesces threads",
+    "RtlDeleteFunctionTable + VirtualFree trampoline"
+  ],
+  "production_status": {
+    "executable": false,
+    "install_game_rva_export": false,
+    "multiplayer_verified": false,
+    "blockers": [
+      "mid-function capacity/allocator stubs still require owner lifetime and callback ABI",
+      "confirmed-peer dispatch and player creation callback contracts",
+      "instruction relocation for every selected stolen span",
+      "thread quiescence and unload protocol",
+      "fifth-player live admission and lifecycle test"
+    ]
+  },
+  "files": {
+    "build_x64.bat": {
+      "size": 527,
+      "sha256": "8696a68e555dadb587e1161265a65880ccf677d5421fa6b32b72e9caeeebc85a"
+    },
+    "native_hook_scaffold.cpp": {
+      "size": 15219,
+      "sha256": "143a9deb97273678690395cd4b96856e9ce68819f02b1b29ed8d83719cca4bd3"
+    },
+    "native_hook_scaffold.dll": {
+      "size": 107008,
+      "sha256": "97578da7687ae36c648cba6f80ef611ed70be4ba95be0f230b0831d75d733b5d"
+    },
+    "native_hook_scaffold.h": {
+      "size": 3048,
+      "sha256": "bf19ab4099dfc84214abd80f58e14dbeeb8f5ead6ff9243b84592dc011853443"
+    },
+    "native_hook_scaffold.lib": {
+      "size": 3744,
+      "sha256": "a52a33f41bf2723735fadf180d960d7bcec06262c96bdcfe52afaaa645f26ebb"
+    },
+    "native_hook_test.cpp": {
+      "size": 5946,
+      "sha256": "f2d648ce92dee6d268c5ed18c23efa059c2699fcc10acf0677317c58916f9b23"
+    },
+    "native_hook_test.exe": {
+      "size": 112640,
+      "sha256": "6a8b611d0b37da7dbfd76d2a1d16837c41a0784f33d16a1ff1560738f6aadcd7"
+    },
+    "README.zh-TW.md": {
+      "size": 2656,
+      "sha256": "9d7aa58e65a9762c67ad53fbe986d45aa7b34780e0eea4d2b60c37c5c82a20bd"
+    },
+    "HOOK_PRODUCTION_FEASIBILITY.zh-TW.md": {
+      "size": 2817,
+      "sha256": "c792e066c060960f5879fe936beca4ab38e21ceb16074d5fbc575bc405ffa99a"
+    },
+    "test_hook_scaffold.py": {
+      "size": 1903,
+      "sha256": "3a722b0b0c117de7281db39763bffdb58d9165d575a40d1b44650fa582b1f854"
+    }
+  },
+  "relocation": {
+    "api": "ep_relocate_block",
+    "supports": [
+      "RIP-relative memory operands",
+      "rel32 CALL",
+      "rel32 JMP"
+    ],
+    "rejects": [
+      "short branches",
+      "conditional rel32 branches",
+      "address-size override RIP form",
+      "out-of-range rel32",
+      "unknown relative encodings"
+    ],
+    "test_cases": [
+      "rip_relative_load_preserves_absolute_target",
+      "rel32_call_preserves_absolute_target",
+      "short_jump_fail_closed",
+      "conditional_jump_fail_closed"
+    ],
+    "production_status": "bounded helper only; full decoder and per-site instruction map still required"
+  }
+}

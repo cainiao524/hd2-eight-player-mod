@@ -1,0 +1,230 @@
+{
+  "schema": "hd2_public_code_research_v1",
+  "research_date": "2026-10-02",
+  "scope": "Read-only public repository research for an 8-account same-mission Helldivers 2 mod. No game-file modification, injection, installation, or multiplayer claim is made by this manifest.",
+  "target_build": {
+    "steam_build": 25480438,
+    "exe_version": "1.8.46015.0",
+    "exe_sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+    "game_dll_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+    "compatibility_rule": "A repository is current-build compatible only when its own documentation or guard names this build; data/type repositories without native fingerprints remain reference-only."
+  },
+  "snapshot_root": "public_research_20261002",
+  "repositories": [
+    {
+      "priority": "S",
+      "name": "Darctor/Helldivers2_RawData",
+      "url": "https://github.com/Darctor/Helldivers2_RawData",
+      "local_path": "public_research_20261002/Darctor_Helldivers2_RawData",
+      "commit": "52056ecb5637bf8d71481a724b019a6bd3b0e9ea",
+      "branch": "main",
+      "commit_date": "2026-09-22T18:00:00+08:00",
+      "license": {"declared": false, "summary": "No repository license file or reuse grant found in checkout."},
+      "compatibility": {"status": "reference_only", "evidence": ["Data metadata game_version=1.007.100", "Data metadata patch_date=2026-09-22"], "target_build_match": "not established"},
+      "reusable_entries": [
+        {"path": "Data/settings/EntityComponentMap.json", "purpose": "entity-to-component membership, including ShipTeleporterComponentData"},
+        {"path": "Data/entities/HiveMindComponentData.json", "purpose": "AI mission difficulty structures and player_count_multipliers"},
+        {"path": "Data/entity_deltas/entity_deltas_decoded.json", "purpose": "decoded player-count multiplier examples"},
+        {"path": "Data/entities/AvatarComponentData.json", "purpose": "avatar component schema reference"},
+        {"path": "README.md", "purpose": "typelib, metadata and data interpretation rules"}
+      ],
+      "network_relevance": "AI/component schema only; no peer/session/player-admission implementation.",
+      "risks": ["Possible leaked or game-derived data", "fields are not mechanism proof", "no declared repository license"]
+    },
+    {
+      "priority": "S",
+      "name": "shalzuth/HelldiversData",
+      "url": "https://github.com/shalzuth/HelldiversData",
+      "local_path": "public_research_20261002/shalzuth_HelldiversData",
+      "commit": "0d18368a707a048d153aec7918f6c12127652283",
+      "branch": "master",
+      "commit_date": "2025-09-20T05:06:06-07:00",
+      "license": {"declared": true, "spdx": "AGPL-3.0", "summary": "GNU Affero General Public License v3 text in LICENSE."},
+      "compatibility": {"status": "historical_reference", "evidence": ["Older data dump; no target-build native fingerprint"], "target_build_match": "not established"},
+      "reusable_entries": [
+        {"path": "data/components/EntityNetworkData.json", "purpose": "game_object_id and settings_hashmap_index schema"},
+        {"path": "data/components/EntityNetworkDataArray.json", "purpose": "entities array schema"},
+        {"path": "data/components/NetworkOverrideComponent.json", "purpose": "network override component name/schema"},
+        {"path": "data/components/ShipTeleporterComponent.json", "purpose": "charge/spawn/cooldown fields"},
+        {"path": "data/components/ShipTeleporterComponentData.json", "purpose": "hashmap and data arrays"},
+        {"path": "data/components/AnimationComponent.json", "purpose": "hotjoin_sync_animation_time field"},
+        {"path": "data/entities/HiveMindComponentData.json", "purpose": "historical 1-4 player-count arrays"}
+      ],
+      "network_relevance": "Schema evidence for dynamic entity arrays and hot-join-related data; no native allocator, peer admission, or player creation code.",
+      "risks": ["AGPL obligations if source code is copied", "old offsets/fields", "game-derived content and author disclaimer"]
+    },
+    {
+      "priority": "S",
+      "name": "CChusky/hd2-tools",
+      "url": "https://github.com/CChusky/hd2-tools",
+      "local_path": "public_research_20261002/CChusky_hd2_tools",
+      "commit": "5d509fad01ce4d16465d991363d30cb4a4f47dfe",
+      "tag": "v1.0.3",
+      "branch": "main",
+      "commit_date": "2026-08-31T06:21:16+08:00",
+      "license": {"declared": true, "summary": "PolyForm Noncommercial License 1.0.0 in LICENSE."},
+      "compatibility": {"status": "unversioned_runtime_hook", "evidence": ["README/source has RC_BUILD_VER v10.77", "No Steam build or EXE/game.dll SHA guard found"], "target_build_match": "not established"},
+      "reusable_entries": [
+        {"path": "hook/hd2_raycast_hook.c", "symbols": ["calc_hook_size", "build_trampoline", "install_hook", "exec_lua", "shm_init"], "purpose": "x64 Lua pcall hook, isolated Lua thread, entity/raycast capture"},
+        {"path": "overlay/shm_proto.h", "symbols": ["RC_SHM_MAGIC", "RC_SHM_VERSION", "struct rc_shm_data"], "purpose": "bounded hook-to-overlay diagnostics channel"},
+        {"path": "hook/watcher.c", "symbols": ["inject_dll"], "purpose": "auto-injection watcher; reference only"},
+        {"path": "hook/dll_injector.c", "symbols": ["inject_dll"], "purpose": "manual DLL injector; reference only"}
+      ],
+      "network_relevance": "Entity observation and overlay only; no session, peer, roster, or player-creation path.",
+      "risks": ["Uses OpenProcess/WriteProcessMemory/VirtualAllocEx/CreateRemoteThread", "direct-syscall anti-cheat bypass code", "PolyForm noncommercial restrictions", "unversioned offsets", "not suitable for direct production bridge reuse"]
+    },
+    {
+      "priority": "S",
+      "name": "CowboyBingus/BingusSharedLoader",
+      "url": "https://github.com/CowboyBingus/BingusSharedLoader",
+      "local_path": "public_research_20261002/BingusSharedLoader",
+      "commit": "3d7e3a120828178573ef1ee0a5c7eeae4a951865",
+      "branch": "main",
+      "commit_date": "2026-09-26T10:54:04-07:00",
+      "release": "v18 / API 1",
+      "license": {"declared": false, "summary": "Documentation says no repository-wide license selected; LuaJIT dependency is MIT."},
+      "compatibility": {"status": "current_build_guarded_loader", "evidence": ["README supports Steam build 25480438 / EXE 1.8.46015.0", "module hashes are checked by build scripts"], "target_build_match": true},
+      "reusable_entries": [
+        {"path": "src/shared_loader.lua", "symbols": ["CowboyBingusModLoader.api", "open_log", "Application.can_get", "pcall(require)"], "purpose": "API 1 addon startup, logging, failure isolation and duplicate guards"},
+        {"path": "src/discover.lua", "symbols": ["discovery.declaration", "discovery.scan", "discovery.enumerate", "discovery.archive_prefix"], "purpose": "declared addon discovery and resource hash checks"},
+        {"path": "src/jit_budget.lua", "symbols": ["jit_budget.start"], "purpose": "shared LuaJIT cache budget management"},
+        {"path": "scripts/build_addon.py", "purpose": "plaintext addon packaging and manager manifest"},
+        {"path": "docs/AUTHORING.md", "purpose": "resource naming, hash and dependency contract"}
+      ],
+      "network_relevance": "Loader/diagnostics/package layer only; no peer admission or roster expansion.",
+      "risks": ["No repository-wide license", "Wwise resource ownership and manager priority conflicts", "gameplay addon behavior remains unverified for multiplayer"]
+    },
+    {
+      "priority": "A",
+      "name": "xypwn/filediver",
+      "url": "https://github.com/xypwn/filediver",
+      "local_path": "public_research_20261002/filediver",
+      "commit": "7b52b323b1cd75326f63c5854c3a38b60a547e32",
+      "tag": "v0.7.57",
+      "branch": "master",
+      "commit_date": "2026-10-02T00:14:19+02:00",
+      "license": {"declared": true, "spdx": "BSD-3-Clause", "path": "LICENSE"},
+      "compatibility": {"status": "current_tooling_candidate", "evidence": ["actively maintained extractor; no game.dll session patch"], "target_build_match": "schema must be regenerated per game update"},
+      "reusable_entries": [
+        {"path": "app/app.go", "symbols": ["OpenGameDir", "App.MatchingFiles", "App.ExtractFile"], "purpose": "open data directory, filter resources, extract files"},
+        {"path": "datalibrary/datalib.go", "symbols": ["ParseTypeLib"], "purpose": "parse LTLD typelib layout"},
+        {"path": "datalibrary/entity_component_settings.go", "symbols": ["ParseEntityComponentSettings"], "purpose": "parse entity/component settings"},
+        {"path": "datalibrary/entity_deltas.go", "symbols": ["ParseComponentIndices", "ParseEntityDeltas"], "purpose": "parse entity delta records"},
+        {"path": "stingray/entity/entity.go", "symbols": ["LoadEntity"], "purpose": "parse entity resources"},
+        {"path": "hashes/dl_type_names.txt", "purpose": "public type-name catalog"}
+      ],
+      "network_relevance": "Offline archive, typelib and entity evidence; no runtime session implementation.",
+      "risks": ["Build-specific resources can become stale", "BSD notices required", "does not grant rights to game assets"]
+    },
+    {
+      "priority": "A",
+      "name": "Boxofbiscuits97/HD2SDK-CommunityEdition",
+      "url": "https://github.com/Boxofbiscuits97/HD2SDK-CommunityEdition",
+      "local_path": "public_research_20261002/HD2SDK-CommunityEdition",
+      "commit": "795e550fe0641660cf373cd4a49d1baa98bbd5c0",
+      "branch": "main",
+      "commit_date": "2026-10-01T11:50:52-04:00",
+      "license": {"declared": false, "summary": "No clear repository-wide license; bundled LZ4 copies carry their own license files."},
+      "compatibility": {"status": "asset_tooling_only", "evidence": ["Blender addon README targets Blender 4.0-5.2", "no target game build/native session guard"], "target_build_match": "not applicable"},
+      "reusable_entries": [
+        {"path": "utils/slim.py", "symbols": ["slim_init", "decompress_dsar", "get_package_toc", "load_package", "reconstruct_package_from_bundles"], "purpose": "DSAR/package archive handling"},
+        {"path": "utils/hashing.py", "symbols": ["murmur64_hash", "murmur32_hash"], "purpose": "Stingray hash helpers"},
+        {"path": "stingray/unit.py", "purpose": "unit/mesh import and serialization"},
+        {"path": "stingray/animation.py", "purpose": "animation parsing and writing"},
+        {"path": "stingray/state_machine.py", "purpose": "state machine parsing and writing"}
+      ],
+      "network_relevance": "Asset authoring only; no peer/session/player lifecycle.",
+      "risks": ["Root license unclear", "Blender/runtime dependencies", "cosmetic archive workflows do not extend network capacity"]
+    },
+    {
+      "priority": "A",
+      "name": "CowboyBingus/ReinforcementBeaconsFixed",
+      "url": "https://github.com/CowboyBingus/ReinforcementBeaconsFixed",
+      "local_path": "public_research_20261002/ReinforcementBeaconsFixed",
+      "commit": "daec6559a28bf287d716ee4dc3afe5d2e1f314b6",
+      "branch": "main",
+      "commit_date": "2026-09-25T15:10:14-07:00",
+      "release": "v4.5",
+      "license": {"declared": false, "summary": "Documentation says no repository-wide license selected; LuaJIT dependency is MIT."},
+      "compatibility": {"status": "current_build_guarded_gameplay_module", "evidence": ["README and scripts support Steam build 25480438 / EXE 1.8.46015.0", "exact EXE/game.dll SHA checks"], "target_build_match": true},
+      "reusable_entries": [
+        {"path": "src/spawn_data.lua", "symbols": ["patch.snapshot", "patch.apply"], "purpose": "guarded read/snapshot, one private-data write, verify and rollback"},
+        {"path": "src/archive_loader.lua", "purpose": "loader API and build fingerprint guard"},
+        {"path": "scripts/build.py", "purpose": "build fingerprint and package report"},
+        {"path": "docs/TECHNICAL.md", "purpose": "documented offsets and write boundary"}
+      ],
+      "network_relevance": "Gameplay data access example; source explicitly asserts players/count <=4 and has no session admission.",
+      "risks": ["Four-player layout assert cannot be reused for eight players", "No repository-wide license", "writes existing game data in live mod path"]
+    },
+    {
+      "priority": "A",
+      "name": "CowboyBingus/BetterStratagemBounce",
+      "url": "https://github.com/CowboyBingus/BetterStratagemBounce",
+      "local_path": "public_research_20261002/BetterStratagemBounce",
+      "commit": "707dd2a5d5d38cc85a0d91692d8c69c6e7e358a8",
+      "branch": "main",
+      "commit_date": "2026-09-27T02:49:32-07:00",
+      "release": "v15.3.1",
+      "license": {"declared": false, "summary": "Documentation says no repository-wide license selected; Filediver BSD-3-Clause and LuaJIT MIT are dependencies."},
+      "compatibility": {"status": "current_build_guarded_gameplay_module", "evidence": ["README and scripts support Steam build 25480438 / EXE 1.8.46015.0", "exact module SHA checks"], "target_build_match": true},
+      "reusable_entries": [
+        {"path": "src/windows_api.lua", "symbols": ["api.module", "api.module_hash", "api.read", "api.write", "api.pointer", "api.writable_data", "api.distance"], "purpose": "fail-closed module/data access adapter"},
+        {"path": "src/navigation_patch.lua", "symbols": ["patch.plan", "patch.apply"], "purpose": "layout snapshot, recheck, write, verify, selective recovery"},
+        {"path": "src/archive_loader.lua", "purpose": "callback chain and module hash gate"},
+        {"path": "scripts/module.py", "purpose": "compiled Lua gameplay module packaging"}
+      ],
+      "network_relevance": "Safe data-patch lifecycle only; no peer/session/roster implementation.",
+      "risks": ["No repository-wide license", "settings-specific offsets and hashes", "must not be generalized into executable native patch"]
+    },
+    {
+      "priority": "B",
+      "name": "Boxofbiscuits97/HD2-Modding-Wiki",
+      "url": "https://github.com/Boxofbiscuits97/HD2-Modding-Wiki",
+      "local_path": "public_research_20261002/HD2-Modding-Wiki",
+      "commit": "a94ad1061dba68c0ffde4b9532308ff178114b9f",
+      "branch": "main",
+      "commit_date": "2026-06-28T17:39:47-04:00",
+      "license": {"declared": false, "summary": "No clear repository-wide license in checkout."},
+      "compatibility": {"status": "documentation_only", "evidence": ["VitePress docs and SDK workflow guides", "no native runtime code"], "target_build_match": "not applicable"},
+      "reusable_entries": [
+        {"path": "docs/dev/sdk functions/functions.md", "purpose": "SDK function and settings guide"},
+        {"path": "docs/dev/sdk functions/settings.md", "purpose": "settings/patch workflow"},
+        {"path": "docs/dev/misc/manifest.md", "purpose": "mod manifest and patch packaging"},
+        {"path": "docs/dev/misc/separating-patches.md", "purpose": "separate patch packaging guidance"}
+      ],
+      "network_relevance": "Documentation and asset workflow only; no session/player implementation.",
+      "risks": ["No clear license", "guides may lag current game build", "manifest guidance is not a network-capacity API"]
+    },
+    {
+      "priority": "B",
+      "name": "Xaymar/Hellextractor",
+      "url": "https://github.com/Xaymar/Hellextractor",
+      "local_path": "public_research_20261002/Hellextractor",
+      "commit": "ad4ecf67c78f4253a80b58e7a9fdd6d408f64eb9",
+      "branch": "root",
+      "commit_date": "2024-04-13T16:17:18+02:00",
+      "license": {"declared": true, "spdx": "BSD-3-Clause", "path": "LICENSE.adoc"},
+      "compatibility": {"status": "historical_reference", "evidence": ["2024 checkout", "no current game build fingerprints"], "target_build_match": false},
+      "reusable_entries": [
+        {"path": "source/mode_hash.cpp", "symbols": ["mode_hash"], "purpose": "Murmur/Stingray hash command"},
+        {"path": "source/mode_extract.cpp", "symbols": ["mode_extract", "enumerate_files"], "purpose": "archive extraction command"},
+        {"path": "source/hash_db.cpp", "symbols": ["hash_db::strings", "hash_db::hashes"], "purpose": "hash database lookup"},
+        {"path": "source/stingray_data.hpp", "purpose": "container/data sections and resource parsing"},
+        {"path": "source/stingray_data.cpp", "purpose": "container/data sections and resource parsing"},
+        {"path": "source/converter.hpp", "purpose": "resource converter registry"},
+        {"path": "source/converter.cpp", "purpose": "resource converter registry"}
+      ],
+      "network_relevance": "Historical archive/hash tooling only; no session, peer or player lifecycle.",
+      "risks": ["Old format assumptions", "BSD notices required", "must not use historical offsets as current evidence"]
+    }
+  ],
+  "adoption_decision": {
+    "research_inputs": ["Darctor/Helldivers2_RawData", "shalzuth/HelldiversData", "xypwn/filediver", "Xaymar/Hellextractor"],
+    "packaging_and_diagnostics_reference": ["CowboyBingus/BingusSharedLoader", "CowboyBingus/BetterStratagemBounce", "CowboyBingus/ReinforcementBeaconsFixed"],
+    "not_a_native_bridge": ["CChusky/hd2-tools", "Boxofbiscuits97/HD2SDK-CommunityEdition", "Boxofbiscuits97/HD2-Modding-Wiki"],
+    "remaining_acceptance": "A production bridge must still connect host capacity/allocator, host/client sidecar lifetime, confirmed-peer dispatch, player creation and cleanup before five-to-eight-account same-mission testing."
+  },
+  "multiplayer_verified": false,
+  "game_files_modified": false,
+  "game_process_accessed_by_this_research": false
+}

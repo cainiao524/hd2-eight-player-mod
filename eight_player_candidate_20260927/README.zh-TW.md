@@ -1,8 +1,22 @@
 # 八人原型候選：名冊原生程式與資源檢查
 
+## 接納契約（離線，未併入 v0.14 收據）
+
+`Source/eight_player_capacity.lua` 是與 v0.14 候選並行的八槽 admission state model。它只驗證 build profile、network index、stable ordinal、pending／active resource bind、generation token、remove hole、反向 map 和 detached snapshot；沒有 FFI、程序存取、原生 hook、PlayFab／Party 呼叫或安裝行為。Python 離線鏡像與契約說明見[八人容量與接納契約](../five_player_feasibility_20260927/EIGHT_PLAYER_CAPACITY_CONTRACT.zh-TW.md)。
+
+## `0.14.0-offline`：6054F0 狀態更新接入共同八格儲存
+
+[狀態更新候選](NATIVE_ROSTER_ARRIVAL.zh-TW.md)已完成離線交付收尾：完整 1111-byte 原 body 產生 1917-byte 候選，19 個 pointer／primary／aux／property 位點改接共同 B；入口檢 binding、counts、map、ordinal、target 與 caller-state。原四列 palette 及 network index≥4 的白色 fallback、三處 current-D 通知、frame／cookie／calls 保留。`arrival` 只是檔名，此函式沒有 append 或 count 遞增的證據。
+
+[5 組／42 次指令驗證](verification/native_roster_arrival_tests.json)包含原版完整返回4、候選完整返回21、入口拒絕17；巢狀 FD9AF0 的25次另列。19處靜態核對、17處有效域動態檢查，6056C8／6056D6只有靜態覆蓋。[Source審查](verification/native_roster_arrival_review.zh-TW.md)及[接續 oracle 審查](verification/native_roster_arrival_test_review.zh-TW.md)已保存；接續重跑42筆紀錄與凍結報告相同。
+
+共同 bundle 為 **16個 roster 函式＋原 player_count 計畫、62個已知區域**，內嵌 v0.13 產物相同。累計 **149組／4,314次套件執行或觀察**，包含原版、拒絕、前綴觀察與預期反例，不能稱為候選成功次數；重跑與巢狀helper不重複計數。15個既有來源與14份舊報告未改，舊套件未重跑。
+
+Sidecar配置／發布／清理、其他reader、caller／callback同步、真實資源、reject handler、hook／Windows unwind仍缺；目前不可安裝，五至八帳號同場任務未驗證。後續P3的[1277920有限調查](../five_player_feasibility_20260927/roster_mask_reader_findings.zh-TW.md)已固定兩個roster讀取與mask前綴：primary+24h和property+Ch都需改接B；24次原前綴觀察未見mask分支造成後續狀態差異，不列入交付套件數。下一步是明確入口guard／普通missing政策並實作完整reader候選。
+
 **目前是可離線執行的候選原始碼元件，尚未接入遊戲，也不是可安裝的八人Mod。** 完整目標與優先工作見[工作清單](../five_player_feasibility_20260927/IMPLEMENTATION_WORKLIST.zh-TW.md)。
 
-## `0.13.0-offline`：登錄表更新與關聯 ID 查找共用八格名冊
+## 歷史：`0.13.0-offline`：登錄表更新與關聯 ID 查找共用八格名冊
 
 新增 [roster_registry_update.py](Native/roster_registry_update.py)與[契約／建置說明](NATIVE_ROSTER_REGISTRY_UPDATE.zh-TW.md)。完整 `B54E00` 的六處 pointer／aux／property 存取，連同 tag73 必要 helper `606520` 的兩處讀取，一起改接共同 B。helper 返回 entity ID，保留只查 D 筆及 associated ID `7FFF` 跳過的原語義；不以 network-index getter 代換。
 
@@ -18,7 +32,7 @@
 
 [7 組／43 次驗證](verification/native_roster_departure_tests.json)分為 7 原完整 departure、16 候選完整 departure、17 候選入口拒絕，以及 3 次候選移除／getter 串接。三個 primary 清理與兩個關聯查找實際執行原指令，其他未展開資源／通知用明示契約。新共同產物含十三個 roster 函式及原 v0.11 player-count patch 計畫，跨元件區域已核對；兩份原嵌入產物保持一致。
 
-這修正的是候選有效狀態下的讀取與計數。從入口至回呼和實際移除之間，仍需引擎層保證名冊狀態與儲存生命週期；入口檢查不提供同步、重入處理或資源失敗回復。沒有遊戲整合或真人驗收。該輪選定的 B54E00／必要 606520 已由上述 v0.13 改接；下一個有限離線切點是既有 consumer 清單的完整 `6054F0..605947`：核清 network-index property 讀取、其他 roster 陣列、palette／玩家數通知與必要 helper 契約，再接共同 B。足以形成候選或定位具體外部缺口便停止；不展開無關 callee，也不重查已收束的 B54E00／606520。
+這修正的是候選有效狀態下的讀取與計數。從入口至回呼和實際移除之間，仍需引擎層保證名冊狀態與儲存生命週期；入口檢查不提供同步、重入處理或資源失敗回復。沒有遊戲整合或真人驗收。該輪選定的 B54E00／必要 606520 已由上述 v0.13 改接；6054F0狀態更新已納入v0.14。[1277920有限查核](../five_player_feasibility_20260927/roster_mask_reader_findings.zh-TW.md)已固定完整body與兩個roster讀取，mask迴圈未提供已證拒絕結果。下一動作：在原input+10h計時store前定義guard，同時保留普通missing返回，將primary+24h與property+Ch接共同B，完成原指令對照與caller／helper契約；不擴搜無關callee。
 
 ## `0.11.0-offline`：玩家數保留至八與設定範圍延伸
 
@@ -179,4 +193,4 @@ result = PoolPreflight.plan(snapshot, template_counts, operations)
 
 本輪沒有安裝任何遊戲檔案，因此沒有需要從遊戲移除的內容。最終Mod的安裝／移除／恢復說明仍待封裝階段完成。
 
-原生機器碼測試使用本機資料夾依賴，重現命令見各候選契約。既有136組加本輪[registry更新](NATIVE_ROSTER_REGISTRY_UPDATE.zh-TW.md)8組，共 **144 組離線測試**；原生套件合計 **4,272 次 x64 執行／觀察**，本輪新增87次的分類見上方v0.13。總數包含原版基準、候選拒絕、兩次預期原移除反例、一次預期原empty-key假命中，以及前版26次僅執行context前綴的觀察；不能稱為4,272次候選成功或完整函式執行。巢狀helper不重複計數，獨立departure／compactor研究探測亦未計入。Pair四組只作bytes組合／區間核對。這些離線結果不替代遊戲與多人驗收。
+原生機器碼測試使用本機資料夾依賴，重現命令見各候選契約。既有144組加本輪[狀態更新](NATIVE_ROSTER_ARRIVAL.zh-TW.md)5組，共 **149 組離線測試**；原生套件合計 **4,314 次 x64 執行／觀察**，本輪新增42次的分類見上方v0.14。總數包含原版基準、候選拒絕、兩次預期原移除反例、一次預期原empty-key假命中，以及前版26次僅執行context前綴的觀察；不能稱為4,314次候選成功或完整函式執行。巢狀helper不重複計數，獨立departure／compactor研究探測亦未計入。Pair四組只作bytes組合／區間核對。這些離線結果不替代遊戲與多人驗收。

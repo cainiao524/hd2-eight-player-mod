@@ -1,0 +1,236 @@
+{
+  "schema": "hd2_live_dispatcher_data_capture_v1",
+  "build": 25480438,
+  "pid": 38588,
+  "captured_at_utc": "2026-10-02T09:37:04.469329+00:00",
+  "scope": "authorized read-only fixed-path API/data scan; no calls, writes, hooks, install, or pointer-following outside listed paths",
+  "pinned_images": {
+    "helldivers2.exe": {
+      "base": 140702590631936,
+      "size": 60719104,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\helldivers2.exe",
+      "sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+      "pe_identity": {
+        "timestamp": 1790149348,
+        "image_size": 60719104
+      }
+    },
+    "game.dll": {
+      "base": 140734444797952,
+      "size": 74727424,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\data\\game\\game.dll",
+      "sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+      "pe_identity": {
+        "timestamp": 1790161983,
+        "image_size": 74727424
+      }
+    }
+  },
+  "fixed_api_path": {
+    "global_rva": "0x3326308",
+    "api_root": "0x7ff7e26b8d80",
+    "fields": [
+      {
+        "label": "game_api_global",
+        "address": "0x7fff4dc96308",
+        "bytes": "808d6be2f77f0000",
+        "value": "0x7ff7e26b8d80"
+      },
+      {
+        "label": "api_root+0x00",
+        "address": "0x7ff7e26b8d80",
+        "bytes": "809a6be2f77f0000",
+        "value": "0x7ff7e26b9a80"
+      },
+      {
+        "label": "api_root+0x30",
+        "address": "0x7ff7e26b8db0",
+        "bytes": "30ba6be2f77f0000",
+        "value": "0x7ff7e26bba30"
+      },
+      {
+        "label": "api_root+0x38",
+        "address": "0x7ff7e26b8db8",
+        "bytes": "30be6be2f77f0000",
+        "value": "0x7ff7e26bbe30"
+      },
+      {
+        "label": "api_root+0xF8",
+        "address": "0x7ff7e26b8e78",
+        "bytes": "70de6be2f77f0000",
+        "value": "0x7ff7e26bde70"
+      },
+      {
+        "label": "api_root+0x100",
+        "address": "0x7ff7e26b8e80",
+        "bytes": "98b66be2f77f0000",
+        "value": "0x7ff7e26bb698"
+      },
+      {
+        "label": "api_root+0xC0",
+        "address": "0x7ff7e26b8e40",
+        "bytes": "509a6be2f77f0000",
+        "value": "0x7ff7e26b9a50"
+      }
+    ],
+    "table_fields": [
+      {
+        "label": "api+0x30.table+0x18",
+        "address": "0x7ff7e26bba48",
+        "bytes": "b09423e0f77f0000",
+        "value": "0x7ff7e02394b0"
+      },
+      {
+        "label": "api+0x30.table+0x38",
+        "address": "0x7ff7e26bba68",
+        "bytes": "d09623e0f77f0000",
+        "value": "0x7ff7e02396d0"
+      },
+      {
+        "label": "api+0x30.table+0x40",
+        "address": "0x7ff7e26bba70",
+        "bytes": "b09723e0f77f0000",
+        "value": "0x7ff7e02397b0"
+      },
+      {
+        "label": "api+0xF8.table+0xA0",
+        "address": "0x7ff7e26bdf10",
+        "bytes": "30677be0f77f0000",
+        "value": "0x7ff7e07b6730"
+      },
+      {
+        "label": "api+0xF8.table+0xA8",
+        "address": "0x7ff7e26bdf18",
+        "bytes": "e0677be0f77f0000",
+        "value": "0x7ff7e07b67e0"
+      }
+    ]
+  },
+  "target_functions": {
+    "confirmed_peer_receiver": {
+      "module": "game.dll",
+      "rva": "0xbaba80",
+      "live_address": "0x7fff4b51ba80"
+    },
+    "confirmed_peer_insert": {
+      "module": "game.dll",
+      "rva": "0xb90b20",
+      "live_address": "0x7fff4b500b20"
+    },
+    "platform_member_consumer": {
+      "module": "game.dll",
+      "rva": "0x1093590",
+      "live_address": "0x7fff4ba03590"
+    },
+    "platform_member_leaf_reader": {
+      "module": "game.dll",
+      "rva": "0x10936e0",
+      "live_address": "0x7fff4ba036e0"
+    },
+    "platform_member_state_update": {
+      "module": "game.dll",
+      "rva": "0x10937a0",
+      "live_address": "0x7fff4ba037a0"
+    },
+    "player_creation_gate": {
+      "module": "game.dll",
+      "rva": "0x1086460",
+      "live_address": "0x7fff4b9f6460"
+    },
+    "host_join_root": {
+      "module": "game.dll",
+      "rva": "0x108bc70",
+      "live_address": "0x7fff4b9fbc70"
+    },
+    "host_confirmed_peer_sender": {
+      "module": "game.dll",
+      "rva": "0x108c760",
+      "live_address": "0x7fff4b9fc760"
+    }
+  },
+  "patterns": {
+    "confirmed_peer_receiver": {
+      "length": 8,
+      "sha256": "941c7320476644112ecf946df9b5c687044726716b3f73d26d49386f85c6f9f6"
+    },
+    "confirmed_peer_insert": {
+      "length": 8,
+      "sha256": "8444ed985b92bfae2010cfa63da7b5fecd0384ed6363659b1ff3d39e5a46b86f"
+    },
+    "platform_member_consumer": {
+      "length": 8,
+      "sha256": "24b7e21e5b6c4b79ea180bdf42787082fd785eecbab814c86df77108a8893507"
+    },
+    "platform_member_leaf_reader": {
+      "length": 8,
+      "sha256": "ce9fa6aa5fdf481f2882a810aad822d28ff4797ddb2270cf846c313bb4b17453"
+    },
+    "platform_member_state_update": {
+      "length": 8,
+      "sha256": "d2b7f5e1e1dfa8ac794ab776f91559f81ccfa7f246bb686c60c2aa16c4e36437"
+    },
+    "player_creation_gate": {
+      "length": 8,
+      "sha256": "86e1629af3e857feeab2f3739d71925d4d8d81ab515bd121e69dfb11c868d96b"
+    },
+    "host_join_root": {
+      "length": 8,
+      "sha256": "f080bcc6abc70d8cf79be03b73c1ad72fd15cb3019feab1619abd58994dd1414"
+    },
+    "host_confirmed_peer_sender": {
+      "length": 8,
+      "sha256": "94c139ce1f2b4e9093ccfdfc1a72dc8884edbcbd78562185cb2f93c6162aca85"
+    },
+    "confirmed_peer_event_hash": {
+      "length": 4,
+      "sha256": "22e65032d2b4ec7e879b6119cfeb1bb9f03bbfbe1337d08aa83d0dfc792c2552"
+    }
+  },
+  "hits": [
+    {
+      "pattern": "confirmed_peer_event_hash",
+      "module": "game.dll",
+      "address": "0x7fff4b554982",
+      "rva": "0xbe4982",
+      "page": "0x7fff4b554000",
+      "page_sha256": "eebae99706b1c2163cd225226426fe967d0e5de2fb65b31781ae41fdf5cbf4fa"
+    },
+    {
+      "pattern": "confirmed_peer_receiver",
+      "module": "game.dll",
+      "address": "0x7fff4cabc820",
+      "rva": "0x214c820",
+      "page": "0x7fff4cabc000",
+      "page_sha256": "2e6048be28582847fc6a482f59b60f04df7008bccaab3ea0f4e84d931f76dac7"
+    }
+  ],
+  "stable_hit_pages": [
+    {
+      "module": "game.dll",
+      "page": "0x7fff4b554000",
+      "sha256_reread": "eebae99706b1c2163cd225226426fe967d0e5de2fb65b31781ae41fdf5cbf4fa"
+    },
+    {
+      "module": "game.dll",
+      "page": "0x7fff4cabc000",
+      "sha256_reread": "2e6048be28582847fc6a482f59b60f04df7008bccaab3ea0f4e84d931f76dac7"
+    }
+  ],
+  "scan_stats": {
+    "pages_read": 33068,
+    "hit_pages": 2,
+    "memory_bytes_read": 135471424
+  },
+  "read_only": true,
+  "calls_made": false,
+  "writes_made": false,
+  "hooks_installed": false,
+  "resolver_closed": false,
+  "eight_player_verified": false,
+  "limitations": [
+    "The fixed API fields are observed but not invoked; their ABI and service semantics are not proved.",
+    "A pointer to 0xBABA80 in a static callback run does not prove hash-to-receiver registration.",
+    "Only pinned executable image ranges were scanned; heap/private writable registries may be outside this capture.",
+    "No player creation, Party/PlayFab result, network frame, or multiplayer mission was tested."
+  ]
+}

@@ -1,0 +1,928 @@
+{
+  "api_global_rva": "0x3326308",
+  "config_global_rva": "0x3326340",
+  "tables": [
+    {
+      "root_offset": "0x30",
+      "table": "0x7ff7e26bba30",
+      "functions": [
+        {
+          "slot": "0x18",
+          "address": "0x7ff7e02394b0",
+          "module": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\helldivers2.exe",
+          "module_rva": "0x3494b0",
+          "size": 256,
+          "bytes": "48895c240848896c24104889742418574883ec50488b058d6d6c018be98bf241b90800000041b8e0050000488d542440488bb890000000488d4808488b4008ff5030488b18488b055c6d6c01488b8888000000488b01ff50104c8b05486d6c014c8bcf89742430488bcb896c242848894424204d8b8098000000e8b1381600488b0d226d6c01488bd0488bd8e8cffbffff488b6c2468488bc3488b5c2460488b7424704883c4505fc3cccccccccccccc48895c240848896c2410565741564883ec50488b05df6c6c01488bf1448bf241b90800000041b8e0050000488d542440488ba890000000488d4808488b4008ff5030488b38488b05ac6c6c01488b8888",
+          "sha256": "d52d364307cb57a442cc6295a48d840458caf81de9da0ac9e40cb72083d9b144",
+          "interpretation": "Function pointer and prefix only; ABI/semantics unverified"
+        }
+      ]
+    },
+    {
+      "root_offset": "0xf8",
+      "table": "0x7ff7e26bde70",
+      "functions": [
+        {
+          "slot": "0xa0",
+          "address": "0x7ff7e07b6730",
+          "module": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\helldivers2.exe",
+          "module_rva": "0x8c6730",
+          "size": 256,
+          "bytes": "4c8bdc49895b0849897310574883ec7033c08bf1498943a80f57c0498943b00fb6fa89442444498d53a88944245c418b402889442458498b4030660f7f442430498943e8498b4038498943f0418b401089442440498b4018498943d0498b4020498943d8488b052d7ca901488b88d0050000488b89a0000000488b4968e8ee6700008bd6488bd8488b481889702040887824e8a9ab01004c8d5c2470488bc3498b5b10498b7318498be35fc3cccccccc40534883ec50488bd94885c90f84ec00000048c7c0ffffffff0f1f800000000048ffc0803c010075f74885c00f84cc000000488b05af7ba90133d2488974246048897c2468488b88d0050000488b89a0",
+          "sha256": "14e69e3aaea1ffc9bc04ed88cbf0ac1be6887485f65b5330006c0c06e6520720",
+          "interpretation": "Function pointer and prefix only; ABI/semantics unverified"
+        }
+      ]
+    }
+  ],
+  "atomic_snapshot": false,
+  "eight_player_verified": false,
+  "api_root": "0x7ff7e26b8d80",
+  "config_root": "0x15c13120080",
+  "config_plus_20_u32": 0,
+  "observed_fields_unchanged_on_reread": true,
+  "changed_fields": [],
+  "field_samples": [
+    {
+      "label": "api_root",
+      "address": "0x7fff4dc96308",
+      "bytes": "808d6be2f77f0000"
+    },
+    {
+      "label": "config_root",
+      "address": "0x7fff4dc96340",
+      "bytes": "800012135c010000"
+    },
+    {
+      "label": "config_plus_20",
+      "address": "0x15c131200a0",
+      "bytes": "00000000"
+    },
+    {
+      "label": "table_30",
+      "address": "0x7ff7e26b8db0",
+      "bytes": "30ba6be2f77f0000"
+    },
+    {
+      "label": "slot_30_18",
+      "address": "0x7ff7e26bba48",
+      "bytes": "b09423e0f77f0000"
+    },
+    {
+      "label": "table_f8",
+      "address": "0x7ff7e26b8e78",
+      "bytes": "70de6be2f77f0000"
+    },
+    {
+      "label": "slot_f8_a0",
+      "address": "0x7ff7e26bdf10",
+      "bytes": "30677be0f77f0000"
+    }
+  ],
+  "limitations": [
+    "Unchanged rereads cannot exclude intervening changes or address reuse.",
+    "No function invocation, service response, RPC trace, player data, or gameplay validation.",
+    "Function prefixes may be stubs; no automatic pointer or branch following."
+  ],
+  "schema_version": 1,
+  "build": 25480438,
+  "pid": 38588,
+  "utc": "2026-10-02T09:28:57.948978+00:00",
+  "pinned_images": {
+    "helldivers2.exe": {
+      "base": 140702590631936,
+      "size": 60719104,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\helldivers2.exe",
+      "sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+      "pe_identity": {
+        "timestamp": 1790149348,
+        "image_size": 60719104
+      }
+    },
+    "game.dll": {
+      "base": 140734444797952,
+      "size": 74727424,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\data\\game\\game.dll",
+      "sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+      "pe_identity": {
+        "timestamp": 1790161983,
+        "image_size": 74727424
+      }
+    }
+  },
+  "modules": [
+    {
+      "base": 1472574324736,
+      "size": 8753152,
+      "path": "C:\\Windows\\SYSTEM32\\Windows.Storage.dll"
+    },
+    {
+      "base": 140702590631936,
+      "size": 60719104,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\helldivers2.exe"
+    },
+    {
+      "base": 140703240552448,
+      "size": 163840,
+      "path": "C:\\Windows\\system32\\nlansp_c.dll"
+    },
+    {
+      "base": 140703271157760,
+      "size": 73728,
+      "path": "C:\\Windows\\System32\\winrnr.dll"
+    },
+    {
+      "base": 140703271485440,
+      "size": 98304,
+      "path": "C:\\Windows\\system32\\napinsp.dll"
+    },
+    {
+      "base": 140703272468480,
+      "size": 757760,
+      "path": "C:\\Windows\\System32\\Windows.Devices.Enumeration.dll"
+    },
+    {
+      "base": 140703287738368,
+      "size": 7499776,
+      "path": "C:\\Windows\\System32\\DriverStore\\FileRepository\\nvlti.inf_amd64_3c6a443eb045b9c7\\nvppex.dll"
+    },
+    {
+      "base": 140703306874880,
+      "size": 307200,
+      "path": "C:\\Windows\\SYSTEM32\\DINPUT8.dll"
+    },
+    {
+      "base": 140703352619008,
+      "size": 446464,
+      "path": "C:\\Windows\\System32\\CapabilityAccessManagerClient.dll"
+    },
+    {
+      "base": 140703368675328,
+      "size": 1495040,
+      "path": "C:\\Windows\\system32\\nvspcap64.dll"
+    },
+    {
+      "base": 140703379095552,
+      "size": 98304,
+      "path": "C:\\Windows\\SYSTEM32\\ondemandconnroutehelper.dll"
+    },
+    {
+      "base": 140703398428672,
+      "size": 221184,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\dstorage.dll"
+    },
+    {
+      "base": 140703418548224,
+      "size": 73728,
+      "path": "C:\\Windows\\SYSTEM32\\xinput1_4.dll"
+    },
+    {
+      "base": 140703478382592,
+      "size": 4894720,
+      "path": "C:\\Program Files\\NVIDIA Corporation\\NvTelemetry\\NvTelemetryAPI64.dll"
+    },
+    {
+      "base": 140703547916288,
+      "size": 1376256,
+      "path": "C:\\Windows\\System32\\Windows.UI.dll"
+    },
+    {
+      "base": 140703558205440,
+      "size": 491520,
+      "path": "C:\\Windows\\system32\\Oleacc.dll"
+    },
+    {
+      "base": 140703569739776,
+      "size": 438272,
+      "path": "C:\\Program Files\\NVIDIA Corporation\\NvTelemetry\\NvTelemetryBridge64.dll"
+    },
+    {
+      "base": 140703648710656,
+      "size": 1814528,
+      "path": "C:\\Windows\\SYSTEM32\\AUDIOSES.DLL"
+    },
+    {
+      "base": 140703755010048,
+      "size": 798720,
+      "path": "C:\\Windows\\SYSTEM32\\webio.dll"
+    },
+    {
+      "base": 140703819890688,
+      "size": 2899968,
+      "path": "C:\\Windows\\SYSTEM32\\iertutil.dll"
+    },
+    {
+      "base": 140703831490560,
+      "size": 1961984,
+      "path": "C:\\Windows\\SYSTEM32\\urlmon.dll"
+    },
+    {
+      "base": 140703853314048,
+      "size": 106496,
+      "path": "C:\\Windows\\SYSTEM32\\NETAPI32.dll"
+    },
+    {
+      "base": 140703855083520,
+      "size": 1081344,
+      "path": "C:\\Windows\\System32\\SystemSettings.DataModel.dll"
+    },
+    {
+      "base": 140703869894656,
+      "size": 2658304,
+      "path": "C:\\Windows\\SYSTEM32\\WININET.dll"
+    },
+    {
+      "base": 140703873040384,
+      "size": 643072,
+      "path": "C:\\Windows\\SYSTEM32\\MSVCP140.dll"
+    },
+    {
+      "base": 140703909937152,
+      "size": 3555328,
+      "path": "C:\\Windows\\System32\\DriverStore\\FileRepository\\nvlti.inf_amd64_3c6a443eb045b9c7\\Display.NvContainer\\NvMessageBus.dll"
+    },
+    {
+      "base": 140703925927936,
+      "size": 180224,
+      "path": "C:\\Windows\\SYSTEM32\\VCRUNTIME140.dll"
+    },
+    {
+      "base": 140703936479232,
+      "size": 5730304,
+      "path": "C:\\Windows\\system32\\DriverStore\\FileRepository\\nvlti.inf_amd64_3c6a443eb045b9c7\\nvapi64_impl.dll"
+    },
+    {
+      "base": 140703945064448,
+      "size": 561152,
+      "path": "C:\\Windows\\SYSTEM32\\nvapi64.dll"
+    },
+    {
+      "base": 140703953977344,
+      "size": 1941504,
+      "path": "C:\\Windows\\SYSTEM32\\inputhost.dll"
+    },
+    {
+      "base": 140703990218752,
+      "size": 978944,
+      "path": "C:\\Windows\\System32\\Windows.Media.Devices.dll"
+    },
+    {
+      "base": 140703992184832,
+      "size": 1347584,
+      "path": "C:\\Windows\\SYSTEM32\\textinputframework.dll"
+    },
+    {
+      "base": 140704020889600,
+      "size": 49152,
+      "path": "C:\\Windows\\SYSTEM32\\VCRUNTIME140_1.dll"
+    },
+    {
+      "base": 140704028033024,
+      "size": 552960,
+      "path": "C:\\Windows\\system32\\ncryptprov.dll"
+    },
+    {
+      "base": 140704028819456,
+      "size": 270336,
+      "path": "C:\\Windows\\system32\\ncryptsslp.dll"
+    },
+    {
+      "base": 140704052609024,
+      "size": 89804800,
+      "path": "C:\\Windows\\System32\\DriverStore\\FileRepository\\nvlti.inf_amd64_3c6a443eb045b9c7\\nvwgf2umx.dll"
+    },
+    {
+      "base": 140704149274624,
+      "size": 167936,
+      "path": "C:\\Windows\\SYSTEM32\\srvcli.dll"
+    },
+    {
+      "base": 140704150847488,
+      "size": 217088,
+      "path": "C:\\Windows\\SYSTEM32\\WINMM.dll"
+    },
+    {
+      "base": 140704151437312,
+      "size": 1290240,
+      "path": "C:\\Windows\\System32\\DriverStore\\FileRepository\\nvlti.inf_amd64_3c6a443eb045b9c7\\NvMemMapStoragex.dll"
+    },
+    {
+      "base": 140704173522944,
+      "size": 2330624,
+      "path": "C:\\Windows\\SYSTEM32\\twinapi.appcore.dll"
+    },
+    {
+      "base": 140704201637888,
+      "size": 626688,
+      "path": "C:\\Windows\\System32\\MMDevApi.dll"
+    },
+    {
+      "base": 140704203538432,
+      "size": 98623488,
+      "path": "C:\\Windows\\System32\\DriverStore\\FileRepository\\nvlti.inf_amd64_3c6a443eb045b9c7\\nvgpucomp64.dll"
+    },
+    {
+      "base": 140704304201728,
+      "size": 548864,
+      "path": "C:\\Windows\\System32\\fwpuclnt.dll"
+    },
+    {
+      "base": 140704306823168,
+      "size": 425984,
+      "path": "C:\\Windows\\SYSTEM32\\GameInput.dll"
+    },
+    {
+      "base": 140704307281920,
+      "size": 794624,
+      "path": "C:\\Windows\\SYSTEM32\\mscms.dll"
+    },
+    {
+      "base": 140704309903360,
+      "size": 90112,
+      "path": "C:\\Windows\\system32\\wshbth.dll"
+    },
+    {
+      "base": 140704315080704,
+      "size": 143360,
+      "path": "C:\\Windows\\SYSTEM32\\dhcpcsvc.DLL"
+    },
+    {
+      "base": 140704315277312,
+      "size": 122880,
+      "path": "C:\\Windows\\SYSTEM32\\dhcpcsvc6.DLL"
+    },
+    {
+      "base": 140704319275008,
+      "size": 45056,
+      "path": "C:\\Windows\\System32\\rasadhlp.dll"
+    },
+    {
+      "base": 140704319340544,
+      "size": 1175552,
+      "path": "C:\\Windows\\SYSTEM32\\WINHTTP.dll"
+    },
+    {
+      "base": 140704320585728,
+      "size": 1527808,
+      "path": "C:\\Windows\\SYSTEM32\\drvstore.dll"
+    },
+    {
+      "base": 140704322420736,
+      "size": 241664,
+      "path": "C:\\Windows\\SYSTEM32\\cryptnet.dll"
+    },
+    {
+      "base": 140704325763072,
+      "size": 45056,
+      "path": "C:\\Windows\\SYSTEM32\\VERSION.dll"
+    },
+    {
+      "base": 140704325828608,
+      "size": 827392,
+      "path": "C:\\Windows\\System32\\DriverStore\\FileRepository\\nvlti.inf_amd64_3c6a443eb045b9c7\\nvldumdx.dll"
+    },
+    {
+      "base": 140704350863360,
+      "size": 61440,
+      "path": "C:\\Windows\\SYSTEM32\\WINNSI.DLL"
+    },
+    {
+      "base": 140704360759296,
+      "size": 102400,
+      "path": "C:\\Windows\\SYSTEM32\\Microsoft.Internal.WarpPal.dll"
+    },
+    {
+      "base": 140704368033792,
+      "size": 2240512,
+      "path": "C:\\Windows\\SYSTEM32\\dcomp.dll"
+    },
+    {
+      "base": 140704374784000,
+      "size": 1200128,
+      "path": "C:\\Windows\\SYSTEM32\\CoreMessaging.dll"
+    },
+    {
+      "base": 140704378650624,
+      "size": 53248,
+      "path": "C:\\Windows\\SYSTEM32\\Secur32.dll"
+    },
+    {
+      "base": 140704379830272,
+      "size": 393216,
+      "path": "C:\\Windows\\SYSTEM32\\directxdatabasehelper.dll"
+    },
+    {
+      "base": 140704380420096,
+      "size": 688128,
+      "path": "C:\\Windows\\system32\\uxtheme.dll"
+    },
+    {
+      "base": 140704381468672,
+      "size": 176128,
+      "path": "C:\\Windows\\SYSTEM32\\dwmapi.dll"
+    },
+    {
+      "base": 140704382779392,
+      "size": 278528,
+      "path": "C:\\Windows\\SYSTEM32\\dxcore.dll"
+    },
+    {
+      "base": 140704390709248,
+      "size": 2519040,
+      "path": "C:\\Windows\\SYSTEM32\\DWrite.dll"
+    },
+    {
+      "base": 140704398442496,
+      "size": 81920,
+      "path": "C:\\Windows\\SYSTEM32\\resourcepolicyclient.dll"
+    },
+    {
+      "base": 140704399884288,
+      "size": 45056,
+      "path": "C:\\Windows\\SYSTEM32\\AVRT.dll"
+    },
+    {
+      "base": 140704399949824,
+      "size": 2490368,
+      "path": "C:\\Windows\\SYSTEM32\\d3d11.dll"
+    },
+    {
+      "base": 140704402833408,
+      "size": 1286144,
+      "path": "C:\\Windows\\SYSTEM32\\dxgi.dll"
+    },
+    {
+      "base": 140704415154176,
+      "size": 61440,
+      "path": "C:\\Windows\\SYSTEM32\\HID.DLL"
+    },
+    {
+      "base": 140704418234368,
+      "size": 53248,
+      "path": "C:\\Windows\\SYSTEM32\\netutils.dll"
+    },
+    {
+      "base": 140704418299904,
+      "size": 212992,
+      "path": "C:\\Windows\\SYSTEM32\\IPHLPAPI.DLL"
+    },
+    {
+      "base": 140704419282944,
+      "size": 1204224,
+      "path": "C:\\Windows\\SYSTEM32\\DNSAPI.dll"
+    },
+    {
+      "base": 140704422690816,
+      "size": 798720,
+      "path": "C:\\Windows\\system32\\schannel.DLL"
+    },
+    {
+      "base": 140704423936000,
+      "size": 241664,
+      "path": "C:\\Windows\\system32\\rsaenh.dll"
+    },
+    {
+      "base": 140704424591360,
+      "size": 110592,
+      "path": "C:\\Windows\\SYSTEM32\\kernel.appcore.dll"
+    },
+    {
+      "base": 140704425771008,
+      "size": 221184,
+      "path": "C:\\Windows\\SYSTEM32\\ntmarta.dll"
+    },
+    {
+      "base": 140704427343872,
+      "size": 299008,
+      "path": "C:\\Windows\\SYSTEM32\\SspiCli.dll"
+    },
+    {
+      "base": 140704430227456,
+      "size": 438272,
+      "path": "C:\\Windows\\system32\\mswsock.dll"
+    },
+    {
+      "base": 140704430686208,
+      "size": 159744,
+      "path": "C:\\Windows\\SYSTEM32\\gpapi.dll"
+    },
+    {
+      "base": 140704430882816,
+      "size": 176128,
+      "path": "C:\\Windows\\SYSTEM32\\USERENV.dll"
+    },
+    {
+      "base": 140704432521216,
+      "size": 49152,
+      "path": "C:\\Windows\\SYSTEM32\\CRYPTBASE.DLL"
+    },
+    {
+      "base": 140704433176576,
+      "size": 409600,
+      "path": "C:\\Windows\\SYSTEM32\\wldp.dll"
+    },
+    {
+      "base": 140704434225152,
+      "size": 110592,
+      "path": "C:\\Windows\\SYSTEM32\\CRYPTSP.dll"
+    },
+    {
+      "base": 140704434618368,
+      "size": 77824,
+      "path": "C:\\Windows\\SYSTEM32\\MSASN1.dll"
+    },
+    {
+      "base": 140704435273728,
+      "size": 258048,
+      "path": "C:\\Windows\\SYSTEM32\\NTASN1.dll"
+    },
+    {
+      "base": 140704435601408,
+      "size": 196608,
+      "path": "C:\\Windows\\SYSTEM32\\ncrypt.dll"
+    },
+    {
+      "base": 140704439468032,
+      "size": 184320,
+      "path": "C:\\Windows\\SYSTEM32\\devobj.dll"
+    },
+    {
+      "base": 140704439664640,
+      "size": 356352,
+      "path": "C:\\Windows\\SYSTEM32\\cfgmgr32.dll"
+    },
+    {
+      "base": 140704440188928,
+      "size": 40960,
+      "path": "C:\\Windows\\SYSTEM32\\DPAPI.dll"
+    },
+    {
+      "base": 140704440385536,
+      "size": 81920,
+      "path": "C:\\Windows\\SYSTEM32\\UMPDC.dll"
+    },
+    {
+      "base": 140704440516608,
+      "size": 385024,
+      "path": "C:\\Windows\\SYSTEM32\\powrprof.dll"
+    },
+    {
+      "base": 140704442744832,
+      "size": 155648,
+      "path": "C:\\Windows\\SYSTEM32\\bcrypt.dll"
+    },
+    {
+      "base": 140704442941440,
+      "size": 167936,
+      "path": "C:\\Windows\\SYSTEM32\\profapi.dll"
+    },
+    {
+      "base": 140704443858944,
+      "size": 1232896,
+      "path": "C:\\Windows\\System32\\gdi32full.dll"
+    },
+    {
+      "base": 140704445890560,
+      "size": 1355776,
+      "path": "C:\\Windows\\System32\\ucrtbase.dll"
+    },
+    {
+      "base": 140704447266816,
+      "size": 4141056,
+      "path": "C:\\Windows\\System32\\KERNELBASE.dll"
+    },
+    {
+      "base": 140704451461120,
+      "size": 516096,
+      "path": "C:\\Windows\\System32\\WINTRUST.dll"
+    },
+    {
+      "base": 140704452050944,
+      "size": 1536000,
+      "path": "C:\\Windows\\System32\\CRYPT32.dll"
+    },
+    {
+      "base": 140704453623808,
+      "size": 159744,
+      "path": "C:\\Windows\\System32\\win32u.dll"
+    },
+    {
+      "base": 140704453820416,
+      "size": 626688,
+      "path": "C:\\Windows\\System32\\bcryptPrimitives.dll"
+    },
+    {
+      "base": 140704454475776,
+      "size": 667648,
+      "path": "C:\\Windows\\System32\\msvcp_win.dll"
+    },
+    {
+      "base": 140704455196672,
+      "size": 1490944,
+      "path": "C:\\Windows\\System32\\wintypes.dll"
+    },
+    {
+      "base": 140704457293824,
+      "size": 880640,
+      "path": "C:\\Windows\\System32\\OLEAUT32.dll"
+    },
+    {
+      "base": 140704458211328,
+      "size": 692224,
+      "path": "C:\\Windows\\System32\\msvcrt.dll"
+    },
+    {
+      "base": 140704460898304,
+      "size": 192512,
+      "path": "C:\\Windows\\System32\\IMM32.dll"
+    },
+    {
+      "base": 140704461160448,
+      "size": 401408,
+      "path": "C:\\Windows\\System32\\SHLWAPI.dll"
+    },
+    {
+      "base": 140704461619200,
+      "size": 3649536,
+      "path": "C:\\Windows\\System32\\combase.dll"
+    },
+    {
+      "base": 140704465289216,
+      "size": 4747264,
+      "path": "C:\\Windows\\System32\\SETUPAPI.dll"
+    },
+    {
+      "base": 140704470073344,
+      "size": 724992,
+      "path": "C:\\Windows\\System32\\clbcatq.dll"
+    },
+    {
+      "base": 140704472432640,
+      "size": 176128,
+      "path": "C:\\Windows\\System32\\GDI32.dll"
+    },
+    {
+      "base": 140704472629248,
+      "size": 1409024,
+      "path": "C:\\Windows\\System32\\MSCTF.dll"
+    },
+    {
+      "base": 140704474071040,
+      "size": 823296,
+      "path": "C:\\Windows\\System32\\KERNEL32.DLL"
+    },
+    {
+      "base": 140704475316224,
+      "size": 131072,
+      "path": "C:\\Windows\\System32\\imagehlp.dll"
+    },
+    {
+      "base": 140704475512832,
+      "size": 983040,
+      "path": "C:\\Windows\\System32\\SHCORE.dll"
+    },
+    {
+      "base": 140704476561408,
+      "size": 32768,
+      "path": "C:\\Windows\\System32\\Normaliz.dll"
+    },
+    {
+      "base": 140704476626944,
+      "size": 1671168,
+      "path": "C:\\Windows\\System32\\ole32.dll"
+    },
+    {
+      "base": 140704478330880,
+      "size": 1851392,
+      "path": "C:\\Windows\\System32\\USER32.dll"
+    },
+    {
+      "base": 140704480231424,
+      "size": 475136,
+      "path": "C:\\Windows\\System32\\WS2_32.dll"
+    },
+    {
+      "base": 140704480755712,
+      "size": 737280,
+      "path": "C:\\Windows\\System32\\ADVAPI32.dll"
+    },
+    {
+      "base": 140704481542144,
+      "size": 479232,
+      "path": "C:\\Windows\\System32\\WLDAP32.dll"
+    },
+    {
+      "base": 140704482066432,
+      "size": 1146880,
+      "path": "C:\\Windows\\System32\\RPCRT4.dll"
+    },
+    {
+      "base": 140704483377152,
+      "size": 40960,
+      "path": "C:\\Windows\\System32\\NSI.dll"
+    },
+    {
+      "base": 140704483442688,
+      "size": 7655424,
+      "path": "C:\\Windows\\System32\\SHELL32.dll"
+    },
+    {
+      "base": 140704491110400,
+      "size": 679936,
+      "path": "C:\\Windows\\System32\\sechost.dll"
+    },
+    {
+      "base": 140704492224512,
+      "size": 32768,
+      "path": "C:\\Windows\\System32\\PSAPI.DLL"
+    },
+    {
+      "base": 140704492552192,
+      "size": 2527232,
+      "path": "C:\\Windows\\SYSTEM32\\ntdll.dll"
+    },
+    {
+      "base": 140734351671296,
+      "size": 598016,
+      "path": "C:\\Windows\\SYSTEM32\\XAudio2_9.dll"
+    },
+    {
+      "base": 140734389813248,
+      "size": 54923264,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\nvngx_dlss.dll"
+    },
+    {
+      "base": 140734444797952,
+      "size": 74727424,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\data\\game\\game.dll"
+    },
+    {
+      "base": 140734519574528,
+      "size": 1798144,
+      "path": "C:\\Program Files (x86)\\Steam\\gameoverlayrenderer64.dll"
+    },
+    {
+      "base": 140734521409536,
+      "size": 4042752,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\PartyWin.dll"
+    },
+    {
+      "base": 140734525472768,
+      "size": 77836288,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\libxess.dll"
+    },
+    {
+      "base": 140734603329536,
+      "size": 22355968,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\amd_fidelityfx_upscaler_dx12.dll"
+    },
+    {
+      "base": 140734629806080,
+      "size": 1888256,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\PlayFabMultiplayerWin.dll"
+    },
+    {
+      "base": 140734631706624,
+      "size": 573440,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\libcurl.dll"
+    },
+    {
+      "base": 140734632296448,
+      "size": 868352,
+      "path": "C:\\Windows\\SYSTEM32\\MSVCR110.dll"
+    },
+    {
+      "base": 140734633213952,
+      "size": 516096,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\crs-client.dll"
+    },
+    {
+      "base": 140734633738240,
+      "size": 53248,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\WinPixEventRuntime.dll"
+    },
+    {
+      "base": 140734633803776,
+      "size": 434176,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\bink2w64.dll"
+    },
+    {
+      "base": 140734634262528,
+      "size": 311296,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\steam_api64.dll"
+    },
+    {
+      "base": 140734634590208,
+      "size": 471040,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\lua51.dll"
+    },
+    {
+      "base": 140734677778432,
+      "size": 8437760,
+      "path": "C:\\Windows\\System32\\DriverStore\\FileRepository\\nvlti.inf_amd64_3c6a443eb045b9c7\\NvPresent64.dll"
+    },
+    {
+      "base": 140734686232576,
+      "size": 7041024,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\plugins\\wwise_pluginw64_release.dll"
+    },
+    {
+      "base": 140734706089984,
+      "size": 1519616,
+      "path": "C:\\Windows\\System32\\DriverStore\\FileRepository\\nvlti.inf_amd64_3c6a443eb045b9c7\\_nvngx.dll"
+    },
+    {
+      "base": 140734707662848,
+      "size": 7553024,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\GameGuard\\npsc64.des"
+    },
+    {
+      "base": 140734717165568,
+      "size": 569344,
+      "path": "C:\\Windows\\system32\\XAudio2_7.dll"
+    },
+    {
+      "base": 140734717755392,
+      "size": 2555904,
+      "path": "C:\\Windows\\SYSTEM32\\D3D12Core.dll"
+    },
+    {
+      "base": 140734906302464,
+      "size": 552960,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\plugins\\level_generation_pluginw64_release.dll"
+    },
+    {
+      "base": 140734906892288,
+      "size": 1540096,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\DStorageCore.dll"
+    },
+    {
+      "base": 140734908465152,
+      "size": 3395584,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\GameGuard\\npggNT64.des"
+    },
+    {
+      "base": 140734913445888,
+      "size": 69632,
+      "path": "C:\\Windows\\SYSTEM32\\websocket.dll"
+    },
+    {
+      "base": 140734913576960,
+      "size": 188416,
+      "path": "C:\\Windows\\SYSTEM32\\D3DSCache.dll"
+    },
+    {
+      "base": 140734984355840,
+      "size": 299008,
+      "path": "C:\\Windows\\SYSTEM32\\icm32.dll"
+    },
+    {
+      "base": 140735601573888,
+      "size": 26726400,
+      "path": "C:\\Program Files (x86)\\Steam\\steamclient64.dll"
+    },
+    {
+      "base": 140735653740544,
+      "size": 1646592,
+      "path": "c:\\windows\\system32\\gameinputredist.dll"
+    },
+    {
+      "base": 140735949242368,
+      "size": 3203072,
+      "path": "C:\\Program Files (x86)\\Steam\\tier0_s64.dll"
+    },
+    {
+      "base": 140735959203840,
+      "size": 798720,
+      "path": "C:\\Program Files (x86)\\Steam\\vstdlib_s64.dll"
+    },
+    {
+      "base": 140736155680768,
+      "size": 143360,
+      "path": "C:\\Windows\\SYSTEM32\\d3d12.dll"
+    },
+    {
+      "base": 140736837386240,
+      "size": 14688256,
+      "path": "C:\\Windows\\System32\\DriverStore\\FileRepository\\nvlti.inf_amd64_3c6a443eb045b9c7\\nvobjectloader64.dll"
+    },
+    {
+      "base": 140736863666176,
+      "size": 32370688,
+      "path": "C:\\Windows\\system32\\DriverStore\\FileRepository\\nvlti.inf_amd64_3c6a443eb045b9c7\\nvcuda64.dll"
+    },
+    {
+      "base": 140736898007040,
+      "size": 4714496,
+      "path": "C:\\Windows\\SYSTEM32\\nvcuda.dll"
+    },
+    {
+      "base": 140736975470592,
+      "size": 716800,
+      "path": "C:\\Windows\\System32\\DriverStore\\FileRepository\\nvlti.inf_amd64_3c6a443eb045b9c7\\nvdxgdmal64.dll"
+    }
+  ],
+  "memory_bytes_read": 17224,
+  "runtime_capture": true,
+  "utility_file_sha256_at_output": "33fe88f4b854b69d939a1e761591c9f30271d88ed8100b3eb56599ec4ba517b5"
+}

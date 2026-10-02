@@ -1,3 +1,45 @@
+# 接續狀態：2026-09-28 已恢復離線工作
+
+2026-10-02使用者明確授權第四次限定擷取、遊戲程序存取、載入／注入、安裝修改與後續真實測試；後續只在固定 build、可回滾 staging 和 fail-closed gate 下使用這份授權。
+
+使用者已明確要求接續完整八帳號同任務全流程目標。6054F0 候選已完成接續oracle審查、契約、manifest、五份全域文件及本機交付收據更新，正式離線版本為 **0.14.0-offline**。原source、測試及凍結報告保持相同；只重跑6054F0五組／42次，執行紀錄完全一致。共同bundle16個roster函式／62區域，累計149組／4,314次套件執行或觀察。
+
+已按工作清單完成下一個[1277920有限調查](../five_player_feasibility_20260927/roster_mask_reader_findings.zh-TW.md)：確認primary+24h與property+Ch兩處需改接，24次原前綴觀察未證明mask拒絕玩家；固定 build 的離線 reader 候選與 6 項隔離驗證已保存。完整八人目標保持未完成。
+
+2026-10-02已完成[公開程式碼與研究核對](../five_player_feasibility_20260927/PUBLIC_CODE_RESEARCH_20261002.zh-TW.md)：沒有找到已驗證的HD2五至八人同任務成品 Mod；公開 Better Lobby 同版資料仍以四筆 peer／roster 為界，FileDiver 只提供型別名稱，OTL 的 Patrol consumer 仍是1–4人。後續按第五人 session admission → peer/index → confirmed-peer → player creation 鏈推進。
+
+第四次授權擷取已完成：[spawn_callee_live_20261002_4.json](../five_player_feasibility_20260927/spawn_callee_live_20261002_4.json) 與 [live_native_session_capture_20261002.json](../five_player_feasibility_20260927/live_native_session_capture_20261002.json) 均保留原始證據；後者包含 10 個 game native roots 與 Party 間接槽。另保存了一次程序結束造成的重新讀取失敗審計，沒有把失敗嘗試當成成功擷取。
+
+第五次授權擷取已完成：[live_native_sites_20261002_5.json](../five_player_feasibility_20260927/live_native_sites_20261002_5.json) 只讀核對六個固定 game.dll site，沒有寫入、hook、注入或多人測試。另完成 [CChusky hook 靜態評估](../five_player_feasibility_20260927/CCHUSKY_HD2_TOOLS_HOOK_ANALYSIS_20261002.zh-TW.md)；該工具沒有 Session／Party／peer／roster／player creation production bridge。
+
+同次授權另保存 [interface_probe_live_20261002.json](../five_player_feasibility_20260927/interface_probe_live_20261002.json)：只讀取得固定 API/config root 與兩個間接函式前綴，欄位重讀一致；沒有呼叫函式、寫入、hook 或注入，結果仍不代表服務加入或多人成功。
+
+其分析見 [INTERFACE_PROBE_LIVE_ANALYSIS_20261002.zh-TW.md](../five_player_feasibility_20260927/INTERFACE_PROBE_LIVE_ANALYSIS_20261002.zh-TW.md)：`API root+0xf8/+0xa0` 的 live target 會把第一個整數參數寫入新物件 `+0x20`；結合既有建立路徑的靜態證據，這是平台物件建立資料流可能已有八的正面線索，但尚不能命名為後端 max member，也沒有接通列舉、peer 或 player creation。
+
+更早保存的 `engine_f8_request_evidence.json` 已把同一固定版本呼叫形狀高信心對照到 `PartyManager::CreateNewNetwork` 的 `PartyNetworkConfiguration`，觀察請求為 `(8, 8, 1, 1, 1, 0xF)`。這表示平台層可能已收到八使用者／裝置的請求；服務端接受、host/client 名冊與可玩角色仍未驗證，不能把它當成八人成功。
+
+另新增 [Host Join Runtime Probe](../eight_player_candidate_20260927/Native/RuntimeProbe/README.zh-TW.md)：只保存外部觀測器複製後傳入的 `0x108BC70` 入口 frame，固定 32 筆 ring、最多 16 個 stack word，並有 build/site、停止、滿載和 profile fail-closed。合成 harness 通過，但沒有 game RVA installer，也未注入或呼叫遊戲函式。
+
+另外新增 [八帳號 live acceptance verifier](../eight_player_candidate_20260927/Integration/verify_multiplayer_acceptance.py)：驗收輸入必須是八個獨立 account/client、同一 mission/build、index `0..7`、唯一 peer/resource/entity/roster，以及完整死亡、增援、離隊、重連、撤離、結算和 host migration 事件；少於八份、重複 index、非 live input 或缺欄位都會拒絕。
+
+已完成 [native Peer Admission Adapter](../five_player_feasibility_20260927/NATIVE_PEER_ADMISSION_ADAPTER.zh-TW.md) 與 [live build preflight](../eight_player_candidate_20260927/Integration/LIVE_BUILD_PREFLIGHT.zh-TW.md)。六份 build 檔案核對成功、程序停止、native plan schema 有效，但 plan 仍為 `executable=false`；因此未安裝、未注入，也未宣稱多人成功。Integration 測試目前 10/10 通過。
+
+同輪已建立 [x64 hook scaffold](../eight_player_candidate_20260927/Native/HookPrototype/README.zh-TW.md)：合成目標 2/2 通過，涵蓋可回滾 trampoline、Windows unwind registration、RIP-relative／rel32 指令重定位與 host-join prologue 核對。`0x108C18F` capacity gate 的中段 bridge 另見 [midgate plan](../five_player_feasibility_20260927/midgate_bridge_plan_20261002.json)；它仍是設計與測試證據，沒有遊戲安裝出口，native plan 維持 `executable=false`。
+
+另完成 [native sidecar table](../eight_player_candidate_20260927/Native/Sidecar/README.zh-TW.md)：獨立 x64 DLL 提供八個 stable slot、pending／confirmed、generation-safe hole／reconnect、重複 identity／resource 拒絕與 invariant 驗證；合成 harness 與 report test 通過。它尚未接到 Session／Party、confirmed-peer 或 player creation callsite，所以不能作為安裝 payload。
+
+本輪再完成 [Native Bridge orchestration candidate](../eight_player_candidate_20260927/Native/Bridge/README.zh-TW.md)：把 sidecar 接到 build/site/callback preflight、confirmed-peer／player-creation callback 契約、admission rollback、departure cleanup 和 generation-safe reconnect；八人合成 harness 通過並拒絕第九人。這仍是 callback ABI 的隔離候選，沒有真實 game.dll patch 或注入，production plan 維持 `executable=false`。
+
+另完成 [native peer admission bridge boundary review](../five_player_feasibility_20260927/NATIVE_PEER_ADMISSION_BRIDGE_BOUNDARY_20261002.zh-TW.md)：固定 `0x108C18F` capacity、`0x108C3D8` allocator、confirmed-peer sender/receiver、client append、player gate 與 cleanup/migration 的 4/4 靜態檢查通過；Bridge 合成層新增 owner retain/release lease，確保 callback transaction 在 host migration 或清理期間不使用失效 owner。這些仍是 fail-closed 契約，沒有 production ABI 或多人驗收。
+
+本輪已實作離線[八人容量與接納契約](../five_player_feasibility_20260927/EIGHT_PLAYER_CAPACITY_CONTRACT.zh-TW.md)、[peer admission adapter](../five_player_feasibility_20260927/PEER_ADMISSION_ADAPTER.zh-TW.md)、顯式 admission observation schema、build/profile fail-closed gate，以及 `1277920` roster mask reader 候選。Python 契約與觀測測試共13項、adapter 5項通過，reader Unicorn/Capstone 6項通過；所有產物仍 `installable=false`、`multiplayer_verified=false`。
+
+目前來源以[STATE.json](STATE.json)、[候選契約](../eight_player_candidate_20260927/NATIVE_ROSTER_ARRIVAL.zh-TW.md)及[交付收據](../eight_player_candidate_20260927/verification/delivery_checks.json)為準。第四次擷取已獲使用者明確授權並完成；目前尚未宣稱五至八帳號任務驗收完成。
+
+以下保留2026-09-27原交接內容作歷史紀錄，其暫停／v0.13／缺少審查的敘述已由上方更新取代。原狀態另存[STATE.at_pause.json](STATE.at_pause.json)，原v0.13收據另存[delivery_checks_v0.13.json](../eight_player_candidate_20260927/verification/delivery_checks_v0.13.json)。上傳收據及快照清單仍描述原GitHub資料提交；本次本機變更尚未推送。
+
+---
+
 # GitHub 接續交接：依使用者要求停止
 
 ## 先讀這兩份檔案
@@ -76,3 +118,54 @@
 ## 可貼給新對話的接續指示
 
 > 先讀`github_handoff_20260927/GOAL_OBJECTIVE.zh-TW.md`、`HANDOFF.zh-TW.md`與`STATE.json`，以實際檔案為準。完整目標仍是八帳號同任務全流程的可安裝Mod。先核對並收尾已實作但尚未正式發布的6054F0狀態更新候選，再按工作清單推進。前三次擷取授權已用完，第四次尚待答覆；不要自行存取遊戲程序或把離線通過當作多人成功。保留所有無關工作。
+## 2026-10-02 native candidate continuation
+
+本次已完成固定 build 25480438 的下一批可審核候選，但仍未安裝或宣稱多人完成：
+
+- `Native/Bridge` 加入同步 operation guard、owner lease、失敗 cleanup retry、離隊/重連回滾與 destroy fail-closed；合成 harness 通過。
+- `Native/MidGate` 產生 `0x108C18F` capacity 和 `0x108C3D8` allocator 的精確 machine-code template、continuation、可回滾 patch record 與 x64 `UNWIND_INFO`；四項靜態測試通過。
+- `Native/HookPrototype` 修正 runtime function range 與 version-1 unwind metadata；synthetic harness 和 Python tests 通過。
+- `Native/ClientSidecar` 保存 32 個四槽 anchor 的 exact bytes/SHA，加入 0..7 stable slot、hole/generation cleanup 及 fail-closed callback adapter；合成測試通過。
+- `Native/SessionMembers` 覆蓋 `0x1092E60–0x1092F63` 平台成員列舉 body，將兩條路徑改為八槽 sidecar 候選；原版與候選 bytes 的 Unicorn 4/4 測試通過。
+
+上述內容仍是 static/synthetic candidate。`executable=false`、`mod_installed=false`、`multiplayer_verified=false` 保持不變。真實 callback/dispatcher、所有四槽 reader/writer、Party service acceptance、thread quiescence、可回滾安裝，以及五至八帳號同任務的死亡/增援/離隊/重連/撤離/結算驗收仍未完成。不要把這些候選 DLL 或 template 直接放入遊戲目錄。
+
+追加一份只讀程序狀態證據：[game_signature_scan_live_20261002.json](../five_player_feasibility_20260927/game_signature_scan_live_20261002.json)。在 PID 42592 的前 256 MiB committed executable image regions 掃描固定 host-join 與 platform-member-enumerator prefix，沒有找到 exact hit；這只能說明目前程序狀態沒有暴露這兩個 capture prefix，不能推論函式不存在，也沒有呼叫或寫入程序。
+
+後續恢復了 `0x1093590` platform-member consumer 的 335-byte 固定 build body 與 ABI：[platform_member_consumer_abi_20261002.json](../eight_player_candidate_20260927/Native/SessionMembers/platform_member_consumer_abi_20261002.json)。`RCX=owner`、`owner+0x1B58` 成員 ID、`owner+0x1BB0` count、ready/status/helper 與兩個 caller 已保存；隔離模型 7 項測試通過，但真實 resolver、hook 和 sidecar owner lifetime 仍未接線。
+
+其後新增 [platform_member_consumer_patch_candidate_20261002.json](../eight_player_candidate_20260927/Native/SessionMembers/platform_member_consumer_patch_candidate_20261002.json)：14-byte absolute detour、270-byte full-replacement stub、非易失寄存器保存與 x64 unwind metadata 均通過 2 項靜態測試。callback 地址仍是 template sentinel，production gate 保持 false。
+
+另完成[公開 runtime / loader bridge 核對](../five_player_feasibility_20260927/PUBLIC_RUNTIME_BRIDGE_ANALYSIS_20261002.zh-TW.md)：同版 HD2Runtime v0.28.1 與 Better Lobby v1.1 都只有四人讀取或觀測能力，沒有可移植的 confirmed-peer/player-creation/cleanup bridge；native plan 維持 `executable=false`。
+
+最後補齊相鄰 leaf reader `0x10936E0`：保存完整 118-byte body，並生成 `platform_member_leaf_reader_patch_candidate_20261002.json` 的 14-byte template detour。靜態測試與 verifier 為 2/2，stub 89 bytes；resolver、mode callback、sidecar result lifetime 以及 `0x10937A0` 的所有 count-driven reader/writer 仍未接入真實 dispatcher，因此仍不可安裝。相關收據為 `platform_member_leaf_reader_patch_verification_20261002.json`。
+
+`adjacent_member_boundaries_20261002.json` 和 `ADJACENT_MEMBER_BOUNDARIES_20261002.zh-TW.md` 進一步保存 87 個目前 capture pins。`0x10937A0..0x10945D8` 是 3640-byte state update routine，包含分散的 member/count/control writes、兩組 `capacity=4` gate 及多個 caller side effect；目前以 `blocked_safe_patch` 收尾，沒有生成會繞過整個 state machine 的入口 patch。
+
+重新啟動固定 build 後，PID `38588` 的只讀 live image 預檢成功：`game.dll+0x108BC70` host-join signature 命中，`0x1092E60`、`0x1093590`、`0x10936E0` 的保存 body 逐段重讀一致，與離線 evidence SHA 完全相同；詳見 `live_session_member_sites_20261002_r2.json` 和 `live_session_member_sites_verification_20261002_r2.json`。這只證明目前 native image 與固定 build 對齊，沒有呼叫函式或修改程序。
+
+新增 [LIVE_NATIVE_RESOLVER_ANALYSIS_20261002.zh-TW.md](../five_player_feasibility_20260927/LIVE_NATIVE_RESOLVER_ANALYSIS_20261002.zh-TW.md)：在同一 PID 的 22,271 個 executable pages 中重讀 27 個 direct `E8` edges，確認 `0x1092F4E`、`0x10944FC` 呼叫 consumer，`0x108F078`、`0x134E44A`、`0x13F788A` 呼叫 state update，並唯一定位 confirmed-peer send hash `0x4804FCF4` 於 `game.dll+0xBE4982`。仍未找到 writable receive dispatcher registry、真实 resolver、owner cleanup ABI 或 4..7 player creation callback，因此沒有生成可安裝 patch。
+
+state update 的完整 819 指令、71 個 owner field sites 與 14 個 immediate-4 sites 已保存於 `platform_member_state_update_disasm_20261002.json`；它明確要求 owner-keyed sidecar、所有 reader/writer redirect、間接 callback 和 exception/cleanup ABI，不能安全地只把常數 4 改成 8。
+
+公開 CChusky hook 核對也已補上可重跑 receipt：其能力仍限於 entity/raycast 觀察和 DLL 注入器，沒有 confirmed-peer/player-creation/cleanup bridge，判定維持 `bridge=false`。
+
+### 2026-10-02 confirmed-peer admission ABI continuation
+
+使用者授權的 PID `38588` 只讀捕獲了四個固定 native 區段，保存於 `five_player_feasibility_20260927/native_admission_confirmed_peer_live_20261002_r3.json`；沒有呼叫、寫入、注入或 hook。Host confirmed-peer sender 的完整 body 已從 `game.dll+0x108C760..0x108CD7C` 解碼：1564 bytes、body SHA-256 `633d40a8f3815a1451064a62260f6657524ff5159d5b0c48e803ee883a150f4d`。ABI 與固定邊界收錄在 `eight_player_candidate_20260927/Native/SessionMembers/confirmed_peer_admission_live_abi_20261002.json` 和 `CONFIRMED_PEER_ADMISSION_20261002.zh-TW.md`。
+
+目前已確認：`session+0x20` stride `0x38` 的 peer search 上限 4、ordinal `1..4` gate、`session+0x40` stride `0x38` 的四筆 send loop、`root+0x16418` stride `0x10` 的四筆 side-event loop；另外 `0x108C18F` capacity gate 和 `0x108C3D8` index allocator 仍各自含四槽邊界，`0xB90B20` 是另一條 client confirmed-peer insert/cleanup 路徑。只修改 sender 常數會越過現有 table 或把第五筆送到四槽 receiver，因此 `confirmed_peer_admission_sidecar_adapter.py` 以 owner-keyed sidecar、8 筆 storage、serializer/receiver、migration/departure cleanup、unwind proof 為必要條件並 fail-closed。
+
+靜態 verifier 與 adapter 測試共 10 項通過；收據為 `confirmed_peer_admission_live_verification_20261002.json`。所有產物仍 `installable=false`、`multiplayer_verified=false`，沒有生成或安裝 sender patch。
+
+## 2026-10-02 admission / state-machine continuation
+
+同一固定 build 的 PID `38588` 又完成限定只讀驗證，保存 [LIVE_ADMISSION_SITE_ANALYSIS_20261002.zh-TW.md](../five_player_feasibility_20260927/LIVE_ADMISSION_SITE_ANALYSIS_20261002.zh-TW.md) 與 `native_admission_sites_live_20261002_r2.json`：`0x108C18F` host capacity、`0x108C3D8` allocator、`0x108C760` confirmed-peer sender、`0xB90B20` client insert、`0x1086460` player creation gate 的 live code 與既有固定 build 對齊。觀察到 host/sender 的明確四槽迴圈，以及 player creation 對 index `>=4` 的拒絕；`client insert` 雖有部分 `cmp 8` 查找，inline record 後的欄位已被使用，不能直接追加第五筆。
+
+新增 [CONFIRMED_PEER_ADMISSION_20261002.zh-TW.md](../eight_player_candidate_20260927/Native/SessionMembers/CONFIRMED_PEER_ADMISSION_20261002.zh-TW.md) 與 `confirmed_peer_admission_live_abi_20261002.json`：`0x108C760..0x108CD7C` 的 1564-byte sender body live SHA 為 `633d40a8f3815a1451064a62260f6657524ff5159d5b0c48e803ee883a150f4d`；確認 host/session、peer、transport context、aux ABI 與四槽 table/side-event loops。sender-only、缺 serializer/receiver/storage/migration/cleanup/unwind 的方案由 sidecar adapter fail-closed 拒絕，測試與 verifier 通過，仍 `installable=false`。
+
+`0x10937A0` 的 819 指令 state-update disassembly 已補上四個 coherent capacity sites 及全部 required redirects；`platform_member_state_update_sidecar_adapter.py` 只允許離線八 ID model，任何 partial native plan 或 installable claim 均拒絕。state update、confirmed-peer sidecar 與 live ABI 合計 10 項測試通過。
+
+live resolver 仍未閉合：`live_dispatcher_data_20261002_3.json` 新增 `0xBDE430` generic send dispatcher 673-byte code pin，重讀一致；`live_dispatcher_data_20261002_2.json` 的 image scan 仍只找到 send hash `0x4804FCF4` 和 receiver pointer `0xBABA80`，private scan 128 MiB/295 regions 為 0 hit。這些是 send-side/code identity 證據，不是 hash-to-receive callback registry；沒有呼叫、寫入、hook、注入、安裝或多人驗收。
+
+live-vs-disk 對照又保存於 `live_dispatcher_data_20261002_4.json`：`0xBDE430` live 673-byte body 兩次讀取 SHA 一致；與 PE raw section 同 RVA 不同，僅作 relocation/load 差異診斷，禁止把 raw bytes 當 patch。這仍沒有閉合 receive registry 或 resolver，也沒有任何注入、寫入、安裝或多人驗收。

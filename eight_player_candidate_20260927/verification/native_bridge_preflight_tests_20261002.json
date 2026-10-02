@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-10-02T07:08:52.6838568Z",
+  "suites": {
+    "core": 28,
+    "integration": 10,
+    "package": 4,
+    "total": 43,
+    "native_bridge_report": 1
+  },
+  "commands": [
+    "five_player_feasibility_20260927 native/admission/midgate unittest",
+    "eight_player_candidate_20260927/Native/HookPrototype unittest",
+    "eight_player_candidate_20260927/Integration unittest discover",
+    "eight_player_candidate_20260927/Package unittest discover"
+  ],
+  "exit_codes": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "native_plan_executable": false,
+  "multiplayer_verified": false,
+  "mod_installed": false,
+  "game_root_modified": false,
+  "scope": "offline contracts, fixed-build read-only preflight, synthetic native bridge only",
+  "bridge_orchestration": {
+    "python_tests": 1,
+    "native_harness": {
+      "exit_code": 0,
+      "marker": "ep_native_bridge_synthetic_passed"
+    },
+    "executable": false,
+    "multiplayer_verified": false
+  },
+  "totals": {
+    "python_report_tests": 1,
+    "native_harnesses": 1,
+    "existing_python_suite_tests": 42,
+    "python_suite_tests_including_bridge_report": 43
+  }
+}

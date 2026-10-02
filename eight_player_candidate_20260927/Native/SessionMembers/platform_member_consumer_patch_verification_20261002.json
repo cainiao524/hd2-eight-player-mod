@@ -1,0 +1,30 @@
+{
+  "schema": "platform_member_consumer_patch_verification_v1",
+  "steam_build": 25480438,
+  "status": "passed_static_template_verification",
+  "test_methods_run": 2,
+  "failure_count": 0,
+  "error_count": 0,
+  "result": {
+    "stub_bytes": 270,
+    "patch_span": 14
+  },
+  "artifacts": {
+    "platform_member_consumer_patch.py": "004c4551a7c91cab089059feda738a57db023f1a33a02f6b8ec465cf5a94746f",
+    "verify_platform_member_consumer_patch.py": "36121b6b53a9c933cba7589a063ce13c919cc716aa888c4125c8996eab2d3fd5",
+    "test_platform_member_consumer_patch.py": "9e4bcc42145129dce75f9b87a878f06efb6d9cec28debdd6139c504d42964f5e",
+    "platform_member_consumer_disasm_20261002.json": "458606e2e2c8fcbdccdc36952bd9edd7b5e280513d70542b35f8ba62f802cab7",
+    "platform_member_consumer_patch_candidate_20261002.json": "f0f03148d494b093a702810e4bca84825a25c548aa4c7cbfdd9b6ef856046621"
+  },
+  "production": {
+    "installable": false,
+    "game_execution": false,
+    "multiplayer_verified": false,
+    "game_files_modified": false,
+    "blockers": [
+      "callback addresses are template sentinels",
+      "owner-lifetime-safe resolver and all count-driven readers/writers remain unresolved",
+      "no process patch or injection was performed"
+    ]
+  }
+}

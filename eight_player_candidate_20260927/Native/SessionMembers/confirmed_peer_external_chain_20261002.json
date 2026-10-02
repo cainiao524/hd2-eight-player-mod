@@ -1,0 +1,124 @@
+{
+  "schema": "confirmed_peer_external_chain_v1",
+  "status": "static_external_abi_blocker",
+  "steam_build": 25480438,
+  "capture_integrity": {
+    "main_capture": "five_player_feasibility_20260927\\native_admission_sites_live_20261002_r2.json",
+    "main_capture_sha256": "31a75196a5afd3b8d102a160225bb0a7066a42af3d47b614ed4eac7be67b304e",
+    "confirmed_capture": "five_player_feasibility_20260927\\native_admission_confirmed_peer_live_20261002_r3.json",
+    "confirmed_capture_sha256": "50cc6fcb8fa4224791a7d40cdd37dafa719664d92a01b7a6d3505655b5f30f7e",
+    "pid": 38588,
+    "read_only": true,
+    "calls_made": false,
+    "writes_made": false,
+    "hooks_or_injection": false
+  },
+  "sites": [
+    {
+      "rva": "0x108c18f",
+      "name": "host_capacity_gate",
+      "semantic": "remaining capacity computes 4-occupied and forwards r8d=4",
+      "source_capture": "five_player_feasibility_20260927\\native_admission_sites_live_20261002_r2.json",
+      "source_row_sha256": "16a3066b40dc336783e58f8a362aa790d992d22bd761a08e0068cc7e7b569271",
+      "size": 256,
+      "unchanged_on_reread": true,
+      "read_only": true
+    },
+    {
+      "rva": "0x108c3d8",
+      "name": "host_index_allocator",
+      "semantic": "host+0x100 flags scan compares ecx with 4; a second table has r14d<4",
+      "source_capture": "five_player_feasibility_20260927\\native_admission_sites_live_20261002_r2.json",
+      "source_row_sha256": "c2db6fca07dd7afab12f082c3ad5b69e7647f8177db1d036f195741e2cb8d572",
+      "size": 512,
+      "unchanged_on_reread": true,
+      "read_only": true
+    },
+    {
+      "rva": "0x108c760",
+      "name": "host_confirmed_peer_sender",
+      "semantic": "session+0x20/session+0x40 confirmed-peer tables are stride 0x38 with four-slot loops",
+      "source_capture": "five_player_feasibility_20260927\\native_admission_confirmed_peer_live_20261002_r3.json",
+      "source_row_sha256": "1400f933c08efc61110e184134cb5ccde5583a0e1f308abc56715bb314dc66e8",
+      "size": 4096,
+      "unchanged_on_reread": true,
+      "read_only": true
+    },
+    {
+      "rva": "0xb90b20",
+      "name": "client_confirmed_peer_insert",
+      "semantic": "client+0xc8 count appends client+0xd0 records with 0x20 stride; fifth append reaches +0x150",
+      "source_capture": "five_player_feasibility_20260927\\native_admission_sites_live_20261002_r2.json",
+      "source_row_sha256": "8d0f4f4394b1e6a8c6384118b702119ed8010bd91ca1c1910559a0af985a8be3",
+      "size": 512,
+      "unchanged_on_reread": true,
+      "read_only": true
+    },
+    {
+      "rva": "0x1086460",
+      "name": "player_creation_gate",
+      "semantic": "player index at owner-relative +0x163ac is rejected when >=4",
+      "source_capture": "five_player_feasibility_20260927\\native_admission_sites_live_20261002_r2.json",
+      "source_row_sha256": "77b833b5b6e22cb6ecb8d1431db945dcb4483c1069f571d0c022704c412f1e09",
+      "size": 512,
+      "unchanged_on_reread": true,
+      "read_only": true
+    }
+  ],
+  "required_lifecycle_paths": [
+    {
+      "rva": "0x108d190",
+      "name": "host_peer_cleanup",
+      "required": "clear sidecar peer record and release owner reservation"
+    },
+    {
+      "rva": "0x1089720",
+      "name": "host_migration_rebuild",
+      "required": "rebuild ordinal map preserving holes/generation"
+    },
+    {
+      "rva": "0x1087540",
+      "name": "client_confirmed_peer_remove",
+      "required": "remove by owner key and compact only logical map"
+    },
+    {
+      "rva": "0x10845b0",
+      "name": "client_confirmed_peer_reset",
+      "required": "reset all eight records without touching adjacent +0x150 fields"
+    }
+  ],
+  "sidecar_contract": {
+    "logical_max_players": 8,
+    "valid_network_index": [
+      0,
+      7
+    ],
+    "owner_key": "host/session or client owner pointer, never peer ordinal",
+    "record_storage": "8 confirmed-peer records and 8 client records, separately owned",
+    "must_preserve": [
+      "pending/confirmed transition",
+      "duplicate rejection",
+      "departure/reconnect",
+      "host migration",
+      "serializer/receiver schema",
+      "resource/player creation handles",
+      "unwind and rollback"
+    ],
+    "reject_if": [
+      "sender-only redirect",
+      "inline client+0x150 overlap",
+      "unknown dispatcher binding",
+      "missing cleanup or migration path",
+      "ordinal/index aliasing"
+    ],
+    "installable": false,
+    "runtime_verified": false,
+    "multiplayer_verified": false
+  },
+  "blockers": [
+    "Host capacity and index allocation are independent four-slot paths.",
+    "Client append has a four-record in-object footprint; record five overlaps adjacent live fields.",
+    "Player creation rejects index 4 and higher before resource/roster creation.",
+    "Cleanup, migration, dispatcher binding, and receiver lifetime are not closed by fixed-site bytes alone."
+  ]
+}

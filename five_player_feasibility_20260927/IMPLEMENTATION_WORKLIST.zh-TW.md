@@ -1,5 +1,31 @@
 # 八人Mod實作工作清單
 
+2026-10-02已完成[公開程式碼與研究核對](PUBLIC_CODE_RESEARCH_20261002.zh-TW.md)。公開的 Better Lobby Management 同版逆向資料仍標示 `MAX_PEERS = 4`、四筆 roster；FileDiver 只提供 schema 名稱；OTL 研究的 Patrol consumer 仍只列 1–4 人；沒有找到已驗證的 HD2 五至八人 Mod。P1因此固定為「session 接納 → peer/index → confirmed-peer → player creation」的第五人鏈，不能只改 platform `MaxPlayers` 或 EntityNetworkData 名稱。
+
+本輪已加入[八人容量與接納契約](EIGHT_PLAYER_CAPACITY_CONTRACT.zh-TW.md)及[peer admission adapter](PEER_ADMISSION_ADAPTER.zh-TW.md)：Python 離線鏡像與 Lua 狀態模型固定 build `25480438`、八個 storage slots、network index `0..7`，區分 pending／active resource bind、generation token、stable ordinal、反向 map 和 detached snapshot；adapter 以同一 observation epoch 串接 lobby／Party／host peer／confirmed-peer。這仍是可重播的 fail-closed 元件；原生接入、程序 hook、安裝和多人測試仍未完成。
+
+2026-10-02在使用者明確授權下完成固定 build 的第四次限定擷取。新增[native Peer Admission Adapter](NATIVE_PEER_ADMISSION_ADAPTER.zh-TW.md)：保存10個 game native roots、Party間接槽與八槽 host/client sidecar lifecycle；6/6 原生 adapter 測試通過，計畫仍明確為 `executable=false`。新增 [live build preflight](../eight_player_candidate_20260927/Integration/LIVE_BUILD_PREFLIGHT.zh-TW.md)：六份實機 build 檔案雜湊全部相符、遊戲程序已停止，但因 native plan 尚不可執行而阻擋 staging。這些證據沒有完成安裝或多人驗收。
+
+同輪新增[可回滾 x64 hook scaffold](../eight_player_candidate_20260927/Native/HookPrototype/README.zh-TW.md)：MSVC x64 合成目標測試 2/2，涵蓋保存指令、14-byte absolute jump、trampoline、Windows unwind registration、instruction-cache flush、移除復原與指令重定位；另核對 `game.dll+0x108BC70` 的 18-byte host-join prologue。這只完成通用橋接基礎，沒有遊戲 RVA 安裝出口。`0x108C18F` 是 capacity gate 中段，已另存[mid-function bridge plan](midgate_bridge_plan_20261002.json)；不能用常數 `4→8` 取代 sidecar、continuation 和 allocator contract。
+
+另完成[獨立 native sidecar table](../eight_player_candidate_20260927/Native/Sidecar/README.zh-TW.md)：C++ x64 DLL 與 harness 驗證八個 stable slot、pending／confirmed、generation-safe hole／reconnect、重複 identity／resource、stale token 和 generation exhaustion。這只封閉儲存契約，尚未接到遊戲 native roots、Session／Party 或 player creation。
+
+另完成[Native Bridge orchestration candidate](../eight_player_candidate_20260927/Native/Bridge/README.zh-TW.md)：以明確 callback ABI 將 sidecar 接到 preflight、confirmed-peer、player creation、departure cleanup 與 reconnect 回滾；合成 harness 通過八格、第九人拒絕與 hole generation。它仍沒有真實 game.dll callback、mid-function continuation 或安裝出口，不能取代第五人實測。
+
+同輪完成[1277920 roster mask reader 候選](../eight_player_candidate_20260927/NATIVE_ROSTER_MASK_READER.zh-TW.md)：完整 1627-byte body 重定位，兩個經證實的 B sidecar operand、早於 input+10h 副作用的 binding／null guard、普通 map-miss fallback 均保留；6 組 Unicorn/Capstone 測試通過。reject handler、cookie／unwind、ring／resource callback、B 生命週期、mask producer、session／peer admission 和真人聯機仍是缺口。
+
+2026-09-29依使用者提供分析完成[peer接納優先順序對照](PEER_ADMISSION_PRIORITY.zh-TW.md)。P1先釐清第五帳號的session結果、唯一index4與各端confirmed-peer記錄，P2保留已證角色建立gate；P3八格資料配套持續完成。通用entity array／hotjoin線索不取代已定位的四槽原生限制。AI Director四項倍率列入P6待核，未與既有player_count候選視為同一路徑。
+
+## `0.14.0-offline`：6054F0 狀態更新接入共同八格儲存
+
+[狀態更新候選](../eight_player_candidate_20260927/NATIVE_ROSTER_ARRIVAL.zh-TW.md)已完成離線交付收尾：完整 1111-byte 原 body 產生 1917-byte 候選，19 個 pointer／primary／aux／property 位點改接共同 B；入口檢 binding、counts、map、ordinal、target 與 caller-state。原四列 palette 及 network index≥4 的白色 fallback、三處 current-D 通知、frame／cookie／calls 保留。`arrival` 只是檔名，此函式沒有 append 或 count 遞增的證據。
+
+[5 組／42 次指令驗證](../eight_player_candidate_20260927/verification/native_roster_arrival_tests.json)包含原版完整返回4、候選完整返回21、入口拒絕17；巢狀 FD9AF0 的25次另列。19處靜態核對、17處有效域動態檢查，6056C8／6056D6只有靜態覆蓋。[Source審查](../eight_player_candidate_20260927/verification/native_roster_arrival_review.zh-TW.md)及[接續 oracle 審查](../eight_player_candidate_20260927/verification/native_roster_arrival_test_review.zh-TW.md)已保存；接續重跑42筆紀錄與凍結報告相同。
+
+共同 bundle 為 **16個 roster 函式＋原 player_count 計畫、62個已知區域**，內嵌 v0.13 產物相同。累計 **149組／4,314次套件執行或觀察**，包含原版、拒絕、前綴觀察與預期反例，不能稱為候選成功次數；重跑與巢狀helper不重複計數。15個既有來源與14份舊報告未改，舊套件未重跑。
+
+Sidecar配置／發布／清理、其他reader、caller／callback同步、真實資源、reject handler、hook／Windows unwind仍缺；目前不可安裝，五至八帳號同場任務未驗證。後續P3的[1277920有限調查](roster_mask_reader_findings.zh-TW.md)已固定兩個roster讀取與mask前綴：primary+24h和property+Ch都需改接B；24次原前綴觀察未見mask分支造成後續狀態差異，不列入交付套件數。下一步是明確入口guard／普通missing政策並實作完整reader候選。
+
 ## 目標與目前狀態
 
 依使用者更新的目標文件：完成八個獨立帳號、八名真人在同一任務合作的可安裝Mod，交付原始碼、版本／安裝／移除說明與可核對實測。第五人是中途驗證點。
@@ -42,12 +68,12 @@
 
 | 優先項／成品行為 | 目前證據 | 缺口與下一個具體動作 | 停止追查／通過條件 | 外部依賴 |
 |---|---|---|---|---|
-| P1：額外帳號通過平台加入，對應A | [平台保存結果](REPORT.zh-TW.md#平台建立參數與本機列舉限制)：有八使用者／裝置配置形狀；本機仍有四人guard | 缺具名介面、其他平台房間限制與非同步完成結果。維持已準備的有限介面核對，先定位決定加入結果的回傳／拒絕來源 | 有可辨識的成功／拒絕路徑及其限制；原型階段再以第五帳號確認，最終八帳號通過 | 新live操作須既有或新增明確授權；多人帳號與服務回應 |
-| P2：第5–8名建立原生角色，對應B | [本地建立guard](local_player_creation_gate_findings.zh-TW.md)、[單一介面](spawn_interface_findings.zh-TW.md)已接到EXE+1AE380 | 下游loaded code缺失。第四次單一下游工具已備妥；有明確答覆後才依固定範圍執行，之後先判定allocator與有效handle條件 | 能設計有效角色建立／移除的原生變更；第五人角色在各端可見、可控才算實測通過 | 第四次擷取待答覆，不重問、不執行；後續載入／修改授權及多人 |
-| P3：八份peer／roster與ID映射，對應A/B | [v0.13 十五函式共同候選](../eight_player_candidate_20260927/NATIVE_ROSTER_REGISTRY_UPDATE.zh-TW.md)加入完整 registry 更新與關聯ID查找，同一 B／count 計畫共同核區域；整理與真實 caller 缺口保留 | 下一個有限離線切點是既有 consumer 清單的完整 `6054F0..605947`：核清 network-index property 讀取、其他 roster 陣列、palette／玩家數通知與必要 helper 契約，再接共同 B。足以形成候選或定位具體外部缺口便停止；不展開無關 callee，也不重查已收束的 B54E00／606520。 departure回呼序列化、其他讀者及配置／發布／清理、整理／caller、真實context map與資源、hook／unwind仍缺 | 完整6054F0有限改接、必要契約與有界原指令對照足以形成候選，或定位具體外部缺口即停止；不當成完整生命週期 | 6054F0完整body已保存，可離線分析；平台、角色、同步與多人仍需外部條件 |
+| P1：額外帳號通過平台加入，對應A | [平台保存結果](REPORT.zh-TW.md#平台建立參數與本機列舉限制)與 [native adapter capture](NATIVE_PEER_ADMISSION_ADAPTER.zh-TW.md)：已保存10個 native roots、Party間接槽與八槽 sidecar契約；本機四槽分配仍是現行行為；通用 x64 trampoline scaffold 已在合成目標通過 | 仍需把 mid-function capacity／allocator bridge 接到 host/client sidecar、confirmed通知與PlayFab／Party非同步結果；先以第五帳號驗證，不能把 capture 當平台成功 | 有可辨識的第五人成功／拒絕路徑及其限制；最終八帳號通過 | 多人帳號與服務回應；native hook／unwind 實作 |
+| P2：第5–8名建立原生角色，對應B | [本地建立guard](local_player_creation_gate_findings.zh-TW.md)、[單一介面](spawn_interface_findings.zh-TW.md)及固定 build 的 live capture 已接到 EXE+1AE380；player-creation root 已保存 | 需完成 trampoline 的寄存器／stack contract、player creation dispatch、資源 handle 與 cleanup；目前只有合成 unwind／重定位測試，native plan `executable=false` | 第五人角色在各端可見、可控，並能完整離隊／重連，才算實測通過 | 後續載入／修改授權已給；仍需可驗證的 native executor 與多人帳號 |
+| P3：八份peer／roster與ID映射，對應A/B | [v0.14 十六函式共同候選](../eight_player_candidate_20260927/NATIVE_ROSTER_ARRIVAL.zh-TW.md)加入完整6054F0狀態更新，同一 B／count 計畫共同核區域；整理與真實 caller 缺口保留 | 6054F0狀態更新已納入v0.14。[1277920有限查核](roster_mask_reader_findings.zh-TW.md)已固定完整body與兩個roster讀取，mask迴圈未提供已證拒絕結果。下一動作：在原input+10h計時store前定義guard，同時保留普通missing返回，將primary+24h與property+Ch接共同B，完成原指令對照與caller／helper契約；不擴搜無關callee。 departure回呼序列化、其他讀者及配置／發布／清理、整理／caller、真實context map與資源、hook／unwind仍缺 | 完整1277920有限改接、必要契約與有界原指令對照足以形成候選，或定位具體外部缺口即停止；不當成完整生命週期 | 1277920完整body已保存，可離線分析；平台、角色、同步與多人仍需外部條件 |
 | P4：固定玩家元件及其他玩法資料八份，對應B/C/E | [儲存設計](PLAYER_COMPONENT_RELOCATION_PLAN.zh-TW.md)已區分七個固定容量與兩個可保留的動態元件 | 固定布局逐項完成大小／對齊、建立、搬移、registry副本與cleanup適配；metadata／stack／裝備／tag73／tagDA共同收束 | 每份擴充資料具備完整配套且跨元件索引一致；不以單一writer測試代替完整生命週期 | 離線可先實作／建置；hook時點與執行驗證仍需資料 |
 | P5：節點配置與資源所有權不因八人破壞，對應B生命週期/E穩定性 | owner layout、snapshot validator、preflight 已有候選；[第二S有限來源](indexed_float_double_secondary_findings.zh-TW.md)與[整合時點邊界](native_integration_boundary.zh-TW.md)已收束 | 第二S配置來源及引擎排他仍缺。保留實際占用；只有可接合的新來源／同步證據才重開這兩條支線，不再泛查callee或增加同型模型。ID0需實際count0與資源契約；update返回後只能後驗，不算preflight | 完整共存需求與轉換餘量有根據；實際operations、snapshot與executor處於同一有效執行保護，外部資源恢復可證 | 需要具體來源／scheduler／callback／生命週期證據；新的live操作另需明確授權 |
-| P6：逐玩家更新、UI、音效與rank，對應C/E | 四格stack／metadata、三項rank資源及缺local已列[設計稿](PLAYER_COMPONENT_RELOCATION_PLAN.zh-TW.md)；v0.11 已完成 count 上限8及有效四人 ranges 延伸，v0.12 已共同建置 departure 與 count 計畫 | 同時改接暫存與讀者；為0..7及缺local明確定義rank／音源。departure 的兩個預測通知已有候選政策，但 `94C9C0` 完整 context15calls／通知及真實 profile 尚未端到端執行驗證；真實資源與回呼期間狀態契約仍缺。`60C2A0` 的數值 fallback 不證明四種以外的命名資源存在，不杜撰hash；原 tech-level 權重索引不作玩家數擴容 | 所有已知索引路徑有八份空間與明確缺值行為；下游玩家數與資源對應在真實資料有效，音源及UI在各端實測一致 | 原始碼可離線；實際資源／音源隔離仍需驗證 |
+| P6：逐玩家更新、UI、音效與rank，對應C/E | 四格stack／metadata、三項rank資源及缺local已列[設計稿](PLAYER_COMPONENT_RELOCATION_PLAN.zh-TW.md)；v0.11 已完成 count 上限8及有效四人 ranges 延伸，v0.12 已共同建置 departure 與 count 計畫 | 同時改接暫存與讀者；為0..7及缺local明確定義rank／音源。departure 的兩個預測通知已有候選政策，但 `94C9C0` 完整 context15calls／通知及真實 profile 尚未端到端執行驗證；真實資源與回呼期間狀態契約仍缺。`60C2A0` 的數值 fallback 不證明四種以外的命名資源存在，不杜撰hash；原 tech-level 權重索引不作玩家數擴容。另依[倍率線索](PEER_ADMISSION_PRIORITY.zh-TW.md)固定同build的player_count_multipliers資產與實際consumer，判斷5–8時clamp／fallback或越界；既有94BE10候選尚未證明覆蓋此欄位 | 所有已知索引路徑有八份空間與明確缺值行為；下游玩家數與資源對應在真實資料有效，音源及UI在各端實測一致 | 原始碼可離線；實際資源／音源隔離仍需驗證 |
 | P7：整合第五人原型，對應A–D | 尚無可玩的五人原型 | P1–P6達到足夠證據時整合版本guard、初始化／存取／cleanup；準備具體變更清單及診斷，再做四人基線與第五人全流程 | 加入、生成、相互可見、移動／戰鬥／互動、死亡／增援、離隊／重連、撤離／結算逐項有紀錄 | 載入及修改授權、五位玩家／帳號；目前不能安排 |
 | P8：六至八人與交付，對應A–E完整驗收 | 未開始實測 | 第五人全流程通過後逐步增加人數，驗證狀態一致性、負載、房主轉移與進度；封裝安裝／移除／恢復文件 | 八帳號同場全流程與穩定性記錄齊全；可重現建置、支援版本、安裝及恢復均可核對 | 六至八位玩家／帳號、各客戶端紀錄及執行條件 |
 
@@ -59,10 +85,10 @@ P5不可因這個元件的單元測試通過而標完成，更不能抵銷P1/P2�
 
 ## 授權與等待狀態
 
-- 前三次各一次擷取已使用完畢。
-- 已提出的第四次`EXE+1AE380`擷取目前未見明確答覆；輸出仍不存在。保持原問題待處理。
-- 目前工作限已授權離線分析與工作區候選開發。沒有查詢遊戲程序、載入、注入、寫入程序或修改安裝檔。
-- P3 整理與 append reader 的有限缺口需具體新來源才重開。既有移除、分類、getter、player_count、departure與本輪registry更新候選已完成，未變依賴不重跑。下一個有限離線切點是既有 consumer 清單的完整 `6054F0..605947`：核清 network-index property 讀取、其他 roster 陣列、palette／玩家數通知與必要 helper 契約，再接共同 B。足以形成候選或定位具體外部缺口便停止；不展開無關 callee，也不重查已收束的 B54E00／606520。 本輪到共同建置與有限驗證收束，不啟動下一切點。P5維持需新來源才重開的邊界，P1/P2仍是可行性優先門檻；本輪不重問授權、不執行新capture。
+- 第四次`EXE+1AE380`擷取已獲明確授權並完成；另一次因程序退出而失敗的重新讀取已單獨保存審計，沒有把失敗當成成功證據。
+- 使用者也已授權遊戲程序存取、載入／注入、安裝修改與真實多人測試；仍只在固定 build、可回滾 staging 與 fail-closed gate 下使用。
+- 目前沒有安裝或修改遊戲檔案。live preflight 已核對六份檔案與停止程序，但 native plan `executable=false`，因此安裝 gate 保持阻擋。
+- P3 整理與 append reader 的有限缺口需具體新來源才重開。既有移除、分類、getter、player_count、departure與本輪registry更新候選已完成，未變依賴不重跑。6054F0狀態更新已納入v0.14。[1277920有限查核](roster_mask_reader_findings.zh-TW.md)已固定完整body與兩個roster讀取，mask迴圈未提供已證拒絕結果。下一動作：在原input+10h計時store前定義guard，同時保留普通missing返回，將primary+24h與property+Ch接共同B，完成原指令對照與caller／helper契約；不擴搜無關callee。 2026-09-28使用者已恢復離線工作，完成v0.14收尾後按此清單推進。P5維持需新來源才重開的邊界，P1/P2仍是可行性優先門檻；本輪不重問授權、不執行新capture。
 
 ## 每項研究的開工與結束規則
 

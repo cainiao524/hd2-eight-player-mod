@@ -1,7 +1,7 @@
 {
   "status": "passed",
-  "candidate_version": "0.13.0-offline",
-  "manifest_sha256": "0ce46ba9f2c0ec7fd67787149f5998f9b8b827c29e50ca9418853d0b00776601",
+  "candidate_version": "0.14.0-offline",
+  "manifest_sha256": "b6a7e821233ddf5cceea2675a3f37d267c4d3dff28bfc9303849e38dce94f9fe",
   "source_sha256": {
     "Source/pool_preflight.lua": "46c47ca4a568e5541cc699c370be0b9b20f9b5d89eb21113c2bb21964937aff3",
     "Source/pool_snapshot.lua": "065fa1c7d74f547e6022de492f8be9fe4d713823877ee1936db7ac347097a01c",
@@ -17,7 +17,8 @@
     "Native/roster_getter.py": "3de7432a9c1218ab98f2e92679583cb299c93d4ba8bcb739fea8aa980520ef5d",
     "Native/player_count.py": "d89b5cb7d8c6a574dbb4d1ef24346524c3a9d2cfeae36357a9bf8fd94967d8ab",
     "Native/roster_departure.py": "a0d9a350254955a840a6039795eb42b89ea8f48e86c3ce00b921e3b1c6f165ba",
-    "Native/roster_registry_update.py": "1e97c7e52c6d723fe43824c599cfc27871650dea3fe4357f9fcf14dfaa2edd01"
+    "Native/roster_registry_update.py": "1e97c7e52c6d723fe43824c599cfc27871650dea3fe4357f9fcf14dfaa2edd01",
+    "Native/roster_arrival.py": "2744e367accb26d022807984b8a573d95cc6e9ec15c011c5b403ee187e030771"
   },
   "validation_reports": {
     "verification/pool_preflight_tests.json": {
@@ -194,10 +195,38 @@
       "test_source_hash_matches": true,
       "test_dependency_hashes_match": true,
       "emulator_executions": 87
+    },
+    "verification/native_roster_arrival_tests.json": {
+      "sha256": "3c9d4921951bc6ae2777c0b02f682b36df44853d89c6d58c79fcd2d3e94530ad",
+      "tests": 5,
+      "source_hashes_match": true,
+      "evidence_hashes_match": true,
+      "test_source_hash_matches": true,
+      "test_dependency_hashes_match": true,
+      "emulator_executions": 42,
+      "execution_counts": {
+        "total": 42,
+        "original_complete_return": 4,
+        "candidate": 38,
+        "candidate_complete_return": 21,
+        "candidate_preflight_rejection": 17
+      },
+      "nested_saved_fd9af0_entries_not_added_to_total": 25,
+      "contract_stubs": {
+        "FD9AF0": "Not a stub: captured174-byte body executes a valid supplied context-map hit at ordinal2; its record DWORD returns1234 or7FFF. Entry-sentinel/default and malformed/missing context-map branches are not executed",
+        "interface38+8": "Check RCX global engine context; return synthetic context pointer for next indirect call",
+        "interface40+160": "Check RCX prior context and EDX1234; return synthetic associated object pointer stored by real body in target aux",
+        "color_interface": "Check RCX color context and12-byte stack RGB vector computed by real palette/fallback/SSE operations; record bytes and preserve nonstack memory",
+        "94C9C0": "Check two tag3E listeners in order, UI object/derived record pointer, XMM2/XMM3 inputs and four stack arguments including unchanged D/float1/config; do not execute actual context or resources",
+        "60C2A0": "Check EDX current D; preserve nonstack memory; actual named resources/count helper not executed",
+        "interface10+480": "Check exact player_count literal, EDX current D and R8 interface pointer; normal CALL returns before cookie check, not a tail jump",
+        "2088770": "Check RCX equals supplied synthetic cookie after real prologue XOR/save and epilogue reload/XOR; security-check implementation is not executed",
+        "all_stubs": "Validate RSP%16=8 and shadow space, clobber all volatile GPR/XMM0..5, preserve nonvolatiles and fixture globals/roster; no actual game callback mutation/reentrancy"
+      }
     }
   },
-  "test_groups": 144,
-  "native_emulator_executions": 4272,
+  "test_groups": 149,
+  "native_emulator_executions": 4314,
   "synthetic_native_pair_example": {
     "sha256": "cddeb09c525fd7fabd0902e7fbc3c86055bb0b66f83bb6b87b8ee15b0047f652",
     "in_memory_regeneration_identical": true,
@@ -328,6 +357,13 @@
       "program_sha256": "daa6eba4c77ad7ccf0c85909960bd9056f2b0677840431881c33ba0328575223",
       "syntax": "passed",
       "scope": "Saved complete B54E00 and required 606520; FD9BA0 is test-only original helper, not a third emitted candidate"
+    },
+    "roster_arrival_native_evidence.json": {
+      "sha256": "c3073ba7658599bc662d980397f21bf7a003f56a2b821cdcf4c2341fe05a2e64",
+      "recheck_identical": true,
+      "program_sha256": "923a68c988f5c6f1fc729dd23539da41a1a650637ea79a462b7d2ba9538e5ebe",
+      "syntax": "passed",
+      "scope": "Frozen complete 6054F0 and test-only FD9AF0; existing evidence checked, capture replay not rerun"
     }
   },
   "review_checks_sha256": {
@@ -335,11 +371,12 @@
     "roster_property_producer_native_review_checks.json": "3aab173b5b354f0bc03930535591633d368610c448618b9c7b3775d8c1b25c31",
     "roster_property_consumers_native_review_checks.json": "f2d7f9f695279f20ff271b8239874b6c62295919ca1f8559fbb77b0baefe9d1e"
   },
-  "local_document_links": 641,
+  "local_document_links": 721,
   "documents_sha256": {
     "eight_player_candidate_20260927/NATIVE_PLAYER_COUNT.zh-TW.md": "6fb4a100c53e7ed4fe43ce724c743ad5dedd4ddbf4ffab0f22bf047028b9d78c",
     "eight_player_candidate_20260927/NATIVE_PROPERTY_PAIR.zh-TW.md": "088cde52cd49132ebb90db45ad54c20225632ddb185048431f7fa7f3339baed7",
     "eight_player_candidate_20260927/NATIVE_RECEIVER.zh-TW.md": "ebaa75d8433ed4f8924582e032aed783ac9cc0c0acb4b28b14892127d34f66ec",
+    "eight_player_candidate_20260927/NATIVE_ROSTER_ARRIVAL.zh-TW.md": "e6d5ed208ff31a27ce1d5264ec797cb4d07382403a8b06744f6d3236fe1c937c",
     "eight_player_candidate_20260927/NATIVE_ROSTER_BUNDLE.zh-TW.md": "9c414d7f1fc79dc378a9a6fdcb96eeb915db2444a3a6e8097122ab0ec6a0b61c",
     "eight_player_candidate_20260927/NATIVE_ROSTER_CLASSIFY.zh-TW.md": "fa9befa747fac1fb7db2cea4d7ffcc895a8d1e1a5a331c641d4d0256cb0754bf",
     "eight_player_candidate_20260927/NATIVE_ROSTER_DEPARTURE.zh-TW.md": "f053d696b5fcf47b348f61a6da1039e4e4d442dedc862d69ed8e97d89bb4f88e",
@@ -348,10 +385,12 @@
     "eight_player_candidate_20260927/NATIVE_ROSTER_REGISTRY_UPDATE.zh-TW.md": "b461fbb6aff7eccefbec5fbe9e8c0d410ef486768d5bbb398d4bf6e3702c3460",
     "eight_player_candidate_20260927/NATIVE_ROSTER_REMOVE.zh-TW.md": "2bba10a1f8128078d3bb1595a11248c974a8382194fca02da5a61d5098dbf623",
     "eight_player_candidate_20260927/OWNER_LAYOUT.zh-TW.md": "ee7760ea47df32c74316ac375abdd3d3c51bfe2ba9e8753732055c5f85a810bf",
-    "eight_player_candidate_20260927/README.zh-TW.md": "fec32068699af6ed5dc9cae586b1a22442095a6ea959da2b6ceefc2497bd9579",
+    "eight_player_candidate_20260927/README.zh-TW.md": "c87534eee8bd0ca3379c918d4e7759d3e976059e9e0d7d005dd577ef6838a5da",
     "eight_player_candidate_20260927/SNAPSHOT_CONTRACT.zh-TW.md": "cbbaea7b0bbe5d53452fceb565140bb1aa22ea94e652eb5e242b3e38ae8e2c6b",
     "eight_player_candidate_20260927/verification/native_player_count_review.zh-TW.md": "7cf2b0c940bd4e8f7f71e4c5cab1afbb735fae4c7ae92511d37b60ab72bec3d1",
     "eight_player_candidate_20260927/verification/native_player_count_test_review.zh-TW.md": "4bcc64bf9109b3479544fbd8a8dec34483120a2ae233dd7f9e67f944aaaf59a1",
+    "eight_player_candidate_20260927/verification/native_roster_arrival_review.zh-TW.md": "ff49c7595ba8cc431d18a7c3270941359086721c2b76f98ab000cb497015098a",
+    "eight_player_candidate_20260927/verification/native_roster_arrival_test_review.zh-TW.md": "217b08f89ea375dfeb8689ed04e95455c50ddac5335d1fe8078529f881577104",
     "eight_player_candidate_20260927/verification/native_roster_classify_review.zh-TW.md": "9d40e43c4e8e3be5a234627539b12ae35c0326d7f9c449b431f8094f8b65fdef",
     "eight_player_candidate_20260927/verification/native_roster_classify_test_review.zh-TW.md": "cd4ad5b5d016f1bf2dd24836d39e8a3c8caadd0e96165ff1544361a9fe22c877",
     "eight_player_candidate_20260927/verification/native_roster_departure_review.zh-TW.md": "35291c65e99b738e153850c6fa74f530f8066372df5f9c72ad107678c76a541a",
@@ -368,16 +407,19 @@
     "eight_player_candidate_20260927/verification/native_roster_remove_test_review.zh-TW.md": "7899d5cbbe5f515299a1c604441a2efccc79e6d95fb94d538c4a0dbccb0abb60",
     "eight_player_candidate_20260927/verification/pool_owner_layout_review.zh-TW.md": "e7cec3636d1e95f167c6d7881f0c07d7d2763e258512b4c90aabf860c228de2e",
     "eight_player_candidate_20260927/verification/pool_snapshot_review.zh-TW.md": "6065168a658a81d4e43aa4aac41201709d8890f58d7a82e8c8c4eb2291d279e0",
-    "five_player_feasibility_20260927/IMPLEMENTATION_WORKLIST.zh-TW.md": "060438e4238098c5c8faf11e76c9d4ddcb77a92fcaae870baed0f5efa511ef40",
-    "five_player_feasibility_20260927/PLAYER_CAPACITY_VERIFICATION.zh-TW.md": "5e2765f443ea7daadfd9d3fb4b7c568e6041247b27f49af9f6483c030d0e653a",
-    "five_player_feasibility_20260927/PLAYER_COMPONENT_RELOCATION_PLAN.zh-TW.md": "026f508657b21997f7c443a321b6b52b626c46443e970fe74a7cfbb5c317b3ce",
-    "five_player_feasibility_20260927/REPORT.zh-TW.md": "6ac217aefb7b412bbaca74ca436c8115485486d8aec526363800c8c372024e53",
+    "five_player_feasibility_20260927/IMPLEMENTATION_WORKLIST.zh-TW.md": "adaa3a836d8b4cca1e7730f88d163fc3e25ed263a1c956e358b3d75f463da981",
+    "five_player_feasibility_20260927/PEER_ADMISSION_PRIORITY.zh-TW.md": "453cb5c22067089696dea55728a9848806177f4eae92e9c8253be0dc0dc92909",
+    "five_player_feasibility_20260927/PLAYER_CAPACITY_VERIFICATION.zh-TW.md": "301be8ccc1d21d45c30c94fe93ff9aae31a4f41c11be711178ca56e7f620060d",
+    "five_player_feasibility_20260927/PLAYER_COMPONENT_RELOCATION_PLAN.zh-TW.md": "688505743aa832c05dd879837bdb3a083634075abb01fbdcb84177abcc964d7d",
+    "five_player_feasibility_20260927/REPORT.zh-TW.md": "c95287e2f10546332394b5b8bd22a689910499fa264151a88dc6fb352d0357b6",
     "five_player_feasibility_20260927/indexed_float_double_secondary_findings.zh-TW.md": "22038b3617e199a3d16c445e40171347fb9511a6fe55b375c166c621fb8fc1f3",
     "five_player_feasibility_20260927/indexed_float_pool_double_records_findings.zh-TW.md": "e4a1e3841c71f4ba1071f8d709acf3bf96b9d59372877056ac025f0a011ba67b",
     "five_player_feasibility_20260927/indexed_float_pool_singletons_findings.zh-TW.md": "9b789234917be159b5bad561de35130c3000341605286ff1ecbf08dd6387cb24",
     "five_player_feasibility_20260927/indexed_float_template_zero_findings.zh-TW.md": "61cb73c7f5c866f46aaf7f549a6f2e4d37a781bfe283d17cfbe98d6b17632efd",
     "five_player_feasibility_20260927/native_integration_boundary.zh-TW.md": "6d59be71342c06ac5d4bf673c1ac7d18d33063b4397d4afabf8a9cf02d00f4c5",
     "five_player_feasibility_20260927/roster_append_dispatch_findings.zh-TW.md": "1ce566e39b4d4944447fc7d801c0d43bd7f23650609ba8cbe6bca9b4a43f3466",
+    "five_player_feasibility_20260927/roster_arrival_native_findings.zh-TW.md": "0b9a000b7128b9db6595093d442e2cefd9a76913410688ec3ebd3320bbf82fa5",
+    "five_player_feasibility_20260927/roster_arrival_native_prerequisites.zh-TW.md": "5cec87b2a7e8d1c999a52316cdef341d7d7238577813a3b9a0fe58191292915d",
     "five_player_feasibility_20260927/roster_classify_native_findings.zh-TW.md": "d6c0c2035ad8fb9400475962a146b1a7fc720a50e059c1abe8d9cdc6679ba5fa",
     "five_player_feasibility_20260927/roster_classify_native_prerequisites.zh-TW.md": "d01bde4b3b814b7278bec95cfe45b15b1f5e9c546d62c277e3ec06f6434d1216",
     "five_player_feasibility_20260927/roster_compact_counterexample.zh-TW.md": "58024670efe50e8e2d179945ec0551fed9affb97869d3b2ddf31eb6680018c06",
@@ -392,6 +434,7 @@
     "five_player_feasibility_20260927/roster_getter_native_prerequisites.zh-TW.md": "449110d87310c8e7f827b6c511431acf90bec1ddb2de5a2698388a6d3ce10e48",
     "five_player_feasibility_20260927/roster_insert_native_findings.zh-TW.md": "7e90250b9a940162acf0308dc7eb2b03d0844852c717578e3acea757664ba0f9",
     "five_player_feasibility_20260927/roster_insert_native_prerequisites.zh-TW.md": "0b6b96b80cdc61bacdae55ee064fec911a907e71432d018a2e0e50ab3a814961",
+    "five_player_feasibility_20260927/roster_mask_reader_findings.zh-TW.md": "a60868b3e2b08637e4ecb52c8984aca3c01063e148c60ab56e7ea34de5712c1c",
     "five_player_feasibility_20260927/roster_move_native_findings.zh-TW.md": "5c34fe030c2b6afba78f3ed3ecd631f418d86107b751e1f49f8aab364da179ce",
     "five_player_feasibility_20260927/roster_move_native_prerequisites.zh-TW.md": "794c287f08b6b5fda59cae045a5960e024acfa67d5d249d9c057d6d5942bec77",
     "five_player_feasibility_20260927/roster_player_count_native_findings.zh-TW.md": "e1d289772d47b39ce5822b192a08ede0e6650f709f9d8c88972f1be5cc9375d2",
@@ -411,7 +454,7 @@
   "game_process_access": false,
   "game_execution": false,
   "mod_installed": false,
-  "scope": "This delivery adds v0.13 offline registry update source: complete B54E00 and required606520 use shared eight-slot B at six and two array sites. Roster branch binding/count guards and matched-map validation prevent invalid tag69 aux writes; other registry tags and distinct associated-ID helper semantics remain. The full bundle has fifteen roster functions plus the unchanged player-count patch plan, and its embedded v0.12 departure artifact is identical. Eight new methods passed87 top-level original/candidate/rejection executions with actual saved FD9BA0 and separately declared external-call contracts. Independent source and oracle reviews found no bounded blocking defect. CLI generation was independently byte-identical. All15 candidate sources,14 reports and their71 source/64 evidence/13 test-source/6 dependency references were checked;14 prior sources and13 prior reports are unchanged and old suites were not rerun. Earlier standalone sample regeneration and old research recheck statements remain historical; their saved artifacts were retained. New research evidence/recheck agrees, with replay syntax and exact body identities checked. Document links and fixed objective/completed-capture hashes were checked. No process query/capture, native host execution, installation, game execution or multiplayer validation occurred. Context map/resource contracts, registry and storage lifetime/synchronization, earlier-entry effects, nested rejection integration, remaining readers, initialization/publication/cleanup and the complete eight-account mission objective remain unverified.",
+  "scope": "v0.14 offline 6054F0 state-update delivery. Frozen reports and all their source/evidence/test pins checked; CLI rebuilt byte-identically with unchanged embedded v0.13. Arrival oracle review reran only its five methods and matched all42 frozen execution records. Old suites and historical research replays were not rerun; inherited regeneration statements are historical. No process access, new capture, host native execution, installation or multiplayer validation. This tool checks release files and links, not semantic correctness or eight-account acceptance.",
   "synthetic_native_roster_bundle_example": {
     "sha256": "01aa146ac792512fd78665d1e6b4f3ee79e5453e3d60dff05de0d0631ca25f85",
     "in_memory_regeneration_identical": true,
@@ -452,7 +495,7 @@
     "runtime_reachability_proven": false,
     "decision": "No direct compactor relocation certified. Pending-tail ownership and append dispatch remain unresolved after bounded inspection."
   },
-  "prior_delivery_receipt_sha256": "ab06acc0b216b70813f99104541c9cd9158e07999ffd129e9270b1617cec4b32",
+  "prior_delivery_receipt_sha256": "49543cb5ed13a64421baee652b133fbf8850101a953a7a08b93e484861216d9a",
   "synthetic_native_roster_remove_bundle_example": {
     "sha256": "e57f22e651193abf3fac07b7d5e71442771e14ca9bae812a8b0794f7d302d73f",
     "addresses_sha256": "c653b65a48b6be4eff8d5b4829b883da47e80aa54caeaaf2100dd68b663880be",
@@ -464,7 +507,7 @@
     "host_native_code_executed": false,
     "pending_tail_repair_is_new_candidate_behavior": true
   },
-  "native_execution_count_note": "4272 is total suite executions/observations, not candidate successes. Registry adds 12 complete original baselines (root8/helper4), 49 candidate complete returns (root32/helper17), and 26 candidate rejections (root20/helper6). Nested FD9BA0=114 and original/candidate606520=1/7 are not added. Prior player-count includes26 context-prefix observations; removal includes2 expected original counterexamples and getter includes1 expected original phantom hit. Separate compactor and original departure investigations remain excluded.",
+  "native_execution_count_note": "4314 is total suite executions/observations, not candidate successes. Arrival adds 4 complete original baselines, 21 candidate complete returns and 17 rejections. Its 25 nested FD9AF0 entries and review rerun are not added. Historical prefix observations, original expected counterexamples and rejection cases remain included as documented in v0.13.",
   "synthetic_native_roster_classify_bundle_example": {
     "sha256": "1630e6b0ca7e826be85ea2957c3b2dcfd87f3f63e67e9727e2b3fb6169927172",
     "addresses_sha256": "cddb1d70549de49b3afa824153b9fb0429163fc5d6251f8e29c99b17902addad",
@@ -516,19 +559,18 @@
     "integrated_with_roster_bundle": false
   },
   "current_delivery_pin_checks": {
-    "candidate_sources": 15,
-    "validation_reports": 14,
-    "unchanged_prior_candidate_sources": 14,
-    "unchanged_prior_validation_reports": 13,
-    "report_source_references": 71,
-    "report_evidence_references": 64,
-    "pinned_test_sources": 13,
-    "test_dependency_references": 6,
+    "candidate_sources": 16,
+    "validation_reports": 15,
+    "unchanged_prior_candidate_sources": 15,
+    "unchanged_prior_validation_reports": 14,
+    "report_source_references": 84,
+    "report_evidence_references": 76,
+    "pinned_test_sources": 14,
+    "test_dependency_references": 8,
     "prior_suites_rerun": false,
-    "new_registry_suite_run": true,
+    "arrival_suite_rechecked_during_oracle_review": true,
     "new_bundle_cli_regenerated": true,
-    "embedded_prior_components_rebuilt": true,
-    "embedded_departure_artifact_match": true
+    "embedded_registry_artifact_match": true
   },
   "synthetic_native_roster_departure_bundle_example": {
     "sha256": "6df0fd14f0241426ec84a7f716c24f5d1453fa2e9f8f5747416a7ee5696cd39d",
@@ -555,5 +597,30 @@
     "known_regions": 59,
     "embedded_departure_artifact_identical": true,
     "host_native_code_executed": false
+  },
+  "synthetic_native_roster_arrival_bundle_example": {
+    "sha256": "a9268253612ad82778491308acec824e83a27afb1f9d19313994657f3dc248e0",
+    "addresses_sha256": "e2ca74722a5d6eed3d2ede6eebd1b7130a2a931e9316a92333f170559fc552a6",
+    "cli_regeneration_byte_identical": true,
+    "root_size_bytes": 1917,
+    "roster_function_count": 16,
+    "known_regions": 62,
+    "embedded_registry_artifact_identical": true,
+    "host_native_code_executed": false
+  },
+  "delivery_verifier_sha256": "07c6b7c670a8d221cb5914df0623a14606a36e9779279c0c5e92fde8aeb9cc97",
+  "followup_mask_reader_investigation": {
+    "files_sha256": {
+      "roster_mask_reader_replay.py": "05a577f63cb5d95a0c71d36b9187fcbcc6ee65f1cf892ed35ee3d7ef3ec22e34",
+      "roster_mask_reader_evidence.json": "596a95bec61e765c4a5758c55b762c803e2a13b35d59f05788431d1cf0c55344",
+      "roster_mask_reader_probe.py": "b046c24264e3b303e16a2d1ab3b4133b26dc57817cabf072abefc8e519c21ce0",
+      "roster_mask_reader_probe.json": "aa59c852470fae85a328bd85933bae056d1da7a5602ce8f231da1cf37c33fe9e",
+      "roster_mask_reader_findings.zh-TW.md": "a60868b3e2b08637e4ecb52c8984aca3c01063e148c60ab56e7ea34de5712c1c"
+    },
+    "prefix_observations": 24,
+    "nested_leaf_calls": 48,
+    "full_function_executed": false,
+    "candidate_emitted": false,
+    "included_in_delivery_suite_totals": false
   }
 }

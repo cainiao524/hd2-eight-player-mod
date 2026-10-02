@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "package_id": "hd2-eight-player-native-bridge",
+  "release": "0.15.0-staging",
+  "artifact_kind": "reversible_native_staging",
+  "activation_allowed_only_when": {
+    "steam_build": 25480438,
+    "exe_version": "1.8.46015.0",
+    "native_plan_executable": true,
+    "native_payload_present": true,
+    "multiplayer_verified": false
+  },
+  "game_files": {
+    "bin/helldivers2.exe": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+    "data/game/game.dll": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+    "bin/PartyWin.dll": "de34667c2f7084013d9c03cd5d1cb5dc3321bc36bb616a845e35534e4e7995e0",
+    "bin/PlayFabMultiplayerWin.dll": "95bc5f958e519f612b479de4227f3bdffaba9b2b8de987eb3f7991960b8ced17",
+    "data/game/dl_library.dl_typelib": "f446aa15c11871bada4839f4c8ea890cea3b46405d09954468319ef61b092c5d",
+    "data/game/generated_entities.dl_bin": "7df1a07e90c61e0b8398ecbc5c088074655900943bf1cd7e09f69bccedec4a2a"
+  },
+  "rollback_manifest": "rollback.json",
+  "diagnostics_output": "diagnostics.json",
+  "loader_boundary": "Lua/data loader cannot implement native Session, Party, peer admission or player creation changes"
+}

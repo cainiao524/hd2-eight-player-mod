@@ -1,0 +1,50 @@
+{
+  "schema": "native_peer_admission_adapter_verification_v1",
+  "status": "passed_contract_and_authorized_readonly_capture",
+  "steam_build": 25480438,
+  "test_command": "C:\\Program Files\\Python312\\python.exe -B -m unittest -v five_player_feasibility_20260927/test_native_peer_admission_adapter.py",
+  "tests": {
+    "total": 6,
+    "passed": 6,
+    "failed": 0
+  },
+  "artifacts": {
+    "native_peer_admission_adapter.py": "bd4dae912209ca91e26a249c0f112b865dc8c989104aaafa63fcd579477f087c6",
+    "test_native_peer_admission_adapter.py": "2d819340489f7d246da96de4b1f7c68ae053bf791855e85ebf0eac5c9c8a9377",
+    "NATIVE_PEER_ADMISSION_ADAPTER.zh-TW.md": "5ac99d6a57dc73f32f0e9b986174482279aeed96f17c77565f0b0ad3dc0a7736",
+    "live_native_session_capture_20261002.json": "de140d85af44417f5442eebf8fac9ff5b2bfce48c694e5ab0cddcf2245a4fa46",
+    "native_peer_admission_plan_20261002.json": "525ab78e78c0a7af8ad16eca218a96d3e89c70cdb178cdfc0a79619b2ad009b3"
+  },
+  "capture": {
+    "authorized": true,
+    "process_read": true,
+    "process_write": false,
+    "hook_installed": false,
+    "game_files_modified": false,
+    "modules": [
+      "helldivers2.exe",
+      "game.dll",
+      "PartyWin.dll",
+      "PlayFabMultiplayerWin.dll"
+    ],
+    "native_roots": 10,
+    "party_indirect_slots_resolved": 6
+  },
+  "plan": {
+    "executable": false,
+    "multiplayer_verified": false,
+    "sidecar_slots": 8,
+    "requires": [
+      "trampoline_unwind_registration",
+      "host_sidecar_lifetime",
+      "client_sidecar_lifetime",
+      "confirmed_peer_dispatch",
+      "player_creation_gate"
+    ]
+  },
+  "limits": [
+    "A live memory capture resolves current indirect pointers but does not prove server acceptance.",
+    "The game remains unmodified; no native adapter is installed.",
+    "No fifth-through-eighth account mission was started or verified."
+  ]
+}

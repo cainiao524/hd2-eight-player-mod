@@ -64,4 +64,18 @@ Preflight 只核當時的 member 狀態，不提供目標記憶體可讀性、ma
   --output NEW-roster-state-update-bundle.json
 ```
 
-本輪執行測試及獨立 oracle 審查將在報告凍結後連結。即使局部機器碼測試通過，也仍缺 B 的配置／初始化／遷移／發布／清理、所有 roster reader／writer、caller 與 callback 生命週期、真實資產、hook／unwind／reject handler、遊戲執行及五至八帳號同場任務驗收。此候選目前不可安裝。
+## 已凍結的測試與審查
+
+[五組測試／42次頂層執行](verification/native_roster_arrival_tests.json)通過：原版完整返回4、候選完整返回21、入口拒絕17；巢狀原FD9AF0共25次，另列不加總。19處靜態核對中17處有效域有動態地址／寬度／條件斷言，6056C8／6056D6只有靜態覆蓋。四格配對、八格、flags、pending／D0、palette fallback、通知current-D、ABI與地址邊界均有有限案例。
+
+[Source審查](verification/native_roster_arrival_review.zh-TW.md)和[2026-09-28接續oracle審查](verification/native_roster_arrival_test_review.zh-TW.md)已保存。後者重跑本套42筆執行，與凍結報告完全相同，未覆寫報告或重跑舊套件。替身、有限context map、未覆蓋分支及整合前提均列於審查。此候選已納入`0.14.0-offline`；合計149組／4,314次套件執行或觀察，非候選成功次數。
+
+即使局部機器碼測試通過，也仍缺 B 的配置／初始化／遷移／發布／清理、所有 roster reader／writer、caller 與 callback 生命週期、真實資產、hook／unwind／reject handler、遊戲執行及五至八帳號同場任務驗收。此候選目前不可安裝。
+
+離線交付一致性可從工作區根目錄重核：
+
+```powershell
+& 'C:\Program Files\Python312\python.exe' -B eight_player_candidate_20260927/verify_v014_delivery.py
+```
+
+此工具核固定報告及來源／依賴指紋、文件連結與CLI重建bundle，不重跑舊套件。`--write`僅供相關文件確定後重建本機交付收據；它不發布GitHub版本或啟用Mod。

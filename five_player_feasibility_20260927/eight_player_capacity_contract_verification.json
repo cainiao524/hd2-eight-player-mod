@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "status": "passed_offline_only",
+  "target_profile": {
+    "build": 25480438,
+    "logical_max_players": 8,
+    "storage_slots": 8,
+    "valid_network_index": "0..7"
+  },
+  "python_unittest": {
+    "tests": 13,
+    "passed": 13,
+    "failed": 0,
+    "errors": 0,
+    "source_sha256": "ddf62d48e3ae6f0c33ab325370d8bee5622c67e3ba3757891dd534e6158a5192",
+    "test_sha256": "009eaaf83ba4f05b3f14e9b72db3988f020e5f2a1102caa53c42a14df3409470",
+    "observation_source_sha256": "3ce85c76315686c2a99569171ae9c1290fc9cffb6ec51e18b5cdc8886972e3f8",
+    "observation_test_sha256": "4a301cf34aa9bc26d7b9f77ada637c7ab7a8e3462f2a8a9289db7882f10372f4"
+  },
+  "lua_smoke": {
+    "status": "passed",
+    "source_sha256": "dfdf755043331dbbf036e2bcd39e569393a08b256067d5d580bba3ce39b6d499",
+    "checks": [
+      "indices 0..7 reserve and bind",
+      "index 8 rejects",
+      "duplicate index rejects",
+      "reverse map and stable ordinal validate",
+      "remove preserves hole",
+      "stale generation rejects delayed bind",
+      "lookup and snapshot are detached"
+    ]
+  },
+  "documentation_sha256": "837ee952dd2394d7be4707f6865319cc1b106312252a96149a422789870dbd84",
+  "game_process_accessed": false,
+  "game_execution": false,
+  "mod_installed": false,
+  "multiplayer_verified": false,
+  "native_adapter_present": false,
+  "live_readiness": false
+}

@@ -1,0 +1,203 @@
+{
+  "schema": "hd2_public_runtime_bridge_cchusky_audit_v1",
+  "audit_date": "2026-10-02",
+  "target_build": {
+    "steam_build": 25480438,
+    "exe_version": "1.8.46015.0",
+    "exe_sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+    "game_dll_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e"
+  },
+  "scope": "Read-only source audit of a public checkout. No source copied into the Mod payload; no game-file modification, injection, installation or multiplayer claim.",
+  "repository": {
+    "name": "CChusky/hd2-tools",
+    "url": "https://github.com/CChusky/hd2-tools",
+    "commit": "5d509fad01ce4d16465d991363d30cb4a4f47dfe",
+    "commit_date": "2026-08-31T06:21:16+08:00",
+    "tag": "v1.0.3",
+    "license": "PolyForm Noncommercial License 1.0.0",
+    "source_root": "public_research_20261002/CChusky_hd2_tools"
+  },
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 4326,
+      "sha256": "bb6b2428c0803d201490b33a0b6eb0e8f38c89ac9bc8b1938d297ece79866402"
+    },
+    {
+      "path": "hook/hd2_raycast_hook.c",
+      "bytes": 182604,
+      "sha256": "3f214601a11a2c988b7435ffdb65d68800778e48b1def01b62dd21b39d582ff2"
+    },
+    {
+      "path": "hook/watcher.c",
+      "bytes": 14435,
+      "sha256": "1585ec5e4875c02d5450ac418d049f3e30b65405c355d50e32e0c2039b562846"
+    },
+    {
+      "path": "hook/dll_injector.c",
+      "bytes": 5420,
+      "sha256": "ce02048ffbf172dd65124adddd005cdc23707137757bc617d539e2405301e919"
+    },
+    {
+      "path": "overlay/shm_proto.h",
+      "bytes": 3480,
+      "sha256": "3fae5589e37dda02f1a1e371c38d2d32be6d4bca44b78feed45632630226b169"
+    }
+  ],
+  "findings": {
+    "runtime_hook": {
+      "status": "observed",
+      "file": "hook/hd2_raycast_hook.c",
+      "lines": [
+        2,
+        463,
+        3872
+      ],
+      "meaning": "x64 Lua pcall hook and trampoline; execution observation/overlay path only."
+    },
+    "entity_observer": {
+      "status": "observed",
+      "file": "hook/hd2_raycast_hook.c",
+      "lines": [
+        2030,
+        2044,
+        2045,
+        2056,
+        2058,
+        2065,
+        2668,
+        2670,
+        2672
+      ],
+      "meaning": "World.units/entities are enumerated for entity/raycast labels; this is not a player creation or network replication call."
+    },
+    "confirmed_peer": {
+      "status": "not_found_in_public_runtime_sources",
+      "searched_files": [
+        "hook/hd2_raycast_hook.c"
+      ],
+      "tokens": [
+        "confirmed-peer",
+        "confirmed_peer",
+        "peer",
+        "roster"
+      ],
+      "matches": {
+        "confirmed-peer": [],
+        "confirmed_peer": [],
+        "peer": [],
+        "roster": []
+      }
+    },
+    "player_creation": {
+      "status": "not_found_in_public_runtime_sources",
+      "searched_files": [
+        "hook/hd2_raycast_hook.c"
+      ],
+      "tokens": [
+        "player creation",
+        "spawn_entity",
+        "player_manager"
+      ],
+      "matches": {
+        "player creation": [],
+        "spawn_entity": [],
+        "player_manager": []
+      }
+    },
+    "cleanup_lifecycle": {
+      "status": "not_found_as_player_lifecycle",
+      "searched_files": [
+        "hook/hd2_raycast_hook.c"
+      ],
+      "tokens": [
+        "despawn",
+        "remove_player",
+        "package unload"
+      ],
+      "matches": {
+        "despawn": [],
+        "remove_player": [],
+        "package unload": []
+      },
+      "note": "Local mesh crash-skip/cache housekeeping is unrelated to peer/player cleanup."
+    },
+    "external_injection": {
+      "status": "observed",
+      "files": [
+        "hook/watcher.c",
+        "hook/dll_injector.c"
+      ],
+      "lines": {
+        "hook/watcher.c": {
+          "OpenProcess": [
+            22,
+            30,
+            35,
+            57,
+            58,
+            65,
+            88,
+            91,
+            95,
+            99,
+            110,
+            113,
+            293,
+            313
+          ],
+          "VirtualAllocEx": [
+            194,
+            196
+          ],
+          "WriteProcessMemory": [
+            200,
+            201
+          ],
+          "CreateRemoteThread": [
+            213,
+            216
+          ]
+        },
+        "hook/dll_injector.c": {
+          "OpenProcess": [
+            50,
+            52
+          ],
+          "VirtualAllocEx": [
+            58,
+            60
+          ],
+          "WriteProcessMemory": [
+            66,
+            67
+          ],
+          "CreateRemoteThread": [
+            83,
+            86
+          ]
+        }
+      },
+      "meaning": "Injector writes a DLL path and starts a remote thread; it supplies no game-specific peer/player ABI and is not adopted as production bridge."
+    }
+  },
+  "decision": {
+    "confirmed_peer_bridge_found": false,
+    "player_creation_bridge_found": false,
+    "cleanup_bridge_found": false,
+    "compilable_observer_reusable": false,
+    "installable": false,
+    "live_ready": false,
+    "multiplayer_verified": false,
+    "reusable_alternative": "Use only the bounded Lua/entity observer shape as diagnostics input after a separate version-gated native bridge exists; keep host/client session writer and player lifecycle out of this source.",
+    "source_build_declared": true,
+    "observer_shape_reusable": true,
+    "note": "The repository declares a build entry for an observer hook; this audit did not compile it, and it is not a session/player bridge."
+  },
+  "build_check": {
+    "source_build_script": "hook/build_clean.bat",
+    "toolchain_available_in_audit": false,
+    "compiled_in_this_audit": false,
+    "reason": "No MSVC cl/vswhere toolchain was available in the audit shell; source/build-script inspection only."
+  }
+}

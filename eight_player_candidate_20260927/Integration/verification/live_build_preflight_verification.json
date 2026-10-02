@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "report_kind": "read_only_live_build_preflight_verification",
+  "tool": "Integration/live_build_preflight.py",
+  "test_runner": "python -m unittest -v eight_player_candidate_20260927.Integration.test_live_build_preflight",
+  "tests": {
+    "count": 3,
+    "passed": 3,
+    "failed": 0
+  },
+  "contract": {
+    "steam_build": 25480438,
+    "exe_version": "1.8.46015.0",
+    "required_file_count": 6,
+    "reparse_points_rejected": true,
+    "running_process_blocks_staging": true,
+    "unknown_process_state_blocks_staging": true,
+    "native_plan_executable_required": true,
+    "native_plan_multiplayer_verified_must_remain_false": true
+  },
+  "observed_installation_preflight": {
+    "game_root": "F:/Game/Steam/steamapps/common/Helldivers 2",
+    "build_verified": true,
+    "files_verified": true,
+    "process_running": false,
+    "native_peer_admission_plan_valid": true,
+    "native_peer_admission_plan_executable": false,
+    "staging_preflight_passed": false,
+    "status": "blocked",
+    "blocker": "native_peer_admission_plan_not_executable",
+    "live_ready": false,
+    "installation_authorized": false,
+    "multiplayer_verified": false,
+    "installation_performed": false
+  },
+  "pinned_game_files": {
+    "exe": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+    "game_dll": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+    "party": "de34667c2f7084013d9c03cd5d1cb5dc3321bc36bb616a845e35534e4e7995e0",
+    "playfab_multiplayer": "95bc5f958e519f612b479de4227f3bdffaba9b2b8de987eb3f7991960b8ced17",
+    "data_typelib": "f446aa15c11871bada4839f4c8ea890cea3b46405d09954468319ef61b092c5d",
+    "data_entities": "7df1a07e90c61e0b8398ecbc5c088074655900943bf1cd7e09f69bccedec4a2a"
+  },
+  "artifact_sha256": {
+    "Integration/live_build_preflight.py": "c13ae224822c59b50fc3cef0ad083e021a20a711cf263be3b976fc787914678c",
+    "Integration/test_live_build_preflight.py": "21fd5876f128d8bbd10282aa104b53f75fc64669a1b8b8223dbaf55e97f36120",
+    "Integration/LIVE_BUILD_PREFLIGHT.zh-TW.md": "cf8f68d8d3016403833fa720daac5be8d7c111ebc3a778f1b15441299fa565e2",
+    "Integration/verification/live_build_preflight_20261002.json": "1d3f9705d5a47e1168e54b778ba105a4e996110decf5335cd4c3aac3e0f5c92e"
+  }
+}

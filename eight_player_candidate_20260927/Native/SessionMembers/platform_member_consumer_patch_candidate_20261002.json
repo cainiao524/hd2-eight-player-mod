@@ -1,0 +1,98 @@
+{
+  "status": "template_sidecar_consumer_patch_candidate",
+  "steam_build": 25480438,
+  "entry": {
+    "rva": "0x1093590",
+    "original_end_exclusive": "0x10936df",
+    "captured_body_sha256": "940aa51124b7e6cab994cd4916165e4197ea2baf1df9427c642e7e67a1693c88",
+    "captured_body_bytes": 335,
+    "entry_patch_span": 14,
+    "expected_entry_bytes": "48896c242056415641574883ec20",
+    "expected_entry_bytes_sha256": "1fbaffebf25fb39bf936677d1076631de98d118dda2a012e881214288b03c963",
+    "rollback_bytes": "48896c242056415641574883ec20",
+    "patch_bytes_template": "ff25000000000000addeff7f0000",
+    "patch_encoding": "FF 25 00 00 00 00 + absolute uint64 stub address"
+  },
+  "stub": {
+    "address_template": "0x7fffdead0000",
+    "size_bytes": 270,
+    "code_hex": "5355565741544155415641574883ec284885c90f84df0000004889cb48b80120addeff7f0000ffd04885c00f84c70000004989c4458b6c24404183fd080f87b500000048b80220addeff7f00004889d9ffd0440fb6f8488b3b4885ff0f848e00000080bba61b0000000f84890000004585ed0f848000000048b80320addeff7f00004889d9ffd04889c6bd010000004533f6453bf50f834c0000004b8b14f44839f20f843700000048b80420addeff7f00004889f94989d8ffd04885c00f841c0000004889c148b80520addeff7f0000ffd085c00f94c00fb6c04121c7ffc541ffc6e9abffffff413bed0f85080000004489f8e905000000b8ffffffff4883c428415f415e415d415c5f5e5d5bc3",
+    "code_sha256": "eb3a04356878c0f470e94c1ac45e84312edd82d9e0166f24e586359c005b38ca",
+    "abi": {
+      "input": {
+        "RCX": "owner/platform state"
+      },
+      "output": {
+        "EAX": "-1 or 0/1 signed status"
+      },
+      "resolver": "RCX=owner; RAX=sidecar or 0",
+      "mode": "RCX=owner; EAX=0/1",
+      "identity": "RCX=owner; RAX=local platform ID",
+      "lookup": "RCX=platform object; RDX=member ID; R8=owner context; RAX=token or 0",
+      "status": "RCX=token; EAX=0 means valid"
+    },
+    "callbacks_template": {
+      "resolver": "0x7fffdead2001",
+      "mode": "0x7fffdead2002",
+      "identity": "0x7fffdead2003",
+      "lookup": "0x7fffdead2004",
+      "status": "0x7fffdead2005"
+    },
+    "sidecar": {
+      "ids_offset": "0x00",
+      "count_offset": "0x40",
+      "max_count": 8
+    }
+  },
+  "unwind": {
+    "registration": "RtlAddFunctionTable for stub; RtlDeleteFunctionTable on rollback",
+    "prologue_size": 17,
+    "unwind_info_address_template": "0x7fffdead1000",
+    "unwind_info_hex": "0111090011420c0f0a0e080d060c04070306020501030000",
+    "runtime_function": {
+      "begin": "0x7fffdead0000",
+      "end": "0x7fffdead010e",
+      "unwind": "0x7fffdead1000"
+    },
+    "saved_nonvolatile": [
+      "RBX",
+      "RBP",
+      "RSI",
+      "RDI",
+      "R12",
+      "R13",
+      "R14",
+      "R15"
+    ],
+    "stack_allocation": 40
+  },
+  "continuation": {
+    "mode": "full_replacement",
+    "forward_target": null,
+    "reason": "continuing into 0x109359e would execute the original four-slot reader",
+    "rollback_resume": "0x1093590",
+    "caller_return": "stub restores nonvolatiles and returns to the original caller"
+  },
+  "rollback": {
+    "restore_rva": "0x1093590",
+    "restore_bytes": "48896c242056415641574883ec20",
+    "verify_before_restore_sha256": "1fbaffebf25fb39bf936677d1076631de98d118dda2a012e881214288b03c963",
+    "flush_instruction_cache": true,
+    "remove_function_table": true,
+    "restore_page_protection": true,
+    "atomic_install_required": true
+  },
+  "verification": {
+    "source_evidence": "eight_player_candidate_20260927\\Native\\SessionMembers\\platform_member_consumer_disasm_20261002.json",
+    "runtime_verified": false,
+    "installable": false,
+    "game_execution": false,
+    "multiplayer_verified": false
+  },
+  "limits": [
+    "All callback and code addresses are template sentinels; none identifies a live game symbol.",
+    "The patch intentionally bypasses the original body and has no forward continuation.",
+    "An owner-lifetime-safe resolver, callback ABI binding, and production hook registration remain unresolved.",
+    "This artifact does not write, inject, or call the game process."
+  ]
+}

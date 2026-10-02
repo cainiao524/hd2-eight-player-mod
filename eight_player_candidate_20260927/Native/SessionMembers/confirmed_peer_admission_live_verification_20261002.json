@@ -1,0 +1,39 @@
+{
+  "schema": "confirmed_peer_admission_live_verification_v1",
+  "steam_build": 25480438,
+  "status": "passed_static_live_abi_verification",
+  "test_methods_run": 3,
+  "failure_count": 0,
+  "error_count": 0,
+  "result": {
+    "entry_rva": "0x108c760",
+    "end_exclusive": "0x108cd7c",
+    "body_bytes": 1564,
+    "body_sha256": "633d40a8f3815a1451064a62260f6657524ff5159d5b0c48e803ee883a150f4d",
+    "semantic_sites": 8
+  },
+  "artifacts": {
+    "confirmed_peer_admission_live_abi.py": "347d572ce157b3d377bfa463394f239700c2a8d5b639ac6b2a8f89f8d1425045",
+    "confirmed_peer_admission_live_abi_20261002.json": "63e83127361b6cc09b179f3807c022fac44992177f9a8b5a6c60ba25d87c6b23",
+    "verify_confirmed_peer_admission_live_abi.py": "e1d8e4dcb0401a10d37ecb8af773a83994f172a86a868ffe861c51d1b9025bc8",
+    "confirmed_peer_admission_sidecar_adapter.py": "5e718f8f008b10d5910121d8bf9f776a4f3a730917a8fcb845126090fc8b7e9c",
+    "test_confirmed_peer_admission_sidecar_adapter.py": "4b52a160e4ffb71ba752c6aa2c6fba51840276c4cd791f327712ca59547ed21e",
+    "CONFIRMED_PEER_ADMISSION_20261002.zh-TW.md": "07a87516385c7826b577cf12a9d91b70dfa2500de04f065f694862d60b78ceb1"
+  },
+  "live_capture": "five_player_feasibility_20260927/native_admission_confirmed_peer_live_20261002_r3.json",
+  "production": {
+    "installable": false,
+    "runtime_verified": false,
+    "game_execution": true,
+    "multiplayer_verified": false,
+    "game_files_modified": false,
+    "calls_made": false,
+    "writes_made": false,
+    "blockers": [
+      "host/session tables at +0x20/+0x40 and side-event table remain four-slot",
+      "host capacity and index allocator have independent four-slot bounds",
+      "client receiver, serializer, migration and cleanup ABIs are not proven for eight",
+      "no native patch or injection was performed"
+    ]
+  }
+}

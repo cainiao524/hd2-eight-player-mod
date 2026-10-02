@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-10-02T07:04:33.3688337Z",
+  "command": "python -B -m unittest discover -s eight_player_candidate_20260927/Package -p test_*.py -v",
+  "exit_code": 0,
+  "tests": 4,
+  "passed": true,
+  "output": "test_exact_hashes_and_payload_are_required_before_stage (test_stage_package.StagePackageTests.test_exact_hashes_and_payload_are_required_before_stage) ... ok\ntest_non_executable_plan_blocks_and_does_not_create_stage (test_stage_package.StagePackageTests.test_non_executable_plan_blocks_and_does_not_create_stage) ... blocked: activation gate blocked: native_plan_not_executable, game_root_missing, native_payload_missing\nok\ntest_plan_build_mismatch_is_fail_closed (test_stage_package.StagePackageTests.test_plan_build_mismatch_is_fail_closed) ... ok\ntest_stage_refuses_output_inside_game_root (test_stage_package.StagePackageTests.test_stage_refuses_output_inside_game_root) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.056s\n\nOK"
+}

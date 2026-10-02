@@ -1,0 +1,106 @@
+{
+  "schema": "ep_runtime_probe_report_v1",
+  "build": {
+    "steam_build": 25480438,
+    "game_exe_version": "1.8.46015.0",
+    "host_join_rva": "0x108bc70",
+    "host_join_prologue_bytes": "405553564154488d6c24e94881ecc8000000",
+    "host_join_prologue_sha256": "8deecd0b4075eee3e436db6d5787ba68feb5ade0b9401ce1eee9814995309624"
+  },
+  "scope": "records an externally copied host-join entry frame; no process injection, no game call, no game write",
+  "abi_evidence": {
+    "calling_convention": "Windows x64",
+    "rcx": "host object; saved by game at [rbp-0x59]",
+    "rdx": "context/status pointer; saved at [rbp-0x69] and moved to r12",
+    "r8": "request list pointer; saved at [rbp-0x71] and moved to rsi",
+    "r9": "request container/count pointer; saved at [rbp-0x51]; [r9] is read as request count",
+    "entry_rsp": "return address is at [rsp] before the game prologue",
+    "stack_capture": "caller-supplied copy, maximum 16 qwords; probe never dereferences rsp",
+    "source_documents": [
+      {
+        "path": "five_player_feasibility_20260927/join_handler_root_disasm.json",
+        "sha256": "89ebd93a31969569fcc5efc163f875ae0c5194e9b7860b10a60385dc1e39285f",
+        "scope": "entry prologue and argument saves"
+      },
+      {
+        "path": "five_player_feasibility_20260927/join_handler_followup.json",
+        "sha256": "ada912d87263a38dcb3cff8a2efa840b535f927d699a70365ee2a55d0b2c1327",
+        "scope": "host layout and request count observations"
+      },
+      {
+        "path": "five_player_feasibility_20260927/live_native_sites_20261002_5.json",
+        "sha256": "3785f94b3f230af2ae09a8fe9dd7047113a1bd93a270126193c9396a149f0d4c",
+        "scope": "fixed build live site bytes, read-only capture"
+      }
+    ]
+  },
+  "recording": {
+    "fixed_capacity": 32,
+    "stack_words": 16,
+    "start_stop": "ep_probe_start clears records; ep_probe_stop disables recording",
+    "failure_modes": [
+      "build mismatch",
+      "site RVA mismatch",
+      "profile mismatch",
+      "full buffer",
+      "inactive context"
+    ]
+  },
+  "exports": {
+    "read_only_site_validation": "ep_probe_validate_site",
+    "entry_frame_record": "ep_probe_record",
+    "snapshot": "ep_probe_snapshot",
+    "game_rva_installer": false
+  },
+  "test": {
+    "command": "ep_runtime_probe_test.exe",
+    "exit_code": 0,
+    "marker": "ep_runtime_probe_synthetic_passed",
+    "scope": "synthetic memory only; no game.dll loaded or modified"
+  },
+  "production": {
+    "executable": false,
+    "multiplayer_verified": false,
+    "game_files_modified": false,
+    "injection_performed": false,
+    "blockers": [
+      "external observer or reviewed entry hook must supply copied frame",
+      "probe does not implement peer admission or player creation",
+      "five-to-eight account lifecycle remains untested"
+    ]
+  },
+  "files": {
+    "build_x64.bat": {
+      "size": 556,
+      "sha256": "169dfed33620e9647ec817db132c6c091c3dcf26fcc4c485579e90de655fbacf"
+    },
+    "ep_runtime_probe.h": {
+      "size": 2826,
+      "sha256": "27f9c9fbb0d52b2fd355ec4100b2829037b62dcc6ec1f892d9082e8f7c7205ca"
+    },
+    "ep_runtime_probe.cpp": {
+      "size": 6144,
+      "sha256": "da52a4d7130a7534e7b872334b076840d6dc7bf0b1435d5e9142105442f80b5c"
+    },
+    "ep_runtime_probe_test.cpp": {
+      "size": 3248,
+      "sha256": "f68cbb014cb1fddc1fa2a758531199cd85d4a878ee47dd97c01212625a0441c6"
+    },
+    "ep_runtime_probe.dll": {
+      "size": 105984,
+      "sha256": "a7e8380046b5d43e3e2e03ab336009ffa1708dc75c6956200bd46c12db889d54"
+    },
+    "ep_runtime_probe_test.exe": {
+      "size": 144384,
+      "sha256": "12d76b1cd3023147d33b07decbe659b80d72ac0a0486d5c57bf9a2a4cf3fd8d4"
+    },
+    "README.zh-TW.md": {
+      "size": 2087,
+      "sha256": "8f731a91e3663ad354fe0c13cff24a8651dfc254555d3af0761425193d931530"
+    },
+    "test_runtime_probe.py": {
+      "size": 1228,
+      "sha256": "3967037aff6ef803902c423cfd968dcef1b82844b81654d39d16da7fa46cbd44"
+    }
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "schema": "platform_member_state_update_four_site_semantics_v1",
+  "steam_build": 25480438,
+  "source_artifact": "platform_member_state_update_disasm_20261002.json",
+  "source_body_sha256": "929b6b1a3163e7b405d92d90d44c19dd4b2dc3d592115d2bb3e0383a1e719a69",
+  "site_count": 14,
+  "sites": [
+    {
+      "rva": "0x10939c2",
+      "asm": "mov dword ptr [rdi + 0x1b9c], 4",
+      "class": "state_enum",
+      "confidence": "high",
+      "semantic": "writes state value 4 after an indirect status result equals the fourth branch",
+      "independent_eight": false,
+      "required_action": "preserve enum semantics; do not change to 8"
+    },
+    {
+      "rva": "0x10939ce",
+      "asm": "mov dword ptr [rdi + 0x1bac], 4",
+      "class": "state_enum",
+      "confidence": "high",
+      "semantic": "writes terminal/error state value 4 before common cleanup",
+      "independent_eight": false,
+      "required_action": "preserve enum semantics; do not change to 8"
+    },
+    {
+      "rva": "0x1093a96",
+      "asm": "add ecx, 4",
+      "class": "resource_index_adjustment",
+      "confidence": "medium",
+      "semantic": "adds a fixed metadata/index offset before the platform-object factory call at 0x1093a99; no member-buffer or count operand is involved",
+      "independent_eight": false,
+      "required_action": "keep 4 unless the factory ABI is separately recovered"
+    },
+    {
+      "rva": "0x1093ada",
+      "asm": "mov r8d, 4",
+      "class": "allocator_or_factory_argument",
+      "confidence": "medium",
+      "semantic": "third argument to 0x173b8d0 while constructing a platform-side object; preceding arguments are a temporary object and rbx+1, not owner member storage",
+      "independent_eight": false,
+      "required_action": "do not change without 0x173b8d0 ABI proof"
+    },
+    {
+      "rva": "0x1093bcc",
+      "asm": "cmp dword ptr [rdi + 0x1bac], 4",
+      "class": "state_enum",
+      "confidence": "high",
+      "semantic": "tests state value 4 before timer/transition update",
+      "independent_eight": false,
+      "required_action": "preserve enum comparison; do not change to 8"
+    },
+    {
+      "rva": "0x1093c91",
+      "asm": "cmp eax, 4",
+      "class": "member_capacity_gate",
+      "confidence": "high",
+      "semantic": "caps the result of the platform enumeration call before writing owner+0x1bb0",
+      "independent_eight": false,
+      "required_action": "rewrite together with destination/count and sidecar ownership; changing this compare alone is unsafe"
+    },
+    {
+      "rva": "0x1093c96",
+      "asm": "mov dword ptr [rdi + 0x1bb0], 4",
+      "class": "member_capacity_gate",
+      "confidence": "high",
+      "semantic": "stores the four-member cap in the inline owner count",
+      "independent_eight": false,
+      "required_action": "rewrite count storage to sidecar and preserve owner control-field layout"
+    },
+    {
+      "rva": "0x1093cb0",
+      "asm": "mov r8d, 4",
+      "class": "member_buffer_capacity_argument",
+      "confidence": "high",
+      "semantic": "capacity argument for the primary platform member enumeration callback writing to owner+0x1b58",
+      "independent_eight": false,
+      "required_action": "rewrite destination to sidecar ids[8] and pass 8 only after callback ABI accepts it"
+    },
+    {
+      "rva": "0x1093d1e",
+      "asm": "mov r8d, 4",
+      "class": "member_buffer_capacity_argument",
+      "confidence": "high",
+      "semantic": "capacity argument for the alternate platform member enumeration callback writing to owner+0x1b58",
+      "independent_eight": false,
+      "required_action": "rewrite destination to sidecar ids[8] and pass 8 only after alternate callback ABI accepts it"
+    },
+    {
+      "rva": "0x1093d72",
+      "asm": "mov r14d, 4",
+      "class": "state_enum",
+      "confidence": "high",
+      "semantic": "maps mode enum 3 to state value 4; neighboring branches use values 2, r15, and 5",
+      "independent_eight": false,
+      "required_action": "preserve state mapping; do not change to 8"
+    },
+    {
+      "rva": "0x1093fd3",
+      "asm": "cmp eax, 4",
+      "class": "status_enum",
+      "confidence": "high",
+      "semantic": "four-way status switch for a later callback; neighboring cases are 2 and 3",
+      "independent_eight": false,
+      "required_action": "preserve status switch; do not change to 8"
+    },
+    {
+      "rva": "0x1094105",
+      "asm": "cmp eax, 4",
+      "class": "status_enum",
+      "confidence": "high",
+      "semantic": "tests callback result value 4 before releasing a platform resource and clearing owner+8",
+      "independent_eight": false,
+      "required_action": "preserve result code and cleanup behavior; do not change to 8"
+    },
+    {
+      "rva": "0x10942ac",
+      "asm": "mov edx, 4",
+      "class": "diagnostic_or_callback_argument",
+      "confidence": "medium",
+      "semantic": "passes literal 4 to 0x4ed920 while formatting a temporary diagnostic/callback record; not a member count field",
+      "independent_eight": false,
+      "required_action": "keep 4 until 0x4ed920 ABI and record schema are recovered"
+    },
+    {
+      "rva": "0x1094338",
+      "asm": "cmp eax, 4",
+      "class": "status_enum",
+      "confidence": "high",
+      "semantic": "tests callback result value 4 before releasing a platform resource and returning through common cleanup",
+      "independent_eight": false,
+      "required_action": "preserve result code and cleanup behavior; do not change to 8"
+    }
+  ],
+  "independent_eight_sites": [],
+  "coherent_capacity_group": ["0x1093c91", "0x1093c96", "0x1093cb0", "0x1093d1e"],
+  "required_non_immediate_redirects": ["0x1093ca9", "0x1093cfe", "0x1093d17", "0x1093dba", "0x10943a4", "0x10943c9"],
+  "verification": {
+    "runtime_verified": false,
+    "installable": false,
+    "multiplayer_verified": false
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "schema": "platform_member_consumer_verification_v1",
+  "build": 25480438,
+  "entry_rva": "0x1093590",
+  "status": "passed",
+  "test_methods_run": 7,
+  "failure_count": 0,
+  "error_count": 0,
+  "artifacts": {
+    "platform_member_consumer.py": "3de481fcabee5deff75d12f3714ddd5fe173550dfbbc054d1c2233a852c806f0",
+    "test_platform_member_consumer.py": "d8eefbc731b8a565f5a891c5e2d5d6759e60e56db95d578e8ed71ba8cdf7174d",
+    "platform_member_consumer_abi_20261002.json": "7edcf9cfa7a8116c3e513e86d1f720304fe3efb8f82166779aa42fe3fc934fe5"
+  },
+  "production": {
+    "installable": false,
+    "game_process_accessed": false,
+    "game_files_modified": false,
+    "multiplayer_verified": false,
+    "executable": false,
+    "blockers": [
+      "resolver and sidecar owner lifetime are not bound to a real game callback",
+      "all four-slot readers/writers and player creation remain unresolved",
+      "Party acceptance and five-to-eight account mission acceptance are unverified"
+    ]
+  }
+}

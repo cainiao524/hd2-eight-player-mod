@@ -1,0 +1,78 @@
+{
+  "status": "template_sidecar_leaf_reader_patch_candidate",
+  "steam_build": 25480438,
+  "entry": {
+    "rva": "0x10936e0",
+    "original_end_exclusive": "0x109375e",
+    "captured_body_bytes": 126,
+    "captured_body_sha256": "61b38874c67e6ea40b0c3fe3ca8ec80895d0f86fee14addf112d13b0a60eca65",
+    "entry_patch_span": 14,
+    "expected_entry_bytes": "8b81781b000085c078040f95c0c3",
+    "expected_entry_bytes_sha256": "4bbf5f8b5a2d4c984554c0abd2f26caba92d77e5fc0037b44c06da6cf03b1290",
+    "rollback_bytes": "8b81781b000085c078040f95c0c3",
+    "patch_bytes_template": "ff25000000000000aedeff7f0000"
+  },
+  "stub": {
+    "address_template": "0x7fffdeae0000",
+    "size_bytes": 89,
+    "code_hex": "534883ec2048894c242048b80120addeff7f0000ffd04885c00f842f0000004889c38b434485c00f880b0000000f95c00fb6c0e91b000000488b4c242048b80220addeff7f0000ffd0e905000000b8ffffffff4883c4205bc3",
+    "code_sha256": "801ba0dd4996e8b78c0cdc95687224bf0e40587c527bc0f8c6219d2a4d71c81b",
+    "abi": {
+      "input": {
+        "RCX": "owner/platform state"
+      },
+      "output": {
+        "EAX": "0/1 for non-negative sidecar result; mode fallback or -1"
+      },
+      "resolver": "RCX=owner; RAX=sidecar or 0",
+      "sidecar_result": "signed int32 at sidecar+0x44",
+      "mode": "RCX=owner; EAX=0/1 fallback predicate"
+    },
+    "callbacks_template": {
+      "resolver": "0x7fffdead2001",
+      "mode": "0x7fffdead2002"
+    }
+  },
+  "unwind": {
+    "registration": "RtlAddFunctionTable for stub; RtlDeleteFunctionTable on rollback",
+    "prologue_size": 5,
+    "unwind_info_address_template": "0x7fffdeae1000",
+    "unwind_info_hex": "0105020005320103",
+    "runtime_function": {
+      "begin": "0x7fffdeae0000",
+      "end": "0x7fffdeae0059",
+      "unwind": "0x7fffdeae1000"
+    },
+    "saved_nonvolatile": [
+      "RBX"
+    ],
+    "stack_allocation": 32
+  },
+  "continuation": {
+    "mode": "full_replacement",
+    "forward_target": null,
+    "reason": "the original leaf embeds the old owner result and mode path; sidecar result is explicit",
+    "rollback_resume": "0x10936e0",
+    "caller_return": "stub restores RBX and returns to original caller"
+  },
+  "rollback": {
+    "restore_rva": "0x10936e0",
+    "restore_bytes": "8b81781b000085c078040f95c0c3",
+    "verify_before_restore_sha256": "4bbf5f8b5a2d4c984554c0abd2f26caba92d77e5fc0037b44c06da6cf03b1290",
+    "flush_instruction_cache": true,
+    "remove_function_table": true,
+    "restore_page_protection": true,
+    "atomic_install_required": true
+  },
+  "verification": {
+    "runtime_verified": false,
+    "installable": false,
+    "game_execution": false,
+    "multiplayer_verified": false
+  },
+  "limits": [
+    "Resolver and mode callback addresses are template sentinels.",
+    "sidecar+0x44 is a new signed result field; production owner/sidecar synchronization is unresolved.",
+    "No process write, injection, or live callback call is performed."
+  ]
+}

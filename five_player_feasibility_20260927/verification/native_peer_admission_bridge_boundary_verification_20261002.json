@@ -1,0 +1,27 @@
+{
+  "schema": "hd2_native_peer_admission_bridge_boundary_verification_v1",
+  "status": "passed_static_boundary_checks",
+  "steam_build": 25480438,
+  "boundary_sha256": "83e9327964e7e4a7ad6f16c7d049c515482f1d619522038dd33e81acd3167743",
+  "capture_sha256": "de140d85af44417f5442eebf8fac9ff5b2bfce48c694e5ab0cddcf2245a4fa46",
+  "native_plan_sha256": "41d267264dec890f7a0633af1faf6730d013695dbfd3281121c9de2e0a7794cd",
+  "midgate_plan_sha256": "edb857c043188b786fdb5f5052ca3a40298313269c04d09a249752a193c9e968",
+  "checks": {
+    "capture_required_game_sites": 10,
+    "native_plan_blocked": true,
+    "midfunction_capacity_boundary": true,
+    "allocator_four_bound_boundary": true,
+    "confirmed_peer_dispatch_binding_closed": false,
+    "production_patch_emitted": false,
+    "process_accessed": false,
+    "multiplayer_verified": false
+  },
+  "unresolved": [
+    "No verified runtime PlayFab/Party acceptance result for a fifth account.",
+    "No closed hash-to-receiver dispatcher binding for confirmed-peer event 0x4804fcf4.",
+    "No complete register/stack/unwind/continuation ABI for the host capacity and allocator mid-function sites.",
+    "No proven owner lifetime, reentrancy, rollback, migration, and cleanup contract for host/client sidecars.",
+    "No production player-creation callback/resource lifetime contract for network indexes 4..7.",
+    "No fifth-account same-mission test; all current bridge and sidecar tests are synthetic/offline."
+  ]
+}

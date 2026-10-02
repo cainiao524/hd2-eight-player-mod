@@ -1,0 +1,95 @@
+{
+  "schema": "hd2_live_native_resolver_receipt_v1",
+  "build": 25480438,
+  "pid": 38588,
+  "scope": "authorized read-only live call-edge and pointer preflight; no writes, calls, hooks, install, or multiplayer test",
+  "status": {
+    "read_only": true,
+    "calls_made": false,
+    "writes_made": false,
+    "hooks_installed": false,
+    "resolver_closed": false,
+    "executable": false,
+    "multiplayer_verified": false
+  },
+  "observations": {
+    "fixed_native_sites": 6,
+    "executable_pages_read": 22271,
+    "memory_bytes_read": 91222016,
+    "direct_call_edges": 27,
+    "confirmed_peer_hash": "0x4804FCF4",
+    "confirmed_peer_hash_live_hits": ["game.dll+0xBE4982"],
+    "platform_member_consumer_callers": ["game.dll+0x1092F4E", "game.dll+0x10944FC"],
+    "platform_member_state_update_callers": ["game.dll+0x108F078", "game.dll+0x134E44A", "game.dll+0x13F788A"],
+    "api_root_page_qwords": 289,
+    "api_root_loaded_image_targets": {"helldivers2.exe": 173, "lua51.dll": 103},
+    "api_root_external_heap_targets": 0,
+    "private_registry_pointer_hash_hits": 0,
+    "generic_send_dispatcher": {
+      "rva": "0xBDE430",
+      "size": 673,
+      "sha256": "ab22276e39bd854e07e369533ff043f1b8c5b9afd03d2da4a81c0b5d219861c5",
+      "reread_equal": true,
+      "disk_raw_sha256": "0eea50f70266c473e3cc7053beb52437086f0f4982aea8e8dc2955f4140f910e",
+      "disk_raw_matches_live": false,
+      "disk_raw_interpretation": "diagnostic only; relocation/load differences not resolved"
+    }
+  },
+  "artifacts": {
+    "tool": {
+      "path": "tools/scan_live_callers.py",
+      "sha256": "16096b62dc4e221db6e6e8beb4caaeedfdebb9de65cbf401a7e53374e4817d10"
+    },
+    "dispatcher_tool": {
+      "path": "tools/capture_live_dispatcher_data.py",
+      "sha256": "ed7b4b709c80a77ffdd22f0e7f484e59104a97978bfc4210a154bffd2bf7e13e"
+    },
+    "private_scan_tool": {
+      "path": "tools/scan_live_private_registry.py",
+      "sha256": "c79356a9ac45cfc4b2ef1e0b8e996f6c01807124ad781774da2b489949892a9d"
+    },
+    "call_edges": {
+      "path": "live_native_call_edges_20261002.json",
+      "sha256": "fae3e35d0a1f579cde7f87942dc69b2d6b0457a71583676f83f497de6e6e7daf"
+    },
+    "native_sites": {
+      "path": "live_native_sites_20261002_6.json",
+      "sha256": "472a559bf5f54327a7aa1e7f4602bff3f859e74b31c36484fb63111af61d3893"
+    },
+    "interface_probe": {
+      "path": "interface_probe_live_20261002_2.json",
+      "sha256": "7020cb1265b1272d3fc4eaa74b37ff659207268d364a5629291afcaa60bf95f0"
+    },
+    "spawn_probe": {
+      "path": "spawn_interface_probe_live_20261002_2.json",
+      "sha256": "9f6c4a90373586fa7a9253dcf287593279eff4d1515bbc7dbdf630b857f6f32c"
+    },
+    "dispatcher_data": {
+      "path": "live_dispatcher_data_20261002.json",
+      "sha256": "49a13e498af9a649d23eaad8f650f4285a14e35d1fe27cb8b13b8805549a1392"
+    },
+    "dispatcher_data_v2": {
+      "path": "live_dispatcher_data_20261002_2.json",
+      "sha256": "d8a3437e77a84051a6a04170dd05e7011968985ab4a54a44b5244d3b4cd4eb34"
+    },
+    "dispatcher_data_v3": {
+      "path": "live_dispatcher_data_20261002_3.json",
+      "sha256": "6916cb8f4616fef0f7dc3a506f6169e294e53d3ea1420a05e69ffcb338c79111"
+    },
+    "dispatcher_data_v4": {
+      "path": "live_dispatcher_data_20261002_4.json",
+      "sha256": "931aaa7728f72581442fda65a4cd80d66fd3e8670caee73401c533db7a7e539d"
+    },
+    "private_registry_scan": {
+      "path": "live_private_registry_20261002.json",
+      "sha256": "f23e2afd0dffa908a6469c90717b1be46cf26268dac532128907ee434012793c"
+    }
+  },
+  "unresolved": [
+    "hash-to-receiver writable dispatcher binding for 0x4804FCF4",
+    "native sidecar owner lifetime, migration, rollback, cleanup and quiescence",
+    "complete host capacity/index allocator continuation ABI",
+    "real player creation/resource callback for network indexes 4..7",
+    "five-to-eight independent-account same-mission evidence"
+  ]
+}

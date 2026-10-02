@@ -1,0 +1,109 @@
+{
+  "status": "recovered_adjacent_member_abis",
+  "steam_build": 25480438,
+  "capture_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "source_files": {
+    "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+  },
+  "functions": [
+    {
+      "rva": "0x1092e60",
+      "end_exclusive": "0x1092f63",
+      "body_sha256": "337667006beecb7e40e381a76ffdcb10ebd4e539c4330e43494febd49d965abf",
+      "abi": {
+        "input": {
+          "RCX": "owner/platform state"
+        },
+        "output": "caller treats return as void; EAX is not a stable public result",
+        "writes": {
+          "owner+0x1b58": "member IDs, uint64 stride 8",
+          "owner+0x1bb0": "member count, capped at 4 in the original",
+          "owner+0x1b78": "consumer result when non-negative"
+        },
+        "calls": [
+          "API root +0xf8 / vtable +0x138 with destination owner+0x1b58 and capacity 4",
+          "alternate API +0x148 / callback +0x58 with destination owner+0x1b58 and capacity 4",
+          "0x1093590 with RCX=owner"
+        ]
+      }
+    },
+    {
+      "rva": "0x1093590",
+      "end_exclusive": "0x10936df",
+      "body_sha256": "940aa51124b7e6cab994cd4916165e4197ea2baf1df9427c642e7e67a1693c88",
+      "abi": {
+        "input": {
+          "RCX": "owner/platform state"
+        },
+        "output": {
+          "EAX": "signed status -1 or 0/1"
+        },
+        "inline_fields": {
+          "owner+0x00": "platform object/handle",
+          "owner+0x1ba6": "ready byte",
+          "owner+0x1b58+8*i": "member ID",
+          "owner+0x1bb0": "member count"
+        }
+      },
+      "sidecar_replacement": "platform_member_consumer.py"
+    },
+    {
+      "rva": "0x10936e0",
+      "end_exclusive": "0x109375e",
+      "body_sha256": "61b38874c67e6ea40b0c3fe3ca8ec80895d0f86fee14addf112d13b0a60eca65",
+      "abi": {
+        "input": {
+          "RCX": "owner/platform state"
+        },
+        "output": {
+          "EAX": "boolean-like reader of owner+0x1b78, with mode guard"
+        },
+        "reads": [
+          "owner+0x1b78",
+          "mode flag target 0x3326340 + 0xac4d9",
+          "mode enum target 0x3326e48 + 0x04"
+        ]
+      },
+      "confidence": "static leaf; not covered by the bounded unwind table"
+    },
+    {
+      "rva": "0x10937a0",
+      "end_exclusive": "0x10945d8",
+      "body_sha256": "929b6b1a3163e7b405d92d90d44c19dd4b2dc3d592115d2bb3e0383a1e719a69",
+      "abi": {
+        "input": {
+          "RCX": "owner/platform state"
+        },
+        "output": "state update routine; callers do not consume a stable return value",
+        "count_driven_reads": [
+          "owner+0x1bb0 controls the member loop",
+          "owner+0x1b58+8*i is read at 0x10943a4",
+          "API root +0xf8 / vtable +0x118 resolves each member ID"
+        ],
+        "direct_writes_relevant_to_sidecar": [
+          "owner+0x1b58+8*i",
+          "owner+0x1bb0",
+          "owner+0x1b78",
+          "owner+0x1b7c",
+          "owner+0x1b80",
+          "owner+0x1b84"
+        ]
+      }
+    }
+  ],
+  "production_connection": {
+    "required": [
+      "replace 0x1092e60 destination/count contract with sidecar storage",
+      "replace 0x1093590 inline reader with the recovered predicate over sidecar IDs",
+      "redirect 0x10936e0 and all 0x10937a0 count-driven readers/writers",
+      "preserve owner+0x1b78..0x1b84 control fields and owner lifetime"
+    ],
+    "current_state": "candidate only; no hook, process write, injection, or online verification"
+  },
+  "verification": {
+    "runtime_verified": false,
+    "installable": false,
+    "multiplayer_verified": false
+  }
+}

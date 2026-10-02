@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "status": "passed_offline_only",
+  "test_methods_run": 6,
+  "passed": 6,
+  "failed": 0,
+  "errors": 0,
+  "source_body_sha256": "aecf466c012f2e9ba64787a5108b1807753f55166b484d7a0c21c71a21e5d1ca",
+  "evidence_sha256": "596a95bec61e765c4a5758c55b762c803e2a13b35d59f05788431d1cf0c55344",
+  "native_emitter_sha256": "0c8ad665c6e450e83fb2db69096a2b923fe0ac326cc2ccf4046e14f25e93b618",
+  "test_sha256": "e28d2ad78d21434fb6defff7c0b3995ca12d9b9158c25b7c4f335f7c45e45685",
+  "bundle_code_sha256": "08468df30a49fbf8bacb94d4259f53ff51ef2b5b05e43a2264cf54d5a6115b52",
+  "bundle_size_bytes": 2029,
+  "game_process_accessed": false,
+  "game_execution": false,
+  "mod_installed": false,
+  "multiplayer_verified": false,
+  "native_hook_installed": false,
+  "scope": [
+    "full body relocation and source fingerprint",
+    "shared-B primary/property operand offsets",
+    "binding and null-input pre-dereference guards",
+    "ordinary map-miss fallback stores",
+    "bounded mask-loop prefix through 0x1277AA3",
+    "reproducible synthetic bundle"
+  ],
+  "limits": [
+    "Synthetic Unicorn RAM only; no game process or installation",
+    "Reject handler, cookie implementation, later callbacks, B lifetime and unwind remain external contracts",
+    "No session/peer admission, player-index producer, UI/AI, or multiplayer mission validation"
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "schema": "platform_member_state_update_verification_v1",
+  "steam_build": 25480438,
+  "status": "passed_exact_state_update_evidence",
+  "test_methods_run": 7,
+  "failure_count": 0,
+  "error_count": 0,
+  "result": {
+    "body_sha256": "929b6b1a3163e7b405d92d90d44c19dd4b2dc3d592115d2bb3e0383a1e719a69",
+    "instruction_count": 819,
+    "owner_field_sites": 71,
+    "four_immediate_sites": 14,
+    "semantics_site_count": 14,
+    "capacity_group_sites": [
+      "0x1093c91",
+      "0x1093c96",
+      "0x1093cb0",
+      "0x1093d1e"
+    ]
+  },
+  "artifacts": {
+    "platform_member_state_update_disasm.py": "460006b021c0e40f9a29f82a35102042f75ab2a519de6c2d02e55b0632e26e89",
+    "verify_platform_member_state_update.py": "b2c71eadb6f217aefe35aa2700600f4673ba3bed6f1a2b0aeb26102c28277375",
+    "test_platform_member_state_update.py": "5322c5f5bf940737e423643706329bf48f932d273e9cf3a10c72a631fe2e0603",
+    "platform_member_state_update_disasm_20261002.json": "a438da2d8f5fe3a806f0b6df0fb734c35725a591572337ab9aa803de73705ce9",
+    "PLATFORM_MEMBER_STATE_UPDATE_20261002.zh-TW.md": "d2108b9e9ed7dbe7b1b2b7f57171705e1bba3d09f8ff72b745fe3f8342211a16",
+    "platform_member_state_update_four_site_semantics_20261002.json": "75d7e749b41c0f99a9eab37cf83ddc921ef793b822b3e0d9dce2d6630bfe8dfc",
+    "platform_member_state_update_sidecar_adapter.py": "56fcb2793696ddd938890c6e8118964c33dbf18a6279aef82a52c31c261f648e",
+    "test_platform_member_state_update_sidecar_adapter.py": "9659bb42db8f20e1a08b586468b6b07eecff08688198f305b5fee4d637a9e6cd"
+  },
+  "production": {
+    "installable": false,
+    "runtime_verified": false,
+    "game_execution": false,
+    "multiplayer_verified": false,
+    "game_files_modified": false,
+    "blockers": [
+      "0x10937a0 is a 3640-byte state machine, not a bounded leaf",
+      "owner-keyed sidecar lifetime and all inline reader/writer redirects are unresolved",
+      "indirect callback and cleanup ABI/unwind/reentrancy are unresolved",
+      "no process write, injection, or live multiplayer verification was performed"
+    ]
+  }
+}

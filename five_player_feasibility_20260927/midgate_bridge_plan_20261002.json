@@ -1,0 +1,41 @@
+{
+  "schema": "hd2_midfunction_bridge_plan_v1",
+  "steam_build": 25480438,
+  "module": "game",
+  "scope": "static instruction-boundary plan from authorized loaded-image capture; no executable patch",
+  "capacity_gate": {
+    "rva": "0x108c18f",
+    "entry_kind": "mid_function",
+    "first_instruction_bytes": "418bc6493941580f95c0ffc04d39b1900000008d48010f44c84d39b1c8000000",
+    "count_prefix_length": 32,
+    "count_prefix_continuation": "0x108c1b5",
+    "four_constant": {"rva": "0x108c1b5", "bytes": "b904000000", "replacement_intent": "sidecar_capacity_base"},
+    "original_branch": {"compare_rva": "0x108c1ba", "branch_rva": "0x108c1bf", "taken": "0x108c1db", "fallthrough": "0x108c1c1"},
+    "required_stub_contract": [
+      "preserve r12/r13/r14/rbp/r9 and live stack locals",
+      "obtain sidecar capacity using current owner and count in eax",
+      "set ecx=sidecar_capacity-eax and reproduce cmp ecx,r13d",
+      "branch to original taken/fallthrough continuation",
+      "keep original return and exception/unwind behavior"
+    ]
+  },
+  "allocator_gate": {
+    "rva": "0x108c3d8",
+    "entry_kind": "mid_function_loop",
+    "loop_bound_instruction": {"rva": "0x108c3e2", "bytes": "83f904", "meaning": "cmp ecx,4"},
+    "write_instruction": {"rva": "0x108c3ee", "bytes": "42c684080001000001", "meaning": "set host+0x100+index flag"},
+    "required_stub_contract": [
+      "allocate a free sidecar index 0..7 while retaining stable native index",
+      "write returned index to caller record at [rdx+0x14]",
+      "set sidecar state before returning to loop continuation",
+      "preserve holes on departure and reject duplicate generation"
+    ]
+  },
+  "status": {
+    "safe_to_apply_constant_patch": false,
+    "safe_to_use_standard_entry_detour": false,
+    "requires_custom_register_stub": true,
+    "requires_sidecar_owner_contract": true,
+    "requires_live_fifth_peer_test": true
+  }
+}

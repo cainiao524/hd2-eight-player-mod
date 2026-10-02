@@ -1,5 +1,15 @@
 # 《Helldivers 2》五人加入／八人同場 Mod：可行性研究
 
+## `0.14.0-offline`：6054F0 狀態更新接入共同八格儲存
+
+[狀態更新候選](../eight_player_candidate_20260927/NATIVE_ROSTER_ARRIVAL.zh-TW.md)已完成離線交付收尾：完整 1111-byte 原 body 產生 1917-byte 候選，19 個 pointer／primary／aux／property 位點改接共同 B；入口檢 binding、counts、map、ordinal、target 與 caller-state。原四列 palette 及 network index≥4 的白色 fallback、三處 current-D 通知、frame／cookie／calls 保留。`arrival` 只是檔名，此函式沒有 append 或 count 遞增的證據。
+
+[5 組／42 次指令驗證](../eight_player_candidate_20260927/verification/native_roster_arrival_tests.json)包含原版完整返回4、候選完整返回21、入口拒絕17；巢狀 FD9AF0 的25次另列。19處靜態核對、17處有效域動態檢查，6056C8／6056D6只有靜態覆蓋。[Source審查](../eight_player_candidate_20260927/verification/native_roster_arrival_review.zh-TW.md)及[接續 oracle 審查](../eight_player_candidate_20260927/verification/native_roster_arrival_test_review.zh-TW.md)已保存；接續重跑42筆紀錄與凍結報告相同。
+
+共同 bundle 為 **16個 roster 函式＋原 player_count 計畫、62個已知區域**，內嵌 v0.13 產物相同。累計 **149組／4,314次套件執行或觀察**，包含原版、拒絕、前綴觀察與預期反例，不能稱為候選成功次數；重跑與巢狀helper不重複計數。15個既有來源與14份舊報告未改，舊套件未重跑。
+
+Sidecar配置／發布／清理、其他reader、caller／callback同步、真實資源、reject handler、hook／Windows unwind仍缺；目前不可安裝，五至八帳號同場任務未驗證。後續P3的[1277920有限調查](roster_mask_reader_findings.zh-TW.md)已固定兩個roster讀取與mask前綴：primary+24h和property+Ch都需改接B；24次原前綴觀察未見mask分支造成後續狀態差異，不列入交付套件數。下一步是明確入口guard／普通missing政策並實作完整reader候選。
+
 日期：2026-09-27。範圍：**同一場任務中出現第五位真實玩家**，作為八人同場的第一個門檻。本報告使用公開的一手資料、本機既有檔案，以及使用者分別同意並手動啟動遊戲後的三次限定唯讀擷取。擷取完成於香港時間 12:02:53、12:15:19 與 12:49:36；沒有修改遊戲檔案或程序，也沒有執行第五人連線測試。
 
 目前完整目標為**完成並驗證 HD2 八人同場 Mod**。第五人是中途驗證步驟；研究工具、可載入 addon 或靜態分析通過都不算完成八人 Mod。此目標尚未完成。
@@ -50,15 +60,15 @@
 
 [8 組／87 次頂層測試](../eight_player_candidate_20260927/verification/native_roster_registry_update_tests.json)分為 **12 次原版完整基準**（root8、helper4）、**49 次候選完整返回**（root32、helper17）及 **26 次候選拒絕**（root20、helper6）。tag69 實際執行保存的 FD9BA0；tag73 實際進入原版或新606520。其他tags的資源calls由明示 ABI／順序／副作用替身提供。全部八格、dense-only／普通miss、aux狀態保留、bit旗標、其他tag、混合registry、拒絕恢復、地址與rel32邊界均有有界案例；沒有新增remove/getter串接執行。巢狀helper不重複加入頂層數。
 
-目前累計 **144 組／4,272 次套件觀測**；總量保留舊版26次context prefix、原版基準、拒絕與預期原反例，並非4,272次候選成功。[Source審查](../eight_player_candidate_20260927/verification/native_roster_registry_update_review.zh-TW.md)及[oracle審查](../eight_player_candidate_20260927/verification/native_roster_registry_update_test_review.zh-TW.md)各自記錄範圍。原14個候選來源及13份報告保持原指紋，未重跑舊套件；新CLI建置逐byte等同保存的完整bundle。
+v0.13當時累計 **144 組／4,272 次套件觀測**；總量保留舊版26次context prefix、原版基準、拒絕與預期原反例，並非4,272次候選成功。[Source審查](../eight_player_candidate_20260927/verification/native_roster_registry_update_review.zh-TW.md)及[oracle審查](../eight_player_candidate_20260927/verification/native_roster_registry_update_test_review.zh-TW.md)各自記錄範圍。原14個候選來源及13份報告保持原指紋，未重跑舊套件；新CLI建置逐byte等同保存的完整bundle。
 
-這不提供引擎同步、有效context map／backing／resource、hook／unwind或nested reject handler。較早registry entries可在較晚拒絕前產生副作用；零容量／full-miss context map的原null缺口亦保留，不能視為任意輸入皆安全。下一有限離線切點是既有完整 `6054F0..605947` 的八格讀取與palette／玩家數通知，固定全部array／必要helper後收束；本輪不啟動該追查。平台加入、角色建立與五至八帳號任務全流程仍未驗證。
+這不提供引擎同步、有效context map／backing／resource、hook／unwind或nested reject handler。較早registry entries可在較晚拒絕前產生副作用；零容量／full-miss context map的原null缺口亦保留，不能視為任意輸入皆安全。該輪6054F0切點已由上述v0.14接入；後續reader見最新工作清單。平台加入、角色建立與五至八帳號任務全流程仍未驗證。
 
 ## 結論
 
 `0.8.0-offline` 已完成[兩種原生移除與九函式共同建置](../eight_player_candidate_20260927/NATIVE_ROSTER_REMOVE.zh-TW.md)。原 helper 在 missing ID 時回 0，原 dense 移除在 D<T 時又會漏保留 pending 尾端；候選先查存在性／ordinal／目標 prefix flag，再保留原 prefix／dense 搬移並補上 tracked-tail→new-pending-start。這是新增候選語義，支援全部有序八格分段；沒有用 D==T 限制代替混合分段。9 組測試含 2,293 次執行（候選 2,141、原四格基準 150、預期原反例 2），通過所有分段／目標、原 ABI、拒絕與八筆追加→移除→再追加→接收串接。獨立 source／oracle 審查完成；外部 ownership／caller／同步仍未證，尚不可安裝。
 
-[追加表派送的有限查核](roster_append_dispatch_findings.zh-TW.md)已確認整理更新鏈 `FDC780→576CF0→60CC70`，但尚未找到第一張 `F0B6F0` 表的實際 reader。已證建立路徑只讀第二張 `F0C110` 表，無法據此閉合 pending 所有權。此支線取得具體計算地址來源或新保存資料前不重複泛查；移除、分類、getter 和離隊前處理已有各自離線候選。`94BE10` 玩家數與 `605950/606820` 改接共同 B 的局部資料流已固定；跨回呼的 count/state 穩定性仍是外部整合契約。v0.13已將B54E00及必要606520完整改接；下一有限P3切點是完整6054F0，pending 生命週期及其餘 alias 仍需具體證據。
+[追加表派送的有限查核](roster_append_dispatch_findings.zh-TW.md)已確認整理更新鏈 `FDC780→576CF0→60CC70`，但尚未找到第一張 `F0B6F0` 表的實際 reader。已證建立路徑只讀第二張 `F0C110` 表，無法據此閉合 pending 所有權。此支線取得具體計算地址來源或新保存資料前不重複泛查；移除、分類、getter 和離隊前處理已有各自離線候選。`94BE10` 玩家數與 `605950/606820` 改接共同 B 的局部資料流已固定；跨回呼的 count/state 穩定性仍是外部整合契約。v0.13已將B54E00及必要606520完整改接；6054F0已納入v0.14，下一有限P3切點是1277920，pending 生命週期及其餘 alias 仍需具體證據。
 
 **已核對房主加入、客戶端 peer 記錄、原生玩家 roster 的四人限制，以及擴至第五筆時的相鄰欄位衝突。** 另有實際 gameplay／復活更新只建立四個候選。兩次限定唯讀擷取已定位並分析兩條平台介面路徑；「設定加四」的結構與 PlayFab Party 網路使用者／裝置上限配置高度吻合，但具名函式綁定與服務回應仍未取得。因此單純更改大廳顯示、好友房間或一個 `MaxPlayers` 數值，不能構成五人可玩的證據。第五人能否通過平台房間／遊戲服務、在所有客戶端生成並同步、完成任務與結算，目前都是**未驗證**。截至本輪，沒有可交付的五人或八人 Mod。
 

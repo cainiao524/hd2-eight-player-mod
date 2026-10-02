@@ -1,0 +1,41 @@
+{
+  "status": "passed",
+  "test_methods_run": 5,
+  "failure_count": 0,
+  "error_count": 0,
+  "candidate": {
+    "source": "Native/SessionMembers/session_members.py",
+    "source_sha256": "1d0ff8f15726ca6ff6b8a1f37a2f57c6dff82ce29143933a363441318bdb43b4",
+    "body_evidence": "HD2/five_player_feasibility_20260927/creation_enumeration_helper_full_disasm_20261002.json",
+    "body_evidence_sha256": "3ad0f0697dc08b777ef2d1d2e8562c7822b30af7d916e81f88c924559b9e3ba0",
+    "code_sha256": "5e3a604dc4b3851daf504683ba4cb7a574bdf533e6d6b53393da4a262cab8c1c",
+    "size_bytes": 426,
+    "capacity": {
+      "original": 4,
+      "candidate": 8,
+      "count_field": "owner+0x1bb0",
+      "sidecar_ids": "sidecar+0x00",
+      "sidecar_count": "sidecar+0x40",
+      "alternate_path_marker": "sidecar+0x48"
+    }
+  },
+  "comparison": {
+    "executed_original_capture_body": true,
+    "executed_candidate_bytes": true,
+    "original_counts": "0..4 on both platform branches",
+    "candidate_counts": "0..8 plus capped 9 on both platform branches",
+    "platform_callbacks": "synthetic Unicorn stubs with captured argument shape",
+    "consumer_callback": "synthetic sidecar-aware callback contract"
+  },
+  "production": {
+    "installable": false,
+    "game_process_accessed": false,
+    "game_files_modified": false,
+    "multiplayer_verified": false,
+    "blockers": [
+      "resolver/consumer callback identities and ABI are not found in the game",
+      "0x1093590 and all other four-slot readers/writers still need sidecar-aware production patches",
+      "hook/unwind/owner lifetime and Party service acceptance remain unclosed"
+    ]
+  }
+}
