@@ -14,6 +14,8 @@ python five_player_feasibility_20260927/recover_selector_registry_20261003.py --
 
 `0x134D69E` 起的六個 constructor call 與 `0x14EE278` 的另一個 call，都由前面的 `mov ecx, imm32` 提供靜態 hash，再以 `call qword ptr [rdx+0xB0]` 送入服務物件。另有 `0x10946A4` 同形 call，其值由 caller 透過 `EDX` 寫入 `[RCX+8]`，不是本機 code 的立即數；這是可能接收 runtime key 的 ABI 形狀，但沒有觀察到實際 hash 或 selector。
 
+`0x1094680..0x10946F3` 的 registration body（116 bytes，SHA-256 `e560d5173d56df1231e96c16ac5db911eb7da6fc39e532b9ab9c72258facc65a`）明確保存 `EDX` 到 object `+8`，再依 runtime mode 呼叫 service vtable `+0xB0`、`+0xC0` 或 fallback `+0x38`。相鄰 `0x1094710..0x109477C` 的 unregistration body（109 bytes，SHA-256 `1a3fd3c9d84714c5953b2d0d5e88df4cea7391ccd94d9709a0fd16c9c11764a5`）會讀回 object `+8`，在其中一條路徑以 `event+0x10` 呼叫 service vtable `+0xE0`；這是 cleanup 形狀，不是八槽 cleanup 實作。
+
 同一 capture 的無 unwind dispatch leaf `0xBC2D10` 仍是：`R8D` selector、`R9` descriptor、owner/context 保留在 `RCX`、table `0x214C2E0` 的 entry 168 指向 `0xBABA80`。這證明 callback vector 的下游 ABI，不證明服務端如何把事件雜湊選成 168。
 
 ## 結論與下一閘門

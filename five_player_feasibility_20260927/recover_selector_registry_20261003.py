@@ -6,6 +6,7 @@ for selector 168. It does not infer a runtime hash-to-selector mapping.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import struct
 import sys
@@ -48,6 +49,21 @@ def target_hits(im: Image, needle: bytes) -> list[dict]:
     return hits
 
 
+def body_summary(im: Image, start: int, end: int, name: str) -> dict:
+    raw = im.read(start, end - start)
+    ins = list(im.md.disasm(raw, start))
+    if sum(i.size for i in ins) != len(raw) or not ins or ins[-1].mnemonic != "ret":
+        raise ValueError(f"{name} decode coverage mismatch")
+    return {
+        "name": name,
+        "start_rva": hex(start),
+        "end_rva_exclusive": hex(end),
+        "size": len(raw),
+        "sha256": hashlib.sha256(raw).hexdigest(),
+        "instructions": [{"rva": hex(i.address), "bytes": bytes(i.bytes).hex(), "asm": f"{i.mnemonic} {i.op_str}".rstrip()} for i in ins],
+    }
+
+
 def audit(evidence: Path) -> dict:
     im = Image(evidence)
     if im.report["capture_sha256"] != CAPTURE_SHA:
@@ -87,6 +103,8 @@ def audit(evidence: Path) -> dict:
     if ptr - im.base != TARGET_RECEIVER:
         raise ValueError("selector 168 receiver mismatch")
     hash_hits = target_hits(im, struct.pack("<I", TARGET_HASH))
+    registration_body = body_summary(im, 0x1094680, 0x10946F4, "runtime_registration")
+    destroy_body = body_summary(im, 0x1094710, 0x109477D, "runtime_unregistration")
     checks = [
         {"name": "static_registration_calls", "passed": True, "count": len(static_rows)},
         {"name": "dynamic_registration_shape", "passed": True, "call_rva": hex(DYNAMIC_REGISTRATION), "hash_source": "EDX argument stored at [RCX+8]"},
@@ -100,6 +118,8 @@ def audit(evidence: Path) -> dict:
         "target_event_hash": hex(TARGET_HASH), "selector": 168, "receiver_rva": hex(TARGET_RECEIVER),
         "static_registration_sites": static_rows,
         "dynamic_registration_site": {"rva": hex(DYNAMIC_REGISTRATION), "call_bytes": dynamic_call.hex(), "hash_source": "caller-supplied EDX stored at [RCX+8]"},
+        "dynamic_registration_body": registration_body,
+        "dynamic_unregistration_body": destroy_body,
         "target_hash_hits": hash_hits, "checks": checks,
         "hash_to_selector_proven": False, "service_registry_captured": False, "production_hook_ready": False,
         "installable": False, "multiplayer_verified": False,
