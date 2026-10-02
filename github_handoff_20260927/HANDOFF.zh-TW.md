@@ -18,6 +18,8 @@
 
 這是首次取得真實 session context 的基線證據，確認讀取路徑可用並保留四人原版行為；roster slot `4..7` 不列為有效 inline records。它沒有第五個 peer、player creation、注入、安裝或多人八人成功。初次未帶四槽標註的原始快照仍保留，但不納入 verifier。
 
+後續 bounded 讀取又保存了 [live_session_snapshot_20261003_r4.json](../five_player_feasibility_20260927/live_session_snapshot_20261003_r4.json)：四個 peer、`session_owner` 可讀，`session+0x20` 的 224-byte confirmed-peer window 可完整保存，但只保留 raw bytes/hash，不把欄位解碼成玩家。再一次讀取 [r5](../five_player_feasibility_20260927/live_session_snapshot_20261003_r5.json) 遇到不可讀區域後 fail-closed，沒有把失败當作空表或成功；兩份原始資料均保留。
+
 ## 2026-10-03 live preflight continuation
 
 在使用者已授權的範圍內，固定 build `25480438` 的 PID `36900` 完成一批 bounded read-only 證據保存：

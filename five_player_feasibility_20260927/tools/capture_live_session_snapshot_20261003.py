@@ -27,6 +27,7 @@ GAME_STATE_PTR_RVA = 0x3326340
 MODE_OFFSET = 0xAC21C
 LOCAL_OFFSET = 0xB398
 HOST_OFFSET = 0xB3A8
+SESSION_OFFSET = 0xB390
 PEER_COUNT_OFFSET = 0x16390
 PEERS_OFFSET = 0x16398
 PEER_STRIDE = 0x20
@@ -140,16 +141,34 @@ def capture(pid: int) -> dict:
             else:
                 local = read_exact(reader, context + LOCAL_OFFSET, 8, "local_peer")
                 host = read_exact(reader, context + HOST_OFFSET, 8, "host_peer")
+                session_owner = read_u64(reader, context + SESSION_OFFSET, "session_owner")
                 raw_count = read_u32(reader, context + PEER_COUNT_OFFSET, "peer_count")
                 peers, errors = read_peer_table(reader, context, raw_count)
                 result["session"] = {
                     "local_peer_hex": local.hex(),
                     "host_peer_hex": host.hex(),
+                    "session_owner": hex(session_owner),
                     "peer_count_raw": raw_count,
                     "peers": peers,
                 }
                 result["errors"].extend(errors)
-                result["status"] = "observed_context" if not errors else "blocked_partial_context"
+                if session_owner:
+                    try:
+                        # Preserve the documented confirmed-peer window as raw
+                        # bytes only.  Its field semantics and 8-slot lifetime
+                        # remain unresolved, so no peer identity is decoded.
+                        window = read_exact(reader, session_owner + 0x20, 0xE0, "confirmed_peer_window")
+                        result["confirmed_peer_window"] = {
+                            "owner": hex(session_owner),
+                            "offset": "0x20",
+                            "size": len(window),
+                            "sha256": digest(window),
+                            "bytes": window.hex(),
+                            "semantic_decode": False,
+                        }
+                    except Exception as exc:
+                        result["errors"].append(f"confirmed_peer_window_read_failed:{type(exc).__name__}")
+                result["status"] = "observed_context" if not result["errors"] else "blocked_partial_context"
             if roster:
                 records, errors = read_roster_table(reader, roster)
                 result["roster"] = {

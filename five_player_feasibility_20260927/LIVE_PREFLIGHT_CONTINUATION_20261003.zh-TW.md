@@ -17,6 +17,8 @@
 
 另以 `capture_live_session_snapshot_20261003.py` 讀取同一 PID 的已知 network context。`live_session_snapshot_20261003_r2.json` 觀察到 1 個 peer，`live_session_snapshot_20261003_r3.json` 觀察到 4 個 peer，四個 network index 為 `0..3`；兩次均只接受公開固定布局中的四筆 roster records，slot `4..7` 明確列為 out-of-contract。`live_session_snapshot_verification_20261003.json` 的 11/11 檢查通過。這確認了四人基線的真實讀取路徑，但沒有提供第五人或八人證據。
 
+`r4` 另保存 `session_owner+0x20` 的 224-byte raw window（hash `6c87dea4699bac3c2eedfa5cea4613523034d5b62dcf6b2a5bdb1a98d0f19819`）；欄位語義仍未解碼。`r5` 在同一 bounded probe 遇到不可讀區域並回報 `blocked_snapshot_read`，證明探針會 fail-closed；它不被計入成功觀察。
+
 ## 判定
 
 `live_preflight_continuation_verification_20261003.json` 的 22 項固定檢查通過，但 `resolver_closed=false`、`installable=false`、`multiplayer_verified=false` 保持不變。這批資料證明固定 build 和 native code identity 穩定，沒有提供 service-side hash→selector registry、第五個 peer 的成功加入、player creation 或角色生命週期證據。
