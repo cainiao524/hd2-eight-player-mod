@@ -15,6 +15,8 @@
 
 第二批檔案 `live_native_sites_20261003_r2.json`、`live_session_member_sites_20261003_r2.json`、`live_call_edges_20261003_r2.json` 及 `live_private_registry_20261003_r2.json` 與第一批逐項比對；固定映像 hash、11 個 native/session site hash、27 條 direct edge、唯一 send-side event hash 及 128 MiB registry 負面結果均一致。`live_preflight_r2_verification_20261003.json` 的 11/11 檢查通過。這是穩定性證據，不是 runtime resolver 或多人驗收。
 
+另以 `capture_live_session_snapshot_20261003.py` 讀取同一 PID 的已知 network context。`live_session_snapshot_20261003_r2.json` 觀察到 1 個 peer，`live_session_snapshot_20261003_r3.json` 觀察到 4 個 peer，四個 network index 為 `0..3`；兩次均只接受公開固定布局中的四筆 roster records，slot `4..7` 明確列為 out-of-contract。`live_session_snapshot_verification_20261003.json` 的 11/11 檢查通過。這確認了四人基線的真實讀取路徑，但沒有提供第五人或八人證據。
+
 ## 判定
 
 `live_preflight_continuation_verification_20261003.json` 的 22 項固定檢查通過，但 `resolver_closed=false`、`installable=false`、`multiplayer_verified=false` 保持不變。這批資料證明固定 build 和 native code identity 穩定，沒有提供 service-side hash→selector registry、第五個 peer 的成功加入、player creation 或角色生命週期證據。

@@ -1,0 +1,107 @@
+{
+  "schema": "hd2_live_session_snapshot_v1",
+  "build": 25480438,
+  "pid": 36900,
+  "captured_at_utc": "2026-10-02T13:28:13.673110+00:00",
+  "scope": "authorized bounded read-only session/context/roster fields; no calls, writes, hooks, injection, or unknown pointer traversal",
+  "pinned_images": {
+    "helldivers2.exe": {
+      "base": 140698584678400,
+      "size": 60719104,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\helldivers2.exe",
+      "sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+      "pe_identity": {
+        "timestamp": 1790149348,
+        "image_size": 60719104
+      }
+    },
+    "game.dll": {
+      "base": 140703820349440,
+      "size": 74727424,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\data\\game\\game.dll",
+      "sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+      "pe_identity": {
+        "timestamp": 1790161983,
+        "image_size": 74727424
+      }
+    }
+  },
+  "game_base": "0x7ff8293b0000",
+  "read_limit": 32768,
+  "read_bytes": 8912,
+  "read_only": true,
+  "calls_made": false,
+  "writes_made": false,
+  "hooks_installed": false,
+  "status": "observed_context",
+  "errors": [],
+  "roots": {
+    "context": "0x1b193aa5f70",
+    "roster": "0x1b197efdc88",
+    "game_state": "0x1b190df0080"
+  },
+  "mode": 3,
+  "session": {
+    "local_peer_hex": "f869ad7b51e7da3f",
+    "host_peer_hex": "3db728dea5c3c72a",
+    "peer_count_raw": 4,
+    "peers": [
+      {
+        "ordinal": 0,
+        "lo": 3727210301,
+        "hi": 717734821,
+        "network_index": 0
+      },
+      {
+        "ordinal": 1,
+        "lo": 2074962424,
+        "hi": 1071310673,
+        "network_index": 1
+      },
+      {
+        "ordinal": 2,
+        "lo": 649101791,
+        "hi": 2633301729,
+        "network_index": 2
+      },
+      {
+        "ordinal": 3,
+        "lo": 3953952865,
+        "hi": 3752154785,
+        "network_index": 3
+      }
+    ]
+  },
+  "roster": {
+    "documented_slot_count": 4,
+    "records": [
+      {
+        "ordinal": 0,
+        "peer_id_hex": "f869ad7b51e7da3f",
+        "name": "男可可蘿"
+      },
+      {
+        "ordinal": 1,
+        "peer_id_hex": "df81b026e1fef49c",
+        "name": "alibery"
+      },
+      {
+        "ordinal": 2,
+        "peer_id_hex": "3db728dea5c3c72a",
+        "name": "ks983434"
+      },
+      {
+        "ordinal": 3,
+        "peer_id_hex": "6188aceba156a5df",
+        "name": "For the Emperor"
+      }
+    ],
+    "out_of_contract_slots": [
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  "snapshot_sha256": "74ee6702d61b9c02b92bfe55a7b61ca91c286d1383cc6e08cb544f8b21ad7ff3"
+}

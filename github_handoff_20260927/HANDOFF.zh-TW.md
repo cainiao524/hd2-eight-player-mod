@@ -12,6 +12,12 @@
 
 這批 reread 只增加固定 build 證據穩定性，沒有提供第五個 peer、player creation、native callback ABI、安裝或多人成功，也沒有呼叫、寫入、hook 或注入遊戲程序。
 
+## 2026-10-03 live session snapshot
+
+新增 [capture_live_session_snapshot_20261003.py](../five_player_feasibility_20260927/tools/capture_live_session_snapshot_20261003.py)，在同一固定 build／PID 以只讀方式觀察已知 network context、peer count、peer index、host/local peer 及四筆 documented roster records。兩次保存的快照顯示 peer count 從 1 到 4，第二次完整讀到四個 peer，index 為 `0..3`；[live_session_snapshot_verification_20261003.json](../five_player_feasibility_20260927/live_session_snapshot_verification_20261003.json) 的 11/11 檢查通過。
+
+這是首次取得真實 session context 的基線證據，確認讀取路徑可用並保留四人原版行為；roster slot `4..7` 不列為有效 inline records。它沒有第五個 peer、player creation、注入、安裝或多人八人成功。初次未帶四槽標註的原始快照仍保留，但不納入 verifier。
+
 ## 2026-10-03 live preflight continuation
 
 在使用者已授權的範圍內，固定 build `25480438` 的 PID `36900` 完成一批 bounded read-only 證據保存：

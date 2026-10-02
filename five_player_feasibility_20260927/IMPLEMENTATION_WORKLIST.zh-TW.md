@@ -4,6 +4,8 @@
 
 2026-10-03在同一固定 build、同一 PID 完成第二批 bounded reread：六個 native site、五個 session/member site、27 條 direct edge 與 128 MiB private registry 負面結果均與前批一致；`live_preflight_r2_verification_20261003.json` 11/11 通過。這只增加映像／觀察穩定性，沒有把 registry resolver、第五 peer、角色建立或多人驗收視為完成。
 
+同輪新增 live session snapshot：同一 PID 的兩個只讀快照實際讀到 peer count `1` 與 `4`，第二次四個 peer 的 network index 為 `0..3`；四筆 documented roster records 可讀，slot `4..7` 不列入有效布局。這完成四人原版 context 基線，不是第五人或八人通過證據；下一個 runtime 門檻仍是第五 peer 的 host/client confirmed-peer 到 player-creation 呼叫鏈。
+
 本輪已加入[八人容量與接納契約](EIGHT_PLAYER_CAPACITY_CONTRACT.zh-TW.md)及[peer admission adapter](PEER_ADMISSION_ADAPTER.zh-TW.md)：Python 離線鏡像與 Lua 狀態模型固定 build `25480438`、八個 storage slots、network index `0..7`，區分 pending／active resource bind、generation token、stable ordinal、反向 map 和 detached snapshot；adapter 以同一 observation epoch 串接 lobby／Party／host peer／confirmed-peer。這仍是可重播的 fail-closed 元件；原生接入、程序 hook、安裝和多人測試仍未完成。
 
 2026-10-02在使用者明確授權下完成固定 build 的第四次限定擷取。新增[native Peer Admission Adapter](NATIVE_PEER_ADMISSION_ADAPTER.zh-TW.md)：保存10個 game native roots、Party間接槽與八槽 host/client sidecar lifecycle；6/6 原生 adapter 測試通過，計畫仍明確為 `executable=false`。新增 [live build preflight](../eight_player_candidate_20260927/Integration/LIVE_BUILD_PREFLIGHT.zh-TW.md)：六份實機 build 檔案雜湊全部相符、遊戲程序已停止，但因 native plan 尚不可執行而阻擋 staging。這些證據沒有完成安裝或多人驗收。

@@ -1,0 +1,76 @@
+{
+  "schema": "hd2_live_session_snapshot_verification_v1",
+  "build": 25480438,
+  "pid": 36900,
+  "source_files": [
+    "five_player_feasibility_20260927\\live_session_snapshot_20261003_r2.json",
+    "five_player_feasibility_20260927\\live_session_snapshot_20261003_r3.json"
+  ],
+  "checks": [
+    {
+      "name": "fixed_build",
+      "passed": true,
+      "detail": "{25480438}"
+    },
+    {
+      "name": "single_pid",
+      "passed": true,
+      "detail": "{36900}"
+    },
+    {
+      "name": "image_identity",
+      "passed": true,
+      "detail": "pinned image hashes match"
+    },
+    {
+      "name": "read_only",
+      "passed": true,
+      "detail": "no calls/writes/hooks"
+    },
+    {
+      "name": "context_observed",
+      "passed": true,
+      "detail": "['observed_context', 'observed_context']"
+    },
+    {
+      "name": "peer_count_within_documented_limit",
+      "passed": true,
+      "detail": "[1, 4]"
+    },
+    {
+      "name": "peer_rows_match_count",
+      "passed": true,
+      "detail": "each row is fully read"
+    },
+    {
+      "name": "peer_indexes_in_range",
+      "passed": true,
+      "detail": "observed indexes in 0..7"
+    },
+    {
+      "name": "peer_indexes_unique",
+      "passed": true,
+      "detail": "no duplicate observed index"
+    },
+    {
+      "name": "documented_roster_is_four",
+      "passed": true,
+      "detail": "only documented inline records are accepted"
+    },
+    {
+      "name": "out_of_contract_roster_slots",
+      "passed": true,
+      "detail": "slots 4..7 are not read as roster records"
+    }
+  ],
+  "checks_passed": 11,
+  "checks_total": 11,
+  "verification_passed": true,
+  "session_peer_count": 4,
+  "maximum_observed_peer_count": 4,
+  "documented_roster_slots": 4,
+  "meaning": "The live process exposes a readable baseline session snapshot; this does not prove a fifth peer, player creation, installation, or multiplayer success.",
+  "resolver_closed": false,
+  "installable": false,
+  "multiplayer_verified": false
+}
