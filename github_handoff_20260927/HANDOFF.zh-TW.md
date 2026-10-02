@@ -183,3 +183,5 @@ live-vs-disk 對照又保存於 `live_dispatcher_data_20261002_4.json`：`0xBDE4
 ## 2026-10-03 player creation chain audit
 
 新增 [PLAYER_CREATION_CHAIN_AUDIT_20261002.zh-TW.md](../five_player_feasibility_20260927/PLAYER_CREATION_CHAIN_AUDIT_20261002.zh-TW.md) 與可重播 JSON：固定 `0x1086460` gate 明確拒絕 index `>=4`；index `0..3` 才進 dummy/player resource、`0xFDC140` component dispatch 與 `0x608B60` roster 路徑，`4..7` 進 fallback ring 而沒有 player-resource dispatch。另核對 `0xB9014B`、`0x13951A9`、session update 四站及七個 player component 的四人護欄。測試 4/4 通過，但這是靜態鏈審計，未生成 executable patch，`runtime_verified=false`、`multiplayer_verified=false`。
+
+Player-chain 審計又補進三個 client layout 固定四人位點：`0x1087122` adjacent lookup bound，以及 `0x10849F7..0x1084A28`、`0x1087260..0x1087298` 的四筆 confirmed-peer reset 清除範圍。重播輸出目前列出 11 個 fixed-four sites、7 個 component guards；測試仍 4/4 通過，這些仍只是靜態證據，不是 patch 或實機驗收。

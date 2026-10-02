@@ -29,6 +29,9 @@ KNOWN_FIXED_FOUR = [
     {"rva": "0x1093c96", "kind": "session_member_count_clamp", "effect": "clamp writes owner+0x1bb0=4", "source": "platform_member_state_update_disasm_20261002.json"},
     {"rva": "0x1093cb0", "kind": "session_member_enumeration_capacity", "effect": "enumerator receives capacity four", "source": "platform_member_state_update_disasm_20261002.json"},
     {"rva": "0x1093d1e", "kind": "session_member_enumeration_capacity", "effect": "alternate enumerator receives capacity four", "source": "platform_member_state_update_disasm_20261002.json"},
+    {"rva": "0x1087122", "kind": "client_adjacent_lookup_bound", "effect": "adjacent peer lookup loop checks four entries; owner provenance remains a candidate", "source": "client_expansion_1087010_body.json"},
+    {"rva": "0x10849f7..0x1084a28", "kind": "client_confirmed_peer_reset", "effect": "eight 16-byte stores clear client+0xd0..+0x14f (four 32-byte records)", "source": "protocol_client_array_reset.json"},
+    {"rva": "0x1087260..0x1087298", "kind": "client_confirmed_peer_reset", "effect": "eight 16-byte stores clear client+0xd0..+0x14f (four 32-byte records)", "source": "client_expansion_1087010_tail.json"},
 ]
 
 COMPONENT_GUARDS = {
