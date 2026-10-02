@@ -8,12 +8,12 @@
 - executable image 的 bounded scan 得到 27 條 direct `E8` call edge。
 - `0x4804FCF4` confirmed-peer event hash 只在 send-side `0xBE4982` 命中。
 - `0xBDE430` generic send dispatcher 的 673-byte live code pin 重讀一致。
-- 128 MiB private registry scan 沒有找到已知 receiver、insert、member consumer/state update pointer 或 event hash。
+- 128 MiB private registry scan 沒有找到已知 receiver、insert、member consumer/state update pointer 或 event hash；同一 PID 再擴大到 1 GiB committed `MEM_PRIVATE`，1,655 個 private regions／262,144 pages，仍為 0 hit。
 - signature scan 找到 host-join，當前狀態沒有找到 platform-member-enumerator signature；這是程序狀態的 bounded negative observation，不代表函式不存在。
 
 ## 判定
 
-`live_preflight_continuation_verification_20261003.json` 的 21 項固定檢查通過，但 `resolver_closed=false`、`installable=false`、`multiplayer_verified=false` 保持不變。這批資料證明固定 build 和 native code identity 穩定，沒有提供 service-side hash→selector registry、第五個 peer 的成功加入、player creation 或角色生命週期證據。
+`live_preflight_continuation_verification_20261003.json` 的 22 項固定檢查通過，但 `resolver_closed=false`、`installable=false`、`multiplayer_verified=false` 保持不變。這批資料證明固定 build 和 native code identity 穩定，沒有提供 service-side hash→selector registry、第五個 peer 的成功加入、player creation 或角色生命週期證據。
 
 下一個可接受的實作門檻仍是：取得允許的 runtime callback/registry 觀測，完成第五 peer 的 host/client confirmed-peer→player-creation 記錄，再產生可回滾 production hook，最後逐級驗證五至八帳號同任務全流程。
 

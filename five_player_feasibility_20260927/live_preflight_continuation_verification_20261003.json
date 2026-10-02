@@ -5,6 +5,7 @@
   "source_files": {
     "interface": "live_interface_probe_20261003.json",
     "private": "live_private_registry_20261003_current.json",
+    "private_1g": "live_private_registry_20261003_1g.json",
     "signature": "live_signature_scan_20261003.json",
     "native": "live_native_sites_20261003.json",
     "session": "live_session_member_sites_20261003.json",
@@ -108,6 +109,17 @@
       "detail": "bounded private scan"
     },
     {
+      "name": "private_registry_1g_negative",
+      "passed": true,
+      "detail": {
+        "private_regions": 1655,
+        "pages_read": 262144,
+        "memory_bytes_read": 1073741824,
+        "limit_bytes": 1073741824,
+        "truncated": true
+      }
+    },
+    {
       "name": "image_signature_host_join",
       "passed": true,
       "detail": "[{'name': 'host_join', 'address': '0x7ff82a43bc70', 'region': '0x7ff8293b1000', 'region_size': '0x2110000', 'signature_sha256': '8deecd0b4075eee3e436db6d5787ba68feb5ade0b9401ce1eee9814995309624'}]"
@@ -118,8 +130,8 @@
       "detail": "all captures"
     }
   ],
-  "checks_passed": 21,
-  "checks_total": 21,
+  "checks_passed": 22,
+  "checks_total": 22,
   "verification_passed": true,
   "runtime_calls_made": false,
   "game_memory_written": false,

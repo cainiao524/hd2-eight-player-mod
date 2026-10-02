@@ -40,6 +40,7 @@ def main() -> int:
     names = {
         "interface": "live_interface_probe_20261003.json",
         "private": "live_private_registry_20261003_current.json",
+        "private_1g": "live_private_registry_20261003_1g.json",
         "signature": "live_signature_scan_20261003.json",
         "native": "live_native_sites_20261003.json",
         "session": "live_session_member_sites_20261003.json",
@@ -80,6 +81,7 @@ def main() -> int:
     check(rows, "dispatcher_code_reread", dispatcher.get("generic_send_dispatcher_code", {}).get("unchanged_on_reread") is True, "reread")
     check(rows, "dispatcher_hash_hit", any(x.get("pattern") == "confirmed_peer_event_hash" and x.get("rva") == "0xbe4982" for x in dispatcher.get("hits", [])), repr(dispatcher.get("hits", [])))
     check(rows, "private_registry_negative", data["private"].get("hits") == [], "bounded private scan")
+    check(rows, "private_registry_1g_negative", data["private_1g"].get("hits") == [] and data["private_1g"].get("scan_stats", {}).get("memory_bytes_read", 0) >= 1024 * 1024 * 1024, data["private_1g"].get("scan_stats"))
     check(rows, "image_signature_host_join", any(x.get("name") == "host_join" for x in data["signature"].get("hits", [])), repr(data["signature"].get("hits", [])))
     check(rows, "all_capture_flags_read_only", all(x.get("read_only", True) and not x.get("calls_made", False) and not x.get("writes_made", False) for x in all_objs), "all captures")
 
