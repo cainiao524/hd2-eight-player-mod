@@ -996,7 +996,7 @@
     "five_player_feasibility_20260927/verification/native_peer_admission_bridge_boundary_verification_20261002.json": "f30a4b9517d3add9050cd24ff3fcd010d9ea1a72cb937bdddb6db250384abad0",
     "five_player_feasibility_20260927/verification/peer_admission_adapter_verification.json": "0b4f84491adeff2b424d02e6fa614c3630381dc12eaf4bc20af39914ff4319fc",
     "five_player_feasibility_20260927/verify_native_peer_admission_bridge_boundary.py": "6cf6d5d4e9898fab0083ea135f8ea13dbc129ff0f1d68d4e83f1c8bd34214ad7",
-    "github_handoff_20260927/HANDOFF.zh-TW.md": "84b2090b45b1c901c41762f6b4ca686e837b4908166ca7bdc23eafe559da707c",
+    "github_handoff_20260927/HANDOFF.zh-TW.md": "d714e8fea5d1d425c4b4c067e07119f18cdeffdd25cb597a252a635ffbb39e72",
     "github_handoff_20260927/SETUP.zh-TW.md": "1c362594a6a8e70fe5fb9fce5f0d23dcf6d160a6338345f2f4b717d538d8003b",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_disasm_20261002.json": "48f504badebad800a8439494bc386e3dff61e1818168a40916d8cffd618790c9",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_patch.py": "9808f073e958fdc464d47bc10a459f328d14ebde9a765f429e13153786a5734a",
@@ -1057,7 +1057,17 @@
     "eight_player_candidate_20260927/Native/SessionMembers/confirmed_peer_external_chain_20261002.json": "2ed8ab92e7f00f2ad0acfa671df61146573fe49bfc3d6485d75ed4a2cb29eea1",
     "eight_player_candidate_20260927/Native/SessionMembers/test_confirmed_peer_external_chain.py": "7c8478318e7041f562f8757c8071db9e464bb7f9204b7a029951587e019593ed",
     "eight_player_candidate_20260927/Native/SessionMembers/verify_confirmed_peer_external_chain.py": "c525b929706a1a4a1b054f73b2c5aa113fe4ccb5f061e0d0f503b75d626e9c1d",
-    "five_player_feasibility_20260927/live_dispatcher_data_20261002_6.json": "922d5a3113c1c8ba4769b5eb386edf4073687dfc1d1cae8afcc7f08204bcd7af"
+    "five_player_feasibility_20260927/live_dispatcher_data_20261002_6.json": "922d5a3113c1c8ba4769b5eb386edf4073687dfc1d1cae8afcc7f08204bcd7af",
+    "five_player_feasibility_20260927/RECEIVER_BINDING_BOUNDARY_20261002.zh-TW.md": "d90d4aad7b4935b4150a3eeb1edd74abb8f3d7ebbcf1f3422f705ae51141d371",
+    "five_player_feasibility_20260927/verify_receiver_binding_boundary_20261002.py": "5063217f3fdebc65f180654aa4d9e45b9516e0f8bc548a34d9f90a2c8e76567c",
+    "five_player_feasibility_20260927/receiver_binding_boundary_verification_20261002.json": "496830a3c13d13f28e0f94c61d274a4076f4927b6ce9f4136fa81dd2fb651de1",
+    "five_player_feasibility_20260927/receiver_binding_boundary_verification_20261002_rerun.json": "496830a3c13d13f28e0f94c61d274a4076f4927b6ce9f4136fa81dd2fb651de1",
+    "five_player_feasibility_20260927/PLAYER_CREATION_CHAIN_AUDIT_20261002.zh-TW.md": "8a0f6b509bf737619b4708c08e50fac0e00d0962687c1e4fba0be739eb65f6e0",
+    "five_player_feasibility_20260927/player_creation_chain_audit_20261002.py": "7e81175c5340a93a90661674014510ee7c63cd80aae869f597a785138d4c4e16",
+    "five_player_feasibility_20260927/player_creation_chain_audit_20261002.json": "c72a0c41b54fa67a765077be031fc83bfc7799b2c6c91dd8afcf214518b10792",
+    "five_player_feasibility_20260927/test_player_creation_chain_audit_20261002.py": "ee1ab75a8c0cb8c14612936bec06b7a25a867a4f76a4bb906d34e94f07e1002e",
+    "five_player_feasibility_20260927/player_creation_chain_audit_20261002_rerun.json": "c72a0c41b54fa67a765077be031fc83bfc7799b2c6c91dd8afcf214518b10792",
+    "five_player_feasibility_20260927/player_creation_chain_audit_20261002_r2.json": "c72a0c41b54fa67a765077be031fc83bfc7799b2c6c91dd8afcf214518b10792"
   },
   "missing_release_files": [],
   "remaining_release_work": [
@@ -1114,7 +1124,9 @@
     "完成 0x10937A0 state-update 四個 coherent capacity sites 與 required redirects 的離線 sidecar adapter；八 ID 只作模型，partial native plan 和 installable claim 明確拒絕",
     "補充 live dispatcher data：0xBDE430 generic send dispatcher 673-byte code pin 兩次重讀一致；image/private bounded scan 仍未閉合 hash-to-receive registry、resolver、owner cleanup ABI，resolver_closed/executable/multiplayer_verified 均為 false",
     "完成 confirmed-peer 外部 admission chain machine receipt：5 個 live site + host cleanup/migration/client remove/reset 依賴，verifier 5 sites 與 2/2 tests 通過；仍 installable=false/runtime_verified=false/multiplayer_verified=false",
-    "完成固定 config-root read-only bounded scan：game.dll+0x3326340 root page + 64KiB/16 pages 對目標函式與 event hash 0 命中；未把 config path 誤命名為 receive resolver，resolver_closed/executable/multiplayer_verified 仍為 false"
+    "完成固定 config-root read-only bounded scan：game.dll+0x3326340 root page + 64KiB/16 pages 對目標函式與 event hash 0 命中；未把 config path 誤命名為 receive resolver，resolver_closed/executable/multiplayer_verified 仍為 false",
+    "完成 receiver binding boundary machine verifier：核對 0xBE4910→0x4804FCF4→0xBABA80→0xB90B20、第五參數→record+0x14 及 entry 168；production gate blocked_receiver_registry_unresolved，未生成 production patch",
+    "完成 player creation chain 靜態審計：0x1086460 對 index>=4 進 fallback ring，沒有 player-resource dispatch；核對 8 個固定四人讀者/7 個 component guards，測試 4/4 通過，未生成 executable patch"
   ],
   "next_offline_work": [
     "利用 live call edges 和 state-update disassembly 恢復 hash→receive dispatcher registry、真实 resolver、owner-keyed sidecar 与所有 cleanup/exception ABI；再生成可回滚 production hook，保持 fail-closed",
@@ -1149,5 +1161,5 @@
   },
   "latest_research_update_date": "2026-10-02",
   "priority_assessment": "five_player_feasibility_20260927/PEER_ADMISSION_PRIORITY.zh-TW.md",
-  "last_update_scope": "fixed build 25480438: live admission sites, confirmed-peer sender/external chain, 0xBDE430 live-vs-disk and config-root bounded scans revalidated read-only; no receive registry/resolver or cleanup ABI closed; no production patch, injection, installation, or multiplayer acceptance."
+  "last_update_scope": "fixed build 25480438: receiver binding and player-creation chain static audits are machine-verified; index 4..7 has no proven resource/component/roster dispatch, and receiver registry/cleanup ABI remain unresolved. No production patch, injection, installation, or multiplayer acceptance."
 }

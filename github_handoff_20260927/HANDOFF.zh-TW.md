@@ -175,3 +175,11 @@ live-vs-disk 對照又保存於 `live_dispatcher_data_20261002_4.json`：`0xBDE4
 新增 `eight_player_candidate_20260927/Native/SessionMembers/confirmed_peer_external_chain_20261002.json` 與 `CONFIRMED_PEER_EXTERNAL_CHAIN_20261002.zh-TW.md`，把固定 build `25480438` 的 host capacity `0x108C18F`、host index allocator `0x108C3D8`、confirmed-peer sender `0x108C760`、client append `0xB90B20`、player creation gate `0x1086460` 和四條 cleanup/migration 路徑收斂成機器可核對的外部 ABI 鏈。其只讀驗證為 5 sites、2/2 tests，`installable=false`、`runtime_verified=false`、`multiplayer_verified=false`。`0xB90B20` 第五筆會寫入 `client+0x150` 鄰接 live 欄位；因此 sender-only 或單改容量仍被 fail-closed。
 
 `live_dispatcher_data_20261002_6.json` 又讀取固定 config root `game.dll+0x3326340` 的 root page 及 64 KiB/16 pages 限定範圍；目標函式與 event hash pattern 0 命中。這只收窄 writable registry 未出現在已知 config path 的結論，沒有把 config root 當作 receive resolver，也沒有呼叫、寫入或安裝。
+
+## 2026-10-03 receiver binding boundary
+
+新增 [RECEIVER_BINDING_BOUNDARY_20261002.zh-TW.md](../five_player_feasibility_20260927/RECEIVER_BINDING_BOUNDARY_20261002.zh-TW.md) 與 machine verifier：固定 capture 已核對 `0xBE4910 → 0x4804FCF4 → 0xBABA80 → 0xB90B20`，以及第五參數寫入 confirmed-peer record `+0x14`；592-entry code-pointer run 的 entry 168 指向 `0xBABA80`。這只閉合靜態資料鏈，沒有 receiver-side writable hash registry、receive ABI、owner storage relocation/cleanup 或 unwind 證據，production gate 保持 `blocked_receiver_registry_unresolved`、`installable=false`、`multiplayer_verified=false`。
+
+## 2026-10-03 player creation chain audit
+
+新增 [PLAYER_CREATION_CHAIN_AUDIT_20261002.zh-TW.md](../five_player_feasibility_20260927/PLAYER_CREATION_CHAIN_AUDIT_20261002.zh-TW.md) 與可重播 JSON：固定 `0x1086460` gate 明確拒絕 index `>=4`；index `0..3` 才進 dummy/player resource、`0xFDC140` component dispatch 與 `0x608B60` roster 路徑，`4..7` 進 fallback ring 而沒有 player-resource dispatch。另核對 `0xB9014B`、`0x13951A9`、session update 四站及七個 player component 的四人護欄。測試 4/4 通過，但這是靜態鏈審計，未生成 executable patch，`runtime_verified=false`、`multiplayer_verified=false`。
