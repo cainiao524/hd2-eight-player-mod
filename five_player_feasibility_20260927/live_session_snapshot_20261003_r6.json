@@ -1,0 +1,83 @@
+{
+  "schema": "hd2_live_session_snapshot_v1",
+  "build": 25480438,
+  "pid": 22976,
+  "captured_at_utc": "2026-10-02T14:31:05.993569+00:00",
+  "scope": "authorized bounded read-only session/context/roster fields; no calls, writes, hooks, injection, or unknown pointer traversal",
+  "pinned_images": {
+    "helldivers2.exe": {
+      "base": 140698584678400,
+      "size": 60719104,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\helldivers2.exe",
+      "sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+      "pe_identity": {
+        "timestamp": 1790149348,
+        "image_size": 60719104
+      }
+    },
+    "game.dll": {
+      "base": 140703898206208,
+      "size": 74727424,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\data\\game\\game.dll",
+      "sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+      "pe_identity": {
+        "timestamp": 1790161983,
+        "image_size": 74727424
+      }
+    }
+  },
+  "game_base": "0x7ff82ddf0000",
+  "read_limit": 32768,
+  "read_bytes": 8872,
+  "read_only": true,
+  "calls_made": false,
+  "writes_made": false,
+  "hooks_installed": false,
+  "status": "observed_context",
+  "errors": [],
+  "roots": {
+    "context": "0x2c22b565f70",
+    "roster": "0x2c22f9bdc88",
+    "game_state": "0x2c2288b0080"
+  },
+  "mode": 0,
+  "session": {
+    "local_peer_hex": "0000000000000000",
+    "host_peer_hex": "0000000000000000",
+    "session_owner": "0x0",
+    "peer_count_raw": 0,
+    "peers": []
+  },
+  "roster": {
+    "documented_slot_count": 4,
+    "records": [
+      {
+        "ordinal": 0,
+        "peer_id_hex": "0000000000000000",
+        "name": ""
+      },
+      {
+        "ordinal": 1,
+        "peer_id_hex": "0000000000000000",
+        "name": ""
+      },
+      {
+        "ordinal": 2,
+        "peer_id_hex": "0000000000000000",
+        "name": ""
+      },
+      {
+        "ordinal": 3,
+        "peer_id_hex": "0000000000000000",
+        "name": ""
+      }
+    ],
+    "out_of_contract_slots": [
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  "snapshot_sha256": "a684e36cf1497966c49f0bed685c8fca57cec9b094ea48f900b0941b62f8ec5a"
+}
