@@ -22,6 +22,8 @@
 
 後續固定 build 程序 PID `22976` 的 [r6](../five_player_feasibility_20260927/live_session_snapshot_20261003_r6.json)／[r7](../five_player_feasibility_20260927/live_session_snapshot_20261003_r7.json) 只補充空 menu 到單一本機 peer 的基線（peer count `0 → 1`、mode `0 → 3`、index `0`）。兩份擷取保持 read-only，沒有第五個 peer、角色建立、注入、安裝或八人成功。
 
+程序退出後對同一 PID 的六個 native site 重讀以 WinError 31 fail-closed；[live_native_sites_20261003_r3.failure.json](../five_player_feasibility_20260927/live_native_sites_20261003_r3.failure.json) 只保存失敗收據，沒有 native bytes 或成功結論。
+
 ## 2026-10-03 live preflight continuation
 
 在使用者已授權的範圍內，固定 build `25480438` 的 PID `36900` 完成一批 bounded read-only 證據保存：

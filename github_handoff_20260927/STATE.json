@@ -996,7 +996,7 @@
     "five_player_feasibility_20260927/verification/native_peer_admission_bridge_boundary_verification_20261002.json": "f30a4b9517d3add9050cd24ff3fcd010d9ea1a72cb937bdddb6db250384abad0",
     "five_player_feasibility_20260927/verification/peer_admission_adapter_verification.json": "0b4f84491adeff2b424d02e6fa614c3630381dc12eaf4bc20af39914ff4319fc",
     "five_player_feasibility_20260927/verify_native_peer_admission_bridge_boundary.py": "6cf6d5d4e9898fab0083ea135f8ea13dbc129ff0f1d68d4e83f1c8bd34214ad7",
-    "github_handoff_20260927/HANDOFF.zh-TW.md": "abb48b5ef18be1dd98b5a8b56fa345248c6e69cde5e88e5fd0bdd5e7863f3970",
+    "github_handoff_20260927/HANDOFF.zh-TW.md": "c5056d2c8fb5860c21ce2fc8cd92d1b30c0a3afc41f99dd52f51183af12c3441",
     "github_handoff_20260927/SETUP.zh-TW.md": "1c362594a6a8e70fe5fb9fce5f0d23dcf6d160a6338345f2f4b717d538d8003b",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_disasm_20261002.json": "48f504badebad800a8439494bc386e3dff61e1818168a40916d8cffd618790c9",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_patch.py": "9808f073e958fdc464d47bc10a459f328d14ebde9a765f429e13153786a5734a",
@@ -1121,7 +1121,7 @@
     "five_player_feasibility_20260927/test_selector_cleanup_xrefs_20261003.py": "dc7812b18df05d5ff68c2b69664c0e19b090e0e36b4a03c27ae9b0f490ee854f",
     "five_player_feasibility_20260927/verify_live_preflight_continuation_20261003.py": "b290ecf861766f14c18c63e21a3e552c4275ddb582b78a477765c60ecb223809",
     "five_player_feasibility_20260927/live_preflight_continuation_verification_20261003.json": "25dfdaf9b9be52bb971b143f964515c324eaca1bde6d9a9d77d67b275830ac06",
-    "five_player_feasibility_20260927/LIVE_PREFLIGHT_CONTINUATION_20261003.zh-TW.md": "b53b7abe1834991c2e7f0e60aa3c379931801a1d9116bc27e93735d396f6f6e8",
+    "five_player_feasibility_20260927/LIVE_PREFLIGHT_CONTINUATION_20261003.zh-TW.md": "a4ccd5fa81507616ccf3f971663161a0c2826b4f6cadeaf286972ffb9766716e",
     "five_player_feasibility_20260927/test_live_preflight_continuation_20261003.py": "ba884b0efa15fd75fd259f0faecc83332ead7134c2ff88822527677809f47f03",
     "five_player_feasibility_20260927/audit_player_capacity_chain_20261003.py": "9a3aa25f149c9f49f2d973783f3e2714a1da4639349bb3548e91f6b2f0064f98",
     "five_player_feasibility_20260927/player_capacity_chain_audit_20261003.json": "3eacb72cdaa7c654b45f99a92cd17d52e78584ac1c677853b24a6259c92c8a46",
@@ -1180,7 +1180,8 @@
     "five_player_feasibility_20260927/live_session_snapshot_20261003_r4.json": "c8bab24c2e52e45208b9e13e198ef17767a3c46e484f9391f5e12442b41eeb0b",
     "five_player_feasibility_20260927/live_session_snapshot_20261003_r5.json": "d8640cb364eff3a0075a982618dc912453aa62f4242f282fb52b312a7fbcb959"
     ,"five_player_feasibility_20260927/live_session_snapshot_20261003_r6.json": "fbfaecdb39223a6042bae752a1fe2cc591c3efcbfa0189a6f856d1479dbfb2a5"
-    ,"five_player_feasibility_20260927/live_session_snapshot_20261003_r7.json": "aadf0b1942def62da056bec53317e3b0059188bbb9ac023e1d2af01265a121ed"
+    ,"five_player_feasibility_20260927/live_session_snapshot_20261003_r7.json": "aadf0b1942def62da056bec53317e3b0059188bbb9ac023e1d2af01265a121ed",
+    "five_player_feasibility_20260927/live_native_sites_20261003_r3.failure.json": "97a39389f10e8e16114bf6cabe27105da4e28409d9dc92da200b7f0e9684749a"
   },
   "missing_release_files": [],
   "remaining_release_work": [
@@ -1274,7 +1275,8 @@
     "Captured a raw 224-byte session+0x20 confirmed-peer window without semantic decoding; preserved a later bounded unreadable-region failure as fail-closed evidence",
     "Corrected the offline player-resource rollback contract to model all three ABI callback tables, with component-239 roster insertion bound inside the first table; first, second and third callback failure points are replayed in a rollback matrix, ABI table bindings are checked against the fixed-build audit, and package tests pass 19/19",
     "Added a fixed-build player-resource callback ABI binding verifier: 9/9 checks connect the three callback tables, component 239 roster leaf, 0x581320/0x581780 dispatch ABI and reverse-cleanup edges; production/runtime/install/multiplayer flags remain false",
-    "Corrected the callback-stage model from a fictitious fourth roster stage to the observed ABI: component 239 roster leaf 0x540920 is registered inside the first table; live PID 22976 snapshots r6/r7 recorded menu-to-one-peer baseline only"
+    "Corrected the callback-stage model from a fictitious fourth roster stage to the observed ABI: component 239 roster leaf 0x540920 is registered inside the first table; live PID 22976 snapshots r6/r7 recorded menu-to-one-peer baseline only",
+    "Preserved the PID 22976 native-site reread failure as WinError 31 fail-closed evidence; no bytes or runtime success were recorded"
   ],
   "next_offline_work": [
     "Bind the offline rollback/quiescence and peer lifecycle contracts to the real 0x1086460 -> 0xFDC140 -> 0x581320/0x581780 -> 0x540920 callback ABI, then verify partial rollback, re-entry idempotence, owner migration and thread quiescence before any native hook.",
@@ -1283,7 +1285,7 @@
     "Run a real fifth-peer session on the same fixed build and record 0x1092E60 -> 0x1093590 -> 0x10937A0 -> confirmed-peer -> player-creation on host and client; preserve rejection and cleanup paths.",
     "After the fifth-peer path is bound, build the reversible production hook and ladder to six, seven and eight independent accounts with full death, reinforcement, departure, reconnect, extraction, result and host-migration logs."
   ],
-  "delivery_test_groups": 173,
+  "delivery_test_groups": 174,
   "delivery_native_executions_or_observations": 4314,
   "followup_prefix_observations_not_in_delivery_total": 24,
   "game_process_accessed": true,

@@ -21,6 +21,8 @@
 
 後續固定 build 程序 PID `22976` 的 `r6`／`r7` 只補充空 menu 到單一本機 peer 的 session 基線（peer count `0 → 1`、mode `0 → 3`、index `0`）。兩份擷取保持 read-only，沒有第五個 peer、角色建立或多人驗收；原程序沒有被寫入或注入。
 
+同一程序退出後，對 PID `22976` 的六個 native site 重讀以 `WinError 31` fail-closed；[live_native_sites_20261003_r3.failure.json](live_native_sites_20261003_r3.failure.json) 只保存失敗原因與範圍，沒有 native bytes，也不計入成功觀察。
+
 ## 判定
 
 `live_preflight_continuation_verification_20261003.json` 的 22 項固定檢查通過，但 `resolver_closed=false`、`installable=false`、`multiplayer_verified=false` 保持不變。這批資料證明固定 build 和 native code identity 穩定，沒有提供 service-side hash→selector registry、第五個 peer 的成功加入、player creation 或角色生命週期證據。
