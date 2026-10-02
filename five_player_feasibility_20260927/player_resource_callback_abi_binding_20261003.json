@@ -1,0 +1,48 @@
+{
+  "schema": "hd2_player_resource_callback_abi_binding_v1",
+  "build": 25480438,
+  "callback_order": [
+    "first_callback",
+    "second_callback",
+    "third_callback",
+    "roster_insert"
+  ],
+  "callback_tables": {
+    "first_callback": "owner+0x40 + component_index*8 + 0xf0c110",
+    "second_callback": "owner+0x40 + component_index*8 + 0xf0cb30",
+    "third_callback": "owner+0x40 + component_index*8 + 0xf0d550"
+  },
+  "roster_component": 239,
+  "source_reports": {
+    "player_creation_abi": {
+      "path": "E:\\File\\Codes\\0\\26.10.1\\HD2\\five_player_feasibility_20260927\\player_creation_abi_gap_audit_20261003.json",
+      "schema": "hd2_player_creation_abi_gap_audit_v1",
+      "capture_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8"
+    },
+    "player_resource_reverse_cleanup": {
+      "path": "E:\\File\\Codes\\0\\26.10.1\\HD2\\five_player_feasibility_20260927\\player_resource_reverse_cleanup_audit_20261003.json",
+      "schema": "hd2_player_resource_reverse_cleanup_audit_v1",
+      "capture_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8"
+    }
+  },
+  "checks": {
+    "fixed_build_matches": true,
+    "callback_tables_match": true,
+    "callback_stage_order_complete": true,
+    "roster_component_matches": true,
+    "roster_leaf_guard_and_writes_present": true,
+    "resource_dispatch_abi_present": true,
+    "resource_record_rollback_requirement_present": true,
+    "reverse_cleanup_anchors_complete": true,
+    "reverse_cleanup_edges_complete": true,
+    "production_patch_ready": false,
+    "runtime_verified": false,
+    "installable": false,
+    "multiplayer_verified": false
+  },
+  "limits": [
+    "Static report binding only; no process query, pointer traversal, native call, memory write, hook, install or multiplayer test.",
+    "A matching callback table and cleanup chain does not prove that index 4..7 reaches the runtime creation path.",
+    "All production, runtime, install and multiplayer flags remain false."
+  ]
+}

@@ -241,7 +241,7 @@
     "five_player_feasibility_20260927/CCHUSKY_HD2_TOOLS_HOOK_ANALYSIS_20261002.zh-TW.md": "9acb089901637a724c96b41f51c853ed41ebcf2c3c4f54c1052fdceabb7e9037",
     "five_player_feasibility_20260927/EIGHT_PLAYER_CAPACITY_CONTRACT.zh-TW.md": "837ee952dd2394d7be4707f6865319cc1b106312252a96149a422789870dbd84",
     "five_player_feasibility_20260927/ENGINE_CALLEE_VERIFICATION.zh-TW.md": "835475ba4872b8047994e331bd4e7c29817a140e4e755ee42b9373b91de6e804",
-    "five_player_feasibility_20260927/IMPLEMENTATION_WORKLIST.zh-TW.md": "d942dc4675e796f47c7499f62e3a46e55e65d1575c9a7332e5a4d5eb6f60646b",
+    "five_player_feasibility_20260927/IMPLEMENTATION_WORKLIST.zh-TW.md": "9b3a10ad5794705d3149ee4eec01d74bb29b70f956700f3c1d654b7840ce80b2",
     "five_player_feasibility_20260927/INTERFACE_PROBE_LIVE_ANALYSIS_20261002.zh-TW.md": "dd28207864d3af240fa24c273d40f812656ea49dc6c73a7feb33a20e5dbf75b9",
     "five_player_feasibility_20260927/NATIVE_PEER_ADMISSION_ADAPTER.zh-TW.md": "5ac99d6a57dc73f32f0e9b986174482279aeed96f17c77565f0b0ad3dc0a7736",
     "five_player_feasibility_20260927/NATIVE_PEER_ADMISSION_BRIDGE_BOUNDARY_20261002.zh-TW.md": "1cf20cea183894296106b8f0e5b71066318ba2609df726db0f0c6122c2787267",
@@ -996,7 +996,7 @@
     "five_player_feasibility_20260927/verification/native_peer_admission_bridge_boundary_verification_20261002.json": "f30a4b9517d3add9050cd24ff3fcd010d9ea1a72cb937bdddb6db250384abad0",
     "five_player_feasibility_20260927/verification/peer_admission_adapter_verification.json": "0b4f84491adeff2b424d02e6fa614c3630381dc12eaf4bc20af39914ff4319fc",
     "five_player_feasibility_20260927/verify_native_peer_admission_bridge_boundary.py": "6cf6d5d4e9898fab0083ea135f8ea13dbc129ff0f1d68d4e83f1c8bd34214ad7",
-    "github_handoff_20260927/HANDOFF.zh-TW.md": "99172bb259fcfb6ff134f96752f151d59164ebde379c4e3c7bd5349ff302af2f",
+    "github_handoff_20260927/HANDOFF.zh-TW.md": "3cedf39dd959ec45ba7abb120a04139d6266bd2e35c5526264413e09592280be",
     "github_handoff_20260927/SETUP.zh-TW.md": "1c362594a6a8e70fe5fb9fce5f0d23dcf6d160a6338345f2f4b717d538d8003b",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_disasm_20261002.json": "48f504badebad800a8439494bc386e3dff61e1818168a40916d8cffd618790c9",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_patch.py": "9808f073e958fdc464d47bc10a459f328d14ebde9a765f429e13153786a5734a",
@@ -1156,6 +1156,9 @@
     "five_player_feasibility_20260927/resource_rollback_quiescence_contract_20261003.json": "82806f08c8f11b9fad30433a8f866ea23b70e58c5d91e7883cdf74ae717d9ae9",
     "five_player_feasibility_20260927/RESOURCE_ROLLBACK_QUIESCENCE_CONTRACT_20261003.zh-TW.md": "0199662f53cebf0b12c578176a1311efa5ed4f64a2f2dfbd80c0dc02f63d5f2b",
     "five_player_feasibility_20260927/test_resource_rollback_quiescence_contract_20261003.py": "fc82a25f7b237339893d9c270f00b66e2711f44658cc593d6b27c701194fe393",
+    "five_player_feasibility_20260927/verify_player_resource_callback_abi_binding_20261003.py": "611f1d8771788720c033057a73102c7838a43ba92834d5df76ae4b3902bcd7c6",
+    "five_player_feasibility_20260927/player_resource_callback_abi_binding_20261003.json": "4d852ad1c39943c7ec6be36622f94e15f9931302c203b84ffdccbcc48dd877f1",
+    "five_player_feasibility_20260927/test_verify_player_resource_callback_abi_binding_20261003.py": "a591da38099dcfe3bdb310ef4da3f647d4e71f88000521f73e3a228847c1d7bc",
     "five_player_feasibility_20260927/peer_lifecycle_sidecar_contract_20261003.py": "65b160f296c475e366ac2a5d56a274d36b841c1419e3c991595fdbb622450d47",
     "five_player_feasibility_20260927/peer_lifecycle_sidecar_contract_20261003.json": "75f08b98d6b217f2940d13310dd6eb0773e50564a814f36e337955bdeddcb914",
     "five_player_feasibility_20260927/PEER_LIFECYCLE_SIDECAR_CONTRACT_20261003.zh-TW.md": "15f3add0a94ca9c64a9f37f9e10106cb3e825dd5828023c478de44a9d469c1d5",
@@ -1267,7 +1270,8 @@
     "Added acceptance regressions for shared session mismatch and duplicate entity identity; six integration checks pass",
     "Captured real session context twice from the fixed build: peer counts 1 and 4 with indexes 0..3; documented roster remains four slots; snapshot verifier 11/11 passed",
     "Captured a raw 224-byte session+0x20 confirmed-peer window without semantic decoding; preserved a later bounded unreadable-region failure as fail-closed evidence",
-    "Corrected the offline player-resource rollback contract to model all three ABI callback tables before roster insertion; third-stage failure now unwinds second then first, ABI table bindings are checked against the fixed-build audit, and package tests pass 19/19"
+    "Corrected the offline player-resource rollback contract to model all three ABI callback tables before roster insertion; third-stage failure now unwinds second then first, ABI table bindings are checked against the fixed-build audit, and package tests pass 19/19",
+    "Added a fixed-build player-resource callback ABI binding verifier: 9/9 checks connect the three callback tables, component 239 roster leaf, 0x581320/0x581780 dispatch ABI and reverse-cleanup edges; production/runtime/install/multiplayer flags remain false"
   ],
   "next_offline_work": [
     "Bind the offline rollback/quiescence and peer lifecycle contracts to the real 0x1086460 -> 0xFDC140 -> 0x581320/0x581780 -> 0x540920 callback ABI, then verify partial rollback, re-entry idempotence, owner migration and thread quiescence before any native hook.",
@@ -1276,7 +1280,7 @@
     "Run a real fifth-peer session on the same fixed build and record 0x1092E60 -> 0x1093590 -> 0x10937A0 -> confirmed-peer -> player-creation on host and client; preserve rejection and cleanup paths.",
     "After the fifth-peer path is bound, build the reversible production hook and ladder to six, seven and eight independent accounts with full death, reinforcement, departure, reconnect, extraction, result and host-migration logs."
   ],
-  "delivery_test_groups": 169,
+  "delivery_test_groups": 170,
   "delivery_native_executions_or_observations": 4314,
   "followup_prefix_observations_not_in_delivery_total": 24,
   "game_process_accessed": true,
