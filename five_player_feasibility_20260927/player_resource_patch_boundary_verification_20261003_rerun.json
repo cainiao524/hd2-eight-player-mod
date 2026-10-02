@@ -1,0 +1,421 @@
+{
+  "schema": "hd2_player_resource_patch_boundary_v1",
+  "build": 25480438,
+  "capture_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "runtime_verified": false,
+  "multiplayer_verified": false,
+  "checks": [
+    {
+      "name": "creation_build",
+      "passed": true,
+      "detail": 25480438
+    },
+    {
+      "name": "creation_capture",
+      "passed": true,
+      "detail": {
+        "value": "5888cbfe7abe46965b752715414b550a8d09bed968cc0c55109a22c30cdbeb4d8",
+        "legacy_alias": true
+      }
+    },
+    {
+      "name": "insert_capture",
+      "passed": true,
+      "detail": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8"
+    },
+    {
+      "name": "callback_capture",
+      "passed": true,
+      "detail": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8"
+    },
+    {
+      "name": "capture_data_sha",
+      "passed": true,
+      "detail": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+    },
+    {
+      "name": "index_4_to_7_gate",
+      "passed": true,
+      "detail": {
+        "rva": "0x1086460",
+        "bytes": "4283bc02ac63010004",
+        "asm": "cmp dword ptr [rdx + r8 + 0x163ac], 4",
+        "sha256": "15f59c1d1dff2ee20cbdce10e7d1f8e781bb44d0963549ac249ba6ea7c99c118"
+      }
+    },
+    {
+      "name": "fallback_unreachable_resource_dispatch",
+      "passed": true,
+      "detail": {
+        "gate_site": "0x1086469",
+        "accepted_edge": [
+          "0x1086469",
+          "0x108646f"
+        ],
+        "fallback_edge": [
+          "0x1086469",
+          "0x108624d"
+        ],
+        "handle_call_reachable_from_entry": true,
+        "handle_call_unreachable_without_accept_edge": true,
+        "setup_call_unreachable_without_accept_edge": true,
+        "fallback_cannot_reach_handle_or_setup_within_root": true,
+        "accepted_path_skips_fallback_ring_write": true,
+        "both_paths_can_reach_ready_helper_call": true,
+        "direct_fdc140_call_count_in_root": 1
+      }
+    },
+    {
+      "name": "resource_dispatch_targets",
+      "passed": true,
+      "detail": {
+        "player": {
+          "rva": "0x10868d7",
+          "bytes": "e86458f5ff",
+          "asm": "call 0xfdc140",
+          "sha256": "f425d400164175f4081c329a8cb87b321a536c3564f257824715ca173a01b47e"
+        },
+        "roster": {
+          "rva": "0x10868f1",
+          "bytes": "e86a2258ff",
+          "asm": "call 0x608b60",
+          "sha256": "4e42e89039545d53b5c72925fc968d708e35cd795566ce35b939632f7d97b4c6"
+        }
+      }
+    },
+    {
+      "name": "player_reference_resource_present",
+      "passed": true,
+      "detail": {
+        "count": 9,
+        "indices": [
+          3,
+          33,
+          41,
+          43,
+          226,
+          238,
+          239,
+          250,
+          260
+        ]
+      }
+    },
+    {
+      "name": "player_resource_selects_component_239",
+      "passed": true,
+      "detail": [
+        3,
+        33,
+        41,
+        43,
+        226,
+        238,
+        239,
+        250,
+        260
+      ]
+    },
+    {
+      "name": "component_239_first_dispatch_callback",
+      "passed": true,
+      "detail": {
+        "targets": [
+          "0x540920"
+        ]
+      }
+    },
+    {
+      "name": "component_239_native_insertion_is_fixed_four_guarded",
+      "passed": true,
+      "detail": {
+        "fixed_component_guards": [
+          33,
+          41,
+          43,
+          226,
+          238,
+          239,
+          250
+        ],
+        "insertion": null
+      }
+    },
+    {
+      "name": "insert_bodies_have_four_slot_guard",
+      "passed": true,
+      "detail": {
+        "roots": [
+          "0x540850",
+          "0x540920",
+          "0x60ca80",
+          "0x60cba0"
+        ],
+        "array_site_counts": {
+          "pointer": 4,
+          "primary": 28,
+          "aux": 24,
+          "property": 0
+        },
+        "map_helper": "Writes ordinal at selected bucket+4, then entity ID at bucket; empty-key or same-key selects bucket; count zero or exhausted probe sets bucket pointer zero and then writes [4]."
+      }
+    },
+    {
+      "name": "map_helper_does_not_grow",
+      "passed": true,
+      "detail": "Writes ordinal at selected bucket+4, then entity ID at bucket; empty-key or same-key selects bucket; count zero or exhausted probe sets bucket pointer zero and then writes [4]."
+    },
+    {
+      "name": "property_stage_stores_network_index",
+      "passed": true,
+      "detail": {
+        "descriptors": [
+          {
+            "ordinal": 0,
+            "hash": "0xf27c68e",
+            "type_code": 1,
+            "roster_field_offset": "0x3a8",
+            "temporary_buffer_offset": 0,
+            "initial_value": "0x7fff",
+            "name_hash_match": null
+          },
+          {
+            "ordinal": 1,
+            "hash": "0xcd889dbc",
+            "type_code": 1,
+            "roster_field_offset": "0x3ac",
+            "temporary_buffer_offset": 4,
+            "initial_value": 0,
+            "name_hash_match": null
+          },
+          {
+            "ordinal": 2,
+            "hash": "0x86c3722",
+            "type_code": 1,
+            "roster_field_offset": "0x3b0",
+            "temporary_buffer_offset": 8,
+            "initial_value": 0,
+            "name_hash_match": null
+          },
+          {
+            "ordinal": 3,
+            "hash": "0xb03b8bce",
+            "type_code": 1,
+            "roster_field_offset": "0x3b4",
+            "temporary_buffer_offset": 12,
+            "initial_value": "local network index from 0x134f190",
+            "name_hash_match": "index"
+          },
+          {
+            "ordinal": 4,
+            "hash": "0x7ed6949c",
+            "type_code": 2,
+            "roster_field_offset": "0x3b8",
+            "temporary_buffer_offset": 16,
+            "initial_value": 0,
+            "name_hash_match": null
+          },
+          {
+            "ordinal": 5,
+            "hash": "0xebee098f",
+            "type_code": 2,
+            "roster_field_offset": "0x3bc",
+            "temporary_buffer_offset": 20,
+            "initial_value": 0,
+            "name_hash_match": null
+          },
+          {
+            "ordinal": 6,
+            "hash": "0xbd74fb92",
+            "type_code": 2,
+            "roster_field_offset": "0x3c0",
+            "temporary_buffer_offset": 24,
+            "initial_value": 0,
+            "name_hash_match": null
+          },
+          {
+            "ordinal": 7,
+            "hash": "0x83c8f804",
+            "type_code": 2,
+            "roster_field_offset": "0x3c4",
+            "temporary_buffer_offset": 28,
+            "initial_value": 0,
+            "name_hash_match": null
+          }
+        ]
+      }
+    },
+    {
+      "name": "index_4_to_7_palette_has_fallback",
+      "passed": true,
+      "detail": {
+        "readonly": [
+          {
+            "name": "four_palette_rows",
+            "rva": "0x213f4e0",
+            "bytes": "0000803f0000803f9e9d1d3f8584843e0000803f8281013fadac2c3ffffe7e3f0000803ff7f6763f8b8a0a3f0000803f0000803fdddcdc3ed8d7573fa9a8a83e",
+            "sha256": "100fab4b4513b242012b69af448eab3a532fcbb49865c74bdaed4b4ee9b287a8"
+          },
+          {
+            "name": "fallback_scalar",
+            "rva": "0x23c6d70",
+            "bytes": "0000803f",
+            "value": 1.0
+          },
+          {
+            "name": "scale_scalar",
+            "rva": "0x23c79ac",
+            "bytes": "00007f43",
+            "value": 255.0
+          },
+          {
+            "name": "player_count_literal",
+            "rva": "0x22473c8",
+            "bytes": "706c617965725f636f756e7400",
+            "text": "player_count"
+          }
+        ],
+        "rows": [
+          {
+            "network_index": 0,
+            "raw_floats": [
+              1.0,
+              1.0,
+              0.615686297416687,
+              0.25882354378700256
+            ],
+            "three_output_components_float32": [
+              255.0,
+              157.0,
+              66.0
+            ]
+          },
+          {
+            "network_index": 1,
+            "raw_floats": [
+              1.0,
+              0.5058823823928833,
+              0.6745098233222961,
+              0.9960784316062927
+            ],
+            "three_output_components_float32": [
+              129.0,
+              172.0,
+              254.0
+            ]
+          },
+          {
+            "network_index": 2,
+            "raw_floats": [
+              1.0,
+              0.9647058844566345,
+              0.5411764979362488,
+              1.0
+            ],
+            "three_output_components_float32": [
+              246.0,
+              138.0,
+              255.0
+            ]
+          },
+          {
+            "network_index": 3,
+            "raw_floats": [
+              1.0,
+              0.4313725531101227,
+              0.843137264251709,
+              0.3294117748737335
+            ],
+            "three_output_components_float32": [
+              110.0,
+              215.0,
+              84.0
+            ]
+          }
+        ],
+        "index_ge_four_output": [
+          255.0,
+          255.0,
+          255.0
+        ],
+        "output_buffer_order": [
+          "table_float1_or_fallback",
+          "table_float2_or_fallback",
+          "table_float3_or_fallback"
+        ],
+        "color_classification": "Strong RGB-palette correspondence; exact destination surface / peripheral is not identified.",
+        "indirect_color_call": {
+          "site": "0x6057e6",
+          "pointer_steps": [
+            "api=qword[global3326308]",
+            "first_table=qword[api]",
+            "nested_table=qword[first_table+0x10]",
+            "target=qword[nested_table]"
+          ],
+          "rcx": "qword[global347D6A0]",
+          "rdx": "address of three float32 components",
+          "guard": "dword[global347D620]==1"
+        },
+        "separate_named_count_call": {
+          "site": "0x605910",
+          "pointer_steps": [
+            "api=qword[global3326308]",
+            "table=qword[api+0x10]",
+            "target=qword[table+0x480]"
+          ],
+          "rcx": "player_count literal",
+          "edx": "roster+0x84 count"
+        },
+        "index_ge_four_branch_rejects_join": false,
+        "scope": "No out-of-range palette access at index4..7, no early return from this branch; other parts of function and global mod requirements remain separate."
+      }
+    },
+    {
+      "name": "existing_sidecar_is_nonproduction",
+      "passed": true,
+      "detail": {
+        "executable": false,
+        "multiplayer_verified": false,
+        "game_files_modified": false,
+        "reason": "isolated sidecar only; native callback ABI and patch install remain unconnected"
+      }
+    },
+    {
+      "name": "existing_sidecar_has_no_live_creation_callback",
+      "passed": true,
+      "detail": {
+        "executable": false,
+        "multiplayer_verified": false,
+        "game_files_modified": false,
+        "reason": "isolated sidecar only; native callback ABI and patch install remain unconnected"
+      }
+    }
+  ],
+  "decision": {
+    "direct_gate_literal_patch_safe": false,
+    "four_to_seven_sidecar_ready": false,
+    "relocation_path_ready": false,
+    "safe_offline_scope": "model only; preserve index 4..7 as fail-closed until native callback, owner lifetime, map capacity and cleanup ABI are bound",
+    "blocking_evidence": [
+      "0x1086460 routes network index >=4 away from the player resource and roster calls.",
+      "player resource selects component 239, whose registered insertion callback reaches 0x540920; its insertion family has original four-slot guards and fixed record stores.",
+      "0x172F790 does not allocate or grow the entity-ID map and can write a null bucket on full/zero-capacity state.",
+      "property generation writes the network index into a roster ordinal record; network index and roster ordinal cannot be substituted.",
+      "the checked-in sidecar has no live player-creation callback and is explicitly nonproduction."
+    ],
+    "required_before_patch": [
+      "Bind the receive/creation callback ABI for 0x1086460 -> 0xFDC140 -> 0x581320 -> 0x540920.",
+      "Provide one owner-keyed 8-slot backing for tracked/dense/prefix records, the 0x20-byte property rows, and the ID->ordinal map.",
+      "Prove map free-slot/duplicate handling before any record/count mutation, plus unwind and cleanup for rejection, departure and reconnect.",
+      "Capture a real fifth-peer run, then ladder to eight independent accounts before enabling a production hook."
+    ]
+  },
+  "limits": [
+    "Static checked-in evidence only; no process calls, writes, injection, install or multiplayer test.",
+    "Reference player metadata is not proof that installed encrypted assets are identical.",
+    "A passed check means the evidence matches the fixed build, not that the corresponding runtime path executed."
+  ],
+  "checks_passed": 18,
+  "checks_total": 18,
+  "verification_passed": true
+}
