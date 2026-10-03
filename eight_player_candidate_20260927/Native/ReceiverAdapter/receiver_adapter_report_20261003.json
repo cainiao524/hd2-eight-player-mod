@@ -1,0 +1,44 @@
+{
+  "schema": "hd2_receiver_vector_adapter_v1",
+  "build": 25480438,
+  "dispatch_entry_rva": "0xbc2d10",
+  "receiver_rva": "0xbaba80",
+  "receiver_selector": 168,
+  "descriptor_offsets": [
+    "0x08",
+    "0x18",
+    "0x28",
+    "0x38",
+    "0x48"
+  ],
+  "source_sha256": {
+    "ep_receiver_adapter.h": "8a62580d2874602173071d7007d2ee02aedf7cb3b2923f7e1f01a5feacb26c9c",
+    "ep_receiver_adapter.cpp": "4486a7688d4c9c534b5e66a2ab266f111bb38a11e4cec0eeeb99ee6f406b0ed8",
+    "ep_receiver_adapter_test.cpp": "5d492c1a632f6202697bdc268044b877aac846ee7cd308e0149f15ebb8cd5ac9",
+    "build_x64.bat": "cd793d320d76538512451fd0d7a2101ade1a6ae7d0a12bcb8fc92f3b5a7bf0d2",
+    "README.zh-TW.md": "50afc90c17a5766861703b1519d57ba47942b89970819d0c8f7cda3f1bc36e1a"
+  },
+  "binary_sha256": {
+    "ep_receiver_adapter.dll": "a42f97be96955070f4b24728c8cdba6002f1fb336d99ba4100f216845e50e920",
+    "ep_receiver_adapter_test.exe": "7fd652b23d09808b4477c258bc5485047ba57a728c63fce09dd70c56497c3f0f"
+  },
+  "test": {
+    "status": "passed",
+    "output": "ep_receiver_adapter_synthetic_passed"
+  },
+  "checks": {
+    "vector_abi_shape_pinned": true,
+    "hash_to_selector_proven": false,
+    "production_executable": false,
+    "runtime_verified": false,
+    "installable": false,
+    "multiplayer_verified": false,
+    "game_process_accessed": false,
+    "host_native_code_executed": false
+  },
+  "limits": [
+    "The adapter decodes the saved vector shape only; it does not resolve event hash 0x4804FCF4.",
+    "The five decoded fields remain opaque and are not guessed as peer/resource/index semantics.",
+    "No callback, hook, game memory write, installation or multiplayer path is present."
+  ]
+}

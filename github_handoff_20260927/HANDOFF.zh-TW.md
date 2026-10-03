@@ -12,6 +12,12 @@
 
 `ep_player_resource_synthetic_passed` 已涵蓋 index `0..7`、佔用第九次拒絕、三階段 callback、失敗回滾與 owner migration；Python report/hash tests 2/2 通過。這是 native 形狀的離線所有權／回滾元件，尚未解析或呼叫 `0x1086460 → 0xFDC140 → 0x581320/0x581780 → 0x540920` 真實 ABI，也沒有 hook、注入、安裝、UI、Party 或多人驗收；`production_executable=false`、`runtime_verified=false`、`installable=false`、`multiplayer_verified=false` 保持不變。
 
+## 2026-10-03 receiver vector ABI adapter
+
+新增 `Native/ReceiverAdapter` 離線候選，固定 `0xBC2D10` callback-vector leaf、selector `168`、table entry `0x214C2E0 + 168*8 → 0xBABA80` 及 descriptor 欄位 `+8/+18/+28/+38/+48`。C++ decoder 只接受 selector `168`，未知 selector／缺欄位 fail-closed；五個值保持 opaque，沒有猜成 peer、resource 或 network index。`ep_receiver_adapter_synthetic_passed` 與 Python report/hash test 通過。
+
+保存的 ABI 仍未閉合 `0x4804FCF4 → selector 168` 的 hash／service registry，故此候選沒有 callback、native hook、遊戲記憶體寫入、安裝或多人功能；`hash_to_selector_proven=false`、`production_executable=false`、`runtime_verified=false`、`installable=false`、`multiplayer_verified=false`。
+
 ## 2026-10-03 fixed-build live preflight reread
 
 在同一固定 build `25480438`、同一 PID `36900` 上保存第二批 bounded read-only reread：

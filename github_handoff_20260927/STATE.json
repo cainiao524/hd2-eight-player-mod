@@ -996,7 +996,7 @@
     "five_player_feasibility_20260927/verification/native_peer_admission_bridge_boundary_verification_20261002.json": "f30a4b9517d3add9050cd24ff3fcd010d9ea1a72cb937bdddb6db250384abad0",
     "five_player_feasibility_20260927/verification/peer_admission_adapter_verification.json": "0b4f84491adeff2b424d02e6fa614c3630381dc12eaf4bc20af39914ff4319fc",
     "five_player_feasibility_20260927/verify_native_peer_admission_bridge_boundary.py": "6cf6d5d4e9898fab0083ea135f8ea13dbc129ff0f1d68d4e83f1c8bd34214ad7",
-    "github_handoff_20260927/HANDOFF.zh-TW.md": "b6aadb27116834f74184727a1ec00dc1400c050139760a7045c77ac79cf91e59",
+    "github_handoff_20260927/HANDOFF.zh-TW.md": "386a8e2226e5c9e107b2c098cbf884e04525801b7739303e897f076596deab17",
     "github_handoff_20260927/SETUP.zh-TW.md": "1c362594a6a8e70fe5fb9fce5f0d23dcf6d160a6338345f2f4b717d538d8003b",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_disasm_20261002.json": "48f504badebad800a8439494bc386e3dff61e1818168a40916d8cffd618790c9",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_patch.py": "9808f073e958fdc464d47bc10a459f328d14ebde9a765f429e13153786a5734a",
@@ -1192,7 +1192,16 @@
     "eight_player_candidate_20260927/Native/PlayerResource/ep_player_resource_test.exe": "f2a7256c6bdc55a49cb2093e1ebedcb5d151cff254d17a676cf639568f88794d",
     "eight_player_candidate_20260927/Native/PlayerResource/player_resource_report_20261003.json": "b3eb64e0b9f3e8ce0177c5ecf92a6da19cbacb392191012b7d16b82f6b250209",
     "eight_player_candidate_20260927/Native/PlayerResource/test_player_resource.py": "7de3e060a5c92ff15545c84715222d0f4a7979d8aa323b9d9678de1045918f67",
-    "eight_player_candidate_20260927/Native/PlayerResource/README.zh-TW.md": "6c63abfbdf4423d1660dd888b19db604ef3bbc87450afd326c307bef36f669f0"
+    "eight_player_candidate_20260927/Native/PlayerResource/README.zh-TW.md": "6c63abfbdf4423d1660dd888b19db604ef3bbc87450afd326c307bef36f669f0",
+    "eight_player_candidate_20260927/Native/ReceiverAdapter/build_x64.bat": "cd793d320d76538512451fd0d7a2101ade1a6ae7d0a12bcb8fc92f3b5a7bf0d2",
+    "eight_player_candidate_20260927/Native/ReceiverAdapter/ep_receiver_adapter.cpp": "4486a7688d4c9c534b5e66a2ab266f111bb38a11e4cec0eeeb99ee6f406b0ed8",
+    "eight_player_candidate_20260927/Native/ReceiverAdapter/ep_receiver_adapter.dll": "a42f97be96955070f4b24728c8cdba6002f1fb336d99ba4100f216845e50e920",
+    "eight_player_candidate_20260927/Native/ReceiverAdapter/ep_receiver_adapter.h": "8a62580d2874602173071d7007d2ee02aedf7cb3b2923f7e1f01a5feacb26c9c",
+    "eight_player_candidate_20260927/Native/ReceiverAdapter/ep_receiver_adapter_test.cpp": "5d492c1a632f6202697bdc268044b877aac846ee7cd308e0149f15ebb8cd5ac9",
+    "eight_player_candidate_20260927/Native/ReceiverAdapter/ep_receiver_adapter_test.exe": "7fd652b23d09808b4477c258bc5485047ba57a728c63fce09dd70c56497c3f0f",
+    "eight_player_candidate_20260927/Native/ReceiverAdapter/README.zh-TW.md": "50afc90c17a5766861703b1519d57ba47942b89970819d0c8f7cda3f1bc36e1a",
+    "eight_player_candidate_20260927/Native/ReceiverAdapter/receiver_adapter_report_20261003.json": "696851b1853d70dc11d6f24cf733b157678f0307b0b0a9daa18ae0a29b169505",
+    "eight_player_candidate_20260927/Native/ReceiverAdapter/test_receiver_adapter.py": "bf2775805cec2074a2dcce8dcb134642512c21f818d5d6df4d7801f40004c2ef"
   },
   "missing_release_files": [],
   "remaining_release_work": [
@@ -1293,7 +1302,8 @@
     "Added an adapter destroy invariant that refuses teardown while any native-confirmed flag remains set; rebuilt both native targets and all bridge/client integration tests passed.",
     "Updated HANDOFF to match the native bridge compensation order, eight-slot cross-component lifecycle harness and current commit receipts.",
     "Implemented an offline native PlayerResource eight-slot sidecar: three audited callback stages, generation and owner-epoch fencing, callback leases, reverse rollback, order-failure rollback, idempotent release and quiesced owner migration; C++ harness and report/hash tests pass while the real ABI, runtime, installation and multiplayer flags remain false.",
-    "Rebuilt and verified the v0.14.0-offline delivery receipt: the 6054F0 state-update candidate is formally frozen at 149 test groups and 4314 emulator/observation executions, with the CLI bundle byte-identical and 726 local document links valid; production/runtime/install/multiplayer remain false."
+    "Rebuilt and verified the v0.14.0-offline delivery receipt: the 6054F0 state-update candidate is formally frozen at 149 test groups and 4314 emulator/observation executions, with the CLI bundle byte-identical and 726 local document links valid; production/runtime/install/multiplayer remain false.",
+    "Added an offline fail-closed receiver-vector adapter for the fixed callback leaf BC2D10: selector 168 and descriptor offsets +8/+18/+28/+38/+48 are pinned, unknown selectors and missing fields reject, and all five values remain opaque; C++ and Python tests pass while hash-to-selector, runtime, install and multiplayer remain false."
   ],
   "next_offline_work": [
     "Bind the offline rollback/quiescence and peer lifecycle contracts to the real 0x1086460 -> 0xFDC140 -> 0x581320/0x581780 -> 0x540920 callback ABI, then verify partial rollback, re-entry idempotence, owner migration and thread quiescence before any native hook.",
@@ -1332,7 +1342,7 @@
   },
   "latest_research_update_date": "2026-10-03",
   "priority_assessment": "five_player_feasibility_20260927/PEER_ADMISSION_PRIORITY.zh-TW.md",
-  "last_update_scope": "Formalized the v0.14.0-offline 6054F0 receipt, closed the bounded 1277920 reader candidate in the worklist, and added the offline native PlayerResource transaction sidecar; no game ABI call, hook, installation or multiplayer validation was performed.",
+  "last_update_scope": "Formalized the v0.14 receipt, closed the bounded 1277920 reader candidate, added the native PlayerResource transaction sidecar, and added a fail-closed receiver-vector ABI adapter; no game ABI call, hook, installation or multiplayer validation was performed.",
   "live_preflight_20261003": {
     "pid": 36900,
     "build": 25480438,
@@ -1502,6 +1512,26 @@
       ],
       "roster_component": 239,
       "tests": "ep_player_resource_synthetic_passed (all indexes 0..7 + occupied ninth rejection); Python report/hash tests 2/2",
+      "production_executable": false,
+      "runtime_verified": false,
+      "installable": false,
+      "multiplayer_verified": false,
+      "process_accessed": false
+    },
+    "native_receiver_vector_adapter": {
+      "build": 25480438,
+      "dispatch_entry_rva": "0xbc2d10",
+      "receiver_rva": "0xbaba80",
+      "selector": 168,
+      "descriptor_offsets": [
+        "0x08",
+        "0x18",
+        "0x28",
+        "0x38",
+        "0x48"
+      ],
+      "tests": "ep_receiver_adapter_synthetic_passed; Python report/hash test 1/1",
+      "hash_to_selector_proven": false,
       "production_executable": false,
       "runtime_verified": false,
       "installable": false,
