@@ -15,6 +15,10 @@ cl /nologo /std:c++20 /O2 /EHsc ep_official_plugin_load_test.cpp /Fe:ep_official
 if errorlevel 1 goto :fail
 ep_official_plugin_load_test.exe
 if errorlevel 1 goto :fail
+cl /nologo /std:c++20 /O2 /EHsc /MT ep_official_session_getter_test.cpp /Fe:ep_official_session_getter_test.exe
+if errorlevel 1 goto :fail
+ep_official_session_getter_test.exe
+if errorlevel 1 goto :fail
 popd
 endlocal
 exit /b 0

@@ -4,7 +4,7 @@
 
 namespace {
 constexpr UINT32 kMagic = 0x45504341u; // EPCA
-constexpr UINT32 kVersion = 3u;
+constexpr UINT32 kVersion = 4u;
 
 EP_CLIENT_ADAPTER* as_adapter(void* owner) {
     auto* a = static_cast<EP_CLIENT_ADAPTER*>(owner);
@@ -15,6 +15,23 @@ EP_CLIENT_ADAPTER* as_adapter(void* owner) {
 
 EP_BRIDGE_STATUS map_status(EP_CLIENT_STATUS status) {
     return status == EP_CLIENT_OK ? EP_BRIDGE_OK : EP_BRIDGE_CALLBACK_REJECTED;
+}
+
+int free_overflow(const EP_CLIENT_ADAPTER* a) {
+    for (UINT32 i = 0; i < EP_SIDECAR_CAPACITY; ++i)
+        if (!a->overflow[i].valid) return static_cast<int>(i);
+    return -1;
+}
+
+int matching_overflow(const EP_CLIENT_ADAPTER* a, UINT8 index,
+                      UINT64 peer, UINT64 handle) {
+    for (UINT32 i = 0; i < EP_SIDECAR_CAPACITY; ++i) {
+        const auto& item = a->overflow[i];
+        if (item.valid && item.network_index == index &&
+            item.peer_id == peer && item.resource_handle == handle)
+            return static_cast<int>(i);
+    }
+    return -1;
 }
 }
 
@@ -58,6 +75,7 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_client_adapter_destroy(EP_CLIENT_ADAPTER*
     for (UINT32 i = 0; i < EP_SIDECAR_CAPACITY; ++i) {
         if (a->native_confirmed[i] != 0) return EP_BRIDGE_CLEANUP_REQUIRED;
         if (a->index_reserved[i] != 0) return EP_BRIDGE_CLEANUP_REQUIRED;
+        if (a->overflow[i].valid != 0) return EP_BRIDGE_CLEANUP_REQUIRED;
     }
     if (a->owner_refs != 0 || ep_client_validate(&a->client) != EP_CLIENT_OK ||
         ep_client_destroy(&a->client) != EP_CLIENT_OK) return EP_BRIDGE_CLEANUP_REQUIRED;
@@ -71,27 +89,57 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_client_adapter_allocate_index(
     auto* a = as_adapter(owner);
     if (!a || !out_index || peer_id == 0 || resource_handle == 0)
         return EP_BRIDGE_INVALID_ARGUMENT;
+    *out_index = 0xFF;
     UINT8 index = 0xFF;
     const auto status = a->native_allocate_index(
         a->native_owner, peer_id, resource_handle, &index);
-    if (status != EP_BRIDGE_OK) return status;
-    if (index >= EP_SIDECAR_CAPACITY || a->index_reserved[index] != 0) {
-        if (index < EP_SIDECAR_CAPACITY)
-            a->native_release_index(a->native_owner, peer_id, resource_handle, index, 0);
+    // FF is the callback contract's no-reservation sentinel. A provider must
+    // return every partially allocated index even when it reports failure.
+    if (index == 0xFF)
+        return status == EP_BRIDGE_OK ? EP_BRIDGE_INDEX_REJECTED : status;
+    if (index >= EP_SIDECAR_CAPACITY) {
+        const int overflow_slot = free_overflow(a);
+        if (overflow_slot < 0) {
+            // No local retry record remains.  Attempt immediate compensation;
+            // keep the index visible if that release itself fails.
+            if (a->native_release_index(a->native_owner, peer_id,
+                                        resource_handle, index, 0) == EP_BRIDGE_OK)
+                return status == EP_BRIDGE_OK ? EP_BRIDGE_INDEX_REJECTED : status;
+            *out_index = index;
+            return EP_BRIDGE_CLEANUP_REQUIRED;
+        }
+        for (const auto& item : a->overflow)
+            if (item.valid && item.network_index == index)
+                return EP_BRIDGE_INDEX_REJECTED;
+        a->overflow[overflow_slot] = {1, index, 0, peer_id, resource_handle};
+        *out_index = index;
+        return status == EP_BRIDGE_OK ? EP_BRIDGE_INDEX_REJECTED : status;
+    }
+    if (a->index_reserved[index] != 0) {
+        // This belongs to an existing admission. Never release that owner's
+        // reservation in response to a colliding allocator result.
         return EP_BRIDGE_INDEX_REJECTED;
     }
     a->index_reserved[index] = 1;
     *out_index = index;
-    return EP_BRIDGE_OK;
+    return status;
 }
 
 extern "C" EP_BRIDGE_STATUS __cdecl ep_client_adapter_release_index(
     void* owner, UINT64 peer_id, UINT64 resource_handle, UINT8 network_index,
     UINT32 generation) {
     auto* a = as_adapter(owner);
-    if (!a || peer_id == 0 || resource_handle == 0 ||
-        network_index >= EP_SIDECAR_CAPACITY)
+    if (!a || peer_id == 0 || resource_handle == 0)
         return EP_BRIDGE_INVALID_ARGUMENT;
+    if (network_index >= EP_SIDECAR_CAPACITY) {
+        if (generation != 0) return EP_BRIDGE_INDEX_REJECTED;
+        const int found = matching_overflow(a, network_index, peer_id, resource_handle);
+        if (found < 0) return EP_BRIDGE_INDEX_REJECTED;
+        const auto status = a->native_release_index(
+            a->native_owner, peer_id, resource_handle, network_index, 0);
+        if (status == EP_BRIDGE_OK) a->overflow[found] = {};
+        return status;
+    }
     if (a->index_reserved[network_index] == 0)
         return EP_BRIDGE_INDEX_REJECTED;
     const auto status = a->native_release_index(

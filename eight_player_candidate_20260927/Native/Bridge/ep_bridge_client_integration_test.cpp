@@ -8,6 +8,10 @@ struct NativeFixture {
     bool reject_remove = false;
     unsigned confirms = 0, creates = 0, removes = 0, retains = 0, releases = 0;
     bool allocated[EP_SIDECAR_CAPACITY]{};
+    UINT8 forced_index = 0xFF;
+    EP_BRIDGE_STATUS forced_allocate_status = EP_BRIDGE_OK;
+    bool fail_overflow_release = false;
+    bool overflow_allocated[256]{};
     unsigned allocate_calls = 0, release_index_calls = 0;
 };
 static EP_BRIDGE_STATUS __cdecl confirm(void* owner, UINT64, UINT64, UINT8) {
@@ -34,6 +38,14 @@ static EP_BRIDGE_STATUS __cdecl allocate_index(
     void* owner, UINT64, UINT64, UINT8* out_index) {
     auto& f = *static_cast<NativeFixture*>(owner);
     ++f.allocate_calls;
+    if (f.forced_index != 0xFF) {
+        *out_index = f.forced_index;
+        if (f.forced_index >= EP_SIDECAR_CAPACITY)
+            f.overflow_allocated[f.forced_index] = true;
+        else if (!f.allocated[f.forced_index])
+            f.allocated[f.forced_index] = true;
+        return f.forced_allocate_status;
+    }
     for (UINT8 i = 0; i < EP_SIDECAR_CAPACITY; ++i) {
         if (f.allocated[i]) continue;
         f.allocated[i] = true;
@@ -46,8 +58,13 @@ static EP_BRIDGE_STATUS __cdecl release_index(
     void* owner, UINT64, UINT64, UINT8 index, UINT32) {
     auto& f = *static_cast<NativeFixture*>(owner);
     ++f.release_index_calls;
-    if (index >= EP_SIDECAR_CAPACITY || !f.allocated[index])
-        return EP_BRIDGE_INDEX_REJECTED;
+    if (index >= EP_SIDECAR_CAPACITY) {
+        if (f.fail_overflow_release || !f.overflow_allocated[index])
+            return EP_BRIDGE_INDEX_REJECTED;
+        f.overflow_allocated[index] = false;
+        return EP_BRIDGE_OK;
+    }
+    if (!f.allocated[index]) return EP_BRIDGE_INDEX_REJECTED;
     f.allocated[index] = false;
     return EP_BRIDGE_OK;
 }
@@ -83,6 +100,34 @@ int main() {
     ok &= check(f.retains == f.releases, "confirm failure balances native owner");
     if (!ok) return 1;
 
+    // A provider can hand back an authoritative index outside the local
+    // client table.  The adapter keeps it for generation-zero compensation,
+    // and the bridge must retry a failed release without creating a sidecar
+    // record.
+    f.forced_index = 8;
+    f.forced_allocate_status = EP_BRIDGE_INDEX_REJECTED;
+    EP_BRIDGE_ADMISSION overflow{};
+    ok &= check(ep_bridge_admit(&bridge, 30, 40, &overflow) == EP_BRIDGE_INDEX_REJECTED,
+                "out-of-range allocator result rejected after release");
+    ok &= check(!f.overflow_allocated[8] && bridge.cleanup_count == 0 &&
+                client.client.confirmed_count == 0,
+                "out-of-range reservation compensated");
+    f.forced_index = 9;
+    f.fail_overflow_release = true;
+    EP_BRIDGE_ADMISSION overflow_retry{};
+    ok &= check(ep_bridge_admit(&bridge, 31, 41, &overflow_retry) ==
+                    EP_BRIDGE_CLEANUP_REQUIRED &&
+                    overflow_retry.token.index == 9 &&
+                    overflow_retry.token.generation == 0 &&
+                    bridge.cleanup_count == 1,
+                "out-of-range release failure retained");
+    f.fail_overflow_release = false;
+    ok &= check(ep_bridge_retry_cleanup(&bridge, overflow_retry) == EP_BRIDGE_OK &&
+                !f.overflow_allocated[9] && bridge.cleanup_count == 0,
+                "out-of-range release retry completes");
+    f.forced_index = 0xFF;
+    f.forced_allocate_status = EP_BRIDGE_OK;
+
     f.reject_confirm = false;
     EP_BRIDGE_ADMISSION admissions[EP_SIDECAR_CAPACITY]{};
     for (UINT8 i = 0; i < EP_SIDECAR_CAPACITY; ++i) {
@@ -93,6 +138,15 @@ int main() {
     ok &= check(bridge.sidecar.active_count == EP_SIDECAR_CAPACITY &&
                 client.client.confirmed_count == EP_SIDECAR_CAPACITY,
                 "native and client registries hold eight players");
+    const unsigned releases_before_collision = f.release_index_calls;
+    f.forced_index = 0;
+    EP_BRIDGE_ADMISSION collision{};
+    ok &= check(ep_bridge_admit(&bridge, 500, 600, &collision) ==
+                    EP_BRIDGE_INDEX_REJECTED &&
+                f.release_index_calls == releases_before_collision &&
+                client.client.confirmed_count == EP_SIDECAR_CAPACITY,
+                "reserved index collision is not released");
+    f.forced_index = 0xFF;
     ok &= check(ep_bridge_depart(&bridge, admissions[4]) == EP_BRIDGE_OK,
                 "client departure keeps a hole");
     EP_BRIDGE_ADMISSION reconnected{};
@@ -112,7 +166,8 @@ int main() {
                 "both registries fully cleaned");
     ok &= check(f.retains == f.releases, "eight-player owner leases balanced");
     ok &= check(f.allocate_calls == f.release_index_calls &&
-                f.allocate_calls == 10, "authoritative index reservations balanced");
+                f.allocate_calls == 13 && f.release_index_calls == 13,
+                "authoritative index reservations balanced");
     ok &= check(ep_bridge_destroy(&bridge) == EP_BRIDGE_OK, "bridge destroy");
     ok &= check(ep_client_adapter_destroy(&client) == EP_BRIDGE_OK, "client destroy");
     if (!ok) return 1;

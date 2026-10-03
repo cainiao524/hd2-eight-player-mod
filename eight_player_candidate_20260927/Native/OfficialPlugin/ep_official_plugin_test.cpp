@@ -16,6 +16,8 @@ static void* runtime_lookup(void* platform, UINT64 id, void* owner) {
 static int runtime_status(void* token) { return token ? 0 : 1; }
 
 static ep_script_api_prefix fake_script{};
+static void* fake_network_table[2]{};
+static void* fake_session_table[2]{};
 static void* stub_api(unsigned id) {
     return id == EP_C_API_ID ? &fake_script : nullptr;
 }
@@ -26,19 +28,26 @@ int main() {
     assert(get_plugin_api(0xFFFFFFFFu) == nullptr);
     assert(table->get_name != nullptr);
     assert(table->loaded != nullptr);
-    fake_script.slots[7] = reinterpret_cast<void*>(static_cast<uintptr_t>(0xABC00000));
-    fake_script.slots[8] = reinterpret_cast<void*>(static_cast<uintptr_t>(0xDEF00000));
+    fake_script.slots[7] = fake_network_table;
+    fake_script.slots[8] = fake_session_table;
     table->loaded(&stub_api);
     assert(ep_official_plugin_probe_state() == 1u);
     assert(ep_official_plugin_c_api_pointer() == reinterpret_cast<uintptr_t>(&fake_script));
-    assert(ep_official_plugin_network_table_pointer() == static_cast<uintptr_t>(0xABC00000));
-    assert(ep_official_plugin_game_session_table_pointer() == static_cast<uintptr_t>(0xDEF00000));
+    assert(ep_official_plugin_network_table_pointer() == reinterpret_cast<uintptr_t>(fake_network_table));
+    assert(ep_official_plugin_game_session_table_pointer() == reinterpret_cast<uintptr_t>(fake_session_table));
     assert(ep_official_plugin_network_api_pointer() == reinterpret_cast<uintptr_t>(&fake_script) + 0x38);
     assert(ep_official_plugin_game_session_api_pointer() == reinterpret_cast<uintptr_t>(&fake_script) + 0x40);
+    for (unsigned i = 0; i < 60; ++i) table->update_game(0.0f);
+    assert(ep_official_plugin_update_ticks() == 60u);
     table->unloaded();
     assert(ep_official_plugin_probe_state() == 0u);
     assert(ep_official_plugin_network_table_pointer() == 0u);
     assert(ep_official_plugin_game_session_table_pointer() == 0u);
+    assert(ep_official_plugin_session_pointer() == 0u);
+    assert(ep_official_plugin_peer_count() == 0xFFFFFFFFu);
+    assert(ep_official_plugin_update_ticks() == 0u);
+    assert(ep_official_plugin_last_snapshot_session() == 0u);
+    assert(ep_official_plugin_last_snapshot_count() == 0xFFFFFFFFu);
 
     EP_CONSUMER_CALLBACKS native_callbacks{};
     assert(ep_official_plugin_runtime_get_native_callbacks(&native_callbacks) ==

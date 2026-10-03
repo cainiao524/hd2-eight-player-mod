@@ -16,6 +16,11 @@ int main() {
         "ep_official_plugin_runtime_bind_native_callbacks",
         "ep_official_plugin_runtime_get_native_callbacks",
         "ep_official_plugin_runtime_unbind_native_callbacks",
+        "ep_official_plugin_session_pointer",
+        "ep_official_plugin_peer_count",
+        "ep_official_plugin_update_ticks",
+        "ep_official_plugin_last_snapshot_session",
+        "ep_official_plugin_last_snapshot_count",
     };
     for (const char* name : exports) assert(GetProcAddress(module, name) != nullptr);
     auto get_api = reinterpret_cast<get_plugin_api_export>(GetProcAddress(module, "get_plugin_api"));

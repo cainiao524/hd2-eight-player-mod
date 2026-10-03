@@ -242,13 +242,20 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_admit(
         *out_admission = bridge->cleanup[identity_cleanup].admission;
         return EP_BRIDGE_CLEANUP_REQUIRED;
     }
+    if (bridge->cleanup_count >= EP_SIDECAR_CAPACITY) return EP_BRIDGE_CLEANUP_REQUIRED;
     OwnerLease lease{bridge->config};
     if (!lease.acquire()) return EP_BRIDGE_CALLBACK_REJECTED;
     UINT8 network_index = 0xFF;
     const EP_BRIDGE_STATUS allocated = bridge->config.allocate_index(
         bridge->config.owner, peer_id, resource_handle, &network_index);
-    if (allocated != EP_BRIDGE_OK)
+    if (allocated != EP_BRIDGE_OK) {
+        if (network_index != 0xFF) {
+            const auto released = release_unreserved_index_or_remember(
+                bridge, peer_id, resource_handle, network_index, lease, out_admission);
+            if (released != EP_BRIDGE_OK) return released;
+        }
         return allocated == EP_BRIDGE_NO_SLOT ? EP_BRIDGE_NO_SLOT : EP_BRIDGE_INDEX_REJECTED;
+    }
     if (network_index >= EP_SIDECAR_CAPACITY) {
         const EP_BRIDGE_STATUS released = release_unreserved_index_or_remember(
             bridge, peer_id, resource_handle, network_index, lease, out_admission);
@@ -333,11 +340,18 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_reconnect(
     if (!existing && conflict) return EP_BRIDGE_CALLBACK_REJECTED;
     EP_SIDECAR_STATUS status = EP_SC_OK;
     if (!existing) {
+        if (bridge->cleanup_count >= EP_SIDECAR_CAPACITY) return EP_BRIDGE_CLEANUP_REQUIRED;
         UINT8 network_index = 0xFF;
         const EP_BRIDGE_STATUS allocated = bridge->config.allocate_index(
             bridge->config.owner, peer_id, resource_handle, &network_index);
-        if (allocated != EP_BRIDGE_OK)
+        if (allocated != EP_BRIDGE_OK) {
+            if (network_index != 0xFF) {
+                const auto released = release_unreserved_index_or_remember(
+                    bridge, peer_id, resource_handle, network_index, lease, out_admission);
+                if (released != EP_BRIDGE_OK) return released;
+            }
             return allocated == EP_BRIDGE_NO_SLOT ? EP_BRIDGE_NO_SLOT : EP_BRIDGE_INDEX_REJECTED;
+        }
         if (network_index >= EP_SIDECAR_CAPACITY) {
             const EP_BRIDGE_STATUS released = release_unreserved_index_or_remember(
                 bridge, peer_id, resource_handle, network_index, lease, out_admission);

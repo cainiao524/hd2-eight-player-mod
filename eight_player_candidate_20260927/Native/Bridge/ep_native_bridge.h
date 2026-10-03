@@ -53,7 +53,10 @@ typedef EP_BRIDGE_STATUS (__cdecl *EP_BRIDGE_OWNER_RETAIN_CB)(void* owner);
 typedef void (__cdecl *EP_BRIDGE_OWNER_RELEASE_CB)(void* owner);
 // Session/Party owns the authoritative network index.  The bridge must use
 // that exact index for every confirmed-peer and player-creation callback; it
-// never substitutes the first locally free sidecar slot.
+// never substitutes the first locally free sidecar slot. The allocator must
+// leave out_index=0xFF when no new reservation exists. If it partially reserves
+// an index and returns an error, it must return that index for generation-zero
+// compensation. Index 0xFF is reserved as the no-reservation sentinel.
 typedef EP_BRIDGE_STATUS (__cdecl *EP_BRIDGE_ALLOCATE_INDEX_CB)(
     void* owner, UINT64 peer_id, UINT64 resource_handle, UINT8* out_index);
 typedef EP_BRIDGE_STATUS (__cdecl *EP_BRIDGE_RELEASE_INDEX_CB)(

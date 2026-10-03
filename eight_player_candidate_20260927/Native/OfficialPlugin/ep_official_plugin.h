@@ -45,7 +45,8 @@ constexpr unsigned EP_PLUGIN_API_ID = 0;
 constexpr unsigned EP_C_API_ID = 31;
 
 // Public Stingray C API prefix: Network is slot 7 and GameSession slot 8.
-// We only expose their computed addresses; no function pointer is dereferenced.
+// The exported pointer helpers only expose computed addresses. setup_game and
+// update_game use the separate read-only getter gate before any function call.
 struct ep_script_api_prefix {
     void* slots[9];
 };
@@ -59,6 +60,11 @@ EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_network_api_pointer();
 EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_game_session_api_pointer();
 EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_network_table_pointer();
 EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_game_session_table_pointer();
+EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_session_pointer();
+EP_PLUGIN_EXPORT unsigned ep_official_plugin_peer_count();
+EP_PLUGIN_EXPORT unsigned ep_official_plugin_update_ticks();
+EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_last_snapshot_session();
+EP_PLUGIN_EXPORT unsigned ep_official_plugin_last_snapshot_count();
 
 // Read-only gate and reversible bridge for the fixed-build consumer candidate.
 // Preflight never writes game memory. Install/remove remain disabled to callers

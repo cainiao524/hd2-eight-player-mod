@@ -1,0 +1,87 @@
+{
+  "schema": "hd2_eight_player_integration_preflight_v1",
+  "date": "2026-10-04",
+  "steam_build": 25480438,
+  "required_capacity": 8,
+  "status": "offline_cross_component_contract",
+  "contract": {
+    "all_component_capacities_must_equal": 8,
+    "components": [
+      "Bridge",
+      "ClientSidecar",
+      "PlayerResource",
+      "ClientReplication",
+      "PlayerCreationGate",
+      "SessionMembers",
+      "OfficialPlugin"
+    ],
+    "authoritative_index_required": true,
+    "compact_ordinal_separate": true,
+    "holes_preserved": true,
+    "host_client_same_build": true,
+    "process_access": false,
+    "native_game_calls": false,
+    "memory_writes": false
+  },
+  "test": {
+    "command": "cmd /c build_x64.bat",
+    "status": "passed",
+    "output": "ep_eight_preflight_synthetic_passed",
+    "rejections": [
+      "client_capacity_4",
+      "build_mismatch",
+      "missing_resource_callback",
+      "missing_authoritative_index",
+      "compact_ordinal_alias",
+      "hole_compaction",
+      "host_client_build_mismatch"
+    ]
+  },
+  "source_sha256": {
+    "ep_eight_preflight.h": {
+      "bytes": 2675,
+      "sha256": "d6089e06df595d3e4bacc57857d5bbd3228eaa57d32773826b86ae8f26eef66e"
+    },
+    "ep_eight_preflight.cpp": {
+      "bytes": 3611,
+      "sha256": "665ea0b4b6f4979da7aad47bbb71408faa91bc3310a0f9c8ff60dd9554eb06c5"
+    },
+    "ep_eight_preflight_test.cpp": {
+      "bytes": 3372,
+      "sha256": "fe53a50e9db316202aabc45692a99d958cb2b825f0c66682b78b3873e776e198"
+    },
+    "build_x64.bat": {
+      "bytes": 567,
+      "sha256": "3d5cbe363bd26595b06acca1a938c31db187400d6d528b62264b4bdf40a808dd"
+    },
+    "README.zh-TW.md": {
+      "bytes": 1179,
+      "sha256": "129cca711169f033ad698f8042fff336d9dd0453f39d09a1c5a57055634440aa"
+    },
+    "test_eight_preflight.py": {
+      "bytes": 1427,
+      "sha256": "4c74db87449d06a07be2f86d743377e25203e538e0c71b5b4f4938a438f8e5b1"
+    }
+  },
+  "binary_sha256": {
+    "ep_eight_preflight.dll": {
+      "bytes": 104448,
+      "sha256": "d3587c21f93b9426905396af99e54cc83ddf71034a2923e5eb1a80e57a11153b"
+    },
+    "ep_eight_preflight_test.exe": {
+      "bytes": 143872,
+      "sha256": "365d7bef5beed631a0ed396a7649dfeb8b1b6cbdc017a28da06db3065e69c494"
+    }
+  },
+  "gates": {
+    "production_executable": false,
+    "runtime_verified": false,
+    "installable": false,
+    "multiplayer_verified": false
+  },
+  "limits": [
+    "This preflight verifies caller-reported adapter contracts only.",
+    "It does not resolve or call the fixed-build native game callback ABI.",
+    "A passing report cannot replace five-to-eight account mission evidence."
+  ]
+}

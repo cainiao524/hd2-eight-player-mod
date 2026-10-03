@@ -17,3 +17,11 @@
 `build_x64.bat` 會建立兩個 DLL、執行隔離測試，並輸出 `ep_client_sidecar_synthetic_passed` 和 `ep_client_bridge_adapter_synthetic_passed`。Python 測試會驗證 manifest 覆蓋所有固定四槽流程與 report 雜湊。
 
 這些結果不能證明實際第五至第八名玩家能通過 Session、Party、roster、entity 或任務全流程。要進入實機階段，必須先恢復每個 callback 的真實 ABI、完成 site bytes preflight、把 sidecar 接到 host/client owner lifetime，並通過八個獨立帳號的同任務驗收。
+
+## Allocator-only 越界 index compensation（2026-10-04）
+
+`ep_client_bridge_adapter` 現在會保留 authoritative allocator 回傳的 `index >= 8`，將它放在獨立的 allocator-only retry table，並在 generation `0` 的 `release_index` 中用相同 peer、resource handle 和 index 完成釋放。`Native Bridge` 會在 allocator callback 已回傳 index 但同時回傳錯誤時，也走這條補償路徑。
+
+若 allocator 回傳已被 adapter 保留的 0..7 index，adapter 不會釋放原本的 reservation，也會把 `0xFF` 當作沒有取得新 reservation 的 sentinel，避免 collision 誤刪現有玩家。
+
+這些測試只驗證離線 allocator/sidecar 交易；越界 index 不代表遊戲或 Session/Party 真的允許該 index。

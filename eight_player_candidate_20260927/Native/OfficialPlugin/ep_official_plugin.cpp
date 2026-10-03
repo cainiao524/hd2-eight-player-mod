@@ -1,4 +1,5 @@
 #include "ep_official_plugin.h"
+#include "ep_official_session_getter.h"
 #include "../SessionObservation/ep_session_snapshot_windows.h"
 
 #include <atomic>
@@ -8,6 +9,9 @@
 #include <sstream>
 #include <string>
 #include <windows.h>
+#include <bcrypt.h>
+
+#pragma comment(lib, "bcrypt.lib")
 
 namespace {
 std::atomic<uintptr_t> g_c_api{0};
@@ -19,6 +23,29 @@ std::atomic<unsigned> g_peer_count{0xFFFFFFFFu};
 std::atomic<unsigned> g_update_ticks{0};
 std::atomic<uintptr_t> g_last_snapshot_session{0};
 std::atomic<unsigned> g_last_snapshot_count{0xFFFFFFFFu};
+
+bool readable_bytes(const void* address, SIZE_T size);
+bool executable_bytes(const void* address, SIZE_T size);
+
+bool read_current(const void* address, void* output, SIZE_T size) {
+    if (!readable_bytes(address, size) || !output) return false;
+    __try {
+        std::memcpy(output, address, size);
+        return true;
+    } __except (EXCEPTION_EXECUTE_HANDLER) {
+        return false;
+    }
+}
+
+void clear_observation_state() {
+    g_session.store(0, std::memory_order_release);
+    g_peer_count.store(0xFFFFFFFFu, std::memory_order_release);
+    g_update_ticks.store(0, std::memory_order_release);
+    g_last_snapshot_session.store(0, std::memory_order_release);
+    g_last_snapshot_count.store(0xFFFFFFFFu, std::memory_order_release);
+}
+
+void observe_snapshot();
 
 const char* plugin_name() {
     return "eight_player_official_plugin_probe";
@@ -66,13 +93,19 @@ void query_c_api(ep_get_api_fn get_engine_api, const char* event) {
     // The only operation performed at plugin load is a versioned API lookup.
     // No game function, memory write, hook, peer admission or player creation is called.
     g_last_api_id.store(EP_PLUGIN_API_ID, std::memory_order_release);
-    if (get_engine_api != nullptr) {
-        const auto c_api = reinterpret_cast<ep_script_api_prefix*>(get_engine_api(EP_C_API_ID));
-        g_c_api.store(reinterpret_cast<uintptr_t>(c_api), std::memory_order_release);
-        if (c_api != nullptr) {
-            // Read the two public C API table pointers only; no table function is called.
-            g_network_table.store(reinterpret_cast<uintptr_t>(c_api->slots[7]), std::memory_order_release);
-            g_game_session_table.store(reinterpret_cast<uintptr_t>(c_api->slots[8]), std::memory_order_release);
+    g_c_api.store(0, std::memory_order_release);
+    g_network_table.store(0, std::memory_order_release);
+    g_game_session_table.store(0, std::memory_order_release);
+    clear_observation_state();
+    if (get_engine_api != nullptr &&
+        executable_bytes(reinterpret_cast<const void*>(get_engine_api), 1)) {
+        void* raw = get_engine_api(EP_C_API_ID);
+        ep_script_api_prefix prefix{};
+        if (raw != nullptr && read_current(raw, &prefix, sizeof(prefix)) &&
+            prefix.slots[7] != nullptr && prefix.slots[8] != nullptr) {
+            g_c_api.store(reinterpret_cast<uintptr_t>(raw), std::memory_order_release);
+            g_network_table.store(reinterpret_cast<uintptr_t>(prefix.slots[7]), std::memory_order_release);
+            g_game_session_table.store(reinterpret_cast<uintptr_t>(prefix.slots[8]), std::memory_order_release);
         }
     }
     write_probe_log(event, true);
@@ -145,16 +178,6 @@ void write_snapshot_log(const ep_session::Snapshot& snapshot) {
         << "}\n";
 }
 
-void observe_snapshot() {
-    const auto snapshot = ep_session::capture_current_process();
-    const auto old_session = g_last_snapshot_session.exchange(snapshot.session_owner, std::memory_order_acq_rel);
-    const auto old_count = g_last_snapshot_count.exchange(snapshot.peer_count, std::memory_order_acq_rel);
-    if (old_session != snapshot.session_owner || old_count != snapshot.peer_count ||
-        std::strcmp(snapshot.status, "observed_context_not_player_proof") != 0) {
-        write_snapshot_log(snapshot);
-    }
-}
-
 void loaded(ep_get_api_fn get_engine_api) {
     // Some builds invoke loaded before the gameplay services are available.
     // Keep this query read-only and repeat it from setup_game below.
@@ -165,15 +188,6 @@ void setup_game(ep_get_api_fn get_engine_api) {
     // The public Stingray ABI calls setup_game after the game services are set up.
     // This is the first legal place to re-check C_API_ID without calling a table.
     query_c_api(get_engine_api, "setup_game");
-    const uintptr_t network = g_network_table.load(std::memory_order_acquire);
-    const uintptr_t session_table = g_game_session_table.load(std::memory_order_acquire);
-    if (network == 0 || session_table == 0) return;
-    using game_session_fn = void* (*)();
-    const auto game_session = *reinterpret_cast<game_session_fn*>(network + sizeof(void*));
-    if (game_session == nullptr) return;
-    void* session = game_session();
-    g_session.store(reinterpret_cast<uintptr_t>(session), std::memory_order_release);
-    write_session_log(reinterpret_cast<uintptr_t>(session));
     observe_snapshot();
 }
 
@@ -182,17 +196,6 @@ void update_game(float) {
     // observed without creating a session or touching any replicated state.
     const unsigned tick = g_update_ticks.fetch_add(1, std::memory_order_relaxed) + 1;
     if ((tick % 60u) != 0u) return;
-    const uintptr_t network = g_network_table.load(std::memory_order_acquire);
-    const uintptr_t session_table = g_game_session_table.load(std::memory_order_acquire);
-    if (network == 0 || session_table == 0) return;
-    using game_session_fn = void* (*)();
-    const auto game_session = *reinterpret_cast<game_session_fn*>(network + sizeof(void*));
-    if (game_session == nullptr) return;
-    void* session = game_session();
-    const uintptr_t old_session = g_session.exchange(reinterpret_cast<uintptr_t>(session), std::memory_order_acq_rel);
-    if (old_session != reinterpret_cast<uintptr_t>(session)) {
-        write_session_log(reinterpret_cast<uintptr_t>(session));
-    }
     observe_snapshot();
 }
 
@@ -206,9 +209,20 @@ bool readable_bytes(const void* address, SIZE_T size) {
     const DWORD protect = mbi.Protect & 0xffu;
     if (protect == PAGE_NOACCESS || protect == PAGE_GUARD) return false;
     const uintptr_t region_begin = reinterpret_cast<uintptr_t>(mbi.BaseAddress);
-    if (mbi.RegionSize > UINTPTR_MAX - region_begin) return false;
+    if (mbi.RegionSize > UINTPTR_MAX - region_begin ||
+        size > UINTPTR_MAX - begin) return false;
     const uintptr_t region_end = region_begin + mbi.RegionSize;
     return begin >= region_begin && begin + size <= region_end;
+}
+
+bool executable_bytes(const void* address, SIZE_T size) {
+    if (!readable_bytes(address, size)) return false;
+    MEMORY_BASIC_INFORMATION mbi{};
+    if (VirtualQuery(address, &mbi, sizeof(mbi)) != sizeof(mbi)) return false;
+    const DWORD protect = mbi.Protect & 0xffu;
+    return (protect & PAGE_EXECUTE) != 0 || (protect & PAGE_EXECUTE_READ) != 0 ||
+           (protect & PAGE_EXECUTE_READWRITE) != 0 ||
+           (protect & PAGE_EXECUTE_WRITECOPY) != 0;
 }
 
 bool safe_target_matches(const BYTE* target, const BYTE* expected, SIZE_T size) {
@@ -217,6 +231,110 @@ bool safe_target_matches(const BYTE* target, const BYTE* expected, SIZE_T size) 
         return std::memcmp(target, expected, size) == 0;
     } __except (EXCEPTION_EXECUTE_HANDLER) {
         return false;
+    }
+}
+
+bool file_sha256(HMODULE module, std::array<uint8_t, 32>& digest) {
+    wchar_t path[32768]{};
+    const DWORD length = GetModuleFileNameW(module, path, static_cast<DWORD>(std::size(path)));
+    if (length == 0 || length >= std::size(path)) return false;
+    HANDLE file = CreateFileW(path, GENERIC_READ,
+                              FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+                              nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+    if (file == INVALID_HANDLE_VALUE) return false;
+    BCRYPT_ALG_HANDLE algorithm = nullptr;
+    BCRYPT_HASH_HANDLE hash = nullptr;
+    bool ok = BCryptOpenAlgorithmProvider(&algorithm, BCRYPT_SHA256_ALGORITHM, nullptr, 0) == 0 &&
+              BCryptCreateHash(algorithm, &hash, nullptr, 0, nullptr, 0, 0) == 0;
+    std::array<BYTE, 1 << 16> buffer{};
+    DWORD got = 0;
+    while (ok) {
+        if (!ReadFile(file, buffer.data(), static_cast<DWORD>(buffer.size()), &got, nullptr)) {
+            ok = false;
+            break;
+        }
+        if (got == 0) break;
+        ok = BCryptHashData(hash, buffer.data(), got, 0) == 0;
+    }
+    if (ok) {
+        ok = BCryptFinishHash(hash, digest.data(), static_cast<ULONG>(digest.size()), 0) == 0;
+    }
+    if (hash) BCryptDestroyHash(hash);
+    if (algorithm) BCryptCloseAlgorithmProvider(algorithm, 0);
+    CloseHandle(file);
+    return ok;
+}
+
+bool runtime_build_identity(ep_official_peer_reader::BuildIdentity& identity) {
+    HMODULE game = GetModuleHandleA("game.dll");
+    HMODULE exe = GetModuleHandleA(nullptr);
+    if (!game || !exe) return false;
+    auto read_pe = [](HMODULE module, DWORD expected_timestamp, DWORD expected_size) {
+        const auto base = reinterpret_cast<const BYTE*>(module);
+        IMAGE_DOS_HEADER dos{};
+        IMAGE_NT_HEADERS64 nt{};
+        if (!read_current(base, &dos, sizeof(dos)) || dos.e_magic != IMAGE_DOS_SIGNATURE ||
+            dos.e_lfanew < 0 || static_cast<size_t>(dos.e_lfanew) > 0x1000 ||
+            !read_current(base + dos.e_lfanew, &nt, sizeof(nt)) ||
+            nt.Signature != IMAGE_NT_SIGNATURE ||
+            nt.FileHeader.Machine != IMAGE_FILE_MACHINE_AMD64 ||
+            nt.FileHeader.TimeDateStamp != expected_timestamp ||
+            nt.OptionalHeader.SizeOfImage != expected_size) {
+            return false;
+        }
+        return true;
+    };
+    if (!read_pe(game, ep_official_peer_reader::kGameTimestamp,
+                 ep_official_peer_reader::kGameImageSize) ||
+        !read_pe(exe, ep_official_peer_reader::kExeTimestamp,
+                 ep_official_peer_reader::kExeImageSize)) {
+        return false;
+    }
+    identity.steam_build = ep_official_peer_reader::kSteamBuild;
+    identity.exe_timestamp = ep_official_peer_reader::kExeTimestamp;
+    identity.exe_image_size = ep_official_peer_reader::kExeImageSize;
+    identity.game_timestamp = ep_official_peer_reader::kGameTimestamp;
+    identity.game_image_size = ep_official_peer_reader::kGameImageSize;
+    return file_sha256(exe, identity.exe_sha256) &&
+           file_sha256(game, identity.game_sha256);
+}
+
+void observe_snapshot() {
+    ep_official_peer_reader::BuildIdentity identity{};
+    const uintptr_t c_api = g_c_api.load(std::memory_order_acquire);
+    const uintptr_t image = reinterpret_cast<uintptr_t>(GetModuleHandleA("game.dll"));
+    if (!runtime_build_identity(identity) || c_api == 0 || image == 0) return;
+    const auto read = [](uintptr_t address, void* output, size_t size) {
+        return read_current(reinterpret_cast<const void*>(address), output, size);
+    };
+    const auto executable = [](uintptr_t address, size_t size) {
+        return executable_bytes(reinterpret_cast<const void*>(address), size);
+    };
+    const auto getter = ep_official_session_getter::inspect(
+        identity, image, c_api, read, executable);
+    if (!getter.ready) return;
+    using game_session_fn = void* (*)();
+    game_session_fn function{};
+    if (!read_current(reinterpret_cast<const void*>(getter.network + sizeof(void*)),
+                      &function, sizeof(function)) ||
+        !function) {
+        return;
+    }
+    void* session = function();
+    const uintptr_t old_session =
+        g_session.exchange(reinterpret_cast<uintptr_t>(session), std::memory_order_acq_rel);
+    if (old_session != reinterpret_cast<uintptr_t>(session)) {
+        write_session_log(reinterpret_cast<uintptr_t>(session));
+    }
+    const auto snapshot = ep_session::capture_current_process();
+    g_peer_count.store(snapshot.peer_count, std::memory_order_release);
+    const auto old = g_last_snapshot_session.exchange(
+        snapshot.session_owner, std::memory_order_acq_rel);
+    const auto old_count = g_last_snapshot_count.exchange(
+        snapshot.peer_count, std::memory_order_acq_rel);
+    if (old != snapshot.session_owner || old_count != snapshot.peer_count ||
+        std::strcmp(snapshot.status, "observed_context_not_player_proof") != 0) {
+        write_snapshot_log(snapshot);
     }
 }
 
@@ -232,6 +350,11 @@ void unloaded() {
     g_network_table.store(0, std::memory_order_release);
     g_game_session_table.store(0, std::memory_order_release);
     g_last_api_id.store(0xFFFFFFFFu, std::memory_order_release);
+    clear_observation_state();
+}
+
+void shutdown_game() {
+    unloaded();
 }
 
 ep_plugin_api& api() {
@@ -243,6 +366,7 @@ ep_plugin_api& api() {
         value.unloaded = &unloaded;
         value.setup_game = &setup_game;
         value.update_game = &update_game;
+        value.shutdown_game = &shutdown_game;
         initialized = true;
     }
     return value;
@@ -282,6 +406,26 @@ EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_network_table_pointer() {
 
 EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_game_session_table_pointer() {
     return g_game_session_table.load(std::memory_order_acquire);
+}
+
+EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_session_pointer() {
+    return g_session.load(std::memory_order_acquire);
+}
+
+EP_PLUGIN_EXPORT unsigned ep_official_plugin_peer_count() {
+    return g_peer_count.load(std::memory_order_acquire);
+}
+
+EP_PLUGIN_EXPORT unsigned ep_official_plugin_update_ticks() {
+    return g_update_ticks.load(std::memory_order_acquire);
+}
+
+EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_last_snapshot_session() {
+    return g_last_snapshot_session.load(std::memory_order_acquire);
+}
+
+EP_PLUGIN_EXPORT unsigned ep_official_plugin_last_snapshot_count() {
+    return g_last_snapshot_count.load(std::memory_order_acquire);
 }
 
 EP_PLUGIN_EXPORT BOOL __cdecl ep_official_plugin_runtime_preflight(

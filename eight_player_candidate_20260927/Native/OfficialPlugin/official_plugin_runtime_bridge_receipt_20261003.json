@@ -37,65 +37,83 @@
       "mutated target rejected",
       "combined DLL LoadLibrary/GetProcAddress exports",
       "OfficialPlugin native callback bind/get/unbind exports",
-      "native binder module/build/argument gates"
-    ]
+      "native binder module/build/argument gates",
+      "session getter fixed RVA and bytes gate",
+      "unknown getter address rejected",
+      "unreadable C API table rejected",
+      "wrong build identity rejected",
+      "shutdown and unload clear session/snapshot counters"
+    ],
+    "test_exit_code": 0
   },
   "artifacts_sha256": {
     "ep_official_plugin.h": {
-      "sha256": "5d1c35fac1043cd2e99a790304c07758a61b6042ea7eccd14acad072a45ba308",
-      "bytes": 4099
+      "sha256": "6b58d7c64965f735ccd1e4718fb32ba5fd659592926cf7e7a0f4a22ee35159b6",
+      "bytes": 4495
     },
     "ep_official_plugin.cpp": {
-      "sha256": "35f6280a2127a8c06c0a949691e31298205929a975d62cb169ebb7f3dfc19963",
-      "bytes": 15366
+      "sha256": "a17a6a51a98cfe77e8afb46d6dfc42010f808f7371200d289e062d1b141dabe9",
+      "bytes": 20961
     },
     "ep_official_plugin_test.cpp": {
-      "sha256": "10fc0fcdf9b76cbdfa93708ea505e597e15b1d5e9c3c30af8e9a3c5bf6e42a75",
-      "bytes": 5341
+      "sha256": "6529290e28927e92e09454ba72a4165b72a598f401288618bc2250b2a851dcea",
+      "bytes": 5770
     },
     "ep_official_plugin_load_test.cpp": {
-      "sha256": "ac5ab53bb7dab4d8dc4ea16421fddc7da7f49cf82f03ae9899f626d2f5bbba93",
-      "bytes": 979
+      "sha256": "eeddc65a60fb53685c27e321869e7d72c391d8c5b18422bb91a1bf05ef3adf2b",
+      "bytes": 1211
     },
     "build_x64.bat": {
-      "sha256": "169649b99a6b7187ed1b81ed94ce318da376171a54dfd2d4e737bd5ea1acbf04",
-      "bytes": 1187
+      "sha256": "17805abe3b448a983d1d1732d97211b1b8d67241ee4c81223625d90e5d1fc2b3",
+      "bytes": 1387
     },
     "README.zh-TW.md": {
-      "sha256": "6f6bf76c701519fa580226e8093487df5c9f2770bb9ec0f4009f0289c3e0fd4b",
-      "bytes": 4313
+      "sha256": "71aa982571fb59fde84456d6ca302fec935b5004b970bc434f322cc50944abfb",
+      "bytes": 5459
     },
     "ep_official_plugin.dll": {
-      "sha256": "c15db1124727c8a8910540714907dffd0d4cf8f4ed19d5111c2e0451f4236780",
-      "bytes": 289792
+      "sha256": "057b083aec8f17d60244e0da828ef7ee161b8a283d21462e006a61b51f139575",
+      "bytes": 294912
     },
     "eight_player_pluginw64_release.dll": {
-      "sha256": "fcf6191d2cdbbdc5566e74a14cb14dbe7eb39ccbe2b652d70634f396596d13fa",
-      "bytes": 289792
+      "sha256": "531bcf99534e5fd227ad80826a26626e85fc368cd2809ed52021c6d6d9523565",
+      "bytes": 294912
     },
     "ep_official_plugin_test.exe": {
-      "sha256": "3447d59a964e815d48393ab083f7c3fd03f2176f3e4a3fa470e203831fe92874",
-      "bytes": 318464
+      "sha256": "ece43f810e0476b9acac40c99ba00937940ec18c1646aaf69f04ae1b5d4ea91b",
+      "bytes": 325120
     },
     "ep_official_plugin_load_test.exe": {
-      "sha256": "6d09e7f40f0787038f51fc97e3a1266c5781bec81dde40ba8e8ccf6717a8af3e",
+      "sha256": "e8813bb628277c9405e838cf3c6b10656988722fa911c1189b25fd3607f5879d",
       "bytes": 154112
     },
     "ep_official_plugin.lib": {
-      "sha256": "020a91d01954b163894569b2914f56b5bf86f8afb402136131ac0c8ae6fbea0f",
-      "bytes": 8534
+      "sha256": "e67b164858ff09e39786e377f4a0c04058e1da1b0dc319d04c0173cffcfe8a47",
+      "bytes": 10076
     },
     "ep_official_plugin.exp": {
-      "sha256": "cbe8295f84d49572a519b68e31381af4e3110d5ab1f15ceaf56943a019a1488a",
-      "bytes": 4612
+      "sha256": "d00b2668dc0719d45688247a8b42400095569bd9c74ad3016a8b9e5c8f891692",
+      "bytes": 5512
     },
     "eight_player_pluginw64_release.lib": {
-      "sha256": "2430d8440d1b873657e501ed7c311249385483cad56a6e51b2ffc6828fa72c0c",
-      "bytes": 8954
+      "sha256": "6710f745c39c869d66718043795da4c361fbd12fe5568f616c03a42d6064fdf9",
+      "bytes": 10556
     },
     "eight_player_pluginw64_release.exp": {
-      "sha256": "9a4567b33d699b0cdf64a3a5d2cf23f86042d9604d7017a11a550801631a9d7e",
-      "bytes": 4636
+      "sha256": "f0b92188e975f8b9d5f93786d7149befe0e0989b075d59f97afb6701ce795d01",
+      "bytes": 5536
+    },
+    "ep_official_session_getter.h": {
+      "sha256": "addd223c35fc01b6d092150e4bb91cad089366e5c3467bbab538413d531a9f5a",
+      "bytes": 3438
+    },
+    "ep_official_session_getter_test.cpp": {
+      "sha256": "1d5ed4a2f00581b225f2826abf44c6a03f164b7cd91b88080b4a7217a685e879",
+      "bytes": 4529
+    },
+    "ep_official_session_getter_test.exe": {
+      "sha256": "c7b88b12443ba8b4c8cfa2eca37edd41e0078a156dab4e112e573519ab71c4e1",
+      "bytes": 157696
     }
   },
   "gates": {
@@ -174,5 +192,34 @@
       "bytes": 3046,
       "path": "eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_native_callbacks_test.lib"
     }
+  },
+  "getter_gate": {
+    "header": "ep_official_session_getter.h",
+    "fixed_build": 25480438,
+    "getter_rva": "0x34fdf0",
+    "getter_bytes": 15,
+    "build_identity_pe_and_sha256_gate": true,
+    "c_api_and_table_readability_gate": true,
+    "function_address_rva_gate": true,
+    "executable_page_gate": true,
+    "stable_table_reread_gate": true,
+    "setup_game_and_update_game_use_same_gate": true,
+    "unknown_function_rejected": true,
+    "unreadable_table_rejected": true,
+    "wrong_build_rejected": true,
+    "getter_result_is_not_player_proof": true,
+    "get_engine_api_executable_gate": true,
+    "query_c_api_table_copy_guarded": true,
+    "setup_update_do_not_dereference_unverified_table": true
+  },
+  "lifecycle_cleanup": {
+    "unloaded_clears_c_api": true,
+    "unloaded_clears_network_table": true,
+    "unloaded_clears_game_session_table": true,
+    "unloaded_clears_session": true,
+    "unloaded_clears_peer_count": true,
+    "unloaded_clears_update_ticks": true,
+    "unloaded_clears_snapshot_counters": true,
+    "shutdown_game_uses_same_cleanup": true
   }
 }

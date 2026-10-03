@@ -2,7 +2,7 @@
 
 ## 執行範圍
 
-依目前授權，曾把 workspace 建置的 `eight_player_pluginw64_release.dll` 暫時複製到固定 Steam build `25480438` 的 `bin/plugins`，再透過 Steam 啟動遊戲。自訂 DLL 使用唯讀探針；沒有設置容量 patch marker，也沒有呼叫 admission、create、remove、entity 或其他寫入型 API。
+依目前授權，曾透過 Steam 請求啟動遊戲，隨後把 workspace 建置的 `eight_player_pluginw64_release.dll` 暫時複製到 `bin/plugins`。複製早於觀察到程序啟動，但實際 loader 時序未核實。EXE 檔案 SHA-256 與固定 build `25480438` 相符。沒有設置容量 patch marker，也沒有主動呼叫 admission、create、remove 或 entity 寫入型 API；本次沒有探針執行記錄，不能據此確認 DLL 是否曾被載入。
 
 ## 結果
 
@@ -13,4 +13,4 @@
 
 ## 判定
 
-這是啟動環境失敗，不是第五人拒絕，也不是八人成功。保持 `installable=false`、`runtime_verified=false`、`multiplayer_verified=false`。下一次實機工作應先解決遊戲正常啟動／可見視窗條件，再重做同一唯讀探針；不得以既有 `%TEMP%` 舊 log 冒充本次結果。
+兩次啟動均只觀察到 `Fatal Error!` 視窗標題，未能讀取對話框內文，根因未診斷。移除自訂 DLL 後仍出錯，不足以判定第一次錯誤的原因。保持 `installable=false`、本次 `runtime_verified=false`、`multiplayer_verified=false`。下一次實機工作應先取得錯誤內文並恢復正常啟動，再重做已核對的探針；不得以既有 `%TEMP%` 舊 log 冒充本次結果。此次 EXE 及兩個官方 plugin 檔案雜湊已與先前固定值比較相符。

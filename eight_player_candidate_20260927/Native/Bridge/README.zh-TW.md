@@ -16,3 +16,9 @@
 `ep_native_bridge_test.exe` 是合成 harness，會走完八個 admission、拒絕第九個、移除第 5 格、重新連線及完整清理。`ep_bridge_client_integration_test.exe` 另外驗證跨元件補償與 owner lease 平衡。兩者都沒有尋找、寫入或注入 `game.dll`，callback 也不是遊戲的真實 ABI；因此這個 bridge 目前仍是 candidate，不能稱為已完成多人 Mod。
 
 要成為 production bridge，必須再把 `EP_BRIDGE_CONFIG` 的 callback（包括 authoritative index allocator/release）接到固定 build 的 host/client confirmed-peer、player creation、departure/cleanup 入口，並由 mid-function capacity/allocator stub 提供正確的 register、stack、unwind 和 continuation。所有遊戲 callback 與 owner lifetime 接通前，Package gate 應保持 blocked。
+
+## Allocator error compensation（2026-10-04）
+
+Bridge 現在保留 allocator callback 在錯誤返回時寫入的非 `0xFF` index，並把它交給 generation-zero release/retry。Client adapter 對 `index >= 8` 保存獨立 allocator-only reservation；對已存在的 0..7 reservation 則使用 `0xFF` no-reservation sentinel，不會釋放原玩家的 index。
+
+跨元件合成測試覆蓋越界 index 立即補償、release 失敗後 retry，以及已保留 index collision；這仍是 callback-shaped 離線測試，沒有連接真實 Session/Party allocator。

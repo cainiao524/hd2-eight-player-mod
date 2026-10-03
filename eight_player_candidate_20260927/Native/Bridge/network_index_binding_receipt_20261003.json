@@ -1,6 +1,6 @@
 {
   "schema": "hd2_network_index_binding_receipt_v1",
-  "date": "2026-10-03",
+  "date": "2026-10-04",
   "steam_build": 25480438,
   "status": "offline_authoritative_index_binding_candidate",
   "change": {
@@ -12,7 +12,9 @@
     ],
     "local_substitution_forbidden": true,
     "generation_passed_to_release": true,
-    "allocator_only_retry": "Generation-zero retry record preserves an allocator index and owner lease when release_index fails before sidecar reservation."
+    "allocator_only_retry": "Generation-zero retry record preserves an allocator index and owner lease when release_index fails before sidecar reservation.",
+    "allocator_error_index_passthrough": "A non-FF index returned with an allocator error is released immediately or retained in a generation-zero retry record.",
+    "overflow_index_generation": 0
   },
   "components": {
     "sidecar_exact_reserve": "Native/Sidecar/ep_sidecar_reserve_at",
@@ -43,7 +45,10 @@
       "departure and reconnect generation",
       "stale cleanup identity rejection",
       "duplicate identity blocked while cleanup retry is pending",
-      "allocator-only release failure retry before sidecar reservation"
+      "allocator-only release failure retry before sidecar reservation",
+      "allocator error with out-of-range result immediate compensation",
+      "allocator error with out-of-range release failure retry",
+      "reserved index collision leaves existing reservation intact"
     ]
   },
   "production_executable": false,
@@ -57,14 +62,14 @@
     "Sidecar/ep_sidecar_test.cpp": "bfa199628a8d650c84ffc879a704bb6263fdb10d3869bf6314817107301d9bcc",
     "Sidecar/build_x64.bat": "c8c0c1dd674109d32fb03455ea27ebbd1e2cde1c4929a59621da6f0bf4d40b64",
     "Sidecar/README.zh-TW.md": "8c8077a97d83079b7935d446e8d9c6a2a7e0cf0193b10affcffd0c019174a9a6",
-    "Bridge/ep_native_bridge.h": "396c0ac453e7deb07d4209b99c3ee361e959fcbd0a651d4a891118e2c2908013",
-    "Bridge/ep_native_bridge.cpp": "7166493b9f5a196daa38cc00daf8d0c8771bbfd1c49e47d9a7b80b7688c57294",
+    "Bridge/ep_native_bridge.h": "faa552c0cad5d6f8c56e592711bd333054b79a447b599ce285a4042f4b02b210",
+    "Bridge/ep_native_bridge.cpp": "3ddb9f5a35e7b7ae0147a6d752d1f58f6b80076ed262c78005da5d3fa619ba02",
     "Bridge/ep_native_bridge_test.cpp": "6a00e0a0d1827da5f89bc33487def9f7fa376832ae955be165a419eeabb2b34d",
-    "Bridge/ep_bridge_client_integration_test.cpp": "9b42403eeb231543a6d69de49d845afb43b65163cbf5863696928d3f25d5594e",
-    "Bridge/README.zh-TW.md": "54d103dfb7213c8e941c2b70c21c116f50b4336d289d957ab2443a2857098ce3",
-    "ClientSidecar/ep_client_bridge_adapter.h": "01565938a609055456bb9398874fd642a438294ef130628f809a4faa68ff8199",
-    "ClientSidecar/ep_client_bridge_adapter.cpp": "aee7e3f3d413a5f64e408179421a6ff945e6ba34b590fe29258b270e42dba6e8",
-    "ClientSidecar/ep_client_bridge_adapter_test.cpp": "a62bdb5127543b990240130acdb80a26b50ed0dc7346e03db743617adf2f785c",
-    "ClientSidecar/README.zh-TW.md": "0a0eb7eb06b3036a85373626476cc49251ad0efb3f185b215d5585ba8ce3d0b4"
+    "Bridge/ep_bridge_client_integration_test.cpp": "282f3838c932407c20c3abf495c371638c9355340454081e61af7c345a7004ef",
+    "Bridge/README.zh-TW.md": "def6531a702fce301ed8714a96953b736ac4c8e02c101e7711ee1b840935f455",
+    "ClientSidecar/ep_client_bridge_adapter.h": "96efa1712c71a22da49749073119934de2205f195547df479accd21d8650ae3f",
+    "ClientSidecar/ep_client_bridge_adapter.cpp": "cb0be03cf633c0b634af05ccf8885586645550c0b18ea30ce5ec6b3f5638c024",
+    "ClientSidecar/ep_client_bridge_adapter_test.cpp": "5a2cd37f015cf05d8c90d69d4a78f192513c568d88457087e1f9fe9427a79160",
+    "ClientSidecar/README.zh-TW.md": "4cb8a256e179e5becf87745fb86a146ffb802f127cb9cdc1eefe6de4073da0b1"
   }
 }

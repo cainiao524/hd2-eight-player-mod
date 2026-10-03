@@ -24,6 +24,16 @@ typedef EP_BRIDGE_STATUS (__cdecl *EP_CLIENT_NATIVE_RELEASE_INDEX_CB)(
 typedef EP_BRIDGE_STATUS (__cdecl *EP_CLIENT_NATIVE_RETAIN_CB)(void* owner);
 typedef void (__cdecl *EP_CLIENT_NATIVE_RELEASE_CB)(void* owner);
 
+// Out-of-range authoritative reservations cannot use the eight-slot table.
+// Keep their exact identity until a generation-zero release succeeds.
+typedef struct EP_CLIENT_OVERFLOW_RESERVATION {
+    UINT8 valid;
+    UINT8 network_index;
+    UINT16 reserved;
+    UINT64 peer_id;
+    UINT64 resource_handle;
+} EP_CLIENT_OVERFLOW_RESERVATION;
+
 typedef struct EP_CLIENT_ADAPTER {
     UINT32 magic;
     UINT32 version;
@@ -50,6 +60,7 @@ typedef struct EP_CLIENT_ADAPTER {
     // A rejected native confirm still needs compensating remove. Keep its
     // identity but disallow creation until native confirmation succeeds.
     BYTE native_confirmed[EP_SIDECAR_CAPACITY];
+    EP_CLIENT_OVERFLOW_RESERVATION overflow[EP_SIDECAR_CAPACITY];
 } EP_CLIENT_ADAPTER;
 
 __declspec(dllexport) EP_BRIDGE_STATUS __cdecl ep_client_adapter_init(
