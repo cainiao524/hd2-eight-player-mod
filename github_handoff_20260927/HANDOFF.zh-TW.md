@@ -24,6 +24,12 @@
 
 這只證明該 menu／one-peer context 的固定 layout 可安全重讀，不把零 count 解讀成 active peer registry，也沒有把它當作第五人或八人證據。工具全程 read-only，沒有呼叫、寫入、hook 或注入；驗證收據中的 `runtime_verified`、`installable`、`multiplayer_verified` 仍為 `false`。
 
+## 2026-10-03 ClientSidecar lock hardening
+
+修正 `Native/ClientSidecar/ep_client_sidecar.cpp` 的同步實作：原候選把 `SRWLOCK` 物件強轉成 `LONG` 自製自旋鎖，現在所有 append／remove／get／reset／validate／destroy 路徑都使用真正的 Windows exclusive SRW lock。ClientSidecar、adapter 與 Bridge/client integration harness 重新建置通過，Python report/hash tests 3/3 通過。
+
+這是隔離 sidecar 的正確同步修補，沒有改變其 native callback、遊戲 hook 或安裝狀態；`production_executable=false`、`runtime_verified=false`、`installable=false`、`multiplayer_verified=false` 保持不變。
+
 ## 2026-10-03 fixed-build live preflight reread
 
 在同一固定 build `25480438`、同一 PID `36900` 上保存第二批 bounded read-only reread：

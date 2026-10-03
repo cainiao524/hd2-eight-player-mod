@@ -29,7 +29,9 @@
     "valid_network_indexes": "0..7",
     "holes_preserved": true,
     "generation_safe": true,
-    "fixed_four_paths_manifested": true
+    "fixed_four_paths_manifested": true,
+    "synchronization": "exclusive SRWLOCK for sidecar mutations and validation",
+    "custom_spin_lock_removed": true
   },
   "artifacts": [
     {
@@ -38,7 +40,7 @@
     },
     {
       "path": "ep_client_sidecar.cpp",
-      "sha256": "fe3c1e68ae470ef72f536bebdc936fce80c7f4357583ad56b68623cf2e873d8d"
+      "sha256": "ccbe7e115675ab7e0f9f92ab5b70af5654cec2c434a26a679d51fd9f4ebee847"
     },
     {
       "path": "ep_client_sidecar_test.cpp",
@@ -70,19 +72,19 @@
     },
     {
       "path": "ep_client_sidecar.dll",
-      "sha256": "43418805dcc9da806b93cd96f66d6da854cb956b8642d162db14bf0e5d29f186"
+      "sha256": "62da54fc5c7381cde21f5f7b67bda02fce67be414990d5effb1bfac5e8720f2d"
     },
     {
       "path": "ep_client_sidecar_test.exe",
-      "sha256": "3413ca8c3e68470c26db9551ace0bc6d10ff9be6be03eb4abfd0534efad34d62"
+      "sha256": "52e3c6ff77323d8f8e6e080bde833acc964b392ee2c36b1ff175ed430077d5e7"
     },
     {
       "path": "ep_client_bridge_adapter.dll",
-      "sha256": "5a519d2a25e9f0c7613fa521afa61f52e1591cbeaf002dbead140f64bd8d8ee4"
+      "sha256": "f1ef5679470389bc683a767f390634b4ee38ceaf5e5a909ec52931383b2e90bc"
     },
     {
       "path": "ep_client_bridge_adapter_test.exe",
-      "sha256": "c1561a838e01a8c9d1401f3b6659236ae76d0f899f6670b6a6b3ec6ab1fc4c09"
+      "sha256": "c9dd83b5488be090bee8d1e95235d4a864f49e2183c830b27de112809d5d4b0f"
     }
   ]
 }
