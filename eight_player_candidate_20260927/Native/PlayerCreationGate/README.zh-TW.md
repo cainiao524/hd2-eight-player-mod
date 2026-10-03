@@ -41,3 +41,10 @@ cmd /c build_x64.bat
 ```
 
 `ep_player_creation_gate_synthetic_passed` 覆蓋固定 build/site preflight、下游未就緒拒絕、可回滾 gate、八個權威 index、重複 identity、離隊 cleanup retry、rollback retry、post-callback invariant compensation 及 resource/roster rollback。這些是離線 ABI 測試，不是第五至第八名玩家的實機驗收；`runtime_verified=false`、`installable=false`、`multiplayer_verified=false`。
+## v3 互斥與生命週期
+
+`EP_PC_VERSION=3` 為所有同步變更操作加入單一 operation guard。`ep_pc_admit`、`ep_pc_depart`、patch 安裝/移除、prepare 和 destroy 在外部 callback 或 quiesce/write 期間保持交易忙碌；同執行緒重入與另一執行緒重疊呼叫都回傳 `EP_PC_BUSY`，不會第二次清理、釋放 owner 或覆寫 live adapter。
+
+`ep_pc_init` 不再覆蓋已初始化的 adapter；呼叫方必須保證 adapter 儲存與 callback owner 在整個交易期間有效，先完成 `ep_pc_destroy` 再重用記憶體。忙碌或未完成的槽位仍需依序完成 departure/rollback，之後才可 destroy。
+
+測試同時覆蓋正常離隊和 failed-admit rollback 的 callback 重入，以及 worker thread 重疊呼叫；兩種情況都確認 cleanup、rollback 和 owner release 僅執行一次。

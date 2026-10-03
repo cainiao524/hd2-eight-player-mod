@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <cstring>
 #include <vector>
+#include <thread>
 
 struct Context {
     std::vector<BYTE>* image{};
@@ -14,6 +15,10 @@ struct Context {
     bool fail_rollback{false};
     bool corrupt_on_roster{false};
     bool fail_cleanup_roster_once{false};
+    bool probe_depart{false};
+    bool probe_on_worker{false};
+    EP_PC_STATUS nested_depart{EP_PC_OK};
+    bool nested_mutations_blocked{false};
     unsigned retain{0};
     unsigned release{0};
     unsigned resolve{0};
@@ -56,16 +61,37 @@ static EP_PC_STATUS __cdecl roster(void* owner, const EP_PC_RESOURCE*) {
     if (c->corrupt_on_roster && c->adapter) c->adapter->inflight = 0;
     return c->fail_roster ? EP_PC_CALLBACK_REJECTED : EP_PC_OK;
 }
-static EP_PC_STATUS __cdecl cleanup_roster(void* owner, const EP_PC_RESOURCE*) {
+static void probe_depart(Context* c, const EP_PC_RESOURCE* resource) {
+    if (!c->probe_depart) return;
+    c->probe_depart = false;
+    EP_PC_TOKEN token{};
+    token.index = resource->network_index;
+    token.generation = resource->generation;
+    token.owner_epoch = c->adapter->owner_epoch;
+    auto attempt = [&] {
+        c->nested_depart = ep_pc_depart(c->adapter, token);
+        EP_PC_TOKEN unused{};
+        c->nested_mutations_blocked =
+            ep_pc_destroy(c->adapter) == EP_PC_BUSY &&
+            ep_pc_install_gate_patch(c->adapter) == EP_PC_BUSY &&
+            ep_pc_remove_gate_patch(c->adapter) == EP_PC_BUSY &&
+            ep_pc_admit(c->adapter, 7, 0x777, 0x888, 0x999, &unused) == EP_PC_BUSY;
+    };
+    if (c->probe_on_worker) { std::thread worker(attempt); worker.join(); }
+    else attempt();
+}
+static EP_PC_STATUS __cdecl cleanup_roster(void* owner, const EP_PC_RESOURCE* resource) {
     auto* c = static_cast<Context*>(owner); ++c->cleanup_roster;
+    probe_depart(c, resource);
     if (c->fail_cleanup_roster_once) { c->fail_cleanup_roster_once = false; return EP_PC_CALLBACK_REJECTED; }
     return EP_PC_OK;
 }
 static EP_PC_STATUS __cdecl cleanup_components(void* owner, const EP_PC_RESOURCE*) {
     ++static_cast<Context*>(owner)->cleanup_components; return EP_PC_OK;
 }
-static EP_PC_STATUS __cdecl rollback(void* owner, const EP_PC_RESOURCE*, UINT32) {
+static EP_PC_STATUS __cdecl rollback(void* owner, const EP_PC_RESOURCE* resource, UINT32) {
     auto* c = static_cast<Context*>(owner); ++c->rollback;
+    probe_depart(c, resource);
     return c->fail_rollback ? EP_PC_CALLBACK_REJECTED : EP_PC_OK;
 }
 static EP_PC_STATUS __cdecl quiesce(void* owner) { ++static_cast<Context*>(owner)->quiesce; return EP_PC_OK; }
@@ -111,6 +137,8 @@ int main() {
                 "preflight fixed build");
     ok &= check(report.ready && report.gate_ok && report.downstream_sites_ok, "preflight flags");
     ok &= check(ep_pc_init(&adapter, EP_PC_BUILD, &callbacks) == EP_PC_OK, "init");
+    ok &= check(ep_pc_init(&adapter, EP_PC_BUILD, &callbacks) == EP_PC_BUSY,
+                "live reinitialization refused");
     ok &= check(ep_pc_prepare_patch(&adapter, EP_PC_BUILD, image.data(), image.size(),
                                     &gate, downstream, 2, &backend, &report) == EP_PC_OK,
                 "prepare patch");
@@ -186,6 +214,34 @@ int main() {
                 invariant_slot.state == EP_PC_FREE &&
                 ep_pc_validate(&adapter) == EP_PC_OK,
                 "commit invariant leaves no stranded slot");
+    // External cleanup callbacks run with the SRW lock released. A second
+    // caller must not clean or recycle the same token while they are running.
+    for (bool worker : {false, true}) {
+        context.probe_on_worker = worker;
+        EP_PC_TOKEN concurrent{};
+        ok &= check(ep_pc_admit(&adapter, 4, 0x111, 0x222, 0x333, &concurrent) == EP_PC_OK,
+                    "concurrency fixture admit");
+        const auto before_cleanup = context.cleanup_roster;
+        const auto before_release = context.release;
+        context.probe_depart = true;
+        ok &= check(ep_pc_depart(&adapter, concurrent) == EP_PC_OK,
+                    "outer departure completes");
+        ok &= check(context.nested_depart == EP_PC_BUSY, "overlapping departure rejected");
+        ok &= check(context.nested_mutations_blocked, "callback cannot replace or destroy active transaction");
+        ok &= check(context.cleanup_roster == before_cleanup + 1 && context.release == before_release + 1,
+                    "cleanup and owner release occur exactly once");
+
+        context.fail_roster = true;
+        context.probe_depart = true;
+        const auto before_rollback = context.rollback;
+        ok &= check(ep_pc_admit(&adapter, 5, 0x444, 0x555, 0x666, &concurrent) == EP_PC_CALLBACK_REJECTED,
+                    "outer rollback completes");
+        context.fail_roster = false;
+        ok &= check(context.nested_depart == EP_PC_BUSY && context.rollback == before_rollback + 1,
+                    "overlapping rollback rejected");
+        ok &= check(context.nested_mutations_blocked, "rollback excludes other mutators");
+        ok &= check(ep_pc_validate(&adapter) == EP_PC_OK, "concurrent callbacks leave coherent slots");
+    }
     ok &= check(ep_pc_destroy(&adapter) == EP_PC_OK, "destroy");
     if (!ok) return 1;
     std::puts("ep_player_creation_gate_synthetic_passed");

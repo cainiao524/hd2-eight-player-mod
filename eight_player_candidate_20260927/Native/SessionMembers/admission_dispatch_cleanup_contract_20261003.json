@@ -73,15 +73,45 @@
         "bytes": "41bc04000000",
         "asm": "mov r12d, 4"
       },
-      "index_gate_low": {
+      "record_state_pointer": {
+        "rva": "0x108c8e3",
+        "bytes": "498d7e40",
+        "asm": "lea rdi, [r14 + 0x40]"
+      },
+      "record_id_load": {
+        "rva": "0x108c8f0",
+        "bytes": "488b77e0",
+        "asm": "mov rsi, qword ptr [rdi - 0x20]"
+      },
+      "record_state_load": {
+        "rva": "0x108c8fd",
+        "bytes": "8b07",
+        "asm": "mov eax, dword ptr [rdi]"
+      },
+      "state_lower_bound": {
         "rva": "0x108c8ff",
         "bytes": "83f805",
         "asm": "cmp eax, 5"
       },
-      "index_gate_high": {
+      "state_below_5_skip": {
+        "rva": "0x108c902",
+        "bytes": "727c",
+        "asm": "jb 0x108c980"
+      },
+      "state_flag_lower_bound": {
         "rva": "0x108c908",
         "bytes": "83f807",
         "asm": "cmp eax, 7"
+      },
+      "state_ge_7_flag": {
+        "rva": "0x108c912",
+        "bytes": "0f93c0",
+        "asm": "setae al"
+      },
+      "state_flag_stack_argument": {
+        "rva": "0x108c918",
+        "bytes": "88442428",
+        "asm": "mov byte ptr [rsp + 0x28], al"
       },
       "sender_call": {
         "rva": "0x108c923",
@@ -126,9 +156,12 @@
     },
     "slot_loop_count": 4,
     "slot_stride": "0x38",
-    "observed_index_gate": {
-      "low_exclusive": 5,
-      "high_inclusive": 7
+    "observed_state_gate": {
+      "field": "record+0x20 (RDI)",
+      "low_inclusive": 5,
+      "upper_bound": null,
+      "state_ge_7_stack_flag": true,
+      "network_index_gate": false
     },
     "confirmed_peer_sender": "0xbe4910",
     "client_confirmed_peer_insert": "0xb90b20",

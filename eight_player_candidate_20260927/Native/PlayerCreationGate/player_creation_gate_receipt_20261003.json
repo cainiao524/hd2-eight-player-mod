@@ -58,7 +58,21 @@
     "downstream_ready_required": true,
     "automatic_process_access": false,
     "rollback_failure": "slot state REMOVING with rollback_pending=1; ep_pc_depart retries rollback callback before normal cleanup",
-    "commit_validation_failure": "completed callbacks are compensated before returning EP_PC_INVARIANT_BROKEN"
+    "commit_validation_failure": "completed callbacks are compensated before returning EP_PC_INVARIANT_BROKEN",
+    "operation_serialization": {
+      "version": 3,
+      "busy_status": "EP_PC_BUSY",
+      "guarded_operations": [
+        "ep_pc_admit",
+        "ep_pc_depart",
+        "ep_pc_prepare_patch",
+        "ep_pc_install_gate_patch",
+        "ep_pc_remove_gate_patch",
+        "ep_pc_destroy"
+      ],
+      "overlap_policy": "same-thread and worker-thread overlap rejected while external callbacks or quiesce/write are active",
+      "init_policy": "live adapter reinitialization rejected; caller owns storage and callback lifetime"
+    }
   },
   "tests": {
     "command": "cmd /c build_x64.bat",
@@ -74,20 +88,24 @@
       "roster cleanup retry",
       "resource/component rollback",
       "failed rollback retention and compensating retry",
-      "post-callback invariant failure compensation"
+      "post-callback invariant failure compensation",
+      "live adapter reinitialization refusal",
+      "same-thread callback re-entry rejected without duplicate departure",
+      "worker-thread overlapping departure rejected without duplicate cleanup or owner release",
+      "same-thread and worker-thread failed-admit rollback overlap rejected"
     ]
   },
   "source_sha256": {
-    "ep_player_creation_gate.h": "15729c0a4c26391beec74015e9e00f9e0d9074443a7b9ad83466aa321f3eefb8",
-    "ep_player_creation_gate.cpp": "da21f1bde1840542603d834dbb9a1f8685a6edac89c70b275b353ef42bcb507c",
-    "ep_player_creation_gate_test.cpp": "2edf5bfb29b0e44da66d190e28c70d37d5419e90488172b1afb8a051524a21f2",
+    "ep_player_creation_gate.h": "8d2fffbcfd535d339b4f408559b625676906616c32a9ebcf0cb3f6386f88b17d",
+    "ep_player_creation_gate.cpp": "49c3f6a2fb812d711c35a716e78f93e0ec5ffb607f08f9475d72f466f5f9bd90",
+    "ep_player_creation_gate_test.cpp": "5ae91205c6aeb86bccaab87cde6598e0ba73bb8b70df5dbd7d31df8d54fe4ae6",
     "build_x64.bat": "602192ffe280c0e5f3028b96433597d70a58d3f69e162f1be1a4a304c011b499",
-    "README.zh-TW.md": "ea55ec5c8bd7b4eb6bc68866b05d703738f38657f5865e5c8c8429c585113c6c",
+    "README.zh-TW.md": "971819ad2a25fc11371a5ae6892c28bf496dccda2d54962b32cb47d7a039bea3",
     "test_player_creation_gate.py": "30a5db66eb24305e0b0d42642941935b4b64395982491787ba91fba941398fd1"
   },
   "binary_sha256": {
-    "ep_player_creation_gate.dll": "03982ab2ad456f9ec8d362d96a9c2ebc772830fa1632bbdb681bc785bcb2862e",
-    "ep_player_creation_gate_test.exe": "b02ecd5c71f129f72e6fce54ed3731bdcb0b98ae9c065c8798e25a8ad5cce3b3"
+    "ep_player_creation_gate.dll": "f9a42097778a51b37ef39d6a00f51bcabc3eec4994a528883ef7cb266289bf4e",
+    "ep_player_creation_gate_test.exe": "1f5224be0962fb5c4a937fa8ce518af2b7bfa062a53e0450c43ab3d30641d74f"
   },
   "test": {
     "binary": "ep_player_creation_gate_test.exe",
@@ -103,6 +121,8 @@
     "No game process was opened or modified.",
     "The adapter callback ABI is caller supplied and has not been bound to live game code.",
     "No fifth or eighth peer, Player Clone replication, mission lifecycle or host migration has been verified.",
-    "The gate patch is not a standalone mod and refuses installation unless all downstream continuation providers report ready."
-  ]
+    "The gate patch is not a standalone mod and refuses installation unless all downstream continuation providers report ready.",
+    "Operation serialization is verified only by injected offline callbacks; it does not prove the unresolved native game callback ABI."
+  ],
+  "adapter_version": 3
 }

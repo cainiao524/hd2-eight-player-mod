@@ -52,6 +52,17 @@ EP_PC_STATUS check_adapter(const EP_PLAYER_CREATION_ADAPTER* a) {
     return valid_context(a) ? EP_PC_OK : EP_PC_INVALID_CONTEXT;
 }
 
+struct OperationGuard {
+    EP_PLAYER_CREATION_ADAPTER* adapter;
+    bool held;
+    explicit OperationGuard(EP_PLAYER_CREATION_ADAPTER* a)
+        : adapter(a), held(InterlockedCompareExchange(&a->operation_busy, 1, 0) == 0) {}
+    ~OperationGuard() { if (held) InterlockedExchange(&adapter->operation_busy, 0); }
+    explicit operator bool() const { return held; }
+    OperationGuard(const OperationGuard&) = delete;
+    OperationGuard& operator=(const OperationGuard&) = delete;
+};
+
 void clear_slot(EP_PC_SLOT& slot) { std::memset(&slot, 0, sizeof(slot)); }
 
 bool same_identity(const EP_PC_SLOT& slot, UINT64 peer, UINT64 handle) {
@@ -108,8 +119,8 @@ EP_PC_STATUS finish_failed_admit(EP_PLAYER_CREATION_ADAPTER* a, UINT8 index,
         }
         resource = slot.resource;
         // Mark the slot before invoking an external callback.  A concurrent
-        // departure must see the rollback transaction and retry the same
-        // callback, rather than starting a second normal cleanup path.
+        // departure is refused until OperationGuard releases this transaction.
+        // A later retry must resume compensation, not normal cleanup.
         if (completed_mask) {
             slot.state = EP_PC_REMOVING;
             slot.rollback_pending = 1;
@@ -146,6 +157,9 @@ EP_PC_STATUS __cdecl ep_pc_init(EP_PLAYER_CREATION_ADAPTER* a, UINT32 build,
     if (!a || build != EP_PC_BUILD || !complete_callbacks(callbacks)) {
         return build != EP_PC_BUILD ? EP_PC_BUILD_MISMATCH : EP_PC_CALLBACK_MISSING;
     }
+    // Caller owns zero-initialized storage and serializes initial lifetime.
+    // Never erase a live adapter, patch record, or outstanding owner lease.
+    if (a->magic == EP_PC_MAGIC) return EP_PC_BUSY;
     std::memset(a, 0, sizeof(*a));
     a->magic = EP_PC_MAGIC;
     a->version = EP_PC_VERSION;
@@ -160,6 +174,9 @@ EP_PC_STATUS __cdecl ep_pc_init(EP_PLAYER_CREATION_ADAPTER* a, UINT32 build,
 EP_PC_STATUS __cdecl ep_pc_destroy(EP_PLAYER_CREATION_ADAPTER* a) {
     auto status = check_adapter(a);
     if (status != EP_PC_OK) return status;
+    OperationGuard operation(a);
+    if (!operation) return EP_PC_BUSY;
+    if (!valid_context(a)) return EP_PC_INVALID_CONTEXT;
     AcquireSRWLockExclusive(&a->lock);
     status = validate_locked(a);
     for (UINT32 i = 0; status == EP_PC_OK && i < EP_PC_CAPACITY; ++i) {
@@ -220,6 +237,9 @@ EP_PC_STATUS __cdecl ep_pc_prepare_patch(
     EP_PC_PREFLIGHT* out) {
     auto status = check_adapter(a);
     if (status != EP_PC_OK) return status;
+    OperationGuard operation(a);
+    if (!operation) return EP_PC_BUSY;
+    if (!valid_context(a)) return EP_PC_INVALID_CONTEXT;
     status = ep_pc_preflight(build, image_base, image_size, gate_site,
                              downstream_sites, downstream_count, &a->callbacks,
                              backend, out);
@@ -243,6 +263,9 @@ EP_PC_STATUS __cdecl ep_pc_prepare_patch(
 EP_PC_STATUS __cdecl ep_pc_install_gate_patch(EP_PLAYER_CREATION_ADAPTER* a) {
     auto status = check_adapter(a);
     if (status != EP_PC_OK) return status;
+    OperationGuard operation(a);
+    if (!operation) return EP_PC_BUSY;
+    if (!valid_context(a)) return EP_PC_INVALID_CONTEXT;
     AcquireSRWLockShared(&a->lock);
     if (!a->patch_address || a->patch_size != EP_PC_GATE_BYTES) {
         ReleaseSRWLockShared(&a->lock);
@@ -271,6 +294,9 @@ EP_PC_STATUS __cdecl ep_pc_install_gate_patch(EP_PLAYER_CREATION_ADAPTER* a) {
 EP_PC_STATUS __cdecl ep_pc_remove_gate_patch(EP_PLAYER_CREATION_ADAPTER* a) {
     auto status = check_adapter(a);
     if (status != EP_PC_OK) return status;
+    OperationGuard operation(a);
+    if (!operation) return EP_PC_BUSY;
+    if (!valid_context(a)) return EP_PC_INVALID_CONTEXT;
     AcquireSRWLockShared(&a->lock);
     if (!a->gate_patched) {
         ReleaseSRWLockShared(&a->lock);
@@ -296,6 +322,9 @@ EP_PC_STATUS __cdecl ep_pc_admit(
     UINT64 handle, UINT64 hash, EP_PC_TOKEN* out_token) {
     auto status = check_adapter(a);
     if (status != EP_PC_OK) return status;
+    OperationGuard operation(a);
+    if (!operation) return EP_PC_BUSY;
+    if (!valid_context(a)) return EP_PC_INVALID_CONTEXT;
     if (!valid_index(index) || !peer || !handle || !hash || !out_token) return EP_PC_INDEX_REJECTED;
     EP_PC_TOKEN token{};
     AcquireSRWLockExclusive(&a->lock);
@@ -383,6 +412,9 @@ EP_PC_STATUS __cdecl ep_pc_admit(
 EP_PC_STATUS __cdecl ep_pc_depart(EP_PLAYER_CREATION_ADAPTER* a, EP_PC_TOKEN token) {
     auto status = check_adapter(a);
     if (status != EP_PC_OK) return status;
+    OperationGuard operation(a);
+    if (!operation) return EP_PC_BUSY;
+    if (!valid_context(a)) return EP_PC_INVALID_CONTEXT;
     EP_PC_RESOURCE resource{};
     UINT8 mask = 0;
     bool rollback_pending = false;

@@ -1,0 +1,85 @@
+{
+  "schema": "hd2_client_replication_sidecar_contract_v1",
+  "build": 25480438,
+  "capacity": 8,
+  "source_inventory": "client_fixed_four_inventory_20261003.json",
+  "source_inventory_role": "saved static evidence only; no native write target inferred",
+  "array_groups": {
+    "adjacent_8": 1,
+    "adjacent_16": 2,
+    "adjacent_16b": 4,
+    "confirmed_32": 8,
+    "peer_keyed": 16,
+    "all_mask": 31,
+    "each_has_independent_ordinal_view": true,
+    "stable_network_index_is_not_compact_ordinal": true,
+    "peer_keyed_one_to_one_with_confirmed_not_proven": true
+  },
+  "operations": {
+    "append_exact_index": true,
+    "confirm": true,
+    "remove": true,
+    "kicked": true,
+    "reset": true,
+    "generation_fence": true,
+    "callback_failure_compensation": true,
+    "rollback_retry": true,
+    "callback_lease_quiescence": true,
+    "host_migration_transaction": true,
+    "holes_preserved_in_network_index_table": true
+  },
+  "checks": {
+    "fixed_build": true,
+    "all_indexes_0_to_7": true,
+    "index_8_rejected": true,
+    "five_array_masks_explicit": true,
+    "rollback_token_retained": true,
+    "stale_generation_rejected": true,
+    "lease_blocks_mutation": true,
+    "migration_epoch_and_quiescence": true,
+    "production_gate_false": true,
+    "no_process_access": true,
+    "no_patch_emitted": true
+  },
+  "artifacts": [
+    {
+      "path": "ep_client_replication_contract.h",
+      "sha256": "4e9884d2a5836d81d29585eb2fcc9c00b7664be35ee6f3c2649cab32ee235fa4"
+    },
+    {
+      "path": "ep_client_replication_contract.cpp",
+      "sha256": "e9160dbb9e8c869d88c2555c0540030f543b7846ff0ab7e8c0e139d1619f987c"
+    },
+    {
+      "path": "ep_client_replication_contract_test.cpp",
+      "sha256": "856e0407d26b5640fe9af3f7e118d003bdee4e4aa78abdcd468f14822d1a9afb"
+    },
+    {
+      "path": "build_x64.bat",
+      "sha256": "1e895dbd61cec85040122b1fa1b92b11cd0fb36a42c7e51145d8ffecb1c448a4"
+    },
+    {
+      "path": "CLIENT_REPLICATION_SIDECAR_CONTRACT_20261004.zh-TW.md",
+      "sha256": "de4269686decacf5ad925c35bb366e670087144b433678ee95057709a84f7c65"
+    },
+    {
+      "path": "ep_client_replication_contract.dll",
+      "sha256": "ac7104e7eeecdaaeaceb5cee91d2a30011dbca450668ab55bc390232ad351825"
+    },
+    {
+      "path": "ep_client_replication_contract_test.exe",
+      "sha256": "56af2a1ce5fc60b10e06e2bd2304372f7f32f958184c7e42495b5a8c4f1c0559"
+    }
+  ],
+  "build_result": {
+    "test_output": "ep_client_replication_contract_synthetic_passed",
+    "test_exit_code": 0
+  },
+  "decision": {
+    "production_patch_ready": false,
+    "installable": false,
+    "runtime_verified": false,
+    "multiplayer_verified": false,
+    "reason": "The sidecar is only an offline transaction contract. Native callback ABI, entity creation and five-to-eight-player runtime evidence remain unresolved."
+  }
+}

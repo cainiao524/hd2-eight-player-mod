@@ -7,7 +7,7 @@
 // the broad capacity patch: the gate is only safe to widen after the resource,
 // component and roster continuations have been supplied by the caller.
 #define EP_PC_MAGIC 0x45504347u /* EPCG */
-#define EP_PC_VERSION 2u
+#define EP_PC_VERSION 3u
 #define EP_PC_BUILD 25480438u
 #define EP_PC_GATE_RVA 0x1086460u
 #define EP_PC_RESOURCE_RVA 0xFDC140u
@@ -157,6 +157,8 @@ typedef struct EP_PLAYER_CREATION_ADAPTER {
     UINT32 version;
     UINT32 build;
     UINT32 initialized;
+    // Synchronous mutators include external callbacks; overlapping calls return BUSY.
+    volatile LONG operation_busy;
     UINT32 owner_epoch;
     UINT32 inflight;
     UINT32 gate_patched;
