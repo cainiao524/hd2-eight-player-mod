@@ -59,6 +59,10 @@ class MidGateStubCandidateTests(unittest.TestCase):
         self.assertEqual(capacity.preserved_registers,
                          ("r9", "r12", "r13", "r14", "r15", "rbp"))
         self.assertEqual(allocator.preserved_registers, ("r9", "rdx"))
+        self.assertIn(b"\x41\x8b\xd6", capacity.stub)
+        self.assertIn(b"\x41\x8b\xd6", allocator.stub)
+        self.assertNotIn(b"\x44\x8b\xd6", capacity.stub)
+        self.assertNotIn(b"\x44\x8b\xd6", allocator.stub)
         self.assertNotIn(b"\xe8", capacity.stub)
         self.assertNotIn(b"\xe9", capacity.stub)
         self.assertNotIn(b"\xe8", allocator.stub)

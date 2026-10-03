@@ -5,6 +5,8 @@
 - `game.dll + 0x108C18F`：capacity gate 的 38-byte 指令範圍，從 `0x108C18F` 到 `0x108C1B4`，跳回原本的 `sub ecx,eax`（`0x108C1BA`）。stub 保存 `r9/r12/r13/r14/r15/rbp`，呼叫 sidecar occupancy helper，驗證回傳值在 `0..8`，再讓原本的比較與分支保持有效。
 - `game.dll + 0x108C3D8`：allocator loop 的 15-byte 指令範圍，跳回原本的 outer-loop continuation `0x108C3F7`。stub 保存 `r9/rdx`，呼叫 sidecar index helper，允許 `0..7` 或原生 `-1` sentinel，最後寫回原本使用的 `r8d`。
 
+2026-10-03 的 ABI 校正把兩個 helper 呼叫前的寄存器搬移固定為 `41 8B D6`（`mov edx,r14d`）。舊的 `44 8B D6` 實際會解碼成 `mov r10d,esi`，不能把 native index 傳給 helper；校正後的 stub、收據和 verifier 已重新生成並逐項一致。
+
 每個 site 都保存：
 
 1. 固定 Build `25480438` 與 `game.dll` SHA-256。
@@ -20,6 +22,8 @@
 & 'C:\Program Files\Python312\python.exe' -B -m unittest -v eight_player_candidate_20260927\Native\MidGate\test_midgate_stub_candidate.py
 & 'C:\Program Files\Python312\python.exe' -B eight_player_candidate_20260927\Native\MidGate\verify_midgate_stub_candidate.py --output eight_player_candidate_20260927\Native\MidGate\verification\midgate_stub_candidate_verification_20261002.json
 ```
+
+工作區另有可重建的離線 executor harness：在 `Native/MidGate` 執行 `cmd /c build_x64.bat` 會編譯 `ep_midgate_executor.dll`、synthetic install/remove harness 和 export load check。它只對合成 PE image 執行，並要求 caller 自行提供 owner、helper lifetime 與 thread quiescence；沒有遊戲程序或 loader 路徑。
 
 驗證器只讀取倉庫內保存的 `join_handler_disasm.json`，並在 synthetic byte buffer 中套用與還原 patch。它不開啟遊戲程序、不配置遊戲記憶體、不寫入 `game.dll`，也不安裝 function table。
 

@@ -138,7 +138,7 @@ def _capacity_stub(helper: int, continuation: int, stub_address: int) -> tuple[b
     code += _push(b"\x55")      # push rbp (game frame)
     code += b"\x48\x83\xEC\x20"  # sub rsp,32-byte shadow space
     code += b"\x4C\x8B\xC9"       # mov rcx,r9 (owner)
-    code += b"\x44\x8B\xD6"       # mov edx,r14d (native base/index)
+    code += b"\x41\x8B\xD6"       # mov edx,r14d (native base/index)
     code += _mov_abs("rax", helper)
     code += b"\xFF\xD0"           # call rax
     code += b"\x48\x83\xC4\x20"  # add rsp,32
@@ -174,7 +174,7 @@ def _allocator_stub(helper: int, continuation: int, stub_address: int) -> tuple[
     code += b"\x52"               # push rdx
     code += b"\x48\x83\xEC\x20"  # shadow space
     code += b"\x4C\x8B\xC9"       # mov rcx,r9 (owner)
-    code += b"\x44\x8B\xD6"       # mov edx,r14d (start index)
+    code += b"\x41\x8B\xD6"       # mov edx,r14d (start index)
     code += _mov_abs("rax", helper)
     code += b"\xFF\xD0"           # call rax
     code += b"\x48\x83\xC4\x20"  # release shadow space

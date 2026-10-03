@@ -473,3 +473,9 @@ capacity patch 仍是 disabled-by-default、固定 build 的研究候选；inlin
 新增 `Native/PlayerResource/ep_resource_bridge_adapter.*`，把八格 player-resource sidecar 的三階段 callback table 接到既有 `EP_NATIVE_BRIDGE` admission/depart/reconnect contract。transaction 順序固定為 `resource_begin → native_confirm → native_create → first → second → third → resource_publish`；任何 callback、metadata、version/size、generation 或 stage failure 都 fail-closed，並由 bridge 的 remove compensation 清除 native 與 sidecar identity。離隊先執行 native remove，再釋放 resource record；network index 由 caller 提供並逐項保留，禁止以 local first-free 或 roster ordinal 代換。
 
 `ep_resource_bridge_adapter_synthetic_passed`、原 player-resource test、Bridge/client integration 與 Python receipt checks 已通過，覆蓋八筆 admission、index 4 departure/reconnect、index 3 stage failure rollback 和完整 owner cleanup。這是離線 ABI-shaped transaction，不是 live callback binding；沒有解析 RVA、呼叫 game.dll、安裝 hook、建立第五至第八 peer 或驗證 client entity replication。`production_executable=false`、`runtime_verified=false`、`installable=false`、`multiplayer_verified=false` 維持不變。收據為 `Native/PlayerResource/resource_bridge_adapter_receipt_20261003.json`，整合提交為 `9715a41`。
+
+## 2026-10-03 MidGate helper-register ABI correction
+
+重新核對 `Native/MidGate` 的兩個 machine-code template 後，修正 helper 呼叫前的 `mov edx,r14d` bytes：正確編碼是 `41 8B D6`；舊候選的 `44 8B D6` 會解碼為 `mov r10d,esi`，並沒有傳遞 native index。容量與 allocator template、固定收據和 verifier 已同步重生成，Python static checks 4/4 通過。
+
+本機另外以 caller-supplied synthetic image 編譯執行器，`ep_midgate_executor_synthetic_passed` 與 DLL export load check 均通過；這只驗證固定 PE/fingerprint gate、兩個 reversible detour、x64 unwind registration、helper ABI 和 exact restore。執行器沒有取得遊戲程序、沒有安裝到 `game.dll`，也沒有綁定真實 owner/quiescence、confirmed-peer、player-creation 或 client replication callback；`installable=false`、`runtime_verified=false`、`multiplayer_verified=false` 仍是有效狀態。

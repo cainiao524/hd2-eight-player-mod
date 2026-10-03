@@ -1,0 +1,39 @@
+{
+  "schema": "hd2_midgate_executor_synthetic_receipt_v1",
+  "steam_build": 25480438,
+  "module": "game.dll",
+  "source_files": {
+    "ep_midgate_executor.cpp": "535534f823fa4ac872a05425fc5c21578af5b4397f69f6881b823d15557633fb",
+    "ep_midgate_executor.h": "e2f234c51bf65bdf940867345ef1275068264eace67950e0f5b1036f4d514f5b",
+    "ep_midgate_executor_test.cpp": "3e788efb403c7f9fa1ba3adadfe09301965905d36d274b83494623167bf45274",
+    "ep_midgate_executor_load_test.cpp": "d07b7232defe97433d400f75032a4abb6cfb3c5f5ce804870213d59b14a0d96b",
+    "build_x64.bat": "e087c6047948a0766fd1355b4ecc84f1f8b3e32ad051579d2bf809bfddb65635"
+  },
+  "fixed_sites": {
+    "capacity": {
+      "rva": "0x108C18F",
+      "span": 38,
+      "code_size": 77
+    },
+    "allocator": {
+      "rva": "0x108C3D8",
+      "span": 15,
+      "code_size": 63
+    }
+  },
+  "tests": {
+    "executor": "ep_midgate_executor_synthetic_passed",
+    "dll_exports": "ep_midgate_executor_dll_exports_passed",
+    "static_python": "4/4 passed"
+  },
+  "process_started": false,
+  "process_accessed": false,
+  "game_module_modified": false,
+  "game_plugin_staged": false,
+  "real_owner_bound": false,
+  "thread_quiescence_bound": false,
+  "installable": false,
+  "runtime_verified": false,
+  "multiplayer_verified": false,
+  "note": "Synthetic PE image only; caller-supplied helper and quiescence contracts remain unresolved."
+}
