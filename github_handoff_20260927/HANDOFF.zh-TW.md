@@ -3,7 +3,7 @@
 
 新增 `Native/CapacityPatch` 原生插件候選，固定 `Build 25480438` 與 35 個四人容量／枚舉／加入／狀態更新 site。插件先完成全 site fingerprint preflight，才以單一交易寫入 `8`；任一 site 不符就拒絕，卸載路徑按逆序恢復 bytes。
 
-在 Steam 正常啟動的固定版本實機中，官方 loader 記錄 `loaded`、`applied` 且 `patched=35`；同一插件透過唯讀 `NetworkCApi.game_session`／`GameSessionCApi.num_peers` 觀察到 session 從空變有效，但兩次 `peer_count` 都是 `0`。實測後已停止遊戲並移除 DLL／marker。
+在 Steam 正常啟動的固定版本實機中，官方 loader 記錄 `loaded`、`applied` 且 `patched=35`；原始收據中的 `GameSessionCApi.num_peers`／`peer_count` 欄位已被 superseded，因為 HD2 的 wrapper/vtable 語義尚未閉合，舊探針不能把該偏移當作可靠 peer getter。實測後已停止遊戲並移除 DLL／marker。
 
 這只閉合容量常數層，沒有證明 Party/PlayFab admission、第五至第八個 confirmed-peer、Player Clone、客戶端 entity replication、死亡增援、重連、撤離或 host migration。`installable=false`、`multiplayer_verified=false` 保持不變。研究與機器收據見 `CAPACITY_PATCH_CANDIDATE_20261003.zh-CN.md`、`live_capacity_patch_runtime_verification_20261003.json`。
 
@@ -13,14 +13,14 @@
 
 同一固定 build `25480438` 保存了 `Network`／`GameSession` C API table 的 bounded prefix 和候選 engine-session vtable 的靜態前綴。捕獲只讀、重讀相等、沒有呼叫函式、寫記憶體、hook 或注入；wrapper table 與 underlying vtable 分開記錄，不能解讀成 peer admission、player creation 或可安裝 Mod。
 
-最新研究提交為 `197b001`，狀態收據提交待本節更新後產生。`installable=false`、`multiplayer_verified=false`、真實第五至第八帳號測試未完成。
+最新研究提交為 `799e5b6`，狀態收據提交待本節更新後產生。`installable=false`、`multiplayer_verified=false`、真實第五至第八帳號測試未完成。
 
 
 ## 2026-10-03 最新離線 native bridge hardening
 
 `Native/Bridge` 與 `Native/ClientSidecar` 的候選交易邊界已再收斂：native player creation 先於 bridge sidecar confirm，native confirm 失敗時 adapter 保留補償 identity，由 bridge 的 remove callback 同時清理 native 與兩端 sidecar；cleanup retry 必須帶完整的 peer、resource handle、network index 和 generation，不能只用重用中的 index。跨元件 harness 已實際走過八個 index `0..7`、離隊洞位、generation-safe reconnect、完整雙 registry cleanup 及 owner lease 平衡；adapter destroy 會拒絕仍有 native-confirmed flag 的 teardown。
 
-這些是固定 build `25480438` 的離線 C++／Python 合成驗證，沒有接真實 callback ABI、沒有寫入或注入遊戲程序，`installable=false`、`runtime_verified=false`、`multiplayer_verified=false` 仍是正式狀態。原研究提交為 `d465682`，狀態收據提交為 `b0b30ec`；本輪 player-resource、receiver-vector、live layout、ClientSidecar lock hardening、native loader boundary、official plugin directory audit、OfficialPlugin ABI probe、GameSession route audit、C API contract pin、plugin startup boundary audit 與官方插件實機載入觀察的最新研究提交為 `80e5860`，最新狀態收據提交待本次狀態更新後產生。
+這些是固定 build `25480438` 的離線 C++／Python 合成驗證，沒有接真實 callback ABI、沒有寫入或注入遊戲程序，`installable=false`、`runtime_verified=false`、`multiplayer_verified=false` 仍是正式狀態。原研究提交為 `d465682`，狀態收據提交為 `b0b30ec`；本輪 player-resource、receiver-vector、live layout、ClientSidecar lock hardening、native loader boundary、official plugin directory audit、OfficialPlugin ABI probe、GameSession route audit、C API contract pin、plugin startup boundary audit 與官方插件實機載入觀察的歷史研究提交為 `80e5860`，最新狀態收據提交待本次狀態更新後產生。
 
 ## 2026-10-03 native player-resource sidecar
 
@@ -408,3 +408,11 @@ Player-chain 審計又補進三個 client layout 固定四人位點：`0x1087122
 在 PID `38132` 的同一固定 build，探針於 `setup_game`／bounded `update_game` 路徑呼叫公開 `NetworkCApi.game_session()` 和 `GameSessionCApi.num_peers()`。記錄到 GameSession 從 `null` 變為 `0x1900edd7e90`，peer count 當時為 `0`。沒有呼叫 `add_peer`、`remove_peer`、`create_game_object`，也沒有寫入、hook 或注入。完整收據見 [R3](../five_player_feasibility_20260927/LIVE_OFFICIAL_PLUGIN_PROBE_20261003_R3.zh-TW.md)。
 
 這使下一個安全邊界成為 `peer_self`／`peer` 唯讀觀察與 player creation/roster callback 解析；第五至第八名玩家、可安裝版本和多人全流程仍未驗收。
+
+## 2026-10-03 capacity patch 下的 Peer 狀態觀測
+
+固定 build `25480438` 的 capacity patch plugin 以官方 plugin ABI 載入，35 個已核對的四人 capacity、enumeration、join、state、migration sites 在同一事務中改為 8，並完成 `GameSession` 唯讀觀測。原始資料保存於 [live_capacity_patch_runtime_20261003_peer_slots.jsonl](../five_player_feasibility_20260927/live_capacity_patch_runtime_20261003_peer_slots.jsonl)，驗證收據為 [live_capacity_patch_peer_state_20261003.json](../five_player_feasibility_20260927/live_capacity_patch_peer_state_20261003.json)。
+
+這次 bounded run 讀到 `peer_count` 由 0 遞增至 16，但八個 `peer()` 讀值全部相同（`0x7ff7bf855b70`）。因此目前不能确定 `num_peers` 是否为玩家数量，也不能把这次计数当作第 5 至第 8 个账号已加入的证据；`peer_id_semantics_unresolved=true`、`count_is_not_player_admission=true`。插件没有调用 `add_peer`、`remove_peer`、`create_game_object`，也没有写入 Party/PlayFab 或建立 Player Clone。
+
+capacity patch 仍是 disabled-by-default、固定 build 的研究候选；inline storage、confirmed-peer/client roster、player creation、实体复制、死亡/增援、重连、撤离、结算及 host migration 仍未闭合。`player_admission_proven=false`、`player_creation_proven=false`、`installable=false`、`multiplayer_verified=false` 保持不变。下一步应先解析 `PeerId`/`peer()` 的实际语义并取得真实 admission callback，再把八槽 sidecar 接入 creation 与 cleanup 链。
