@@ -11,20 +11,21 @@
   "source_sha256": {
     "ep_player_resource.h": "8939ab4129c286955ccc9caec41508b7b2759b1db82b0ec6631b8b93357e0d84",
     "ep_player_resource.cpp": "710930b6c1a163a56475b6ad4426f38b9e71b468a9ffb1f4eb377a8eb399d1ce",
-    "ep_player_resource_test.cpp": "92c11637d71ee5263024b3f759f48c1db15f5f3ef0de08101a4c3c85dfa7a352",
+    "ep_player_resource_test.cpp": "98502ec5bcf05e95d93981836f8ab99f331a476d5420ba13ef00e9458c530a81",
     "build_x64.bat": "573b7009a8d5483a98342a91f3063ad56431370d480d23bb77bb97db1322d89b",
     "README.zh-TW.md": "6c63abfbdf4423d1660dd888b19db604ef3bbc87450afd326c307bef36f669f0"
   },
   "binary_sha256": {
-    "ep_player_resource.dll": "0d3ac8dff3a281c3e155287bda9416900f814958a1e5234e479950cb2b2160f5",
-    "ep_player_resource_test.exe": "9e5f6f3cacad7634be69c4518dcc0d705f2770f95417581feee42d2d4c0e570d"
+    "ep_player_resource.dll": "c9162fbc8345fbfef5c549e31cfcabae4f54484c1c2d01aa4d51133f5c2e016e",
+    "ep_player_resource_test.exe": "f2a7256c6bdc55a49cb2093e1ebedcb5d151cff254d17a676cf639568f88794d"
   },
   "test": {
     "command": "cmd /c build_x64.bat",
     "status": "passed",
     "output": "ep_player_resource_synthetic_passed",
     "coverage": [
-      "all eight storage indexes are bounded",
+      "all eight storage indexes 0..7 are bounded",
+      "occupied ninth admission is rejected",
       "three callback stages publish only after completion",
       "third-stage failure releases the record",
       "callback-order failure releases the record",
