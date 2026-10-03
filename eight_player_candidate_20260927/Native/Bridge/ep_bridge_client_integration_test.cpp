@@ -57,6 +57,35 @@ int main() {
                 "failed native confirm clears both registries and owner lease");
     ok &= check(f.retains == f.releases, "confirm failure balances native owner");
     if (!ok) return 1;
+
+    f.reject_confirm = false;
+    EP_BRIDGE_ADMISSION admissions[EP_SIDECAR_CAPACITY]{};
+    for (UINT8 i = 0; i < EP_SIDECAR_CAPACITY; ++i) {
+        ok &= check(ep_bridge_admit(&bridge, 100 + i, 200 + i, &admissions[i]) == EP_BRIDGE_OK,
+                    "eight client admissions");
+        ok &= check(admissions[i].token.index == i, "stable network index");
+    }
+    ok &= check(bridge.sidecar.active_count == EP_SIDECAR_CAPACITY &&
+                client.client.confirmed_count == EP_SIDECAR_CAPACITY,
+                "native and client registries hold eight players");
+    ok &= check(ep_bridge_depart(&bridge, admissions[4]) == EP_BRIDGE_OK,
+                "client departure keeps a hole");
+    EP_BRIDGE_ADMISSION reconnected{};
+    ok &= check(ep_bridge_reconnect(&bridge, 1004, 2004, &reconnected) == EP_BRIDGE_OK,
+                "client reconnect");
+    ok &= check(reconnected.token.index == 4 &&
+                reconnected.token.generation != admissions[4].token.generation,
+                "client reconnect generation");
+    for (UINT8 i = 0; i < EP_SIDECAR_CAPACITY; ++i) {
+        if (i == 4) continue;
+        ok &= check(ep_bridge_depart(&bridge, admissions[i]) == EP_BRIDGE_OK,
+                    "client cleanup");
+    }
+    ok &= check(ep_bridge_depart(&bridge, reconnected) == EP_BRIDGE_OK,
+                "client reconnect cleanup");
+    ok &= check(bridge.sidecar.active_count == 0 && client.client.confirmed_count == 0,
+                "both registries fully cleaned");
+    ok &= check(f.retains == f.releases, "eight-player owner leases balanced");
     ok &= check(ep_bridge_destroy(&bridge) == EP_BRIDGE_OK, "bridge destroy");
     ok &= check(ep_client_adapter_destroy(&client) == EP_BRIDGE_OK, "client destroy");
     if (!ok) return 1;

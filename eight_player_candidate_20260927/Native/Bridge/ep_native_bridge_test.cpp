@@ -73,6 +73,12 @@ int main() {
                 "failed create keeps slot");
     ok &= check(harness.retained == 1 && harness.released == 0,
                 "failed create keeps owner lease");
+    EP_BRIDGE_ADMISSION stale = failed;
+    stale.peer_id++;
+    ok &= check(ep_bridge_retry_cleanup(&bridge, stale) == EP_BRIDGE_INVALID_ARGUMENT,
+                "stale retry identity rejected");
+    ok &= check(bridge.cleanup_count == 1 && bridge.sidecar.active_count == 1,
+                "stale retry leaves cleanup pinned");
     harness.fail_create = false;
     harness.fail_remove = false;
     ok &= check(ep_bridge_retry_cleanup(&bridge, failed) == EP_BRIDGE_OK,
