@@ -416,3 +416,9 @@ Player-chain 審計又補進三個 client layout 固定四人位點：`0x1087122
 這次 bounded run 讀到 `peer_count` 由 0 遞增至 16，但八個 `peer()` 讀值全部相同（`0x7ff7bf855b70`）。因此目前不能确定 `num_peers` 是否为玩家数量，也不能把这次计数当作第 5 至第 8 个账号已加入的证据；`peer_id_semantics_unresolved=true`、`count_is_not_player_admission=true`。插件没有调用 `add_peer`、`remove_peer`、`create_game_object`，也没有写入 Party/PlayFab 或建立 Player Clone。
 
 capacity patch 仍是 disabled-by-default、固定 build 的研究候选；inline storage、confirmed-peer/client roster、player creation、实体复制、死亡/增援、重连、撤离、结算及 host migration 仍未闭合。`player_admission_proven=false`、`player_creation_proven=false`、`installable=false`、`multiplayer_verified=false` 保持不变。下一步应先解析 `PeerId`/`peer()` 的实际语义并取得真实 admission callback，再把八槽 sidecar 接入 creation 与 cleanup 链。
+
+## 2026-10-03 no-call Session snapshot integration
+
+`Native/SessionObservation` 已接入官方插件。`setup_game`／bounded update 现在先通过固定 EXE、Network getter、GameSession 底层 vtable 与 record layout fingerprint，再以进程内只读复制获取最多八条 opaque record；任何不匹配、count 超过 8、backing 缺失或双读变化都 fail-closed。此路径不调用 `peer`、`num_peers`、`in_session` 或 `host`，也不写入游戏状态。
+
+这只提供固定版本的 layout 观察工具，不是玩家 admission 或 Player Clone 建立。当前第五至第八个账号、客户端复制、死亡/增援、重连、结算和 host migration 仍未验证；`installable=false`、`multiplayer_verified=false` 保持不变。最新研究提交为 `2136c72`，状态收据提交待本节更新后产生。
