@@ -4,7 +4,7 @@
 
 namespace {
 constexpr UINT32 kMagic = 0x45504341u; // EPCA
-constexpr UINT32 kVersion = 2u;
+constexpr UINT32 kVersion = 3u;
 
 EP_CLIENT_ADAPTER* as_adapter(void* owner) {
     auto* a = static_cast<EP_CLIENT_ADAPTER*>(owner);
@@ -23,10 +23,13 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_client_adapter_init(
     EP_CLIENT_NATIVE_CONFIRM_CB native_confirm,
     EP_CLIENT_NATIVE_CREATE_CB native_create,
     EP_CLIENT_NATIVE_REMOVE_CB native_remove,
+    EP_CLIENT_NATIVE_ALLOCATE_INDEX_CB native_allocate_index,
+    EP_CLIENT_NATIVE_RELEASE_INDEX_CB native_release_index,
     EP_CLIENT_NATIVE_RETAIN_CB native_retain,
     EP_CLIENT_NATIVE_RELEASE_CB native_release) {
     if (!a || !native_owner || !native_confirm || !native_create ||
-        !native_remove || !native_retain || !native_release)
+        !native_remove || !native_allocate_index || !native_release_index ||
+        !native_retain || !native_release)
         return EP_BRIDGE_INVALID_ARGUMENT;
     std::memset(a, 0, sizeof(*a));
     a->magic = kMagic;
@@ -36,6 +39,8 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_client_adapter_init(
     a->native_confirm = native_confirm;
     a->native_create = native_create;
     a->native_remove = native_remove;
+    a->native_allocate_index = native_allocate_index;
+    a->native_release_index = native_release_index;
     a->native_retain = native_retain;
     a->native_release = native_release;
     if (ep_client_init(&a->client, EP_CLIENT_SIDECAR_BUILD) != EP_CLIENT_OK) {
@@ -50,6 +55,7 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_client_adapter_destroy(EP_CLIENT_ADAPTER*
     if (!as_adapter(a)) return EP_BRIDGE_INVALID_CONTEXT;
     for (UINT32 i = 0; i < EP_SIDECAR_CAPACITY; ++i) {
         if (a->native_confirmed[i] != 0) return EP_BRIDGE_CLEANUP_REQUIRED;
+        if (a->index_reserved[i] != 0) return EP_BRIDGE_CLEANUP_REQUIRED;
     }
     if (a->owner_refs != 0 || ep_client_validate(&a->client) != EP_CLIENT_OK ||
         ep_client_destroy(&a->client) != EP_CLIENT_OK) return EP_BRIDGE_CLEANUP_REQUIRED;
@@ -58,10 +64,48 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_client_adapter_destroy(EP_CLIENT_ADAPTER*
     return EP_BRIDGE_OK;
 }
 
+extern "C" EP_BRIDGE_STATUS __cdecl ep_client_adapter_allocate_index(
+    void* owner, UINT64 peer_id, UINT64 resource_handle, UINT8* out_index) {
+    auto* a = as_adapter(owner);
+    if (!a || !out_index || peer_id == 0 || resource_handle == 0)
+        return EP_BRIDGE_INVALID_ARGUMENT;
+    UINT8 index = 0xFF;
+    const auto status = a->native_allocate_index(
+        a->native_owner, peer_id, resource_handle, &index);
+    if (status != EP_BRIDGE_OK) return status;
+    if (index >= EP_SIDECAR_CAPACITY || a->index_reserved[index] != 0) {
+        if (index < EP_SIDECAR_CAPACITY)
+            a->native_release_index(a->native_owner, peer_id, resource_handle, index, 0);
+        return EP_BRIDGE_INDEX_REJECTED;
+    }
+    a->index_reserved[index] = 1;
+    *out_index = index;
+    return EP_BRIDGE_OK;
+}
+
+extern "C" EP_BRIDGE_STATUS __cdecl ep_client_adapter_release_index(
+    void* owner, UINT64 peer_id, UINT64 resource_handle, UINT8 network_index,
+    UINT32 generation) {
+    auto* a = as_adapter(owner);
+    if (!a || peer_id == 0 || resource_handle == 0 ||
+        network_index >= EP_SIDECAR_CAPACITY)
+        return EP_BRIDGE_INVALID_ARGUMENT;
+    if (a->index_reserved[network_index] == 0)
+        return EP_BRIDGE_INDEX_REJECTED;
+    const auto status = a->native_release_index(
+        a->native_owner, peer_id, resource_handle, network_index, generation);
+    if (status != EP_BRIDGE_OK) return status;
+    a->index_reserved[network_index] = 0;
+    return EP_BRIDGE_OK;
+}
+
 extern "C" EP_BRIDGE_STATUS __cdecl ep_client_adapter_confirm(
     void* owner, UINT64 peer_id, UINT64 resource_handle, UINT8 network_index) {
     auto* a = as_adapter(owner);
     if (!a) return EP_BRIDGE_INVALID_CONTEXT;
+    if (network_index >= EP_SIDECAR_CAPACITY ||
+        a->index_reserved[network_index] == 0)
+        return EP_BRIDGE_INDEX_REJECTED;
     UINT32 generation = 0;
     if (map_status(ep_client_append(&a->client, peer_id, resource_handle,
                                     network_index, &generation)) != EP_BRIDGE_OK)

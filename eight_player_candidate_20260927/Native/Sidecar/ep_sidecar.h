@@ -24,6 +24,11 @@ typedef enum EP_SIDECAR_STATUS : UINT32 {
     EP_SC_INVALID_STATE = 9,
     EP_SC_ALREADY_CONFIRMED = 10,
     EP_SC_INVARIANT_BROKEN = 11,
+    // A caller-provided network index is already occupied.  This is kept
+    // separate from EP_SC_FULL so an allocator/bridge can release the
+    // external reservation and fail closed instead of silently choosing a
+    // different ordinal.
+    EP_SC_INDEX_OCCUPIED = 12,
 } EP_SIDECAR_STATUS;
 
 typedef enum EP_SIDECAR_SLOT_STATE : UINT8 {
@@ -61,6 +66,12 @@ __declspec(dllexport) EP_SIDECAR_STATUS __cdecl ep_sidecar_init(EP_SIDECAR* side
 __declspec(dllexport) EP_SIDECAR_STATUS __cdecl ep_sidecar_destroy(EP_SIDECAR* sidecar);
 __declspec(dllexport) EP_SIDECAR_STATUS __cdecl ep_sidecar_reserve(
     EP_SIDECAR* sidecar, UINT64 peer_id, UINT64 resource_handle,
+    EP_SIDECAR_TOKEN* out_token);
+// Reserve the exact network index assigned by Session/Party.  The sidecar
+// never substitutes another index; callers must release their external
+// reservation when this returns anything other than EP_SC_OK.
+__declspec(dllexport) EP_SIDECAR_STATUS __cdecl ep_sidecar_reserve_at(
+    EP_SIDECAR* sidecar, UINT8 index, UINT64 peer_id, UINT64 resource_handle,
     EP_SIDECAR_TOKEN* out_token);
 __declspec(dllexport) EP_SIDECAR_STATUS __cdecl ep_sidecar_confirm(
     EP_SIDECAR* sidecar, EP_SIDECAR_TOKEN token);

@@ -22,10 +22,13 @@
     "duplicate_peer_rejected": true,
     "duplicate_resource_rejected": true,
     "stale_token_rejected": true,
-    "generation_exhaustion_fail_closed": true
+    "generation_exhaustion_fail_closed": true,
+    "authoritative_index_binding": true,
+    "local_index_substitution_forbidden": true
   },
   "scenarios": [
     "reserve and confirm all eight stable slots",
+    "reserve exact authoritative network index without local substitution",
     "reject ninth reservation",
     "reject duplicate peer and duplicate resource",
     "remove without compacting neighboring slots",
@@ -39,23 +42,23 @@
   "artifacts": [
     {
       "path": "ep_sidecar.h",
-      "sha256": "93450fd16d8d96fcce918fa51c9827bbfa14d5724bc74457a281f50efcb50514"
+      "sha256": "045fedc963f19527a94f77d7de6b569e6052f5ceda0d665d79d20682c268fde0"
     },
     {
       "path": "ep_sidecar.cpp",
-      "sha256": "02aaca9f1a59ee09d5d3454318e868f765cee2e344eb474c8e66fc5d31cf8e21"
+      "sha256": "ddae8b22ae4d2715d84deafacbd702b013a5685dcf7664431926c0c46a643db7"
     },
     {
       "path": "ep_sidecar_test.cpp",
-      "sha256": "facf93f24c7242ad5c87a1bad0cf9a776506f8b92ce692630071a1b0957a379c"
+      "sha256": "bfa199628a8d650c84ffc879a704bb6263fdb10d3869bf6314817107301d9bcc"
     },
     {
       "path": "build_x64.bat",
-      "sha256": "78d2b69791cb65cf24c714b3b69bdf35adaefd74e26fc7efc61345d9ab9aea33"
+      "sha256": "c8c0c1dd674109d32fb03455ea27ebbd1e2cde1c4929a59621da6f0bf4d40b64"
     },
     {
       "path": "README.zh-TW.md",
-      "sha256": "7456ad4775901b1c0a56aa4691055f6c3ea534a109ae614514e642571d8164b9"
+      "sha256": "8c8077a97d83079b7935d446e8d9c6a2a7e0cf0193b10affcffd0c019174a9a6"
     },
     {
       "path": "test_sidecar_report.py",
@@ -63,11 +66,11 @@
     },
     {
       "path": "ep_sidecar.dll",
-      "sha256": "90ff8a5a6d70c71968fbf8f0d33f255cef49da3abc580f041eed3f044fe5202e"
+      "sha256": "ab845fdc896f6b20dbd7404df353a4123462b5f5a3d8c6af63b6bd193006625f"
     },
     {
       "path": "ep_sidecar_test.exe",
-      "sha256": "214b6fdbd753e705a24aaa62d537448567027fd29ea68e5c24cb5107c2999708"
+      "sha256": "4e97bdd8f20ec7cd769d18bd19c2ece1b5a582987828f5e232cae577f57acd7f"
     }
   ],
   "production": {

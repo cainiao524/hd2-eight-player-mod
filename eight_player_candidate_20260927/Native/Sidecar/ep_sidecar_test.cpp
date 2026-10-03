@@ -7,6 +7,7 @@
 using InitFn = EP_SIDECAR_STATUS(__cdecl*)(EP_SIDECAR*);
 using DestroyFn = EP_SIDECAR_STATUS(__cdecl*)(EP_SIDECAR*);
 using ReserveFn = EP_SIDECAR_STATUS(__cdecl*)(EP_SIDECAR*, UINT64, UINT64, EP_SIDECAR_TOKEN*);
+using ReserveAtFn = EP_SIDECAR_STATUS(__cdecl*)(EP_SIDECAR*, UINT8, UINT64, UINT64, EP_SIDECAR_TOKEN*);
 using ConfirmFn = EP_SIDECAR_STATUS(__cdecl*)(EP_SIDECAR*, EP_SIDECAR_TOKEN);
 using RemoveFn = EP_SIDECAR_STATUS(__cdecl*)(EP_SIDECAR*, EP_SIDECAR_TOKEN);
 using ReconnectFn = EP_SIDECAR_STATUS(__cdecl*)(EP_SIDECAR*, UINT64, UINT64, EP_SIDECAR_TOKEN*);
@@ -24,17 +25,36 @@ int main() {
     auto init = reinterpret_cast<InitFn>(GetProcAddress(dll, "ep_sidecar_init"));
     auto destroy = reinterpret_cast<DestroyFn>(GetProcAddress(dll, "ep_sidecar_destroy"));
     auto reserve = reinterpret_cast<ReserveFn>(GetProcAddress(dll, "ep_sidecar_reserve"));
+    auto reserve_at = reinterpret_cast<ReserveAtFn>(GetProcAddress(dll, "ep_sidecar_reserve_at"));
     auto confirm = reinterpret_cast<ConfirmFn>(GetProcAddress(dll, "ep_sidecar_confirm"));
     auto remove = reinterpret_cast<RemoveFn>(GetProcAddress(dll, "ep_sidecar_remove"));
     auto reconnect = reinterpret_cast<ReconnectFn>(GetProcAddress(dll, "ep_sidecar_reconnect"));
     auto get_slot = reinterpret_cast<GetSlotFn>(GetProcAddress(dll, "ep_sidecar_get_slot"));
     auto validate = reinterpret_cast<ValidateFn>(GetProcAddress(dll, "ep_sidecar_validate"));
     auto capacity = reinterpret_cast<CapacityFn>(GetProcAddress(dll, "ep_sidecar_capacity"));
-    if (!init || !destroy || !reserve || !confirm || !remove || !reconnect ||
+    if (!init || !destroy || !reserve || !reserve_at || !confirm || !remove || !reconnect ||
         !get_slot || !validate || !capacity) return 11;
 
     EP_SIDECAR sidecar{};
     if (capacity() != 8 || init(&sidecar) != EP_SC_OK || validate(&sidecar) != EP_SC_OK) return 12;
+
+    // The authoritative Session/Party allocator may return a hole or a
+    // non-dense ordinal.  The bridge must reserve that exact index and never
+    // silently substitute another free slot.
+    EP_SIDECAR exact{};
+    EP_SIDECAR_TOKEN exact_token{};
+    EP_SIDECAR_TOKEN exact_out{};
+    if (init(&exact) != EP_SC_OK ||
+        reserve_at(&exact, 5, 55, 505, &exact_token) != EP_SC_OK ||
+        exact_token.index != 5 || exact_token.generation != 1 ||
+        reserve_at(&exact, 5, 56, 506, &exact_out) != EP_SC_INDEX_OCCUPIED ||
+        reserve_at(&exact, 4, 55, 507, &exact_out) != EP_SC_DUPLICATE_IDENTITY ||
+        remove(&exact, exact_token) != EP_SC_OK ||
+        reserve_at(&exact, 5, 56, 506, &exact_out) != EP_SC_OK ||
+        exact_out.index != 5 || exact_out.generation != 2 ||
+        remove(&exact, exact_token) != EP_SC_STALE_TOKEN ||
+        remove(&exact, exact_out) != EP_SC_OK ||
+        destroy(&exact) != EP_SC_OK) return 35;
 
     EP_SIDECAR_TOKEN tokens[8]{};
     for (UINT8 i = 0; i < 8; ++i) {

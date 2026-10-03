@@ -12,6 +12,11 @@ network ordinal，並把 `peer_id`、resource handle、slot state 與 generation
 - `reconnect`：現存 identity 取回相同 token；離隊後重新保留同一個空槽並遞增 generation。
 - `validate`：檢查容量、計數、狀態、generation、重複 peer/resource 與清理後的 stale handle。
 
+`ep_sidecar_reserve_at()` 是給 host/session allocator 的接線點：呼叫者先取得
+authoritative network index，sidecar 只接受該指定 index；若該格已被佔用、身份
+重複或 generation 已耗盡，操作會拒絕並要求外層釋放原本的 allocator reservation。
+它不會因本地有其他空槽而偷偷改用另一個 network ordinal。
+
 所有 API 都是 fail-closed。八槽已用盡、generation 溢位、重複 peer 或
 resource、stale token 及損壞的 context 都會回傳明確狀態碼。這份 DLL
 沒有尋找、載入或寫入 `game.dll`、Party、PlayFab 或任何遊戲程序，也沒有

@@ -5,7 +5,7 @@ call "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\Common7\Tools
 if errorlevel 1 goto :fail
 cl /nologo /std:c++20 /O2 /EHsc /LD ep_sidecar.cpp /Fe:ep_sidecar.dll
 if errorlevel 1 goto :fail
-cl /nologo /std:c++20 /O2 /EHsc ep_sidecar_test.cpp /link /out:ep_sidecar_test.exe
+cl /nologo /std:c++20 /O2 /EHsc ep_sidecar.cpp ep_sidecar_test.cpp /link /out:ep_sidecar_test.exe
 if errorlevel 1 goto :fail
 ep_sidecar_test.exe
 if errorlevel 1 goto :fail

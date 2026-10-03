@@ -16,6 +16,11 @@ typedef EP_BRIDGE_STATUS (__cdecl *EP_CLIENT_NATIVE_CONFIRM_CB)(
     void* owner, UINT64 peer_id, UINT64 resource_handle, UINT8 network_index);
 typedef EP_BRIDGE_STATUS (__cdecl *EP_CLIENT_NATIVE_REMOVE_CB)(
     void* owner, UINT64 peer_id, UINT64 resource_handle, UINT8 network_index);
+typedef EP_BRIDGE_STATUS (__cdecl *EP_CLIENT_NATIVE_ALLOCATE_INDEX_CB)(
+    void* owner, UINT64 peer_id, UINT64 resource_handle, UINT8* out_index);
+typedef EP_BRIDGE_STATUS (__cdecl *EP_CLIENT_NATIVE_RELEASE_INDEX_CB)(
+    void* owner, UINT64 peer_id, UINT64 resource_handle, UINT8 network_index,
+    UINT32 generation);
 typedef EP_BRIDGE_STATUS (__cdecl *EP_CLIENT_NATIVE_RETAIN_CB)(void* owner);
 typedef void (__cdecl *EP_CLIENT_NATIVE_RELEASE_CB)(void* owner);
 
@@ -33,9 +38,15 @@ typedef struct EP_CLIENT_ADAPTER {
     EP_CLIENT_NATIVE_CONFIRM_CB native_confirm;
     EP_CLIENT_NATIVE_CREATE_CB native_create;
     EP_CLIENT_NATIVE_REMOVE_CB native_remove;
+    EP_CLIENT_NATIVE_ALLOCATE_INDEX_CB native_allocate_index;
+    EP_CLIENT_NATIVE_RELEASE_INDEX_CB native_release_index;
     EP_CLIENT_NATIVE_RETAIN_CB native_retain;
     EP_CLIENT_NATIVE_RELEASE_CB native_release;
     EP_CLIENT_SIDECAR client;
+    // Mirrors the authoritative Session/Party reservation.  It is kept
+    // separate from client records because allocation precedes confirmed-peer
+    // insertion and must survive a failed callback for compensation.
+    BYTE index_reserved[EP_SIDECAR_CAPACITY];
     // A rejected native confirm still needs compensating remove. Keep its
     // identity but disallow creation until native confirmation succeeds.
     BYTE native_confirmed[EP_SIDECAR_CAPACITY];
@@ -46,6 +57,8 @@ __declspec(dllexport) EP_BRIDGE_STATUS __cdecl ep_client_adapter_init(
     EP_CLIENT_NATIVE_CONFIRM_CB native_confirm,
     EP_CLIENT_NATIVE_CREATE_CB native_create,
     EP_CLIENT_NATIVE_REMOVE_CB native_remove,
+    EP_CLIENT_NATIVE_ALLOCATE_INDEX_CB native_allocate_index,
+    EP_CLIENT_NATIVE_RELEASE_INDEX_CB native_release_index,
     EP_CLIENT_NATIVE_RETAIN_CB native_retain,
     EP_CLIENT_NATIVE_RELEASE_CB native_release);
 __declspec(dllexport) EP_BRIDGE_STATUS __cdecl ep_client_adapter_destroy(
@@ -56,6 +69,11 @@ __declspec(dllexport) EP_BRIDGE_STATUS __cdecl ep_client_adapter_create(
     void* owner, UINT64 peer_id, UINT64 resource_handle, UINT8 network_index);
 __declspec(dllexport) EP_BRIDGE_STATUS __cdecl ep_client_adapter_remove(
     void* owner, UINT64 peer_id, UINT64 resource_handle, UINT8 network_index);
+__declspec(dllexport) EP_BRIDGE_STATUS __cdecl ep_client_adapter_allocate_index(
+    void* owner, UINT64 peer_id, UINT64 resource_handle, UINT8* out_index);
+__declspec(dllexport) EP_BRIDGE_STATUS __cdecl ep_client_adapter_release_index(
+    void* owner, UINT64 peer_id, UINT64 resource_handle, UINT8 network_index,
+    UINT32 generation);
 __declspec(dllexport) EP_BRIDGE_STATUS __cdecl ep_client_adapter_retain(void* owner);
 __declspec(dllexport) void __cdecl ep_client_adapter_release(void* owner);
 

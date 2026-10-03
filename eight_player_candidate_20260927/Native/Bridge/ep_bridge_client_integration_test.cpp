@@ -7,6 +7,8 @@ struct NativeFixture {
     bool reject_create = false;
     bool reject_remove = false;
     unsigned confirms = 0, creates = 0, removes = 0, retains = 0, releases = 0;
+    bool allocated[EP_SIDECAR_CAPACITY]{};
+    unsigned allocate_calls = 0, release_index_calls = 0;
 };
 static EP_BRIDGE_STATUS __cdecl confirm(void* owner, UINT64, UINT64, UINT8) {
     auto& f = *static_cast<NativeFixture*>(owner);
@@ -28,6 +30,27 @@ static EP_BRIDGE_STATUS __cdecl retain(void* owner) {
     return EP_BRIDGE_OK;
 }
 static void __cdecl release(void* owner) { ++static_cast<NativeFixture*>(owner)->releases; }
+static EP_BRIDGE_STATUS __cdecl allocate_index(
+    void* owner, UINT64, UINT64, UINT8* out_index) {
+    auto& f = *static_cast<NativeFixture*>(owner);
+    ++f.allocate_calls;
+    for (UINT8 i = 0; i < EP_SIDECAR_CAPACITY; ++i) {
+        if (f.allocated[i]) continue;
+        f.allocated[i] = true;
+        *out_index = i;
+        return EP_BRIDGE_OK;
+    }
+    return EP_BRIDGE_INDEX_REJECTED;
+}
+static EP_BRIDGE_STATUS __cdecl release_index(
+    void* owner, UINT64, UINT64, UINT8 index, UINT32) {
+    auto& f = *static_cast<NativeFixture*>(owner);
+    ++f.release_index_calls;
+    if (index >= EP_SIDECAR_CAPACITY || !f.allocated[index])
+        return EP_BRIDGE_INDEX_REJECTED;
+    f.allocated[index] = false;
+    return EP_BRIDGE_OK;
+}
 static bool check(bool passed, const char* label) {
     if (!passed) std::fprintf(stderr, "failed: %s\n", label);
     return passed;
@@ -39,11 +62,13 @@ int main() {
     EP_NATIVE_BRIDGE bridge{};
     BYTE image[] = {0x40, 0x55};
     EP_BRIDGE_SITE site{0, image, sizeof(image)};
-    bool ok = check(ep_client_adapter_init(&client, &f, confirm, create, remove, retain, release)
+    bool ok = check(ep_client_adapter_init(&client, &f, confirm, create, remove,
+                    allocate_index, release_index, retain, release)
                     == EP_BRIDGE_OK, "adapter init");
     EP_BRIDGE_CONFIG config{25480438u, reinterpret_cast<HMODULE>(image), &site, 1, &client,
         ep_client_adapter_confirm, ep_client_adapter_create, ep_client_adapter_remove,
-        ep_client_adapter_retain, ep_client_adapter_release};
+        ep_client_adapter_retain, ep_client_adapter_release,
+        ep_client_adapter_allocate_index, ep_client_adapter_release_index};
     ok &= check(ep_bridge_init(&bridge, &config) == EP_BRIDGE_OK, "bridge init");
     ok &= check(ep_bridge_preflight(&bridge) == EP_BRIDGE_OK, "preflight");
 
@@ -86,6 +111,8 @@ int main() {
     ok &= check(bridge.sidecar.active_count == 0 && client.client.confirmed_count == 0,
                 "both registries fully cleaned");
     ok &= check(f.retains == f.releases, "eight-player owner leases balanced");
+    ok &= check(f.allocate_calls == f.release_index_calls &&
+                f.allocate_calls == 10, "authoritative index reservations balanced");
     ok &= check(ep_bridge_destroy(&bridge) == EP_BRIDGE_OK, "bridge destroy");
     ok &= check(ep_client_adapter_destroy(&client) == EP_BRIDGE_OK, "client destroy");
     if (!ok) return 1;

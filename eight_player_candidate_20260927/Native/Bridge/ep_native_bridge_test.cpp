@@ -8,6 +8,9 @@ struct Harness {
     UINT32 created = 0;
     UINT32 removed = 0;
     UINT8 indexes[EP_SIDECAR_CAPACITY]{};
+    UINT8 allocated[EP_SIDECAR_CAPACITY]{};
+    UINT32 allocated_count = 0;
+    UINT32 released_indexes = 0;
     UINT32 retained = 0;
     UINT32 released = 0;
     bool fail_confirm = false;
@@ -36,6 +39,27 @@ static EP_BRIDGE_STATUS __cdecl retain_cb(void* raw) {
 static void __cdecl release_cb(void* raw) {
     static_cast<Harness*>(raw)->released++;
 }
+static EP_BRIDGE_STATUS __cdecl allocate_index_cb(
+    void* raw, UINT64, UINT64, UINT8* out_index) {
+    auto* h = static_cast<Harness*>(raw);
+    for (UINT8 i = 0; i < EP_SIDECAR_CAPACITY; ++i) {
+        if (h->allocated[i]) continue;
+        h->allocated[i] = 1;
+        ++h->allocated_count;
+        *out_index = i;
+        return EP_BRIDGE_OK;
+    }
+    return EP_BRIDGE_NO_SLOT;
+}
+static EP_BRIDGE_STATUS __cdecl release_index_cb(
+    void* raw, UINT64, UINT64, UINT8 index, UINT32) {
+    auto* h = static_cast<Harness*>(raw);
+    if (index >= EP_SIDECAR_CAPACITY || !h->allocated[index])
+        return EP_BRIDGE_INDEX_REJECTED;
+    h->allocated[index] = 0;
+    ++h->released_indexes;
+    return EP_BRIDGE_OK;
+}
 
 static bool check(bool ok, const char* what) {
     if (!ok) std::fprintf(stderr, "failed: %s\n", what);
@@ -57,6 +81,8 @@ int main() {
     config.remove_player = remove_cb;
     config.retain_owner = retain_cb;
     config.release_owner = release_cb;
+    config.allocate_index = allocate_index_cb;
+    config.release_index = release_index_cb;
     EP_NATIVE_BRIDGE bridge{};
     bool ok = true;
     ok &= check(ep_bridge_init(&bridge, &config) == EP_BRIDGE_OK, "init");
@@ -73,6 +99,12 @@ int main() {
                 "failed create keeps slot");
     ok &= check(harness.retained == 1 && harness.released == 0,
                 "failed create keeps owner lease");
+    EP_BRIDGE_ADMISSION duplicate_pending{};
+    ok &= check(ep_bridge_admit(&bridge, 90, 190, &duplicate_pending) ==
+                    EP_BRIDGE_CLEANUP_REQUIRED &&
+                duplicate_pending.token.index == failed.token.index &&
+                duplicate_pending.token.generation == failed.token.generation,
+                "pending cleanup blocks duplicate admission");
     EP_BRIDGE_ADMISSION stale = failed;
     stale.peer_id++;
     ok &= check(ep_bridge_retry_cleanup(&bridge, stale) == EP_BRIDGE_INVALID_ARGUMENT,
@@ -100,6 +132,8 @@ int main() {
         ok &= check(ep_bridge_depart(&bridge, admissions[i]) == EP_BRIDGE_OK, "cleanup");
     ok &= check(ep_bridge_depart(&bridge, reconnect) == EP_BRIDGE_OK, "cleanup reconnect");
     ok &= check(harness.retained == harness.released, "owner lease balanced");
+    ok &= check(harness.allocated_count == harness.released_indexes &&
+                harness.allocated_count == 10, "authoritative index reservations balanced");
     ok &= check(ep_bridge_destroy(&bridge) == EP_BRIDGE_OK, "destroy");
     if (!ok) return 1;
     std::puts("ep_native_bridge_synthetic_passed");

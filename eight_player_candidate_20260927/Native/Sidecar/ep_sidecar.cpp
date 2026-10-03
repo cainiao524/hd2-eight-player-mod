@@ -67,6 +67,10 @@ EP_SIDECAR_STATUS begin_exclusive(EP_SIDECAR* sidecar) {
     return EP_SC_OK;
 }
 
+EP_SIDECAR_STATUS reserve_at_unlocked(EP_SIDECAR* sidecar, UINT8 index,
+                                      UINT64 peer_id, UINT64 resource_handle,
+                                      EP_SIDECAR_TOKEN* out_token);
+
 EP_SIDECAR_STATUS reserve_unlocked(EP_SIDECAR* sidecar, UINT64 peer_id,
                                    UINT64 resource_handle,
                                    EP_SIDECAR_TOKEN* out_token) {
@@ -76,7 +80,6 @@ EP_SIDECAR_STATUS reserve_unlocked(EP_SIDECAR* sidecar, UINT64 peer_id,
     std::memset(out_token, 0, sizeof(*out_token));
 
     bool free_slot_seen = false;
-    bool exhausted_slot_seen = false;
     for (UINT32 i = 0; i < EP_SIDECAR_CAPACITY; ++i) {
         const EP_SIDECAR_SLOT& slot = sidecar->slots[i];
         if (slot.state == EP_SC_SLOT_FREE) {
@@ -91,21 +94,40 @@ EP_SIDECAR_STATUS reserve_unlocked(EP_SIDECAR* sidecar, UINT64 peer_id,
     for (UINT32 i = 0; i < EP_SIDECAR_CAPACITY; ++i) {
         EP_SIDECAR_SLOT& slot = sidecar->slots[i];
         if (slot.state != EP_SC_SLOT_FREE) continue;
-        if (slot.generation == 0xFFFFFFFFu) {
-            exhausted_slot_seen = true;
-            continue;
-        }
-        const UINT32 generation = slot.generation + 1;
-        slot.state = EP_SC_SLOT_PENDING;
-        slot.generation = generation;
-        slot.peer_id = peer_id;
-        slot.resource_handle = resource_handle;
-        ++sidecar->active_count;
-        out_token->index = static_cast<UINT8>(i);
-        out_token->generation = generation;
-        return EP_SC_OK;
+        const EP_SIDECAR_STATUS result = reserve_at_unlocked(
+            sidecar, static_cast<UINT8>(i), peer_id, resource_handle, out_token);
+        if (result == EP_SC_OK) return result;
+        if (result != EP_SC_GENERATION_EXHAUSTED) return result;
     }
-    return exhausted_slot_seen ? EP_SC_GENERATION_EXHAUSTED : EP_SC_FULL;
+    return EP_SC_GENERATION_EXHAUSTED;
+}
+
+EP_SIDECAR_STATUS reserve_at_unlocked(EP_SIDECAR* sidecar, UINT8 index,
+                                      UINT64 peer_id, UINT64 resource_handle,
+                                      EP_SIDECAR_TOKEN* out_token) {
+    if (!valid_identity(peer_id, resource_handle) || !out_token) {
+        return EP_SC_INVALID_ARGUMENT;
+    }
+    if (index >= EP_SIDECAR_CAPACITY) return EP_SC_INVALID_TOKEN;
+    std::memset(out_token, 0, sizeof(*out_token));
+    for (UINT32 i = 0; i < EP_SIDECAR_CAPACITY; ++i) {
+        const EP_SIDECAR_SLOT& slot = sidecar->slots[i];
+        if (slot.state == EP_SC_SLOT_FREE) continue;
+        if (slot.peer_id == peer_id) return EP_SC_DUPLICATE_IDENTITY;
+        if (slot.resource_handle == resource_handle) return EP_SC_DUPLICATE_RESOURCE;
+    }
+    EP_SIDECAR_SLOT& slot = sidecar->slots[index];
+    if (slot.state != EP_SC_SLOT_FREE) return EP_SC_INDEX_OCCUPIED;
+    if (slot.generation == 0xFFFFFFFFu) return EP_SC_GENERATION_EXHAUSTED;
+    const UINT32 generation = slot.generation + 1;
+    slot.state = EP_SC_SLOT_PENDING;
+    slot.generation = generation;
+    slot.peer_id = peer_id;
+    slot.resource_handle = resource_handle;
+    ++sidecar->active_count;
+    out_token->index = index;
+    out_token->generation = generation;
+    return EP_SC_OK;
 }
 
 EP_SIDECAR_STATUS check_token_unlocked(const EP_SIDECAR* sidecar,
@@ -163,6 +185,18 @@ extern "C" EP_SIDECAR_STATUS __cdecl ep_sidecar_reserve(
     const EP_SIDECAR_STATUS status = begin_exclusive(sidecar);
     if (status != EP_SC_OK) return status;
     const EP_SIDECAR_STATUS result = reserve_unlocked(sidecar, peer_id, resource_handle, out_token);
+    ReleaseSRWLockExclusive(&sidecar->lock);
+    return result;
+}
+
+extern "C" EP_SIDECAR_STATUS __cdecl ep_sidecar_reserve_at(
+    EP_SIDECAR* sidecar, UINT8 index, UINT64 peer_id, UINT64 resource_handle,
+    EP_SIDECAR_TOKEN* out_token) {
+    if (!sidecar) return EP_SC_INVALID_ARGUMENT;
+    const EP_SIDECAR_STATUS status = begin_exclusive(sidecar);
+    if (status != EP_SC_OK) return status;
+    const EP_SIDECAR_STATUS result = reserve_at_unlocked(
+        sidecar, index, peer_id, resource_handle, out_token);
     ReleaseSRWLockExclusive(&sidecar->lock);
     return result;
 }

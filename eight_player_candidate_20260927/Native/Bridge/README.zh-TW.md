@@ -4,6 +4,7 @@
 
 - preflight 先比對 build、模組 site bytes 和三個遊戲 callback 加上 retain/release owner lifetime callback；
 - admission 依序 reserve、confirmed-peer callback、player-creation callback、sidecar confirm；只有 native player 建立成功後才發布 confirmed slot；
+- admission 先向 caller-provided `allocate_index` 取得 Session/Party 的 authoritative network index，再以 `ep_sidecar_reserve_at` 綁定同一 index；release callback 失敗時保留整個 slot 與 owner lease，禁止用另一個本地空槽替代；
 - `ep_bridge_client_integration_test.exe` 會把 Native Bridge 和 client adapter 串在一起，驗證 native confirm 失敗時保留補償記錄、由 bridge 呼叫 remove，並同時清掉兩端 sidecar；
 - 任一 callback 失敗都嘗試回滾 slot；若遊戲 cleanup callback 失敗，slot 和 owner lease 會保留，必須用 retry cleanup 完成後才釋放；
 - departure 先要求 player cleanup callback，再移除 sidecar slot；
@@ -13,4 +14,4 @@
 
 `ep_native_bridge_test.exe` 是合成 harness，會走完八個 admission、拒絕第九個、移除第 5 格、重新連線及完整清理。`ep_bridge_client_integration_test.exe` 另外驗證跨元件補償與 owner lease 平衡。兩者都沒有尋找、寫入或注入 `game.dll`，callback 也不是遊戲的真實 ABI；因此這個 bridge 目前仍是 candidate，不能稱為已完成多人 Mod。
 
-要成為 production bridge，必須再把 `EP_BRIDGE_CONFIG` 的 callback 接到固定 build 的 host/client confirmed-peer、player creation、departure/cleanup 入口，並由 mid-function capacity/allocator stub 提供正確的 register、stack、unwind 和 continuation。所有遊戲 callback 與 owner lifetime 接通前，Package gate 應保持 blocked。
+要成為 production bridge，必須再把 `EP_BRIDGE_CONFIG` 的 callback（包括 authoritative index allocator/release）接到固定 build 的 host/client confirmed-peer、player creation、departure/cleanup 入口，並由 mid-function capacity/allocator stub 提供正確的 register、stack、unwind 和 continuation。所有遊戲 callback 與 owner lifetime 接通前，Package gate 應保持 blocked。

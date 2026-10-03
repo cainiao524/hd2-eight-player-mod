@@ -27,6 +27,8 @@ typedef enum EP_BRIDGE_STATUS : UINT32 {
     EP_BRIDGE_ALREADY_READY = 10,
     EP_BRIDGE_BUSY = 11,
     EP_BRIDGE_CLEANUP_REQUIRED = 12,
+    EP_BRIDGE_INDEX_REJECTED = 13,
+    EP_BRIDGE_INDEX_RELEASE_FAILED = 14,
 } EP_BRIDGE_STATUS;
 
 typedef struct EP_BRIDGE_SITE {
@@ -49,6 +51,14 @@ typedef EP_BRIDGE_STATUS (__cdecl *EP_BRIDGE_REMOVE_PLAYER_CB)(
 // through confirm/create/remove.  The bridge never owns the object itself.
 typedef EP_BRIDGE_STATUS (__cdecl *EP_BRIDGE_OWNER_RETAIN_CB)(void* owner);
 typedef void (__cdecl *EP_BRIDGE_OWNER_RELEASE_CB)(void* owner);
+// Session/Party owns the authoritative network index.  The bridge must use
+// that exact index for every confirmed-peer and player-creation callback; it
+// never substitutes the first locally free sidecar slot.
+typedef EP_BRIDGE_STATUS (__cdecl *EP_BRIDGE_ALLOCATE_INDEX_CB)(
+    void* owner, UINT64 peer_id, UINT64 resource_handle, UINT8* out_index);
+typedef EP_BRIDGE_STATUS (__cdecl *EP_BRIDGE_RELEASE_INDEX_CB)(
+    void* owner, UINT64 peer_id, UINT64 resource_handle, UINT8 network_index,
+    UINT32 generation);
 
 typedef struct EP_BRIDGE_CONFIG {
     UINT32 steam_build;
@@ -61,6 +71,8 @@ typedef struct EP_BRIDGE_CONFIG {
     EP_BRIDGE_REMOVE_PLAYER_CB remove_player;
     EP_BRIDGE_OWNER_RETAIN_CB retain_owner;
     EP_BRIDGE_OWNER_RELEASE_CB release_owner;
+    EP_BRIDGE_ALLOCATE_INDEX_CB allocate_index;
+    EP_BRIDGE_RELEASE_INDEX_CB release_index;
 } EP_BRIDGE_CONFIG;
 
 typedef struct EP_BRIDGE_ADMISSION {
@@ -82,6 +94,8 @@ typedef struct EP_NATIVE_BRIDGE {
     // Neither its index nor its resource may be reused in the meantime.
     struct {
         UINT32 pending;
+        UINT32 remove_done;
+        UINT32 index_released;
         EP_BRIDGE_ADMISSION admission;
     } cleanup[EP_SIDECAR_CAPACITY];
 } EP_NATIVE_BRIDGE;

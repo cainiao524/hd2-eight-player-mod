@@ -25,20 +25,23 @@
     "concurrency": "single synchronous operation guard; busy returns fail-closed",
     "destroy": "refuses while active slots or cleanup records remain",
     "retry_identity": "peer_id + resource_handle + network_index + generation",
-    "cross_component_compensation": "client adapter keeps pending identity after native confirm failure; bridge remove compensation clears native and sidecar state"
+    "cross_component_compensation": "client adapter keeps pending identity after native confirm failure; bridge remove compensation clears native and sidecar state",
+    "authoritative_index_allocator": "caller-provided allocate_index/release_index callbacks",
+    "exact_index_binding": "ep_sidecar_reserve_at; local substitution forbidden",
+    "release_generation": "passed to release_index; failed release pins slot and owner lease"
   },
   "artifacts": [
     {
       "path": "ep_native_bridge.h",
-      "sha256": "68eac60be01b8a046c79bb1b5665cb8bf6eacb6d53db468a9e5333fa5bcfdb31"
+      "sha256": "396c0ac453e7deb07d4209b99c3ee361e959fcbd0a651d4a891118e2c2908013"
     },
     {
       "path": "ep_native_bridge.cpp",
-      "sha256": "45d0c4283597ee688708995c509a315eed66b76a97a315cff5e74f5a4deeb252"
+      "sha256": "eddc23b39ff7a85b553c5704373094ba4e1d45ca0a53ff331b837549ea107c0e"
     },
     {
       "path": "ep_native_bridge_test.cpp",
-      "sha256": "fb41fa815e5962eb5e58fe6e5a260c112b32998dc524cb25719c2d7247a35b35"
+      "sha256": "10ab0d8ba3c6385f6a1b066f58c6a9fe86ffaa44a9ddfde8cc54da4687749998"
     },
     {
       "path": "build_x64.bat",
@@ -46,7 +49,7 @@
     },
     {
       "path": "README.zh-TW.md",
-      "sha256": "bd789bd24ed747d23d7499dd3cf1fa9b0aa02b266ce0b38e9ed0c0f4ed60663f"
+      "sha256": "df92141caaf795410d9f3328db65e6fda402832b57faa8a4765fb5a0e00926fc"
     },
     {
       "path": "test_native_bridge.py",
@@ -54,35 +57,35 @@
     },
     {
       "path": "ep_native_bridge.dll",
-      "sha256": "7734d558cfd4d011dc78c0b62348a0cdbb3df96e41fe94e0ba9756ce5c383fd3"
+      "sha256": "777e5759dfa71ae049428e2d902403c1c6b53ab7bcfda1ca5372eb952a44b43e"
     },
     {
       "path": "ep_native_bridge_test.exe",
-      "sha256": "83cad08de667e3ffcdb95731368b2590b2b2c6898974e6c3c8901c067a828a50"
+      "sha256": "229ee62a5e61ea2dde04b589ea75b1a1ff5cb8b2ce4a834e9a3dd5e179b64ced"
     },
     {
       "path": "ep_native_bridge.lib",
-      "sha256": "9bda913dc2208a35150f7aa7fe9ee0459d65afa7c7bf1c2e41de19400f595839"
+      "sha256": "928152e7d8dfd3005070116b4ffa9bf8d0ad86853c03b20f860b5ee454e6e969"
     },
     {
       "path": "ep_native_bridge.exp",
-      "sha256": "4772f50b1fb9f2f1724ef3e43f951581c9e8f3d86ccb1ab94e8b9aa90a10cd51"
+      "sha256": "40cee908300bc0b4158427c67b3a6593783d6b5061bd62177e2d1f3e4dfdd115"
     },
     {
       "path": "ep_native_bridge.obj",
-      "sha256": "e4625ad62b7eff1c8530793c44d76a469ac611b42710edb4906c654c3bf0a194"
+      "sha256": "f37bb0bea7cb1ee1d45e0f723297487c01c3b96deda422c1315768a4d411c4d4"
     },
     {
       "path": "ep_native_bridge_test.obj",
-      "sha256": "63e97e3772d1061c10acae9ae0311b83aa2a16ac4c89accc5c249d92b9cab584"
+      "sha256": "6672c89c0597ca9d6d7e7b7f6ecf1d33ec6ff8bf755270134cb0c5b9afe541ad"
     },
     {
       "path": "ep_bridge_client_integration_test.cpp",
-      "sha256": "fd3253bbbe13dd2612dd32a1cf31dadedb77bad13205696f6ad64efc5f502eb6"
+      "sha256": "9b42403eeb231543a6d69de49d845afb43b65163cbf5863696928d3f25d5594e"
     },
     {
       "path": "ep_bridge_client_integration_test.exe",
-      "sha256": "a5db4cdba5da5ca6ec281e271bce5ec2cbe5c43963165d92b9cb0fdd4a51c626"
+      "sha256": "2922b47f607f0170538fc4712ea16ba827df5c01b5958d30b718da74ce5dd9d5"
     }
   ],
   "production": {
