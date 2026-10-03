@@ -33,19 +33,19 @@
   },
   "build_artifacts": {
     "ep_official_plugin.dll": {
-      "sha256": "a9ee51bcccf536544ed02521b98e804502552002f878f98561abf8b969a75ef6",
+      "sha256": "8fae07f643203f20a3484488a5723c6baf6459b97a7dd59fa5a330338270e16b",
       "bytes": 284672
     },
     "ep_official_plugin_test.exe": {
-      "sha256": "389477dfc7ed43a16451cbab8b90c99ed694ed0768f2027414649609dea1e564",
+      "sha256": "9c7b41bd928e6003d5cf01fc09dab391697bad38d9a28768721d1882bb308b53",
       "bytes": 309760
     },
     "ep_official_plugin_load_test.exe": {
-      "sha256": "915b2051589ebe7624d9832267b008ebbecda3337e6c163bc93f76dd69383f2e",
+      "sha256": "6a474b47c702ab24e7b6ae1854aaa499e19d35b94f3207b79163d9eec96ef140",
       "bytes": 153088
     },
     "eight_player_pluginw64_release.dll": {
-      "sha256": "dd2ee67c3beab3c4a5e2730045ad4a4c1281053a7df0e77b89047174f0e873be",
+      "sha256": "6c0af6ba1a6ff51c2688849ebc355567e363e073d06ff29d801fe97b896a75aa",
       "bytes": 284672
     },
     "eight_player_pluginw64_release.lib": {
@@ -57,7 +57,7 @@
       "bytes": 1936
     }
   },
-  "synthetic_harness": "ep_official_plugin_test.exe and ep_official_plugin_load_test.exe passed; session snapshot uses game.dll context globals and does not call engine functions; GameSession peer methods remain unbound and are not called",
+  "synthetic_harness": "ep_official_plugin_test.exe and ep_official_plugin_load_test.exe passed; session snapshot uses game.dll context globals, bounded overflow-safe reads and stable reread; GameSession peer methods remain unbound and are not called",
   "production_executable": false,
   "runtime_verified": true,
   "custom_mod_entry_proven": true,
@@ -132,6 +132,8 @@
     "roster_slots_4_to_7_in_contract": false,
     "engine_functions_called": false,
     "memory_writes": false,
-    "player_admission_proven": false
+    "player_admission_proven": false,
+    "stable_reread_gate": true,
+    "overflow_safe_derived_addresses": true
   }
 }

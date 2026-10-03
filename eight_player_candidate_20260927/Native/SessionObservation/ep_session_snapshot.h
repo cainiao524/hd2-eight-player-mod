@@ -64,6 +64,14 @@ bool read_at(Reader& read, uintptr_t base, uintptr_t offset, T& out) {
 }
 
 template<class Reader>
+bool read_bytes_at(Reader& read, uintptr_t base, uintptr_t offset, void* out, size_t size) {
+    if (base > std::numeric_limits<uintptr_t>::max() - offset) return false;
+    const uintptr_t address = base + offset;
+    if (size > std::numeric_limits<uintptr_t>::max() - address) return false;
+    return read(address, out, size);
+}
+
+template<class Reader>
 bool read_payload(Reader& read, uintptr_t image, Snapshot& out) {
     out = Snapshot{};
     out.status = "unread_context";
@@ -119,9 +127,15 @@ bool read_payload(Reader& read, uintptr_t image, Snapshot& out) {
     }
     out.roster_count = kDocumentedRosterSlots;
     for (uint32_t i = 0; i < kDocumentedRosterSlots; ++i) {
-        const uintptr_t record = out.roster + uintptr_t(i) * kRosterStride;
+        const uintptr_t record_offset = uintptr_t(i) * kRosterStride;
+        uintptr_t record{};
+        if (out.roster > std::numeric_limits<uintptr_t>::max() - record_offset) {
+            out.status = "unread_roster_record";
+            return false;
+        }
+        record = out.roster + record_offset;
         if (!read_at(read, record, kRosterIdOffset, out.roster_ids[i]) ||
-            !read(out.roster + uintptr_t(i) * kRosterStride + kRosterNameOffset,
+            !read_bytes_at(read, record, kRosterNameOffset,
                   out.roster_names.data() + size_t(i) * kRosterNameLimit,
                   kRosterNameLimit)) {
             out.status = "unread_roster_record";

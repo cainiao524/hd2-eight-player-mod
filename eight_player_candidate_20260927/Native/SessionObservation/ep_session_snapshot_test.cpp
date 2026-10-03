@@ -78,5 +78,19 @@ int main() {
     image.put(b + pe + 8, uint32_t(ep_session::kGameTimestamp + 1));
     auto mismatch = ep_session::capture_game_context(b, read);
     assert(mismatch.status == std::string("image_identity_refused"));
+
+    image.put(b + pe + 8, ep_session::kGameTimestamp);
+    image.put(context + ep_session::kPeersOffset + ep_session::kPeerStride + ep_session::kPeerIndexOffset, uint32_t(1));
+    size_t reads = 0;
+    auto unstable = [&](uintptr_t address, void* out, size_t size) {
+        const bool result = image.read(address, out, size);
+        ++reads;
+        // The first successful payload has 22 bounded reads. Change a field
+        // before the second payload to prove the stable reread gate rejects it.
+        if (reads == 22) image.put(roster, uint64_t(0x5fff));
+        return result;
+    };
+    auto changed = ep_session::capture_game_context(b, unstable);
+    assert(changed.status == std::string("snapshot_changed"));
     std::cout << "session_snapshot_synthetic_passed\n";
 }
