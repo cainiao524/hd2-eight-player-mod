@@ -1,0 +1,95 @@
+{
+  "schema": "hd2_dynamic_registration_caller_audit_v1",
+  "build": 25480438,
+  "capture_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "read_only": true,
+  "process_accessed": false,
+  "game_memory_written": false,
+  "hooks_installed": false,
+  "dynamic_registration": {
+    "start_rva": "0x1094680",
+    "call_rva": "0x10946a4",
+    "hash_source": "caller-supplied EDX stored at [RCX+8]"
+  },
+  "direct_rel32_callers": [],
+  "neighboring_direct_calls": [
+    {
+      "caller_call_rva": "0x133c88a",
+      "target": "status",
+      "target_rva": "0x1094780",
+      "range": "code"
+    },
+    {
+      "caller_call_rva": "0x133d477",
+      "target": "unregistration",
+      "target_rva": "0x1094710",
+      "range": "code"
+    },
+    {
+      "caller_call_rva": "0x145f2ec",
+      "target": "unregistration",
+      "target_rva": "0x1094710",
+      "range": "code"
+    },
+    {
+      "caller_call_rva": "0x145f6b4",
+      "target": "status",
+      "target_rva": "0x1094780",
+      "range": "code"
+    },
+    {
+      "caller_call_rva": "0x145f732",
+      "target": "unregistration",
+      "target_rva": "0x1094710",
+      "range": "code"
+    },
+    {
+      "caller_call_rva": "0x145f74d",
+      "target": "status",
+      "target_rva": "0x1094780",
+      "range": "code"
+    }
+  ],
+  "static_registration_hashes": [
+    "0x68601a2",
+    "0x19339cd6",
+    "0x36334d22",
+    "0x3e3f525a",
+    "0x520227a4",
+    "0x5dcd723a",
+    "0xbde53653"
+  ],
+  "target_event_hash": "0x4804fcf4",
+  "checks": [
+    {
+      "name": "capture_identity",
+      "passed": true,
+      "detail": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8"
+    },
+    {
+      "name": "no_direct_rel32_registration_callers",
+      "passed": true,
+      "detail": "no E8 caller targets 0x1094680 in the fixed capture"
+    },
+    {
+      "name": "target_hash_not_static_registration_value",
+      "passed": true,
+      "detail": "target hash is absent from the seven recovered static registration immediates"
+    },
+    {
+      "name": "runtime_hash_source_remains_caller_supplied",
+      "passed": true,
+      "detail": "0x1094690 stores EDX at [RCX+8]"
+    }
+  ],
+  "checks_passed": 4,
+  "checks_total": 4,
+  "verification_passed": true,
+  "hash_to_selector_proven": false,
+  "service_registry_captured": false,
+  "production_hook_ready": false,
+  "installable": false,
+  "multiplayer_verified": false,
+  "meaning": "The fixed capture contains no direct relative caller for the dynamic registration body; its hash/selector value is supplied through a runtime call boundary. Static registration immediates do not contain 0x4804FCF4. This narrows the missing evidence to a runtime registration/dispatch trace or service-owned state, and does not provide an installable hook.",
+  "next_required": "Capture a permitted runtime callback or service-side registration state that shows the caller-supplied EDX value and its selector/receiver ownership."
+}

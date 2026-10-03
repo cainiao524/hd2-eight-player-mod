@@ -322,3 +322,7 @@ Player-chain 審計又補進三個 client layout 固定四人位點：`0x1087122
 固定 build `25480438` 的 PID `36536` 完成新的只讀 dispatcher 與 session snapshot 重讀，收據為 `five_player_feasibility_20260927/live_capture_rerun_verification_20261003.json`，12/12 通過。dispatcher 的兩個命中仍是 send-side event hash `0x4804FCF4`（RVA `0xBE4982`）與 receiver pointer `0xBABA80`（RVA `0x214C820`）；session 仍只有 1 個 peer，文件化 roster 仍為 4 槽，4..7 維持合約外。
 
 同一 PID 的 1 GiB `MEM_PRIVATE` registry 掃描在程序消失後沒有產生結果檔，已保存 `live_private_registry_20261003_rerun.failure.json`。這被明確標成未完成嘗試，不推斷 registry 陰性，也沒有呼叫、寫入、hook、注入、安裝或多人驗收。
+
+## 2026-10-03 dynamic registration caller boundary
+
+新增 `five_player_feasibility_20260927/dynamic_registration_caller_audit_20261003.json` 與可重播腳本。固定 code capture 中沒有直接 `E8` caller 指向 dynamic registration body `0x1094680`；該 body 的 hash／selector 仍由 caller 以 `EDX` 在 runtime call boundary 提供。七個 static registration immediate 也沒有 `0x4804FCF4`。4/4 checks 通過，但 `hash_to_selector_proven=false`、`installable=false`、`multiplayer_verified=false` 維持不變。
