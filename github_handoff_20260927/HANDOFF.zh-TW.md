@@ -18,6 +18,12 @@
 
 保存的 ABI 仍未閉合 `0x4804FCF4 → selector 168` 的 hash／service registry，故此候選沒有 callback、native hook、遊戲記憶體寫入、安裝或多人功能；`hash_to_selector_proven=false`、`production_executable=false`、`runtime_verified=false`、`installable=false`、`multiplayer_verified=false`。
 
+## 2026-10-03 live client peer layout reread
+
+在固定 build `25480438` 的現行程序 PID `45820` 上，新增兩次 bounded read-only client layout capture。沿保存的 owner→client `+0x162C8`、count `+0xC8`、records `+0xD0`／stride `0x20` 與相鄰 table `+0x150`／stride `0x10` 讀取；兩次 owner、client 位址、四筆 records 和相鄰 table 完全一致。當時 session snapshot 觀察到 host peer `network_index=0`，但此 client object 的 count 為 `0`，四筆 records 與相鄰 table 全零。
+
+這只證明該 menu／one-peer context 的固定 layout 可安全重讀，不把零 count 解讀成 active peer registry，也沒有把它當作第五人或八人證據。工具全程 read-only，沒有呼叫、寫入、hook 或注入；驗證收據中的 `runtime_verified`、`installable`、`multiplayer_verified` 仍為 `false`。
+
 ## 2026-10-03 fixed-build live preflight reread
 
 在同一固定 build `25480438`、同一 PID `36900` 上保存第二批 bounded read-only reread：
