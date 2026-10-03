@@ -4,7 +4,7 @@
 
 `Native/Bridge` 與 `Native/ClientSidecar` 的候選交易邊界已再收斂：native player creation 先於 bridge sidecar confirm，native confirm 失敗時 adapter 保留補償 identity，由 bridge 的 remove callback 同時清理 native 與兩端 sidecar；cleanup retry 必須帶完整的 peer、resource handle、network index 和 generation，不能只用重用中的 index。跨元件 harness 已實際走過八個 index `0..7`、離隊洞位、generation-safe reconnect、完整雙 registry cleanup 及 owner lease 平衡；adapter destroy 會拒絕仍有 native-confirmed flag 的 teardown。
 
-這些是固定 build `25480438` 的離線 C++／Python 合成驗證，沒有接真實 callback ABI、沒有寫入或注入遊戲程序，`installable=false`、`runtime_verified=false`、`multiplayer_verified=false` 仍是正式狀態。原研究提交為 `d465682`，狀態收據提交為 `b0b30ec`；本輪 player-resource、receiver-vector、live layout、ClientSidecar lock hardening、native loader boundary、official plugin directory audit 與 OfficialPlugin ABI probe 的最新研究提交為 `724b6f8`，最新狀態收據提交待本次狀態更新後產生。
+這些是固定 build `25480438` 的離線 C++／Python 合成驗證，沒有接真實 callback ABI、沒有寫入或注入遊戲程序，`installable=false`、`runtime_verified=false`、`multiplayer_verified=false` 仍是正式狀態。原研究提交為 `d465682`，狀態收據提交為 `b0b30ec`；本輪 player-resource、receiver-vector、live layout、ClientSidecar lock hardening、native loader boundary、official plugin directory audit 與 OfficialPlugin ABI probe 的最新研究提交為 `89721f4`，最新狀態收據提交待本次狀態更新後產生。
 
 ## 2026-10-03 native player-resource sidecar
 
