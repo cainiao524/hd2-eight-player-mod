@@ -1,4 +1,12 @@
 # 接續狀態：2026-09-28 已恢復離線工作
+## 2026-10-03 固定版本容量補丁實機載入
+
+新增 `Native/CapacityPatch` 原生插件候選，固定 `Build 25480438` 與 25 個四人容量／枚舉／加入／狀態更新 site。插件先完成全 site fingerprint preflight，才以單一交易寫入 `8`；任一 site 不符就拒絕，卸載路徑按逆序恢復 bytes。
+
+在 Steam 正常啟動的固定版本實機中，官方 loader 記錄 `loaded`、`applied` 且 `patched=25`；同一插件透過唯讀 `NetworkCApi.game_session`／`GameSessionCApi.num_peers` 觀察到 session 從空變有效，但兩次 `peer_count` 都是 `0`。實測後已停止遊戲並移除 DLL／marker。
+
+這只閉合容量常數層，沒有證明 Party/PlayFab admission、第五至第八個 confirmed-peer、Player Clone、客戶端 entity replication、死亡增援、重連、撤離或 host migration。`installable=false`、`multiplayer_verified=false` 保持不變。研究與機器收據見 `CAPACITY_PATCH_CANDIDATE_20261003.zh-CN.md`、`live_capacity_patch_runtime_verification_20261003.json`。
+
 ## 2026-10-03 公開倉庫研究與官方 C API 邊界捕獲
 
 已固定閱讀三個新增公開倉庫：`MrChengl11/hd2-lua-mod-skill`（`d1811983ab4fec230ede24bdd3d274f77b0b82fd`）、`junze0910/junze-hd2-lua-mod`（`95b2d26ea10ea43281c93123a95d326a289da2ae`）及 `starmatch666-droid/hd2-mod-update-skill`（`2eae30596a0886b4674567f22f549ef03e9b80e4`）。研究結果已寫入 `PUBLIC_CODE_RESEARCH_20261003_NEW_REPOS.*`：可採用離線／唯讀探測、UI 第五槽位寫入風險與 build/hash/table fail-closed 門檻，但三者都沒有 Party → Session → Player Clone 的八人能力證據。

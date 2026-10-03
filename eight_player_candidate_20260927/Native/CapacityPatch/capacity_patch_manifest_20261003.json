@@ -1,0 +1,189 @@
+{
+  "schema": "hd2_capacity_patch_plugin_candidate_v1",
+  "build": 25480438,
+  "game_dll_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+  "plugin": "eight_player_capacity_pluginw64_release.dll",
+  "logical_max_players": 8,
+  "sites": [
+    {
+      "rva": "0x108f108",
+      "old": "c786901b000004000000",
+      "new": "c786901b000008000000",
+      "role": "owner capacity"
+    },
+    {
+      "rva": "0x10919d1",
+      "old": "b904000000",
+      "new": "b908000000",
+      "role": "owner capacity source"
+    },
+    {
+      "rva": "0x1091aa2",
+      "old": "83c104",
+      "new": "83c108",
+      "role": "recreate increment"
+    },
+    {
+      "rva": "0x1092e78",
+      "old": "41b804000000",
+      "new": "41b808000000",
+      "role": "enumeration API capacity"
+    },
+    {
+      "rva": "0x1092ecb",
+      "old": "83f804",
+      "new": "83f808",
+      "role": "enumeration clamp"
+    },
+    {
+      "rva": "0x1092ed0",
+      "old": "c783b01b000004000000",
+      "new": "c783b01b000008000000",
+      "role": "enumeration count"
+    },
+    {
+      "rva": "0x1092f31",
+      "old": "41b804000000",
+      "new": "41b808000000",
+      "role": "enumeration API capacity"
+    },
+    {
+      "rva": "0x1093a96",
+      "old": "83c104",
+      "new": "83c108",
+      "role": "state recreate increment"
+    },
+    {
+      "rva": "0x1093ada",
+      "old": "41b804000000",
+      "new": "41b808000000",
+      "role": "state API capacity"
+    },
+    {
+      "rva": "0x1093c91",
+      "old": "83f804",
+      "new": "83f808",
+      "role": "state clamp"
+    },
+    {
+      "rva": "0x1093c96",
+      "old": "c787b01b000004000000",
+      "new": "c787b01b000008000000",
+      "role": "state count"
+    },
+    {
+      "rva": "0x1093cb0",
+      "old": "41b804000000",
+      "new": "41b808000000",
+      "role": "state API capacity"
+    },
+    {
+      "rva": "0x1093d1e",
+      "old": "41b804000000",
+      "new": "41b808000000",
+      "role": "state API capacity"
+    },
+    {
+      "rva": "0x1093fd3",
+      "old": "83f804",
+      "new": "83f808",
+      "role": "state consumer clamp"
+    },
+    {
+      "rva": "0x1094105",
+      "old": "83f804",
+      "new": "83f808",
+      "role": "state consumer clamp"
+    },
+    {
+      "rva": "0x10942ac",
+      "old": "ba04000000",
+      "new": "ba08000000",
+      "role": "state metadata capacity"
+    },
+    {
+      "rva": "0x1094338",
+      "old": "83f804",
+      "new": "83f808",
+      "role": "state consumer clamp"
+    },
+    {
+      "rva": "0x10889e4",
+      "old": "83c104",
+      "new": "83c108",
+      "role": "host init increment"
+    },
+    {
+      "rva": "0x1088a9a",
+      "old": "83c104",
+      "new": "83c108",
+      "role": "host init increment"
+    },
+    {
+      "rva": "0x134dcd4",
+      "old": "83c104",
+      "new": "83c108",
+      "role": "host owner init increment"
+    },
+    {
+      "rva": "0x108c1b5",
+      "old": "b904000000",
+      "new": "b908000000",
+      "role": "join capacity"
+    },
+    {
+      "rva": "0x108c1c5",
+      "old": "41b804000000",
+      "new": "41b808000000",
+      "role": "join capacity"
+    },
+    {
+      "rva": "0x108c2cb",
+      "old": "83f804",
+      "new": "83f808",
+      "role": "join clamp"
+    },
+    {
+      "rva": "0x108c393",
+      "old": "83f804",
+      "new": "83f808",
+      "role": "join clamp"
+    },
+    {
+      "rva": "0x108bb62",
+      "old": "83f804",
+      "new": "83f808",
+      "role": "existing peer clamp"
+    }
+  ],
+  "transaction": {
+    "preflight_all_sites": true,
+    "rollback_on_failure": true,
+    "flush_instruction_cache": true,
+    "env_gate": "EP_ENABLE_CAPACITY_PATCH=1"
+  },
+  "production_patch_ready": false,
+  "installable": false,
+  "runtime_verified": false,
+  "multiplayer_verified": false,
+  "unresolved": [
+    "inline member storage overlaps adjacent fields",
+    "Party/PlayFab admission",
+    "confirmed-peer and Player Clone creation",
+    "client-side roster and entity replication",
+    "death/reinforcement/reconnect/host migration",
+    "real fifth-to-eighth peer test"
+  ],
+  "runtime_evidence": "five_player_feasibility_20260927/live_capacity_patch_runtime_20261003.jsonl",
+  "runtime_verification": "five_player_feasibility_20260927/live_capacity_patch_runtime_verification_20261003.json",
+  "runtime_loaded": true,
+  "runtime_applied_sites": 25,
+  "runtime_session_getter_observed": true,
+  "runtime_peer_counts": [
+    0,
+    0
+  ],
+  "runtime_process_mutated": true,
+  "rollback_runtime_observed": false,
+  "dll_sha256": "bd075af4c7b9e56e01b958b404ce727deb43154af504b7f13f02bf5f55d3ccdc"
+}
