@@ -139,6 +139,24 @@ int main() {
     ok &= check(ep_pc_init(&adapter, EP_PC_BUILD, &callbacks) == EP_PC_OK, "init");
     ok &= check(ep_pc_init(&adapter, EP_PC_BUILD, &callbacks) == EP_PC_BUSY,
                 "live reinitialization refused");
+    EP_PLAYER_CREATION_ADAPTER prevalidate{};
+    ok &= check(ep_pc_init(&prevalidate, EP_PC_BUILD, &callbacks) == EP_PC_OK,
+                "prevalidate fixture init");
+    prevalidate.inflight = 1;
+    EP_PC_TOKEN prevalidate_token{};
+    ok &= check(ep_pc_admit(&prevalidate, 7, 0x707, 0x808, 0x909,
+                            &prevalidate_token) == EP_PC_INVARIANT_BROKEN,
+                "pre-commit invariant failure is rejected");
+    EP_PC_SLOT prevalidate_slot{};
+    ok &= check(ep_pc_get(&prevalidate, 7, &prevalidate_slot) == EP_PC_OK &&
+                prevalidate_slot.state == EP_PC_FREE &&
+                prevalidate_slot.owner_held == 0 &&
+                prevalidate.inflight == 1 && context.retain == 0 &&
+                context.release == 0,
+                "pre-commit invariant failure unwinds reservation without owner callbacks");
+    prevalidate.inflight = 0;
+    ok &= check(ep_pc_destroy(&prevalidate) == EP_PC_OK,
+                "prevalidate fixture destroy");
     ok &= check(ep_pc_prepare_patch(&adapter, EP_PC_BUILD, image.data(), image.size(),
                                     &gate, downstream, 2, &backend, &report) == EP_PC_OK,
                 "prepare patch");

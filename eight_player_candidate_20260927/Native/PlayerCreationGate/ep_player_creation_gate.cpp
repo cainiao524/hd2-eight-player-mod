@@ -327,6 +327,7 @@ EP_PC_STATUS __cdecl ep_pc_admit(
     if (!valid_context(a)) return EP_PC_INVALID_CONTEXT;
     if (!valid_index(index) || !peer || !handle || !hash || !out_token) return EP_PC_INDEX_REJECTED;
     EP_PC_TOKEN token{};
+    bool reservation_created = false;
     AcquireSRWLockExclusive(&a->lock);
     for (UINT32 i = 0; status == EP_PC_OK && i < EP_PC_CAPACITY; ++i) {
         if (same_identity(a->slots[i], peer, handle)) status = EP_PC_DUPLICATE;
@@ -352,10 +353,18 @@ EP_PC_STATUS __cdecl ep_pc_admit(
         token.generation = slot->generation;
         token.owner_epoch = slot->owner_epoch;
         *out_token = token;
+        reservation_created = true;
         status = validate_locked(a);
     }
     ReleaseSRWLockExclusive(&a->lock);
-    if (status != EP_PC_OK) return status;
+    if (status != EP_PC_OK) {
+        if (!reservation_created) return status;
+        // The slot was reserved before the local invariant check.  No
+        // external owner was retained yet, so unwind the reservation without
+        // invoking rollback or release callbacks.  Returning directly here
+        // would strand a PENDING slot, inflight count and owner_held flag.
+        return finish_failed_admit(a, index, token, 0, status, false);
+    }
 
     status = a->callbacks.retain_owner(a->callbacks.owner);
     if (status != EP_PC_OK) {

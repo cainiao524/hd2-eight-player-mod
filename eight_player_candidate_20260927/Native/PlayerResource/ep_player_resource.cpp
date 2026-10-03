@@ -68,6 +68,11 @@ extern "C" {
 
 EP_RESOURCE_STATUS __cdecl ep_resource_init(EP_PLAYER_RESOURCE* r, UINT32 owner_key) {
     if (!r || owner_key == 0) return EP_RS_INVALID_ARGUMENT;
+    // Initialization owns the caller-provided storage.  Never erase a live
+    // resource table: doing so would invalidate active generation tokens and
+    // silently lose the owner leases tracked by the bridge.  The caller must
+    // destroy a live table before reusing its storage.
+    if (r->magic == EP_RESOURCE_MAGIC) return EP_RS_BUSY;
     std::memset(r, 0, sizeof(*r));
     r->magic = EP_RESOURCE_MAGIC; r->version = EP_RESOURCE_VERSION; r->initialized = 1;
     r->owner_key = owner_key; r->owner_epoch = 1; r->next_lease_id = 1; InitializeSRWLock(&r->lock);

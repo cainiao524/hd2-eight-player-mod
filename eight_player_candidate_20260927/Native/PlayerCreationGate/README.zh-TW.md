@@ -48,3 +48,5 @@ cmd /c build_x64.bat
 `ep_pc_init` 不再覆蓋已初始化的 adapter；呼叫方必須保證 adapter 儲存與 callback owner 在整個交易期間有效，先完成 `ep_pc_destroy` 再重用記憶體。忙碌或未完成的槽位仍需依序完成 departure/rollback，之後才可 destroy。
 
 測試同時覆蓋正常離隊和 failed-admit rollback 的 callback 重入，以及 worker thread 重疊呼叫；兩種情況都確認 cleanup、rollback 和 owner release 僅執行一次。
+
+建立交易在第一次本地 invariant 檢查失敗時也會同步清除剛保留的 `PENDING` 槽位；這條路徑尚未 retain 外部 owner，因此不會虛構 rollback 或 release callback。重複 identity、非法 index 與其他未建立 reservation 的拒絕則直接返回，不會觸碰 slot。

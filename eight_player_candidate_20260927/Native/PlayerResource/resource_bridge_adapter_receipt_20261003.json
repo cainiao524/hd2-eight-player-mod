@@ -37,7 +37,8 @@
       "duplicate identity",
       "stage failure",
       "metadata sentinel",
-      "busy reentry"
+      "busy reentry",
+      "live resource reinitialization refusal"
     ]
   },
   "tests": {
@@ -58,12 +59,12 @@
     "ep_resource_bridge_adapter.cpp": "ded758160597ce825a31f707efdeda2b18094d5d39ddd61b35b6b883f5431f37",
     "ep_resource_bridge_adapter_test.cpp": "f1322c38ebef3fd3e87515c203f70300a3b79cddc9b66e897e5393fd9563899f",
     "build_x64.bat": "153d3d223a96a8d2b99f2f83a2392aede864b38ec8e14bfd84fda4da220fb4c7",
-    "README.zh-TW.md": "de53fafb34509f2552b86f0ea1a950663ce4f15d518ab4244775ea0aaef836cf",
+    "README.zh-TW.md": "6a3a9aea44949996a96e227ee894c5a1746a2b68c636a564f8c963762e9eda01",
     "test_resource_bridge_adapter.py": "7e4870dd26208d06a9a6717469718ff9e9c6c636d3028b631013eedcf17f9419"
   },
   "binary_sha256": {
-    "ep_resource_bridge_adapter.dll": "74b2e0eb7c0ee8e4211d3f37c1565f3eedd8f0beeac2c60c4444f8289947d42e",
-    "ep_resource_bridge_adapter_test.exe": "89d6b7176ff13a4d673e6870bdf81adf47624694ed16f35755f1ee071cbdc282"
+    "ep_resource_bridge_adapter.dll": "96bfc033e0e3109db7c74c1d95554c8164051483cf49d2084ab89bcc634b39ea",
+    "ep_resource_bridge_adapter_test.exe": "72d0db4e4e09a631707ff15072eae2240fd55a418ec47db88360916ac807f0c3"
   },
   "checks": {
     "production_executable": false,
@@ -72,5 +73,10 @@
     "multiplayer_verified": false,
     "game_process_accessed": false,
     "native_game_callback_abi_bound": false
+  },
+  "lifetime_guard": {
+    "resource_init_live_magic": "EP_RS_BUSY",
+    "verified_by": "ep_player_resource_synthetic_passed",
+    "zero_initialized_storage_required": true
   }
 }

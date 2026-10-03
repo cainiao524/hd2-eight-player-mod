@@ -6,6 +6,16 @@ static bool check(bool ok, const char* label) { if (!ok) std::fprintf(stderr, "f
 int main() {
     EP_PLAYER_RESOURCE r{}; bool ok = check(ep_resource_init(&r, 0x3000) == EP_RS_OK, "init");
     EP_RESOURCE_TOKEN token{}; ok &= check(ep_resource_begin(&r, 4, 0x44, 0xA004, 0xB004, 0, 239, &token) == EP_RS_OK, "begin index4");
+    EP_RESOURCE_RECORD before_reinit{};
+    ok &= check(ep_resource_get(&r, 4, &before_reinit) == EP_RS_OK, "capture before reinit");
+    ok &= check(ep_resource_init(&r, 0xDEAD) == EP_RS_BUSY, "live reinit rejected");
+    EP_RESOURCE_RECORD after_reinit{};
+    ok &= check(ep_resource_get(&r, 4, &after_reinit) == EP_RS_OK &&
+                    after_reinit.state == before_reinit.state &&
+                    after_reinit.generation == before_reinit.generation &&
+                    after_reinit.peer_id == before_reinit.peer_id &&
+                    after_reinit.resource_handle == before_reinit.resource_handle,
+                "live reinit preserves record");
     for (UINT8 stage = 0; stage < 3; ++stage) {
         EP_RESOURCE_LEASE lease{};
         ok &= check(ep_resource_begin_callback(&r, token, &lease) == EP_RS_OK, "begin callback");
@@ -55,6 +65,8 @@ int main() {
     ok &= check(ep_resource_validate(&r) == EP_RS_OK, "validate after rollback");
     ok &= check(ep_resource_quiesce(&r) == EP_RS_OK, "final quiesce");
     ok &= check(ep_resource_destroy(&r) == EP_RS_OK, "destroy");
+    ok &= check(ep_resource_init(&r, 0x6000) == EP_RS_OK, "reinit after destroy");
+    ok &= check(ep_resource_destroy(&r) == EP_RS_OK, "destroy reinitialized table");
     if (!ok) return 1;
     std::puts("ep_player_resource_synthetic_passed"); return 0;
 }

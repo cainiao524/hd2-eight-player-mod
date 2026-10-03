@@ -10,20 +10,21 @@
   "roster_component": 239,
   "source_sha256": {
     "ep_player_resource.h": "8939ab4129c286955ccc9caec41508b7b2759b1db82b0ec6631b8b93357e0d84",
-    "ep_player_resource.cpp": "710930b6c1a163a56475b6ad4426f38b9e71b468a9ffb1f4eb377a8eb399d1ce",
-    "ep_player_resource_test.cpp": "98502ec5bcf05e95d93981836f8ab99f331a476d5420ba13ef00e9458c530a81",
+    "ep_player_resource.cpp": "91bbfb84c0b86a41c022ef794775f78ae7c4c41200fdc7f21d46547cb6cf9465",
+    "ep_player_resource_test.cpp": "2c08bbf965af209e6bcf8e86f5839ec04ba23552f7395db7225b2d862faa1efa",
     "build_x64.bat": "153d3d223a96a8d2b99f2f83a2392aede864b38ec8e14bfd84fda4da220fb4c7",
-    "README.zh-TW.md": "de53fafb34509f2552b86f0ea1a950663ce4f15d518ab4244775ea0aaef836cf"
+    "README.zh-TW.md": "6a3a9aea44949996a96e227ee894c5a1746a2b68c636a564f8c963762e9eda01"
   },
   "binary_sha256": {
-    "ep_player_resource.dll": "1a440f6188eaa152f99517112d34c3a4baef970e0907a1d07611fedaccd85fef",
-    "ep_player_resource_test.exe": "d79547fff63f695a8d18374ab42e0cce51b43d497e3eac733a7b5506763895a4"
+    "ep_player_resource.dll": "6633b4dd5be7c771bb58b3903c12f6dac65e8994599738328ed239d76beee412",
+    "ep_player_resource_test.exe": "1a821dc0483ebfbf9cf473938cd75c96a9fa1c4dd7888cdaa72ca82a1b46d4e6"
   },
   "test": {
     "command": "cmd /c build_x64.bat",
     "status": "passed",
     "output": "ep_player_resource_synthetic_passed",
     "coverage": [
+      "live storage reinitialization refusal preserves pending record",
       "all eight storage indexes 0..7 are bounded",
       "occupied ninth admission is rejected",
       "three callback stages publish only after completion",
@@ -31,7 +32,8 @@
       "callback-order failure releases the record",
       "release is idempotent through a generation token",
       "owner migration requires quiescence",
-      "Bridge adapter binds exact index, resource metadata and all three callback stages"
+      "Bridge adapter binds exact index, resource metadata and all three callback stages",
+      "reinit after destroy succeeds"
     ]
   },
   "checks": {
@@ -57,5 +59,11 @@
     "multiplayer_verified": false,
     "game_process_accessed": false,
     "test_output": "ep_resource_bridge_adapter_synthetic_passed"
+  },
+  "init_policy": {
+    "live_magic_reinit": "EP_RS_BUSY",
+    "storage_owner": "caller must destroy before reuse",
+    "tested": true,
+    "zero_initialized_storage_required": true
   }
 }
