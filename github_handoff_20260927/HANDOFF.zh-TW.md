@@ -326,3 +326,9 @@ Player-chain 審計又補進三個 client layout 固定四人位點：`0x1087122
 ## 2026-10-03 dynamic registration caller boundary
 
 新增 `five_player_feasibility_20260927/dynamic_registration_caller_audit_20261003.json` 與可重播腳本。固定 code capture 中沒有直接 `E8` caller 指向 dynamic registration body `0x1094680`；該 body 的 hash／selector 仍由 caller 以 `EDX` 在 runtime call boundary 提供。七個 static registration immediate 也沒有 `0x4804FCF4`。4/4 checks 通過，但 `hash_to_selector_proven=false`、`installable=false`、`multiplayer_verified=false` 維持不變。
+
+## 2026-10-03 fresh live registration-state scan
+
+重新啟動原版固定 build `25480438` 的 PID `6884` 後，完成 dispatcher 與 session 的只讀捕獲，以及兩次私有區掃描。128 MiB 基線與包含 receiver／insert／platform-member 指標、`0x4804FCF4` 和七個 static registration hash 的未截斷約 1 GiB `MEM_PRIVATE` 掃描均為 0 命中；`live_registration_state_verification_20261003.json` 的 12/12 checks 通過。
+
+此程序當時仍在空 menu baseline（peer count `0`），文件化 roster 仍為 4 槽，故這只是更強的有界負面觀察，不能證明 registry 不存在，也沒有取得 hash→selector、第五 peer、player creation、安裝或八人驗收。全程沒有呼叫函式、寫入、hook 或注入。

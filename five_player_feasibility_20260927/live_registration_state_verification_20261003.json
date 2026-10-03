@@ -1,0 +1,85 @@
+{
+  "schema": "hd2_live_registration_state_verification_v1",
+  "build": 25480438,
+  "pid": 6884,
+  "source_files": [
+    "five_player_feasibility_20260927/live_dispatcher_data_20261003_r3.json",
+    "five_player_feasibility_20260927/live_session_snapshot_20261003_r8.json",
+    "five_player_feasibility_20260927/live_registration_state_20261003.json",
+    "five_player_feasibility_20260927/live_registration_state_20261003_1g.json"
+  ],
+  "checks": [
+    {
+      "name": "fixed_build",
+      "passed": true,
+      "detail": "[25480438, 25480438, 25480438, 25480438]"
+    },
+    {
+      "name": "single_pid",
+      "passed": true,
+      "detail": "[6884, 6884, 6884, 6884]"
+    },
+    {
+      "name": "image_identity",
+      "passed": true,
+      "detail": "pinned image hashes match"
+    },
+    {
+      "name": "expanded_patterns",
+      "passed": true,
+      "detail": "five known runtime values plus seven static registration hashes"
+    },
+    {
+      "name": "small_scan_complete",
+      "passed": true,
+      "detail": "128 MiB bounded scan"
+    },
+    {
+      "name": "large_scan_complete",
+      "passed": true,
+      "detail": "1 GiB target scan completed without truncation"
+    },
+    {
+      "name": "registration_hits_negative",
+      "passed": true,
+      "detail": "no pointer/event/static-registration value hits"
+    },
+    {
+      "name": "dispatcher_hits_preserved",
+      "passed": true,
+      "detail": "image hits remain code-side only"
+    },
+    {
+      "name": "session_observed",
+      "passed": true,
+      "detail": "empty menu baseline"
+    },
+    {
+      "name": "roster_boundary",
+      "passed": true,
+      "detail": "only four roster slots documented"
+    },
+    {
+      "name": "read_only",
+      "passed": true,
+      "detail": "no calls/writes/hooks"
+    },
+    {
+      "name": "runtime_gate",
+      "passed": true,
+      "detail": "runtime/install/multiplayer remain false"
+    }
+  ],
+  "checks_passed": 12,
+  "checks_total": 12,
+  "verification_passed": true,
+  "read_only": true,
+  "calls_made": false,
+  "writes_made": false,
+  "hooks_installed": false,
+  "resolver_closed": false,
+  "hash_to_selector_proven": false,
+  "installable": false,
+  "multiplayer_verified": false,
+  "meaning": "A fresh fixed-build process was scanned read-only across a 128 MiB baseline and an untruncated ~1 GiB MEM_PRIVATE range using known receiver/insert/member pointers, the confirmed-peer event hash and all seven static registration hashes. No private-state hit was observed. This is a bounded negative observation, not proof that no registry exists; the process was still at an empty menu baseline and no fifth peer was exercised."
+}
