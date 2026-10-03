@@ -1,0 +1,90 @@
+{
+  "schema": "hd2_official_peer_reader_contract_v1",
+  "steam_build": 25480438,
+  "identity": {
+    "helldivers2_exe": {
+      "timestamp": 1790149348,
+      "image_size": 60719104,
+      "sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06"
+    },
+    "game_dll": {
+      "timestamp": 1790161983,
+      "image_size": 74727424,
+      "sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e"
+    }
+  },
+  "public_c_api_reference": {
+    "c_api_id": 31,
+    "network_slot_offset": "0x38",
+    "game_session_slot_offset": "0x40",
+    "peer_getter_offset": "0x48",
+    "peer_count_getter_offset": "0x50",
+    "runtime_calls_allowed": false
+  },
+  "forbidden_game_session_operations": [
+    "add_peer",
+    "remove_peer",
+    "create_game_object"
+  ],
+  "adapter_contract": {
+    "max_peers": 8,
+    "record_source": "SessionObservation opaque vtable snapshot plus record semantics boundary",
+    "read_exports": ["get_peer_count", "get_peer_record"],
+    "required_callbacks": [
+      "owner_acquire",
+      "owner_live",
+      "owner_release",
+      "quiescence_begin",
+      "quiescence_end",
+      "cleanup"
+    ],
+    "enable_requires": [
+      "pinned_build_identity",
+      "stable_opaque_snapshot",
+      "verified_record_relationships",
+      "owner_lifetime_lease",
+      "thread_quiescence",
+      "cleanup_callback"
+    ],
+    "fail_closed_reasons": [
+      "version_mismatch",
+      "callbacks_missing",
+      "snapshot_unproven",
+      "record_count_invalid",
+      "owner_unavailable",
+      "owner_lost",
+      "quiescence_failed",
+      "index_invalid",
+      "cleanup_failed"
+    ]
+  },
+  "verification": {
+    "command": "cmd /c build_peer_reader_x64.bat",
+    "result": "official_peer_reader_contract_synthetic_passed",
+    "process_accessed": false,
+    "game_calls": false,
+    "memory_writes": false,
+    "admission_proven": false,
+    "player_semantics_proven": false,
+    "installable": false,
+    "multiplayer_verified": false
+  },
+  "artifacts_sha256": {
+    "ep_official_peer_reader.h": {
+      "sha256": "d8906213c3cfd1b51886fcf5b2dab84fb9f9e41ed109bf4894699df2914f9179",
+      "bytes": 12077
+    },
+    "ep_official_peer_reader_test.cpp": {
+      "sha256": "2d2c5a46e08c264176810b63139d41b306063ef56759c9d9cf7a982902d59d6c",
+      "bytes": 5148
+    },
+    "build_peer_reader_x64.bat": {
+      "sha256": "b57a2c1d3d3e10f569e7f37fee585efa2fd164f6183f5086f5449fa8327d88c8",
+      "bytes": 444
+    },
+    "ep_official_peer_reader_test.exe": {
+      "sha256": "07b248706f18f730decb90d81b1248fe354ba8a90a14ba240569bef95cdfb78b",
+      "bytes": 265216
+    }
+  }
+}
