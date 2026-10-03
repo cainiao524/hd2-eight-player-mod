@@ -536,3 +536,7 @@ PlayerCreationGate、PlayerResource、resource bridge 的 C++ marker 與 Python 
 ## 2026-10-04 ClientSidecar adapter 初始化生命週期修正
 
 `Native/ClientSidecar/ep_client_adapter_init` 原本會對 live adapter 無條件 `memset`。現在若 adapter 仍 initialized 會返回 `EP_BRIDGE_ALREADY_READY`，保留 authoritative index reservation、client record 與 owner refs；必須先 destroy，並由 caller 提供 zero-initialized storage 才能重建。測試在已保留 index 後重初始化，確認 reservation 未被抹除；sidecar/adapter marker 與 Python report tests 通過。真實 client callback、entity replication 與多人驗收仍未接線。
+
+## 2026-10-04 實機探針啟動嘗試
+
+依使用者授權暫時部署唯讀 `eight_player_pluginw64_release.dll` 並啟動固定 Steam build。含自訂 DLL 的程序 PID `39916` 與移除自訂 DLL 後的官方程序 PID `18216` 均顯示 `Fatal Error!`，沒有新的探針 log、GameSession、peer 或玩家建立資料。自訂 DLL 已移回 workspace 證據目錄；官方插件未修改，容量 patch 未啟用，兩個程序已停止。這是啟動環境失敗，不是多人拒絕或成功；`installable`、`runtime_verified`、`multiplayer_verified` 保持 false。完整記錄見 `five_player_feasibility_20260927/LIVE_PROBE_ATTEMPT_20261004.*`。
