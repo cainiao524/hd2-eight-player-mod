@@ -313,29 +313,13 @@ void observe_snapshot() {
     const auto getter = ep_official_session_getter::inspect(
         identity, image, c_api, read, executable);
     if (!getter.ready) return;
-    using game_session_fn = void* (*)();
-    game_session_fn function{};
-    if (!read_current(reinterpret_cast<const void*>(getter.network + sizeof(void*)),
-                      &function, sizeof(function)) ||
-        !function) {
-        return;
-    }
-    void* session = function();
-    const uintptr_t old_session =
-        g_session.exchange(reinterpret_cast<uintptr_t>(session), std::memory_order_acq_rel);
-    if (old_session != reinterpret_cast<uintptr_t>(session)) {
-        write_session_log(reinterpret_cast<uintptr_t>(session));
-    }
-    const auto snapshot = ep_session::capture_current_process();
-    g_peer_count.store(snapshot.peer_count, std::memory_order_release);
-    const auto old = g_last_snapshot_session.exchange(
-        snapshot.session_owner, std::memory_order_acq_rel);
-    const auto old_count = g_last_snapshot_count.exchange(
-        snapshot.peer_count, std::memory_order_acq_rel);
-    if (old != snapshot.session_owner || old_count != snapshot.peer_count ||
-        std::strcmp(snapshot.status, "observed_context_not_player_proof") != 0) {
-        write_snapshot_log(snapshot);
-    }
+    // The getter address and machine-code fingerprint are now version-gated,
+    // but its native calling convention and return-object lifetime are still
+    // unresolved.  Do not invoke it from a production-loaded plugin: a
+    // successful fingerprint is an observation boundary, not an ABI proof.
+    // Keeping this path no-call lets the official loader be tested without
+    // risking a crash from a mismatched wrapper/vtable layer.
+    (void)getter;
 }
 
 bool callbacks_complete(const EP_CONSUMER_CALLBACKS* callbacks) {

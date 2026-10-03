@@ -14,3 +14,7 @@
 ## 判定
 
 兩次啟動均只觀察到 `Fatal Error!` 視窗標題，未能讀取對話框內文，根因未診斷。移除自訂 DLL 後仍出錯，不足以判定第一次錯誤的原因。保持 `installable=false`、本次 `runtime_verified=false`、`multiplayer_verified=false`。下一次實機工作應先取得錯誤內文並恢復正常啟動，再重做已核對的探針；不得以既有 `%TEMP%` 舊 log 冒充本次結果。此次 EXE 及兩個官方 plugin 檔案雜湊已與先前固定值比較相符。
+
+## 追加的乾淨重試
+
+清空 `%TEMP%\hd2_eight_player_plugin_runtime_probe.json` 後，透過 Steam `-applaunch 553850` 暫時部署同一份 DLL。PID `15724` 顯示 `Fatal Error!`，20 秒內沒有產生新的探針 log，也沒有 `setup_game`、`update_game`、Session 或 peer 觀察。程序已停止，自訂 DLL 已移除；這次不採用共用暫存檔中較早的 loader 回呼作為證據。

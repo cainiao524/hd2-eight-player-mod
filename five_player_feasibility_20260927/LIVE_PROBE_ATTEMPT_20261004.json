@@ -1,10 +1,10 @@
 {
   "schema": "hd2_live_probe_attempt_20261004_v1",
   "build": 25480438,
-  "custom_probe_process_id": 39916,
+  "custom_probe_process_id": 15724,
   "official_only_process_id": 18216,
-  "custom_probe_loaded": null,
-  "custom_probe_load_status": "not_observed",
+  "custom_probe_loaded": false,
+  "custom_probe_load_status": "not_observed_clean_followup",
   "deployment_timing": "Steam launch request preceded DLL copy; copy preceded observed process start; loader timing unverified",
   "custom_probe_log_created": false,
   "custom_probe_process_title": "Fatal Error!",
@@ -25,5 +25,18 @@
   "staged_probe_sha256": "da09a2bb3ce7d1c3377404cf03976a156868e70076f157722b4101f01e7738a9",
   "error_dialog_body_observed": false,
   "root_cause_known": false,
-  "interpretation": "both launches showed Fatal Error window title; no new runtime evidence; cause undiagnosed"
+  "interpretation": "Initial and clean follow-up launches showed Fatal Error; the follow-up temp log was empty, so no loader/setup/session evidence is accepted.",
+  "followup_probe": {
+    "method": "Steam -applaunch 553850 with temporary eight_player_pluginw64_release.dll copy",
+    "process_id": 15724,
+    "custom_plugin_copy_removed": true,
+    "custom_probe_load_status": "not_observed",
+    "probe_log_created": false,
+    "window_title": "Fatal Error!",
+    "setup_game_observed": false,
+    "update_game_observed": false,
+    "game_calls": false,
+    "memory_writes": false,
+    "interpretation": "clean temp log produced no loader callback before Fatal Error; no runtime/session/player evidence"
+  }
 }

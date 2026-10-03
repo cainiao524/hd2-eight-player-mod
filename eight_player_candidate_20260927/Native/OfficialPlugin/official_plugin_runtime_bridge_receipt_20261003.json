@@ -4,7 +4,7 @@
   "entry_rva": "0x1093590",
   "target_stolen_bytes": 14,
   "executor_code_bytes": 270,
-  "scope": "OfficialPlugin and consumer executor are linked into one DLL; bridge remains explicit and fail-closed",
+  "scope": "OfficialPlugin and consumer executor are linked into one DLL; bridge remains explicit and fail-closed; fixed-build session getter is inspect-only until calling convention and return lifetime are proven",
   "preflight": {
     "read_only": true,
     "build_gate": true,
@@ -52,8 +52,8 @@
       "bytes": 4495
     },
     "ep_official_plugin.cpp": {
-      "sha256": "a17a6a51a98cfe77e8afb46d6dfc42010f808f7371200d289e062d1b141dabe9",
-      "bytes": 20961
+      "sha256": "f49edce1ed7b65d52f7e9d7960b970c4fa1f1d0efac09c8c7bc896d31ac103e8",
+      "bytes": 20303
     },
     "ep_official_plugin_test.cpp": {
       "sha256": "6529290e28927e92e09454ba72a4165b72a598f401288618bc2250b2a851dcea",
@@ -68,23 +68,23 @@
       "bytes": 1387
     },
     "README.zh-TW.md": {
-      "sha256": "71aa982571fb59fde84456d6ca302fec935b5004b970bc434f322cc50944abfb",
-      "bytes": 5459
+      "sha256": "36b3f6680eaf5ba11fed082248648c7e775f6f7d3bdf4aaab93ccb22122bbaa6",
+      "bytes": 5560
     },
     "ep_official_plugin.dll": {
-      "sha256": "057b083aec8f17d60244e0da828ef7ee161b8a283d21462e006a61b51f139575",
-      "bytes": 294912
+      "sha256": "797f01a30dbca3cd1acffbe681acb66ad00b1bc28fb3957f04cb1bc36a387d66",
+      "bytes": 286720
     },
     "eight_player_pluginw64_release.dll": {
-      "sha256": "531bcf99534e5fd227ad80826a26626e85fc368cd2809ed52021c6d6d9523565",
-      "bytes": 294912
+      "sha256": "3cb3b1ff1737b281efe8762f668e919db2f35a9db6f4f860f0b39ee03bc373bc",
+      "bytes": 286720
     },
     "ep_official_plugin_test.exe": {
-      "sha256": "ece43f810e0476b9acac40c99ba00937940ec18c1646aaf69f04ae1b5d4ea91b",
-      "bytes": 325120
+      "sha256": "a1d96435bf2b50af9a4d4172ad6d06e664455af7657c0eec9a77072866c7458f",
+      "bytes": 316416
     },
     "ep_official_plugin_load_test.exe": {
-      "sha256": "e8813bb628277c9405e838cf3c6b10656988722fa911c1189b25fd3607f5879d",
+      "sha256": "d1e57be73a457f27f0ebbdd5476a474035f4be556ee33928bf6560aaeaef9143",
       "bytes": 154112
     },
     "ep_official_plugin.lib": {
@@ -112,7 +112,7 @@
       "bytes": 4529
     },
     "ep_official_session_getter_test.exe": {
-      "sha256": "c7b88b12443ba8b4c8cfa2eca37edd41e0078a156dab4e112e573519ab71c4e1",
+      "sha256": "f7978a8989ede88c9ed570194f8ce0b4140ec4bc1017549546fbb496b3598a9b",
       "bytes": 157696
     }
   },
@@ -210,7 +210,11 @@
     "getter_result_is_not_player_proof": true,
     "get_engine_api_executable_gate": true,
     "query_c_api_table_copy_guarded": true,
-    "setup_update_do_not_dereference_unverified_table": true
+    "setup_update_do_not_dereference_unverified_table": true,
+    "getter_invocation": false,
+    "no_call_runtime_boundary": true,
+    "session_pointer_observation": false,
+    "fatal_error_after_previous_invocation_observed": true
   },
   "lifecycle_cleanup": {
     "unloaded_clears_c_api": true,

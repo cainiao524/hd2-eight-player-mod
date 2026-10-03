@@ -23,13 +23,13 @@ ABI 參考：[Autodesk Stingray plugin API samples](https://github.com/AutodeskG
 同一個 OfficialPlugin 也輸出 `ep_official_plugin_runtime_bind_native_callbacks()`、`ep_official_plugin_runtime_get_native_callbacks()` 與 `ep_official_plugin_runtime_unbind_native_callbacks()`。這三個入口只轉接固定 build 的 native callback binder：它會核對 `game.dll` PE timestamp `1790161983` 與 image size `74727424`，並要求 sidecar resolver；未綁定時 getter 會回傳 `EP_CONSUMER_NATIVE_NOT_BOUND`，錯誤參數或 build 不符會拒絕。合成測試驗證 OfficialPlugin 的轉接 export、未綁定 getter、錯誤 bind 與 native callback 自身的 resolver/mode/identity/lookup/status 路徑。這仍然是 ABI 候選，不等同於已驗證的 HD2 player admission 或安裝流程。
 ### Session getter gate（2026-10-04）
 
-setup_game 與每 60 tick 的 update_game 現在共用 ep_official_session_getter.h 的唯讀 gate；不再直接從 network + 8 解參考 function pointer。gate 必須同時通過：
+setup_game 與每 60 tick 的 update_game 現在共用 ep_official_session_getter.h 的唯讀 gate；不再直接從 network + 8 解參考 function pointer，也不在實機呼叫尚未完成 ABI 綁定的 getter。gate 必須同時通過：
 
 - EXE/game.dll 的實際 PE timestamp、image size 與 SHA-256 對固定 build 25480438 的核對；
 - C API prefix、Network table、GameSession table 與 getter 欄位的可讀性；
 - getter 必須是 game.dll 0x34fdf0，且 15 bytes machine-code fingerprint 完全相符；
 - function page 必須可執行，C API table 重讀必須穩定。
 
-任一條件不符都停止觀察，不呼叫 getter，也不更新 session 或 peer snapshot。這個 gate 只證明可安全觀察固定的 session getter；getter 的結果仍不是 PeerId、player index 或 admission 證據。
+任一條件不符都停止觀察，不呼叫 getter，也不更新 session 或 peer snapshot。所有條件通過也只證明固定版本的 getter 位址可被安全檢查；getter 的結果仍不是 PeerId、player index 或 admission 證據。
 
 unloaded 和 shutdown_game 會清除 C API、兩張 table、session、peer count、update tick、last snapshot session/count，防止下一次載入沿用 stale 狀態。新增的 synthetic getter test 覆蓋未知 function、不可讀 table、錯誤 build 與固定 getter 通過；plugin test 也核對 unload 後所有計數器歸零。
