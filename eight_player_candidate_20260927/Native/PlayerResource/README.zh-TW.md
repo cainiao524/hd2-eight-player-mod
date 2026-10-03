@@ -11,3 +11,22 @@ cmd /c build_x64.bat
 ```
 
 輸出 `ep_player_resource_synthetic_passed` 只代表離線 C++ 契約成立，`production_executable`、`runtime_verified`、`installable` 與 `multiplayer_verified` 保持 `false`。
+
+## Bridge transaction adapter（2026-10-03）
+
+`ep_resource_bridge_adapter.h/.cpp` 把三階段 resource transaction 接到既有
+`EP_NATIVE_BRIDGE` callback 形狀。`ep_resource_bridge_configure()` 產生的
+Bridge config 會把同一個 caller-provided network index 傳給 confirmed-peer、
+player-create、三個 resource stage 及 remove/reconnect；stage callback table
+有明示的 version/size，metadata callback 也必須提供非零 resource hash、record
+ordinal 與 component ordinal。
+
+admit 的離線順序是 `resource begin → native confirm → native create → first →
+second → third → publish`。任一 callback 失敗都讓 Bridge 走既有 remove compensation；
+離隊先完成 native remove，再釋放 resource record，generation 和 network index
+仍由 Bridge/Sidecar 契約管理。缺少 callback、版本不符、重複 identity、stage
+順序錯誤和 resource metadata 不完整都會 fail-closed。
+
+`ep_resource_bridge_adapter_test.exe` 覆蓋八筆 admission、三階段 publish、index 4
+離隊／重連 generation、index 3 的第二階段失敗回滾與完整清理。這是離線 ABI-shaped
+adapter；它沒有解析 RVA、呼叫 game.dll、安裝 hook 或證明第五至第八位真人聯機。

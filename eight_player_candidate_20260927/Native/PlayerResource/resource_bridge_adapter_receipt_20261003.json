@@ -1,0 +1,76 @@
+{
+  "schema": "hd2_resource_bridge_adapter_receipt_v1",
+  "date": "2026-10-03",
+  "steam_build": 25480438,
+  "status": "offline_abi_shaped_bridge_resource_candidate",
+  "contract": {
+    "adapter_version": 1,
+    "stage_callback_version": 1,
+    "capacity": 8,
+    "valid_network_indexes": [
+      0,
+      7
+    ],
+    "transaction_order": [
+      "resource_begin",
+      "native_confirm",
+      "native_create",
+      "first_callback",
+      "second_callback",
+      "third_callback",
+      "resource_publish"
+    ],
+    "remove_order": [
+      "native_remove",
+      "resource_release"
+    ],
+    "metadata_required": [
+      "nonzero_resource_hash",
+      "record_ordinal",
+      "component_ordinal"
+    ],
+    "exact_index_passthrough": true,
+    "generation_owned_by_bridge_sidecar": true,
+    "fail_closed": [
+      "missing callback",
+      "version/size mismatch",
+      "duplicate identity",
+      "stage failure",
+      "metadata sentinel",
+      "busy reentry"
+    ]
+  },
+  "tests": {
+    "command": "cmd /c build_x64.bat",
+    "resource_output": "ep_player_resource_synthetic_passed",
+    "adapter_output": "ep_resource_bridge_adapter_synthetic_passed",
+    "status": "passed",
+    "coverage": [
+      "eight resource-backed admissions",
+      "three stage callbacks before publish",
+      "index 4 departure and reconnect generation",
+      "index 3 second-stage failure rollback",
+      "full sidecar/resource/owner cleanup"
+    ]
+  },
+  "source_sha256": {
+    "ep_resource_bridge_adapter.h": "fd39822d24a24d6ab211b691cda4d097f3a3b1c9fd5faffe13ff03440099f3fc",
+    "ep_resource_bridge_adapter.cpp": "ded758160597ce825a31f707efdeda2b18094d5d39ddd61b35b6b883f5431f37",
+    "ep_resource_bridge_adapter_test.cpp": "f1322c38ebef3fd3e87515c203f70300a3b79cddc9b66e897e5393fd9563899f",
+    "build_x64.bat": "153d3d223a96a8d2b99f2f83a2392aede864b38ec8e14bfd84fda4da220fb4c7",
+    "README.zh-TW.md": "de53fafb34509f2552b86f0ea1a950663ce4f15d518ab4244775ea0aaef836cf",
+    "test_resource_bridge_adapter.py": "7e4870dd26208d06a9a6717469718ff9e9c6c636d3028b631013eedcf17f9419"
+  },
+  "binary_sha256": {
+    "ep_resource_bridge_adapter.dll": "74b2e0eb7c0ee8e4211d3f37c1565f3eedd8f0beeac2c60c4444f8289947d42e",
+    "ep_resource_bridge_adapter_test.exe": "89d6b7176ff13a4d673e6870bdf81adf47624694ed16f35755f1ee071cbdc282"
+  },
+  "checks": {
+    "production_executable": false,
+    "runtime_verified": false,
+    "installable": false,
+    "multiplayer_verified": false,
+    "game_process_accessed": false,
+    "native_game_callback_abi_bound": false
+  }
+}

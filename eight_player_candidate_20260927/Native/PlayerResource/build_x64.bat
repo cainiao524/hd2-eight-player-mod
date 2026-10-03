@@ -9,6 +9,12 @@ cl /nologo /std:c++20 /O2 /EHsc ep_player_resource.cpp ep_player_resource_test.c
 if errorlevel 1 goto :fail
 ep_player_resource_test.exe
 if errorlevel 1 goto :fail
+cl /nologo /std:c++20 /O2 /EHsc /LD ep_player_resource.cpp ep_resource_bridge_adapter.cpp ..\Bridge\ep_native_bridge.cpp ..\Sidecar\ep_sidecar.cpp /Fe:ep_resource_bridge_adapter.dll
+if errorlevel 1 goto :fail
+cl /nologo /std:c++20 /O2 /EHsc ep_player_resource.cpp ep_resource_bridge_adapter.cpp ..\Bridge\ep_native_bridge.cpp ..\Sidecar\ep_sidecar.cpp ep_resource_bridge_adapter_test.cpp /link /out:ep_resource_bridge_adapter_test.exe
+if errorlevel 1 goto :fail
+ep_resource_bridge_adapter_test.exe
+if errorlevel 1 goto :fail
 popd
 endlocal
 exit /b 0

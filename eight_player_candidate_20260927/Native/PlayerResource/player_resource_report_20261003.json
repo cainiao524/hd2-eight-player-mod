@@ -12,12 +12,12 @@
     "ep_player_resource.h": "8939ab4129c286955ccc9caec41508b7b2759b1db82b0ec6631b8b93357e0d84",
     "ep_player_resource.cpp": "710930b6c1a163a56475b6ad4426f38b9e71b468a9ffb1f4eb377a8eb399d1ce",
     "ep_player_resource_test.cpp": "98502ec5bcf05e95d93981836f8ab99f331a476d5420ba13ef00e9458c530a81",
-    "build_x64.bat": "573b7009a8d5483a98342a91f3063ad56431370d480d23bb77bb97db1322d89b",
-    "README.zh-TW.md": "6c63abfbdf4423d1660dd888b19db604ef3bbc87450afd326c307bef36f669f0"
+    "build_x64.bat": "153d3d223a96a8d2b99f2f83a2392aede864b38ec8e14bfd84fda4da220fb4c7",
+    "README.zh-TW.md": "de53fafb34509f2552b86f0ea1a950663ce4f15d518ab4244775ea0aaef836cf"
   },
   "binary_sha256": {
-    "ep_player_resource.dll": "c9162fbc8345fbfef5c549e31cfcabae4f54484c1c2d01aa4d51133f5c2e016e",
-    "ep_player_resource_test.exe": "f2a7256c6bdc55a49cb2093e1ebedcb5d151cff254d17a676cf639568f88794d"
+    "ep_player_resource.dll": "1a440f6188eaa152f99517112d34c3a4baef970e0907a1d07611fedaccd85fef",
+    "ep_player_resource_test.exe": "d79547fff63f695a8d18374ab42e0cce51b43d497e3eac733a7b5506763895a4"
   },
   "test": {
     "command": "cmd /c build_x64.bat",
@@ -30,7 +30,8 @@
       "third-stage failure releases the record",
       "callback-order failure releases the record",
       "release is idempotent through a generation token",
-      "owner migration requires quiescence"
+      "owner migration requires quiescence",
+      "Bridge adapter binds exact index, resource metadata and all three callback stages"
     ]
   },
   "checks": {
@@ -45,5 +46,16 @@
     "The sidecar does not resolve or call the fixed-build callback ABI.",
     "Component 239 is a contract input bound to the audit, not a live roster insertion.",
     "No hook, injection, package, UI, Party, session or multiplayer path is implemented here."
-  ]
+  ],
+  "bridge_adapter": {
+    "schema": "ep_resource_bridge_adapter_v1",
+    "stage_callback_version": 1,
+    "bridge_build": 25480438,
+    "production_executable": false,
+    "runtime_verified": false,
+    "installable": false,
+    "multiplayer_verified": false,
+    "game_process_accessed": false,
+    "test_output": "ep_resource_bridge_adapter_synthetic_passed"
+  }
 }
