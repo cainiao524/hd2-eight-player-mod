@@ -31,6 +31,8 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_client_adapter_init(
         !native_remove || !native_allocate_index || !native_release_index ||
         !native_retain || !native_release)
         return EP_BRIDGE_INVALID_ARGUMENT;
+    if (a->magic == kMagic && a->version == kVersion && a->initialized)
+        return EP_BRIDGE_ALREADY_READY;
     std::memset(a, 0, sizeof(*a));
     a->magic = kMagic;
     a->version = kVersion;

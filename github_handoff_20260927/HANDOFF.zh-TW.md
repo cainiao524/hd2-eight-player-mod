@@ -532,3 +532,7 @@ PlayerCreationGate、PlayerResource、resource bridge 的 C++ marker 與 Python 
 修正 `Native/Bridge` 的另一個離線生命週期漏洞：Session/Party allocator 已回傳 index、但 sidecar 尚未建立時，如果第一次 `release_index` 失敗，舊路徑會只返回錯誤並丟失 authoritative index 與 owner lease。現在 bridge 會保存 generation-zero allocator-only cleanup record，保留 peer、resource handle、index 與 owner lease；`ep_bridge_retry_cleanup` 完成 release 後才清除記錄並釋放 owner。重複 identity 在 retry 前仍會被阻擋，正常 generation token cleanup 行為不變。
 
 合成 harness 新增 invalid allocator index、release failure、duplicate block 與 retry recovery；`ep_native_bridge_synthetic_passed`、跨元件 integration marker 與 Python report test 通過。這仍未綁定真實 Session/Party allocator 或遊戲 callback ABI，`installable=false`、`multiplayer_verified=false` 不變。
+
+## 2026-10-04 ClientSidecar adapter 初始化生命週期修正
+
+`Native/ClientSidecar/ep_client_adapter_init` 原本會對 live adapter 無條件 `memset`。現在若 adapter 仍 initialized 會返回 `EP_BRIDGE_ALREADY_READY`，保留 authoritative index reservation、client record 與 owner refs；必須先 destroy，並由 caller 提供 zero-initialized storage 才能重建。測試在已保留 index 後重初始化，確認 reservation 未被抹除；sidecar/adapter marker 與 Python report tests 通過。真實 client callback、entity replication 與多人驗收仍未接線。

@@ -60,6 +60,10 @@ int main() {
     if (ep_client_adapter_retain(&b) != EP_BRIDGE_OK) return 12;
     UINT8 index = 0xFF;
     if (ep_client_adapter_allocate_index(&b, 100, 900, &index) != EP_BRIDGE_OK || index != 0) return 13;
+    if (ep_client_adapter_init(&b, &b, native_confirm, native_create, native_remove,
+                               native_allocate, native_release_index,
+                               native_retain, native_release) != EP_BRIDGE_ALREADY_READY ||
+        b.index_reserved[0] == 0) return 131;
     if (ep_client_adapter_confirm(&b, 100, 900, index) != EP_BRIDGE_OK) return 14;
     if (ep_client_adapter_create(&b, 100, 900, index) != EP_BRIDGE_OK) return 15;
     ep_client_adapter_release(&b);

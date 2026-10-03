@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "client_sidecar_synthetic_report",
   "build": {
     "steam_build": 25480438,
@@ -25,7 +25,9 @@
     "destroy_requires_no_native_confirmed_flags": true,
     "authoritative_index_allocator_required": true,
     "index_release_generation_checked": true,
-    "local_index_substitution_forbidden": true
+    "local_index_substitution_forbidden": true,
+    "live_reinitialization_refused": "EP_BRIDGE_ALREADY_READY; active index reservations and client records are preserved",
+    "zero_initialized_storage_required": true
   },
   "contract": {
     "capacity": 8,
@@ -35,7 +37,8 @@
     "fixed_four_paths_manifested": true,
     "synchronization": "exclusive SRWLOCK for sidecar mutations and validation",
     "custom_spin_lock_removed": true,
-    "authoritative_index_binding": true
+    "authoritative_index_binding": true,
+    "adapter_live_init_guard": true
   },
   "artifacts": [
     {
@@ -56,11 +59,11 @@
     },
     {
       "path": "ep_client_bridge_adapter.cpp",
-      "sha256": "aee7e3f3d413a5f64e408179421a6ff945e6ba34b590fe29258b270e42dba6e8"
+      "sha256": "7489982d9d8c84fbffc215ef3f9eabbbd836e65c6f1998f1536d083a2aae88c4"
     },
     {
       "path": "ep_client_bridge_adapter_test.cpp",
-      "sha256": "a62bdb5127543b990240130acdb80a26b50ed0dc7346e03db743617adf2f785c"
+      "sha256": "7bae694ab6dc5817bbd2d8e82643b7dfd602b73b5f41f6eb963c04c074fa6052"
     },
     {
       "path": "build_x64.bat",
@@ -68,7 +71,7 @@
     },
     {
       "path": "README.zh-TW.md",
-      "sha256": "0a0eb7eb06b3036a85373626476cc49251ad0efb3f185b215d5585ba8ce3d0b4"
+      "sha256": "e41c5fef9ba13fe768e2e5b1f94a91f1ea6c567108e2d3c4a70155b8e1643b84"
     },
     {
       "path": "client_four_slot_patch_manifest_20261002.json",
@@ -76,19 +79,19 @@
     },
     {
       "path": "ep_client_sidecar.dll",
-      "sha256": "16af704cd889ffb392947cf4f15bb4bb4a849be3d4cdd11352f32f53d1b34c1b"
+      "sha256": "abdbe620e03a1ef90197f657e2283c5da3be231fca9bc6e912f3dcecba877379"
     },
     {
       "path": "ep_client_sidecar_test.exe",
-      "sha256": "8cf5a0536523e1c424daf585cefce968109fb358531594a35bd4fcd962dc2676"
+      "sha256": "12d9ebe7ede86f9b559710f6f85254fc4ddfad5a7fdea086cf780784550e4cc5"
     },
     {
       "path": "ep_client_bridge_adapter.dll",
-      "sha256": "8a532e2cdc5a8d02aec5300fd9046cc7e25bc8855097976ae4da247112ddbe63"
+      "sha256": "540fd16c5ba67f4c51ed9b141effdbd423040f6cbb72b01af0a8214f656538b8"
     },
     {
       "path": "ep_client_bridge_adapter_test.exe",
-      "sha256": "18855c494964bac802fecbd05d6fcd606d7aa79e28f9112c3f1e120ff08cc52c"
+      "sha256": "e23c550bc082045b32554c0d0b536fc86ac4b377b97911c7d90be1f36644408d"
     }
   ]
 }
