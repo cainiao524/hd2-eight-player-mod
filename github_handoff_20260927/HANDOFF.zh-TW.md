@@ -1,4 +1,10 @@
 # 接續狀態：2026-09-28 已恢復離線工作
+## 2026-10-03 platform-member consumer bound candidate
+
+已把固定 build `0x1093590` consumer 從 sentinel-only template 收束成可重定位的離線候選：`bind_candidate()` 接受呼叫者提供的 code、unwind 和 callback 位址，拒絕未解析 sentinel、非 canonical／未對齊位址、alias、映像與 stub 重疊及相對位移溢出。`test_consumer_bound_execution.py` 以合成 callback 實際跑過 0..8 成員、失敗／缺本機／未 ready／resolver 拒絕、移動後 code 位址、volatile register 破壞與完整 unwind 邊界，4 項通過；既有 consumer、session-member 與 static patch 測試也通過。
+
+同時修正舊 unwind metadata：consumer 序言是 16 bytes；`UWOP_PUSH_NONVOL` 的 register `OpInfo` 現在以正確高半位元組編碼。這讓 native bridge 候選的機器碼驗證可靠，但 callback resolver、owner lifetime、confirmed-peer producer／cleanup 和真實安裝仍未閉合；`installable=false`、`multiplayer_verified=false` 維持不變。最新研究提交為 `dba4c7f`。
+
 ## 2026-10-03 game.dll session snapshot contract alignment
 
 已將 `Native/SessionObservation/ep_session_snapshot.h` 從未閉合的 EXE engine-session vtable 假設改為與既有四人實機捕獲相同的 `game.dll` bounded layout：核對固定 `game.dll` PE identity，讀取 context、roster、game-state globals、local/host/session owner、mode、最多八筆 `0x20` stride peer records，以及四筆 documented `0xC0` stride roster records。network index 必須唯一且小於 8；roster slot `4..7` 保持 out-of-contract。Windows wrapper 現在明確取得 `game.dll`，不再把主 EXE 當作映像來源。
