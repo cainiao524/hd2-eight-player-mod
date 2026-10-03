@@ -7,7 +7,7 @@
 
 在 bound candidate 之後新增 `Native/SessionMembers/ep_consumer_executor.h/.cpp` 與可載入的 `ep_consumer_executor.dll`：固定 build `25480438`、入口 `0x1093590`、14-byte fingerprint、270-byte full-replacement stub 和 24-byte registered unwind。安裝器只接受五個非空 callback，先以 `RtlAddFunctionTable` 註冊 unwind，再在入口寫入可回滾的 FF25 absolute detour；移除時驗證 detour 所有權並恢復原始 bytes。`build_consumer_executor_x64.bat` 與 `ep_consumer_executor_test.exe` 在合成 module 上通過 4 人相容、5--8 人 count、count 9 拒絕、缺 callback／入口變更拒絕及 install/remove 恢復。 `ep_consumer_executor_load_test.exe` 另通過 DLL export 與 getter 檢查。
 
-收據為 `eight_player_candidate_20260927/Native/SessionMembers/consumer_executor_receipt_20261003.json`。研究提交為 `a4a5519`，本次狀態收據提交為 `e6e5250`。此 executor 仍是離線 native 安裝器候選：callback resolver、owner lifetime、producer／player creation／cleanup、Party admission 和客戶端 replication 尚未綁定；沒有存取或修改 HD2 程序，`production_executable=false`、`runtime_verified=false`、`installable=false`、`multiplayer_verified=false`。
+收據為 `eight_player_candidate_20260927/Native/SessionMembers/consumer_executor_receipt_20261003.json`。最新整合提交為 `6b21fc1`；STATE 與收據已同步更新。此 executor 仍是離線 native 安裝器候選：callback resolver、owner lifetime、producer／player creation／cleanup、Party admission 和客戶端 replication 尚未綁定；沒有存取或修改 HD2 程序，`production_executable=false`、`runtime_verified=false`、`installable=false`、`multiplayer_verified=false`。
 
 ## 2026-10-03 固定 build native callback binding 候選
 
@@ -19,7 +19,7 @@
 
 已把固定 build `0x1093590` consumer 從 sentinel-only template 收束成可重定位的離線候選：`bind_candidate()` 接受呼叫者提供的 code、unwind 和 callback 位址，拒絕未解析 sentinel、非 canonical／未對齊位址、alias、映像與 stub 重疊及相對位移溢出。`test_consumer_bound_execution.py` 以合成 callback 實際跑過 0..8 成員、失敗／缺本機／未 ready／resolver 拒絕、移動後 code 位址、volatile register 破壞與完整 unwind 邊界，4 項通過；既有 consumer、session-member 與 static patch 測試也通過。
 
-同時修正舊 unwind metadata：consumer 序言是 16 bytes；`UWOP_PUSH_NONVOL` 的 register `OpInfo` 現在以正確高半位元組編碼。這讓 native bridge 候選的機器碼驗證可靠，但 callback resolver、owner lifetime、confirmed-peer producer／cleanup 和真實安裝仍未閉合；`installable=false`、`multiplayer_verified=false` 維持不變。最新研究提交為 `dafc981`。
+同時修正舊 unwind metadata：consumer 序言是 16 bytes；`UWOP_PUSH_NONVOL` 的 register `OpInfo` 現在以正確高半位元組編碼。這讓 native bridge 候選的機器碼驗證可靠，但 callback resolver、owner lifetime、confirmed-peer producer／cleanup 和真實安裝仍未閉合；`installable=false`、`multiplayer_verified=false` 維持不變。最新研究提交為 `6b21fc1`。
 
 ## 2026-10-03 game.dll session snapshot contract alignment
 
@@ -412,6 +412,18 @@ Player-chain 審計又補進三個 client layout 固定四人位點：`0x1087122
 ## 2026-10-03 OfficialPlugin ABI 骨架
 
 新增 `eight_player_candidate_20260927/Native/OfficialPlugin`：依 Autodesk Stingray 公開 `engine_plugin_api` 介面，提供固定 `PLUGIN_API_ID=0`、`C_API_ID=31` 的最小 `get_plugin_api` DLL、版本化 callback table、unload 清理與本機 stub harness。`ep_official_plugin_test.exe` 已通過 API ID、未知 ID 拒絕、C API callback 捕獲和 unload 清除四項合成檢查。
+
+## 2026-10-03 authoritative network-index binding
+
+`Native/Bridge`、`Native/Sidecar` 和 `Native/ClientSidecar` 現在要求 Session／Party caller 提供精確的 network index；`ep_sidecar_reserve_at()` 只接受 `0..7`，禁止以本機第一個空槽替代。離隊、重連與 cleanup retry 都攜帶 generation；release 失敗會保留 slot／owner lease 直到可重試，pending cleanup 期間的重複 admission 會被拒絕。收據為 `Native/Bridge/network_index_binding_receipt_20261003.json`。
+
+這仍是離線 bridge 候選：沒有真實 Session／Party allocator、第五至第八個 peer、Player Clone 或客戶端 entity replication 證據，`production_executable=false`、`runtime_verified=false`、`installable=false`、`multiplayer_verified=false`。
+
+## 2026-10-03 OfficialPlugin runtime bridge integration
+
+`Native/OfficialPlugin` 已把 consumer executor 與 native callback binder 編入同一 DLL，提供 preflight／install／remove 及 bind／get／unbind exports。resolver 的 compact view 固定為 `ids[0..7]` 位於 `+0x00`、count 位於 `+0x40`，並明確與 `EP_SIDECAR` layout 分離；preflight 與 bind 都不寫入遊戲記憶體。收據為 `Native/OfficialPlugin/official_plugin_runtime_bridge_receipt_20261003.json`。
+
+這只完成固定 build 的 ABI 候選與合成測試，resolver owner lifetime、Party admission、player creation、cleanup、客戶端 replication 和任務全流程仍未綁定，所有正式多人門檻維持 false。
 
 這個 DLL 只保存 `get_engine_api(31)` 返回指標，不呼叫遊戲函式、不讀寫遊戲程序、不建立 peer 或 player entity。它是合法官方 plugin 入口的 ABI 骨架，不是可玩的八人 Mod；報告 `official_plugin_probe_report_20261003.json` 仍固定 `production_executable=false`、`custom_mod_entry_proven=false`、`player_admission_proven=false`、`installable=false`、`multiplayer_verified=false`。下一閘門是固定 build 的 `ScriptApi`／`GameSessionCApi` layout 與受許可的 plugin 載入觀察，之後才可把 sidecar 接到實際 admission/creation callback。
 

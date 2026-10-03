@@ -1,6 +1,6 @@
 # 八人目標完成審計（2026-10-03）
 
-本收據由 `audit_completion_state_20261003.py` 對目前工作樹唯讀產生，時間 `2026-10-03T12:23:06.120160+00:00`。審計不啟動遊戲、不開啟程序 handle、不載入 DLL、不寫入記憶體，也不連線 Steam／Party／PlayFab。
+本收據由 `audit_completion_state_20261003.py` 對目前工作樹唯讀產生，時間以 `completion_audit_20261003.json` 的 `generated_at_utc` 為準。審計不啟動遊戲、不開啟程序 handle、不載入 DLL、不寫入記憶體，也不連線 Steam／Party／PlayFab。
 
 ## 結果
 
@@ -23,62 +23,18 @@
 ## 狀態與檔案完整性
 
 - GOAL SHA-256 與 STATE 宣告一致：`True`
-- STATE manifest 宣告 `1343` 個檔案；missing `0`，hash mismatch `40`。
-- 本次工作樹包含尚未由其他 agent 提交／重新寫入 STATE map 的修改，因此 mismatch 只表示收據需在整合後重跑，不代表新程式碼已被否定。
+- STATE manifest 宣告 `1356` 個檔案；missing `0`，hash mismatch `0`。
+- 所有已納入 manifest 的檔案均與目前工作樹雜湊相符。
 - 保留使用者未跟蹤檔案：`True`
-
-本次產生收據觀察到的 mismatch 路徑：
-
-- `eight_player_candidate_20260927/Native/Bridge/ep_native_bridge.cpp`
-- `eight_player_candidate_20260927/Native/Bridge/ep_native_bridge.h`
-- `eight_player_candidate_20260927/Native/ClientSidecar/ep_client_bridge_adapter.cpp`
-- `eight_player_candidate_20260927/Native/ClientSidecar/ep_client_bridge_adapter.h`
-- `eight_player_candidate_20260927/Native/Sidecar/ep_sidecar.cpp`
-- `eight_player_candidate_20260927/Native/Sidecar/ep_sidecar.h`
-- `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.h`
-- `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.cpp`
-- `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_test.cpp`
-- `eight_player_candidate_20260927/Native/OfficialPlugin/build_x64.bat`
-- `eight_player_candidate_20260927/Native/OfficialPlugin/README.zh-TW.md`
-- `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.dll`
-- `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_test.exe`
-- `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.exp`
-- `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.lib`
-- `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.obj`
-- `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_test.exp`
-- `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_test.lib`
-- `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_test.obj`
-- `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_load_test.cpp`
-- `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_load_test.exe`
-- `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_load_test.obj`
-- `eight_player_candidate_20260927/Native/OfficialPlugin/eight_player_pluginw64_release.dll`
-- `eight_player_candidate_20260927/Native/OfficialPlugin/eight_player_pluginw64_release.exp`
-- `eight_player_candidate_20260927/Native/OfficialPlugin/eight_player_pluginw64_release.lib`
-- `eight_player_candidate_20260927/Native/SessionMembers/build_consumer_executor_x64.bat`
-- `eight_player_candidate_20260927/Native/SessionMembers/consumer_executor_receipt_20261003.json`
-- `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor.cpp`
-- `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor.h`
-- `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor.obj`
-- `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor_test.exe`
-- `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor_test.exp`
-- `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor_test.lib`
-- `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor_test.obj`
-- `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor.dll`
-- `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor.exp`
-- `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor.lib`
-- `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor_load_test.cpp`
-- `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor_load_test.exe`
-- `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor_load_test.obj`
 
 ## Git 參考
 
-- 審計 HEAD：`36cfb06f53769242208976c78f8d97a9d0826fc7`
-- STATE latest research commit：`a4a5519`（存在：`True`）
-- STATE latest status receipt commit：`e6e5250`（存在：`True`）
+- 審計 HEAD：`6b21fc14482e465f46cc4ae0b93df330ab2d7fcd`
+- STATE latest research commit：`6b21fc1`（存在：`True`）
+- STATE latest status receipt commit：`6b21fc1`（存在：`True`）
 
 ## 下一個可驗證動作
 
-- 先整合並提交目前 native／plugin 修改，重新計算 `STATE.json.files_sha256`。
-- 重新執行本審計並把新的 JSON 收據與此報告一起保存。
+- 已整合 native／plugin 修改並重新計算 `STATE.json.files_sha256`；後續只在狀態或證據改變時重跑本審計。
 - 取得八個獨立帳號同一任務的實機客戶端日誌，使用 `verify_multiplayer_acceptance.py` 產生非 synthetic receipt。
 - 只有 receipt、安裝 gate 與完整 A--E 條件同時通過時，才可把 `installable`／`multiplayer_verified` 設為 true。
