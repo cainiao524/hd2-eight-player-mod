@@ -22,7 +22,7 @@ retain owner
   → active
 ```
 
-任一步失敗會呼叫 rollback；rollback 失敗會保留 `REMOVING` 槽位，等待 `ep_pc_depart` 重試。離隊會先清理 roster，再清理 components；清理失敗同樣保留槽位與 owner lease。
+任一步失敗會呼叫 rollback；rollback 失敗會保留 `REMOVING` 槽位與 `rollback_pending` 標記，`ep_pc_depart` 會重試同一個 rollback callback，不會誤走正常離隊 cleanup。所有 callback 完成後若本地 commit invariant 失敗，也會先補償再返回 `EP_PC_INVARIANT_BROKEN`。正常離隊會先清理 roster，再清理 components；清理失敗同樣保留槽位與 owner lease。
 
 ## Gate patch 契約
 
@@ -40,4 +40,4 @@ retain owner
 cmd /c build_x64.bat
 ```
 
-`ep_player_creation_gate_synthetic_passed` 覆蓋固定 build/site preflight、下游未就緒拒絕、可回滾 gate、八個權威 index、重複 identity、離隊 cleanup retry 及 resource/roster rollback。這些是離線 ABI 測試，不是第五至第八名玩家的實機驗收；`runtime_verified=false`、`installable=false`、`multiplayer_verified=false`。
+`ep_player_creation_gate_synthetic_passed` 覆蓋固定 build/site preflight、下游未就緒拒絕、可回滾 gate、八個權威 index、重複 identity、離隊 cleanup retry、rollback retry、post-callback invariant compensation 及 resource/roster rollback。這些是離線 ABI 測試，不是第五至第八名玩家的實機驗收；`runtime_verified=false`、`installable=false`、`multiplayer_verified=false`。

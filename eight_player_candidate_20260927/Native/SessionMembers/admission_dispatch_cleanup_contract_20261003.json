@@ -1,0 +1,203 @@
+{
+  "schema": "hd2_admission_dispatch_cleanup_contract_v1",
+  "status": "static_cross_reference_only",
+  "build": 25480438,
+  "module": "game.dll",
+  "source_sha256": {
+    "five_player_feasibility_20260927\\host_expansion_disasm_108d9f0.json": "5e065ebbac9e6274ab59f486155e06fed146d1ba5e42bc3bebf22e5f5803e888",
+    "five_player_feasibility_20260927\\protocol_host_to_client_dispatch.json": "a485b4b0559181a85fa43b7fbc288edce9a278469e876218166c888c78e1c565",
+    "five_player_feasibility_20260927\\protocol_confirmed_peer_sender.json": "1bf9a21b46bf125d2f6565ee944047b6c4af49d61e0ab88c72faf44dc4210dda",
+    "five_player_feasibility_20260927\\join_handler_disasm.json": "f0e2c853fb731fecffd27ed2bbab97f9d8ed2868b076c60ee51bcdfe472e505c"
+  },
+  "host_admission": {
+    "fixed_rows": {
+      "admission_call_08": {
+        "rva": "0x108ddc7",
+        "bytes": "41ff5008",
+        "asm": "call qword ptr [r8 + 8]"
+      },
+      "admission_call_50": {
+        "rva": "0x108de09",
+        "bytes": "41ff5050",
+        "asm": "call qword ptr [r8 + 0x50]"
+      },
+      "state_write": {
+        "rva": "0x108ddf2",
+        "bytes": "41c744242007000000",
+        "asm": "mov dword ptr [r12 + 0x20], 7"
+      },
+      "event_hash_1": {
+        "rva": "0x108de17",
+        "bytes": "b9dda297a4",
+        "asm": "mov ecx, 0xa497a2dd"
+      },
+      "event_hash_2": {
+        "rva": "0x108de4e",
+        "bytes": "b99601e78f",
+        "asm": "mov ecx, 0x8fe70196"
+      }
+    },
+    "table_offsets": [
+      "0x08",
+      "0x50"
+    ],
+    "owner_register": "RCX loaded from [network_context+0xB390]",
+    "id_register": "RDX loaded from [r12]",
+    "target_functions_named": false,
+    "return_abi_decoded": false
+  },
+  "host_to_client_dispatch": {
+    "fixed_rows": {
+      "event_hash_roster": {
+        "rva": "0x108c8af",
+        "bytes": "b91533fb4b",
+        "asm": "mov ecx, 0x4bfb3315"
+      },
+      "event_call_roster": {
+        "rva": "0x108c8cb",
+        "bytes": "e8601bb5ff",
+        "asm": "call 0xbde430"
+      },
+      "event_hash_peer": {
+        "rva": "0x108c8d9",
+        "bytes": "b92628b71a",
+        "asm": "mov ecx, 0x1ab72826"
+      },
+      "event_call_peer": {
+        "rva": "0x108c8de",
+        "bytes": "e84d1bb5ff",
+        "asm": "call 0xbde430"
+      },
+      "loop_count": {
+        "rva": "0x108c8e7",
+        "bytes": "41bc04000000",
+        "asm": "mov r12d, 4"
+      },
+      "index_gate_low": {
+        "rva": "0x108c8ff",
+        "bytes": "83f805",
+        "asm": "cmp eax, 5"
+      },
+      "index_gate_high": {
+        "rva": "0x108c908",
+        "bytes": "83f807",
+        "asm": "cmp eax, 7"
+      },
+      "sender_call": {
+        "rva": "0x108c923",
+        "bytes": "e8e87fb5ff",
+        "asm": "call 0xbe4910"
+      },
+      "client_insert_call": {
+        "rva": "0x108c960",
+        "bytes": "e8bb41b0ff",
+        "asm": "call 0xb90b20"
+      },
+      "slot_stride": {
+        "rva": "0x108c980",
+        "bytes": "4883c738",
+        "asm": "add rdi, 0x38"
+      },
+      "loop_decrement": {
+        "rva": "0x108c984",
+        "bytes": "4983ec01",
+        "asm": "sub r12, 1"
+      },
+      "loop_backedge": {
+        "rva": "0x108c988",
+        "bytes": "0f8562ffffff",
+        "asm": "jne 0x108c8f0"
+      },
+      "post_loop_predicate": {
+        "rva": "0x108c991",
+        "bytes": "e87a202d00",
+        "asm": "call 0x135ea10"
+      },
+      "post_loop_event_hash": {
+        "rva": "0x108c99e",
+        "bytes": "b98c6df89b",
+        "asm": "mov ecx, 0x9bf86d8c"
+      },
+      "post_loop_event_call": {
+        "rva": "0x108c9ad",
+        "bytes": "e87e1ab5ff",
+        "asm": "call 0xbde430"
+      }
+    },
+    "slot_loop_count": 4,
+    "slot_stride": "0x38",
+    "observed_index_gate": {
+      "low_exclusive": 5,
+      "high_inclusive": 7
+    },
+    "confirmed_peer_sender": "0xbe4910",
+    "client_confirmed_peer_insert": "0xb90b20",
+    "post_loop_predicate": "0x135ea10",
+    "post_loop_event_hash": "0x9bf86d8c",
+    "meaning": "roster/peer propagation candidate; loop shape is not a player-capacity proof"
+  },
+  "join_status_and_cleanup": {
+    "fixed_rows": {
+      "nested_table_load": {
+        "rva": "0x108bfb9",
+        "bytes": "498b4050",
+        "asm": "mov rax, qword ptr [r8 + 0x50]"
+      },
+      "nested_target_load": {
+        "rva": "0x108bfbd",
+        "bytes": "4c8b4028",
+        "asm": "mov r8, qword ptr [rax + 0x28]"
+      },
+      "nested_call": {
+        "rva": "0x108bfc1",
+        "bytes": "41ffd0",
+        "asm": "call r8"
+      },
+      "nested_return_test": {
+        "rva": "0x108bfc7",
+        "bytes": "f7c1faffffff",
+        "asm": "test ecx, 0xfffffffa"
+      },
+      "nested_status_compare": {
+        "rva": "0x108bfcf",
+        "bytes": "83f802",
+        "asm": "cmp eax, 2"
+      },
+      "reject_or_cleanup_predicate": {
+        "rva": "0x108bfd7",
+        "bytes": "e8543f3600",
+        "asm": "call 0x13eff30"
+      },
+      "reject_or_cleanup_test": {
+        "rva": "0x108bfdc",
+        "bytes": "84c0",
+        "asm": "test al, al"
+      }
+    },
+    "nested_probe_shape": "[object+0x50] -> [returned+0x28] -> call",
+    "nested_return_observation": "EAX is checked against a small status set; semantics unresolved",
+    "reject_or_cleanup_candidate": "0x13eff30 followed by test AL and branch to 0x108c043",
+    "same_as_host_table_0x50": false,
+    "cleanup_abi_proven": false
+  },
+  "target_resolution": {
+    "host_table_0x08_target_resolved": false,
+    "host_table_0x50_target_resolved": false,
+    "dispatcher_target_semantics_resolved": false,
+    "player_index_4_to_7_proven": false,
+    "client_replication_proven": false,
+    "multiplayer_verified": false
+  },
+  "safety": {
+    "process_started": false,
+    "process_accessed": false,
+    "function_calls_made": false,
+    "memory_writes": false,
+    "hooks_installed": false,
+    "injection": false,
+    "production_executable": false,
+    "installable": false,
+    "runtime_verified": false,
+    "multiplayer_verified": false
+  }
+}

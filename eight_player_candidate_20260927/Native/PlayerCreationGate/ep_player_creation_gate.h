@@ -7,7 +7,7 @@
 // the broad capacity patch: the gate is only safe to widen after the resource,
 // component and roster continuations have been supplied by the caller.
 #define EP_PC_MAGIC 0x45504347u /* EPCG */
-#define EP_PC_VERSION 1u
+#define EP_PC_VERSION 2u
 #define EP_PC_BUILD 25480438u
 #define EP_PC_GATE_RVA 0x1086460u
 #define EP_PC_RESOURCE_RVA 0xFDC140u
@@ -142,7 +142,11 @@ typedef struct EP_PC_SLOT {
     UINT8 state;
     UINT8 completed_mask;
     UINT8 owner_held;
-    UINT8 reserved;
+    // A failed admission rollback is a different cleanup transaction from a
+    // normal departure.  Keep the distinction in the slot so a retry cannot
+    // accidentally invoke roster/component departure callbacks for a
+    // resource whose creation transaction never committed.
+    UINT8 rollback_pending;
     UINT32 generation;
     UINT32 owner_epoch;
     EP_PC_RESOURCE resource;

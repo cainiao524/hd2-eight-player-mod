@@ -56,7 +56,9 @@
     ],
     "gate_write": "caller supplied quiesce/resume/write backend only",
     "downstream_ready_required": true,
-    "automatic_process_access": false
+    "automatic_process_access": false,
+    "rollback_failure": "slot state REMOVING with rollback_pending=1; ep_pc_depart retries rollback callback before normal cleanup",
+    "commit_validation_failure": "completed callbacks are compensated before returning EP_PC_INVARIANT_BROKEN"
   },
   "tests": {
     "command": "cmd /c build_x64.bat",
@@ -70,20 +72,22 @@
       "index 8 rejection",
       "duplicate peer rejection",
       "roster cleanup retry",
-      "resource/component rollback"
+      "resource/component rollback",
+      "failed rollback retention and compensating retry",
+      "post-callback invariant failure compensation"
     ]
   },
   "source_sha256": {
-    "ep_player_creation_gate.h": "0d4f8303c141658a8c7b7e5ba5335113a9fbda665a4090ac60b29a7c7f2e1407",
-    "ep_player_creation_gate.cpp": "9c91bb93e316bde2ef251d21a467de966813166363d4ac2c31692b17174684f8",
-    "ep_player_creation_gate_test.cpp": "03121d1d45acc62761ee53d217e64de4c58f781939c7a121696428cad035b9aa",
+    "ep_player_creation_gate.h": "15729c0a4c26391beec74015e9e00f9e0d9074443a7b9ad83466aa321f3eefb8",
+    "ep_player_creation_gate.cpp": "da21f1bde1840542603d834dbb9a1f8685a6edac89c70b275b353ef42bcb507c",
+    "ep_player_creation_gate_test.cpp": "2edf5bfb29b0e44da66d190e28c70d37d5419e90488172b1afb8a051524a21f2",
     "build_x64.bat": "602192ffe280c0e5f3028b96433597d70a58d3f69e162f1be1a4a304c011b499",
-    "README.zh-TW.md": "13eaa88fff268e5770b9cd754213d7389ade2cdb58285ccdaa8c8ce020ea482d",
+    "README.zh-TW.md": "ea55ec5c8bd7b4eb6bc68866b05d703738f38657f5865e5c8c8429c585113c6c",
     "test_player_creation_gate.py": "30a5db66eb24305e0b0d42642941935b4b64395982491787ba91fba941398fd1"
   },
   "binary_sha256": {
-    "ep_player_creation_gate.dll": "4e381b1e5764d1631bce757523ca5d0769e1917c63e0bcfd6b83ce01cc1cc10e",
-    "ep_player_creation_gate_test.exe": "e34f0a3d46faab38ad3226407de7761a54938720181a967c8ad03722ea992d85"
+    "ep_player_creation_gate.dll": "03982ab2ad456f9ec8d362d96a9c2ebc772830fa1632bbdb681bc785bcb2862e",
+    "ep_player_creation_gate_test.exe": "b02ecd5c71f129f72e6fce54ed3731bdcb0b98ae9c065c8798e25a8ad5cce3b3"
   },
   "test": {
     "binary": "ep_player_creation_gate_test.exe",

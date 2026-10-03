@@ -1,0 +1,37 @@
+{
+  "schema": "hd2_underlying_session_record_semantics_boundary_receipt_v1",
+  "build": 25480438,
+  "source_evidence": "five_player_feasibility_20260927/live_engine_session_vtable_20261003.json",
+  "proven_relationships": {
+    "session_count_field": "0x138",
+    "session_record_table_field": "0x140",
+    "record_stride": "0x30",
+    "record_identity_token_field": "0x00",
+    "session_self_key_field": "0x20",
+    "record_observed_byte_field": "0x29",
+    "session_owner_field": "0x130"
+  },
+  "unknown_semantics": [
+    "identity_token is not decoded as PeerId",
+    "observed_byte_29 is not decoded as network index or sync state",
+    "session_owner_field is not decoded as owner or host",
+    "record ordinal is not a player slot"
+  ],
+  "fail_closed_conditions": [
+    "snapshot_not_proven_stable",
+    "record_count_over_capacity",
+    "unread_session_self_key",
+    "unread_record_semantic_boundary",
+    "duplicate_record_identity_token",
+    "self_record_unresolved"
+  ],
+  "synthetic_test": "session_record_semantics_synthetic_passed",
+  "function_calls_made": false,
+  "writes_made": false,
+  "player_semantics_decoded": false,
+  "player_admission_proven": false,
+  "player_creation_proven": false,
+  "runtime_verified": false,
+  "installable": false,
+  "multiplayer_verified": false
+}

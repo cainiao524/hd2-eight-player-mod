@@ -497,3 +497,13 @@ capacity patch 仍是 disabled-by-default、固定 build 的研究候选；inlin
 重新核對 `Native/MidGate` 的兩個 machine-code template 後，修正 helper 呼叫前的 `mov edx,r14d` bytes：正確編碼是 `41 8B D6`；舊候選的 `44 8B D6` 會解碼為 `mov r10d,esi`，並沒有傳遞 native index。容量與 allocator template、固定收據和 verifier 已同步重生成，Python static checks 4/4 通過。
 
 本機另外以 caller-supplied synthetic image 編譯執行器，`ep_midgate_executor_synthetic_passed` 與 DLL export load check 均通過；這只驗證固定 PE/fingerprint gate、兩個 reversible detour、x64 unwind registration、helper ABI 和 exact restore。執行器沒有取得遊戲程序、沒有安裝到 `game.dll`，也沒有綁定真實 owner/quiescence、confirmed-peer、player-creation 或 client replication callback；`installable=false`、`runtime_verified=false`、`multiplayer_verified=false` 仍是有效狀態。
+
+## 2026-10-03 player creation rollback hardening and admission boundary continuation
+
+本輪只在離線固定版本資料與合成 harness 上工作，沒有啟動或存取遊戲程序，沒有呼叫、寫入、hook、注入、安裝或多人驗收。
+
+- `Native/PlayerCreationGate` 的版本門控 adapter 升為 `EP_PC_VERSION=2`，對失敗 admission 增加 `rollback_pending` 狀態。已完成 callback 但補償失敗時，slot 保持 `REMOVING` 並由 `ep_pc_depart` 重試同一 rollback；本地 commit invariant 失敗時會補償已完成 callback，避免 ACTIVE slot 或 owner lease 遺留。`ep_player_creation_gate_synthetic_passed` 與 receipt verifier 通過。
+- `Native/SessionObservation` 新增 `ep_session_record_semantics` 邊界驗證：session `+0x138` count、`+0x140` table、`0x30` stride、record `+0x00` opaque identity token、session `+0x20` self key、owner `+0x130` 與 record `+0x29` byte 的穩定讀取與重複 token rejection 均可重播。這些仍不是 PeerId、network index 或玩家語義，也沒有呼叫任何 GameSession writer。
+- `Native/SessionMembers` 新增 admission/dispatch/cleanup 靜態交叉契約：host `+0x08`／`+0x50` 間接呼叫、host-to-client 四筆 `0x38` stride dispatch、5..7 candidate gate、`0xBE4910` sender、`0xB90B20` client insert、join-handler nested call 與 `0x13EFF30` reject/cleanup candidate 已固定。target 語義、return ABI、cleanup ABI、第五至第八 peer admission、player creation、replication 與 migration 仍未解析。
+
+離線證據與合成測試不能替代實機多人驗收。正式狀態仍為 `installable=false`、`multiplayer_verified=false`；下一步先取得允許的唯讀 callback/owner/cleanup ABI 證據，再把 producer、confirmed-peer、player creation、client replication 與 rollback/unwind 綁定，之後才可進行五至八帳號階梯。

@@ -64,15 +64,20 @@ EP_PC_STATUS validate_locked(const EP_PLAYER_CREATION_ADAPTER* a) {
     for (UINT32 i = 0; i < EP_PC_CAPACITY; ++i) {
         const EP_PC_SLOT& slot = a->slots[i];
         if (slot.state == EP_PC_FREE) {
-            if (slot.completed_mask || slot.owner_held) return EP_PC_INVARIANT_BROKEN;
+            if (slot.completed_mask || slot.owner_held || slot.rollback_pending)
+                return EP_PC_INVARIANT_BROKEN;
             continue;
         }
         if (slot.generation == 0 || slot.owner_epoch != a->owner_epoch ||
             slot.resource.network_index != i || slot.completed_mask > 3 ||
             slot.owner_held != 1) return EP_PC_INVARIANT_BROKEN;
+        if (slot.rollback_pending && slot.state != EP_PC_REMOVING)
+            return EP_PC_INVARIANT_BROKEN;
         ++inflight;
         if (slot.state == EP_PC_ACTIVE && slot.completed_mask != 3) return EP_PC_INVARIANT_BROKEN;
         if (slot.state == EP_PC_PENDING && slot.completed_mask == 3) return EP_PC_INVARIANT_BROKEN;
+        if (slot.state != EP_PC_PENDING && slot.state != EP_PC_ACTIVE &&
+            slot.state != EP_PC_REMOVING) return EP_PC_INVARIANT_BROKEN;
     }
     return inflight == a->inflight ? EP_PC_OK : EP_PC_INVARIANT_BROKEN;
 }
@@ -95,10 +100,21 @@ EP_PC_STATUS finish_failed_admit(EP_PLAYER_CREATION_ADAPTER* a, UINT8 index,
     EP_PC_RESOURCE resource{};
     EP_PC_STATUS rollback_status = EP_PC_OK;
     {
-        AcquireSRWLockShared(&a->lock);
-        const EP_PC_SLOT& slot = a->slots[index];
+        AcquireSRWLockExclusive(&a->lock);
+        EP_PC_SLOT& slot = a->slots[index];
+        if (slot.generation != token.generation || slot.owner_epoch != token.owner_epoch) {
+            ReleaseSRWLockExclusive(&a->lock);
+            return EP_PC_INVARIANT_BROKEN;
+        }
         resource = slot.resource;
-        ReleaseSRWLockShared(&a->lock);
+        // Mark the slot before invoking an external callback.  A concurrent
+        // departure must see the rollback transaction and retry the same
+        // callback, rather than starting a second normal cleanup path.
+        if (completed_mask) {
+            slot.state = EP_PC_REMOVING;
+            slot.rollback_pending = 1;
+        }
+        ReleaseSRWLockExclusive(&a->lock);
     }
     if (completed_mask) rollback_status = a->callbacks.rollback(
         a->callbacks.owner, &resource, completed_mask);
@@ -117,6 +133,7 @@ EP_PC_STATUS finish_failed_admit(EP_PLAYER_CREATION_ADAPTER* a, UINT8 index,
     }
     slot.state = EP_PC_REMOVING;
     slot.completed_mask = completed_mask;
+    slot.rollback_pending = completed_mask ? 1 : 0;
     ReleaseSRWLockExclusive(&a->lock);
     return EP_PC_ROLLBACK_FAILED;
 }
@@ -350,9 +367,16 @@ EP_PC_STATUS __cdecl ep_pc_admit(
     }
     committed.completed_mask = completed;
     committed.state = EP_PC_ACTIVE;
+    committed.rollback_pending = 0;
     status = validate_locked(a);
     ReleaseSRWLockExclusive(&a->lock);
-    if (status != EP_PC_OK) return status;
+    if (status != EP_PC_OK) {
+        // The callbacks completed, but the local commit invariant did not.
+        // Compensate the already-created resource before returning.  Without
+        // this path a corrupted inflight counter (or equivalent local state)
+        // could strand an ACTIVE slot and its owner lease indefinitely.
+        return finish_failed_admit(a, index, token, completed, status, true);
+    }
     return EP_PC_OK;
 }
 
@@ -361,20 +385,52 @@ EP_PC_STATUS __cdecl ep_pc_depart(EP_PLAYER_CREATION_ADAPTER* a, EP_PC_TOKEN tok
     if (status != EP_PC_OK) return status;
     EP_PC_RESOURCE resource{};
     UINT8 mask = 0;
+    bool rollback_pending = false;
     AcquireSRWLockExclusive(&a->lock);
     EP_PC_SLOT* slot = nullptr;
     status = token_slot(a, token, &slot);
     if (status == EP_PC_OK) {
-        if (slot->state == EP_PC_PENDING) status = EP_PC_BUSY;
+        if (slot->state == EP_PC_PENDING && !slot->rollback_pending) status = EP_PC_BUSY;
         else if (slot->state != EP_PC_ACTIVE && slot->state != EP_PC_REMOVING) status = EP_PC_INVALID_CONTEXT;
         else {
             resource = slot->resource;
             mask = slot->completed_mask;
+            rollback_pending = slot->rollback_pending != 0;
             slot->state = EP_PC_REMOVING;
         }
     }
     ReleaseSRWLockExclusive(&a->lock);
     if (status != EP_PC_OK) return status;
+
+    if (rollback_pending) {
+        // A failed admission has its own compensating callback.  Retrying a
+        // normal departure cleanup here could operate on a roster/component
+        // that never committed, and would make the transaction ambiguous.
+        const EP_PC_STATUS rollback = mask
+            ? a->callbacks.rollback(a->callbacks.owner, &resource, mask)
+            : EP_PC_OK;
+        AcquireSRWLockExclusive(&a->lock);
+        slot = &a->slots[token.index];
+        if (slot->generation != token.generation ||
+            slot->owner_epoch != token.owner_epoch) {
+            ReleaseSRWLockExclusive(&a->lock);
+            return EP_PC_INVARIANT_BROKEN;
+        }
+        if (rollback != EP_PC_OK) {
+            slot->state = EP_PC_REMOVING;
+            slot->completed_mask = mask;
+            slot->rollback_pending = 1;
+            ReleaseSRWLockExclusive(&a->lock);
+            return EP_PC_ROLLBACK_FAILED;
+        }
+        const bool held = slot->owner_held != 0;
+        clear_slot(*slot);
+        if (a->inflight) --a->inflight;
+        status = validate_locked(a);
+        ReleaseSRWLockExclusive(&a->lock);
+        if (held) a->callbacks.release_owner(a->callbacks.owner);
+        return status;
+    }
 
     EP_PC_STATUS first_failure = EP_PC_OK;
     if ((mask & kRosterDone) != 0) {

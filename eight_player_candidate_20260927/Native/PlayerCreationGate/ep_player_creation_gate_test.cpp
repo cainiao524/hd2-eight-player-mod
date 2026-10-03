@@ -6,11 +6,13 @@
 
 struct Context {
     std::vector<BYTE>* image{};
+    EP_PLAYER_CREATION_ADAPTER* adapter{};
     bool ready{false};
     bool fail_retain{false};
     bool fail_components{false};
     bool fail_roster{false};
     bool fail_rollback{false};
+    bool corrupt_on_roster{false};
     bool fail_cleanup_roster_once{false};
     unsigned retain{0};
     unsigned release{0};
@@ -51,6 +53,7 @@ static EP_PC_STATUS __cdecl components(void* owner, const EP_PC_RESOURCE*) {
 }
 static EP_PC_STATUS __cdecl roster(void* owner, const EP_PC_RESOURCE*) {
     auto* c = static_cast<Context*>(owner); ++c->roster;
+    if (c->corrupt_on_roster && c->adapter) c->adapter->inflight = 0;
     return c->fail_roster ? EP_PC_CALLBACK_REJECTED : EP_PC_OK;
 }
 static EP_PC_STATUS __cdecl cleanup_roster(void* owner, const EP_PC_RESOURCE*) {
@@ -100,6 +103,7 @@ int main() {
                               roster, cleanup_roster, cleanup_components, rollback};
     EP_PC_PATCH_BACKEND backend{&context, quiesce, resume, write_bytes, downstream_ready};
     EP_PLAYER_CREATION_ADAPTER adapter{};
+    context.adapter = &adapter;
 
     EP_PC_PREFLIGHT report{};
     ok &= check(ep_pc_preflight(EP_PC_BUILD, image.data(), image.size(), &gate,
@@ -147,6 +151,41 @@ int main() {
                 "rollback freed slot");
     context.fail_roster = false;
     ok &= check(ep_pc_validate(&adapter) == EP_PC_OK, "final validate");
+
+    // A failed admission rollback must be retried through rollback(), not the
+    // normal departure cleanup callbacks.  This also verifies that a failed
+    // rollback keeps the owner lease and exact token alive.
+    context.fail_roster = true;
+    context.fail_rollback = true;
+    EP_PC_TOKEN rollback_token{};
+    ok &= check(ep_pc_admit(&adapter, 5, 0x555, 0x655, 0x755,
+                            &rollback_token) == EP_PC_ROLLBACK_FAILED,
+                "rollback failure is retained");
+    EP_PC_SLOT rollback_slot{};
+    ok &= check(ep_pc_get(&adapter, 5, &rollback_slot) == EP_PC_OK &&
+                rollback_slot.state == EP_PC_REMOVING &&
+                rollback_slot.rollback_pending == 1,
+                "rollback pending state");
+    context.fail_roster = false;
+    context.fail_rollback = false;
+    ok &= check(ep_pc_depart(&adapter, rollback_token) == EP_PC_OK,
+                "rollback retry uses compensating callback");
+    ok &= check(ep_pc_validate(&adapter) == EP_PC_OK,
+                "rollback retry restores invariant");
+
+    // If local commit validation fails after all callbacks, compensation must
+    // clear the slot and owner lease before returning the invariant error.
+    context.corrupt_on_roster = true;
+    EP_PC_TOKEN invariant_token{};
+    ok &= check(ep_pc_admit(&adapter, 6, 0x666, 0x766, 0x866,
+                            &invariant_token) == EP_PC_INVARIANT_BROKEN,
+                "commit invariant failure compensates");
+    context.corrupt_on_roster = false;
+    EP_PC_SLOT invariant_slot{};
+    ok &= check(ep_pc_get(&adapter, 6, &invariant_slot) == EP_PC_OK &&
+                invariant_slot.state == EP_PC_FREE &&
+                ep_pc_validate(&adapter) == EP_PC_OK,
+                "commit invariant leaves no stranded slot");
     ok &= check(ep_pc_destroy(&adapter) == EP_PC_OK, "destroy");
     if (!ok) return 1;
     std::puts("ep_player_creation_gate_synthetic_passed");
