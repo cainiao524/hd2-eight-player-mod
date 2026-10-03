@@ -9,6 +9,12 @@
 
 收據為 `eight_player_candidate_20260927/Native/SessionMembers/consumer_executor_receipt_20261003.json`。研究提交為 `a4a5519`，本次狀態收據提交為 `e6e5250`。此 executor 仍是離線 native 安裝器候選：callback resolver、owner lifetime、producer／player creation／cleanup、Party admission 和客戶端 replication 尚未綁定；沒有存取或修改 HD2 程序，`production_executable=false`、`runtime_verified=false`、`installable=false`、`multiplayer_verified=false`。
 
+## 2026-10-03 固定 build native callback binding 候選
+
+`Native/SessionMembers/ep_consumer_native_callbacks.h/.cpp` 依已保存 `0x1093590` body 將四個可由固定 code 直接恢復的 callback 接到版本化 adapter：mode 使用 `game.dll+0x3326340/+0xac4d9` 和 `+0x3326e48/+0x04`，identity 使用 owner `+0xB398`，lookup 使用 `game.dll+0x3326308 → +0xF8 → vtable +0x118` 及 `game.dll+0x2264210` tag，status 使用 `game.dll+0x20BDE78`。PE timestamp／image size 與 Steam build 都 fail-closed；resolver 仍必須由 sidecar owner-lifetime 提供。
+
+`ep_consumer_native_callbacks_test.exe` 通過合成 image、vtable、lookup/status code、固定 identity、版本／映像拒絕與 unbind。這是 ABI binding candidate，bind 本身不呼叫遊戲函式、不安裝 hook；尚無 live callback call、Party admission、player creation 或 client replication 證據，所有正式多人門檻維持 false。
+
 ## 2026-10-03 platform-member consumer bound candidate
 
 已把固定 build `0x1093590` consumer 從 sentinel-only template 收束成可重定位的離線候選：`bind_candidate()` 接受呼叫者提供的 code、unwind 和 callback 位址，拒絕未解析 sentinel、非 canonical／未對齊位址、alias、映像與 stub 重疊及相對位移溢出。`test_consumer_bound_execution.py` 以合成 callback 實際跑過 0..8 成員、失敗／缺本機／未 ready／resolver 拒絕、移動後 code 位址、volatile register 破壞與完整 unwind 邊界，4 項通過；既有 consumer、session-member 與 static patch 測試也通過。

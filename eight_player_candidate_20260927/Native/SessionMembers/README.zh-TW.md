@@ -53,4 +53,9 @@
 新增 `ep_consumer_executor.h/.cpp` 與 `build_consumer_executor_x64.bat`，該腳本同時產生可載入 DLL `ep_consumer_executor.dll` 與合成測試執行檔；把固定 build `25480438` 的 `0x1093590` consumer 候選收束成可回滾的 Windows x64 原生安裝器：先驗證 14-byte 原始入口，再配置 270-byte full-replacement stub 與 24-byte unwind，註冊 `RUNTIME_FUNCTION`，最後寫入 FF25 絕對跳轉；移除時只接受自己擁有的 detour 並恢復原始 bytes。安裝器要求五個非空 callback，呼叫者必須負責 thread quiescence 與 callback／owner lifetime。
 
 `ep_consumer_executor_test.exe` 在合成 module 上通過 4 人相容、5--8 人 count、count 9 拒絕、缺 callback 拒絕、入口 fingerprint 改變拒絕及 install/remove 原始 bytes 恢復；收據見 `consumer_executor_receipt_20261003.json`。 `ep_consumer_executor_load_test.exe` 另外通過 DLL `LoadLibrary`、五個 export 與 build/size getter 檢查。這是可審查的離線 executor，不是 HD2 callback 綁定：沒有注入或改寫遊戲程序，`production_executable=false`、`runtime_verified=false`、`installable=false`、`multiplayer_verified=false`。
+## 2026-10-03 固定 build native callback binding 候選
+
+新增 `ep_consumer_native_callbacks.h/.cpp`：依 `0x1093590` 已保存 body 的實際呼叫形狀，將 mode（`game.dll+0x3326340/+0xac4d9` 與 `+0x3326e48/+0x04`）、identity（owner `+0xB398`）、platform lookup（`+0x3326308 → +0xF8 → vtable +0x118`，第三參數為 `game.dll+0x2264210`）及 status（`game.dll+0x20BDE78`）包成固定 build、PE identity 門控的 callback table。resolver 仍由 sidecar／owner lifetime 的呼叫者提供；bind 不呼叫遊戲函式、不安裝 hook。
+
+`ep_consumer_native_callbacks_test.exe` 以合成 PE image、vtable、lookup/status code 驗證 bind、五個 callback、版本／映像拒絕和 unbind。這讓四個 callback 的 ABI 來源從 sentinel 收束為可審查的固定 body 形狀，但沒有在實機呼叫它們，也沒有證明 Party admission、player creation 或客戶端 replication；`live_callback_abi_verified=false`、`installable=false`、`multiplayer_verified=false`。
 

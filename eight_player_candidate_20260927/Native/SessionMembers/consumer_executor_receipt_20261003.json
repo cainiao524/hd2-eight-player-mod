@@ -25,7 +25,7 @@
   },
   "synthetic_test": {
     "test_file": "ep_consumer_executor_test.cpp",
-    "command": "build_consumer_executor_x64.bat (DLL + synthetic executable)",
+    "command": "build_consumer_executor_x64.bat (executor DLL, native callback adapter, executor harness and DLL export harness)",
     "result": "ep_consumer_executor_synthetic_passed",
     "covered": [
       "4-player compatibility and count 5..8",
@@ -34,26 +34,35 @@
       "mutated target fingerprint rejected",
       "install/remove restores original target",
       "LoadLibrary/GetProcAddress export and getter contract",
-      "expected entry RVA getter and export contract"
+      "expected entry RVA getter and export contract",
+      "native callback binding preflight, fixed image identity, recovered lookup/status call shape, and unbind"
     ],
     "dll_load_test": "ep_consumer_executor_dll_exports_passed"
   },
   "artifacts_sha256": {
-    "ep_consumer_executor.h": "d452ebc19380fee5957e3e13a40c931b5c8f31c7b953090b68d5165d1c08c354",
+    "build_consumer_executor_x64.bat": "7afd8cd11c34d506dd2da246653714f6ba2ae2e90b87020821778d7c127453dd",
     "ep_consumer_executor.cpp": "8ea0d3798266b0391e623824a1c7b70f057b0f849f06d11f3777de95b7d9f207",
+    "ep_consumer_executor.h": "d452ebc19380fee5957e3e13a40c931b5c8f31c7b953090b68d5165d1c08c354",
+    "ep_consumer_executor.obj": "ab4e62cca2a0f5736eca3a16475974612ec32fcee9a06856631815439bcd0f5c",
+    "ep_consumer_executor.dll": "0269e73a3a73596acc2db38c917bd3e227c260a0e95a9352311006e24e384a6b",
+    "ep_consumer_executor.exp": "7843fdc80f6593e5ba4bfc7709a1e4ffc167109fd788ae833413ded9b3c14555",
+    "ep_consumer_executor.lib": "1fc80ac75e1bd48dd94aacd0f348a7b8929232ac7a419f0a44c2fcab1441cfda",
     "ep_consumer_executor_test.cpp": "240cac1f479339ef62b8ac1e1692c1b9b6cbf8ac833aab97cbc7c347ba46ae6c",
-    "build_consumer_executor_x64.bat": "3a08fca8248996c907205001b69488259e4ff8659cce522c70e432dd2be0719f",
-    "ep_consumer_executor.obj": "e17f5ef45d4f3edb133f746c20f0c0bffbf790aee3a23cb4270a77afc0098457",
-    "ep_consumer_executor_test.exe": "9e7c95f9a2d070ffca13ea32a7a81c78c96f23833cabd5553574a1750188c64b",
-    "ep_consumer_executor_test.obj": "9836ff2336622ee6239314926e6b4f272da62cd4b82e67cee38465140164ada2",
-    "ep_consumer_executor_test.exp": "bf2cc4d46fe5d74f1f59c984ec5d6a5acd4376aa48e3c2c534f4dfdd81ce8d89",
-    "ep_consumer_executor_test.lib": "630c5df731220b69f5c7cff5a283247099191179c6f04326d5d505635ddf245f",
-    "ep_consumer_executor.dll": "88e18c432e55bb6bd178b53b0e1d12a0ad8740619d1088c0df86fadd1e33df2f",
-    "ep_consumer_executor.exp": "39b3b044cd330a0dc563690b67b9b0329405849ae6e79a7a5c37ad183e45daf2",
-    "ep_consumer_executor.lib": "38e73f5948f377979b7a3399816849c89444d497f8350cde7ba02c990f136ee3",
-    "ep_consumer_executor_load_test.cpp": "5fca8dd494c0489baa64d359f01e938993f990deeebcdf85978460e84cf23208",
-    "ep_consumer_executor_load_test.exe": "f217d66a39d7c96604cc47661824665f7885f232301b91de48facf5e764b8ac7",
-    "ep_consumer_executor_load_test.obj": "bb57e208d304fdefda53f326bf750aaac3215b0bb877c8aa3a259cadf20934c8"
+    "ep_consumer_executor_test.exe": "aa1b782645dcc59ce33f768d3f7eda6e531f552254598f835efc08b6c649ca5b",
+    "ep_consumer_executor_test.obj": "31577f112b3b08bd80878c201d1123f5afdc195f2786baafea5e624a5e447f14",
+    "ep_consumer_executor_test.exp": "6420ac1af545958dc6062c823ba3f25bdf4c7e1da407db993ab716c045a897fd",
+    "ep_consumer_executor_test.lib": "4a24c86fb84555eb7c274af0177a0107c4f28125d7adc08af24a4d474b327968",
+    "ep_consumer_executor_load_test.cpp": "d837069ae8638697b350fb297b4ae268af02302ed6cb17540e5596894452d421",
+    "ep_consumer_executor_load_test.exe": "b469f2f13c5964305ebd3dfd485cff1632f62ad5f53ebcdcb969edd1ab0856a8",
+    "ep_consumer_executor_load_test.obj": "e186f45d8f3cd332678e9439f722d62f5c3a3868c7ec776428b17fa2c06907c3",
+    "ep_consumer_native_callbacks.cpp": "edee6aa4ad409327f11d09d7ba4be4b730138139db6d02f6dccdbda66765ad12",
+    "ep_consumer_native_callbacks.h": "ba315dc205d221764c1dd8de6832cd32708d1190f4f978d1fb8df4fd42a7d2f8",
+    "ep_consumer_native_callbacks.obj": "1e6be0482b7739f035207a1a021398e6fbdca1efbdee5a1e0dbc2562378c9f0f",
+    "ep_consumer_native_callbacks_test.cpp": "011bf99bcf5d535c0e0335f698189fd4f62f38cb8dd2a37243030574a074f8ac",
+    "ep_consumer_native_callbacks_test.exe": "72f681ae076ca553b1d5df7d774652524a18443de371f642ebe9d579cc75f2db",
+    "ep_consumer_native_callbacks_test.obj": "af03f9f9a02112c4aa176d1ad74f8142ddcfb2cd405ff58c347b35b9da7e422c",
+    "ep_consumer_native_callbacks_test.exp": "3196efef9e10ba805870f65dc8adab1bb882e2f26503161ccd9147b575f28c2d",
+    "ep_consumer_native_callbacks_test.lib": "7a7b09fdd690cc86694c23fc4d3dfd2201a1188d9a8e4a9db316accffd4b1ec6"
   },
   "production": {
     "production_executable": false,
@@ -66,5 +75,29 @@
       "producer/player creation/cleanup and Party admission are unresolved",
       "no live process patch or multiplayer test was performed"
     ]
+  },
+  "native_callback_binding": {
+    "build": 25480438,
+    "module_identity_gate": {
+      "timestamp": 1790161983,
+      "image_size": 74727424
+    },
+    "recoverable_callbacks": {
+      "resolver": "caller-supplied sidecar resolver; owner lifetime remains external",
+      "mode": "game.dll+0x3326340 -> +0xac4d9 flag and game.dll+0x3326e48 -> +0x04 enum mapping",
+      "identity": "owner+0xb398",
+      "lookup": "game.dll+0x3326308 -> +0xf8 -> vtable +0x118, called as (platform,id,game.dll+0x2264210)",
+      "status": "game.dll+0x20bde78 direct function, called as (token)"
+    },
+    "native_calls_performed": false,
+    "live_callback_abi_verified": false,
+    "synthetic_test": "ep_consumer_native_callbacks_synthetic_passed",
+    "installable": false,
+    "member_view_contract": {
+      "ids_offset": "0x00",
+      "ids_count": 8,
+      "count_offset": "0x40",
+      "separate_from_ep_sidecar": true
+    }
   }
 }
