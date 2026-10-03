@@ -196,6 +196,36 @@ void update_game(float) {
     observe_snapshot();
 }
 
+bool readable_bytes(const void* address, SIZE_T size) {
+    if (!address || size == 0) return false;
+    const uintptr_t begin = reinterpret_cast<uintptr_t>(address);
+    if (size > UINTPTR_MAX - begin) return false;
+    MEMORY_BASIC_INFORMATION mbi{};
+    if (VirtualQuery(address, &mbi, sizeof(mbi)) != sizeof(mbi) ||
+        mbi.State != MEM_COMMIT) return false;
+    const DWORD protect = mbi.Protect & 0xffu;
+    if (protect == PAGE_NOACCESS || protect == PAGE_GUARD) return false;
+    const uintptr_t region_begin = reinterpret_cast<uintptr_t>(mbi.BaseAddress);
+    if (mbi.RegionSize > UINTPTR_MAX - region_begin) return false;
+    const uintptr_t region_end = region_begin + mbi.RegionSize;
+    return begin >= region_begin && begin + size <= region_end;
+}
+
+bool safe_target_matches(const BYTE* target, const BYTE* expected, SIZE_T size) {
+    if (!readable_bytes(target, size) || !expected) return false;
+    __try {
+        return std::memcmp(target, expected, size) == 0;
+    } __except (EXCEPTION_EXECUTE_HANDLER) {
+        return false;
+    }
+}
+
+bool callbacks_complete(const EP_CONSUMER_CALLBACKS* callbacks) {
+    return callbacks != nullptr && callbacks->resolver != nullptr &&
+           callbacks->mode != nullptr && callbacks->identity != nullptr &&
+           callbacks->lookup != nullptr && callbacks->status != nullptr;
+}
+
 void unloaded() {
     write_probe_log("unloaded", false);
     g_c_api.store(0, std::memory_order_release);
@@ -252,4 +282,48 @@ EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_network_table_pointer() {
 
 EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_game_session_table_pointer() {
     return g_game_session_table.load(std::memory_order_acquire);
+}
+
+EP_PLUGIN_EXPORT BOOL __cdecl ep_official_plugin_runtime_preflight(
+    DWORD steam_build, HMODULE game_module, DWORD entry_rva,
+    const BYTE* expected_entry, SIZE_T expected_size,
+    const EP_CONSUMER_CALLBACKS* callbacks, EP_RUNTIME_PREFLIGHT* out) {
+    if (!out) return FALSE;
+    std::memset(out, 0, sizeof(*out));
+    out->steam_build = steam_build;
+    out->entry_rva = entry_rva;
+    out->expected_entry_size = expected_size > UINT32_MAX ? 0 : static_cast<DWORD>(expected_size);
+    out->expected_stolen_size = ep_consumer_stolen_size();
+    out->expected_code_size = ep_consumer_code_size();
+    out->build_ok = steam_build == ep_consumer_expected_build();
+    out->module_ok = game_module != nullptr;
+    out->entry_ok = entry_rva == ep_consumer_expected_entry_rva();
+    out->target_ok = out->module_ok && out->entry_ok &&
+        expected_size == ep_consumer_stolen_size() &&
+        expected_entry != nullptr &&
+        safe_target_matches(reinterpret_cast<const BYTE*>(game_module) + entry_rva,
+                            expected_entry, expected_size);
+    out->callback_ok = callbacks_complete(callbacks);
+    out->executor_abi_ok = ep_consumer_expected_build() == 25480438u &&
+        ep_consumer_expected_entry_rva() == 0x1093590u &&
+        ep_consumer_code_size() == 270u && ep_consumer_stolen_size() == 14u;
+    out->ready = out->build_ok && out->module_ok && out->entry_ok &&
+        out->target_ok && out->callback_ok && out->executor_abi_ok;
+    return out->ready;
+}
+
+EP_PLUGIN_EXPORT BOOL __cdecl ep_official_plugin_runtime_install(
+    DWORD steam_build, HMODULE game_module, DWORD entry_rva,
+    const BYTE* expected_entry, SIZE_T expected_size,
+    const EP_CONSUMER_CALLBACKS* callbacks, EP_CONSUMER_HOOK* out_hook) {
+    EP_RUNTIME_PREFLIGHT report{};
+    if (!out_hook || !ep_official_plugin_runtime_preflight(
+            steam_build, game_module, entry_rva, expected_entry, expected_size,
+            callbacks, &report)) return FALSE;
+    return ep_consumer_install(steam_build, game_module, entry_rva,
+                               expected_entry, expected_size, callbacks, out_hook);
+}
+
+EP_PLUGIN_EXPORT BOOL __cdecl ep_official_plugin_runtime_remove(EP_CONSUMER_HOOK* hook) {
+    return ep_consumer_remove(hook);
 }

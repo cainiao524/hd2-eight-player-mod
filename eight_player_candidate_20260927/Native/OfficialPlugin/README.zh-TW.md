@@ -11,3 +11,9 @@
 ABI 參考：[Autodesk Stingray plugin API samples](https://github.com/AutodeskGames/stingray-plugin-api-samples) 與 [Stingray engine plugin 文件](https://help.autodesk.com/cloudhelp/ENU/Stingray-SDK-Help/sdk_help/extend_engine.html)。
 
 這是版本化的觀察入口，不是八人功能。必須先取得同一 build 的 peer admission、player creation、roster、client cleanup 和 host migration 合約；任何欄位或 callback 未確認時都保持 disabled。
+
+## Consumer executor 整合邊界（2026-10-03）
+
+`ep_official_plugin.dll` 現在會一起編譯 `SessionMembers/ep_consumer_executor.cpp`，並輸出三個明確的橋接入口：`ep_official_plugin_runtime_preflight()`、`ep_official_plugin_runtime_install()` 與 `ep_official_plugin_runtime_remove()`。`preflight` 只做唯讀檢查：固定 build、entry RVA、14-byte target fingerprint、executor ABI、可讀記憶體範圍與五個 callback 是否全部存在；任一項不通過就不會寫入遊戲記憶體。
+
+`runtime_install` 先完整通過相同 preflight，再呼叫可回滾的 consumer executor；`runtime_remove` 只接受自己擁有的 detour。synthetic harness 覆蓋 4 人相容、5--8 人計數、第 9 人拒絕、callback 缺失、target fingerprint 變更、install/remove 還原與 DLL export。這個整合仍未綁定 HD2 的真實 callback、Party admission 或 Player Clone 建立，因此沒有把 `installable`、`runtime_verified` 或 `multiplayer_verified` 門檻改成 true，也沒有將 DLL 放入遊戲目錄。

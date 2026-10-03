@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include "../SessionMembers/ep_consumer_executor.h"
 
 #ifdef _WIN32
 #define EP_PLUGIN_EXPORT extern "C" __declspec(dllexport)
@@ -57,3 +58,31 @@ EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_network_api_pointer();
 EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_game_session_api_pointer();
 EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_network_table_pointer();
 EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_game_session_table_pointer();
+
+// Read-only gate and reversible bridge for the fixed-build consumer candidate.
+// Preflight never writes game memory. Install/remove remain disabled to callers
+// until the caller supplies the versioned callback ABI and owns thread quiescence.
+typedef struct EP_RUNTIME_PREFLIGHT {
+    DWORD steam_build;
+    DWORD entry_rva;
+    DWORD expected_entry_size;
+    DWORD expected_stolen_size;
+    DWORD expected_code_size;
+    BOOL build_ok;
+    BOOL module_ok;
+    BOOL entry_ok;
+    BOOL target_ok;
+    BOOL callback_ok;
+    BOOL executor_abi_ok;
+    BOOL ready;
+} EP_RUNTIME_PREFLIGHT;
+
+EP_PLUGIN_EXPORT BOOL __cdecl ep_official_plugin_runtime_preflight(
+    DWORD steam_build, HMODULE game_module, DWORD entry_rva,
+    const BYTE* expected_entry, SIZE_T expected_size,
+    const EP_CONSUMER_CALLBACKS* callbacks, EP_RUNTIME_PREFLIGHT* out);
+EP_PLUGIN_EXPORT BOOL __cdecl ep_official_plugin_runtime_install(
+    DWORD steam_build, HMODULE game_module, DWORD entry_rva,
+    const BYTE* expected_entry, SIZE_T expected_size,
+    const EP_CONSUMER_CALLBACKS* callbacks, EP_CONSUMER_HOOK* out_hook);
+EP_PLUGIN_EXPORT BOOL __cdecl ep_official_plugin_runtime_remove(EP_CONSUMER_HOOK* hook);

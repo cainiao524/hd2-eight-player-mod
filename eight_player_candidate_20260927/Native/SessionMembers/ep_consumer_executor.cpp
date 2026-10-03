@@ -104,5 +104,6 @@ extern "C" BOOL __cdecl ep_consumer_remove(EP_CONSUMER_HOOK* hook) {
     return TRUE;
 }
 extern "C" DWORD __cdecl ep_consumer_expected_build() { return kBuild; }
+extern "C" DWORD __cdecl ep_consumer_expected_entry_rva() { return kEntryRva; }
 extern "C" DWORD __cdecl ep_consumer_code_size() { return static_cast<DWORD>(kCodeSize); }
 extern "C" DWORD __cdecl ep_consumer_stolen_size() { return static_cast<DWORD>(kStolen); }

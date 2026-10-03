@@ -1,0 +1,110 @@
+{
+  "schema": "ep_official_plugin_runtime_bridge_receipt_v1",
+  "steam_build": 25480438,
+  "entry_rva": "0x1093590",
+  "target_stolen_bytes": 14,
+  "executor_code_bytes": 270,
+  "scope": "OfficialPlugin and consumer executor are linked into one DLL; bridge remains explicit and fail-closed",
+  "preflight": {
+    "read_only": true,
+    "build_gate": true,
+    "entry_rva_gate": true,
+    "target_fingerprint_gate": true,
+    "callback_non_null_gate": true,
+    "executor_abi_gate": true,
+    "memory_write_on_preflight": false,
+    "missing_callback_rejected": true,
+    "mutated_target_rejected": true
+  },
+  "runtime_bridge": {
+    "install_requires_preflight": true,
+    "remove_requires_owned_detour": true,
+    "rollback_restores_original_bytes": true,
+    "thread_quiescence_owned_by_caller": true,
+    "callbacks_bound_to_hd2": false,
+    "party_admission_bound": false,
+    "player_creation_bound": false
+  },
+  "synthetic_test": {
+    "command": "Native/OfficialPlugin/build_x64.bat",
+    "result": "official_plugin_runtime_bridge_tests_passed",
+    "covered": [
+      "preflight accepted fixed synthetic target",
+      "missing callback rejected without write",
+      "install executes 4..8 consumer path",
+      "ninth player rejected by executor",
+      "remove restores original target",
+      "mutated target rejected",
+      "combined DLL LoadLibrary/GetProcAddress exports"
+    ]
+  },
+  "artifacts_sha256": {
+    "ep_official_plugin.h": {
+      "sha256": "84065fd484be27312929bb1f9054f14d4f634f2edbbf5d6df3145c43e9e7ec77",
+      "bytes": 3586
+    },
+    "ep_official_plugin.cpp": {
+      "sha256": "8d06a1b3c86f2bf648c306271a301834b3c0e418398836f16a21e99b075bec5e",
+      "bytes": 14726
+    },
+    "ep_official_plugin_test.cpp": {
+      "sha256": "2538b77279df12ebb03703ff561ab17ab9759120b6c07b6911934aed9e4744ac",
+      "bytes": 4935
+    },
+    "ep_official_plugin_load_test.cpp": {
+      "sha256": "563f70c44d4daf074632c9c1d407f0fb80464d5b054f8bb0345dc0a6649dc065",
+      "bytes": 798
+    },
+    "build_x64.bat": {
+      "sha256": "e2ab6298a61ba3f99560a21f898f77dccaf7f40daade9560b8e8df3a28369bd7",
+      "bytes": 1034
+    },
+    "README.zh-TW.md": {
+      "sha256": "d7b506d655c77d5d44c8c9f0adb4016692d90de96ceebdb6d7ffa3efdd482bb6",
+      "bytes": 3554
+    },
+    "ep_official_plugin.dll": {
+      "sha256": "5687f2f0f50305515348894de14d8f5494f52c4b51f7e06813bdf5757942511f",
+      "bytes": 287744
+    },
+    "eight_player_pluginw64_release.dll": {
+      "sha256": "6eb876a7c669a14b977bbe59f4bf80a5490ba5d1b681462ccc5721ea9899d04f",
+      "bytes": 287744
+    },
+    "ep_official_plugin_test.exe": {
+      "sha256": "093cfdcaec08355244d5ce83431872b09f68c256654fa9257add51c04abed30d",
+      "bytes": 316416
+    },
+    "ep_official_plugin_load_test.exe": {
+      "sha256": "f9bdd4d569286d2f5c1ad97fd5f05d525d27f0afcdd910472a22f50bcf395812",
+      "bytes": 154112
+    },
+    "ep_official_plugin.lib": {
+      "sha256": "1fba35d1777c048a19567487b2a30a84dce9c5d9d34e165fd0dfc1a4cd588104",
+      "bytes": 6334
+    },
+    "ep_official_plugin.exp": {
+      "sha256": "282c954a5bcc0cc14b8411183a9e9b4c7a8dabbfea4b3877c8876ab398bccf52",
+      "bytes": 3326
+    },
+    "eight_player_pluginw64_release.lib": {
+      "sha256": "fe4895ebd9059ab039583e449d952349d186aba6717d891c5324631d4c3aa647",
+      "bytes": 6670
+    },
+    "eight_player_pluginw64_release.exp": {
+      "sha256": "78d9396b752467a4f36c367246af940508307e7ece6b3569d3ab7c99bf389d65",
+      "bytes": 3350
+    }
+  },
+  "gates": {
+    "production_executable": false,
+    "runtime_verified": false,
+    "installable": false,
+    "multiplayer_verified": false
+  },
+  "next_required": [
+    "resolve HD2 callback addresses and owner lifetime",
+    "bind Party/Session admission and Player Clone creation",
+    "verify all-client mission lifecycle including reconnect and host migration"
+  ]
+}

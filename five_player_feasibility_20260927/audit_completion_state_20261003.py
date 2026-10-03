@@ -180,6 +180,14 @@ def _validate_acceptance_receipt(path: Path, repo_root: Path) -> dict[str, Any]:
         and len({str(row.get("client_id", "")) for row in rows}) == 8
         and all(row.get("client_id") for row in rows)
     )
+    row_indexes = [row.get("network_index") for row in rows] if row_ok else []
+    row_index_ok = bool(
+        row_ok
+        and all(isinstance(index, int) and not isinstance(index, bool) for index in row_indexes)
+        and sorted(row_indexes) == list(range(8))
+    )
+    mission_ok = bool(receipt.get("mission_id"))
+    session_ok = bool(receipt.get("session_id"))
     # Require the receipt to be inside this repository, so a copied summary
     # cannot silently serve as external evidence.
     try:
@@ -194,7 +202,17 @@ def _validate_acceptance_receipt(path: Path, repo_root: Path) -> dict[str, Any]:
         "rows": len(rows) if isinstance(rows, list) else None,
         "unique_accounts": bool(unique_accounts),
         "unique_clients": bool(unique_clients),
-        "valid": inside_repo and not mismatches and bool(row_ok and unique_accounts and unique_clients),
+        "row_indexes_exactly_0_to_7": bool(row_index_ok),
+        "mission_id_present": mission_ok,
+        "session_id_present": session_ok,
+        "valid": (
+            inside_repo
+            and not mismatches
+            and bool(row_ok and unique_accounts and unique_clients)
+            and row_index_ok
+            and mission_ok
+            and session_ok
+        ),
     }
 
 

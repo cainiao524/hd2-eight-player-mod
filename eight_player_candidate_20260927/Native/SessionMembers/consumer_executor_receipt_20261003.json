@@ -21,7 +21,7 @@
     "remove_requires_owned_detour": true,
     "original_bytes_restored": true,
     "no_trampoline": "full replacement; caller must quiesce threads and retain callback lifetime",
-    "loadable_dll_export": "ep_consumer_executor.dll exports ep_consumer_install/remove and expected build/size getters; not staged into game plugins"
+    "loadable_dll_export": "ep_consumer_executor.dll exports ep_consumer_install/remove and expected build/entry RVA/code/stolen-size getters; not staged into game plugins"
   },
   "synthetic_test": {
     "test_file": "ep_consumer_executor_test.cpp",
@@ -33,26 +33,27 @@
       "missing callbacks rejected",
       "mutated target fingerprint rejected",
       "install/remove restores original target",
-      "LoadLibrary/GetProcAddress export and getter contract"
+      "LoadLibrary/GetProcAddress export and getter contract",
+      "expected entry RVA getter and export contract"
     ],
     "dll_load_test": "ep_consumer_executor_dll_exports_passed"
   },
   "artifacts_sha256": {
-    "ep_consumer_executor.h": "74e3663911ad11d332e569b7082d45492ee9cbf61dd444397e0961f7e2b09be8",
-    "ep_consumer_executor.cpp": "3dcaeb57dc7abf2147d4bee86c04e6d0a70028083715d9dd29cdd32ab1c8c039",
+    "ep_consumer_executor.h": "d452ebc19380fee5957e3e13a40c931b5c8f31c7b953090b68d5165d1c08c354",
+    "ep_consumer_executor.cpp": "8ea0d3798266b0391e623824a1c7b70f057b0f849f06d11f3777de95b7d9f207",
     "ep_consumer_executor_test.cpp": "240cac1f479339ef62b8ac1e1692c1b9b6cbf8ac833aab97cbc7c347ba46ae6c",
     "build_consumer_executor_x64.bat": "3a08fca8248996c907205001b69488259e4ff8659cce522c70e432dd2be0719f",
-    "ep_consumer_executor.obj": "e145f7cf4c227aab8a54f98ca9d0c08db24fe8d59b4b3f3a130f9f4addf0e7d2",
-    "ep_consumer_executor_test.exe": "2c49b58d9b41edf0f57945de2de888c36d2b0e7f695512099eb75d9cdae954e1",
-    "ep_consumer_executor_test.obj": "14d18bcee79d145532c6d55b0504771124eae1585dd21d06f078d7c57e64863c",
-    "ep_consumer_executor_test.exp": "56dfa59fbd76d7f0eb568bb61a125d634890830d6e74fd782f9cadd743705f3f",
-    "ep_consumer_executor_test.lib": "b313bef2556dcb86931adf9c8df15dbe93fb252b0d86892d8fdedda2ec18a63a",
-    "ep_consumer_executor.dll": "35a6a8046a0ca2456bdfeddf332a34f3ca9b02d389b9d00ddb5ffe24360e839a",
-    "ep_consumer_executor.exp": "8886acba863840041f46e70b1eaa49efcad47cf09fb55ddc38ede9dcae50a7e2",
-    "ep_consumer_executor.lib": "9eeb82a0287dd4c5b9e6adb9c8afb5bf73eaf4c5ef1542d2f3be4fb83b366ff1",
-    "ep_consumer_executor_load_test.cpp": "58fef32c069936e87613aa4b3499be92eebb361c08e6398b7cdf305dc35faada",
-    "ep_consumer_executor_load_test.exe": "58104874b84d7d54cf879c2dcd0d82324613384c4502c870c1af67cbe837b64f",
-    "ep_consumer_executor_load_test.obj": "071e3273388a55ed37f37a6cb4d77612d2a992da47d197f2e75fbb71f792676a"
+    "ep_consumer_executor.obj": "e17f5ef45d4f3edb133f746c20f0c0bffbf790aee3a23cb4270a77afc0098457",
+    "ep_consumer_executor_test.exe": "9e7c95f9a2d070ffca13ea32a7a81c78c96f23833cabd5553574a1750188c64b",
+    "ep_consumer_executor_test.obj": "9836ff2336622ee6239314926e6b4f272da62cd4b82e67cee38465140164ada2",
+    "ep_consumer_executor_test.exp": "bf2cc4d46fe5d74f1f59c984ec5d6a5acd4376aa48e3c2c534f4dfdd81ce8d89",
+    "ep_consumer_executor_test.lib": "630c5df731220b69f5c7cff5a283247099191179c6f04326d5d505635ddf245f",
+    "ep_consumer_executor.dll": "88e18c432e55bb6bd178b53b0e1d12a0ad8740619d1088c0df86fadd1e33df2f",
+    "ep_consumer_executor.exp": "39b3b044cd330a0dc563690b67b9b0329405849ae6e79a7a5c37ad183e45daf2",
+    "ep_consumer_executor.lib": "38e73f5948f377979b7a3399816849c89444d497f8350cde7ba02c990f136ee3",
+    "ep_consumer_executor_load_test.cpp": "5fca8dd494c0489baa64d359f01e938993f990deeebcdf85978460e84cf23208",
+    "ep_consumer_executor_load_test.exe": "f217d66a39d7c96604cc47661824665f7885f232301b91de48facf5e764b8ac7",
+    "ep_consumer_executor_load_test.obj": "bb57e208d304fdefda53f326bf750aaac3215b0bb877c8aa3a259cadf20934c8"
   },
   "production": {
     "production_executable": false,

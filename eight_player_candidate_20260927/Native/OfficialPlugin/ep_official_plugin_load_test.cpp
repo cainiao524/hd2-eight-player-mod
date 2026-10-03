@@ -8,6 +8,13 @@ typedef void* (__cdecl *get_plugin_api_export)(unsigned);
 int main() {
     HMODULE module = LoadLibraryW(L"ep_official_plugin.dll");
     assert(module != nullptr);
+    const char* exports[] = {
+        "get_plugin_api",
+        "ep_official_plugin_runtime_preflight",
+        "ep_official_plugin_runtime_install",
+        "ep_official_plugin_runtime_remove",
+    };
+    for (const char* name : exports) assert(GetProcAddress(module, name) != nullptr);
     auto get_api = reinterpret_cast<get_plugin_api_export>(GetProcAddress(module, "get_plugin_api"));
     assert(get_api != nullptr);
     assert(get_api(EP_PLUGIN_API_ID) != nullptr);

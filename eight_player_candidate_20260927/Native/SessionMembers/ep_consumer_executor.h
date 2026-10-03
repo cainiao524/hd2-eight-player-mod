@@ -1,4 +1,7 @@
 #pragma once
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <windows.h>
 
 extern "C" {
@@ -32,6 +35,7 @@ __declspec(dllexport) BOOL __cdecl ep_consumer_install(
     const EP_CONSUMER_CALLBACKS* callbacks, EP_CONSUMER_HOOK* out_hook);
 __declspec(dllexport) BOOL __cdecl ep_consumer_remove(EP_CONSUMER_HOOK* hook);
 __declspec(dllexport) DWORD __cdecl ep_consumer_expected_build();
+__declspec(dllexport) DWORD __cdecl ep_consumer_expected_entry_rva();
 __declspec(dllexport) DWORD __cdecl ep_consumer_code_size();
 __declspec(dllexport) DWORD __cdecl ep_consumer_stolen_size();
 }

@@ -1,6 +1,6 @@
 # 八人目標完成審計（2026-10-03）
 
-本收據由 `audit_completion_state_20261003.py` 對目前工作樹唯讀產生，時間 `2026-10-03T12:20:46.287160+00:00`。審計不啟動遊戲、不開啟程序 handle、不載入 DLL、不寫入記憶體，也不連線 Steam／Party／PlayFab。
+本收據由 `audit_completion_state_20261003.py` 對目前工作樹唯讀產生，時間 `2026-10-03T12:23:06.120160+00:00`。審計不啟動遊戲、不開啟程序 handle、不載入 DLL、不寫入記憶體，也不連線 Steam／Party／PlayFab。
 
 ## 結果
 
@@ -23,7 +23,7 @@
 ## 狀態與檔案完整性
 
 - GOAL SHA-256 與 STATE 宣告一致：`True`
-- STATE manifest 宣告 `1343` 個檔案；missing `0`，hash mismatch `13`。
+- STATE manifest 宣告 `1343` 個檔案；missing `0`，hash mismatch `40`。
 - 本次工作樹包含尚未由其他 agent 提交／重新寫入 STATE map 的修改，因此 mismatch 只表示收據需在整合後重跑，不代表新程式碼已被否定。
 - 保留使用者未跟蹤檔案：`True`
 
@@ -31,6 +31,8 @@
 
 - `eight_player_candidate_20260927/Native/Bridge/ep_native_bridge.cpp`
 - `eight_player_candidate_20260927/Native/Bridge/ep_native_bridge.h`
+- `eight_player_candidate_20260927/Native/ClientSidecar/ep_client_bridge_adapter.cpp`
+- `eight_player_candidate_20260927/Native/ClientSidecar/ep_client_bridge_adapter.h`
 - `eight_player_candidate_20260927/Native/Sidecar/ep_sidecar.cpp`
 - `eight_player_candidate_20260927/Native/Sidecar/ep_sidecar.h`
 - `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.h`
@@ -38,14 +40,39 @@
 - `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_test.cpp`
 - `eight_player_candidate_20260927/Native/OfficialPlugin/build_x64.bat`
 - `eight_player_candidate_20260927/Native/OfficialPlugin/README.zh-TW.md`
+- `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.dll`
+- `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_test.exe`
+- `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.exp`
+- `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.lib`
+- `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.obj`
+- `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_test.exp`
+- `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_test.lib`
+- `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_test.obj`
 - `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_load_test.cpp`
+- `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_load_test.exe`
+- `eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_load_test.obj`
+- `eight_player_candidate_20260927/Native/OfficialPlugin/eight_player_pluginw64_release.dll`
+- `eight_player_candidate_20260927/Native/OfficialPlugin/eight_player_pluginw64_release.exp`
+- `eight_player_candidate_20260927/Native/OfficialPlugin/eight_player_pluginw64_release.lib`
+- `eight_player_candidate_20260927/Native/SessionMembers/build_consumer_executor_x64.bat`
+- `eight_player_candidate_20260927/Native/SessionMembers/consumer_executor_receipt_20261003.json`
 - `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor.cpp`
 - `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor.h`
+- `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor.obj`
+- `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor_test.exe`
+- `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor_test.exp`
+- `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor_test.lib`
+- `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor_test.obj`
+- `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor.dll`
+- `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor.exp`
+- `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor.lib`
 - `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor_load_test.cpp`
+- `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor_load_test.exe`
+- `eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor_load_test.obj`
 
 ## Git 參考
 
-- 審計 HEAD：`a3a2a4b219ad034a10550e8bacdd1ac998c7138d`
+- 審計 HEAD：`36cfb06f53769242208976c78f8d97a9d0826fc7`
 - STATE latest research commit：`a4a5519`（存在：`True`）
 - STATE latest status receipt commit：`e6e5250`（存在：`True`）
 
