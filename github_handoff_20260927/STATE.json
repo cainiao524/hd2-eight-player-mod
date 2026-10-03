@@ -1183,7 +1183,16 @@
     "five_player_feasibility_20260927/live_session_snapshot_20261003_r7.json": "aadf0b1942def62da056bec53317e3b0059188bbb9ac023e1d2af01265a121ed",
     "five_player_feasibility_20260927/live_native_sites_20261003_r3.failure.json": "97a39389f10e8e16114bf6cabe27105da4e28409d9dc92da200b7f0e9684749a",
     "eight_player_candidate_20260927/Native/Bridge/ep_bridge_client_integration_test.cpp": "fd3253bbbe13dd2612dd32a1cf31dadedb77bad13205696f6ad64efc5f502eb6",
-    "eight_player_candidate_20260927/Native/Bridge/ep_bridge_client_integration_test.exe": "02531bdca120e02b012cf7c00815bb82ba03674458a57eb7cd8fe4b3c2f0b9af"
+    "eight_player_candidate_20260927/Native/Bridge/ep_bridge_client_integration_test.exe": "02531bdca120e02b012cf7c00815bb82ba03674458a57eb7cd8fe4b3c2f0b9af",
+    "eight_player_candidate_20260927/Native/PlayerResource/ep_player_resource.h": "8939ab4129c286955ccc9caec41508b7b2759b1db82b0ec6631b8b93357e0d84",
+    "eight_player_candidate_20260927/Native/PlayerResource/ep_player_resource.cpp": "710930b6c1a163a56475b6ad4426f38b9e71b468a9ffb1f4eb377a8eb399d1ce",
+    "eight_player_candidate_20260927/Native/PlayerResource/ep_player_resource_test.cpp": "92c11637d71ee5263024b3f759f48c1db15f5f3ef0de08101a4c3c85dfa7a352",
+    "eight_player_candidate_20260927/Native/PlayerResource/build_x64.bat": "573b7009a8d5483a98342a91f3063ad56431370d480d23bb77bb97db1322d89b",
+    "eight_player_candidate_20260927/Native/PlayerResource/ep_player_resource.dll": "0d3ac8dff3a281c3e155287bda9416900f814958a1e5234e479950cb2b2160f5",
+    "eight_player_candidate_20260927/Native/PlayerResource/ep_player_resource_test.exe": "9e5f6f3cacad7634be69c4518dcc0d705f2770f95417581feee42d2d4c0e570d",
+    "eight_player_candidate_20260927/Native/PlayerResource/player_resource_report_20261003.json": "3f9cc169672b50fdb651442cfc5021d070c865adc8794e899c5226f65a3627df",
+    "eight_player_candidate_20260927/Native/PlayerResource/test_player_resource.py": "7de3e060a5c92ff15545c84715222d0f4a7979d8aa323b9d9678de1045918f67",
+    "eight_player_candidate_20260927/Native/PlayerResource/README.zh-TW.md": "6c63abfbdf4423d1660dd888b19db604ef3bbc87450afd326c307bef36f669f0"
   },
   "missing_release_files": [],
   "remaining_release_work": [
@@ -1282,7 +1291,8 @@
     "Hardened the Native Bridge and ClientSidecar cross-component transaction: create-before-confirm publication, full-token cleanup retry, native-confirm compensation and owner-lease balancing; bridge/client C++ harnesses and report/hash tests passed.",
     "Extended the bridge/client integration harness to eight real sidecar admissions with stable 0..7 indexes, departure hole preservation, generation-safe reconnect and full dual-registry cleanup; rebuilt harness passed.",
     "Added an adapter destroy invariant that refuses teardown while any native-confirmed flag remains set; rebuilt both native targets and all bridge/client integration tests passed.",
-    "Updated HANDOFF to match the native bridge compensation order, eight-slot cross-component lifecycle harness and current commit receipts."
+    "Updated HANDOFF to match the native bridge compensation order, eight-slot cross-component lifecycle harness and current commit receipts.",
+    "Implemented an offline native PlayerResource eight-slot sidecar: three audited callback stages, generation and owner-epoch fencing, callback leases, reverse rollback, order-failure rollback, idempotent release and quiesced owner migration; C++ harness and report/hash tests pass while the real ABI, runtime, installation and multiplayer flags remain false."
   ],
   "next_offline_work": [
     "Bind the offline rollback/quiescence and peer lifecycle contracts to the real 0x1086460 -> 0xFDC140 -> 0x581320/0x581780 -> 0x540920 callback ABI, then verify partial rollback, re-entry idempotence, owner migration and thread quiescence before any native hook.",
@@ -1316,12 +1326,12 @@
     "verified_at_utc": "2026-09-27T20:52:54.657201+08:00",
     "remote_contains_current_delivery": true,
     "note": "2026-10-03 native bridge/client adapter cross-component compensation hardening committed and pushed to main; installable=false, resolver_closed=false and multiplayer_verified=false remain authoritative.",
-    "latest_research_commit": "d465682",
-    "latest_research_commit_pushed": true
+    "latest_research_commit": "pending-local-commit",
+    "latest_research_commit_pushed": false
   },
   "latest_research_update_date": "2026-10-03",
   "priority_assessment": "five_player_feasibility_20260927/PEER_ADMISSION_PRIORITY.zh-TW.md",
-  "last_update_scope": "Hardened the fixed-build native bridge/client adapter transaction boundary: native player creation now precedes sidecar confirmation, confirm failure keeps a compensation identity until bridge remove completes, and cleanup retry matches the full peer/resource/index/generation token. Bridge and client integration harnesses pass; production ABI, install and multiplayer gates remain false.",
+  "last_update_scope": "Formalized the frozen v0.14.0-offline 6054F0 state-update delivery receipt and added an offline native PlayerResource transaction sidecar bound to the three audited callback stages; no game ABI call, hook, installation or multiplayer validation was performed.",
   "live_preflight_20261003": {
     "pid": 36900,
     "build": 25480438,
@@ -1480,7 +1490,23 @@
     "peer_lifecycle_tests": "8/8",
     "package_stage_tests": "10/10",
     "peer_lifecycle_checks": "9/9",
-    "native_bridge_integration_tests": "bridge/client cross-component harness passed; no game ABI or runtime proof"
+    "native_bridge_integration_tests": "bridge/client cross-component harness passed; no game ABI or runtime proof",
+    "native_player_resource_sidecar": {
+      "build": 25480438,
+      "capacity": 8,
+      "callback_order": [
+        "first_callback",
+        "second_callback",
+        "third_callback"
+      ],
+      "roster_component": 239,
+      "tests": "ep_player_resource_synthetic_passed; Python report/hash tests 2/2",
+      "production_executable": false,
+      "runtime_verified": false,
+      "installable": false,
+      "multiplayer_verified": false,
+      "process_accessed": false
+    }
   },
   "live_loadout_layout_preflight_20261003": {
     "pid": 36900,

@@ -4,7 +4,13 @@
 
 `Native/Bridge` 與 `Native/ClientSidecar` 的候選交易邊界已再收斂：native player creation 先於 bridge sidecar confirm，native confirm 失敗時 adapter 保留補償 identity，由 bridge 的 remove callback 同時清理 native 與兩端 sidecar；cleanup retry 必須帶完整的 peer、resource handle、network index 和 generation，不能只用重用中的 index。跨元件 harness 已實際走過八個 index `0..7`、離隊洞位、generation-safe reconnect、完整雙 registry cleanup 及 owner lease 平衡；adapter destroy 會拒絕仍有 native-confirmed flag 的 teardown。
 
-這些是固定 build `25480438` 的離線 C++／Python 合成驗證，沒有接真實 callback ABI、沒有寫入或注入遊戲程序，`installable=false`、`runtime_verified=false`、`multiplayer_verified=false` 仍是正式狀態。研究提交為 `0256ed0`，狀態收據提交為 `75e536d`。
+這些是固定 build `25480438` 的離線 C++／Python 合成驗證，沒有接真實 callback ABI、沒有寫入或注入遊戲程序，`installable=false`、`runtime_verified=false`、`multiplayer_verified=false` 仍是正式狀態。原研究提交為 `d465682`，狀態收據提交為 `b0b30ec`；後續新增的 player-resource sidecar 會在下一個研究提交記錄。
+
+## 2026-10-03 native player-resource sidecar
+
+新增 `Native/PlayerResource` 八格 C++ sidecar，將固定 build audit 的三張 callback table 固定成 `begin → first → second → third → publish → release` 交易：每個 network index 都保留 generation、owner epoch、peer／resource identity 與 callback lease；第三階段拒絕、callback 順序錯誤和重複 release 都會清除或拒絕 stale record，owner migration 需先 quiesce。`component 239` 僅作為第一張 table 的 roster leaf 契約輸入。
+
+`ep_player_resource_synthetic_passed` 與 Python report/hash tests 通過。這是 native 形狀的離線所有權／回滾元件，尚未解析或呼叫 `0x1086460 → 0xFDC140 → 0x581320/0x581780 → 0x540920` 真實 ABI，也沒有 hook、注入、安裝、UI、Party 或多人驗收；`production_executable=false`、`runtime_verified=false`、`installable=false`、`multiplayer_verified=false` 保持不變。
 
 ## 2026-10-03 fixed-build live preflight reread
 

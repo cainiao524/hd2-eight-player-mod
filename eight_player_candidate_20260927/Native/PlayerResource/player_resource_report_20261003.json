@@ -1,0 +1,48 @@
+{
+  "schema": "hd2_native_player_resource_sidecar_v1",
+  "build": 25480438,
+  "capacity": 8,
+  "callback_order": [
+    "first_callback",
+    "second_callback",
+    "third_callback"
+  ],
+  "roster_component": 239,
+  "source_sha256": {
+    "ep_player_resource.h": "8939ab4129c286955ccc9caec41508b7b2759b1db82b0ec6631b8b93357e0d84",
+    "ep_player_resource.cpp": "710930b6c1a163a56475b6ad4426f38b9e71b468a9ffb1f4eb377a8eb399d1ce",
+    "ep_player_resource_test.cpp": "92c11637d71ee5263024b3f759f48c1db15f5f3ef0de08101a4c3c85dfa7a352",
+    "build_x64.bat": "573b7009a8d5483a98342a91f3063ad56431370d480d23bb77bb97db1322d89b",
+    "README.zh-TW.md": "6c63abfbdf4423d1660dd888b19db604ef3bbc87450afd326c307bef36f669f0"
+  },
+  "binary_sha256": {
+    "ep_player_resource.dll": "0d3ac8dff3a281c3e155287bda9416900f814958a1e5234e479950cb2b2160f5",
+    "ep_player_resource_test.exe": "9e5f6f3cacad7634be69c4518dcc0d705f2770f95417581feee42d2d4c0e570d"
+  },
+  "test": {
+    "command": "cmd /c build_x64.bat",
+    "status": "passed",
+    "output": "ep_player_resource_synthetic_passed",
+    "coverage": [
+      "all eight storage indexes are bounded",
+      "three callback stages publish only after completion",
+      "third-stage failure releases the record",
+      "callback-order failure releases the record",
+      "release is idempotent through a generation token",
+      "owner migration requires quiescence"
+    ]
+  },
+  "checks": {
+    "production_executable": false,
+    "runtime_verified": false,
+    "installable": false,
+    "multiplayer_verified": false,
+    "game_process_accessed": false,
+    "host_native_code_executed": false
+  },
+  "limits": [
+    "The sidecar does not resolve or call the fixed-build callback ABI.",
+    "Component 239 is a contract input bound to the audit, not a live roster insertion.",
+    "No hook, injection, package, UI, Party, session or multiplayer path is implemented here."
+  ]
+}
