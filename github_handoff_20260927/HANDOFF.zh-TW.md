@@ -421,4 +421,4 @@ capacity patch 仍是 disabled-by-default、固定 build 的研究候选；inlin
 
 `Native/SessionObservation` 已接入官方插件。`setup_game`／bounded update 现在先通过固定 EXE、Network getter、GameSession 底层 vtable 与 record layout fingerprint，再以进程内只读复制获取最多八条 opaque record；任何不匹配、count 超过 8、backing 缺失或双读变化都 fail-closed。此路径不调用 `peer`、`num_peers`、`in_session` 或 `host`，也不写入游戏状态。
 
-这只提供固定版本的 layout 观察工具，不是玩家 admission 或 Player Clone 建立。当前第五至第八个账号、客户端复制、死亡/增援、重连、结算和 host migration 仍未验证；`installable=false`、`multiplayer_verified=false` 保持不变。最新研究提交为 `2136c72`，状态收据提交待本节更新后产生。
+这只提供固定版本的 layout 观察工具，不是玩家 admission 或 Player Clone 建立。当前第五至第八个账号、客户端复制、死亡/增援、重连、结算和 host migration 仍未验证；`installable=false`、`multiplayer_verified=false` 保持不变。最新研究提交为 `2136c72`，状态收据提交为 `0037825`。
