@@ -1,4 +1,12 @@
 # 接續狀態：2026-09-28 已恢復離線工作
+## 2026-10-03 公開倉庫研究與官方 C API 邊界捕獲
+
+已固定閱讀三個新增公開倉庫：`MrChengl11/hd2-lua-mod-skill`（`d1811983ab4fec230ede24bdd3d274f77b0b82fd`）、`junze0910/junze-hd2-lua-mod`（`95b2d26ea10ea43281c93123a95d326a289da2ae`）及 `starmatch666-droid/hd2-mod-update-skill`（`2eae30596a0886b4674567f22f549ef03e9b80e4`）。研究結果已寫入 `PUBLIC_CODE_RESEARCH_20261003_NEW_REPOS.*`：可採用離線／唯讀探測、UI 第五槽位寫入風險與 build/hash/table fail-closed 門檻，但三者都沒有 Party → Session → Player Clone 的八人能力證據。
+
+同一固定 build `25480438` 保存了 `Network`／`GameSession` C API table 的 bounded prefix 和候選 engine-session vtable 的靜態前綴。捕獲只讀、重讀相等、沒有呼叫函式、寫記憶體、hook 或注入；wrapper table 與 underlying vtable 分開記錄，不能解讀成 peer admission、player creation 或可安裝 Mod。
+
+最新研究提交為 `43e156c`，狀態收據提交待本節更新後產生。`installable=false`、`multiplayer_verified=false`、真實第五至第八帳號測試未完成。
+
 
 ## 2026-10-03 最新離線 native bridge hardening
 
