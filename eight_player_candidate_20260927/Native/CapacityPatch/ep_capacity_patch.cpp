@@ -35,12 +35,19 @@ SITE(s108c1c5,0x108c1c5,0x41,0xb8,0x04,0,0,0)
 SITE(s108c2cb,0x108c2cb,0x83,0xf8,0x04)
 SITE(s108c393,0x108c393,0x83,0xf8,0x04)
 SITE(s108bb62,0x108bb62,0x83,0xf8,0x04)
+SITE(s108c3e2,0x108c3e2,0x83,0xf9,0x04)
+SITE(s108c4a1,0x108c4a1,0x41,0x83,0xfe,0x04)
+SITE(s108c7eb,0x108c7eb,0x83,0xf8,0x04)
+SITE(s108c878,0x108c878,0xc7,0x41,0x20,0x04,0,0,0)
+SITE(s108c8e7,0x108c8e7,0x41,0xbc,0x04,0,0,0)
+SITE(sb90c74,0xb90c74,0x83,0xf9,0x04)
+SITE(s1086460,0x1086460,0x42,0x83,0xbc,0x02,0xac,0x63,0x01,0x00,0x04)
 #undef SITE
 #define REP(name) static unsigned char name##_new[sizeof(name##_old)] = {0};
-REP(s108f108) REP(s10919d1) REP(s1091aa2) REP(s1092e78) REP(s1092ecb) REP(s1092ed0) REP(s1092f31) REP(s1093a96) REP(s1093ada) REP(s1093c91) REP(s1093c96) REP(s1093cb0) REP(s1093d1e) REP(s1093fd3) REP(s1094105) REP(s10942ac) REP(s1094338) REP(s10889e4) REP(s1088a9a) REP(s134dcd4) REP(s108c1b5) REP(s108c1c5) REP(s108c2cb) REP(s108c393) REP(s108bb62)
+REP(s108f108) REP(s10919d1) REP(s1091aa2) REP(s1092e78) REP(s1092ecb) REP(s1092ed0) REP(s1092f31) REP(s1093a96) REP(s1093ada) REP(s1093c91) REP(s1093c96) REP(s1093cb0) REP(s1093d1e) REP(s1093fd3) REP(s1094105) REP(s10942ac) REP(s1094338) REP(s10889e4) REP(s1088a9a) REP(s134dcd4) REP(s108c1b5) REP(s108c1c5) REP(s108c2cb) REP(s108c393) REP(s108bb62) REP(s108c3e2) REP(s108c4a1) REP(s108c7eb) REP(s108c878) REP(s108c8e7) REP(sb90c74) REP(s1086460)
 #undef REP
 #define ENTRY(name) {name##_rva,name##_old,name##_new,sizeof(name##_old)},
-static Site kSites[] = {ENTRY(s108f108)ENTRY(s10919d1)ENTRY(s1091aa2)ENTRY(s1092e78)ENTRY(s1092ecb)ENTRY(s1092ed0)ENTRY(s1092f31)ENTRY(s1093a96)ENTRY(s1093ada)ENTRY(s1093c91)ENTRY(s1093c96)ENTRY(s1093cb0)ENTRY(s1093d1e)ENTRY(s1093fd3)ENTRY(s1094105)ENTRY(s10942ac)ENTRY(s1094338)ENTRY(s10889e4)ENTRY(s1088a9a)ENTRY(s134dcd4)ENTRY(s108c1b5)ENTRY(s108c1c5)ENTRY(s108c2cb)ENTRY(s108c393)ENTRY(s108bb62)};
+static Site kSites[] = {ENTRY(s108f108)ENTRY(s10919d1)ENTRY(s1091aa2)ENTRY(s1092e78)ENTRY(s1092ecb)ENTRY(s1092ed0)ENTRY(s1092f31)ENTRY(s1093a96)ENTRY(s1093ada)ENTRY(s1093c91)ENTRY(s1093c96)ENTRY(s1093cb0)ENTRY(s1093d1e)ENTRY(s1093fd3)ENTRY(s1094105)ENTRY(s10942ac)ENTRY(s1094338)ENTRY(s10889e4)ENTRY(s1088a9a)ENTRY(s134dcd4)ENTRY(s108c1b5)ENTRY(s108c1c5)ENTRY(s108c2cb)ENTRY(s108c393)ENTRY(s108bb62)ENTRY(s108c3e2)ENTRY(s108c4a1)ENTRY(s108c7eb)ENTRY(s108c878)ENTRY(s108c8e7)ENTRY(sb90c74)ENTRY(s1086460)};
 #undef ENTRY
 std::atomic<unsigned> g_state{0}; // 0 disabled, 1 applied, 2 refused, 3 rolled back
 std::atomic<unsigned> g_count{0};
@@ -61,7 +68,7 @@ void apply(){
  make_replacements(); HMODULE m=GetModuleHandleA("game.dll"); if(!m){g_state.store(2);log("refused","game.dll_not_loaded");return;} auto base=reinterpret_cast<unsigned char*>(m);
  for(auto &s:kSites){ if(std::memcmp(base+s.rva,s.expected,s.size)!=0){g_state.store(2);log("refused","site_fingerprint_mismatch"); return;} }
  for(auto &s:kSites){ void* p=base+s.rva; DWORD old; g_originals.emplace_back(p,std::vector<unsigned char>(s.expected,s.expected+s.size)); bool wrote=false; if(VirtualProtect(p,s.size,PAGE_EXECUTE_READWRITE,&old)){ std::memcpy(p,s.replacement,s.size); FlushInstructionCache(GetCurrentProcess(),p,s.size); VirtualProtect(p,s.size,old,&old); wrote=true; } else { SIZE_T done=0; wrote=WriteProcessMemory(GetCurrentProcess(),p,s.replacement,s.size,&done)!=FALSE && done==s.size; if(wrote) FlushInstructionCache(GetCurrentProcess(),p,s.size); } if(!wrote){ char why[128]; std::snprintf(why,sizeof(why),"write_failed_%lu_rva_%llx",(unsigned long)GetLastError(),(unsigned long long)s.rva); g_state.store(2);log("refused",why); restore(); return;} g_count.fetch_add(1); }
- g_state.store(1); log("applied","fixed_build_sites_25");
+ g_state.store(1); log("applied","fixed_build_sites_32");
 }
 void loaded(ep_cap_get_api_fn get){ log("loaded"); if(get){ auto c=reinterpret_cast<void**>(get(31)); if(c){ g_network.store(reinterpret_cast<uintptr_t>(c[7])); g_session_table.store(reinterpret_cast<uintptr_t>(c[8])); } } }
 void observe_session(){ auto n=g_network.load(); auto t=g_session_table.load(); if(!n||!t)return; using get_session_fn=void*(*)(); using num_peers_fn=unsigned(*)(void*); auto get_session=*reinterpret_cast<get_session_fn*>(n+sizeof(void*)); auto num_peers=*reinterpret_cast<num_peers_fn*>(t+0x50); if(!get_session||!num_peers)return; void* session=get_session(); unsigned count=session?num_peers(session):0; auto old_s=g_last_session.exchange(reinterpret_cast<uintptr_t>(session)); auto old_c=g_last_peers.exchange(count); if(old_s!=reinterpret_cast<uintptr_t>(session)||old_c!=count){ std::ofstream o(path(),std::ios::app); if(o)o<<"{\"schema\":\"hd2_capacity_patch_v1\",\"event\":\"session_observe\",\"session\":\"0x"<<std::hex<<reinterpret_cast<uintptr_t>(session)<<"\",\"peer_count\":"<<std::dec<<count<<",\"pid\":"<<GetCurrentProcessId()<<"}\n"; } }

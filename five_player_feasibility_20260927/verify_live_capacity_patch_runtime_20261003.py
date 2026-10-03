@@ -10,7 +10,7 @@ result={
  'log':str(LOG.as_posix()),
  'events':len(rows),
  'loaded':any(x.get('event')=='loaded' for x in rows),
- 'applied':len(applied)==1 and applied[0].get('patched')==25,
+ 'applied':len(applied)==1 and applied[0].get('patched')==32,
  'patched_count': applied[0].get('patched') if applied else 0,
  'refused':len(refused)>0,
  'session_observations':sum(x.get('event')=='session_observe' for x in rows),

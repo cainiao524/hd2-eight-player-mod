@@ -154,6 +154,48 @@
       "old": "83f804",
       "new": "83f808",
       "role": "existing peer clamp"
+    },
+    {
+      "rva": "0x108c3e2",
+      "old": "83f904",
+      "new": "83f908",
+      "role": "host index allocator clamp"
+    },
+    {
+      "rva": "0x108c4a1",
+      "old": "4183fe04",
+      "new": "4183fe08",
+      "role": "host index allocator clamp"
+    },
+    {
+      "rva": "0x108c7eb",
+      "old": "83f804",
+      "new": "83f808",
+      "role": "confirmed peer sender clamp"
+    },
+    {
+      "rva": "0x108c878",
+      "old": "c7412004000000",
+      "new": "c7412008000000",
+      "role": "confirmed peer sender count"
+    },
+    {
+      "rva": "0x108c8e7",
+      "old": "41bc04000000",
+      "new": "41bc08000000",
+      "role": "confirmed peer sender capacity"
+    },
+    {
+      "rva": "0xb90c74",
+      "old": "83f904",
+      "new": "83f908",
+      "role": "client confirmed peer clamp"
+    },
+    {
+      "rva": "0x1086460",
+      "old": "4283bc02ac63010004",
+      "new": "4283bc02ac63010008",
+      "role": "player creation gate"
     }
   ],
   "transaction": {
@@ -169,15 +211,15 @@
   "unresolved": [
     "inline member storage overlaps adjacent fields",
     "Party/PlayFab admission",
-    "confirmed-peer and Player Clone creation",
     "client-side roster and entity replication",
     "death/reinforcement/reconnect/host migration",
-    "real fifth-to-eighth peer test"
+    "real fifth-to-eighth peer test",
+    "confirmed-peer storage requires sidecar; gate extension alone is not safe player creation"
   ],
   "runtime_evidence": "five_player_feasibility_20260927/live_capacity_patch_runtime_20261003.jsonl",
   "runtime_verification": "five_player_feasibility_20260927/live_capacity_patch_runtime_verification_20261003.json",
   "runtime_loaded": true,
-  "runtime_applied_sites": 25,
+  "runtime_applied_sites": 33,
   "runtime_session_getter_observed": true,
   "runtime_peer_counts": [
     0,
@@ -185,5 +227,6 @@
   ],
   "runtime_process_mutated": true,
   "rollback_runtime_observed": false,
-  "dll_sha256": "bd075af4c7b9e56e01b958b404ce727deb43154af504b7f13f02bf5f55d3ccdc"
+  "dll_sha256": "bd075af4c7b9e56e01b958b404ce727deb43154af504b7f13f02bf5f55d3ccdc",
+  "sites_count": 32
 }

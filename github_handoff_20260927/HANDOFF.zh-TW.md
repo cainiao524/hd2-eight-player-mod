@@ -1,9 +1,9 @@
 # 接續狀態：2026-09-28 已恢復離線工作
 ## 2026-10-03 固定版本容量補丁實機載入
 
-新增 `Native/CapacityPatch` 原生插件候選，固定 `Build 25480438` 與 25 個四人容量／枚舉／加入／狀態更新 site。插件先完成全 site fingerprint preflight，才以單一交易寫入 `8`；任一 site 不符就拒絕，卸載路徑按逆序恢復 bytes。
+新增 `Native/CapacityPatch` 原生插件候選，固定 `Build 25480438` 與 32 個四人容量／枚舉／加入／狀態更新 site。插件先完成全 site fingerprint preflight，才以單一交易寫入 `8`；任一 site 不符就拒絕，卸載路徑按逆序恢復 bytes。
 
-在 Steam 正常啟動的固定版本實機中，官方 loader 記錄 `loaded`、`applied` 且 `patched=25`；同一插件透過唯讀 `NetworkCApi.game_session`／`GameSessionCApi.num_peers` 觀察到 session 從空變有效，但兩次 `peer_count` 都是 `0`。實測後已停止遊戲並移除 DLL／marker。
+在 Steam 正常啟動的固定版本實機中，官方 loader 記錄 `loaded`、`applied` 且 `patched=32`；同一插件透過唯讀 `NetworkCApi.game_session`／`GameSessionCApi.num_peers` 觀察到 session 從空變有效，但兩次 `peer_count` 都是 `0`。實測後已停止遊戲並移除 DLL／marker。
 
 這只閉合容量常數層，沒有證明 Party/PlayFab admission、第五至第八個 confirmed-peer、Player Clone、客戶端 entity replication、死亡增援、重連、撤離或 host migration。`installable=false`、`multiplayer_verified=false` 保持不變。研究與機器收據見 `CAPACITY_PATCH_CANDIDATE_20261003.zh-CN.md`、`live_capacity_patch_runtime_verification_20261003.json`。
 
