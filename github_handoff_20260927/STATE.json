@@ -996,7 +996,7 @@
     "five_player_feasibility_20260927/verification/native_peer_admission_bridge_boundary_verification_20261002.json": "f30a4b9517d3add9050cd24ff3fcd010d9ea1a72cb937bdddb6db250384abad0",
     "five_player_feasibility_20260927/verification/peer_admission_adapter_verification.json": "0b4f84491adeff2b424d02e6fa614c3630381dc12eaf4bc20af39914ff4319fc",
     "five_player_feasibility_20260927/verify_native_peer_admission_bridge_boundary.py": "6cf6d5d4e9898fab0083ea135f8ea13dbc129ff0f1d68d4e83f1c8bd34214ad7",
-    "github_handoff_20260927/HANDOFF.zh-TW.md": "d834b1692c512806329eaac025faf548bba6560545b3cf7507422a5f0287e2c3",
+    "github_handoff_20260927/HANDOFF.zh-TW.md": "7ca464f1a36eb470258310d0c8a39db78c70a1a835aa95782b8fa734e1318bdc",
     "github_handoff_20260927/SETUP.zh-TW.md": "1c362594a6a8e70fe5fb9fce5f0d23dcf6d160a6338345f2f4b717d538d8003b",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_disasm_20261002.json": "48f504badebad800a8439494bc386e3dff61e1818168a40916d8cffd618790c9",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_patch.py": "9808f073e958fdc464d47bc10a459f328d14ebde9a765f429e13153786a5734a",
@@ -1332,7 +1332,9 @@
     "five_player_feasibility_20260927/verify_peer_state_observation_20261003.py": "e2b18134b235c2eb4286b86b0d73ccb17461dab99f25862f18f989700bdc3230",
     "eight_player_candidate_20260927/Native/SessionMembers/consumer_bound_execution_20261003.json": "261ee3da73d26778006f821af2d4bd35a02800ab6e2b765bac484c0e35ecd80c",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_consumer_bound_candidate_20261003.json": "a77cbbcaaf75d3478fb75fd0ab54ff7e5ad8b6cf9056cc098559e06005f1fff8",
-    "eight_player_candidate_20260927/Native/SessionMembers/test_consumer_bound_execution.py": "0dfaaeb1def419d426bd5e3cc5a6477c635afed244cb59095a56d72587c62858"
+    "eight_player_candidate_20260927/Native/SessionMembers/test_consumer_bound_execution.py": "0dfaaeb1def419d426bd5e3cc5a6477c635afed244cb59095a56d72587c62858",
+    "five_player_feasibility_20260927/PUBLIC_CODE_RESEARCH_20261003_RUNTIME_BOUNDARY.json": "ba973104088e92943af1be103d2b5ddd6f3192a71c08bee3e67733631a9c3694",
+    "five_player_feasibility_20260927/PUBLIC_CODE_RESEARCH_20261003_RUNTIME_BOUNDARY.zh-TW.md": "a25175500d68176e8c35deee17f6e500ac1085902cf61d2b9cc207b77684633a"
   },
   "missing_release_files": [],
   "remaining_release_work": [
@@ -1460,7 +1462,8 @@
     "Integrated the no-call SessionObservation snapshot into the official plugin; it rejects build/code/layout drift and records only bounded opaque records, with no peer getter calls or writes.",
     "Aligned the native SessionObservation contract with the fixed-build game.dll context layout; rebuilt synthetic and official plugin harnesses, with game.dll identity, unique 0..7 peer indexes, documented roster slots and fail-closed rejection tests passing.",
     "Added overflow-safe bounded address reads and a synthetic stable-reread mutation test to SessionObservation; rebuilt session and official plugin harnesses successfully.",
-    "Bound the fixed-build platform-member consumer candidate to caller-supplied relocatable addresses, corrected UWOP_PUSH_NONVOL metadata, and passed four bound-execution tests plus the existing static, session-member and ABI tests."
+    "Bound the fixed-build platform-member consumer candidate to caller-supplied relocatable addresses, corrected UWOP_PUSH_NONVOL metadata, and passed four bound-execution tests plus the existing static, session-member and ABI tests.",
+    "Pinned current public runtime repositories and converted their documented capabilities into a native-only admission decision; Lua/Shared Loader remains data/UI support and no longer counts as an eight-player capacity lead."
   ],
   "next_offline_work": [
     "Use the corrected consumer only as an offline bridge artifact; bind its resolver, producer, cleanup, and confirmed-peer callbacks to real HD2 owner lifetime before any installation or peer getter is attempted.",
@@ -1500,13 +1503,13 @@
     "verified_at_utc": "2026-09-27T20:52:54.657201+08:00",
     "remote_contains_current_delivery": true,
     "note": "2026-10-03 aligned native SessionObservation with game.dll context/roster/game-state globals and pushed source, official plugin, tests and receipt; historical peer_count/peer_slots claims remain superseded; installable=false, resolver_closed=false and multiplayer_verified=false remain authoritative.",
-    "latest_research_commit": "dba4c7f",
+    "latest_research_commit": "50a9114",
     "latest_research_commit_pushed": false,
     "latest_status_receipt_commit": "e207906"
   },
   "latest_research_update_date": "2026-10-03",
   "priority_assessment": "five_player_feasibility_20260927/PEER_ADMISSION_PRIORITY.zh-TW.md",
-  "last_update_scope": "Completed the offline session-member consumer bridge hardening: corrected Windows x64 unwind encoding and 16-byte prologue metadata, added relocatable address/callback binding with fail-closed overlap checks, and executed synthetic 0..8 member paths with volatile-register clobber and unwind reconstruction. Real resolver ownership, producer/cleanup paths, admission and multiplayer gates remain false.",
+  "last_update_scope": "Fixed public HD2Runtime, ReinforcementBeaconsFixed and ModOptionsMenu commits and recorded their boundary: they support version-gated data edits and diagnostics, not Session/Party admission or Player Clone creation. Native host/client bridge remains the required eight-player path.",
   "live_preflight_20261003": {
     "pid": 36900,
     "build": 25480438,
@@ -2351,6 +2354,38 @@
     "real_callback_abi_bound": false,
     "production_executable": false,
     "runtime_verified": false,
+    "installable": false,
+    "multiplayer_verified": false
+  },
+  "public_code_research_runtime_boundary_20261003": {
+    "build": 25480438,
+    "artifacts": [
+      "five_player_feasibility_20260927/PUBLIC_CODE_RESEARCH_20261003_RUNTIME_BOUNDARY.zh-TW.md",
+      "five_player_feasibility_20260927/PUBLIC_CODE_RESEARCH_20261003_RUNTIME_BOUNDARY.json"
+    ],
+    "repositories": [
+      {
+        "url": "https://github.com/SkyeShade/HD2Runtime",
+        "commit": "96ab2d258d867a5df4f22bb7b3321d84d28de21d",
+        "data_layer": true,
+        "session_admission": false
+      },
+      {
+        "url": "https://github.com/CowboyBingus/ReinforcementBeaconsFixed",
+        "commit": "daec6559a28bf287d716ee4dc3afe5d2e1f314b6",
+        "data_layer": true,
+        "network_capacity": false
+      },
+      {
+        "url": "https://github.com/CowboyBingus/ModOptionsMenu",
+        "commit": "46d693e421b44c4221ee6d984d26ea49997b948a",
+        "ui_and_version_gate": true,
+        "capacity_proof": false
+      }
+    ],
+    "native_bridge_required": true,
+    "player_admission_proven": false,
+    "player_creation_proven": false,
     "installable": false,
     "multiplayer_verified": false
   }
