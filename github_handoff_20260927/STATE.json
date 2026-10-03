@@ -996,7 +996,7 @@
     "five_player_feasibility_20260927/verification/native_peer_admission_bridge_boundary_verification_20261002.json": "f30a4b9517d3add9050cd24ff3fcd010d9ea1a72cb937bdddb6db250384abad0",
     "five_player_feasibility_20260927/verification/peer_admission_adapter_verification.json": "0b4f84491adeff2b424d02e6fa614c3630381dc12eaf4bc20af39914ff4319fc",
     "five_player_feasibility_20260927/verify_native_peer_admission_bridge_boundary.py": "6cf6d5d4e9898fab0083ea135f8ea13dbc129ff0f1d68d4e83f1c8bd34214ad7",
-    "github_handoff_20260927/HANDOFF.zh-TW.md": "42cb11b865d49dfbe70ec79517b512591ad6096d87a26660929af34a043f6722",
+    "github_handoff_20260927/HANDOFF.zh-TW.md": "524e5974aaa91dce181fd5c750b5c3c8a91c878fe6e00b0b776a69e078f5a175",
     "github_handoff_20260927/SETUP.zh-TW.md": "1c362594a6a8e70fe5fb9fce5f0d23dcf6d160a6338345f2f4b717d538d8003b",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_disasm_20261002.json": "48f504badebad800a8439494bc386e3dff61e1818168a40916d8cffd618790c9",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_patch.py": "9808f073e958fdc464d47bc10a459f328d14ebde9a765f429e13153786a5734a",
@@ -1363,7 +1363,7 @@
     "eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_native_callbacks_test.obj": "af03f9f9a02112c4aa176d1ad74f8142ddcfb2cd405ff58c347b35b9da7e422c",
     "five_player_feasibility_20260927/COMPLETION_AUDIT_20261003.zh-TW.md": "e942cbefc83e557619641bcd5c42e526ef5003142a259e54cde767d2b941e5a5",
     "five_player_feasibility_20260927/audit_completion_state_20261003.py": "9e101fa476ca66ff24d3ab806298a4b33beb25ad2cfb63bc974443e6b67fcd04",
-    "five_player_feasibility_20260927/completion_audit_20261003.json": "48ff7e4f1625fc8cdc83b7a81e0c8cde3069394fd2582688b687369ff4c8bfc9",
+    "five_player_feasibility_20260927/completion_audit_20261003.json": "f936067c70f343ff1dd4e203ec8a5d53d87b456fe0c27eda850544a641c898f2",
     "eight_player_candidate_20260927/Native/PlayerCreationGate/README.zh-TW.md": "7944d5197af9aea9439adc703ff18db89a480efa82ed59317ff8781c8470939b",
     "eight_player_candidate_20260927/Native/PlayerCreationGate/build_x64.bat": "602192ffe280c0e5f3028b96433597d70a58d3f69e162f1be1a4a304c011b499",
     "eight_player_candidate_20260927/Native/PlayerCreationGate/ep_player_creation_gate.cpp": "ad4361a8637c736c08d50b706133084f3fa4fddb69c1123a29b99d7cce78c0ca",
@@ -1609,7 +1609,8 @@
     "Added the offline cross-component integration preflight for build, capacity, authoritative index, ordinal separation, holes and host/client identity; synthetic gates pass while production, runtime and multiplayer remain false.",
     "Guarded the fixed-build OfficialPlugin session getter with PE/SHA-256 identity, table readability, getter RVA/fingerprint, executable-page and stable-reread checks; unload/shutdown clears all observation state.",
     "Attempted a reversible official/custom plugin launch; both observed process windows showed Fatal Error, custom DLL loading was not confirmed, and no new runtime or multiplayer evidence was accepted.",
-    "After the getter-invocation probe produced Fatal Error, kept the OfficialPlugin session getter inspect-only: fixed address/fingerprint validation remains, but no native function call or session snapshot is attempted until calling convention and return lifetime are proven."
+    "After the getter-invocation probe produced Fatal Error, kept the OfficialPlugin session getter inspect-only: fixed address/fingerprint validation remains, but no native function call or session snapshot is attempted until calling convention and return lifetime are proven.",
+    "Extended HANDOFF.zh-TW.md with the latest remote commit, no-call getter boundary, clean Fatal Error probe result, reversible plugin cleanup and exact next admission-ABI prerequisites."
   ],
   "next_offline_work": [
     "Resolve the two admission call targets and their return/state/cleanup ABI from a permitted read-only runtime trace before binding any player or peer writer; retain the static call-shape contract as a version gate only.",
@@ -1667,7 +1668,7 @@
   },
   "latest_research_update_date": "2026-10-04",
   "priority_assessment": "five_player_feasibility_20260927/PEER_ADMISSION_PRIORITY.zh-TW.md",
-  "last_update_scope": "Recorded the clean follow-up Fatal Error probe and removed the unsafe native getter invocation from the loaded plugin path; fixed-build getter checks remain inspect-only and multiplayer gates remain closed.",
+  "last_update_scope": "Updated the handoff with allocator overflow cleanup, inspect-only fixed-build getter checks, and the clean Fatal Error follow-up probe; all native and multiplayer gates remain closed.",
   "live_preflight_20261003": {
     "pid": 36900,
     "build": 25480438,
@@ -2622,7 +2623,7 @@
     "native_callback_synthetic_test": "ep_consumer_native_callbacks_synthetic_passed",
     "live_callback_abi_verified": false
   },
-  "latest_status_receipt_commit": "b56c8d0",
+  "latest_status_receipt_commit": "cfe188f",
   "network_index_binding_20261003": {
     "build": 25480438,
     "receipt": "eight_player_candidate_20260927/Native/Bridge/network_index_binding_receipt_20261003.json",
@@ -2681,7 +2682,7 @@
     "installable": false,
     "multiplayer_verified": false,
     "preserved_user_audit": true,
-    "generated_from_commit": "b56c8d0"
+    "generated_from_commit": "cfe188f"
   },
   "player_creation_gate_adapter_20261003": {
     "build": 25480438,
@@ -2989,7 +2990,7 @@
     "installable": false,
     "multiplayer_verified": false,
     "preserved_user_audit": true,
-    "generated_from_commit": "b56c8d0"
+    "generated_from_commit": "cfe188f"
   },
   "player_resource_lifetime_guard_20261004": {
     "build": 25480438,
