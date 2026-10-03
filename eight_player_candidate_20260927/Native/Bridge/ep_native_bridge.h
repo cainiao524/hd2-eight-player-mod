@@ -9,7 +9,7 @@
 // production installer must provide all callbacks and a matching build/site
 // observation; otherwise preflight and admission fail closed.
 #define EP_BRIDGE_MAGIC 0x45504252u /* "EPBR" */
-#define EP_BRIDGE_VERSION 3u
+#define EP_BRIDGE_VERSION 4u
 
 extern "C" {
 
@@ -101,7 +101,7 @@ __declspec(dllexport) EP_BRIDGE_STATUS __cdecl ep_bridge_reconnect(
 __declspec(dllexport) EP_BRIDGE_STATUS __cdecl ep_bridge_destroy(
     EP_NATIVE_BRIDGE* bridge);
 __declspec(dllexport) EP_BRIDGE_STATUS __cdecl ep_bridge_retry_cleanup(
-    EP_NATIVE_BRIDGE* bridge, UINT8 network_index);
+    EP_NATIVE_BRIDGE* bridge, EP_BRIDGE_ADMISSION admission);
 __declspec(dllexport) UINT32 __cdecl ep_bridge_capacity();
 
 }

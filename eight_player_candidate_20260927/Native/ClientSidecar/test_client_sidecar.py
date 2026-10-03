@@ -39,7 +39,8 @@ class ClientSidecarTests(unittest.TestCase):
         self.assertFalse(report["production"]["executable"])
         self.assertFalse(report["production"]["multiplayer_verified"])
         self.assertTrue(report["adapter_contract"]["native_callbacks_required"])
-        self.assertTrue(report["adapter_contract"]["native_confirm_failure_rolls_back_sidecar"])
+        self.assertTrue(report["adapter_contract"]["native_confirm_failure_preserves_compensation_record"])
+        self.assertTrue(report["adapter_contract"]["bridge_owns_native_confirm_compensation"])
         self.assertTrue(report["adapter_contract"]["native_create_required_for_all_indexes"])
         self.assertTrue(report["adapter_contract"]["owner_lifetime_delegated"])
         for artifact in report["artifacts"]:

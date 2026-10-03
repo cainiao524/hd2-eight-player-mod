@@ -41,8 +41,10 @@ int main() {
     if (ep_client_adapter_remove(&b, 100, 900, 4) != EP_BRIDGE_OK) return 15;
     if (ep_client_adapter_confirm(&b, 999, 9999, 5) != EP_BRIDGE_CALLBACK_REJECTED) return 16;
     if (ep_client_adapter_create(&b, 999, 9999, 5) != EP_BRIDGE_CALLBACK_REJECTED) return 17;
+    if (ep_client_adapter_destroy(&b) != EP_BRIDGE_CLEANUP_REQUIRED) return 20;
+    if (ep_client_adapter_remove(&b, 999, 9999, 5) != EP_BRIDGE_OK) return 21;
     if (ep_client_adapter_destroy(&b) != EP_BRIDGE_OK) return 18;
-    if (g_confirm != 2 || g_create != 1 || g_remove != 1 ||
+    if (g_confirm != 2 || g_create != 1 || g_remove != 2 ||
         g_retain != 1 || g_release != 1) return 19;
     std::puts("ep_client_bridge_adapter_synthetic_passed");
     return 0;

@@ -6,8 +6,8 @@
 
 // Narrow callback adapter for the existing native bridge.  The adapter only
 // owns the isolated client sidecar.  A real player-creation callback is
-// mandatory for indexes 4..7; absent that callback the adapter rejects the
-// operation instead of pretending that a player was created.
+// mandatory for every network index, including 4..7; absent that callback the
+// adapter rejects the operation instead of pretending that a player was created.
 extern "C" {
 
 typedef EP_BRIDGE_STATUS (__cdecl *EP_CLIENT_NATIVE_CREATE_CB)(
@@ -36,6 +36,9 @@ typedef struct EP_CLIENT_ADAPTER {
     EP_CLIENT_NATIVE_RETAIN_CB native_retain;
     EP_CLIENT_NATIVE_RELEASE_CB native_release;
     EP_CLIENT_SIDECAR client;
+    // A rejected native confirm still needs compensating remove. Keep its
+    // identity but disallow creation until native confirmation succeeds.
+    BYTE native_confirmed[EP_SIDECAR_CAPACITY];
 } EP_CLIENT_ADAPTER;
 
 __declspec(dllexport) EP_BRIDGE_STATUS __cdecl ep_client_adapter_init(

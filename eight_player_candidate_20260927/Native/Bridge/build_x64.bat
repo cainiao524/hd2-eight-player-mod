@@ -9,6 +9,10 @@ cl /nologo /std:c++20 /O2 /EHsc ..\Sidecar\ep_sidecar.cpp ep_native_bridge.cpp e
 if errorlevel 1 goto :fail
 ep_native_bridge_test.exe
 if errorlevel 1 goto :fail
+cl /nologo /std:c++20 /O2 /EHsc ..\Sidecar\ep_sidecar.cpp ep_native_bridge.cpp ..\ClientSidecar\ep_client_sidecar.cpp ..\ClientSidecar\ep_client_bridge_adapter.cpp ep_bridge_client_integration_test.cpp /link /out:ep_bridge_client_integration_test.exe
+if errorlevel 1 goto :fail
+ep_bridge_client_integration_test.exe
+if errorlevel 1 goto :fail
 popd
 endlocal
 exit /b 0

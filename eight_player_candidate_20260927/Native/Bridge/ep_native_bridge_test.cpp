@@ -75,7 +75,7 @@ int main() {
                 "failed create keeps owner lease");
     harness.fail_create = false;
     harness.fail_remove = false;
-    ok &= check(ep_bridge_retry_cleanup(&bridge, failed.token.index) == EP_BRIDGE_OK,
+    ok &= check(ep_bridge_retry_cleanup(&bridge, failed) == EP_BRIDGE_OK,
                 "retry cleanup");
     ok &= check(bridge.sidecar.active_count == 0 && bridge.cleanup_count == 0,
                 "retry frees slot");

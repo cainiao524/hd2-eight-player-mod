@@ -82,7 +82,7 @@ bool remember_cleanup(EP_NATIVE_BRIDGE* bridge, EP_BRIDGE_ADMISSION admission,
                       OwnerLease& lease) {
     if (!bridge || admission.token.index >= EP_SIDECAR_CAPACITY) return false;
     if (cleanup_for(bridge, admission) >= 0) {
-        lease.disarm();
+        // The retry record already owns one reference; release this new one.
         return true;
     }
     for (UINT32 i = 0; i < EP_SIDECAR_CAPACITY; ++i) {
@@ -168,16 +168,17 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_admit(
         if (result == EP_BRIDGE_CLEANUP_REQUIRED) *out_admission = admission;
         return result;
     }
+    if (bridge->config.create_player(bridge->config.owner, peer_id, resource_handle, token.index) != EP_BRIDGE_OK) {
+        const EP_BRIDGE_STATUS result = remove_and_release(
+            bridge, admission, lease, EP_BRIDGE_CALLBACK_REJECTED);
+        if (result == EP_BRIDGE_CLEANUP_REQUIRED) *out_admission = admission;
+        return result;
+    }
+    // Publish bridge readiness only after the native player exists.
     status = ep_sidecar_confirm(&bridge->sidecar, token);
     if (status != EP_SC_OK) {
         const EP_BRIDGE_STATUS result = remove_and_release(
             bridge, admission, lease, sidecar_status(status));
-        if (result == EP_BRIDGE_CLEANUP_REQUIRED) *out_admission = admission;
-        return result;
-    }
-    if (bridge->config.create_player(bridge->config.owner, peer_id, resource_handle, token.index) != EP_BRIDGE_OK) {
-        const EP_BRIDGE_STATUS result = remove_and_release(
-            bridge, admission, lease, EP_BRIDGE_CALLBACK_REJECTED);
         if (result == EP_BRIDGE_CLEANUP_REQUIRED) *out_admission = admission;
         return result;
     }
@@ -231,10 +232,21 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_reconnect(
     if (ep_sidecar_get_slot(&bridge->sidecar, token.index, &slot) != EP_SC_OK)
         return EP_BRIDGE_ROLLBACK_FAILED;
     EP_BRIDGE_ADMISSION admission{peer_id, resource_handle, token};
-    if (cleanup_for(bridge, admission) >= 0) return EP_BRIDGE_CLEANUP_REQUIRED;
+    if (cleanup_for(bridge, admission) >= 0) {
+        *out_admission = admission;
+        return EP_BRIDGE_CLEANUP_REQUIRED;
+    }
     if (slot.state == EP_SC_SLOT_PENDING) {
         if (bridge->config.confirm_peer(bridge->config.owner, peer_id,
                                         resource_handle, token.index) != EP_BRIDGE_OK)
+        {
+            const EP_BRIDGE_STATUS result = remove_and_release(
+                bridge, admission, lease, EP_BRIDGE_CALLBACK_REJECTED);
+            if (result == EP_BRIDGE_CLEANUP_REQUIRED) *out_admission = admission;
+            return result;
+        }
+        if (bridge->config.create_player(bridge->config.owner, peer_id,
+                                         resource_handle, token.index) != EP_BRIDGE_OK)
         {
             const EP_BRIDGE_STATUS result = remove_and_release(
                 bridge, admission, lease, EP_BRIDGE_CALLBACK_REJECTED);
@@ -249,38 +261,24 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_reconnect(
             if (result == EP_BRIDGE_CLEANUP_REQUIRED) *out_admission = admission;
             return result;
         }
-        if (bridge->config.create_player(bridge->config.owner, peer_id,
-                                         resource_handle, token.index) != EP_BRIDGE_OK)
-        {
-            const EP_BRIDGE_STATUS result = remove_and_release(
-                bridge, admission, lease, EP_BRIDGE_CALLBACK_REJECTED);
-            if (result == EP_BRIDGE_CLEANUP_REQUIRED) *out_admission = admission;
-            return result;
-        }
     }
     *out_admission = admission;
     return EP_BRIDGE_OK;
 }
 
 extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_retry_cleanup(
-    EP_NATIVE_BRIDGE* bridge, UINT8 network_index) {
+    EP_NATIVE_BRIDGE* bridge, EP_BRIDGE_ADMISSION admission) {
     if (!valid_context(bridge) || !bridge->ready ||
-        network_index >= EP_SIDECAR_CAPACITY)
+        admission.token.index >= EP_SIDECAR_CAPACITY || admission.token.generation == 0)
         return EP_BRIDGE_INVALID_ARGUMENT;
     OperationGuard operation{bridge};
     if (!operation) return EP_BRIDGE_BUSY;
-    int found = -1;
-    for (UINT32 i = 0; i < EP_SIDECAR_CAPACITY; ++i) {
-        if (bridge->cleanup[i].pending &&
-            bridge->cleanup[i].admission.token.index == network_index) {
-            found = static_cast<int>(i);
-            break;
-        }
-    }
+    // Index alone is insufficient: a delayed retry can address a new player
+    // after the same slot is reused. Check the full identity and generation.
+    const int found = cleanup_for(bridge, admission);
     if (found < 0) return EP_BRIDGE_INVALID_ARGUMENT;
-    const EP_BRIDGE_ADMISSION admission = bridge->cleanup[found].admission;
     if (bridge->config.remove_player(bridge->config.owner, admission.peer_id,
-                                     admission.resource_handle, network_index) != EP_BRIDGE_OK)
+                                     admission.resource_handle, admission.token.index) != EP_BRIDGE_OK)
         return EP_BRIDGE_CALLBACK_REJECTED;
     if (ep_sidecar_remove(&bridge->sidecar, admission.token) != EP_SC_OK)
         return EP_BRIDGE_ROLLBACK_FAILED;

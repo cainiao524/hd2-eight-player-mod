@@ -4,7 +4,7 @@
 
 `ep_client_sidecar.dll` 只操作呼叫者配置的 `EP_CLIENT_SIDECAR`。它不尋找遊戲物件、不載入 `game.dll`、不安裝 detour，也不呼叫 Session、Party 或玩家建立函式。移除保留 network index 洞位，generation 防止舊 token 清理新玩家；五組 sidecar 陣列會一起清除，模擬原本分散的固定四槽 reader/writer/cleanup 契約。
 
-`ep_client_bridge_adapter.dll` 是給 Native Bridge 的最小 callback adapter。它把 confirmed-peer insert、player create、remove 與 owner lifetime callback 都接到 sidecar；所有 index（包括 0–3）都必須經過真實 native create callback，不能把 sidecar 記錄當成已建立角色。native confirm 失敗會移除暫存記錄，native remove 失敗則保留記錄供重試；缺少任一 callback 時初始化直接拒絕。這個拒絕是刻意的安全閘門，不能當成第五至第八名玩家已建立。
+`ep_client_bridge_adapter.dll` 是給 Native Bridge 的最小 callback adapter。它把 confirmed-peer insert、player create、remove 與 owner lifetime callback 都接到 sidecar；所有 index（包括 0–3）都必須經過真實 native create callback，不能把 sidecar 記錄當成已建立角色。native confirm 失敗會保留暫存 identity，交由 Native Bridge 的 remove compensation 清理；native remove 失敗則保留記錄供重試。缺少任一 callback 時初始化直接拒絕。這個拒絕是刻意的安全閘門，不能當成第五至第八名玩家已建立。
 
 `client_four_slot_patch_manifest_20261002.json` 是給後續 native bridge 的 machine-readable 接線清單。每個 site 都列出 RVA、root、固定容量證據、sidecar operation、必要 callback 和 fail-closed 條件。`player_creation_gate` 不可用無條件跳轉取代，因為原始 unsigned sentinel 拒絕仍需保留。
 

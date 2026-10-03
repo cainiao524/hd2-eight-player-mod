@@ -4,7 +4,7 @@
 
 namespace {
 constexpr UINT32 kMagic = 0x45504341u; // EPCA
-constexpr UINT32 kVersion = 1u;
+constexpr UINT32 kVersion = 2u;
 
 EP_CLIENT_ADAPTER* as_adapter(void* owner) {
     auto* a = static_cast<EP_CLIENT_ADAPTER*>(owner);
@@ -63,13 +63,13 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_client_adapter_confirm(
     if (map_status(ep_client_append(&a->client, peer_id, resource_handle,
                                     network_index, &generation)) != EP_BRIDGE_OK)
         return EP_BRIDGE_CALLBACK_REJECTED;
+    a->native_confirmed[network_index] = 0;
     const auto native = a->native_confirm(a->native_owner, peer_id,
                                           resource_handle, network_index);
-    if (native != EP_BRIDGE_OK) {
-        // A failed native append must never leave a confirmed sidecar record.
-        const auto rollback = ep_client_remove(&a->client, network_index, generation);
-        return rollback == EP_CLIENT_OK ? native : EP_BRIDGE_ROLLBACK_FAILED;
-    }
+    // The bridge owns compensation. Erasing the identity here would prevent
+    // its remove callback from undoing partially completed native work.
+    if (native != EP_BRIDGE_OK) return native;
+    a->native_confirmed[network_index] = 1;
     return EP_BRIDGE_OK;
 }
 
@@ -79,7 +79,8 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_client_adapter_create(
     if (!a) return EP_BRIDGE_INVALID_CONTEXT;
     EP_CLIENT_RECORD record{};
     if (ep_client_get(&a->client, network_index, &record) != EP_CLIENT_OK ||
-        record.peer_id != peer_id || record.resource_handle != resource_handle)
+        record.peer_id != peer_id || record.resource_handle != resource_handle ||
+        !a->native_confirmed[network_index])
         return EP_BRIDGE_CALLBACK_REJECTED;
     const auto gate = ep_client_creation_gate(&a->client, network_index);
     if (gate == EP_CLIENT_INDEX_REJECTED || gate == EP_CLIENT_INVALID_CONTEXT)
@@ -101,7 +102,9 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_client_adapter_remove(
     const auto native = a->native_remove(a->native_owner, peer_id,
                                          resource_handle, network_index);
     if (native != EP_BRIDGE_OK) return native;
-    return map_status(ep_client_remove(&a->client, network_index, record.generation));
+    const auto status = ep_client_remove(&a->client, network_index, record.generation);
+    if (status == EP_CLIENT_OK) a->native_confirmed[network_index] = 0;
+    return map_status(status);
 }
 
 extern "C" EP_BRIDGE_STATUS __cdecl ep_client_adapter_retain(void* owner) {

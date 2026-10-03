@@ -1,5 +1,5 @@
 {
-  "schema": "ep-native-bridge-report/v2",
+  "schema": "ep-native-bridge-report/v3",
   "candidate": "eight-slot-native-bridge-orchestration",
   "build": {
     "steam_build": 25480438,
@@ -8,53 +8,57 @@
     "command": "call build_x64.bat",
     "game_root_touched": false,
     "test_exit_code": 0,
-    "test_output": "ep_native_bridge_synthetic_passed"
+    "test_output": "ep_native_bridge_synthetic_passed",
+    "integration_test_exit_code": 0,
+    "integration_test_output": "ep_bridge_client_integration_passed"
   },
   "contract": {
     "capacity": 8,
     "valid_network_indexes": "0..7",
     "preflight": "build/site/callback guarded",
-    "admission": "reserve-confirm-create with rollback",
+    "admission": "reserve-confirm-create-confirm-sidecar with rollback",
     "departure": "cleanup callback then sidecar remove",
     "reconnect": "hole preserving, generation safe",
     "ninth_player": "rejected",
     "owner_lifetime": "retain before callback transaction, release after confirm/create/remove or rollback; unbalanced leases fail the synthetic harness",
-    "failure_cleanup": "failed remove/sidecar cleanup retains slot and owner lease; explicit retry required",
+    "failure_cleanup": "failed native remove/sidecar cleanup retains exact admission identity and owner lease; explicit full-token retry required",
     "concurrency": "single synchronous operation guard; busy returns fail-closed",
-    "destroy": "refuses while active slots or cleanup records remain"
+    "destroy": "refuses while active slots or cleanup records remain",
+    "retry_identity": "peer_id + resource_handle + network_index + generation",
+    "cross_component_compensation": "client adapter keeps pending identity after native confirm failure; bridge remove compensation clears native and sidecar state"
   },
   "artifacts": [
     {
       "path": "ep_native_bridge.h",
-      "sha256": "a79b503f79acc795ffab8ac37df9d9c28046177ad77af3042fe2946c5849a7ce"
+      "sha256": "68eac60be01b8a046c79bb1b5665cb8bf6eacb6d53db468a9e5333fa5bcfdb31"
     },
     {
       "path": "ep_native_bridge.cpp",
-      "sha256": "7c896eddbc2a6c253fbf8bd0024ca56ad1be0bbce9d98b955a362af0c4a94e13"
+      "sha256": "45d0c4283597ee688708995c509a315eed66b76a97a315cff5e74f5a4deeb252"
     },
     {
       "path": "ep_native_bridge_test.cpp",
-      "sha256": "6f125562001f6ad9aeb38e89bdecd7638a2bfece7e1965c2a8d73104483dc60e"
+      "sha256": "6f4ef610f23925b60a17461becb0164a4b659a5e57927aad21b3e682283dbf6e"
     },
     {
       "path": "build_x64.bat",
-      "sha256": "7ab5d67af5c3f91926a7d06852b0574a4dc7ffe2ab9309a10a69a41b8b0b1340"
+      "sha256": "2eb7f271c2bbb1d0d4f2129a43a0afec95644680c40e81f8881b76318bd9f07a"
     },
     {
       "path": "README.zh-TW.md",
-      "sha256": "7898afd0202f5d51ef5cb024299b00f779fa87702cde3518159a40043c98833e"
+      "sha256": "bd789bd24ed747d23d7499dd3cf1fa9b0aa02b266ce0b38e9ed0c0f4ed60663f"
     },
     {
       "path": "test_native_bridge.py",
-      "sha256": "e2f07c2ffc881cb96b992c7422f662d1a4e07b577e37794e7def529d69954e7e"
+      "sha256": "0842008a1185114173d9baf7f2bbac7b80aeb0243230f45166effe1d9ba79de7"
     },
     {
       "path": "ep_native_bridge.dll",
-      "sha256": "d764f7edc369f8df0ab3180d889af95fe1105e077194a61fd3933ae4caffda1c"
+      "sha256": "853a3eeffe17b03e0441c311dd7ef241572361642ba0ad71668e0f2e58139ce0"
     },
     {
       "path": "ep_native_bridge_test.exe",
-      "sha256": "8bd9c5ae75e86dd3bc88ec2aee8ef048b650fd61eccd9666bee4e23ea2aad279"
+      "sha256": "2c0bfef9db28818e09a2f2b65f19c963a5429aa71b7bd0e8a81e4f1962db1e83"
     },
     {
       "path": "ep_native_bridge.lib",
@@ -66,11 +70,19 @@
     },
     {
       "path": "ep_native_bridge.obj",
-      "sha256": "f773c74ad0598663bc1a33c03766ea81b956c55db19f0a1081778bdc6ac93bf1"
+      "sha256": "0ddfcc848d958f6b5a73a08ed97510653bcdb8d853d3aee97a15ce6b782ff3fb"
     },
     {
       "path": "ep_native_bridge_test.obj",
-      "sha256": "a87af501070f677de86bdb45cfea0c6050ff089f32b721ad0e686a184ae6aa03"
+      "sha256": "0447cfa4ce173281f0e436f34f58b817ea59952cbfd3ed0580c9acdd781d13f0"
+    },
+    {
+      "path": "ep_bridge_client_integration_test.cpp",
+      "sha256": "48708d15b3a1d9b4136749d5d6adf9e0c7134dbfe5b2ac8f122a21b8b7acdf05"
+    },
+    {
+      "path": "ep_bridge_client_integration_test.exe",
+      "sha256": "2a849cc20584f142fed2d4d3a6183fd461061a0725797ceceaacd083046cb76b"
     }
   ],
   "production": {
