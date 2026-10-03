@@ -382,3 +382,13 @@ Player-chain 審計又補進三個 client layout 固定四人位點：`0x1087122
 探針在 `loaded` callback 只查詢 `C_API_ID=31`。本次 callback path 回傳 null，`Network` 與 `GameSession` table pointer 都是 null，因此沒有進入任何遊戲函式、peer admission 或 player creation。探針沒有寫入記憶體、安裝 hook、注入模組或改動官方 DLL。完整原始 JSON Lines 收據見 [live_official_plugin_probe_runtime_20261003.jsonl](../five_player_feasibility_20260927/live_official_plugin_probe_runtime_20261003.jsonl)，彙整結果見 [LIVE_OFFICIAL_PLUGIN_PROBE_20261003.zh-TW.md](../five_player_feasibility_20260927/LIVE_OFFICIAL_PLUGIN_PROBE_20261003.zh-TW.md)。
 
 因此這次只把 `runtime_verified` 與 `custom_mod_entry_proven` 標記為 true；`player_admission_proven`、`player_creation_proven`、`installable`、`multiplayer_verified` 仍為 false。下一個實作邊界是找出 `C_API_ID=31` 在官方 plugin callback path 回傳 null 的原因，取得版本鎖定的 `GameSession`/peer admission callback 合約後才可設計可回滾的 sidecar。
+
+## 2026-10-03 `setup_game` C API 已取得
+
+在固定 build `25480438` 的 PID `42132`，官方 loader 先於 `loaded` callback 回傳 null，之後在公開 `PluginApi.setup_game` callback 取得非 null 的 `ScriptApi`、`Network` 與 `GameSession` table pointer。這修正了先前把 `loaded` 當作唯一入口的假設；原始 JSON Lines 與收據保留於 [R2 證據](../five_player_feasibility_20260927/LIVE_OFFICIAL_PLUGIN_PROBE_20261003_R2.zh-TW.md)。
+
+## 2026-10-03 GameSession 唯讀 getter 已實機呼叫
+
+在 PID `38132` 的同一固定 build，探針於 `setup_game`／bounded `update_game` 路徑呼叫公開 `NetworkCApi.game_session()` 和 `GameSessionCApi.num_peers()`。記錄到 GameSession 從 `null` 變為 `0x1900edd7e90`，peer count 當時為 `0`。沒有呼叫 `add_peer`、`remove_peer`、`create_game_object`，也沒有寫入、hook 或注入。完整收據見 [R3](../five_player_feasibility_20260927/LIVE_OFFICIAL_PLUGIN_PROBE_20261003_R3.zh-TW.md)。
+
+這使下一個安全邊界成為 `peer_self`／`peer` 唯讀觀察與 player creation/roster callback 解析；第五至第八名玩家、可安裝版本和多人全流程仍未驗收。

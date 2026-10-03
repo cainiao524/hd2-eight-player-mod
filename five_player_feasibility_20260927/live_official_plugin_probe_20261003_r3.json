@@ -1,0 +1,44 @@
+{
+  "schema": "hd2_official_plugin_runtime_probe_evidence_v3",
+  "build": 25480438,
+  "process_id": 38132,
+  "game_dll_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+  "module_loaded": true,
+  "get_plugin_api_ids_observed": [
+    0,
+    18,
+    19,
+    180683628,
+    1260801838,
+    3772659805
+  ],
+  "loaded_callback_observed": true,
+  "setup_game_callback_observed": true,
+  "c_api_pointer": "0x7ff7c09a8d80",
+  "network_table_pointer": "0x7ff7c09abe30",
+  "game_session_table_pointer": "0x7ff7c09abb90",
+  "session_observations": [
+    {
+      "session": "0x0",
+      "peer_count": 0
+    },
+    {
+      "session": "0x1900edd7e90",
+      "peer_count": 0
+    }
+  ],
+  "getter_calls": [
+    "NetworkCApi.game_session",
+    "GameSessionCApi.num_peers"
+  ],
+  "read_only_getters": true,
+  "memory_writes": false,
+  "hooks": false,
+  "injection": false,
+  "player_admission_proven": false,
+  "player_creation_proven": false,
+  "installable": false,
+  "multiplayer_verified": false,
+  "runtime_log": "live_official_plugin_probe_runtime_20261003_r3.jsonl",
+  "meaning": "setup_game 與 update_game 以公開 C API getter 觀察到 GameSession 從 null 變為非 null，當時 peer_count 為 0；未呼叫 add_peer、create_game_object 或任何寫入型 API。"
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "hd2_official_plugin_runtime_probe_evidence_v2",
+  "build": 25480438,
+  "process_id": 42132,
+  "game_dll_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+  "module_loaded": true,
+  "get_plugin_api_ids_observed": [
+    0,
+    18,
+    19,
+    180683628,
+    1260801838,
+    3772659805
+  ],
+  "loaded_callback_observed": true,
+  "setup_game_callback_observed": true,
+  "setup_game_c_api_pointer": "0x7ff7c09a8d80",
+  "setup_game_network_table_pointer": "0x7ff7c09abe30",
+  "setup_game_session_table_pointer": "0x7ff7c09abb90",
+  "c_api_id_31_returned_non_null": true,
+  "read_only": true,
+  "memory_writes": false,
+  "game_calls": false,
+  "hooks": false,
+  "injection": false,
+  "player_admission_proven": false,
+  "player_creation_proven": false,
+  "installable": false,
+  "multiplayer_verified": false,
+  "runtime_log": "live_official_plugin_probe_runtime_20261003_r2.jsonl",
+  "meaning": "setup_game 階段取得非 null 的 ScriptApi、Network 和 GameSession table pointer；探針仍未讀取 table function、未呼叫遊戲函式，也未建立 peer 或玩家。"
+}

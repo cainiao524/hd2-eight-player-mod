@@ -13,12 +13,15 @@ std::atomic<uintptr_t> g_c_api{0};
 std::atomic<uintptr_t> g_network_table{0};
 std::atomic<uintptr_t> g_game_session_table{0};
 std::atomic<unsigned> g_last_api_id{0xFFFFFFFFu};
+std::atomic<uintptr_t> g_session{0};
+std::atomic<unsigned> g_peer_count{0xFFFFFFFFu};
+std::atomic<unsigned> g_update_ticks{0};
 
 const char* plugin_name() {
     return "eight_player_official_plugin_probe";
 }
 
-void write_probe_log(bool loaded_state) {
+void write_probe_log(const char* event, bool loaded_state) {
     char path[32768]{};
     DWORD n = GetEnvironmentVariableA("EP_OFFICIAL_PLUGIN_PROBE_LOG", path, sizeof(path));
     if (n == 0 || n >= sizeof(path)) {
@@ -44,7 +47,7 @@ void write_probe_log(bool loaded_state) {
     }
     out << "{\n"
         << "  \"schema\": \"hd2_official_plugin_runtime_probe_v1\",\n"
-        << "  \"event\": \"" << (loaded_state ? "loaded" : "api_query_or_unloaded") << "\",\n"
+        << "  \"event\": \"" << event << "\",\n"
         << "  \"loaded\": " << (loaded_state ? "true" : "false") << ",\n"
         << "  \"last_api_id\": " << g_last_api_id.load(std::memory_order_acquire) << ",\n"
         << "  \"c_api\": \"" << hex(g_c_api.load(std::memory_order_acquire)) << "\",\n"
@@ -56,7 +59,7 @@ void write_probe_log(bool loaded_state) {
         << "}\n";
 }
 
-void loaded(ep_get_api_fn get_engine_api) {
+void query_c_api(ep_get_api_fn get_engine_api, const char* event) {
     // The only operation performed at plugin load is a versioned API lookup.
     // No game function, memory write, hook, peer admission or player creation is called.
     g_last_api_id.store(EP_PLUGIN_API_ID, std::memory_order_release);
@@ -69,11 +72,82 @@ void loaded(ep_get_api_fn get_engine_api) {
             g_game_session_table.store(reinterpret_cast<uintptr_t>(c_api->slots[8]), std::memory_order_release);
         }
     }
-    write_probe_log(true);
+    write_probe_log(event, true);
+}
+
+void write_session_log(uintptr_t session, unsigned peer_count) {
+    char path[32768]{};
+    DWORD n = GetEnvironmentVariableA("EP_OFFICIAL_PLUGIN_PROBE_LOG", path, sizeof(path));
+    if (n == 0 || n >= sizeof(path)) {
+        n = GetTempPathA(sizeof(path), path);
+        if (n == 0 || n >= sizeof(path)) return;
+        constexpr char suffix[] = "hd2_eight_player_plugin_runtime_probe.json";
+        const size_t used = static_cast<size_t>(n);
+        if (used + sizeof(suffix) > sizeof(path)) return;
+        memcpy(path + used, suffix, sizeof(suffix));
+    }
+    std::ofstream out(path, std::ios::app);
+    if (!out) return;
+    out << "{\n"
+        << "  \"schema\": \"hd2_official_plugin_runtime_probe_v1\",\n"
+        << "  \"event\": \"session_observe\",\n"
+        << "  \"session\": \"0x" << std::hex << session << "\",\n"
+        << "  \"peer_count\": " << std::dec << peer_count << ",\n"
+        << "  \"process_id\": " << GetCurrentProcessId() << ",\n"
+        << "  \"memory_writes\": false,\n"
+        << "  \"game_calls\": true\n"
+        << "}\n";
+}
+
+void loaded(ep_get_api_fn get_engine_api) {
+    // Some builds invoke loaded before the gameplay services are available.
+    // Keep this query read-only and repeat it from setup_game below.
+    query_c_api(get_engine_api, "loaded");
+}
+
+void setup_game(ep_get_api_fn get_engine_api) {
+    // The public Stingray ABI calls setup_game after the game services are set up.
+    // This is the first legal place to re-check C_API_ID without calling a table.
+    query_c_api(get_engine_api, "setup_game");
+    const uintptr_t network = g_network_table.load(std::memory_order_acquire);
+    const uintptr_t session_table = g_game_session_table.load(std::memory_order_acquire);
+    if (network == 0 || session_table == 0) return;
+    using game_session_fn = void* (*)();
+    using num_peers_fn = unsigned (*)(void*);
+    const auto game_session = *reinterpret_cast<game_session_fn*>(network + sizeof(void*));
+    const auto num_peers = *reinterpret_cast<num_peers_fn*>(session_table + 0x50);
+    if (game_session == nullptr || num_peers == nullptr) return;
+    void* session = game_session();
+    const unsigned count = session == nullptr ? 0u : num_peers(session);
+    g_session.store(reinterpret_cast<uintptr_t>(session), std::memory_order_release);
+    g_peer_count.store(count, std::memory_order_release);
+    write_session_log(reinterpret_cast<uintptr_t>(session), count);
+}
+
+void update_game(float) {
+    // Poll only a bounded read-only getter path so a later mission/session can be
+    // observed without creating a session or touching any replicated state.
+    const unsigned tick = g_update_ticks.fetch_add(1, std::memory_order_relaxed) + 1;
+    if ((tick % 60u) != 0u) return;
+    const uintptr_t network = g_network_table.load(std::memory_order_acquire);
+    const uintptr_t session_table = g_game_session_table.load(std::memory_order_acquire);
+    if (network == 0 || session_table == 0) return;
+    using game_session_fn = void* (*)();
+    using num_peers_fn = unsigned (*)(void*);
+    const auto game_session = *reinterpret_cast<game_session_fn*>(network + sizeof(void*));
+    const auto num_peers = *reinterpret_cast<num_peers_fn*>(session_table + 0x50);
+    if (game_session == nullptr || num_peers == nullptr) return;
+    void* session = game_session();
+    const unsigned count = session == nullptr ? 0u : num_peers(session);
+    const uintptr_t old_session = g_session.exchange(reinterpret_cast<uintptr_t>(session), std::memory_order_acq_rel);
+    const unsigned old_count = g_peer_count.exchange(count, std::memory_order_acq_rel);
+    if (old_session != reinterpret_cast<uintptr_t>(session) || old_count != count) {
+        write_session_log(reinterpret_cast<uintptr_t>(session), count);
+    }
 }
 
 void unloaded() {
-    write_probe_log(false);
+    write_probe_log("unloaded", false);
     g_c_api.store(0, std::memory_order_release);
     g_network_table.store(0, std::memory_order_release);
     g_game_session_table.store(0, std::memory_order_release);
@@ -87,6 +161,8 @@ ep_plugin_api& api() {
         value.get_name = &plugin_name;
         value.loaded = &loaded;
         value.unloaded = &unloaded;
+        value.setup_game = &setup_game;
+        value.update_game = &update_game;
         initialized = true;
     }
     return value;
@@ -95,7 +171,7 @@ ep_plugin_api& api() {
 
 EP_PLUGIN_EXPORT void* get_plugin_api(unsigned api_id) {
     g_last_api_id.store(api_id, std::memory_order_release);
-    write_probe_log(false);
+    write_probe_log("api_query", false);
     if (api_id == EP_PLUGIN_API_ID) {
         return &api();
     }

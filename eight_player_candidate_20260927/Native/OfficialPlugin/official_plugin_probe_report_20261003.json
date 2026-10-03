@@ -11,8 +11,8 @@
       "bytes": 2353
     },
     "ep_official_plugin.cpp": {
-      "sha256": "f1cf6b2d52c3bc8eccb4076aab4a6a82c6c8afc310fc83a35d8d51ded1e486fd",
-      "bytes": 4857
+      "sha256": "9f17e196281545e735ae4a66bf20bfc611d9cf9078b1d94bede9c3a5d138fc0c",
+      "bytes": 8858
     },
     "ep_official_plugin_test.cpp": {
       "sha256": "99859e8e05296b13d924ce3be7c0a032e83936a4e42ce32776f09500ec0b755a",
@@ -23,8 +23,8 @@
       "bytes": 910
     },
     "README.zh-TW.md": {
-      "sha256": "c165a7c3f781478bd85f41b9415bb28776fd210e431f59e4edb0123357992d2b",
-      "bytes": 1542
+      "sha256": "063d6999f2db65d3e1f11fb4920a2685ef28dc937ffc86addace2641fb061c1c",
+      "bytes": 1555
     },
     "ep_official_plugin_load_test.cpp": {
       "sha256": "b1005bc5ea2a2a93ff612e4633060e3dbe339dede9435068a8723e0eece7ff95",
@@ -33,20 +33,20 @@
   },
   "build_artifacts": {
     "ep_official_plugin.dll": {
-      "sha256": "41824b8372a64dfe04332846353c0be82ce8558e117726fdc607d4ac8edf2974",
-      "bytes": 275456
+      "sha256": "e20e844184352afe863054258272ad99864cfb0e3663f7354d758af0036bf7d9",
+      "bytes": 276992
     },
     "ep_official_plugin_test.exe": {
-      "sha256": "876acb03c6124b665f7f1912f37ceb8ae376ffa479190d13de073355bdf6be26",
-      "bytes": 300544
+      "sha256": "7c0539482297d22a123b06dc7ad5285cd29af5272ae0b749405cde0d202facff",
+      "bytes": 302592
     },
     "ep_official_plugin_load_test.exe": {
-      "sha256": "4eebc6e33e3598858a603fbb385e508287a602c7ff8b8080325e7cb8cad58074",
+      "sha256": "dd977946dd6033f2d7e7199400bfd5cd59132300bc8fbc0634ecb23f66826eca",
       "bytes": 153088
     },
     "eight_player_pluginw64_release.dll": {
-      "sha256": "bfc006e0918cf44d82701a193dd4e67b099d4f33583736079223b1bdd11182fa",
-      "bytes": 275456
+      "sha256": "5dac9a5cb5ce6cea0d20ff3e582b77909ff6cbee55717d6d82655e04419a6996",
+      "bytes": 276992
     },
     "eight_player_pluginw64_release.lib": {
       "sha256": "42448ecda608f32f4bb6810f41f07950265fab55fd9808d187bffcfdb3c63517",
@@ -68,14 +68,14 @@
   "process_started": true,
   "process_mutated": false,
   "next_required": [
-    "resolve why C_API_ID 31 returns null for this official plugin callback path before reading any GameSession or Network table",
-    "obtain a version-pinned read-only GameSession/peer admission callback contract",
-    "resolve peer admission/player creation callbacks before enabling any sidecar"
+    "observe bounded peer_self/peer and roster state using the verified C API getter path",
+    "resolve peer admission/player creation callbacks before enabling any sidecar",
+    "verify departure/reconnect/cleanup and host migration with independent clients"
   ],
   "runtime_probe": {
-    "evidence": "../../five_player_feasibility_20260927/live_official_plugin_probe_20261003.json",
-    "runtime_log": "../../five_player_feasibility_20260927/live_official_plugin_probe_runtime_20261003.jsonl",
-    "process_id": 20472,
+    "evidence": "../../five_player_feasibility_20260927/live_official_plugin_probe_20261003_r3.json",
+    "runtime_log": "../../five_player_feasibility_20260927/live_official_plugin_probe_runtime_20261003_r3.jsonl",
+    "process_id": 38132,
     "module_loaded": true,
     "get_plugin_api_ids_observed": [
       0,
@@ -86,12 +86,29 @@
       180683628
     ],
     "loaded_callback_observed": true,
-    "c_api_id_31_returned_null": true,
-    "network_table_returned_null": true,
-    "game_session_table_returned_null": true,
+    "setup_game_callback_observed": true,
+    "c_api_id_31_returned_non_null": true,
+    "network_table_returned_non_null": true,
+    "game_session_table_returned_non_null": true,
+    "session_observations": [
+      {
+        "session": "0x0",
+        "peer_count": 0
+      },
+      {
+        "session": "0x1900edd7e90",
+        "peer_count": 0
+      }
+    ],
+    "getter_calls": [
+      "NetworkCApi.game_session",
+      "GameSessionCApi.num_peers"
+    ],
+    "read_only_getters": true,
     "read_only": true,
     "memory_writes": false,
-    "game_calls": false,
+    "game_calls": true,
+    "write_api_calls": false,
     "player_admission_proven": false,
     "player_creation_proven": false,
     "installable": false,
