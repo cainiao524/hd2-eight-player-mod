@@ -11,6 +11,8 @@
 
 兩個模組都 export `get_plugin_api`，與 `data/game/game.dll` 的同名 export 形狀一致。這證明遊戲存在官方原生 plugin ABI 候選，值得優先研究；它比未知注入或外部 loader 更接近可支援的 Mod 入口。
 
+固定設定也保存於：[plugin_settings_boundary_20261003.json](plugin_settings_boundary_20261003.json)。`data/settings.ini`（SHA-256 `6bc566328fcd989331fe13522b91e519d812e28e7bd88fe15021109a9d963fc6`）明確是 `support_plugin_reload=false`，因此合法 plugin 研究必須以啟動期載入為邊界。
+
 機器收據：[native_plugin_directory_audit_20261003.json](native_plugin_directory_audit_20261003.json)
 
 ## 仍未閉合的部分
