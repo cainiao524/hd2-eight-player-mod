@@ -1,4 +1,5 @@
 #include "ep_official_plugin.h"
+#include "../SessionObservation/ep_session_snapshot_windows.h"
 
 #include <atomic>
 #include <cstring>
@@ -16,6 +17,8 @@ std::atomic<unsigned> g_last_api_id{0xFFFFFFFFu};
 std::atomic<uintptr_t> g_session{0};
 std::atomic<unsigned> g_peer_count{0xFFFFFFFFu};
 std::atomic<unsigned> g_update_ticks{0};
+std::atomic<uintptr_t> g_last_snapshot_session{0};
+std::atomic<unsigned> g_last_snapshot_count{0xFFFFFFFFu};
 
 const char* plugin_name() {
     return "eight_player_official_plugin_probe";
@@ -99,6 +102,48 @@ void write_session_log(uintptr_t session) {
         << "}\n";
 }
 
+void write_snapshot_log(const ep_session::Snapshot& snapshot) {
+    char path[32768]{};
+    DWORD n = GetEnvironmentVariableA("EP_OFFICIAL_PLUGIN_PROBE_LOG", path, sizeof(path));
+    if (n == 0 || n >= sizeof(path)) {
+        n = GetTempPathA(sizeof(path), path);
+        if (n == 0 || n >= sizeof(path)) return;
+        constexpr char suffix[] = "hd2_eight_player_plugin_runtime_probe.json";
+        const size_t used = static_cast<size_t>(n);
+        if (used + sizeof(suffix) > sizeof(path)) return;
+        memcpy(path + used, suffix, sizeof(suffix));
+    }
+    std::ofstream out(path, std::ios::app);
+    if (!out) return;
+    out << "{\n"
+        << "  \"schema\": \"hd2_official_plugin_session_snapshot_v1\",\n"
+        << "  \"event\": \"session_snapshot\",\n"
+        << "  \"status\": \"" << snapshot.status << "\",\n"
+        << "  \"session\": \"0x" << std::hex << snapshot.session << "\",\n"
+        << "  \"host_value\": \"0x" << snapshot.host_value << "\",\n"
+        << "  \"record_count\": " << std::dec << snapshot.record_count << ",\n"
+        << "  \"record_ids\": [";
+    for (uint32_t i = 0; i < snapshot.record_count && i < snapshot.record_ids.size(); ++i) {
+        if (i) out << ",";
+        out << "\"0x" << std::hex << snapshot.record_ids[i] << "\"";
+    }
+    out << "],\n"
+        << "  \"fixed_build_code_pins\": true,\n"
+        << "  \"engine_functions_called\": false,\n"
+        << "  \"memory_writes\": false,\n"
+        << "  \"process_id\": " << std::dec << GetCurrentProcessId() << "\n"
+        << "}\n";
+}
+
+void observe_snapshot() {
+    const auto snapshot = ep_session::capture_current_process();
+    const auto old_session = g_last_snapshot_session.exchange(snapshot.session, std::memory_order_acq_rel);
+    const auto old_count = g_last_snapshot_count.exchange(snapshot.record_count, std::memory_order_acq_rel);
+    if (old_session != snapshot.session || old_count != snapshot.record_count || std::strcmp(snapshot.status, "stable_bounded_records_not_player_proof") != 0) {
+        write_snapshot_log(snapshot);
+    }
+}
+
 void loaded(ep_get_api_fn get_engine_api) {
     // Some builds invoke loaded before the gameplay services are available.
     // Keep this query read-only and repeat it from setup_game below.
@@ -118,6 +163,7 @@ void setup_game(ep_get_api_fn get_engine_api) {
     void* session = game_session();
     g_session.store(reinterpret_cast<uintptr_t>(session), std::memory_order_release);
     write_session_log(reinterpret_cast<uintptr_t>(session));
+    observe_snapshot();
 }
 
 void update_game(float) {
@@ -136,6 +182,7 @@ void update_game(float) {
     if (old_session != reinterpret_cast<uintptr_t>(session)) {
         write_session_log(reinterpret_cast<uintptr_t>(session));
     }
+    observe_snapshot();
 }
 
 void unloaded() {
