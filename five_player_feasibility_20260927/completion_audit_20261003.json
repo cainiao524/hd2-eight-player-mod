@@ -1,6 +1,6 @@
 {
   "schema": "hd2_eight_player_completion_audit_v1",
-  "generated_at_utc": "2026-10-03T15:44:20.500131+00:00",
+  "generated_at_utc": "2026-10-03T15:47:13.134526+00:00",
   "status": "incomplete",
   "authoritative_completion": false,
   "build": 25480438,
@@ -27,8 +27,24 @@
   "state_manifest": {
     "declared_entries": 1408,
     "missing": [],
-    "bad": [],
-    "ok": true
+    "bad": [
+      {
+        "path": "five_player_feasibility_20260927/completion_audit_20261003.json",
+        "expected": "8f0cd285eb9d4718121ce11290a8ec1259b2cb2ad681a4e86efd808afff2108b",
+        "actual": "246b9969157c1aa6cc19be4719008278c7596eb5836e2c35a75a7da7afc9d750"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_peer_reader.h",
+        "expected": "d8906213c3cfd1b51886fcf5b2dab84fb9f9e41ed109bf4894699df2914f9179",
+        "actual": "807794de2a72edc84bd3e3376023c8320bc804d89157243fbf37e4c23410adf7"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_peer_reader_test.cpp",
+        "expected": "2d2c5a46e08c264176810b63139d41b306063ef56759c9d9cf7a982902d59d6c",
+        "actual": "7c4ad6bb697834af68bf6dccb314ebaf854743f3bb5e951e97282890c083184a"
+      }
+    ],
+    "ok": false
   },
   "acceptance_receipt": null,
   "acceptance": {
@@ -184,15 +200,14 @@
     "count": 3
   },
   "git": {
-    "head": "761335dfbaffac8fe874d45bda743314166c172c",
-    "latest_research_commit": "761335d",
-    "latest_status_receipt_commit": "761335d",
+    "head": "54691a762d0e1b060f7534a1984a3772c5835fd1",
+    "latest_research_commit": "54691a7",
+    "latest_status_receipt_commit": "54691a7",
     "latest_research_exists": true,
     "latest_status_receipt_exists": true
   },
   "untracked_status": [
     "M five_player_feasibility_20260927/completion_audit_20261003.json",
-    " M github_handoff_20260927/HANDOFF.zh-TW.md",
     " M github_handoff_20260927/STATE.json",
     "?? eight_player_candidate_20260927/Native/Bridge/ep_bridge_client_integration_test.exp",
     "?? eight_player_candidate_20260927/Native/Bridge/ep_bridge_client_integration_test.lib",
@@ -254,7 +269,8 @@
     "no_authoritative_eight_client_live_acceptance_receipt",
     "installable_gate_false",
     "multiplayer_verified_gate_false",
-    "state_remaining_release_work_nonempty"
+    "state_remaining_release_work_nonempty",
+    "state_manifest_mismatch"
   ],
   "next_actions": [
     "bind native admission, player creation, replication and cleanup callbacks to real HD2 ABI",
