@@ -241,7 +241,7 @@
     "five_player_feasibility_20260927/CCHUSKY_HD2_TOOLS_HOOK_ANALYSIS_20261002.zh-TW.md": "9acb089901637a724c96b41f51c853ed41ebcf2c3c4f54c1052fdceabb7e9037",
     "five_player_feasibility_20260927/EIGHT_PLAYER_CAPACITY_CONTRACT.zh-TW.md": "837ee952dd2394d7be4707f6865319cc1b106312252a96149a422789870dbd84",
     "five_player_feasibility_20260927/ENGINE_CALLEE_VERIFICATION.zh-TW.md": "835475ba4872b8047994e331bd4e7c29817a140e4e755ee42b9373b91de6e804",
-    "five_player_feasibility_20260927/IMPLEMENTATION_WORKLIST.zh-TW.md": "e6cca4c4b14cce2eb091763f14ce29198735ae06abea5e52b973c9d225f27ba8",
+    "five_player_feasibility_20260927/IMPLEMENTATION_WORKLIST.zh-TW.md": "ef40b38a66bfa6a87b878dcaefd0db431070fc11b7f25cab8ee7853a42c5362d",
     "five_player_feasibility_20260927/INTERFACE_PROBE_LIVE_ANALYSIS_20261002.zh-TW.md": "dd28207864d3af240fa24c273d40f812656ea49dc6c73a7feb33a20e5dbf75b9",
     "five_player_feasibility_20260927/NATIVE_PEER_ADMISSION_ADAPTER.zh-TW.md": "5ac99d6a57dc73f32f0e9b986174482279aeed96f17c77565f0b0ad3dc0a7736",
     "five_player_feasibility_20260927/NATIVE_PEER_ADMISSION_BRIDGE_BOUNDARY_20261002.zh-TW.md": "1cf20cea183894296106b8f0e5b71066318ba2609df726db0f0c6122c2787267",
@@ -1292,7 +1292,8 @@
     "Extended the bridge/client integration harness to eight real sidecar admissions with stable 0..7 indexes, departure hole preservation, generation-safe reconnect and full dual-registry cleanup; rebuilt harness passed.",
     "Added an adapter destroy invariant that refuses teardown while any native-confirmed flag remains set; rebuilt both native targets and all bridge/client integration tests passed.",
     "Updated HANDOFF to match the native bridge compensation order, eight-slot cross-component lifecycle harness and current commit receipts.",
-    "Implemented an offline native PlayerResource eight-slot sidecar: three audited callback stages, generation and owner-epoch fencing, callback leases, reverse rollback, order-failure rollback, idempotent release and quiesced owner migration; C++ harness and report/hash tests pass while the real ABI, runtime, installation and multiplayer flags remain false."
+    "Implemented an offline native PlayerResource eight-slot sidecar: three audited callback stages, generation and owner-epoch fencing, callback leases, reverse rollback, order-failure rollback, idempotent release and quiesced owner migration; C++ harness and report/hash tests pass while the real ABI, runtime, installation and multiplayer flags remain false.",
+    "Rebuilt and verified the v0.14.0-offline delivery receipt: the 6054F0 state-update candidate is formally frozen at 149 test groups and 4314 emulator/observation executions, with the CLI bundle byte-identical and 726 local document links valid; production/runtime/install/multiplayer remain false."
   ],
   "next_offline_work": [
     "Bind the offline rollback/quiescence and peer lifecycle contracts to the real 0x1086460 -> 0xFDC140 -> 0x581320/0x581780 -> 0x540920 callback ABI, then verify partial rollback, re-entry idempotence, owner migration and thread quiescence before any native hook.",
@@ -1331,7 +1332,7 @@
   },
   "latest_research_update_date": "2026-10-03",
   "priority_assessment": "five_player_feasibility_20260927/PEER_ADMISSION_PRIORITY.zh-TW.md",
-  "last_update_scope": "Formalized the frozen v0.14.0-offline 6054F0 state-update delivery receipt and added an offline native PlayerResource transaction sidecar bound to the three audited callback stages; no game ABI call, hook, installation or multiplayer validation was performed.",
+  "last_update_scope": "Formalized the v0.14.0-offline 6054F0 receipt, closed the bounded 1277920 reader candidate in the worklist, and added the offline native PlayerResource transaction sidecar; no game ABI call, hook, installation or multiplayer validation was performed.",
   "live_preflight_20261003": {
     "pid": 36900,
     "build": 25480438,
