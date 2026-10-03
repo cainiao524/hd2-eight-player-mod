@@ -540,3 +540,12 @@ PlayerCreationGate、PlayerResource、resource bridge 的 C++ marker 與 Python 
 ## 2026-10-04 實機探針啟動嘗試
 
 依使用者授權暫時部署唯讀 `eight_player_pluginw64_release.dll` 並啟動固定 Steam build。含自訂 DLL 的程序 PID `39916` 與移除自訂 DLL 後的官方程序 PID `18216` 均顯示 `Fatal Error!`，沒有新的探針 log、GameSession、peer 或玩家建立資料。自訂 DLL 已移回 workspace 證據目錄；官方插件未修改，容量 patch 未啟用，兩個程序已停止。這是啟動環境失敗，不是多人拒絕或成功；`installable`、`runtime_verified`、`multiplayer_verified` 保持 false。完整記錄見 `five_player_feasibility_20260927/LIVE_PROBE_ATTEMPT_20261004.*`。
+
+
+## 2026-10-04 allocator overflow 與實機 no-call 邊界
+
+最新遠端提交為 `67d32de`。`Native/Bridge` 與 `Native/ClientSidecar` 現在保留 allocator 回傳的 authoritative index（包括 `index >= 8` 的 generation-zero compensation），allocator 失敗但回傳非 `0xFF` 時會立即補償或留下可重試 cleanup；已保留的 index collision 不會被誤釋放。Bridge、ClientSidecar、跨元件 preflight 與 Python receipt tests 均通過，但仍是 caller-owned offline contract，沒有真實 Session/Party callback。
+
+`Native/OfficialPlugin` 的固定 build getter gate 現在只檢查 PE/SHA-256、C API/table 可讀性、`game.dll+0x34fdf0` 及 15-byte machine-code fingerprint、可執行頁與穩定重讀；不再呼叫 getter 或解碼 session/peer。先前呼叫版本在實機啟動時出現 Fatal Error，因此保留 no-call fail-closed 邊界。最新實機重試 PID `15724` 仍顯示 `Fatal Error!`，清空後的探針暫存檔沒有新回呼；自訂 DLL 已移除，官方 plugins 未修改。
+
+可核對資料：`five_player_feasibility_20260927/LIVE_PROBE_ATTEMPT_20261004.*`、`Native/OfficialPlugin/official_plugin_runtime_bridge_receipt_20261003.json`、`Native/IntegrationPreflight/integration_preflight_receipt_20261004.json`。目前 `installable=false`、`runtime_verified=false`、`multiplayer_verified=false`；下一步先診斷固定 Steam build 的 Fatal Error／合法 plugin 載入時序，再取得允許的 admission callback/owner/cleanup ABI，之後才做第五至第八帳號階梯。
