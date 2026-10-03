@@ -1,0 +1,55 @@
+{
+  "schema": "hd2_official_plugin_probe_v1",
+  "build": 25480438,
+  "api_ids": {
+    "PLUGIN_API_ID": 0,
+    "C_API_ID": 31
+  },
+  "source_files": {
+    "ep_official_plugin.h": {
+      "sha256": "79817eb6569f0c6359ea740f63387bdb96aee8b1ac0337124497311a5bd8787e",
+      "bytes": 1596
+    },
+    "ep_official_plugin.cpp": {
+      "sha256": "d87975f0349c6c640ac238b6d5d02da1439cc6932cc15ff00e8c327f800ebb86",
+      "bytes": 1295
+    },
+    "ep_official_plugin_test.cpp": {
+      "sha256": "23edb0fb90887fc07f892daff4a21d60c81c8e6bca9b0c57f8b18f6c0001ce7a",
+      "bytes": 709
+    },
+    "build_x64.bat": {
+      "sha256": "8caa23ec4d32f9600d58c68748ce4769eb8f7a451167eb7321b4356f6fde30d1",
+      "bytes": 561
+    },
+    "README.zh-TW.md": {
+      "sha256": "db76687d76c3857e62fa7b23e95592c615876fe7f7faf73f30a157e0f6e704dc",
+      "bytes": 961
+    }
+  },
+  "build_artifacts": {
+    "ep_official_plugin.dll": {
+      "sha256": "2c85fe646cd2136f792fed5357474e8911e4c1bf07d679979cd43359e956e08e",
+      "bytes": 103424
+    },
+    "ep_official_plugin_test.exe": {
+      "sha256": "807451b9db1284ab74701fb54ad7ceb1dea40a266b42b5fcb39253a95899bee6",
+      "bytes": 154112
+    }
+  },
+  "synthetic_harness": "ep_official_plugin_test.exe passed: plugin API id 0, unknown ID rejection, C_API_ID callback capture, unload clearing",
+  "production_executable": false,
+  "runtime_verified": false,
+  "custom_mod_entry_proven": false,
+  "player_admission_proven": false,
+  "installable": false,
+  "multiplayer_verified": false,
+  "process_accessed": false,
+  "process_started": false,
+  "process_mutated": false,
+  "next_required": [
+    "pin ScriptApi/GameSessionCApi layout for build 25480438",
+    "obtain permitted plugin loading observation",
+    "resolve peer admission/player creation callbacks before enabling sidecar"
+  ]
+}

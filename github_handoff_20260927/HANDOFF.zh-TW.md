@@ -364,3 +364,9 @@ Player-chain 審計又補進三個 client layout 固定四人位點：`0x1087122
 ## 2026-10-03 官方原生 Plugin 目錄發現
 
 新增 [NATIVE_PLUGIN_DIRECTORY_AUDIT_20261003.zh-TW.md](../five_player_feasibility_20260927/NATIVE_PLUGIN_DIRECTORY_AUDIT_20261003.zh-TW.md) 與收據 `native_plugin_directory_audit_20261003.json`。固定 build 的 `bin/plugins` 含官方 `level_generation_pluginw64_release.dll` 與 `wwise_pluginw64_release.dll`，兩者都 export `get_plugin_api`；這證明存在官方原生 plugin ABI 候選，應優先於未知注入路徑研究。它仍沒有提供自訂 plugin 的合法載入證據，也沒有 Session、peer admission、player creation 或 network spawn writer。沒有新增、載入或執行 plugin；`custom_mod_entry_proven=false`、`player_admission_proven=false`、`installable=false`、`multiplayer_verified=false`。
+
+## 2026-10-03 OfficialPlugin ABI 骨架
+
+新增 `eight_player_candidate_20260927/Native/OfficialPlugin`：依 Autodesk Stingray 公開 `engine_plugin_api` 介面，提供固定 `PLUGIN_API_ID=0`、`C_API_ID=31` 的最小 `get_plugin_api` DLL、版本化 callback table、unload 清理與本機 stub harness。`ep_official_plugin_test.exe` 已通過 API ID、未知 ID 拒絕、C API callback 捕獲和 unload 清除四項合成檢查。
+
+這個 DLL 只保存 `get_engine_api(31)` 返回指標，不呼叫遊戲函式、不讀寫遊戲程序、不建立 peer 或 player entity。它是合法官方 plugin 入口的 ABI 骨架，不是可玩的八人 Mod；報告 `official_plugin_probe_report_20261003.json` 仍固定 `production_executable=false`、`custom_mod_entry_proven=false`、`player_admission_proven=false`、`installable=false`、`multiplayer_verified=false`。下一閘門是固定 build 的 `ScriptApi`／`GameSessionCApi` layout 與受許可的 plugin 載入觀察，之後才可把 sidecar 接到實際 admission/creation callback。

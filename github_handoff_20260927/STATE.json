@@ -996,7 +996,7 @@
     "five_player_feasibility_20260927/verification/native_peer_admission_bridge_boundary_verification_20261002.json": "f30a4b9517d3add9050cd24ff3fcd010d9ea1a72cb937bdddb6db250384abad0",
     "five_player_feasibility_20260927/verification/peer_admission_adapter_verification.json": "0b4f84491adeff2b424d02e6fa614c3630381dc12eaf4bc20af39914ff4319fc",
     "five_player_feasibility_20260927/verify_native_peer_admission_bridge_boundary.py": "6cf6d5d4e9898fab0083ea135f8ea13dbc129ff0f1d68d4e83f1c8bd34214ad7",
-    "github_handoff_20260927/HANDOFF.zh-TW.md": "50e7c7dd1ad4b0a1beaea5fc40abf40db170abac76dfe0b834567c6013acfe81",
+    "github_handoff_20260927/HANDOFF.zh-TW.md": "9ff2f9923e5512a093a4aaf42752ba083ce08f8d837e94f7bd7618dc0828475a",
     "github_handoff_20260927/SETUP.zh-TW.md": "1c362594a6a8e70fe5fb9fce5f0d23dcf6d160a6338345f2f4b717d538d8003b",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_disasm_20261002.json": "48f504badebad800a8439494bc386e3dff61e1818168a40916d8cffd618790c9",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_patch.py": "9808f073e958fdc464d47bc10a459f328d14ebde9a765f429e13153786a5734a",
@@ -1258,7 +1258,15 @@
     "five_player_feasibility_20260927/native_loader_boundary_20261003.json": "929a1345deadbd66ec9e3130e8e2e74d875a9d459355122723f74a39bba48994",
     "five_player_feasibility_20260927/NATIVE_LOADER_BOUNDARY_20261003.zh-TW.md": "6bb32093c4d1979349a055c9b8beda90d72beffd3c06403f8651c05b47c630ee",
     "five_player_feasibility_20260927/native_plugin_directory_audit_20261003.json": "e8a0ef690ddfd7c26bf4520fd63ba3a929c295a3a1929de4fcf9737aa55ae82a",
-    "five_player_feasibility_20260927/NATIVE_PLUGIN_DIRECTORY_AUDIT_20261003.zh-TW.md": "6af838c2c824b83f211693f034bf416c140d4835c549a0007de1a051d9fb8935"
+    "five_player_feasibility_20260927/NATIVE_PLUGIN_DIRECTORY_AUDIT_20261003.zh-TW.md": "6af838c2c824b83f211693f034bf416c140d4835c549a0007de1a051d9fb8935",
+    "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.h": "79817eb6569f0c6359ea740f63387bdb96aee8b1ac0337124497311a5bd8787e",
+    "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.cpp": "d87975f0349c6c640ac238b6d5d02da1439cc6932cc15ff00e8c327f800ebb86",
+    "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_test.cpp": "23edb0fb90887fc07f892daff4a21d60c81c8e6bca9b0c57f8b18f6c0001ce7a",
+    "eight_player_candidate_20260927/Native/OfficialPlugin/build_x64.bat": "8caa23ec4d32f9600d58c68748ce4769eb8f7a451167eb7321b4356f6fde30d1",
+    "eight_player_candidate_20260927/Native/OfficialPlugin/README.zh-TW.md": "db76687d76c3857e62fa7b23e95592c615876fe7f7faf73f30a157e0f6e704dc",
+    "eight_player_candidate_20260927/Native/OfficialPlugin/official_plugin_probe_report_20261003.json": "1f9a908f2f764105df663e6ab86b9923f43c76ae117c9363ef7eb365a082158a",
+    "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.dll": "2c85fe646cd2136f792fed5357474e8911e4c1bf07d679979cd43359e956e08e",
+    "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_test.exe": "807451b9db1284ab74701fb54ad7ceb1dea40a266b42b5fcb39253a95899bee6"
   },
   "missing_release_files": [],
   "remaining_release_work": [
@@ -1370,7 +1378,8 @@
     "Captured and reread the fixed-build owner/client peer layout on live PID 45820: owner+0x162C8, client+0xC8/+0xD0 four 0x20-byte records and adjacent +0x150 four 0x10-byte table were stable, but the menu/one-peer context reported client count zero and zero records; this is read-only layout evidence, not fifth-peer or eight-player proof.",
     "Hardened ClientSidecar synchronization by replacing the invalid SRWLOCK-to-LONG spin lock with real Windows exclusive SRW locks across append/remove/get/reset/validate/destroy; rebuilt ClientSidecar, adapter and Bridge/client integration harnesses pass, while production/runtime/install/multiplayer remain false.",
     "Audited the fixed-build native loader boundary from the official executable/DLL chain; get_plugin_api remains an unresolved runtime plugin candidate, no supported user loader or production entry was proven, and disallowed injection artifacts were excluded. No process was started or mutated; installable/runtime/multiplayer remain false.",
-    "Audited the official bin/plugins directory and confirmed two signed-by-fingerprint native plugin modules export get_plugin_api; this is a legitimate ABI candidate, but custom plugin loading and player admission remain unproven."
+    "Audited the official bin/plugins directory and confirmed two signed-by-fingerprint native plugin modules export get_plugin_api; this is a legitimate ABI candidate, but custom plugin loading and player admission remain unproven.",
+    "Built the version-pinned OfficialPlugin ABI skeleton and local stub harness for PLUGIN_API_ID 0 and C_API_ID 31; harness passed, while no game process or plugin runtime was accessed and all production gates remain false."
   ],
   "next_offline_work": [
     "Keep the join-handler fixed-four inventory bound to any future native bridge; only the five capacity/slot sites are patch candidates and the three protocol/metadata literals remain protected.",
@@ -1411,7 +1420,7 @@
   },
   "latest_research_update_date": "2026-10-03",
   "priority_assessment": "five_player_feasibility_20260927/PEER_ADMISSION_PRIORITY.zh-TW.md",
-  "last_update_scope": "Added the official native plugin-directory audit: two fixed-build plugin modules export get_plugin_api, but custom plugin loading and peer/player admission remain unresolved; all production gates stay fail-closed.",
+  "last_update_scope": "Added a version-pinned official Stingray plugin ABI skeleton and local stub harness; it captures C_API_ID 31 only and stays disconnected from game callbacks and multiplayer admission.",
   "live_preflight_20261003": {
     "pid": 36900,
     "build": 25480438,
@@ -1801,7 +1810,15 @@
       "eight_player_candidate_20260927/Native/Bridge/ep_bridge_client_integration_test.cpp",
       "eight_player_candidate_20260927/Native/Bridge/ep_bridge_client_integration_test.exe",
       "eight_player_candidate_20260927/Native/Bridge/native_bridge_report_20261002.json",
-      "eight_player_candidate_20260927/Native/ClientSidecar/client_sidecar_report_20261002.json"
+      "eight_player_candidate_20260927/Native/ClientSidecar/client_sidecar_report_20261002.json",
+      "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.h",
+      "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.cpp",
+      "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_test.cpp",
+      "eight_player_candidate_20260927/Native/OfficialPlugin/build_x64.bat",
+      "eight_player_candidate_20260927/Native/OfficialPlugin/README.zh-TW.md",
+      "eight_player_candidate_20260927/Native/OfficialPlugin/official_plugin_probe_report_20261003.json",
+      "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.dll",
+      "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_test.exe"
     ],
     "player_creation_abi_pins": 43,
     "player_creation_test_groups": "1/1",
@@ -1863,6 +1880,21 @@
       "runtime_verified": false,
       "installable": false,
       "multiplayer_verified": false
+    },
+    "official_plugin_probe": {
+      "build": 25480438,
+      "api_ids": {
+        "PLUGIN_API_ID": 0,
+        "C_API_ID": 31
+      },
+      "synthetic_harness": "passed",
+      "production_executable": false,
+      "custom_mod_entry_proven": false,
+      "player_admission_proven": false,
+      "installable": false,
+      "multiplayer_verified": false,
+      "process_accessed": false,
+      "meaning": "official plugin ABI skeleton only; no game callbacks or runtime load were performed"
     }
   },
   "live_loadout_layout_preflight_20261003": {
