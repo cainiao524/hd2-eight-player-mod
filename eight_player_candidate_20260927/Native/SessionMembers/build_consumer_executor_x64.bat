@@ -7,7 +7,11 @@ cl /nologo /std:c++20 /O2 /EHsc /MT /LD ep_consumer_executor.cpp /Fe:ep_consumer
 if errorlevel 1 goto :fail
 cl /nologo /std:c++20 /O2 /EHsc /MT ep_consumer_executor.cpp ep_consumer_executor_test.cpp /Fe:ep_consumer_executor_test.exe
 if errorlevel 1 goto :fail
+cl /nologo /std:c++20 /O2 /EHsc /MT ep_consumer_executor_load_test.cpp /Fe:ep_consumer_executor_load_test.exe
+if errorlevel 1 goto :fail
 ep_consumer_executor_test.exe
+if errorlevel 1 goto :fail
+ep_consumer_executor_load_test.exe
 if errorlevel 1 goto :fail
 popd
 endlocal

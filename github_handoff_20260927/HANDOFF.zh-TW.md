@@ -5,7 +5,7 @@
 
 ## 2026-10-03 原生 consumer executor 候選
 
-在 bound candidate 之後新增 `Native/SessionMembers/ep_consumer_executor.h/.cpp` 與可載入的 `ep_consumer_executor.dll`：固定 build `25480438`、入口 `0x1093590`、14-byte fingerprint、270-byte full-replacement stub 和 24-byte registered unwind。安裝器只接受五個非空 callback，先以 `RtlAddFunctionTable` 註冊 unwind，再在入口寫入可回滾的 FF25 absolute detour；移除時驗證 detour 所有權並恢復原始 bytes。`build_consumer_executor_x64.bat` 與 `ep_consumer_executor_test.exe` 在合成 module 上通過 4 人相容、5--8 人 count、count 9 拒絕、缺 callback／入口變更拒絕及 install/remove 恢復。
+在 bound candidate 之後新增 `Native/SessionMembers/ep_consumer_executor.h/.cpp` 與可載入的 `ep_consumer_executor.dll`：固定 build `25480438`、入口 `0x1093590`、14-byte fingerprint、270-byte full-replacement stub 和 24-byte registered unwind。安裝器只接受五個非空 callback，先以 `RtlAddFunctionTable` 註冊 unwind，再在入口寫入可回滾的 FF25 absolute detour；移除時驗證 detour 所有權並恢復原始 bytes。`build_consumer_executor_x64.bat` 與 `ep_consumer_executor_test.exe` 在合成 module 上通過 4 人相容、5--8 人 count、count 9 拒絕、缺 callback／入口變更拒絕及 install/remove 恢復。 `ep_consumer_executor_load_test.exe` 另通過 DLL export 與 getter 檢查。
 
 收據為 `eight_player_candidate_20260927/Native/SessionMembers/consumer_executor_receipt_20261003.json`。研究提交為 `866791a`，本次狀態收據提交為 `0a8dc34`。此 executor 仍是離線 native 安裝器候選：callback resolver、owner lifetime、producer／player creation／cleanup、Party admission 和客戶端 replication 尚未綁定；沒有存取或修改 HD2 程序，`production_executable=false`、`runtime_verified=false`、`installable=false`、`multiplayer_verified=false`。
 

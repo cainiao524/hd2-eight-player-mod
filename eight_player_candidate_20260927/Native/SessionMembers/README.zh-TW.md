@@ -52,5 +52,5 @@
 
 新增 `ep_consumer_executor.h/.cpp` 與 `build_consumer_executor_x64.bat`，該腳本同時產生可載入 DLL `ep_consumer_executor.dll` 與合成測試執行檔；把固定 build `25480438` 的 `0x1093590` consumer 候選收束成可回滾的 Windows x64 原生安裝器：先驗證 14-byte 原始入口，再配置 270-byte full-replacement stub 與 24-byte unwind，註冊 `RUNTIME_FUNCTION`，最後寫入 FF25 絕對跳轉；移除時只接受自己擁有的 detour 並恢復原始 bytes。安裝器要求五個非空 callback，呼叫者必須負責 thread quiescence 與 callback／owner lifetime。
 
-`ep_consumer_executor_test.exe` 在合成 module 上通過 4 人相容、5--8 人 count、count 9 拒絕、缺 callback 拒絕、入口 fingerprint 改變拒絕及 install/remove 原始 bytes 恢復；收據見 `consumer_executor_receipt_20261003.json`。這是可審查的離線 executor，不是 HD2 callback 綁定：沒有注入或改寫遊戲程序，`production_executable=false`、`runtime_verified=false`、`installable=false`、`multiplayer_verified=false`。
+`ep_consumer_executor_test.exe` 在合成 module 上通過 4 人相容、5--8 人 count、count 9 拒絕、缺 callback 拒絕、入口 fingerprint 改變拒絕及 install/remove 原始 bytes 恢復；收據見 `consumer_executor_receipt_20261003.json`。 `ep_consumer_executor_load_test.exe` 另外通過 DLL `LoadLibrary`、五個 export 與 build/size getter 檢查。這是可審查的離線 executor，不是 HD2 callback 綁定：沒有注入或改寫遊戲程序，`production_executable=false`、`runtime_verified=false`、`installable=false`、`multiplayer_verified=false`。
 
