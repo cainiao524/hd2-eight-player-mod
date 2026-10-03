@@ -1,0 +1,60 @@
+{
+  "schema": "ep_consumer_executor_receipt_v1",
+  "steam_build": 25480438,
+  "entry_rva": "0x1093590",
+  "target_stolen_bytes": 14,
+  "stub_code_bytes": 270,
+  "unwind_offset": 272,
+  "unwind_bytes": 24,
+  "unwind_prologue_bytes": 16,
+  "unwind_code_count": 9,
+  "status": "passed_offline_native_executor",
+  "scope": "synthetic module only; fixed-build guarded installer with reversible detour and registered Windows x64 runtime function; no HD2 process or Steam service access",
+  "install_contract": {
+    "build_gate": true,
+    "entry_rva_gate": true,
+    "expected_target_bytes_gate": true,
+    "non_null_callback_gate": true,
+    "rwx_code_unwind_allocation": true,
+    "rtl_add_function_table": true,
+    "target_write_protection_restore": true,
+    "remove_requires_owned_detour": true,
+    "original_bytes_restored": true,
+    "no_trampoline": "full replacement; caller must quiesce threads and retain callback lifetime"
+  },
+  "synthetic_test": {
+    "test_file": "ep_consumer_executor_test.cpp",
+    "command": "build_consumer_executor_x64.bat",
+    "result": "ep_consumer_executor_synthetic_passed",
+    "covered": [
+      "4-player compatibility and count 5..8",
+      "count 9 rejected",
+      "missing callbacks rejected",
+      "mutated target fingerprint rejected",
+      "install/remove restores original target"
+    ]
+  },
+  "artifacts_sha256": {
+    "ep_consumer_executor.h": "74e3663911ad11d332e569b7082d45492ee9cbf61dd444397e0961f7e2b09be8",
+    "ep_consumer_executor.cpp": "3dcaeb57dc7abf2147d4bee86c04e6d0a70028083715d9dd29cdd32ab1c8c039",
+    "ep_consumer_executor_test.cpp": "240cac1f479339ef62b8ac1e1692c1b9b6cbf8ac833aab97cbc7c347ba46ae6c",
+    "build_consumer_executor_x64.bat": "8f991ce7768a7b649f20320c7cb293c247dc7f605313716609b8f6b4ce7454db",
+    "ep_consumer_executor.obj": "7cd10a8e962f708c4416cd71ade171b0026147719cfe47f45b1289291bf449be",
+    "ep_consumer_executor_test.exe": "8c13aa15d18404615fe79d790740343e53f99a43c2e1f3e33dcf8bfbb3a0b06d",
+    "ep_consumer_executor_test.obj": "c14390e74be4f70585372152a41ebd7e656893e3c00b5e58375a8013d31026e9",
+    "ep_consumer_executor_test.exp": "56dfa59fbd76d7f0eb568bb61a125d634890830d6e74fd782f9cadd743705f3f",
+    "ep_consumer_executor_test.lib": "b313bef2556dcb86931adf9c8df15dbe93fb252b0d86892d8fdedda2ec18a63a"
+  },
+  "production": {
+    "production_executable": false,
+    "runtime_verified": false,
+    "installable": false,
+    "multiplayer_verified": false,
+    "callbacks_bound_to_hd2": false,
+    "blockers": [
+      "callback resolver and owner lifetime are still synthetic",
+      "producer/player creation/cleanup and Party admission are unresolved",
+      "no live process patch or multiplayer test was performed"
+    ]
+  }
+}

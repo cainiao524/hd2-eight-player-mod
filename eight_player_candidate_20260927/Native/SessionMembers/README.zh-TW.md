@@ -48,3 +48,9 @@
 `confirmed_peer_external_chain_20261002.json` 將 host capacity `0x108C18F`、host index allocator `0x108C3D8`、host sender `0x108C760`、client append `0xB90B20` 和 player creation gate `0x1086460` 綁定到固定 build 的只讀 capture，並列出 host cleanup、host migration、client remove/reset 四條必須同時閉合的生命週期。`CONFIRMED_PEER_EXTERNAL_CHAIN_20261002.zh-TW.md` 說明第五筆 client record 會從 `+0x150` 開始、與鄰接 live 欄位衝突，因此 sender-only 或單改 capacity 不能成為八槽 patch。
 
 `verify_confirmed_peer_external_chain.py` 與 `test_confirmed_peer_external_chain.py` 的結果為 5 個 site、2/2 tests；所有旗標保持 `installable=false`、`runtime_verified=false`、`multiplayer_verified=false`。
+## 2026-10-03 原生 consumer executor 候選
+
+新增 `ep_consumer_executor.h/.cpp` 與 `build_consumer_executor_x64.bat`，把固定 build `25480438` 的 `0x1093590` consumer 候選收束成可回滾的 Windows x64 原生安裝器：先驗證 14-byte 原始入口，再配置 270-byte full-replacement stub 與 24-byte unwind，註冊 `RUNTIME_FUNCTION`，最後寫入 FF25 絕對跳轉；移除時只接受自己擁有的 detour 並恢復原始 bytes。安裝器要求五個非空 callback，呼叫者必須負責 thread quiescence 與 callback／owner lifetime。
+
+`ep_consumer_executor_test.exe` 在合成 module 上通過 4 人相容、5--8 人 count、count 9 拒絕、缺 callback 拒絕、入口 fingerprint 改變拒絕及 install/remove 原始 bytes 恢復；收據見 `consumer_executor_receipt_20261003.json`。這是可審查的離線 executor，不是 HD2 callback 綁定：沒有注入或改寫遊戲程序，`production_executable=false`、`runtime_verified=false`、`installable=false`、`multiplayer_verified=false`。
+
