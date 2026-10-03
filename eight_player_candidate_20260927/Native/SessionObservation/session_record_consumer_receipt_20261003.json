@@ -1,0 +1,173 @@
+{
+  "schema": "hd2_game_session_opaque_record_consumer_xref_v1",
+  "status": "static_record_consumer_xref_only",
+  "build": 25480438,
+  "module": "helldivers2.exe",
+  "sources": {
+    "session_vtable": {
+      "path": "five_player_feasibility_20260927\\live_engine_session_vtable_20261003.json",
+      "sha256": "ef35587ba76dfab0fc2d814c161d73f91495686e258c2fee186da070060254f0",
+      "captured_calls": false,
+      "captured_writes": false
+    },
+    "protocol_slot_consumers": {
+      "path": "five_player_feasibility_20260927\\protocol_slot_consumers.json",
+      "sha256": "cba56a8a7070786238b0853346bbd1cd17e74dce1de3412381a34197c3183c2a",
+      "scope": "unwind-bounded fragments of HostSynchronizer candidate roots from host_layout_inventory.json"
+    },
+    "join_handler": {
+      "path": "five_player_feasibility_20260927\\join_handler_followup.json",
+      "sha256": "ada912d87263a38dcb3cff8a2efa840b535f927d699a70365ee2a55d0b2c1327",
+      "scope": "Read-only static replay of the pinned Steam build 25480438 capture. RVA values are relative to the captured game.dll image."
+    }
+  },
+  "record_layout": {
+    "table_field": "session + 0x140",
+    "count_field": "session + 0x138",
+    "stride": "0x30",
+    "token_field": "record + 0x00",
+    "observed_byte_field": "record + 0x29",
+    "self_key_field": "session + 0x20",
+    "owner_field": "session + 0x130 (opaque; not interpreted)"
+  },
+  "consumer_sites": [
+    {
+      "kind": "session_count_read",
+      "slot": "0x70",
+      "rvas": [
+        "0x292be0"
+      ],
+      "field": "session + 0x138",
+      "width": 4,
+      "semantic_name": "opaque_count_field"
+    },
+    {
+      "kind": "indexed_record_pointer_read",
+      "slot": "0x78",
+      "rvas": [
+        "0x292bf2",
+        "0x292bf6",
+        "0x292bfd",
+        "0x292c00"
+      ],
+      "formula": "record = session[+0x140] + index * 0x30",
+      "field": "record pointer table entry",
+      "semantic_name": "opaque_record_pointer",
+      "bound_requirement": "caller must establish 0 <= index < session[+0x138]"
+    },
+    {
+      "kind": "identity_token_compare",
+      "slot": "0x88",
+      "rvas": [
+        "0x292c4a"
+      ],
+      "field": "record + 0x00",
+      "comparison": "record qword compared with session + 0x20",
+      "semantic_name": "opaque_identity_token"
+    },
+    {
+      "kind": "identity_token_compare_and_byte_read",
+      "slot": "0x98 adjacent helper region",
+      "rvas": [
+        "0x292cf7",
+        "0x292d07"
+      ],
+      "field": "record + 0x00, then record + 0x29",
+      "semantic_name": "opaque_token_then_observed_byte_29",
+      "bound_requirement": "loop uses session count; indexed byte path requires external bound"
+    },
+    {
+      "kind": "indexed_byte_read",
+      "slot": "0x98 adjacent helper region",
+      "rvas": [
+        "0x292d20"
+      ],
+      "formula": "byte = session[+0x140][index * 0x30] + 0x29",
+      "field": "record + 0x29",
+      "semantic_name": "opaque_observed_byte_29",
+      "bound_requirement": "caller must establish 0 <= index < session[+0x138]"
+    }
+  ],
+  "instruction_evidence": {
+    "0x292be0": {
+      "rva": "0x292be0",
+      "bytes": "8b8138010000",
+      "asm": "mov eax, dword ptr [rcx + 0x138]"
+    },
+    "0x292bf2": {
+      "rva": "0x292bf2",
+      "bytes": "488d1440",
+      "asm": "lea rdx, [rax + rax*2]"
+    },
+    "0x292bf6": {
+      "rva": "0x292bf6",
+      "bytes": "488b8140010000",
+      "asm": "mov rax, qword ptr [rcx + 0x140]"
+    },
+    "0x292bfd": {
+      "rva": "0x292bfd",
+      "bytes": "4803d2",
+      "asm": "add rdx, rdx"
+    },
+    "0x292c00": {
+      "rva": "0x292c00",
+      "bytes": "488b04d0",
+      "asm": "mov rax, qword ptr [rax + rdx*8]"
+    },
+    "0x292c4a": {
+      "rva": "0x292c4a",
+      "bytes": "4d3914d1",
+      "asm": "cmp qword ptr [r9 + rdx*8], r10"
+    },
+    "0x292cf7": {
+      "rva": "0x292cf7",
+      "bytes": "4b3914c2",
+      "asm": "cmp qword ptr [r10 + r8*8], rdx"
+    },
+    "0x292d07": {
+      "rva": "0x292d07",
+      "bytes": "430fb644c229",
+      "asm": "movzx eax, byte ptr [r10 + r8*8 + 0x29]"
+    },
+    "0x292d20": {
+      "rva": "0x292d20",
+      "bytes": "0fb644d029",
+      "asm": "movzx eax, byte ptr [rax + rdx*8 + 0x29]"
+    }
+  },
+  "join_context": {
+    "protocol_log": "0x108ddd0: Adding %llx to game session with player index %u",
+    "host_peer_storage": "selected join evidence describes a four-entry game.dll host array at host+0x20 + 0x38*i",
+    "host_index_storage": "selected join evidence describes four bytes at host+0x100..+0x103",
+    "direct_session_target_rvas_in_selected_protocol_join_text": [],
+    "interpretation": "These game.dll records and the helldivers2.exe session record table are kept as separate evidence domains; no alias or call binding is proven."
+  },
+  "semantic_limits": {
+    "identity_token_is_peer_id": false,
+    "identity_token_is_member_id": false,
+    "identity_token_is_player_index": false,
+    "record_ordinal_is_player_slot": false,
+    "observed_byte_29_is_network_state": false,
+    "session_owner_is_host": false,
+    "protocol_join_calls_session_consumer": false,
+    "whole_image_xrefs_exhausted": false
+  },
+  "safety": {
+    "process_started_in_this_run": false,
+    "process_accessed_in_this_run": false,
+    "function_calls_made": false,
+    "memory_writes": false,
+    "hooks_installed": false,
+    "injection": false,
+    "production_executable": false,
+    "installable": false,
+    "runtime_verified": false,
+    "multiplayer_verified": false
+  },
+  "blockers": [
+    "the indexed getter and byte getter have no visible bound check; callers must prove count and lifetime",
+    "saved session methods expose opaque token and byte relationships only",
+    "selected protocol/join evidence has no direct xref to the session target RVAs and cannot bind the two modules",
+    "no constructor, mutation, destruction, callback, or client replication consumer is statically bound"
+  ]
+}
