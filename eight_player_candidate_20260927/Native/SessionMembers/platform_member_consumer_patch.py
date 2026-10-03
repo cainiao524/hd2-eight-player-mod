@@ -74,8 +74,10 @@ def mov_rax_imm(a: Assembler, value: int) -> None:
     a.emit(b"\x48\xb8" + struct.pack("<Q", value))
 
 
-def build_stub() -> bytes:
-    a = Assembler(STUB_ADDRESS)
+def build_stub(address: int = STUB_ADDRESS, callbacks: dict[str, int] | None = None) -> bytes:
+    callbacks = SENTINELS if callbacks is None else callbacks
+    require(set(callbacks) == set(SENTINELS), "callback set mismatch")
+    a = Assembler(address)
 
     # Eight nonvolatile pushes leave RSP at +8 mod 16; 0x28 bytes make it
     # aligned for every callback and provide the mandatory 0x20 shadow area.
@@ -85,7 +87,7 @@ def build_stub() -> bytes:
     a.jcc(b"\x0f\x84", "fail")
     a.emit(b"\x48\x89\xcb")  # rbx = owner
 
-    mov_rax_imm(a, SENTINELS["resolver"])
+    mov_rax_imm(a, callbacks["resolver"])
     a.emit(b"\xff\xd0")       # resolver(owner) -> rax=sidecar
     a.emit(b"\x48\x85\xc0")
     a.jcc(b"\x0f\x84", "fail")
@@ -94,7 +96,7 @@ def build_stub() -> bytes:
     a.emit(b"\x41\x83\xfd\x08")
     a.jcc(b"\x0f\x87", "fail")
 
-    mov_rax_imm(a, SENTINELS["mode"])
+    mov_rax_imm(a, callbacks["mode"])
     a.emit(b"\x48\x89\xd9\xff\xd0")  # mode(owner) -> eax 0/1
     a.emit(b"\x44\x0f\xb6\xf8")        # r15d = zero-extended AL
 
@@ -105,7 +107,7 @@ def build_stub() -> bytes:
     a.jcc(b"\x0f\x84", "fail")
     a.emit(b"\x45\x85\xed")
     a.jcc(b"\x0f\x84", "fail")
-    mov_rax_imm(a, SENTINELS["identity"])
+    mov_rax_imm(a, callbacks["identity"])
     a.emit(b"\x48\x89\xd9\xff\xd0")  # identity(owner) -> rax=local ID
     a.emit(b"\x48\x89\xc6")             # rsi = local ID
     a.emit(b"\xbd\x01\x00\x00\x00")     # ebp = 1
@@ -117,14 +119,14 @@ def build_stub() -> bytes:
     a.emit(b"\x4b\x8b\x14\xf4")           # rdx=sidecar->ids[r14]
     a.emit(b"\x48\x39\xf2")               # cmp rdx,rsi
     a.jcc(b"\x0f\x84", "next")
-    mov_rax_imm(a, SENTINELS["lookup"])
+    mov_rax_imm(a, callbacks["lookup"])
     a.emit(b"\x48\x89\xf9")               # rcx=platform object
     a.emit(b"\x49\x89\xd8")               # r8=owner context
     a.emit(b"\xff\xd0")                    # lookup(platform,id,owner)
     a.emit(b"\x48\x85\xc0")
     a.jcc(b"\x0f\x84", "next")
     a.emit(b"\x48\x89\xc1")               # rcx=token
-    mov_rax_imm(a, SENTINELS["status"])
+    mov_rax_imm(a, callbacks["status"])
     a.emit(b"\xff\xd0")                    # status(token)
     a.emit(b"\x85\xc0\x0f\x94\xc0")       # al = status == 0
     a.emit(b"\x0f\xb6\xc0")                # eax = al
@@ -150,21 +152,21 @@ def build_stub() -> bytes:
 
 
 def unwind_info() -> bytes:
-    # Version 1, no flags, 17-byte prologue, 9 unwind codes.
+    # Version 1, no flags, 16-byte prologue, 9 unwind codes.
     # Codes are stored in reverse prologue order by Windows x64 convention.
     codes = bytes([
-        0x11, 0x42,  # sub rsp, 0x28 (UWOP_ALLOC_SMALL, size/8 - 1 = 4)
-        0x0C, 0x0F,  # push r15
-        0x0A, 0x0E,  # push r14
-        0x08, 0x0D,  # push r13
-        0x06, 0x0C,  # push r12
-        0x04, 0x07,  # push rdi
-        0x03, 0x06,  # push rsi
-        0x02, 0x05,  # push rbp
-        0x01, 0x03,  # push rbx
+        0x10, 0x42,  # sub rsp, 0x28 (UWOP_ALLOC_SMALL, size/8 - 1 = 4)
+        0x0C, 0xF0,  # push r15 (UWOP_PUSH_NONVOL, OpInfo=15)
+        0x0A, 0xE0,  # push r14
+        0x08, 0xD0,  # push r13
+        0x06, 0xC0,  # push r12
+        0x04, 0x70,  # push rdi
+        0x03, 0x60,  # push rsi
+        0x02, 0x50,  # push rbp
+        0x01, 0x30,  # push rbx
         0x00, 0x00,  # alignment padding
     ])
-    return bytes([0x01, 0x11, 0x09, 0x00]) + codes
+    return bytes([0x01, 0x10, 0x09, 0x00]) + codes
 
 
 def load_exact_site(evidence: Path) -> tuple[bytes, str]:
@@ -225,7 +227,7 @@ def build(evidence: Path) -> dict:
         },
         "unwind": {
             "registration": "RtlAddFunctionTable for stub; RtlDeleteFunctionTable on rollback",
-            "prologue_size": 17,
+            "prologue_size": 16,
             "unwind_info_address_template": hex(UNWIND_ADDRESS),
             "unwind_info_hex": info.hex(),
             "runtime_function": {"begin": hex(STUB_ADDRESS), "end": hex(STUB_ADDRESS + len(stub)), "unwind": hex(UNWIND_ADDRESS)},
@@ -261,6 +263,54 @@ def build(evidence: Path) -> dict:
             "An owner-lifetime-safe resolver, callback ABI binding, and production hook registration remain unresolved.",
             "This artifact does not write, inject, or call the game process.",
         ],
+    }
+
+
+def bind_candidate(evidence: Path, *, game_base: int, code_address: int,
+                   unwind_address: int, callbacks: dict[str, int]) -> dict:
+    """Emit relocatable bytes for an offline executor supplied by the caller.
+
+    Addresses do not establish code provenance, lifetime, or permission to
+    install. The caller must keep the resolver's storage stable across all
+    nested callbacks; this generator never allocates or installs anything.
+    """
+    require(set(callbacks) == set(SENTINELS), "callback set mismatch")
+    addresses = [game_base, code_address, unwind_address, *callbacks.values()]
+    require(all(type(v) is int and 0x10000 <= v < (1 << 47) for v in addresses),
+            "invalid user address")
+    require(game_base % 0x1000 == 0, "unaligned game base")
+    require(code_address % 16 == 0 and unwind_address % 4 == 0, "unaligned code/unwind")
+    require(not any(v in SENTINELS.values() for v in callbacks.values()), "unresolved sentinel")
+    require(len(set(callbacks.values())) == len(callbacks), "aliased callbacks")
+    stub = build_stub(code_address, callbacks)
+    info = unwind_info()
+    ranges = [(game_base, game_base + 74727424),
+              (code_address, code_address + len(stub)),
+              (unwind_address, unwind_address + len(info))]
+    require(all(end <= (1 << 47) for _, end in ranges), "range overflow")
+    for i, (start, end) in enumerate(ranges):
+        for other_start, other_end in ranges[i + 1:]:
+            require(end <= other_start or other_end <= start, "overlapping image/code/unwind")
+    for value in callbacks.values():
+        require(all(not (start <= value < end) for start, end in ranges),
+                "callback overlaps image/code/unwind; supply an explicit adapter")
+    require(0 <= unwind_address - code_address <= 0xffffffff - len(info),
+            "unwind RVA out of range")
+    original, body_hash = load_exact_site(evidence)
+    return {
+        "schema": "platform_member_consumer_bound_candidate_v1",
+        "steam_build": 25480438,
+        "entry_address": game_base + ENTRY_RVA,
+        "expected_entry_hex": original[:PATCH_SPAN].hex(),
+        "body_sha256": body_hash,
+        "detour_hex": (b"\xff\x25\0\0\0\0" + struct.pack("<Q", code_address)).hex(),
+        "code_address": code_address, "code_hex": stub.hex(),
+        "unwind_address": unwind_address, "unwind_hex": info.hex(),
+        "function_table_base": code_address,
+        "runtime_function_hex": struct.pack("<III", 0, len(stub), unwind_address - code_address).hex(),
+        "callbacks": dict(callbacks),
+        "resolver_contract": "storage and owner held stable through return, including nested callbacks",
+        "installable": False, "runtime_verified": False, "multiplayer_verified": False,
     }
 
 

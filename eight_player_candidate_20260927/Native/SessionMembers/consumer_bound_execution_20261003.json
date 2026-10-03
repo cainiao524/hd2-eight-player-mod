@@ -1,0 +1,62 @@
+{
+  "schema": "platform_member_consumer_bound_execution_v1",
+  "steam_build": 25480438,
+  "entry_rva": "0x1093590",
+  "status": "passed_offline_bound_execution",
+  "scope": "synthetic bytes and explicit callback contracts only; no game process, DLL, Steam service, hook, injection, or memory write",
+  "tests": {
+    "test_file": "test_consumer_bound_execution.py",
+    "methods": 4,
+    "passed": [
+      "four-player compatibility and counts 5..8",
+      "missing/invalid/local/ready/resolver/count rejection paths",
+      "relocated code and callback address overlap rejection",
+      "Windows x64 unwind reconstruction at every prologue boundary"
+    ],
+    "executed_index_counts": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "relocated_code_address": "0x20000000",
+    "synthetic_callback_addresses": true,
+    "callback_volatile_register_clobber": true,
+    "owner_memory_unchanged": true
+  },
+  "unwind": {
+    "prologue_bytes": 16,
+    "unwind_code_count": 9,
+    "push_nonvolatile_encoding_checked": true,
+    "alloc_small_encoding_checked": true,
+    "runtime_function_relative_fields_checked": true
+  },
+  "artifacts": {
+    "platform_member_consumer_patch.py": "5c565abbfc6ae1dedcf0a6f8be08d2cba33a1e1cb83e32b90f69b4207b3b1044",
+    "verify_platform_member_consumer_patch.py": "a02a087edd796640aa0dbdbbdd752375363c0a1346f304a90dcc3220b37386b3",
+    "test_platform_member_consumer_patch.py": "36dff6bc5139e8ce8f3c19ce00ccd44947b2edf90943163a5b3dc466f0a9dcf0",
+    "test_consumer_bound_execution.py": "0dfaaeb1def419d426bd5e3cc5a6477c635afed244cb59095a56d72587c62858",
+    "platform_member_consumer_disasm_20261002.json": "458606e2e2c8fcbdccdc36952bd9edd7b5e280513d70542b35f8ba62f802cab7",
+    "platform_member_consumer_patch_candidate_20261002.json": "a258752455803ec2f1656f86ebac2c8ad279534981ac8b053204b0fb1532085c",
+    "platform_member_consumer_bound_candidate_20261003.json": "a77cbbcaaf75d3478fb75fd0ab54ff7e5ad8b6cf9056cc098559e06005f1fff8",
+    "platform_member_consumer_patch_verification_20261002.json": "ac3540e8ad2ce0034628aa2b252cde718610173a2cbb29d4a04a66f3e5e9f875",
+    "consumer_bound_execution_20261003.json": "4b62ffa31a73574a7df8bc38688c21b522d5904f7957e4cc1ab972b23c19e5a1"
+  },
+  "production": {
+    "production_executable": false,
+    "runtime_verified": false,
+    "installable": false,
+    "multiplayer_verified": false,
+    "blockers": [
+      "callback addresses are synthetic and the owner-lifetime resolver is not bound to HD2",
+      "all producer/consumer/cleanup paths and Party admission remain unresolved",
+      "no live process patch or multiplayer test was performed"
+    ]
+  }
+}

@@ -19,6 +19,14 @@
 
 `platform_member_consumer_patch_candidate_20261002.json` 則是 consumer 的 template-only 14-byte detour／270-byte stub，`adjacent_member_abi_20261002.json` 保存 `0x1092E60`、`0x10936E0` 和 `0x10937A0` 的相鄰讀寫關係。這些資料用來阻止只替換 consumer 而留下四槽 caller；沒有任何 template callback 地址可直接安裝。
 
+### 2026-10-03 bound candidate 與 unwind 修正
+
+新增 `bind_candidate()`，將已核對的 body 轉成由呼叫者提供地址的可重定位 bytes。它會拒絕未解析 sentinel、非 canonical／未對齊地址、callback alias、image／stub／unwind 重疊與 `RUNTIME_FUNCTION` 相對位移溢出；它只輸出 detour、stub、unwind 和 callback contract，不分配記憶體、不改寫遊戲、不註冊 hook。
+
+`test_consumer_bound_execution.py` 以合成 callback 實際執行產物，涵蓋原四人與 5–8 人 count、失敗回滾、移動後的 code address、callback 破壞 volatile registers，以及全部 prologue 邊界的 Windows x64 unwind 重建。測試共 4 項通過，收據見 `consumer_bound_execution_20261003.json`。
+
+這次也修正了先前 unwind metadata 的實際錯誤：序言長度是 16 bytes，而不是 17；`UWOP_PUSH_NONVOL` 的 `OpInfo` 現在使用正確的高半位元組編碼。這只使離線 native bridge 候選可被正確審查，不能把合成 callback 當成 HD2 的真實 resolver 或八人聯機成功。
+
 ## `0x10936E0` leaf reader 候選
 
 已保存 `platform_member_leaf_reader_disasm_20261002.json` 的完整 118-byte body，以及對 `0x10936E0` 的 template-only 14-byte detour 候選。候選先讀八槽 sidecar 的 signed result，對非負結果轉成原 leaf 的布林值；sidecar 缺失、負結果或 callback 未解析時回到既有 owner/mode predicate。`platform_member_leaf_reader_patch_verification_20261002.json` 的靜態收據為 2/2，stub 為 89 bytes。

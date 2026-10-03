@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / ".native-test-deps"))
 
 from platform_member_consumer_patch import build
 from verify_platform_member_consumer_patch import verify
@@ -21,7 +22,7 @@ class PlatformMemberConsumerPatchTests(unittest.TestCase):
         self.assertFalse(artifact["verification"]["multiplayer_verified"])
         self.assertEqual(artifact["entry"]["entry_patch_span"], 14)
         self.assertEqual(len(bytes.fromhex(artifact["stub"]["code_hex"])), artifact["stub"]["size_bytes"])
-        self.assertEqual(bytes.fromhex(artifact["unwind"]["unwind_info_hex"])[:4], bytes([1, 17, 9, 0]))
+        self.assertEqual(bytes.fromhex(artifact["unwind"]["unwind_info_hex"])[:4], bytes([1, 16, 9, 0]))
 
     def test_static_verifier_accepts_generated_artifact(self):
         artifact = build(EVIDENCE)

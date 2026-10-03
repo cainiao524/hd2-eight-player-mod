@@ -62,8 +62,13 @@ def verify(evidence: Path, artifact_path: Path) -> dict:
     unwind = artifact["unwind"]
     info = bytes.fromhex(unwind["unwind_info_hex"])
     require(len(info) == 24, "unexpected unwind info size")
-    require(info[:4] == bytes([1, 17, 9, 0]), "unwind header mismatch")
-    require(unwind["prologue_size"] == 17, "prologue size mismatch")
+    # Derive instruction ends instead of repeating the generator's constant.
+    prologue = disasm[:9]
+    require([i.mnemonic for i in prologue] == ["push"] * 8 + ["sub"], "prologue shape")
+    ends = [i.address + i.size - STUB_ADDRESS for i in prologue]
+    require(info[:4] == bytes([1, ends[-1], 9, 0]), "unwind header mismatch")
+    require(list(info[4:22:2]) == list(reversed(ends)), "unwind instruction offsets mismatch")
+    require(unwind["prologue_size"] == ends[-1], "prologue size mismatch")
     require(unwind["unwind_info_address_template"] == hex(UNWIND_ADDRESS), "unwind address mismatch")
     runtime = unwind["runtime_function"]
     require(runtime == {"begin": hex(STUB_ADDRESS), "end": hex(STUB_ADDRESS + len(stub)), "unwind": hex(UNWIND_ADDRESS)}, "runtime function mismatch")
