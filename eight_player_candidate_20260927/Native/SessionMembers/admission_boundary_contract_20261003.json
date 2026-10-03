@@ -1,0 +1,108 @@
+{
+  "schema": "hd2_host_admission_boundary_contract_v1",
+  "status": "static_call_shape_only",
+  "build": 25480438,
+  "module": "game.dll",
+  "source": "five_player_feasibility_20260927\\host_expansion_disasm_108d9f0.json",
+  "source_sha256": "5e065ebbac9e6274ab59f486155e06fed146d1ba5e42bc3bebf22e5f5803e888",
+  "source_root": "0x108d9f0",
+  "call_sites": [
+    {
+      "name": "first_admission_call",
+      "rva": "0x108ddc7",
+      "bytes": "41ff5008",
+      "asm": "call qword ptr [r8 + 8]",
+      "table_base": "R8",
+      "table_source": "[game.dll+0x3326308+0x40]",
+      "target_table_offset": "0x08",
+      "RCX": "[network_context+0xB390]",
+      "RDX": "[r12] peer/player opaque id",
+      "return_semantics": "unresolved"
+    },
+    {
+      "name": "second_admission_call",
+      "rva": "0x108de09",
+      "bytes": "41ff5050",
+      "asm": "call qword ptr [r8 + 0x50]",
+      "table_base": "R8",
+      "table_source": "[game.dll+0x3326308+0x40]",
+      "target_table_offset": "0x50",
+      "RCX": "[network_context+0xB390]",
+      "RDX": "[r12] peer/player opaque id",
+      "return_semantics": "unresolved"
+    }
+  ],
+  "supporting_sites": {
+    "peer_id_load": {
+      "rva": "0x108ddaf",
+      "bytes": "498b1424",
+      "asm": "mov rdx, qword ptr [r12]"
+    },
+    "table_load": {
+      "rva": "0x108ddbc",
+      "bytes": "4c8b4040",
+      "asm": "mov r8, qword ptr [rax + 0x40]"
+    },
+    "owner_load_1": {
+      "rva": "0x108ddc0",
+      "bytes": "488b8990b30000",
+      "asm": "mov rcx, qword ptr [rcx + 0xb390]"
+    },
+    "owner_load_2": {
+      "rva": "0x108de02",
+      "bytes": "488b8990b30000",
+      "asm": "mov rcx, qword ptr [rcx + 0xb390]"
+    },
+    "state_write": {
+      "rva": "0x108ddf2",
+      "bytes": "41c744242007000000",
+      "asm": "mov dword ptr [r12 + 0x20], 7"
+    },
+    "event_hash_1": {
+      "rva": "0x108de17",
+      "bytes": "b9dda297a4",
+      "asm": "mov ecx, 0xa497a2dd"
+    },
+    "event_hash_2": {
+      "rva": "0x108de4e",
+      "bytes": "b99601e78f",
+      "asm": "mov ecx, 0x8fe70196"
+    }
+  },
+  "observed_chain": [
+    "load peer/player opaque id from [r12]",
+    "load interface table from [game.dll+0x3326308]+0x40",
+    "load session/network owner from [network_context+0xB390]",
+    "indirect call table+0x08",
+    "write slot+0x20 = 7",
+    "indirect call table+0x50",
+    "dispatch hashes 0xA497A2DD and 0x8FE70196"
+  ],
+  "semantics": {
+    "peer_admission_proven": false,
+    "player_index_4_to_7_proven": false,
+    "return_values_decoded": false,
+    "cleanup_abi_proven": false,
+    "player_creation_proven": false,
+    "client_replication_proven": false,
+    "target_functions_named": false
+  },
+  "safety": {
+    "process_started": false,
+    "process_accessed": false,
+    "function_calls_made": false,
+    "memory_writes": false,
+    "hooks_installed": false,
+    "injection": false,
+    "production_executable": false,
+    "installable": false,
+    "runtime_verified": false,
+    "multiplayer_verified": false
+  },
+  "blockers": [
+    "indirect target return and state-consumer ABI are unresolved",
+    "the call shape supplies an opaque id and owner but does not prove PeerId or player index semantics",
+    "the following cleanup, rejection, migration and client receiver paths are not bound",
+    "the saved source is static evidence and cannot produce a production hook"
+  ]
+}

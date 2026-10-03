@@ -486,6 +486,12 @@ capacity patch 仍是 disabled-by-default、固定 build 的研究候选；inlin
 
 `session_vtable_snapshot_synthetic_passed` 已通過，收據為 `Native/SessionObservation/session_vtable_snapshot_receipt_20261003.json`。record 尚未解碼成 PeerId、network index 或玩家，也沒有呼叫 `add_peer`、`remove_peer`、`create_game_object`、player creation 或 client replication；這是下一個真實 admission callback 解析的版本化觀測邊界，不是八人成功證據。
 
+## 2026-10-03 admission call-shape contract
+
+新增 `Native/SessionMembers/admission_boundary_contract_20261003.py`、JSON 收據、中文說明與 2 項 Python 合成測試，固定保存的 `host_expansion_disasm_108d9f0.json` 中兩個最接近 admission 的間接呼叫：`game.dll+0x3326308` 介面表的 `+0x08`／`+0x50`，同一個 `[network_context+0xB390]` owner、`[r12]` 不透明 ID、`[r12+0x20]=7` 狀態寫入，以及後續 `0xA497A2DD`／`0x8FE70196` dispatcher hash。
+
+這只固定 bytes、RVA、反組譯文字與來源 SHA-256；兩個 target 的實際函式、回傳值、PeerId／network index、拒絕／cleanup、player creation、client replication 與 host migration 仍未解析。全程沒有啟動或存取遊戲程序、呼叫函式、寫入記憶體或安裝 hook，`installable=false`、`runtime_verified=false`、`multiplayer_verified=false` 維持不變。
+
 ## 2026-10-03 MidGate helper-register ABI correction
 
 重新核對 `Native/MidGate` 的兩個 machine-code template 後，修正 helper 呼叫前的 `mov edx,r14d` bytes：正確編碼是 `41 8B D6`；舊候選的 `44 8B D6` 會解碼為 `mov r10d,esi`，並沒有傳遞 native index。容量與 allocator template、固定收據和 verifier 已同步重生成，Python static checks 4/4 通過。
