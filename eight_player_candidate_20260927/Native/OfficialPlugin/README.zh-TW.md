@@ -2,7 +2,7 @@
 
 此目錄保存固定 build `25480438` 的官方 native plugin ABI 探針。`get_plugin_api(unsigned)` 只接受 `api_id == 0`，未知 ID 會回傳 null；公開的 `PluginApi.setup_game` callback 取得 `C_API_ID == 31` 的 `ScriptApi`，再以 `+0x38` 與 `+0x40` 讀取 `Network` 和 `GameSession` table 指標。
 
-目前已在實際遊戲啟動流程觀察到官方 loader 載入 `eight_player_pluginw64_release.dll`，並在 `setup_game` 階段取得非 null 的兩張 table。探針在唯讀 getter 路徑呼叫 `NetworkCApi.game_session()` 與 `GameSessionCApi.num_peers()`；記錄到 GameSession 從 null 變為非 null，當時 peer count 為 `0`。沒有呼叫 `add_peer`、`remove_peer`、`create_game_object` 或其他寫入型 API。觀察收據位於 `five_player_feasibility_20260927/live_official_plugin_probe_20261003_r3.json`。
+目前已在實際遊戲啟動流程觀察到官方 loader 載入 `eight_player_pluginw64_release.dll`，並在 `setup_game` 階段取得非 null 的兩張 table。舊 probe 對 `GameSessionCApi.num_peers()` 的呼叫現已標為 superseded：HD2 的 runtime wrapper/vtable 與公開 SDK 的表布局沒有完成语义绑定，不能把旧 `peer_count` 当作可靠数据。现行探针只在固定 machine-code fingerprint 通过后调用 `NetworkCApi.game_session()` getter 观察 session 指针，不读取 `peer()`、`num_peers()`、`in_session()` 或 `host()`，也不呼叫 `add_peer`、`remove_peer`、`create_game_object` 或其他寫入型 API。舊收據保留於 `five_player_feasibility_20260927/live_official_plugin_probe_20261003_r3.json`，修正說明見 `CAPACITY_PATCH_PEER_OBSERVATION_CORRECTION_20261003.zh-CN.md`。
 
 `unloaded` callback 會清除所有保存的指標，避免使用 stale API。`build_x64.bat` 會建置探針 DLL、synthetic harness 和 `LoadLibrary`/`GetProcAddress` smoke test。
 

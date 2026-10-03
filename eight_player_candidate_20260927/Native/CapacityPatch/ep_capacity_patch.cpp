@@ -57,7 +57,6 @@ std::atomic<unsigned> g_count{0};
 std::atomic<uintptr_t> g_network{0};
 std::atomic<uintptr_t> g_session_table{0};
 std::atomic<uintptr_t> g_last_session{0};
-std::atomic<unsigned> g_last_peers{0xffffffffu};
 std::atomic<unsigned> g_ticks{0};
 std::vector<std::pair<void*,std::vector<unsigned char>>> g_originals;
 const char* name(){return "eight_player_capacity_patch";}
@@ -74,7 +73,28 @@ void apply(){
  g_state.store(1); log("applied","fixed_build_sites_35");
 }
 void loaded(ep_cap_get_api_fn get){ log("loaded"); if(get){ auto c=reinterpret_cast<void**>(get(31)); if(c){ g_network.store(reinterpret_cast<uintptr_t>(c[7])); g_session_table.store(reinterpret_cast<uintptr_t>(c[8])); } } }
-void observe_session(){ auto n=g_network.load(); auto t=g_session_table.load(); if(!n||!t)return; using get_session_fn=void*(*)(); using num_peers_fn=unsigned(*)(void*); auto get_session=*reinterpret_cast<get_session_fn*>(n+sizeof(void*)); auto num_peers=*reinterpret_cast<num_peers_fn*>(t+0x50); if(!get_session||!num_peers)return; void* session=get_session(); unsigned count=session?num_peers(session):0; auto old_s=g_last_session.exchange(reinterpret_cast<uintptr_t>(session)); auto old_c=g_last_peers.exchange(count); if(old_s!=reinterpret_cast<uintptr_t>(session)||old_c!=count){ std::ofstream o(path(),std::ios::app); if(o)o<<"{\"schema\":\"hd2_capacity_patch_v1\",\"event\":\"session_observe\",\"session\":\"0x"<<std::hex<<reinterpret_cast<uintptr_t>(session)<<"\",\"peer_count\":"<<std::dec<<count<<",\"pid\":"<<GetCurrentProcessId()<<"}\n"; } }
+void observe_session(){
+ auto n=g_network.load(); if(!n)return;
+ using get_session_fn=void*(*)();
+ auto get_session=*reinterpret_cast<get_session_fn*>(n+sizeof(void*));
+ if(!get_session)return;
+ // The fixed-build Network wrapper is a getter at +0x34fdf0.  The HD2
+ // GameSession table is not the public SDK layout, so peer()/num_peers() are
+ // deliberately not called until their wrapper and callee contracts are bound.
+ const unsigned char expected[] = {0x48,0x8b,0x05,0x81,0x04,0x6c,0x01,0x48,0x8b,0x80,0xa8,0,0,0,0xc3};
+ MEMORY_BASIC_INFORMATION mbi{};
+ if(VirtualQuery(reinterpret_cast<const void*>(get_session),&mbi,sizeof(mbi))==0 ||
+    mbi.State!=MEM_COMMIT || mbi.Protect==PAGE_NOACCESS ||
+    mbi.RegionSize<sizeof(expected) || std::memcmp(reinterpret_cast<const void*>(get_session),expected,sizeof(expected))!=0) return;
+ void* session=get_session();
+ auto old_s=g_last_session.exchange(reinterpret_cast<uintptr_t>(session));
+ if(old_s!=reinterpret_cast<uintptr_t>(session)){
+  std::ofstream o(path(),std::ios::app);
+  if(o){
+   o<<"{\"schema\":\"hd2_capacity_patch_v2\",\"event\":\"session_pointer_observe\",\"session\":\"0x"<<std::hex<<reinterpret_cast<uintptr_t>(session)<<"\",\"getter_code_pinned\":true,\"peer_state_read\":false,\"pid\":"<<std::dec<<GetCurrentProcessId()<<"}\n";
+  }
+ }
+}
 void setup_game(ep_cap_get_api_fn get){ if(get){ auto c=reinterpret_cast<void**>(get(31)); if(c){ g_network.store(reinterpret_cast<uintptr_t>(c[7])); g_session_table.store(reinterpret_cast<uintptr_t>(c[8])); } } if(g_state.load()==0 || g_state.load()==2) apply(); observe_session(); }
 void update_game(float){ if((++g_ticks%60u)==0u){ if(g_state.load()==0 || g_state.load()==2) apply(); observe_session(); } }
 void unloaded(){ if(g_state.load()==1) restore(); else log("unloaded"); }

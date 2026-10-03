@@ -1,0 +1,16 @@
+{
+  "schema": "hd2_capacity_patch_peer_observation_correction_v1",
+  "build": 25480438,
+  "superseded_log": "live_capacity_patch_runtime_20261003_peer_slots.jsonl",
+  "superseded_claims": ["peer_count", "peer_slots", "read_only_peer_observation"],
+  "reason": "HD2 GameSession runtime wrapper/vtable layout was not semantically bound; old probe used public SDK offsets directly and could call the wrong functions.",
+  "corrected_source": "../eight_player_candidate_20260927/Native/CapacityPatch/ep_capacity_patch.cpp",
+  "bounded_snapshot": "../eight_player_candidate_20260927/Native/SessionObservation/ep_session_snapshot.h",
+  "synthetic_test": "../eight_player_candidate_20260927/Native/SessionObservation/ep_session_snapshot_test.exe",
+  "corrected_peer_calls": false,
+  "corrected_memory_writes": false,
+  "player_admission_proven": false,
+  "player_creation_proven": false,
+  "installable": false,
+  "multiplayer_verified": false
+}

@@ -8,4 +8,6 @@
 
 机器记录：[live_capacity_patch_runtime_20261003.jsonl](live_capacity_patch_runtime_20261003.jsonl)，验证收据：[live_capacity_patch_runtime_verification_20261003.json](live_capacity_patch_runtime_verification_20261003.json)。
 
-本次还通过 `NetworkCApi.game_session` 与 `GameSessionCApi.num_peers` 做了两次只读观察，session 从空变为有效对象，但两次 `peer_count` 都是 `0`。这次实机结果只证明容量常数补丁能在该 build 的官方插件入口执行并保持到卸载；没有加入第五账号，没有调用 Party/PlayFab 或 GameSession 写入 API，也没有证明 confirmed-peer、Player Clone、客户端同步或完整任务流程。验证后已停止游戏并移除自制 DLL 和 marker。
+收据中的旧版本 `peer_count` 字段现已标为 superseded：固定 build 的 live GameSession wrapper 与公开 SDK 的表布局不一致，旧探针把未闭合的 wrapper 偏移当成 `num_peers`，因此不能把那些数值当作可靠的只读 peer 观测。旧原始日志仍保留用于审计，但不再支持 `peer_count` 结论。修正后的 capacity plugin 只在已固定代码字节的 Network getter 上读取 session 指针，明确不读取 `peer()`、`num_peers()`、`in_session()` 或 `host()`。
+
+修正后的合成快照测试为 `session_snapshot_synthetic_passed`，它只接受固定 EXE 身份、Network getter bytes、GameSession 底层 vtable bytes、bounded record count、稳定双读和最多八项记录；任一不匹配都拒绝。这样仍只证明容量常数补丁可以在该 build 的官方插件入口执行，不能证明第五账号、confirmed-peer、Player Clone、客户端同步或完整任务流程。验证后已停止游戏并移除自制 DLL 和 marker。

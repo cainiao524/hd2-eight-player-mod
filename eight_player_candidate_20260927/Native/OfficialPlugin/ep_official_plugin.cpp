@@ -75,7 +75,7 @@ void query_c_api(ep_get_api_fn get_engine_api, const char* event) {
     write_probe_log(event, true);
 }
 
-void write_session_log(uintptr_t session, unsigned peer_count) {
+void write_session_log(uintptr_t session) {
     char path[32768]{};
     DWORD n = GetEnvironmentVariableA("EP_OFFICIAL_PLUGIN_PROBE_LOG", path, sizeof(path));
     if (n == 0 || n >= sizeof(path)) {
@@ -92,7 +92,7 @@ void write_session_log(uintptr_t session, unsigned peer_count) {
         << "  \"schema\": \"hd2_official_plugin_runtime_probe_v1\",\n"
         << "  \"event\": \"session_observe\",\n"
         << "  \"session\": \"0x" << std::hex << session << "\",\n"
-        << "  \"peer_count\": " << std::dec << peer_count << ",\n"
+        << "  \"peer_state_read\": false,\n"
         << "  \"process_id\": " << GetCurrentProcessId() << ",\n"
         << "  \"memory_writes\": false,\n"
         << "  \"game_calls\": true\n"
@@ -113,15 +113,11 @@ void setup_game(ep_get_api_fn get_engine_api) {
     const uintptr_t session_table = g_game_session_table.load(std::memory_order_acquire);
     if (network == 0 || session_table == 0) return;
     using game_session_fn = void* (*)();
-    using num_peers_fn = unsigned (*)(void*);
     const auto game_session = *reinterpret_cast<game_session_fn*>(network + sizeof(void*));
-    const auto num_peers = *reinterpret_cast<num_peers_fn*>(session_table + 0x50);
-    if (game_session == nullptr || num_peers == nullptr) return;
+    if (game_session == nullptr) return;
     void* session = game_session();
-    const unsigned count = session == nullptr ? 0u : num_peers(session);
     g_session.store(reinterpret_cast<uintptr_t>(session), std::memory_order_release);
-    g_peer_count.store(count, std::memory_order_release);
-    write_session_log(reinterpret_cast<uintptr_t>(session), count);
+    write_session_log(reinterpret_cast<uintptr_t>(session));
 }
 
 void update_game(float) {
@@ -133,16 +129,12 @@ void update_game(float) {
     const uintptr_t session_table = g_game_session_table.load(std::memory_order_acquire);
     if (network == 0 || session_table == 0) return;
     using game_session_fn = void* (*)();
-    using num_peers_fn = unsigned (*)(void*);
     const auto game_session = *reinterpret_cast<game_session_fn*>(network + sizeof(void*));
-    const auto num_peers = *reinterpret_cast<num_peers_fn*>(session_table + 0x50);
-    if (game_session == nullptr || num_peers == nullptr) return;
+    if (game_session == nullptr) return;
     void* session = game_session();
-    const unsigned count = session == nullptr ? 0u : num_peers(session);
     const uintptr_t old_session = g_session.exchange(reinterpret_cast<uintptr_t>(session), std::memory_order_acq_rel);
-    const unsigned old_count = g_peer_count.exchange(count, std::memory_order_acq_rel);
-    if (old_session != reinterpret_cast<uintptr_t>(session) || old_count != count) {
-        write_session_log(reinterpret_cast<uintptr_t>(session), count);
+    if (old_session != reinterpret_cast<uintptr_t>(session)) {
+        write_session_log(reinterpret_cast<uintptr_t>(session));
     }
 }
 

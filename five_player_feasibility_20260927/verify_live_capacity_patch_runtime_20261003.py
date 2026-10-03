@@ -14,6 +14,9 @@ result={
  'patched_count': applied[0].get('patched') if applied else 0,
  'refused':len(refused)>0,
  'session_observations':sum(x.get('event')=='session_observe' for x in rows),
+ 'session_peer_observations_superseded':True,
+ 'peer_state_read':False,
+ 'peer_admission_observation':False,
  'rollback_event':any(x.get('event')=='unloaded' for x in rows),
  'read_only':False,
  'process_mutated':True,
@@ -23,7 +26,7 @@ result={
  'installable':False,
  'multiplayer_verified':False
 }
-result['verification_passed']=result['loaded'] and result['applied'] and not result['refused'] and result['session_observations']>=1
+result['verification_passed']=result['loaded'] and result['applied'] and not result['refused'] and result['session_observations']>=1 and result['session_peer_observations_superseded'] and not result['peer_state_read']
 Path(__file__).with_name('live_capacity_patch_runtime_verification_20261003.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 print(json.dumps(result,ensure_ascii=False))
 assert result['verification_passed']
