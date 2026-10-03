@@ -20,11 +20,12 @@
     "target_write_protection_restore": true,
     "remove_requires_owned_detour": true,
     "original_bytes_restored": true,
-    "no_trampoline": "full replacement; caller must quiesce threads and retain callback lifetime"
+    "no_trampoline": "full replacement; caller must quiesce threads and retain callback lifetime",
+    "loadable_dll_export": "ep_consumer_executor.dll exports ep_consumer_install/remove and expected build/size getters; not staged into game plugins"
   },
   "synthetic_test": {
     "test_file": "ep_consumer_executor_test.cpp",
-    "command": "build_consumer_executor_x64.bat",
+    "command": "build_consumer_executor_x64.bat (DLL + synthetic executable)",
     "result": "ep_consumer_executor_synthetic_passed",
     "covered": [
       "4-player compatibility and count 5..8",
@@ -38,12 +39,15 @@
     "ep_consumer_executor.h": "74e3663911ad11d332e569b7082d45492ee9cbf61dd444397e0961f7e2b09be8",
     "ep_consumer_executor.cpp": "3dcaeb57dc7abf2147d4bee86c04e6d0a70028083715d9dd29cdd32ab1c8c039",
     "ep_consumer_executor_test.cpp": "240cac1f479339ef62b8ac1e1692c1b9b6cbf8ac833aab97cbc7c347ba46ae6c",
-    "build_consumer_executor_x64.bat": "8f991ce7768a7b649f20320c7cb293c247dc7f605313716609b8f6b4ce7454db",
+    "build_consumer_executor_x64.bat": "2caad8db4ef31ff448f7fa308b3c11a22ff607a4c7a0e703cc78d3efa0068cac",
     "ep_consumer_executor.obj": "7cd10a8e962f708c4416cd71ade171b0026147719cfe47f45b1289291bf449be",
     "ep_consumer_executor_test.exe": "8c13aa15d18404615fe79d790740343e53f99a43c2e1f3e33dcf8bfbb3a0b06d",
     "ep_consumer_executor_test.obj": "c14390e74be4f70585372152a41ebd7e656893e3c00b5e58375a8013d31026e9",
     "ep_consumer_executor_test.exp": "56dfa59fbd76d7f0eb568bb61a125d634890830d6e74fd782f9cadd743705f3f",
-    "ep_consumer_executor_test.lib": "b313bef2556dcb86931adf9c8df15dbe93fb252b0d86892d8fdedda2ec18a63a"
+    "ep_consumer_executor_test.lib": "b313bef2556dcb86931adf9c8df15dbe93fb252b0d86892d8fdedda2ec18a63a",
+    "ep_consumer_executor.dll": "6abdf4c2332aa7745fd2c71039b45ea7cf6911792bb96a03e8e69a440012e8a5",
+    "ep_consumer_executor.exp": "8886acba863840041f46e70b1eaa49efcad47cf09fb55ddc38ede9dcae50a7e2",
+    "ep_consumer_executor.lib": "9eeb82a0287dd4c5b9e6adb9c8afb5bf73eaf4c5ef1542d2f3be4fb83b366ff1"
   },
   "production": {
     "production_executable": false,
