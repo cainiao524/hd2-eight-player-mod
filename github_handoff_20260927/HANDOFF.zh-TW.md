@@ -474,6 +474,18 @@ capacity patch 仍是 disabled-by-default、固定 build 的研究候选；inlin
 
 `ep_resource_bridge_adapter_synthetic_passed`、原 player-resource test、Bridge/client integration 與 Python receipt checks 已通過，覆蓋八筆 admission、index 4 departure/reconnect、index 3 stage failure rollback 和完整 owner cleanup。這是離線 ABI-shaped transaction，不是 live callback binding；沒有解析 RVA、呼叫 game.dll、安裝 hook、建立第五至第八 peer 或驗證 client entity replication。`production_executable=false`、`runtime_verified=false`、`installable=false`、`multiplayer_verified=false` 維持不變。收據為 `Native/PlayerResource/resource_bridge_adapter_receipt_20261003.json`，整合提交為 `9715a41`。
 
+## 2026-10-03 MidGate owner／capacity ABI correction
+
+重新以 x64 反組譯核對後，MidGate 兩個 helper call 的 owner 來源是原生中段的 `R9`，正確搬移為 `49 8B C9`（`mov rcx,r9`）；先前 `4C 8B C9` 其實是反向搬移，synthetic wrapper 因原本保留 `RCX` 而未暴露這個錯誤。index 搬移維持 `41 8B D6`（`mov edx,r14d`）。capacity stub 現在在比較前無條件建立 `ECX=8`，再把合法／非法 occupancy 結果交回原本的 `sub ecx,eax` continuation。
+
+`ep_midgate_executor_synthetic_passed`、DLL export load check 和 MidGate Python 4/4 均重新通過；合成測試另覆蓋 owner 不從錯誤寄存器取得、partial remove、獨立 site restore 和 retry cleanup。這仍是 caller-supplied helper/quiescence 的固定 build 候選，沒有遊戲程序存取、真實 callback 綁定、安裝或多人驗收。`installable=false`、`runtime_verified=false`、`multiplayer_verified=false` 維持不變。整合提交為 `5c879a9`。
+
+## 2026-10-03 underlying GameSession vtable bounded observation
+
+新增 `Native/SessionObservation/ep_session_vtable_snapshot.h` 與合成 harness，針對保存的固定 build vtable capture 建立不呼叫函式的 bounded reader：`helldivers2.exe+0x292BE0` 的 slot `0x70` 讀取 object `+0x138` count，`+0x292BF0` 的 slot `0x78` 對 `+0x140` table 使用 `0x30` stride，slot `0x98`／`+0x292CC0` 讀取 `+0x130` opaque owner。它會核對 EXE PE identity、function prefix、count `<=8`、record pointer 唯一性，並穩定重讀最多八筆 `0x30` bytes opaque record；任何漂移都 fail-closed。
+
+`session_vtable_snapshot_synthetic_passed` 已通過，收據為 `Native/SessionObservation/session_vtable_snapshot_receipt_20261003.json`。record 尚未解碼成 PeerId、network index 或玩家，也沒有呼叫 `add_peer`、`remove_peer`、`create_game_object`、player creation 或 client replication；這是下一個真實 admission callback 解析的版本化觀測邊界，不是八人成功證據。
+
 ## 2026-10-03 MidGate helper-register ABI correction
 
 重新核對 `Native/MidGate` 的兩個 machine-code template 後，修正 helper 呼叫前的 `mov edx,r14d` bytes：正確編碼是 `41 8B D6`；舊候選的 `44 8B D6` 會解碼為 `mov r10d,esi`，並沒有傳遞 native index。容量與 allocator template、固定收據和 verifier 已同步重生成，Python static checks 4/4 通過。
