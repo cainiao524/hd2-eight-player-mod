@@ -1,19 +1,65 @@
 #include "ep_official_plugin.h"
 
 #include <atomic>
+#include <cstring>
+#include <fstream>
+#include <iomanip>
+#include <sstream>
+#include <string>
+#include <windows.h>
 
 namespace {
 std::atomic<uintptr_t> g_c_api{0};
 std::atomic<uintptr_t> g_network_table{0};
 std::atomic<uintptr_t> g_game_session_table{0};
+std::atomic<unsigned> g_last_api_id{0xFFFFFFFFu};
 
 const char* plugin_name() {
     return "eight_player_official_plugin_probe";
 }
 
+void write_probe_log(bool loaded_state) {
+    char path[32768]{};
+    DWORD n = GetEnvironmentVariableA("EP_OFFICIAL_PLUGIN_PROBE_LOG", path, sizeof(path));
+    if (n == 0 || n >= sizeof(path)) {
+        n = GetTempPathA(sizeof(path), path);
+        if (n == 0 || n >= sizeof(path)) {
+            return;
+        }
+        constexpr char suffix[] = "hd2_eight_player_plugin_runtime_probe.json";
+        const size_t used = static_cast<size_t>(n);
+        if (used + sizeof(suffix) > sizeof(path)) {
+            return;
+        }
+        memcpy(path + used, suffix, sizeof(suffix));
+    }
+    const auto hex = [](uintptr_t value) {
+        std::ostringstream out;
+        out << "0x" << std::hex << value;
+        return out.str();
+    };
+    std::ofstream out(path, std::ios::app);
+    if (!out) {
+        return;
+    }
+    out << "{\n"
+        << "  \"schema\": \"hd2_official_plugin_runtime_probe_v1\",\n"
+        << "  \"event\": \"" << (loaded_state ? "loaded" : "api_query_or_unloaded") << "\",\n"
+        << "  \"loaded\": " << (loaded_state ? "true" : "false") << ",\n"
+        << "  \"last_api_id\": " << g_last_api_id.load(std::memory_order_acquire) << ",\n"
+        << "  \"c_api\": \"" << hex(g_c_api.load(std::memory_order_acquire)) << "\",\n"
+        << "  \"network_table\": \"" << hex(g_network_table.load(std::memory_order_acquire)) << "\",\n"
+        << "  \"game_session_table\": \"" << hex(g_game_session_table.load(std::memory_order_acquire)) << "\",\n"
+        << "  \"process_id\": " << GetCurrentProcessId() << ",\n"
+        << "  \"memory_writes\": false,\n"
+        << "  \"game_calls\": false\n"
+        << "}\n";
+}
+
 void loaded(ep_get_api_fn get_engine_api) {
     // The only operation performed at plugin load is a versioned API lookup.
     // No game function, memory write, hook, peer admission or player creation is called.
+    g_last_api_id.store(EP_PLUGIN_API_ID, std::memory_order_release);
     if (get_engine_api != nullptr) {
         const auto c_api = reinterpret_cast<ep_script_api_prefix*>(get_engine_api(EP_C_API_ID));
         g_c_api.store(reinterpret_cast<uintptr_t>(c_api), std::memory_order_release);
@@ -23,12 +69,15 @@ void loaded(ep_get_api_fn get_engine_api) {
             g_game_session_table.store(reinterpret_cast<uintptr_t>(c_api->slots[8]), std::memory_order_release);
         }
     }
+    write_probe_log(true);
 }
 
 void unloaded() {
+    write_probe_log(false);
     g_c_api.store(0, std::memory_order_release);
     g_network_table.store(0, std::memory_order_release);
     g_game_session_table.store(0, std::memory_order_release);
+    g_last_api_id.store(0xFFFFFFFFu, std::memory_order_release);
 }
 
 ep_plugin_api& api() {
@@ -45,6 +94,8 @@ ep_plugin_api& api() {
 }
 
 EP_PLUGIN_EXPORT void* get_plugin_api(unsigned api_id) {
+    g_last_api_id.store(api_id, std::memory_order_release);
+    write_probe_log(false);
     if (api_id == EP_PLUGIN_API_ID) {
         return &api();
     }

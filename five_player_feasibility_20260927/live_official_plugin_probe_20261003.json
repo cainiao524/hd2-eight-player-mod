@@ -1,0 +1,55 @@
+{
+  "schema": "hd2_official_plugin_runtime_probe_evidence_v1",
+  "build": 25480438,
+  "process_id": 20472,
+  "game_executable": "F:/Game/Steam/steamapps/common/Helldivers 2/bin/helldivers2.exe",
+  "game_dll_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+  "module_observation": {
+    "read_only": true,
+    "modules": [
+      {
+        "name": "eight_player_pluginw64_release.dll",
+        "path": "F:/Game/Steam/steamapps/common/Helldivers 2/bin/plugins/eight_player_pluginw64_release.dll",
+        "sha256": "bfc006e0918cf44d82701a193dd4e67b099d4f33583736079223b1bdd11182fa"
+      },
+      {
+        "name": "level_generation_pluginw64_release.dll",
+        "path": "F:/Game/Steam/steamapps/common/Helldivers 2/bin/plugins/level_generation_pluginw64_release.dll"
+      },
+      {
+        "name": "wwise_pluginw64_release.dll",
+        "path": "F:/Game/Steam/steamapps/common/Helldivers 2/bin/plugins/wwise_pluginw64_release.dll"
+      }
+    ],
+    "custom_module_loaded": true
+  },
+  "plugin_callbacks": {
+    "get_plugin_api_ids_observed": [
+      0,
+      18,
+      19,
+      1260801838,
+      3772659805,
+      180683628
+    ],
+    "plugin_api_id_0_returned": true,
+    "loaded_callback_observed": true,
+    "get_engine_api_c_api_id": 31,
+    "c_api_returned_null": true,
+    "network_table_returned_null": true,
+    "game_session_table_returned_null": true
+  },
+  "safety": {
+    "memory_writes": false,
+    "game_calls": false,
+    "hooks": false,
+    "injection": false,
+    "read_only": true
+  },
+  "player_admission_proven": false,
+  "player_creation_proven": false,
+  "installable": false,
+  "multiplayer_verified": false,
+  "log_artifact": "live_official_plugin_probe_runtime_20261003.jsonl",
+  "meaning": "官方插件載入邊界已在固定 build 觀察到；C_API_ID 31 於此 callback path 回傳 null，因此尚未取得 GameSession/Network table，也未進入 peer admission 或 player creation。"
+}

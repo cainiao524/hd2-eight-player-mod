@@ -11,20 +11,20 @@
       "bytes": 2353
     },
     "ep_official_plugin.cpp": {
-      "sha256": "2e98752b5418b8d96da7a73e6e05e44eba331c55a3c0ad521c93f764770ca2a8",
-      "bytes": 2720
+      "sha256": "f1cf6b2d52c3bc8eccb4076aab4a6a82c6c8afc310fc83a35d8d51ded1e486fd",
+      "bytes": 4857
     },
     "ep_official_plugin_test.cpp": {
       "sha256": "99859e8e05296b13d924ce3be7c0a032e83936a4e42ce32776f09500ec0b755a",
       "bytes": 1456
     },
     "build_x64.bat": {
-      "sha256": "1667dda827897f6d8c2651d7dc54cc43eb04ef56f3da007c98d447c672d9992e",
-      "bytes": 771
+      "sha256": "d5fee1341f0ddd73d1770fb3f641edf5c620a24384183eb5ffdfabe62cf7eb8e",
+      "bytes": 910
     },
     "README.zh-TW.md": {
-      "sha256": "99cb9accd684ca1c6242f54e37f072e003160ef456c39915d0772e691e7819a7",
-      "bytes": 1450
+      "sha256": "c165a7c3f781478bd85f41b9415bb28776fd210e431f59e4edb0123357992d2b",
+      "bytes": 1542
     },
     "ep_official_plugin_load_test.cpp": {
       "sha256": "b1005bc5ea2a2a93ff612e4633060e3dbe339dede9435068a8723e0eece7ff95",
@@ -33,31 +33,68 @@
   },
   "build_artifacts": {
     "ep_official_plugin.dll": {
-      "sha256": "bab7afb396a9f2a16d333d37b86f3c6dad7d24b90deca34eb41d673595358059",
-      "bytes": 103936
+      "sha256": "41824b8372a64dfe04332846353c0be82ce8558e117726fdc607d4ac8edf2974",
+      "bytes": 275456
     },
     "ep_official_plugin_test.exe": {
-      "sha256": "165f4d866f8f4fc8158ea0855b8f23bd1ab0c4508c800dc5518f577b5c01667a",
-      "bytes": 155648
+      "sha256": "876acb03c6124b665f7f1912f37ceb8ae376ffa479190d13de073355bdf6be26",
+      "bytes": 300544
     },
     "ep_official_plugin_load_test.exe": {
-      "sha256": "635474c11af0be0577629b37d400a04ab2babc1bf667237906856b0568b9b797",
+      "sha256": "4eebc6e33e3598858a603fbb385e508287a602c7ff8b8080325e7cb8cad58074",
       "bytes": 153088
+    },
+    "eight_player_pluginw64_release.dll": {
+      "sha256": "bfc006e0918cf44d82701a193dd4e67b099d4f33583736079223b1bdd11182fa",
+      "bytes": 275456
+    },
+    "eight_player_pluginw64_release.lib": {
+      "sha256": "42448ecda608f32f4bb6810f41f07950265fab55fd9808d187bffcfdb3c63517",
+      "bytes": 4134
+    },
+    "eight_player_pluginw64_release.exp": {
+      "sha256": "fa7b80398a1d9c67947c0ce27cc166bc87179446d1609ff4a5181630f622da3f",
+      "bytes": 1936
     }
   },
   "synthetic_harness": "ep_official_plugin_test.exe and ep_official_plugin_load_test.exe passed: API ID 0, unknown ID rejection, C_API_ID callback capture, public ScriptApi Network/GameSession slots 0x38/0x40, read-only table pointer capture, DLL export smoke test, unload clearing",
   "production_executable": false,
-  "runtime_verified": false,
-  "custom_mod_entry_proven": false,
+  "runtime_verified": true,
+  "custom_mod_entry_proven": true,
   "player_admission_proven": false,
   "installable": false,
   "multiplayer_verified": false,
-  "process_accessed": false,
-  "process_started": false,
+  "process_accessed": true,
+  "process_started": true,
   "process_mutated": false,
   "next_required": [
-    "pin ScriptApi/GameSessionCApi layout for build 25480438",
-    "obtain permitted plugin loading observation",
-    "resolve peer admission/player creation callbacks before enabling sidecar"
-  ]
+    "resolve why C_API_ID 31 returns null for this official plugin callback path before reading any GameSession or Network table",
+    "obtain a version-pinned read-only GameSession/peer admission callback contract",
+    "resolve peer admission/player creation callbacks before enabling any sidecar"
+  ],
+  "runtime_probe": {
+    "evidence": "../../five_player_feasibility_20260927/live_official_plugin_probe_20261003.json",
+    "runtime_log": "../../five_player_feasibility_20260927/live_official_plugin_probe_runtime_20261003.jsonl",
+    "process_id": 20472,
+    "module_loaded": true,
+    "get_plugin_api_ids_observed": [
+      0,
+      18,
+      19,
+      1260801838,
+      3772659805,
+      180683628
+    ],
+    "loaded_callback_observed": true,
+    "c_api_id_31_returned_null": true,
+    "network_table_returned_null": true,
+    "game_session_table_returned_null": true,
+    "read_only": true,
+    "memory_writes": false,
+    "game_calls": false,
+    "player_admission_proven": false,
+    "player_creation_proven": false,
+    "installable": false,
+    "multiplayer_verified": false
+  }
 }

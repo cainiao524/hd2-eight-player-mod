@@ -1,12 +1,11 @@
-# 官方 Stingray Plugin ABI 邊界
+# 官方 Stingray Plugin ABI 探針
 
-`get_plugin_api(unsigned)` 是固定 build 的官方 plugin 載入 ABI 候選。此目錄提供一個最小、版本化且 fail-closed 的探針：
+此目錄保存固定 build `25480438` 的官方 native plugin ABI 探針。`get_plugin_api(unsigned)` 只接受 `api_id == 0`，未知 ID 會回傳 null；`loaded` callback 只查詢 `C_API_ID == 31`，再以公開的 `ScriptApi` 位置讀取 `Network`（`+0x38`）與 `GameSession`（`+0x40`）table 指標。探針不呼叫任何 table function，不讀寫遊戲資料，不建立 peer 或玩家。
 
-- 只接受 `api_id == 0`（`PLUGIN_API_ID`），未知 API ID 回傳 null。
-- `loaded` 只查詢 `C_API_ID == 31` 並保存返回指標；依公開 `ScriptApi` 順序讀取 `Network` slot `+0x38`、`GameSession` slot `+0x40` 的 table 指標並保存，但不解參照其中的 function pointer、不呼叫函式、不寫入遊戲記憶體、不建立 peer、不建立 player entity。
-- `unloaded` 清除保存的指標，避免跨生命週期使用 stale API。
-- `build_x64.bat` 會產生 DLL、執行 ABI stub harness，並以 `LoadLibrary`／`GetProcAddress` 做本機 DLL export smoke test；這些 harness 不載入遊戲、不存取遊戲程序。
+目前已在實際遊戲啟動流程觀察到官方 loader 載入 `eight_player_pluginw64_release.dll`，並呼叫 `get_plugin_api` 的 ID `0`、`18`、`19` 及 `loaded` callback。該程序的 `C_API_ID=31` 回傳 null，所以還沒有可用的 `Network` 或 `GameSession` table。觀察收據位於 `five_player_feasibility_20260927/live_official_plugin_probe_20261003.json`。
 
-公開 ABI 來源：[Autodesk Stingray plugin API samples](https://github.com/AutodeskGames/stingray-plugin-api-samples) 與 [Stingray engine plugin 說明](https://help.autodesk.com/cloudhelp/ENU/Stingray-SDK-Help/sdk_help/extend_engine.html)。
+`unloaded` callback 會清除所有保存的指標，避免使用 stale API。`build_x64.bat` 會建置探針 DLL、synthetic harness 和 `LoadLibrary`/`GetProcAddress` smoke test。
 
-這是官方插件入口的 ABI 骨架，不是八人功能本身。要接八人 sidecar，還需要同一 build 的 `ScriptApi`／`GameSessionCApi` 版本核對、合法 plugin 載入證據、第五至第八個 peer admission 與 player creation callback，以及所有 client cleanup/migration 路徑。任何一項缺失都保持 disabled。
+ABI 參考：[Autodesk Stingray plugin API samples](https://github.com/AutodeskGames/stingray-plugin-api-samples) 與 [Stingray engine plugin 文件](https://help.autodesk.com/cloudhelp/ENU/Stingray-SDK-Help/sdk_help/extend_engine.html)。
+
+這是版本化的觀察入口，不是八人功能。必須先取得同一 build 的 `ScriptApi`/`GameSessionCApi` 真實 callback 合約，才能研究 peer admission、player creation、client cleanup 和 host migration；任何欄位或 callback 未確認時都保持 disabled。

@@ -374,3 +374,11 @@ Player-chain 審計又補進三個 client layout 固定四人位點：`0x1087122
 ## 2026-10-03 Official Plugin → GameSession 路線
 
 新增 [OFFICIAL_PLUGIN_GAME_SESSION_ROUTE_20261003.zh-TW.md](../five_player_feasibility_20260927/OFFICIAL_PLUGIN_GAME_SESSION_ROUTE_20261003.zh-TW.md)。公開 Stingray C API 確認 `C_API_ID=31` 的 `ScriptApi` 有 `Network` slot `+0x38`、`GameSession` slot `+0x40`，而 `GameSessionCApi` 具備 `add_peer`、`num_peers`、`peer`、`remove_peer`、`create_game_object`、`migrate_game_object` 等方法。這是目前最實際的合法實作路線，但只是通用 ABI；HD2 實際 table、Party member 到 GameSession 的事件與第五至第八個 Player Clone 建立仍未證明。現有 probe 只保存 table 指標，不呼叫任何遊戲 API；`game_session_table_observed=false`、`player_admission_proven=false`、`installable=false`、`multiplayer_verified=false`。
+
+## 2026-10-03 官方插件載入邊界已在實機觀察
+
+固定 build `25480438` 的遊戲程序 PID `20472` 實際載入倉庫建置的 `eight_player_pluginw64_release.dll`。插件 runtime log 記錄到官方 loader 呼叫 `get_plugin_api` 的 API id `0`、`18`、`19`，並完成 `loaded` callback；這確認官方 plugin directory 的 ABI 入口可由自建探針觀察。模組列表同時保留官方 `level_generation_pluginw64_release.dll` 與 `wwise_pluginw64_release.dll`。
+
+探針在 `loaded` callback 只查詢 `C_API_ID=31`。本次 callback path 回傳 null，`Network` 與 `GameSession` table pointer 都是 null，因此沒有進入任何遊戲函式、peer admission 或 player creation。探針沒有寫入記憶體、安裝 hook、注入模組或改動官方 DLL。完整原始 JSON Lines 收據見 [live_official_plugin_probe_runtime_20261003.jsonl](../five_player_feasibility_20260927/live_official_plugin_probe_runtime_20261003.jsonl)，彙整結果見 [LIVE_OFFICIAL_PLUGIN_PROBE_20261003.zh-TW.md](../five_player_feasibility_20260927/LIVE_OFFICIAL_PLUGIN_PROBE_20261003.zh-TW.md)。
+
+因此這次只把 `runtime_verified` 與 `custom_mod_entry_proven` 標記為 true；`player_admission_proven`、`player_creation_proven`、`installable`、`multiplayer_verified` 仍為 false。下一個實作邊界是找出 `C_API_ID=31` 在官方 plugin callback path 回傳 null 的原因，取得版本鎖定的 `GameSession`/peer admission callback 合約後才可設計可回滾的 sidecar。
