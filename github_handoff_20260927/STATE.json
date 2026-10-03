@@ -1237,7 +1237,15 @@
     "five_player_feasibility_20260927/live_registration_state_20261003_16m.json": "db339e9dce7350b3fcf9847e8dc502766c1a1e04c33af772bec2ae3fa19ed232",
     "five_player_feasibility_20260927/live_registration_state_16m_verification_20261003.json": "caf23ea5549ea0b93a8054665255a63b6956afd5a18db29ccafed268ce3aee8a",
     "five_player_feasibility_20260927/test_live_registration_state_16m_20261003.py": "863b262471f811f017e2b8f5195aa88c9e5e53c1b7c61b4a82b42d9ecaba3b2a",
-    "five_player_feasibility_20260927/LIVE_REGISTRATION_STATE_16M_20261003.zh-TW.md": "93d1858c0c40c9345355343db110264e98730eaf6a3d3e3ab94793dc70afc501"
+    "five_player_feasibility_20260927/LIVE_REGISTRATION_STATE_16M_20261003.zh-TW.md": "93d1858c0c40c9345355343db110264e98730eaf6a3d3e3ab94793dc70afc501",
+    "five_player_feasibility_20260927/live_native_sites_20261003_r4.json": "d5134cf9d737ef27c5948138535050ac8872139ee6a7e3adfc8035f153414988",
+    "five_player_feasibility_20260927/live_session_member_sites_20261003_r3.json": "cc2fbd081e0024b35ac93dd018ef9a2cb3d034c871daa9ba59f99d46dcda5731",
+    "five_player_feasibility_20260927/live_dispatcher_data_20261003_r5.json": "74e5a64ecda110f8f3e9a85e994647a4aec71a2731a1668c1d805719b6ba4710",
+    "five_player_feasibility_20260927/live_registration_state_20261003_16m_r2.json": "1f472f68fb656769b3e280eedcddb6fddbf2aab8b87e855cedb446d3ec498960",
+    "five_player_feasibility_20260927/live_session_snapshot_20261003_r10.json": "6dd292b7280ffa74a47926e87cbcc320fad6df47a8d2048f3715eea99b9ca4f2",
+    "five_player_feasibility_20260927/verify_live_capture_current_20261003.py": "9858fad8b328845ee31f795a48a09c2d886c76f55f9c87a06d67bf85b83fcca3",
+    "five_player_feasibility_20260927/test_verify_live_capture_current_20261003.py": "9ec7ce48dadcd37253f58d982a34949e72ae15c5e47cb2a192c1f616da1cc763",
+    "five_player_feasibility_20260927/live_capture_current_verification_20261003.json": "6e3c9c621c3e33d3195b126de8977c5cbad515f7c12c84b17d512e7f977180c9"
   },
   "missing_release_files": [],
   "remaining_release_work": [
@@ -1380,7 +1388,7 @@
     "upload_receipt": "github_handoff_20260927/UPLOAD_STATUS.json",
     "verified_at_utc": "2026-09-27T20:52:54.657201+08:00",
     "remote_contains_current_delivery": true,
-    "note": "2026-10-03 added fixed-build live rerun evidence and then corrected the private-registry scan accounting; historical 1 GiB negative claim is superseded, installable=false, resolver_closed=false and multiplayer_verified=false remain authoritative.",
+    "note": "2026-10-03 added fresh PID 45904 fixed-build read-only reread evidence; historical 1 GiB negative claim remains superseded, installable=false, resolver_closed=false and multiplayer_verified=false remain authoritative.",
     "latest_research_commit": "384f3b5",
     "latest_research_commit_pushed": true
   },
@@ -1456,7 +1464,15 @@
       "five_player_feasibility_20260927/live_registration_state_20261003_16m.json",
       "five_player_feasibility_20260927/live_registration_state_16m_verification_20261003.json",
       "five_player_feasibility_20260927/test_live_registration_state_16m_20261003.py",
-      "five_player_feasibility_20260927/LIVE_REGISTRATION_STATE_16M_20261003.zh-TW.md"
+      "five_player_feasibility_20260927/LIVE_REGISTRATION_STATE_16M_20261003.zh-TW.md",
+      "five_player_feasibility_20260927/live_native_sites_20261003_r4.json",
+      "five_player_feasibility_20260927/live_session_member_sites_20261003_r3.json",
+      "five_player_feasibility_20260927/live_dispatcher_data_20261003_r5.json",
+      "five_player_feasibility_20260927/live_registration_state_20261003_16m_r2.json",
+      "five_player_feasibility_20260927/live_session_snapshot_20261003_r10.json",
+      "five_player_feasibility_20260927/verify_live_capture_current_20261003.py",
+      "five_player_feasibility_20260927/test_verify_live_capture_current_20261003.py",
+      "five_player_feasibility_20260927/live_capture_current_verification_20261003.json"
     ],
     "native_site_count": 6,
     "session_site_count": 5,
@@ -1588,7 +1604,41 @@
     "private_registry_1g_negative_observation_valid": false,
     "private_registry_1g_bytes_observed": 1073741824,
     "private_registry_1g_bytes_note": "historical receipt field; coverage is invalidated and must not be used as a complete negative claim",
-    "last_update_scope": "Corrected historical registry accounting, then validated the repaired scanner on fresh PID 41576: 16 MiB prefix reached exactly with stable postflight identity and zero hits. Historical 1 GiB receipt is superseded; native admission, installation and multiplayer remain unproven."
+    "last_update_scope": "Fresh PID 45904 fixed-build reread: native/session sites match prior hashes, dispatcher signature remains two known hits, registration prefix is a valid complete 16 MiB negative observation, and menu context remains zero peers with four documented roster slots. Native admission, installation and multiplayer remain unproven.",
+    "current_r5_pid": 45904,
+    "current_r5_artifacts": [
+      "five_player_feasibility_20260927/live_native_sites_20261003_r4.json",
+      "five_player_feasibility_20260927/live_session_member_sites_20261003_r3.json",
+      "five_player_feasibility_20260927/live_dispatcher_data_20261003_r5.json",
+      "five_player_feasibility_20260927/live_registration_state_20261003_16m_r2.json",
+      "five_player_feasibility_20260927/live_session_snapshot_20261003_r10.json",
+      "five_player_feasibility_20260927/verify_live_capture_current_20261003.py",
+      "five_player_feasibility_20260927/test_verify_live_capture_current_20261003.py",
+      "five_player_feasibility_20260927/live_capture_current_verification_20261003.json"
+    ],
+    "current_r5_checks": "14/14",
+    "current_r5_verification": "five_player_feasibility_20260927/live_capture_current_verification_20261003.json",
+    "current_r5_native_sites_same_as_r2": true,
+    "current_r5_session_sites_same_as_r2": true,
+    "current_r5_dispatcher_hit_signature": [
+      "confirmed_peer_event_hash@0xbe4982",
+      "confirmed_peer_receiver@0x214c820"
+    ],
+    "current_r5_registration_prefix_mib": 16,
+    "current_r5_registration_prefix_hits": 0,
+    "current_r5_registration_prefix_coverage_complete": true,
+    "current_r5_registration_prefix_postflight_verified": true,
+    "current_r5_session_peer_count": 0,
+    "current_r5_documented_roster_slots": 4,
+    "current_r5_out_of_contract_slots": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "current_r5_read_only": true,
+    "current_r5_multiplayer_verified": false,
+    "current_r5_meaning": "Fresh PID 45904 fixed-build reread is internally consistent and preserves the four-slot baseline; native resolver ownership, fifth-peer admission, installation and multiplayer remain unproven."
   },
   "offline_continuation_20261003": {
     "build": 25480438,

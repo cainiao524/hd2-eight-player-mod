@@ -1,0 +1,92 @@
+{
+  "schema": "hd2_live_capture_current_verification_v1",
+  "build": 25480438,
+  "pid": 45904,
+  "artifacts": [
+    "live_native_sites_20261003_r4.json",
+    "live_session_member_sites_20261003_r3.json",
+    "live_dispatcher_data_20261003_r5.json",
+    "live_registration_state_20261003_16m_r2.json",
+    "live_session_snapshot_20261003_r10.json"
+  ],
+  "checks": [
+    {
+      "name": "fixed_build_all_artifacts",
+      "passed": true,
+      "detail": "all artifacts use build 25480438"
+    },
+    {
+      "name": "same_live_pid",
+      "passed": true,
+      "detail": "[45904]"
+    },
+    {
+      "name": "native_image_identity",
+      "passed": true,
+      "detail": "exe/game hashes match"
+    },
+    {
+      "name": "member_image_identity",
+      "passed": true,
+      "detail": "exe/game hashes match"
+    },
+    {
+      "name": "dispatcher_image_identity",
+      "passed": true,
+      "detail": "exe/game hashes match"
+    },
+    {
+      "name": "registration_image_identity",
+      "passed": true,
+      "detail": "exe/game hashes match"
+    },
+    {
+      "name": "session_image_identity",
+      "passed": true,
+      "detail": "exe/game hashes match"
+    },
+    {
+      "name": "native_sites_reread_stable",
+      "passed": true,
+      "detail": "6 sites match prior fixed-build reread"
+    },
+    {
+      "name": "session_sites_reread_stable",
+      "passed": true,
+      "detail": "5 sites match prior fixed-build reread"
+    },
+    {
+      "name": "dispatcher_signature",
+      "passed": true,
+      "detail": "[('confirmed_peer_event_hash', '0xbe4982'), ('confirmed_peer_receiver', '0x214c820')]"
+    },
+    {
+      "name": "bounded_registration_scan",
+      "passed": true,
+      "detail": "16 MiB complete prefix, stable postflight, zero hits"
+    },
+    {
+      "name": "session_baseline_four_slot",
+      "passed": true,
+      "detail": "menu baseline has zero peers and four documented roster slots"
+    },
+    {
+      "name": "read_only_flags",
+      "passed": true,
+      "detail": "all runtime/install/multiplayer flags remain false"
+    },
+    {
+      "name": "no_process_mutation",
+      "passed": true,
+      "detail": "calls, writes and hooks are false"
+    }
+  ],
+  "checks_passed": 14,
+  "checks_total": 14,
+  "verification_passed": true,
+  "read_only": true,
+  "resolver_closed": false,
+  "installable": false,
+  "multiplayer_verified": false,
+  "meaning": "Fresh fixed-build read-only evidence is internally consistent; it does not prove a fifth peer, native resolver ownership, installation or eight-player multiplayer."
+}
