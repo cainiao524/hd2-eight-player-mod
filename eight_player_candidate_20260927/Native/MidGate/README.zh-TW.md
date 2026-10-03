@@ -5,7 +5,9 @@
 - `game.dll + 0x108C18F`：capacity gate 的 38-byte 指令範圍，從 `0x108C18F` 到 `0x108C1B4`，跳回原本的 `sub ecx,eax`（`0x108C1BA`）。stub 保存 `r9/r12/r13/r14/r15/rbp`，呼叫 sidecar occupancy helper，驗證回傳值在 `0..8`，再讓原本的比較與分支保持有效。
 - `game.dll + 0x108C3D8`：allocator loop 的 15-byte 指令範圍，跳回原本的 outer-loop continuation `0x108C3F7`。stub 保存 `r9/rdx`，呼叫 sidecar index helper，允許 `0..7` 或原生 `-1` sentinel，最後寫回原本使用的 `r8d`。
 
-2026-10-03 的 ABI 校正把兩個 helper 呼叫前的寄存器搬移固定為 `41 8B D6`（`mov edx,r14d`）。舊的 `44 8B D6` 實際會解碼成 `mov r10d,esi`，不能把 native index 傳給 helper；校正後的 stub、收據和 verifier 已重新生成並逐項一致。
+2026-10-03 的 ABI 校正把兩個 helper 呼叫前的寄存器搬移固定為 `49 8B C9`（`mov rcx,r9`）以及 `41 8B D6`（`mov edx,r14d`）。舊的 `4C 8B C9` 實際會解碼成 `mov r9,rcx`，不能把 native owner 傳給 helper；舊的 `44 8B D6` 實際會解碼成 `mov r10d,esi`，不能把 native index 傳給 helper。capacity stub 也在比較前固定 `mov ecx,8`，因為原本的 `mov ecx,4` 位於被覆蓋範圍，continuation 的 `sub ecx,eax` 不能依賴未定義的 ECX。校正後的 stub、收據和 verifier 已重新生成並逐項一致。
+
+Executor 的卸載流程會分別嘗試兩個 site。若其中一個 site 的 bytes 被外部改動，另一個 site 仍會先恢復；未恢復的 site 狀態保留在 `EP_MIDGATE_HOOK`，待 bytes 回復後可再次呼叫 remove。原始 bytes 已恢復但 page-protection 還原回報失敗時，stub 仍會先解除 function table 並釋放，避免留下不可重試的假 ownership。
 
 每個 site 都保存：
 

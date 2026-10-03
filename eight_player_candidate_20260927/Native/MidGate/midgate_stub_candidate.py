@@ -137,7 +137,10 @@ def _capacity_stub(helper: int, continuation: int, stub_address: int) -> tuple[b
     code += _push(b"\x41\x57")  # push r15 (request list)
     code += _push(b"\x55")      # push rbp (game frame)
     code += b"\x48\x83\xEC\x20"  # sub rsp,32-byte shadow space
-    code += b"\x4C\x8B\xC9"       # mov rcx,r9 (owner)
+    # R9 carries the native host owner at this mid-function site.  The
+    # helper ABI receives it in RCX; 49 8B C9 is mov rcx,r9.  4C 8B C9
+    # would move the unrelated RCX value into R9 and silently lose owner.
+    code += b"\x49\x8B\xC9"       # mov rcx,r9 (owner)
     code += b"\x41\x8B\xD6"       # mov edx,r14d (native base/index)
     code += _mov_abs("rax", helper)
     code += b"\xFF\xD0"           # call rax
@@ -149,10 +152,13 @@ def _capacity_stub(helper: int, continuation: int, stub_address: int) -> tuple[b
     code += b"\x41\x5C"           # pop r12
     code += b"\x41\x59"           # pop r9
     # Reject helper results outside [0,8] by treating them as fully occupied.
+    # The original mov ecx,4 lies inside the overwritten span.  Set the
+    # replacement capacity before both branches so the continuation's
+    # original sub ecx,eax always has a defined eight-slot capacity.
+    code += b"\xB9\x08\x00\x00\x00"  # mov ecx,8
     code += b"\x83\xF8\x08"       # cmp eax,8
     code += b"\x76\x05"           # jbe valid
     code += b"\xB8\x08\x00\x00\x00"  # mov eax,8
-    code += b"\xB9\x08\x00\x00\x00"  # mov ecx,8
     code += _absolute_jump(continuation)
     unwind = _register_unwind(15, [
         (15, 0x32),  # UWOP_ALLOC_SMALL, 32 bytes
@@ -173,7 +179,9 @@ def _allocator_stub(helper: int, continuation: int, stub_address: int) -> tuple[
     code += b"\x41\x51"           # push r9
     code += b"\x52"               # push rdx
     code += b"\x48\x83\xEC\x20"  # shadow space
-    code += b"\x4C\x8B\xC9"       # mov rcx,r9 (owner)
+    # R9 carries the native host owner; pass it through the Windows x64 first
+    # argument register RCX before calling the sidecar helper.
+    code += b"\x49\x8B\xC9"       # mov rcx,r9 (owner)
     code += b"\x41\x8B\xD6"       # mov edx,r14d (start index)
     code += _mov_abs("rax", helper)
     code += b"\xFF\xD0"           # call rax

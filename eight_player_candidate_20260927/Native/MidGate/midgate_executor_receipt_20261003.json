@@ -3,9 +3,9 @@
   "steam_build": 25480438,
   "module": "game.dll",
   "source_files": {
-    "ep_midgate_executor.cpp": "535534f823fa4ac872a05425fc5c21578af5b4397f69f6881b823d15557633fb",
+    "ep_midgate_executor.cpp": "7fcc8ef8ba88bb459a1ab70dc07735aa8e939704f2d290afa8b394999257fc5a",
     "ep_midgate_executor.h": "e2f234c51bf65bdf940867345ef1275068264eace67950e0f5b1036f4d514f5b",
-    "ep_midgate_executor_test.cpp": "3e788efb403c7f9fa1ba3adadfe09301965905d36d274b83494623167bf45274",
+    "ep_midgate_executor_test.cpp": "2aa2159ea348e9f429a92ff25964d44b5d594ba93222287d51b2093e16b2eae9",
     "ep_midgate_executor_load_test.cpp": "d07b7232defe97433d400f75032a4abb6cfb3c5f5ce804870213d59b14a0d96b",
     "build_x64.bat": "e087c6047948a0766fd1355b4ecc84f1f8b3e32ad051579d2bf809bfddb65635"
   },
@@ -24,7 +24,13 @@
   "tests": {
     "executor": "ep_midgate_executor_synthetic_passed",
     "dll_exports": "ep_midgate_executor_dll_exports_passed",
-    "static_python": "4/4 passed"
+    "static_python": "4/4 passed",
+    "partial_remove_retry": "covered by executor harness"
+  },
+  "abi_fixes": {
+    "owner_move": "49 8B C9 (mov rcx,r9)",
+    "index_move": "41 8B D6 (mov edx,r14d)",
+    "capacity_register": "B9 08 00 00 00 before compare and continuation"
   },
   "process_started": false,
   "process_accessed": false,

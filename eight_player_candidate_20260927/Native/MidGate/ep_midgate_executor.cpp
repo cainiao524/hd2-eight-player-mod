@@ -31,12 +31,12 @@ constexpr BYTE kAllocatorExpected[kAllocatorSpan] = {
     0x44,0x38,0x30,0x74,0x0c,0xff,0xc1,0x48,0xff,0xc0,0x83,0xf9,0x04,0x72,0xf1};
 constexpr BYTE kCapacityCode[kCapacityCodeSize] = {
     0x41,0x51,0x41,0x54,0x41,0x55,0x41,0x56,0x41,0x57,0x55,0x48,0x83,0xec,0x20,
-    0x4c,0x8b,0xc9,0x41,0x8b,0xd6,0x48,0xb8,0,0,0,0,0,0,0,0,0xff,0xd0,
+    0x49,0x8b,0xc9,0x41,0x8b,0xd6,0x48,0xb8,0,0,0,0,0,0,0,0,0xff,0xd0,
     0x48,0x83,0xc4,0x20,0x5d,0x41,0x5f,0x41,0x5e,0x41,0x5d,0x41,0x5c,0x41,0x59,
-    0x83,0xf8,0x08,0x76,0x05,0xb8,0x08,0x00,0x00,0x00,0xb9,0x08,0x00,0x00,0x00,
+    0xb9,0x08,0x00,0x00,0x00,0x83,0xf8,0x08,0x76,0x05,0xb8,0x08,0x00,0x00,0x00,
     0xff,0x25,0x00,0x00,0x00,0x00,0,0,0,0,0,0,0,0};
 constexpr BYTE kAllocatorCode[kAllocatorCodeSize] = {
-    0x41,0x51,0x52,0x48,0x83,0xec,0x20,0x4c,0x8b,0xc9,0x41,0x8b,0xd6,
+    0x41,0x51,0x52,0x48,0x83,0xec,0x20,0x49,0x8b,0xc9,0x41,0x8b,0xd6,
     0x48,0xb8,0,0,0,0,0,0,0,0,0xff,0xd0,0x48,0x83,0xc4,0x20,0x5a,0x41,0x59,
     0x83,0xf8,0x08,0x72,0x0a,0x83,0xf8,0xff,0x74,0x05,0xb8,0xff,0xff,0xff,0xff,
     0x44,0x8b,0xc0,0x49,0xbb,0,0,0,0,0,0,0,0,0x41,0xff,0xe3};
@@ -204,11 +204,15 @@ bool restore_site(EP_MIDGATE_SITE_HOOK* site) {
     std::memcpy(site->target, site->original, site->stolen_size);
     FlushInstructionCache(GetCurrentProcess(), site->target, site->stolen_size);
     DWORD ignored = 0;
-    if (!VirtualProtect(site->target, site->stolen_size, old, &ignored)) return false;
+    const BOOL protection_restored = VirtualProtect(site->target, site->stolen_size, old, &ignored);
+    // Once the original bytes are back, the detour is gone even if restoring
+    // page protection reports an error.  Clear ownership and unregister/free
+    // the stub so a later remove call cannot mistake the stale bytes for an
+    // active hook or leak executable memory.
     site->installed = FALSE;
     release_site(site);
     site->target = nullptr;
-    return true;
+    return protection_restored != FALSE;
 }
 }
 
@@ -236,7 +240,10 @@ extern "C" BOOL __cdecl ep_midgate_install(
                       kAllocatorCode, kAllocatorCodeSize, kAllocatorUnwind, kUnwindAllocatorSize,
                       kAllocatorUnwindOffset, reinterpret_cast<void*>(callbacks->allocator),
                       allocator_continuation, 15, 52)) {
+        // Keep any surviving site state in out_hook so the caller can retry
+        // cleanup if a protection transition failed during rollback.
         restore_site(&out_hook->capacity);
+        out_hook->installed = out_hook->capacity.installed || out_hook->allocator.installed;
         return FALSE;
     }
     out_hook->installed = TRUE;
@@ -244,11 +251,15 @@ extern "C" BOOL __cdecl ep_midgate_install(
 }
 
 extern "C" BOOL __cdecl ep_midgate_remove(EP_MIDGATE_HOOK* hook) {
-    if (!hook || !hook->installed || !owns_detour(hook->capacity) || !owns_detour(hook->allocator)) return FALSE;
-    if (!restore_site(&hook->allocator)) return FALSE;
-    if (!restore_site(&hook->capacity)) return FALSE;
-    hook->installed = FALSE;
-    return TRUE;
+    if (!hook || !hook->installed) return FALSE;
+    // Attempt both sites even when the first one fails.  This prevents a
+    // failed allocator restore from leaving a removable capacity detour
+    // untouched, and preserves per-site state for a later retry.
+    BOOL ok = TRUE;
+    if (hook->allocator.installed && !restore_site(&hook->allocator)) ok = FALSE;
+    if (hook->capacity.installed && !restore_site(&hook->capacity)) ok = FALSE;
+    hook->installed = hook->capacity.installed || hook->allocator.installed;
+    return ok != FALSE && hook->installed == FALSE;
 }
 
 extern "C" DWORD __cdecl ep_midgate_expected_build() { return kBuild; }

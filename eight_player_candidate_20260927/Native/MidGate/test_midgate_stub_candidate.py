@@ -63,6 +63,12 @@ class MidGateStubCandidateTests(unittest.TestCase):
         self.assertIn(b"\x41\x8b\xd6", allocator.stub)
         self.assertNotIn(b"\x44\x8b\xd6", capacity.stub)
         self.assertNotIn(b"\x44\x8b\xd6", allocator.stub)
+        self.assertIn(b"\x49\x8b\xc9", capacity.stub)
+        self.assertIn(b"\x49\x8b\xc9", allocator.stub)
+        self.assertNotIn(b"\x4c\x8b\xc9", capacity.stub)
+        self.assertNotIn(b"\x4c\x8b\xc9", allocator.stub)
+        self.assertLess(capacity.stub.index(b"\xb9\x08\x00\x00\x00"),
+                        capacity.stub.index(b"\x83\xf8\x08"))
         self.assertNotIn(b"\xe8", capacity.stub)
         self.assertNotIn(b"\xe9", capacity.stub)
         self.assertNotIn(b"\xe8", allocator.stub)
