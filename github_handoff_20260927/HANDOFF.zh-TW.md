@@ -10,7 +10,7 @@
 
 新增 `Native/PlayerResource` 八格 C++ sidecar，將固定 build audit 的三張 callback table 固定成 `begin → first → second → third → publish → release` 交易：每個 network index 都保留 generation、owner epoch、peer／resource identity 與 callback lease；第三階段拒絕、callback 順序錯誤和重複 release 都會清除或拒絕 stale record，owner migration 需先 quiesce。`component 239` 僅作為第一張 table 的 roster leaf 契約輸入。
 
-`ep_player_resource_synthetic_passed` 與 Python report/hash tests 通過。這是 native 形狀的離線所有權／回滾元件，尚未解析或呼叫 `0x1086460 → 0xFDC140 → 0x581320/0x581780 → 0x540920` 真實 ABI，也沒有 hook、注入、安裝、UI、Party 或多人驗收；`production_executable=false`、`runtime_verified=false`、`installable=false`、`multiplayer_verified=false` 保持不變。
+`ep_player_resource_synthetic_passed` 已涵蓋 index `0..7`、佔用第九次拒絕、三階段 callback、失敗回滾與 owner migration；Python report/hash tests 2/2 通過。這是 native 形狀的離線所有權／回滾元件，尚未解析或呼叫 `0x1086460 → 0xFDC140 → 0x581320/0x581780 → 0x540920` 真實 ABI，也沒有 hook、注入、安裝、UI、Party 或多人驗收；`production_executable=false`、`runtime_verified=false`、`installable=false`、`multiplayer_verified=false` 保持不變。
 
 ## 2026-10-03 fixed-build live preflight reread
 
