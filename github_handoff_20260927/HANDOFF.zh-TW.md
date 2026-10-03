@@ -19,7 +19,7 @@
 
 同一固定 build `25480438` 保存了 `Network`／`GameSession` C API table 的 bounded prefix 和候選 engine-session vtable 的靜態前綴。捕獲只讀、重讀相等、沒有呼叫函式、寫記憶體、hook 或注入；wrapper table 與 underlying vtable 分開記錄，不能解讀成 peer admission、player creation 或可安裝 Mod。
 
-最新研究提交為 `799e5b6`，狀態收據提交為 `c4fcaba`。`installable=false`、`multiplayer_verified=false`、真實第五至第八帳號測試未完成。
+最新研究提交為 `cc6aacd`，狀態收據提交為 `dfe946a`。`installable=false`、`multiplayer_verified=false`、真實第五至第八帳號測試未完成。
 
 
 ## 2026-10-03 最新離線 native bridge hardening
