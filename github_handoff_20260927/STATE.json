@@ -996,7 +996,7 @@
     "five_player_feasibility_20260927/verification/native_peer_admission_bridge_boundary_verification_20261002.json": "f30a4b9517d3add9050cd24ff3fcd010d9ea1a72cb937bdddb6db250384abad0",
     "five_player_feasibility_20260927/verification/peer_admission_adapter_verification.json": "0b4f84491adeff2b424d02e6fa614c3630381dc12eaf4bc20af39914ff4319fc",
     "five_player_feasibility_20260927/verify_native_peer_admission_bridge_boundary.py": "6cf6d5d4e9898fab0083ea135f8ea13dbc129ff0f1d68d4e83f1c8bd34214ad7",
-    "github_handoff_20260927/HANDOFF.zh-TW.md": "6afa8676164a0ceb24feea04753eff0cf6682b10e1ab38d8948c80539bbb9c99",
+    "github_handoff_20260927/HANDOFF.zh-TW.md": "bf6c16eb99b61b1f13bddf9d85eaf3f2a19a6e2b06dbb6003bac4820fc6429c8",
     "github_handoff_20260927/SETUP.zh-TW.md": "1c362594a6a8e70fe5fb9fce5f0d23dcf6d160a6338345f2f4b717d538d8003b",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_disasm_20261002.json": "48f504badebad800a8439494bc386e3dff61e1818168a40916d8cffd618790c9",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_patch.py": "9808f073e958fdc464d47bc10a459f328d14ebde9a765f429e13153786a5734a",
@@ -1363,7 +1363,7 @@
     "eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_native_callbacks_test.obj": "af03f9f9a02112c4aa176d1ad74f8142ddcfb2cd405ff58c347b35b9da7e422c",
     "five_player_feasibility_20260927/COMPLETION_AUDIT_20261003.zh-TW.md": "e942cbefc83e557619641bcd5c42e526ef5003142a259e54cde767d2b941e5a5",
     "five_player_feasibility_20260927/audit_completion_state_20261003.py": "9e101fa476ca66ff24d3ab806298a4b33beb25ad2cfb63bc974443e6b67fcd04",
-    "five_player_feasibility_20260927/completion_audit_20261003.json": "bce81e83f884c46b135b72509d9322b431f47ef5634db52f563d23a608e860b6",
+    "five_player_feasibility_20260927/completion_audit_20261003.json": "85cfb9be78ca9413c93e00c7937b60d4a341da39234f94248a7797dca2ac8575",
     "eight_player_candidate_20260927/Native/PlayerCreationGate/README.zh-TW.md": "13eaa88fff268e5770b9cd754213d7389ade2cdb58285ccdaa8c8ce020ea482d",
     "eight_player_candidate_20260927/Native/PlayerCreationGate/build_x64.bat": "602192ffe280c0e5f3028b96433597d70a58d3f69e162f1be1a4a304c011b499",
     "eight_player_candidate_20260927/Native/PlayerCreationGate/ep_player_creation_gate.cpp": "9c91bb93e316bde2ef251d21a467de966813166363d4ac2c31692b17174684f8",
@@ -1390,7 +1390,11 @@
     "eight_player_candidate_20260927/Native/SessionObservation/ep_session_vtable_snapshot_test.cpp": "bf67b8bdd86b70fe65195e047379918aef81619464490f08d5789645d56ccaea",
     "eight_player_candidate_20260927/Native/SessionObservation/build_vtable_snapshot_x64.bat": "9479210b656d0c702819081eacf95254dd652d5a24a6ad82d1138940ee430e96",
     "eight_player_candidate_20260927/Native/SessionObservation/SESSION_VTABLE_OBSERVATION_20261003.zh-TW.md": "b920c6cea3e106c017e305eba13f23fb933d118a833284455b8fd4c307544770",
-    "eight_player_candidate_20260927/Native/SessionObservation/session_vtable_snapshot_receipt_20261003.json": "f9086a710722295c956661415b155bad1bd86e9d01ba7424b9338724ae087232"
+    "eight_player_candidate_20260927/Native/SessionObservation/session_vtable_snapshot_receipt_20261003.json": "f9086a710722295c956661415b155bad1bd86e9d01ba7424b9338724ae087232",
+    "eight_player_candidate_20260927/Native/SessionMembers/admission_boundary_contract_20261003.py": "d1eaf5875798383028615a5da4a691f519f0dc177ba4f0e5430366ab863352e3",
+    "eight_player_candidate_20260927/Native/SessionMembers/admission_boundary_contract_20261003.json": "463188bd0b480dbe45a00db5470f0f778c469f85c8e337713ef815273b20eda9",
+    "eight_player_candidate_20260927/Native/SessionMembers/test_admission_boundary_contract_20261003.py": "f870f934a606efed1193656a39ff71a5a093d10230dd9dfe54b271d1e7b86d0a",
+    "eight_player_candidate_20260927/Native/SessionMembers/ADMISSION_BOUNDARY_CONTRACT_20261003.zh-TW.md": "e089d4610124e5866cd2d88867d3a26f97fc12340dc6b143cd4bc3c157dd72b4"
   },
   "missing_release_files": [],
   "remaining_release_work": [
@@ -1526,9 +1530,11 @@
     "Built and verified the fixed-build PlayerCreationGate adapter and resource-to-bridge transaction; documented both as offline ABI candidates with fail-closed gates.",
     "Corrected both MidGate helper register moves to 41 8B D6 (mov edx,r14d), regenerated the fixed receipt, and passed four static checks plus the offline executor and DLL export harnesses; no game installation was performed.",
     "修正 MidGate owner move 為 49 8B C9、capacity 比較前建立 ECX=8，並以 owner/index/capacity machine-code verifier、offline executor、DLL load harness 與 Python 4/4 checks 重新核對；process/install/runtime/multiplayer gates 仍為 false。",
-    "新增固定 build 25480438 的 underlying GameSession vtable bounded observation contract：slot 0x70/0x78/0x98、count +0x138、record table +0x140、owner +0x130 與 0x30 stride 均做 PE/function fingerprint、容量、唯一指標及穩定雙讀 fail-closed；synthetic test passed，record 語義與 admission/creation 仍未證明。"
+    "新增固定 build 25480438 的 underlying GameSession vtable bounded observation contract：slot 0x70/0x78/0x98、count +0x138、record table +0x140、owner +0x130 與 0x30 stride 均做 PE/function fingerprint、容量、唯一指標及穩定雙讀 fail-closed；synthetic test passed，record 語義與 admission/creation 仍未證明。",
+    "固定 host admission 兩個間接 call site 的 bytes/RVA/owner/opaque ID/state/hash call-shape contract；2 項 Python 合成測試通過，target semantics、cleanup、player creation、client replication 與 production hook 仍未證明。"
   ],
   "next_offline_work": [
+    "Resolve the two admission call targets and their return/state/cleanup ABI from a permitted read-only runtime trace before binding any player or peer writer; retain the static call-shape contract as a version gate only.",
     "Decode the bounded GameSession vtable opaque records and bind their owner/record lifetime to the real admission callback contract; keep the no-call reader and all write paths disabled until PeerId, network index and cleanup semantics are proven.",
     "Validate the corrected MidGate owner/capacity register ABI against a permitted real resolver/quiescence contract; preserve exact restore and retry cleanup before any installation.",
     "Cross-check the corrected MidGate executor against a permitted real owner/quiescence ABI; keep it disabled until confirmed-peer, player-creation, cleanup and client replication callbacks are bound.",
@@ -1547,8 +1553,8 @@
     "Bind PlayerCreationGate downstream callbacks to the real fixed-build resource/component/roster owner and relocation path; keep the gate disabled until all four-slot backing and cleanup readers/writers are covered.",
     "Bind the resource bridge metadata and three stage callbacks to real confirmed-peer/player creation ABI and verify compensating removal on host/client paths before any installation."
   ],
-  "delivery_test_groups": 179,
-  "delivery_native_executions_or_observations": 4322,
+  "delivery_test_groups": 180,
+  "delivery_native_executions_or_observations": 4323,
   "followup_prefix_observations_not_in_delivery_total": 24,
   "game_process_accessed": true,
   "game_execution": true,
@@ -1572,13 +1578,13 @@
     "verified_at_utc": "2026-09-27T20:52:54.657201+08:00",
     "remote_contains_current_delivery": true,
     "note": "2026-10-03 added bounded underlying GameSession vtable observation and corrected MidGate owner/capacity ABI; all live admission, installation and multiplayer gates remain false.",
-    "latest_research_commit": "6c092ea",
+    "latest_research_commit": "b7d5148",
     "latest_research_commit_pushed": true,
-    "latest_status_receipt_commit": "6c092ea"
+    "latest_status_receipt_commit": "b7d5148"
   },
   "latest_research_update_date": "2026-10-03",
   "priority_assessment": "five_player_feasibility_20260927/PEER_ADMISSION_PRIORITY.zh-TW.md",
-  "last_update_scope": "Added a bounded, no-call underlying GameSession vtable observation contract for the fixed build and recorded the corrected MidGate owner/capacity register ABI; synthetic verification passed while all live admission, installation and multiplayer gates remain false.",
+  "last_update_scope": "Added a fail-closed static contract for the fixed-build host admission indirect call sites; no target semantics, live callback binding, installation or multiplayer proof was added.",
   "live_preflight_20261003": {
     "pid": 36900,
     "build": 25480438,
@@ -2464,7 +2470,7 @@
     "installable": false,
     "multiplayer_verified": false
   },
-  "latest_research_commit": "6c092ea",
+  "latest_research_commit": "b7d5148",
   "session_member_consumer_executor_20261003": {
     "build": 25480438,
     "entry_rva": "0x1093590",
@@ -2499,7 +2505,7 @@
     "native_callback_synthetic_test": "ep_consumer_native_callbacks_synthetic_passed",
     "live_callback_abi_verified": false
   },
-  "latest_status_receipt_commit": "6c092ea",
+  "latest_status_receipt_commit": "b7d5148",
   "network_index_binding_20261003": {
     "build": 25480438,
     "receipt": "eight_player_candidate_20260927/Native/Bridge/network_index_binding_receipt_20261003.json",
@@ -2663,6 +2669,35 @@
     "player_semantics_decoded": false,
     "player_admission_proven": false,
     "player_creation_proven": false,
+    "production_executable": false,
+    "runtime_verified": false,
+    "installable": false,
+    "multiplayer_verified": false
+  },
+  "admission_boundary_contract_20261003": {
+    "build": 25480438,
+    "module": "game.dll",
+    "source": "five_player_feasibility_20260927/host_expansion_disasm_108d9f0.json",
+    "source_sha256": "5e065ebbac9e6274ab59f486155e06fed146d1ba5e42bc3bebf22e5f5803e888",
+    "contract": "eight_player_candidate_20260927/Native/SessionMembers/admission_boundary_contract_20261003.json",
+    "sites": [
+      "0x108DDC7 -> table+0x08",
+      "0x108DE09 -> table+0x50"
+    ],
+    "owner_source": "[network_context+0xB390]",
+    "opaque_id_source": "[r12]",
+    "state_write": "[r12+0x20]=7",
+    "dispatcher_hashes": [
+      "0xA497A2DD",
+      "0x8FE70196"
+    ],
+    "synthetic_test": "2/2 passed",
+    "function_calls_made": false,
+    "writes_made": false,
+    "target_semantics_resolved": false,
+    "peer_admission_proven": false,
+    "player_creation_proven": false,
+    "cleanup_abi_proven": false,
     "production_executable": false,
     "runtime_verified": false,
     "installable": false,
