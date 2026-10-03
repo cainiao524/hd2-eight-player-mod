@@ -55,3 +55,5 @@ EP_PLUGIN_EXPORT unsigned ep_official_plugin_probe_state();
 EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_c_api_pointer();
 EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_network_api_pointer();
 EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_game_session_api_pointer();
+EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_network_table_pointer();
+EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_game_session_table_pointer();

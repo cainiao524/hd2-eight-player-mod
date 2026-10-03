@@ -4,6 +4,8 @@
 
 namespace {
 std::atomic<uintptr_t> g_c_api{0};
+std::atomic<uintptr_t> g_network_table{0};
+std::atomic<uintptr_t> g_game_session_table{0};
 
 const char* plugin_name() {
     return "eight_player_official_plugin_probe";
@@ -13,12 +15,20 @@ void loaded(ep_get_api_fn get_engine_api) {
     // The only operation performed at plugin load is a versioned API lookup.
     // No game function, memory write, hook, peer admission or player creation is called.
     if (get_engine_api != nullptr) {
-        g_c_api.store(reinterpret_cast<uintptr_t>(get_engine_api(EP_C_API_ID)), std::memory_order_release);
+        const auto c_api = reinterpret_cast<ep_script_api_prefix*>(get_engine_api(EP_C_API_ID));
+        g_c_api.store(reinterpret_cast<uintptr_t>(c_api), std::memory_order_release);
+        if (c_api != nullptr) {
+            // Read the two public C API table pointers only; no table function is called.
+            g_network_table.store(reinterpret_cast<uintptr_t>(c_api->slots[7]), std::memory_order_release);
+            g_game_session_table.store(reinterpret_cast<uintptr_t>(c_api->slots[8]), std::memory_order_release);
+        }
     }
 }
 
 void unloaded() {
     g_c_api.store(0, std::memory_order_release);
+    g_network_table.store(0, std::memory_order_release);
+    g_game_session_table.store(0, std::memory_order_release);
 }
 
 ep_plugin_api& api() {
@@ -57,4 +67,12 @@ EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_network_api_pointer() {
 EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_game_session_api_pointer() {
     const auto base = g_c_api.load(std::memory_order_acquire);
     return base == 0 ? 0 : base + offsetof(ep_script_api_prefix, slots[8]);
+}
+
+EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_network_table_pointer() {
+    return g_network_table.load(std::memory_order_acquire);
+}
+
+EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_game_session_table_pointer() {
+    return g_game_session_table.load(std::memory_order_acquire);
 }
