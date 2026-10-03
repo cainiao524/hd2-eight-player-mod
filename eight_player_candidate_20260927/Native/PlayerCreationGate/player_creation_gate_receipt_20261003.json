@@ -1,0 +1,104 @@
+{
+  "schema": "hd2_player_creation_gate_adapter_v1",
+  "date": "2026-10-03",
+  "build": 25480438,
+  "module": "game.dll",
+  "module_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+  "status": "offline_version_gated_reversible_player_creation_abi_adapter",
+  "fixed_sites": {
+    "gate": {
+      "rva": "0x1086460",
+      "instruction": "cmp dword ptr [rdx + r8 + 0x163ac], 4",
+      "expected_bytes": "4283bc02ac63010004",
+      "patched_bytes": "4283bc02ac63010008",
+      "patch_size": 9
+    },
+    "resource_dispatch": {
+      "rva": "0xfdc140",
+      "role": "resource/component dispatch fingerprint required"
+    },
+    "roster_dispatch": {
+      "rva": "0x608b60",
+      "role": "roster path fingerprint required"
+    }
+  },
+  "capacity_contract": {
+    "logical_max_players": 8,
+    "valid_network_indexes": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "invalid_network_index_min": 8,
+    "authoritative_index_required": true,
+    "roster_ordinal_substitution_forbidden": true,
+    "holes_preserved": true,
+    "generation_tokens": true
+  },
+  "adapter_contract": {
+    "admission_order": [
+      "retain_owner",
+      "resolve_resource",
+      "dispatch_components",
+      "insert_roster",
+      "active"
+    ],
+    "rollback": "failed stages retain the slot as REMOVING until depart retry succeeds",
+    "departure_order": [
+      "cleanup_roster",
+      "cleanup_components",
+      "release_owner"
+    ],
+    "gate_write": "caller supplied quiesce/resume/write backend only",
+    "downstream_ready_required": true,
+    "automatic_process_access": false
+  },
+  "tests": {
+    "command": "cmd /c build_x64.bat",
+    "status": "passed",
+    "output": "ep_player_creation_gate_synthetic_passed",
+    "coverage": [
+      "fixed build and gate/downstream site fingerprints",
+      "downstream readiness refusal before gate write",
+      "reversible gate immediate 4 to 8 patch",
+      "eight authoritative indexes 0..7",
+      "index 8 rejection",
+      "duplicate peer rejection",
+      "roster cleanup retry",
+      "resource/component rollback"
+    ]
+  },
+  "source_sha256": {
+    "ep_player_creation_gate.h": "0d4f8303c141658a8c7b7e5ba5335113a9fbda665a4090ac60b29a7c7f2e1407",
+    "ep_player_creation_gate.cpp": "9c91bb93e316bde2ef251d21a467de966813166363d4ac2c31692b17174684f8",
+    "ep_player_creation_gate_test.cpp": "03121d1d45acc62761ee53d217e64de4c58f781939c7a121696428cad035b9aa",
+    "build_x64.bat": "602192ffe280c0e5f3028b96433597d70a58d3f69e162f1be1a4a304c011b499",
+    "README.zh-TW.md": "13eaa88fff268e5770b9cd754213d7389ade2cdb58285ccdaa8c8ce020ea482d",
+    "test_player_creation_gate.py": "30a5db66eb24305e0b0d42642941935b4b64395982491787ba91fba941398fd1"
+  },
+  "binary_sha256": {
+    "ep_player_creation_gate.dll": "4e381b1e5764d1631bce757523ca5d0769e1917c63e0bcfd6b83ce01cc1cc10e",
+    "ep_player_creation_gate_test.exe": "e34f0a3d46faab38ad3226407de7761a54938720181a967c8ad03722ea992d85"
+  },
+  "test": {
+    "binary": "ep_player_creation_gate_test.exe",
+    "output": "ep_player_creation_gate_synthetic_passed"
+  },
+  "gates": {
+    "production_executable": false,
+    "runtime_verified": false,
+    "installable": false,
+    "multiplayer_verified": false
+  },
+  "limits": [
+    "No game process was opened or modified.",
+    "The adapter callback ABI is caller supplied and has not been bound to live game code.",
+    "No fifth or eighth peer, Player Clone replication, mission lifecycle or host migration has been verified.",
+    "The gate patch is not a standalone mod and refuses installation unless all downstream continuation providers report ready."
+  ]
+}
