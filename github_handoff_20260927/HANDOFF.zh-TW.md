@@ -356,3 +356,7 @@ Player-chain 審計又補進三個 client layout 固定四人位點：`0x1087122
 新原版 PID `41576` 以修正 scanner 完成 16 MiB readable `MEM_PRIVATE` prefix：`coverage_complete=true`、`postflight_verified=true`、executable/module/disk identity 全部保持一致，目标指针、事件 hash 与七个 static registration hash 均 0 命中；收据 `live_registration_state_16m_verification_20261003.json` 11/11 通過。
 
 同一 PID 的 dispatcher/session 捕获仍只有 code-side send/receiver hits、1 個 peer 與 4 槽文件化 roster。這證明校正工具的有界負面觀察流程有效，但不證明整個 registry 不存在，也不提供第五 peer、player creation、安裝或八人任務驗收。
+
+## 2026-10-03 原生載入邊界審計
+
+新增 [NATIVE_LOADER_BOUNDARY_20261003.zh-TW.md](../five_player_feasibility_20260927/NATIVE_LOADER_BOUNDARY_20261003.zh-TW.md) 與只讀機器收據 `native_loader_boundary_20261003.json`。固定 build `25480438` 的官方鏈（`helldivers2.exe`、`game.dll`、Party、PlayFab、Steam、Lua）可辨識，但沒有找到受支援的使用者原生 loader 或 production native entry；`game.dll` 的唯一 named export 是 `get_plugin_api`，其合法 caller、callback ID 31 的返回物件與 lobby/player admission 用途仍未閉合。審計也記錄安裝目錄內的 Havoc、HH.sys、pyinjector、dxgi 等疑似注入工具檔案，全部標記為 disallowed injection artifacts，未納入任何實作或啟動路徑。`read_only=true`、`process_started=false`、`process_mutated=false`、`installable=false`、`multiplayer_verified=false` 保持不變。

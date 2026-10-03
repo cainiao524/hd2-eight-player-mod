@@ -996,7 +996,7 @@
     "five_player_feasibility_20260927/verification/native_peer_admission_bridge_boundary_verification_20261002.json": "f30a4b9517d3add9050cd24ff3fcd010d9ea1a72cb937bdddb6db250384abad0",
     "five_player_feasibility_20260927/verification/peer_admission_adapter_verification.json": "0b4f84491adeff2b424d02e6fa614c3630381dc12eaf4bc20af39914ff4319fc",
     "five_player_feasibility_20260927/verify_native_peer_admission_bridge_boundary.py": "6cf6d5d4e9898fab0083ea135f8ea13dbc129ff0f1d68d4e83f1c8bd34214ad7",
-    "github_handoff_20260927/HANDOFF.zh-TW.md": "c4c4a2c610a78237455d80222dc8353536b45a708dfebc5cda5c26206b44b9ca",
+    "github_handoff_20260927/HANDOFF.zh-TW.md": "78b7724fc583d95d9c0415ee35cfec23d208c4ba61a44576d073ee1479fc98ef",
     "github_handoff_20260927/SETUP.zh-TW.md": "1c362594a6a8e70fe5fb9fce5f0d23dcf6d160a6338345f2f4b717d538d8003b",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_disasm_20261002.json": "48f504badebad800a8439494bc386e3dff61e1818168a40916d8cffd618790c9",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_patch.py": "9808f073e958fdc464d47bc10a459f328d14ebde9a765f429e13153786a5734a",
@@ -1254,7 +1254,9 @@
     "five_player_feasibility_20260927/live_client_peer_layout_verification_20261003.json": "779bfc05a2225e525d88325bf821c607d5154410f00038ff9a8a3e1b24eac44a",
     "five_player_feasibility_20260927/LIVE_CLIENT_PEER_LAYOUT_20261003.zh-TW.md": "4fff2985bbf76d9f207061585cf0d1dc6d7ca006cd68b19906ec89d865302f49",
     "five_player_feasibility_20260927/live_session_snapshot_20261003_r11.json": "6f2399793c910b3b881894213b4469fdcae6b81e416efa8c2a893460eeb183d8",
-    "five_player_feasibility_20260927/live_session_snapshot_20261003_r12.json": "642b87318d187d00e68072fbcaad64f5c458fa580c3f6cc1fe59a30f9fc08dfc"
+    "five_player_feasibility_20260927/live_session_snapshot_20261003_r12.json": "642b87318d187d00e68072fbcaad64f5c458fa580c3f6cc1fe59a30f9fc08dfc",
+    "five_player_feasibility_20260927/native_loader_boundary_20261003.json": "929a1345deadbd66ec9e3130e8e2e74d875a9d459355122723f74a39bba48994",
+    "five_player_feasibility_20260927/NATIVE_LOADER_BOUNDARY_20261003.zh-TW.md": "6bb32093c4d1979349a055c9b8beda90d72beffd3c06403f8651c05b47c630ee"
   },
   "missing_release_files": [],
   "remaining_release_work": [
@@ -1364,7 +1366,8 @@
     "撤回旧版 1 GiB private-registry 12/12 收据：其 max_read 与 limit 相同、实际只读 262141 pages 且没有 postflight validity，不能称为完整负面证据；修正 scanner 增加 coverage/termination/postflight 字段，PID 6884 的修正版 128 MiB 重读因 module-list 稳定性未通过而保持 incomplete。",
     "使用修正 scanner 对新原版 PID 41576 完成有效 16 MiB 私有区重读：coverage_complete、postflight_verified、module/disk identity 全部通过，0 命中；同 PID session 仍为 1 peer 与四槽 roster，11/11 收据通过。",
     "Captured and reread the fixed-build owner/client peer layout on live PID 45820: owner+0x162C8, client+0xC8/+0xD0 four 0x20-byte records and adjacent +0x150 four 0x10-byte table were stable, but the menu/one-peer context reported client count zero and zero records; this is read-only layout evidence, not fifth-peer or eight-player proof.",
-    "Hardened ClientSidecar synchronization by replacing the invalid SRWLOCK-to-LONG spin lock with real Windows exclusive SRW locks across append/remove/get/reset/validate/destroy; rebuilt ClientSidecar, adapter and Bridge/client integration harnesses pass, while production/runtime/install/multiplayer remain false."
+    "Hardened ClientSidecar synchronization by replacing the invalid SRWLOCK-to-LONG spin lock with real Windows exclusive SRW locks across append/remove/get/reset/validate/destroy; rebuilt ClientSidecar, adapter and Bridge/client integration harnesses pass, while production/runtime/install/multiplayer remain false.",
+    "Audited the fixed-build native loader boundary from the official executable/DLL chain; get_plugin_api remains an unresolved runtime plugin candidate, no supported user loader or production entry was proven, and disallowed injection artifacts were excluded. No process was started or mutated; installable/runtime/multiplayer remain false."
   ],
   "next_offline_work": [
     "Keep the join-handler fixed-four inventory bound to any future native bridge; only the five capacity/slot sites are patch candidates and the three protocol/metadata literals remain protected.",
@@ -1405,7 +1408,7 @@
   },
   "latest_research_update_date": "2026-10-03",
   "priority_assessment": "five_player_feasibility_20260927/PEER_ADMISSION_PRIORITY.zh-TW.md",
-  "last_update_scope": "Captured the stable one-peer session reread, corrected ClientSidecar synchronization to use real Windows SRW locks, and rebuilt the native bridge/client harnesses; no game ABI call, hook, installation or multiplayer validation was performed.",
+  "last_update_scope": "Added a read-only native loader boundary audit and documented the unresolved get_plugin_api runtime handoff; excluded disallowed injection artifacts and kept all production gates fail-closed.",
   "live_preflight_20261003": {
     "pid": 36900,
     "build": 25480438,
@@ -1492,7 +1495,9 @@
       "five_player_feasibility_20260927/live_client_peer_layout_verification_20261003.json",
       "five_player_feasibility_20260927/LIVE_CLIENT_PEER_LAYOUT_20261003.zh-TW.md",
       "five_player_feasibility_20260927/live_session_snapshot_20261003_r11.json",
-      "five_player_feasibility_20260927/live_session_snapshot_20261003_r12.json"
+      "five_player_feasibility_20260927/live_session_snapshot_20261003_r12.json",
+      "five_player_feasibility_20260927/native_loader_boundary_20261003.json",
+      "five_player_feasibility_20260927/NATIVE_LOADER_BOUNDARY_20261003.zh-TW.md"
     ],
     "native_site_count": 6,
     "session_site_count": 5,
@@ -1707,6 +1712,37 @@
       "writes_made": false,
       "hooks_installed": false,
       "meaning": "same one-peer baseline reread; no fifth peer, player creation or eight-player acceptance"
+    },
+    "native_loader_boundary_audit": {
+      "build": 25480438,
+      "official_chain": [
+        "helldivers2.exe",
+        "game.dll",
+        "PartyWin.dll",
+        "PlayFabMultiplayerWin.dll",
+        "steam_api64.dll",
+        "lua51.dll"
+      ],
+      "supported_native_loader_found": false,
+      "production_native_entry_proven": false,
+      "game_dll_named_exports": [
+        "get_plugin_api"
+      ],
+      "known_user_loader_matches": [],
+      "disallowed_injection_artifacts": [
+        "Havoc_Experimental.CT",
+        "Helldivers 2 Havoc Hub.exe",
+        "_internal/pyinjector/injector.cp311-win_amd64.pyd",
+        "files/bin/HH.sys",
+        "files/dxgi.dll"
+      ],
+      "read_only": true,
+      "process_started": false,
+      "process_mutated": false,
+      "installable": false,
+      "runtime_verified": false,
+      "multiplayer_verified": false,
+      "meaning": "official chain is intact but no supported user loader or production native entry is proven; disallowed injection artifacts excluded from activation path"
     }
   },
   "offline_continuation_20261003": {
