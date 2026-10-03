@@ -1,5 +1,5 @@
 {
-  "schema": "ep-native-bridge-report/v3",
+  "schema": "ep-native-bridge-report/v4",
   "candidate": "eight-slot-native-bridge-orchestration",
   "build": {
     "steam_build": 25480438,
@@ -28,7 +28,8 @@
     "cross_component_compensation": "client adapter keeps pending identity after native confirm failure; bridge remove compensation clears native and sidecar state",
     "authoritative_index_allocator": "caller-provided allocate_index/release_index callbacks",
     "exact_index_binding": "ep_sidecar_reserve_at; local substitution forbidden",
-    "release_generation": "passed to release_index; failed release pins slot and owner lease"
+    "release_generation": "passed to release_index; failed release pins slot and owner lease",
+    "allocator_failure_cleanup": "generation-zero allocator-only retry record preserves authoritative index and owner lease when release_index fails before sidecar reservation"
   },
   "artifacts": [
     {
@@ -37,11 +38,11 @@
     },
     {
       "path": "ep_native_bridge.cpp",
-      "sha256": "eddc23b39ff7a85b553c5704373094ba4e1d45ca0a53ff331b837549ea107c0e"
+      "sha256": "7166493b9f5a196daa38cc00daf8d0c8771bbfd1c49e47d9a7b80b7688c57294"
     },
     {
       "path": "ep_native_bridge_test.cpp",
-      "sha256": "10ab0d8ba3c6385f6a1b066f58c6a9fe86ffaa44a9ddfde8cc54da4687749998"
+      "sha256": "6a00e0a0d1827da5f89bc33487def9f7fa376832ae955be165a419eeabb2b34d"
     },
     {
       "path": "build_x64.bat",
@@ -49,7 +50,7 @@
     },
     {
       "path": "README.zh-TW.md",
-      "sha256": "df92141caaf795410d9f3328db65e6fda402832b57faa8a4765fb5a0e00926fc"
+      "sha256": "54d103dfb7213c8e941c2b70c21c116f50b4336d289d957ab2443a2857098ce3"
     },
     {
       "path": "test_native_bridge.py",
@@ -57,11 +58,11 @@
     },
     {
       "path": "ep_native_bridge.dll",
-      "sha256": "777e5759dfa71ae049428e2d902403c1c6b53ab7bcfda1ca5372eb952a44b43e"
+      "sha256": "504bfc5bb3032bf92226c935bd2c47b7d52a845836e2667546202f416375310c"
     },
     {
       "path": "ep_native_bridge_test.exe",
-      "sha256": "229ee62a5e61ea2dde04b589ea75b1a1ff5cb8b2ce4a834e9a3dd5e179b64ced"
+      "sha256": "e0443e46669e4626bc191634ca7cebb883c3331a76c849c5b3fb73f8cbb4b5f5"
     },
     {
       "path": "ep_native_bridge.lib",
@@ -73,11 +74,11 @@
     },
     {
       "path": "ep_native_bridge.obj",
-      "sha256": "f37bb0bea7cb1ee1d45e0f723297487c01c3b96deda422c1315768a4d411c4d4"
+      "sha256": "e2fca806e4ec0e98d26a05aec40a15312135f25804e5c440b234fd35d885286b"
     },
     {
       "path": "ep_native_bridge_test.obj",
-      "sha256": "6672c89c0597ca9d6d7e7b7f6ecf1d33ec6ff8bf755270134cb0c5b9afe541ad"
+      "sha256": "fd8d471899d70f9588b92d961a2468722ea4502fc1a888119b415355d2f37010"
     },
     {
       "path": "ep_bridge_client_integration_test.cpp",
@@ -85,7 +86,7 @@
     },
     {
       "path": "ep_bridge_client_integration_test.exe",
-      "sha256": "2922b47f607f0170538fc4712ea16ba827df5c01b5958d30b718da74ce5dd9d5"
+      "sha256": "1705974260b45d9f138d40297f6f2e712d7ba4c610721985fb2b2041f87d4258"
     }
   ],
   "production": {
@@ -96,7 +97,8 @@
       "mid-function capacity and allocator continuation remain template-only and uninstalled",
       "no game module patch or process injection",
       "host/client owner lifetime callback is synthetic; no migration/reentrancy evidence",
-      "five-to-eight account acceptance is pending"
+      "five-to-eight account acceptance is pending",
+      "allocator-only release retry is synthetic; no real Session/Party allocator callback ABI"
     ]
   }
 }

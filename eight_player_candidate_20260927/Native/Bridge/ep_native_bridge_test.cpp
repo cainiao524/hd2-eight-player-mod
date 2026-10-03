@@ -16,6 +16,8 @@ struct Harness {
     bool fail_confirm = false;
     bool fail_create = false;
     bool fail_remove = false;
+    bool force_invalid_index = false;
+    bool allow_invalid_release = false;
 };
 
 static EP_BRIDGE_STATUS __cdecl confirm_cb(void* raw, UINT64, UINT64, UINT8 index) {
@@ -42,6 +44,11 @@ static void __cdecl release_cb(void* raw) {
 static EP_BRIDGE_STATUS __cdecl allocate_index_cb(
     void* raw, UINT64, UINT64, UINT8* out_index) {
     auto* h = static_cast<Harness*>(raw);
+    if (h->force_invalid_index) {
+        ++h->allocated_count;
+        *out_index = 200;
+        return EP_BRIDGE_OK;
+    }
     for (UINT8 i = 0; i < EP_SIDECAR_CAPACITY; ++i) {
         if (h->allocated[i]) continue;
         h->allocated[i] = 1;
@@ -54,7 +61,10 @@ static EP_BRIDGE_STATUS __cdecl allocate_index_cb(
 static EP_BRIDGE_STATUS __cdecl release_index_cb(
     void* raw, UINT64, UINT64, UINT8 index, UINT32) {
     auto* h = static_cast<Harness*>(raw);
-    if (index >= EP_SIDECAR_CAPACITY || !h->allocated[index])
+    if (index >= EP_SIDECAR_CAPACITY)
+        return h->allow_invalid_release ? (++h->released_indexes, EP_BRIDGE_OK)
+                                        : EP_BRIDGE_INDEX_REJECTED;
+    if (!h->allocated[index])
         return EP_BRIDGE_INDEX_REJECTED;
     h->allocated[index] = 0;
     ++h->released_indexes;
@@ -88,6 +98,27 @@ int main() {
     ok &= check(ep_bridge_init(&bridge, &config) == EP_BRIDGE_OK, "init");
     ok &= check(ep_bridge_preflight(&bridge) == EP_BRIDGE_OK, "preflight");
     EP_BRIDGE_ADMISSION admissions[EP_SIDECAR_CAPACITY]{};
+    // An allocator can return a value outside the sidecar range. If its first
+    // release attempt fails, retain an allocator-only retry record instead of
+    // dropping the authoritative index and owner lease.
+    harness.force_invalid_index = true;
+    EP_BRIDGE_ADMISSION invalid_index{};
+    ok &= check(ep_bridge_admit(&bridge, 80, 180, &invalid_index) ==
+                    EP_BRIDGE_CLEANUP_REQUIRED && invalid_index.token.index == 200 &&
+                    invalid_index.token.generation == 0,
+                "invalid allocator index pins retry cleanup");
+    ok &= check(bridge.cleanup_count == 1 && harness.retained == 1 && harness.released == 0,
+                "allocator-only retry keeps owner lease");
+    EP_BRIDGE_ADMISSION duplicate_invalid{};
+    ok &= check(ep_bridge_admit(&bridge, 80, 180, &duplicate_invalid) ==
+                    EP_BRIDGE_CLEANUP_REQUIRED && duplicate_invalid.token.index == 200,
+                "allocator-only cleanup blocks duplicate identity");
+    harness.allow_invalid_release = true;
+    ok &= check(ep_bridge_retry_cleanup(&bridge, invalid_index) == EP_BRIDGE_OK,
+                "allocator-only retry completes");
+    ok &= check(bridge.cleanup_count == 0 && harness.retained == harness.released,
+                "allocator-only retry releases owner lease");
+    harness.force_invalid_index = false;
     // A failed create must call the compensating remove.  If remove also
     // fails, the slot and owner lease remain pinned until explicit retry.
     harness.fail_create = true;
@@ -97,7 +128,7 @@ int main() {
                 "failed create pins cleanup");
     ok &= check(bridge.sidecar.active_count == 1 && bridge.cleanup_count == 1,
                 "failed create keeps slot");
-    ok &= check(harness.retained == 1 && harness.released == 0,
+    ok &= check(harness.retained == 2 && harness.released == 1,
                 "failed create keeps owner lease");
     EP_BRIDGE_ADMISSION duplicate_pending{};
     ok &= check(ep_bridge_admit(&bridge, 90, 190, &duplicate_pending) ==
@@ -123,7 +154,7 @@ int main() {
         ok &= check(ep_bridge_admit(&bridge, 100 + i, 200 + i, &admissions[i]) == EP_BRIDGE_OK, "admit");
     ok &= check(ep_bridge_admit(&bridge, 999, 999, &admissions[0]) == EP_BRIDGE_NO_SLOT, "ninth rejected");
     ok &= check(harness.confirmed == 9 && harness.created == 8, "callbacks");
-    ok &= check(harness.retained == 10 && harness.released == 10, "owner lease admission");
+    ok &= check(harness.retained == 11 && harness.released == 11, "owner lease admission");
     ok &= check(ep_bridge_depart(&bridge, admissions[4]) == EP_BRIDGE_OK, "depart");
     EP_BRIDGE_ADMISSION reconnect{};
     ok &= check(ep_bridge_reconnect(&bridge, 1004, 2004, &reconnect) == EP_BRIDGE_OK, "reconnect");
@@ -133,7 +164,7 @@ int main() {
     ok &= check(ep_bridge_depart(&bridge, reconnect) == EP_BRIDGE_OK, "cleanup reconnect");
     ok &= check(harness.retained == harness.released, "owner lease balanced");
     ok &= check(harness.allocated_count == harness.released_indexes &&
-                harness.allocated_count == 10, "authoritative index reservations balanced");
+                harness.allocated_count == 11, "authoritative index reservations balanced");
     ok &= check(ep_bridge_destroy(&bridge) == EP_BRIDGE_OK, "destroy");
     if (!ok) return 1;
     std::puts("ep_native_bridge_synthetic_passed");

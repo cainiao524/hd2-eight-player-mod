@@ -66,7 +66,7 @@ bool sites_match(const EP_BRIDGE_CONFIG& config) {
 }
 
 int cleanup_for(const EP_NATIVE_BRIDGE* bridge, EP_BRIDGE_ADMISSION admission) {
-    if (!bridge || admission.token.index >= EP_SIDECAR_CAPACITY) return -1;
+    if (!bridge) return -1;
     for (UINT32 i = 0; i < EP_SIDECAR_CAPACITY; ++i) {
         const auto& item = bridge->cleanup[i];
         if (!item.pending) continue;
@@ -83,7 +83,7 @@ int cleanup_for(const EP_NATIVE_BRIDGE* bridge, EP_BRIDGE_ADMISSION admission) {
 bool remember_cleanup(EP_NATIVE_BRIDGE* bridge, EP_BRIDGE_ADMISSION admission,
                       OwnerLease& lease, UINT32 remove_done,
                       UINT32 index_released) {
-    if (!bridge || admission.token.index >= EP_SIDECAR_CAPACITY) return false;
+    if (!bridge) return false;
     if (cleanup_for(bridge, admission) >= 0) {
         // The retry record already owns one reference; release this new one.
         return true;
@@ -124,6 +124,7 @@ EP_BRIDGE_STATUS finish_cleanup(EP_NATIVE_BRIDGE* bridge,
         if (released != EP_BRIDGE_OK) return EP_BRIDGE_INDEX_RELEASE_FAILED;
         *index_released = 1;
     }
+    if (admission.token.generation == 0) return EP_BRIDGE_OK;
     const EP_SIDECAR_STATUS removed = ep_sidecar_remove(
         &bridge->sidecar, admission.token);
     return removed == EP_SC_OK ? EP_BRIDGE_OK : EP_BRIDGE_ROLLBACK_FAILED;
@@ -141,6 +142,27 @@ EP_BRIDGE_STATUS remove_and_release(EP_NATIVE_BRIDGE* bridge,
     if (remember_cleanup(bridge, admission, lease, remove_done, index_released))
         return EP_BRIDGE_CLEANUP_REQUIRED;
     return EP_BRIDGE_ROLLBACK_FAILED;
+}
+
+EP_BRIDGE_STATUS release_unreserved_index_or_remember(
+    EP_NATIVE_BRIDGE* bridge, UINT64 peer_id, UINT64 resource_handle,
+    UINT8 network_index, OwnerLease& lease, EP_BRIDGE_ADMISSION* out_admission) {
+    if (bridge->config.release_index(bridge->config.owner, peer_id,
+                                     resource_handle, network_index, 0) == EP_BRIDGE_OK)
+        return EP_BRIDGE_OK;
+    // The sidecar reservation was never created. Keep a generation-zero
+    // allocator-only retry record so a failed release cannot leak the
+    // authoritative Session/Party index or its owner lease.
+    EP_BRIDGE_ADMISSION admission{};
+    admission.peer_id = peer_id;
+    admission.resource_handle = resource_handle;
+    admission.token.index = network_index;
+    admission.token.generation = 0;
+    if (remember_cleanup(bridge, admission, lease, 1, 0)) {
+        if (out_admission) *out_admission = admission;
+        return EP_BRIDGE_CLEANUP_REQUIRED;
+    }
+    return EP_BRIDGE_INDEX_RELEASE_FAILED;
 }
 
 bool find_identity(const EP_NATIVE_BRIDGE* bridge, UINT64 peer_id,
@@ -228,18 +250,18 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_admit(
     if (allocated != EP_BRIDGE_OK)
         return allocated == EP_BRIDGE_NO_SLOT ? EP_BRIDGE_NO_SLOT : EP_BRIDGE_INDEX_REJECTED;
     if (network_index >= EP_SIDECAR_CAPACITY) {
-        if (bridge->config.release_index(bridge->config.owner, peer_id,
-                                         resource_handle, network_index, 0) != EP_BRIDGE_OK)
-            return EP_BRIDGE_INDEX_RELEASE_FAILED;
+        const EP_BRIDGE_STATUS released = release_unreserved_index_or_remember(
+            bridge, peer_id, resource_handle, network_index, lease, out_admission);
+        if (released != EP_BRIDGE_OK) return released;
         return EP_BRIDGE_INDEX_REJECTED;
     }
     EP_SIDECAR_TOKEN token{};
     EP_SIDECAR_STATUS status = ep_sidecar_reserve_at(
         &bridge->sidecar, network_index, peer_id, resource_handle, &token);
     if (status != EP_SC_OK) {
-        if (bridge->config.release_index(bridge->config.owner, peer_id,
-                                         resource_handle, network_index, 0) != EP_BRIDGE_OK)
-            return EP_BRIDGE_INDEX_RELEASE_FAILED;
+        const EP_BRIDGE_STATUS released = release_unreserved_index_or_remember(
+            bridge, peer_id, resource_handle, network_index, lease, out_admission);
+        if (released != EP_BRIDGE_OK) return released;
         return sidecar_status(status);
     }
     EP_BRIDGE_ADMISSION admission{peer_id, resource_handle, token};
@@ -317,17 +339,17 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_reconnect(
         if (allocated != EP_BRIDGE_OK)
             return allocated == EP_BRIDGE_NO_SLOT ? EP_BRIDGE_NO_SLOT : EP_BRIDGE_INDEX_REJECTED;
         if (network_index >= EP_SIDECAR_CAPACITY) {
-            if (bridge->config.release_index(bridge->config.owner, peer_id,
-                                             resource_handle, network_index, 0) != EP_BRIDGE_OK)
-                return EP_BRIDGE_INDEX_RELEASE_FAILED;
+            const EP_BRIDGE_STATUS released = release_unreserved_index_or_remember(
+                bridge, peer_id, resource_handle, network_index, lease, out_admission);
+            if (released != EP_BRIDGE_OK) return released;
             return EP_BRIDGE_INDEX_REJECTED;
         }
         status = ep_sidecar_reserve_at(&bridge->sidecar, network_index,
                                        peer_id, resource_handle, &token);
         if (status != EP_SC_OK) {
-            if (bridge->config.release_index(bridge->config.owner, peer_id,
-                                             resource_handle, network_index, 0) != EP_BRIDGE_OK)
-                return EP_BRIDGE_INDEX_RELEASE_FAILED;
+            const EP_BRIDGE_STATUS released = release_unreserved_index_or_remember(
+                bridge, peer_id, resource_handle, network_index, lease, out_admission);
+            if (released != EP_BRIDGE_OK) return released;
             return sidecar_status(status);
         }
     }
@@ -367,13 +389,13 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_reconnect(
 
 extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_retry_cleanup(
     EP_NATIVE_BRIDGE* bridge, EP_BRIDGE_ADMISSION admission) {
-    if (!valid_context(bridge) || !bridge->ready ||
-        admission.token.index >= EP_SIDECAR_CAPACITY || admission.token.generation == 0)
+    if (!valid_context(bridge) || !bridge->ready)
         return EP_BRIDGE_INVALID_ARGUMENT;
     OperationGuard operation{bridge};
     if (!operation) return EP_BRIDGE_BUSY;
-    // Index alone is insufficient: a delayed retry can address a new player
-    // after the same slot is reused. Check the full identity and generation.
+    // Normal cleanup requires the full identity and generation. A generation
+    // of zero is reserved for allocator-only cleanup where no sidecar slot was
+    // ever created; identity plus the returned authoritative index is used.
     const int found = cleanup_for(bridge, admission);
     if (found < 0) return EP_BRIDGE_INVALID_ARGUMENT;
     auto& item = bridge->cleanup[found];

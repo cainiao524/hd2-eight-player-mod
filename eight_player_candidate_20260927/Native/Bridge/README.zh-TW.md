@@ -7,6 +7,7 @@
 - admission 先向 caller-provided `allocate_index` 取得 Session/Party 的 authoritative network index，再以 `ep_sidecar_reserve_at` 綁定同一 index；release callback 失敗時保留整個 slot 與 owner lease，禁止用另一個本地空槽替代；
 - `ep_bridge_client_integration_test.exe` 會把 Native Bridge 和 client adapter 串在一起，驗證 native confirm 失敗時保留補償記錄、由 bridge 呼叫 remove，並同時清掉兩端 sidecar；
 - 任一 callback 失敗都嘗試回滾 slot；若遊戲 cleanup callback 失敗，slot 和 owner lease 會保留，必須用 retry cleanup 完成後才釋放；
+- authoritative allocator 已分配但 sidecar 尚未建立時，若 `release_index` 失敗，bridge 會保存 generation-zero allocator-only retry record，保留 index、identity 與 owner lease，直到 `ep_bridge_retry_cleanup` 完成；
 - departure 先要求 player cleanup callback，再移除 sidecar slot；
 - reconnect 保留可用的 network index，並以新 generation 拒絕 stale token；cleanup retry 必須帶完整的 peer、resource handle、index 和 generation，避免延遲 retry 誤刪重用的 slot；
 - 八槽已滿、第九個玩家、重複 identity 或缺少 callback 都 fail-closed。

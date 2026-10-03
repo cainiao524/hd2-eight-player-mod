@@ -11,7 +11,8 @@
       7
     ],
     "local_substitution_forbidden": true,
-    "generation_passed_to_release": true
+    "generation_passed_to_release": true,
+    "allocator_only_retry": "Generation-zero retry record preserves an allocator index and owner lease when release_index fails before sidecar reservation."
   },
   "components": {
     "sidecar_exact_reserve": "Native/Sidecar/ep_sidecar_reserve_at",
@@ -41,7 +42,8 @@
       "eight admissions",
       "departure and reconnect generation",
       "stale cleanup identity rejection",
-      "duplicate identity blocked while cleanup retry is pending"
+      "duplicate identity blocked while cleanup retry is pending",
+      "allocator-only release failure retry before sidecar reservation"
     ]
   },
   "production_executable": false,
@@ -56,10 +58,10 @@
     "Sidecar/build_x64.bat": "c8c0c1dd674109d32fb03455ea27ebbd1e2cde1c4929a59621da6f0bf4d40b64",
     "Sidecar/README.zh-TW.md": "8c8077a97d83079b7935d446e8d9c6a2a7e0cf0193b10affcffd0c019174a9a6",
     "Bridge/ep_native_bridge.h": "396c0ac453e7deb07d4209b99c3ee361e959fcbd0a651d4a891118e2c2908013",
-    "Bridge/ep_native_bridge.cpp": "eddc23b39ff7a85b553c5704373094ba4e1d45ca0a53ff331b837549ea107c0e",
-    "Bridge/ep_native_bridge_test.cpp": "10ab0d8ba3c6385f6a1b066f58c6a9fe86ffaa44a9ddfde8cc54da4687749998",
+    "Bridge/ep_native_bridge.cpp": "7166493b9f5a196daa38cc00daf8d0c8771bbfd1c49e47d9a7b80b7688c57294",
+    "Bridge/ep_native_bridge_test.cpp": "6a00e0a0d1827da5f89bc33487def9f7fa376832ae955be165a419eeabb2b34d",
     "Bridge/ep_bridge_client_integration_test.cpp": "9b42403eeb231543a6d69de49d845afb43b65163cbf5863696928d3f25d5594e",
-    "Bridge/README.zh-TW.md": "df92141caaf795410d9f3328db65e6fda402832b57faa8a4765fb5a0e00926fc",
+    "Bridge/README.zh-TW.md": "54d103dfb7213c8e941c2b70c21c116f50b4336d289d957ab2443a2857098ce3",
     "ClientSidecar/ep_client_bridge_adapter.h": "01565938a609055456bb9398874fd642a438294ef130628f809a4faa68ff8199",
     "ClientSidecar/ep_client_bridge_adapter.cpp": "aee7e3f3d413a5f64e408179421a6ff945e6ba34b590fe29258b270e42dba6e8",
     "ClientSidecar/ep_client_bridge_adapter_test.cpp": "a62bdb5127543b990240130acdb80a26b50ed0dc7346e03db743617adf2f785c",

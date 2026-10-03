@@ -526,3 +526,9 @@ capacity patch 仍是 disabled-by-default、固定 build 的研究候选；inlin
 - `PlayerResource.ep_resource_init` 遇到 live magic 現在回傳 `EP_RS_BUSY`，不再用 `memset` 抹掉 active/PENDING record、generation 或 owner lease；caller 必須提供 zero-initialized storage，destroy 後才可重用。Bridge/resource receipt 與報告已重算二進位與來源雜湊。
 
 PlayerCreationGate、PlayerResource、resource bridge 的 C++ marker 與 Python receipt tests 均通過。這些修正仍只作用於 caller-owned offline sidecar；真實 admission/creation/replication callback、遊戲安裝與八帳號任務尚未驗證，正式 gates 維持 false。
+
+## 2026-10-04 Native Bridge allocator release retry
+
+修正 `Native/Bridge` 的另一個離線生命週期漏洞：Session/Party allocator 已回傳 index、但 sidecar 尚未建立時，如果第一次 `release_index` 失敗，舊路徑會只返回錯誤並丟失 authoritative index 與 owner lease。現在 bridge 會保存 generation-zero allocator-only cleanup record，保留 peer、resource handle、index 與 owner lease；`ep_bridge_retry_cleanup` 完成 release 後才清除記錄並釋放 owner。重複 identity 在 retry 前仍會被阻擋，正常 generation token cleanup 行為不變。
+
+合成 harness 新增 invalid allocator index、release failure、duplicate block 與 retry recovery；`ep_native_bridge_synthetic_passed`、跨元件 integration marker 與 Python report test 通過。這仍未綁定真實 Session/Party allocator 或遊戲 callback ABI，`installable=false`、`multiplayer_verified=false` 不變。
