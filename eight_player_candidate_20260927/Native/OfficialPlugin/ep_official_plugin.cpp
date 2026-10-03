@@ -48,3 +48,13 @@ EP_PLUGIN_EXPORT unsigned ep_official_plugin_probe_state() {
 EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_c_api_pointer() {
     return g_c_api.load(std::memory_order_acquire);
 }
+
+EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_network_api_pointer() {
+    const auto base = g_c_api.load(std::memory_order_acquire);
+    return base == 0 ? 0 : base + offsetof(ep_script_api_prefix, slots[7]);
+}
+
+EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_game_session_api_pointer() {
+    const auto base = g_c_api.load(std::memory_order_acquire);
+    return base == 0 ? 0 : base + offsetof(ep_script_api_prefix, slots[8]);
+}

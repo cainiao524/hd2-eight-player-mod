@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <stddef.h>
 
 #ifdef _WIN32
 #define EP_PLUGIN_EXPORT extern "C" __declspec(dllexport)
@@ -41,6 +42,16 @@ struct ep_plugin_api {
 constexpr unsigned EP_PLUGIN_API_ID = 0;
 constexpr unsigned EP_C_API_ID = 31;
 
+// Public Stingray C API prefix: Network is slot 7 and GameSession slot 8.
+// We only expose their computed addresses; no function pointer is dereferenced.
+struct ep_script_api_prefix {
+    void* slots[9];
+};
+static_assert(offsetof(ep_script_api_prefix, slots[7]) == 0x38, "network slot drift");
+static_assert(offsetof(ep_script_api_prefix, slots[8]) == 0x40, "game session slot drift");
+
 EP_PLUGIN_EXPORT void* get_plugin_api(unsigned api_id);
 EP_PLUGIN_EXPORT unsigned ep_official_plugin_probe_state();
 EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_c_api_pointer();
+EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_network_api_pointer();
+EP_PLUGIN_EXPORT uintptr_t ep_official_plugin_game_session_api_pointer();
