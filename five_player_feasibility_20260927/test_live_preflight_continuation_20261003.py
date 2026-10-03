@@ -7,11 +7,14 @@ def test_live_preflight_continuation_report():
     assert report["schema"] == "hd2_live_preflight_continuation_verification_v1"
     assert report["build"] == 25480438
     assert report["pid"] == 36900
-    assert report["verification_passed"] is True
+    assert report["verification_passed"] is False
+    assert report["superseded"] is True
+    assert report["checks_passed"] < report["checks_total"]
     assert report["runtime_calls_made"] is False
     assert report["game_memory_written"] is False
     assert report["hooks_installed"] is False
     assert report["resolver_closed"] is False
     assert report["installable"] is False
     assert report["multiplayer_verified"] is False
-    assert report["checks_passed"] == report["checks_total"]
+    assert report["checks_passed"] < report["checks_total"]
+

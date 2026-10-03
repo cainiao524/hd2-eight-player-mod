@@ -68,11 +68,16 @@
       "name": "runtime_gate",
       "passed": true,
       "detail": "runtime/install/multiplayer remain false"
+    },
+    {
+      "name": "coverage_and_postflight_validity",
+      "passed": false,
+      "detail": "Original 1 GiB capture used no headroom and did not prove stable postflight image/module identity; corrected r2 capture ended incomplete after module-list instability."
     }
   ],
   "checks_passed": 12,
-  "checks_total": 12,
-  "verification_passed": true,
+  "checks_total": 13,
+  "verification_passed": false,
   "read_only": true,
   "calls_made": false,
   "writes_made": false,
@@ -81,5 +86,8 @@
   "hash_to_selector_proven": false,
   "installable": false,
   "multiplayer_verified": false,
-  "meaning": "A fresh fixed-build process was scanned read-only across a 128 MiB baseline and an untruncated ~1 GiB MEM_PRIVATE range using known receiver/insert/member pointers, the confirmed-peer event hash and all seven static registration hashes. No private-state hit was observed. This is a bounded negative observation, not proof that no registry exists; the process was still at an empty menu baseline and no fifth peer was exercised."
+  "meaning": "Superseded: the original capture recorded a zero-hit prefix but did not reserve postflight budget or prove stable module identity. It must not be used as a complete 1 GiB negative observation.",
+  "superseded": true,
+  "superseded_by": "five_player_feasibility_20260927/live_registration_state_20261003_r2.json",
+  "negative_observation_valid": false
 }

@@ -92,5 +92,15 @@
   "resolver_closed": false,
   "installable": false,
   "multiplayer_verified": false,
-  "meaning": "Pointer/hash hits are observational only; no ownership or dispatch ABI is inferred."
+  "meaning": "Pointer/hash hits are observational only; no ownership or dispatch ABI is inferred.",
+  "audit_correction": {
+    "status": "invalid_for_negative_observation",
+    "reason": "The original scanner used max_read_mib=1024 while the requested limit was also 1024 MiB; it ended after 262141 pages with 12288 bytes below the nominal limit and did not reserve/verify postflight reads. The old truncated=false field is not a valid coverage proof.",
+    "corrected_by": [
+      "five_player_feasibility_20260927/scan_live_registration_state_20261003.py",
+      "five_player_feasibility_20260927/live_registration_state_20261003_r2.json",
+      "five_player_feasibility_20260927/REGISTRATION_SCAN_CORRECTION_20261003.zh-TW.md"
+    ],
+    "negative_observation_valid": false
+  }
 }

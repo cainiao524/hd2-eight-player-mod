@@ -1,0 +1,103 @@
+{
+  "schema": "hd2_live_registration_state_scan_v2",
+  "build": 25480438,
+  "pid": 6884,
+  "captured_at_utc": "2026-10-03T03:25:52.323760+00:00",
+  "scope": "authorized read-only bounded MEM_PRIVATE scan; no calls, writes, hooks, injection or installation",
+  "pinned_images": {
+    "helldivers2.exe": {
+      "base": 140702897733632,
+      "size": 60719104,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\helldivers2.exe",
+      "sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+      "pe_identity": {
+        "timestamp": 1790149348,
+        "image_size": 60719104
+      }
+    },
+    "game.dll": {
+      "base": 140715979571200,
+      "size": 74727424,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\data\\game\\game.dll",
+      "sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+      "pe_identity": {
+        "timestamp": 1790161983,
+        "image_size": 74727424
+      }
+    }
+  },
+  "patterns": {
+    "confirmed_peer_receiver_ptr": {
+      "length": 8,
+      "sha256": "d311a174d168b99d797092643ce8c019dbe78ff7952b4177e099913c1df07460"
+    },
+    "confirmed_peer_insert_ptr": {
+      "length": 8,
+      "sha256": "81be23c011ddffcdfd50d29732527d0a427617aa9046978911ae673e922ab59f"
+    },
+    "platform_member_consumer_ptr": {
+      "length": 8,
+      "sha256": "adea54c3ccc010ed36cc12124eaf41c58bfaef5f2f6540b08f9b0710e22966bf"
+    },
+    "platform_member_state_update_ptr": {
+      "length": 8,
+      "sha256": "a9cebc65c8aa9855cef3c036845ccf27463c855fb35d7bd668a9f999205e6dbd"
+    },
+    "confirmed_peer_event_hash": {
+      "length": 4,
+      "sha256": "22e65032d2b4ec7e879b6119cfeb1bb9f03bbfbe1337d08aa83d0dfc792c2552"
+    },
+    "static_registration_hash_0": {
+      "length": 4,
+      "sha256": "0df5e507d24f4668de8cbee2d8ebf8f6cb190e7d9f3e031b36d5f4f86f23c227"
+    },
+    "static_registration_hash_1": {
+      "length": 4,
+      "sha256": "24501f3849c3e9d67f6475e81b81a64b08fb1d369d5c69d7f963417b8a11c814"
+    },
+    "static_registration_hash_2": {
+      "length": 4,
+      "sha256": "b01bb3451042cfb98fce42cbd73f8c1f82e33a0ec4efc3420653c16c20d65c86"
+    },
+    "static_registration_hash_3": {
+      "length": 4,
+      "sha256": "ad52c564f3067a7711cb93ba73123b8239d7d9a9d8da6ad7cdf12d24c690cdb0"
+    },
+    "static_registration_hash_4": {
+      "length": 4,
+      "sha256": "f8a5b604cf15d4ecded9e0437e5ae2904dd0925da970f1e111d0ead589087cd3"
+    },
+    "static_registration_hash_5": {
+      "length": 4,
+      "sha256": "bfcd702f167b06dfc1ecb5a4e0d14ae9e07bc4477ac99f908f0c6cbd2bc9cec7"
+    },
+    "static_registration_hash_6": {
+      "length": 4,
+      "sha256": "6998062f4adc5468147eae260052c90e1c396ab398f0dc5343d5f1eae04137ed"
+    }
+  },
+  "hits": [],
+  "errors": [],
+  "scan_stats": {
+    "private_regions": 464,
+    "pages_read": 32768,
+    "memory_bytes_read": 134217728,
+    "limit_bytes": 134217728,
+    "reader_bytes_used": 134234336,
+    "termination_reason": "scan_limit_reached",
+    "coverage_complete": false,
+    "truncated": true
+  },
+  "postflight_verified": false,
+  "status": "incomplete",
+  "negative_observation_valid": false,
+  "read_only": true,
+  "calls_made": false,
+  "writes_made": false,
+  "hooks_installed": false,
+  "hash_to_selector_proven": false,
+  "resolver_closed": false,
+  "installable": false,
+  "multiplayer_verified": false,
+  "meaning": "The result covers only the reported readable private-memory prefix. A pattern hit is not ownership proof and a negative scan does not prove that no registry exists."
+}

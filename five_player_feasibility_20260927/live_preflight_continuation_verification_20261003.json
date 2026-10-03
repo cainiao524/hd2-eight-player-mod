@@ -128,11 +128,16 @@
       "name": "all_capture_flags_read_only",
       "passed": true,
       "detail": "all captures"
+    },
+    {
+      "name": "private_registry_coverage_and_postflight_validity",
+      "passed": false,
+      "detail": "private_registry_1g has truncated=true and no postflight_verified/negative_observation_valid fields; its zero-hit result cannot support a complete 1 GiB negative claim"
     }
   ],
   "checks_passed": 22,
-  "checks_total": 22,
-  "verification_passed": true,
+  "checks_total": 23,
+  "verification_passed": false,
   "runtime_calls_made": false,
   "game_memory_written": false,
   "hooks_installed": false,
@@ -140,12 +145,14 @@
   "installable": false,
   "multiplayer_verified": false,
   "decision": {
-    "status": "live_image_aligned_registry_unresolved",
-    "meaning": "The fixed build and native boundaries are stable in one process state; no service-side hash/selector registry or player creation success was observed.",
+    "status": "historical_bundle_scan_coverage_invalidated",
+    "meaning": "Native/image checks remain usable as raw evidence, but the historical 1 GiB private-registry negative check is invalid because coverage was truncated and postflight stability was not recorded.",
     "next_required": [
       "Bind the service-side event-hash to selector registry or a real callback trace.",
       "Run a real fifth-peer session and capture confirmed-peer to player creation on host and client.",
       "Only then construct a production hook and ladder to eight accounts."
     ]
-  }
+  },
+  "superseded": true,
+  "superseded_by": "five_player_feasibility_20260927/REGISTRATION_SCAN_CORRECTION_20261003.zh-TW.md"
 }

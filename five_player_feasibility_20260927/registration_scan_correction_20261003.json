@@ -1,0 +1,40 @@
+{
+  "schema": "hd2_registration_scan_correction_v1",
+  "build": 25480438,
+  "pid": 6884,
+  "source_files": [
+    "five_player_feasibility_20260927/live_registration_state_20261003_1g.json",
+    "five_player_feasibility_20260927/live_registration_state_20261003_r2.json",
+    "five_player_feasibility_20260927/scan_live_registration_state_20261003.py"
+  ],
+  "checks": [
+    {
+      "name": "old_capture_reclassified",
+      "passed": true,
+      "detail": "old v1 zero-hit output is retained as raw evidence but invalid for complete negative coverage"
+    },
+    {
+      "name": "old_budget_headroom",
+      "passed": false,
+      "detail": "max_read_mib equaled limit_mib; postflight reserve was absent"
+    },
+    {
+      "name": "corrected_scanner",
+      "passed": true,
+      "detail": "v2 records termination_reason, coverage_complete, errors and postflight separately"
+    },
+    {
+      "name": "corrected_runtime_capture",
+      "passed": false,
+      "detail": "incomplete: corrected r2 reported coverage_complete=false and postflight_verified=false after module stability could not be proved"
+    }
+  ],
+  "checks_passed": 2,
+  "checks_total": 4,
+  "verification_passed": false,
+  "negative_observation_valid": false,
+  "installable": false,
+  "multiplayer_verified": false,
+  "resolver_closed": false,
+  "meaning": "The earlier 1 GiB negative claim is withdrawn. The corrected scanner is ready for a fresh process capture with max_read_mib greater than limit_mib; the available r2 capture reached the requested 128 MiB read limit but failed postflight module stability, so it is incomplete evidence."
+}
