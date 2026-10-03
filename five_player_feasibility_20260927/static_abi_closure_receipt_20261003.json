@@ -1,0 +1,140 @@
+{
+  "schema": "hd2_static_abi_closure_receipt_v1",
+  "build": 25480438,
+  "scope": "offline fixed-build evidence closure; no process access or executable patch",
+  "checks": {
+    "all_sources_present": true,
+    "all_sources_fixed_build": true,
+    "player_resource_abi_static_checks": true,
+    "player_creation_static_checks": true,
+    "rollback_static_checks": true,
+    "peer_lifecycle_static_checks": true,
+    "loadout_lifecycle_static_checks": true,
+    "native_plan_has_eight_slots_and_ten_sites": true,
+    "live_capture_is_read_only": true,
+    "external_chain_remains_blocked": true,
+    "confirmed_peer_abi_remains_blocked": true,
+    "player_resource_callback_abi_production_patch_ready_false": true,
+    "player_resource_callback_abi_runtime_verified_false": true,
+    "player_resource_callback_abi_installable_false": true,
+    "player_resource_callback_abi_multiplayer_verified_false": true,
+    "player_creation_abi_runtime_verified_false": true,
+    "player_creation_abi_installable_false": true,
+    "player_creation_abi_multiplayer_verified_false": true,
+    "player_resource_rollback_production_patch_ready_false": true,
+    "player_resource_rollback_runtime_verified_false": true,
+    "player_resource_rollback_installable_false": true,
+    "player_resource_rollback_multiplayer_verified_false": true,
+    "peer_lifecycle_runtime_verified_false": true,
+    "peer_lifecycle_installable_false": true,
+    "peer_lifecycle_multiplayer_verified_false": true,
+    "loadout_lifecycle_production_patch_ready_false": true,
+    "loadout_lifecycle_runtime_verified_false": true,
+    "loadout_lifecycle_installable_false": true,
+    "loadout_lifecycle_multiplayer_verified_false": true,
+    "native_admission_plan_multiplayer_verified_false": true,
+    "native_admission_capture_multiplayer_verified_false": true
+  },
+  "source_reports": {
+    "player_resource_callback_abi": {
+      "path": "E:\\File\\Codes\\0\\26.10.1\\HD2\\five_player_feasibility_20260927\\player_resource_callback_abi_binding_20261003.json",
+      "sha256": "09bcdf2eff6cf93e4788a1f57c188318f169a90ad61f88833de361b11a4cb0e9",
+      "schema": "hd2_player_resource_callback_abi_binding_v1",
+      "build": 25480438
+    },
+    "player_creation_abi": {
+      "path": "E:\\File\\Codes\\0\\26.10.1\\HD2\\five_player_feasibility_20260927\\player_creation_abi_gap_audit_20261003.json",
+      "sha256": "30a9b708551c34f8ad45a91b21947bd6c3c68a7e212a35f50d506165a9b9f494",
+      "schema": "hd2_player_creation_abi_gap_audit_v1",
+      "build": 25480438
+    },
+    "player_resource_rollback": {
+      "path": "E:\\File\\Codes\\0\\26.10.1\\HD2\\five_player_feasibility_20260927\\resource_rollback_quiescence_contract_20261003.json",
+      "sha256": "686dac913f7486f0b341ca5077df0516a8bbdcc3669c521dbd93b05ddd9dc7cb",
+      "schema": "hd2_player_resource_rollback_quiescence_contract_v1",
+      "build": 25480438
+    },
+    "peer_lifecycle": {
+      "path": "E:\\File\\Codes\\0\\26.10.1\\HD2\\five_player_feasibility_20260927\\peer_lifecycle_sidecar_contract_20261003.json",
+      "sha256": "75f08b98d6b217f2940d13310dd6eb0773e50564a814f36e337955bdeddcb914",
+      "schema": "hd2_peer_lifecycle_sidecar_contract_v1",
+      "build": 25480438
+    },
+    "loadout_lifecycle": {
+      "path": "E:\\File\\Codes\\0\\26.10.1\\HD2\\five_player_feasibility_20260927\\loadout_lifecycle_abi_audit_20261003.json",
+      "sha256": "10790ace6e9e9b37547c141ac5092c6e6bd6f166693251e3c155577cd590c351",
+      "schema": "hd2_loadout_lifecycle_abi_audit_v1",
+      "build": 25480438
+    },
+    "native_admission_plan": {
+      "path": "E:\\File\\Codes\\0\\26.10.1\\HD2\\five_player_feasibility_20260927\\native_peer_admission_plan_20261002.json",
+      "sha256": "aa999dd7695ae6a27f5036d52ea6166b192eb735e922054bb5e75eb212faa62b",
+      "schema": null,
+      "build": 25480438
+    },
+    "native_admission_capture": {
+      "path": "E:\\File\\Codes\\0\\26.10.1\\HD2\\five_player_feasibility_20260927\\native_admission_confirmed_peer_live_20261002_r3.json",
+      "sha256": "50cc6fcb8fa4224791a7d40cdd37dafa719664d92a01b7a6d3505655b5f30f7e",
+      "schema": "hd2_native_admission_live_capture_v1",
+      "build": 25480438
+    },
+    "confirmed_peer_external_chain": {
+      "path": "E:\\File\\Codes\\0\\26.10.1\\HD2\\eight_player_candidate_20260927\\Native\\SessionMembers\\confirmed_peer_external_chain_20261002.json",
+      "sha256": "2ed8ab92e7f00f2ad0acfa671df61146573fe49bfc3d6485d75ed4a2cb29eea1",
+      "schema": "confirmed_peer_external_chain_v1",
+      "build": 25480438
+    },
+    "confirmed_peer_live_abi": {
+      "path": "E:\\File\\Codes\\0\\26.10.1\\HD2\\eight_player_candidate_20260927\\Native\\SessionMembers\\confirmed_peer_admission_live_abi_20261002.json",
+      "sha256": "63e83127361b6cc09b179f3807c022fac44992177f9a8b5a6c60ba25d87c6b23",
+      "schema": "confirmed_peer_admission_live_abi_v1",
+      "build": 25480438
+    }
+  },
+  "production_flags": {
+    "player_resource_callback_abi": {
+      "production_patch_ready": false,
+      "runtime_verified": false,
+      "installable": false,
+      "multiplayer_verified": false
+    },
+    "player_creation_abi": {
+      "runtime_verified": false,
+      "installable": false,
+      "multiplayer_verified": false
+    },
+    "player_resource_rollback": {
+      "production_patch_ready": false,
+      "runtime_verified": false,
+      "installable": false,
+      "multiplayer_verified": false
+    },
+    "peer_lifecycle": {
+      "runtime_verified": false,
+      "installable": false,
+      "multiplayer_verified": false
+    },
+    "loadout_lifecycle": {
+      "production_patch_ready": false,
+      "runtime_verified": false,
+      "installable": false,
+      "multiplayer_verified": false
+    },
+    "native_admission_plan": {
+      "multiplayer_verified": false
+    },
+    "native_admission_capture": {
+      "multiplayer_verified": false
+    },
+    "confirmed_peer_external_chain": {},
+    "confirmed_peer_live_abi": {}
+  },
+  "limits": [
+    "This receipt proves only static evidence consistency and fail-closed state.",
+    "It does not provide a native resolver, executable payload, installation, fifth-to-eighth peer admission, or task synchronization.",
+    "The game is not modified and no process memory is queried or written by this verifier."
+  ],
+  "installable": false,
+  "runtime_verified": false,
+  "multiplayer_verified": false
+}
