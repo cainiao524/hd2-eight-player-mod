@@ -117,3 +117,7 @@ P5不可因這個元件的單元測試通過而標完成，更不能抵銷P1/P2�
 ## 每項研究的開工與結束規則
 
 新增研究前在對應P項寫清：要修哪個行為、會改變哪個程式決策、拿到什麼便停止、如何接到候選變更／驗證。已固定且已核對的證據只因具體依賴變動才重跑。剩餘外部條件不足時完成獨立工作；若已無有意義的獨立工作，按目標管理規則如實處理受阻。
+
+## 2026-10-04 Mod Options Menu 公開研究
+
+已核對 `CowboyBingus/ModOptionsMenu` v1.1（commit `46d693e421b44c4221ee6d984d26ea49997b948a`）與 `MrChengl11/hd2-lua-mod-skill` v1.8.1（commit `d1811983ab4fec230ede24bdd3d274f77b0b82fd`）。Mod Options Menu 只提供本地 MODS 設定 UI 和 Lua update hook，不能改變 Session/Party、peer admission、Player Clone 或 entity replication；因此只列為可選診斷 UI，不改變 `installable=false`、`runtime_verified=false`、`multiplayer_verified=false`。詳見 [MOD_OPTIONS_MENU_RESEARCH_20261004](MOD_OPTIONS_MENU_RESEARCH_20261004.zh-TW.md) 與收據。
