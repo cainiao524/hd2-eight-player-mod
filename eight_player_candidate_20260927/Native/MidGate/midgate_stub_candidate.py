@@ -274,6 +274,18 @@ def _check_stub(site: PatchSite) -> None:
     # not known until activation.
     if b"\xE8" in site.stub or b"\xE9" in site.stub:
         raise ValueError(f"relative_call_or_jump_in_stub:{site.name}")
+    # Native mid-function inputs are R9 (owner) and R14D (index).  Verify the
+    # emitted bridge performs the Windows x64 owner/index moves explicitly;
+    # the old 4C 8B C9 encoding moved RCX into R9 and passed the wrong object.
+    if b"\x49\x8B\xC9" not in site.stub or b"\x4C\x8B\xC9" in site.stub:
+        raise ValueError(f"owner_move_abi:{site.name}")
+    if b"\x41\x8B\xD6" not in site.stub or b"\x44\x8B\xD6" in site.stub:
+        raise ValueError(f"index_move_abi:{site.name}")
+    if site.name == "host_capacity_midgate":
+        capacity_move = b"\xB9\x08\x00\x00\x00"
+        compare = b"\x83\xF8\x08"
+        if capacity_move not in site.stub or site.stub.index(capacity_move) > site.stub.index(compare):
+            raise ValueError("capacity_register_not_initialized")
     if site.prolog_size <= 0 or len(site.unwind) < 4:
         raise ValueError(f"unwind_missing:{site.name}")
     if site.unwind[0] & 7 != 1:
