@@ -1252,7 +1252,8 @@
     "five_player_feasibility_20260927/live_client_peer_layout_20261003_r2.json": "d51da384589cffedad86fe865931b43c8becbd1cbc1d7a0f0c2b0db10c4b0ff4",
     "five_player_feasibility_20260927/verify_live_client_peer_layout_20261003.py": "c6a007e9cb18b9a2da7a590955aabda6df08af3b1f39cf87145b675632e085bf",
     "five_player_feasibility_20260927/live_client_peer_layout_verification_20261003.json": "779bfc05a2225e525d88325bf821c607d5154410f00038ff9a8a3e1b24eac44a",
-    "five_player_feasibility_20260927/LIVE_CLIENT_PEER_LAYOUT_20261003.zh-TW.md": "4fff2985bbf76d9f207061585cf0d1dc6d7ca006cd68b19906ec89d865302f49"
+    "five_player_feasibility_20260927/LIVE_CLIENT_PEER_LAYOUT_20261003.zh-TW.md": "4fff2985bbf76d9f207061585cf0d1dc6d7ca006cd68b19906ec89d865302f49",
+    "five_player_feasibility_20260927/live_session_snapshot_20261003_r11.json": "6f2399793c910b3b881894213b4469fdcae6b81e416efa8c2a893460eeb183d8"
   },
   "missing_release_files": [],
   "remaining_release_work": [
@@ -1402,7 +1403,7 @@
   },
   "latest_research_update_date": "2026-10-03",
   "priority_assessment": "five_player_feasibility_20260927/PEER_ADMISSION_PRIORITY.zh-TW.md",
-  "last_update_scope": "Formalized the v0.14 receipt, closed the bounded 1277920 reader candidate, added the native PlayerResource transaction sidecar and receiver-vector adapter, and captured a stable read-only owner/client peer layout; no game ABI call, hook, installation or multiplayer validation was performed.",
+  "last_update_scope": "Formalized the v0.14 receipt, closed the bounded 1277920 reader candidate, added the native PlayerResource transaction sidecar and receiver-vector adapter, and captured stable read-only one-peer session and owner/client layouts; no game ABI call, hook, installation or multiplayer validation was performed.",
   "live_preflight_20261003": {
     "pid": 36900,
     "build": 25480438,
@@ -1487,7 +1488,8 @@
       "five_player_feasibility_20260927/live_client_peer_layout_20261003_r2.json",
       "five_player_feasibility_20260927/verify_live_client_peer_layout_20261003.py",
       "five_player_feasibility_20260927/live_client_peer_layout_verification_20261003.json",
-      "five_player_feasibility_20260927/LIVE_CLIENT_PEER_LAYOUT_20261003.zh-TW.md"
+      "five_player_feasibility_20260927/LIVE_CLIENT_PEER_LAYOUT_20261003.zh-TW.md",
+      "five_player_feasibility_20260927/live_session_snapshot_20261003_r11.json"
     ],
     "native_site_count": 6,
     "session_site_count": 5,
@@ -1671,6 +1673,22 @@
       "writes_made": false,
       "hooks_installed": false,
       "meaning": "stable menu/one-peer owner-client layout reread; zero count is preserved without interpreting registry semantics"
+    },
+    "session_snapshot_r11": {
+      "pid": 45820,
+      "build": 25480438,
+      "status": "observed_context",
+      "mode": 3,
+      "peer_count": 1,
+      "peer_indexes": [
+        0
+      ],
+      "documented_roster_slots": 4,
+      "read_only": true,
+      "calls_made": false,
+      "writes_made": false,
+      "hooks_installed": false,
+      "meaning": "current one-peer baseline; no fifth peer, player creation or eight-player acceptance"
     }
   },
   "offline_continuation_20261003": {
