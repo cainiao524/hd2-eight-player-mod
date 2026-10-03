@@ -507,3 +507,13 @@ capacity patch 仍是 disabled-by-default、固定 build 的研究候选；inlin
 - `Native/SessionMembers` 新增 admission/dispatch/cleanup 靜態交叉契約：host `+0x08`／`+0x50` 間接呼叫、host-to-client 四筆 `0x38` stride dispatch、5..7 candidate gate、`0xBE4910` sender、`0xB90B20` client insert、join-handler nested call 與 `0x13EFF30` reject/cleanup candidate 已固定。target 語義、return ABI、cleanup ABI、第五至第八 peer admission、player creation、replication 與 migration 仍未解析。
 
 離線證據與合成測試不能替代實機多人驗收。正式狀態仍為 `installable=false`、`multiplayer_verified=false`；下一步先取得允許的唯讀 callback/owner/cleanup ABI 證據，再把 producer、confirmed-peer、player creation、client replication 與 rollback/unwind 綁定，之後才可進行五至八帳號階梯。
+
+## 2026-10-03 client fixed-four inventory and bounded peer reader continuation
+
+本輪仍只使用倉庫內固定 build 證據與合成 harness，沒有啟動或存取遊戲程序，沒有呼叫、寫入、hook、注入、安裝或多人驗收。
+
+- `five_player_feasibility_20260927/client_fixed_four_inventory_20261003.json` 固定客戶端 confirmed-peer 的五組四槽陣列：`+0x10/+0x18` stride 8、`+0x38/+0x40` stride 16、`+0x80/+0x88` stride 16、`+0xC8/+0xD0` stride 32（record `+0x14`），以及 `+0x150..+0x190` peer-keyed 區。append、remove/neighbor compaction、primary/secondary reset、kicked 與 host migration handoff 均已列出；10/10 replay 與 3 個 Python tests 通過。這是四槽 reader/writer inventory，不是 network index 語義或可安裝 patch。
+- `Native/SessionObservation/ep_session_record_consumer_contract.py` 對 session vtable 的 count/table/token/byte `+0x29` instruction consumers 做 bounded xref。保存資料沒有直接 target RVA，可重播結果明確為 negative/bounded，不能把 opaque record 推成 PeerId 或 player index；3 個 tests 通過。
+- `Native/OfficialPlugin` 新增只讀 `official_peer_reader_contract_20261003.json`。它只接受穩定 opaque snapshot 與 record semantics，提供 bounded `get_peer_count/get_peer_record`；版本、owner lease、quiescence、cleanup、index 與 count 失敗均 fail-closed，明確禁止 `add_peer`、`remove_peer`、`create_game_object`。`official_peer_reader_contract_synthetic_passed` 通過，但不構成 admission 或角色建立證據。
+
+上述三項進一步閉合了離線固定四槽與安全觀測邊界，仍未閉合第五至第八 peer 的原生 admission、client replication、Player Clone 建立、生命週期與撤離結算。因此 `installable=false`、`multiplayer_verified=false` 維持不變。
