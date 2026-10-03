@@ -462,3 +462,14 @@ capacity patch 仍是 disabled-by-default、固定 build 的研究候选；inlin
 `Native/SessionObservation` 已接入官方插件。`setup_game`／bounded update 现在先通过固定 EXE、Network getter、GameSession 底层 vtable 与 record layout fingerprint，再以进程内只读复制获取最多八条 opaque record；任何不匹配、count 超过 8、backing 缺失或双读变化都 fail-closed。此路径不调用 `peer`、`num_peers`、`in_session` 或 `host`，也不写入游戏状态。
 
 这只提供固定版本的 layout 观察工具，不是玩家 admission 或 Player Clone 建立。当前第五至第八个账号、客户端复制、死亡/增援、重连、结算和 host migration 仍未验证；`installable=false`、`multiplayer_verified=false` 保持不变。最新研究提交为 `2136c72`，状态收据提交为 `0037825`。
+## 2026-10-03 player creation gate ABI adapter
+
+新增 `Native/PlayerCreationGate` 固定 build `25480438` 的版本門控候選。它要求 `game.dll+0x1086460` 的 9-byte gate fingerprint，以及 `0xFDC140` resource/component dispatch 和 `0x608B60` roster dispatch 的 downstream fingerprints；只有 caller 提供的 owner、resource、component、roster、cleanup、rollback、quiesce、write 與 readiness callbacks 全部有效時，才允許把 gate immediate 從 `4` 暫時改為 `8`。寫入與恢復完全由 caller-supplied backend 執行，模組本身不取得程序 handle，也不呼叫 `VirtualProtect` 或 `WriteProcessMemory`。
+
+`ep_player_creation_gate_synthetic_passed` 與 receipt verifier 已通過：network index `0..7`、index `8` 拒絕、重複 identity、generation/owner lease、resource/component/roster rollback、cleanup retry 及 exact-byte restore 均有測試。這仍不是獨立可玩的 patch；真實 downstream ABI、四人 component backing relocation、confirmed-peer receiver、client replication 和完整任務生命週期尚未接線，因此 `production_executable=false`、`runtime_verified=false`、`installable=false`、`multiplayer_verified=false` 維持不變。收據為 `Native/PlayerCreationGate/player_creation_gate_receipt_20261003.json`，整合提交為 `30ca8c0`。
+
+## 2026-10-03 player resource → native bridge transaction adapter
+
+新增 `Native/PlayerResource/ep_resource_bridge_adapter.*`，把八格 player-resource sidecar 的三階段 callback table 接到既有 `EP_NATIVE_BRIDGE` admission/depart/reconnect contract。transaction 順序固定為 `resource_begin → native_confirm → native_create → first → second → third → resource_publish`；任何 callback、metadata、version/size、generation 或 stage failure 都 fail-closed，並由 bridge 的 remove compensation 清除 native 與 sidecar identity。離隊先執行 native remove，再釋放 resource record；network index 由 caller 提供並逐項保留，禁止以 local first-free 或 roster ordinal 代換。
+
+`ep_resource_bridge_adapter_synthetic_passed`、原 player-resource test、Bridge/client integration 與 Python receipt checks 已通過，覆蓋八筆 admission、index 4 departure/reconnect、index 3 stage failure rollback 和完整 owner cleanup。這是離線 ABI-shaped transaction，不是 live callback binding；沒有解析 RVA、呼叫 game.dll、安裝 hook、建立第五至第八 peer 或驗證 client entity replication。`production_executable=false`、`runtime_verified=false`、`installable=false`、`multiplayer_verified=false` 維持不變。收據為 `Native/PlayerResource/resource_bridge_adapter_receipt_20261003.json`，整合提交為 `9715a41`。
