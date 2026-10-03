@@ -1,5 +1,11 @@
 # 接續狀態：2026-09-28 已恢復離線工作
 
+## 2026-10-03 最新離線 native bridge hardening
+
+`Native/Bridge` 與 `Native/ClientSidecar` 的候選交易邊界已再收斂：native player creation 先於 bridge sidecar confirm，native confirm 失敗時 adapter 保留補償 identity，由 bridge 的 remove callback 同時清理 native 與兩端 sidecar；cleanup retry 必須帶完整的 peer、resource handle、network index 和 generation，不能只用重用中的 index。跨元件 harness 已實際走過八個 index `0..7`、離隊洞位、generation-safe reconnect、完整雙 registry cleanup 及 owner lease 平衡；adapter destroy 會拒絕仍有 native-confirmed flag 的 teardown。
+
+這些是固定 build `25480438` 的離線 C++／Python 合成驗證，沒有接真實 callback ABI、沒有寫入或注入遊戲程序，`installable=false`、`runtime_verified=false`、`multiplayer_verified=false` 仍是正式狀態。研究提交為 `0256ed0`，狀態收據提交為 `75e536d`。
+
 ## 2026-10-03 fixed-build live preflight reread
 
 在同一固定 build `25480438`、同一 PID `36900` 上保存第二批 bounded read-only reread：
@@ -62,7 +68,7 @@
 
 已將這個下一步實作成 [LOADOUT_SIDECAR_CONTRACT_20261003.zh-TW.md](../five_player_feasibility_20260927/LOADOUT_SIDECAR_CONTRACT_20261003.zh-TW.md)：八個 stable network slots、獨立 UI slot／widget token、generation-safe hole、pending／confirmed／releasing 生命週期與 forward／inverse map invariant 均有 5 項合成測試；新增嚴格型別 identity guard，並以 `cancel_pending` 完成被拒絕的 widget／資源建構回滾。它仍是離線 sidecar；沒有 native callback、UI package、遊戲程序或多人驗收，所有 production/runtime/install/multiplayer flags 仍為 false。
 
-另修正 ClientSidecar callback adapter 的安全邊界：native confirm/create/remove 及 owner retain/release callback 現在全部為必要項；所有 network index（含 0–3）都必須經過 native create，confirm 失敗會回滾 sidecar，remove 失敗會保留記錄供重試。合成測試重新通過，這仍是隔離 sidecar，沒有真實 callback ABI、遊戲 patch 或多人成功。
+另修正 ClientSidecar callback adapter 的安全邊界：native confirm/create/remove 及 owner retain/release callback 現在全部為必要項；所有 network index（含 0–3）都必須經過 native create，confirm 失敗會保留 identity 供 Native Bridge 的 remove compensation 同步清理，remove 失敗會保留記錄供重試。合成測試重新通過，這仍是隔離 sidecar，沒有真實 callback ABI、遊戲 patch 或多人成功。
 
 ## 2026-10-03 player-resource rollback 與 peer lifecycle sidecar 契約
 
@@ -107,7 +113,7 @@
 
 另完成 [native sidecar table](../eight_player_candidate_20260927/Native/Sidecar/README.zh-TW.md)：獨立 x64 DLL 提供八個 stable slot、pending／confirmed、generation-safe hole／reconnect、重複 identity／resource 拒絕與 invariant 驗證；合成 harness 與 report test 通過。它尚未接到 Session／Party、confirmed-peer 或 player creation callsite，所以不能作為安裝 payload。
 
-本輪再完成 [Native Bridge orchestration candidate](../eight_player_candidate_20260927/Native/Bridge/README.zh-TW.md)：把 sidecar 接到 build/site/callback preflight、confirmed-peer／player-creation callback 契約、admission rollback、departure cleanup 和 generation-safe reconnect；八人合成 harness 通過並拒絕第九人。這仍是 callback ABI 的隔離候選，沒有真實 game.dll patch 或注入，production plan 維持 `executable=false`。
+本輪再完成 [Native Bridge orchestration candidate](../eight_player_candidate_20260927/Native/Bridge/README.zh-TW.md)：把 sidecar 接到 build/site/callback preflight、confirmed-peer／player-creation callback 契約、admission rollback、departure cleanup 和 generation-safe reconnect；八人合成 harness 通過並拒絕第九人，跨元件 harness 另通過八個 index 的離隊／重連／清理。這仍是 callback ABI 的隔離候選，沒有真實 game.dll patch 或注入，production plan 維持 `executable=false`。
 
 另完成 [native peer admission bridge boundary review](../five_player_feasibility_20260927/NATIVE_PEER_ADMISSION_BRIDGE_BOUNDARY_20261002.zh-TW.md)：固定 `0x108C18F` capacity、`0x108C3D8` allocator、confirmed-peer sender/receiver、client append、player gate 與 cleanup/migration 的 4/4 靜態檢查通過；Bridge 合成層新增 owner retain/release lease，確保 callback transaction 在 host migration 或清理期間不使用失效 owner。這些仍是 fail-closed 契約，沒有 production ABI 或多人驗收。
 
