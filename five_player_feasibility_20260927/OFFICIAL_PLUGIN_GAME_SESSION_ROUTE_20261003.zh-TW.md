@@ -29,3 +29,5 @@ Autodesk Stingray 的公開 `engine_plugin_api/plugin_api.h` 定義：
 4. 對第五至第八人逐級測試 cleanup、reconnect、host migration；任一 callback 或 ABI 未閉合時保持 disabled。
 
 目前狀態：`game_session_table_observed=false`、`player_admission_proven=false`、`installable=false`、`multiplayer_verified=false`。
+
+機器契約：[game_session_c_api_contract_20261003.json](game_session_c_api_contract_20261003.json) 固定了公開 table offset 與各 GameSession 方法的通用偏移；`runtime_table_observed=false`，不可直接當作 HD2 call target。
