@@ -7,4 +7,6 @@
 - `unloaded` 清除保存的指標，避免跨生命週期使用 stale API。
 - `build_x64.bat` 會產生 DLL 並執行本機 stub harness；這個 harness 不載入遊戲、不存取程序。
 
+公開 ABI 來源：[Autodesk Stingray plugin API samples](https://github.com/AutodeskGames/stingray-plugin-api-samples) 與 [Stingray engine plugin 說明](https://help.autodesk.com/cloudhelp/ENU/Stingray-SDK-Help/sdk_help/extend_engine.html)。
+
 這是官方插件入口的 ABI 骨架，不是八人功能本身。要接八人 sidecar，還需要同一 build 的 `ScriptApi`／`GameSessionCApi` 版本核對、合法 plugin 載入證據、第五至第八個 peer admission 與 player creation callback，以及所有 client cleanup/migration 路徑。任何一項缺失都保持 disabled。
