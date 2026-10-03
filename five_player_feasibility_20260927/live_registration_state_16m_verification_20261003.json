@@ -1,0 +1,78 @@
+{
+  "schema": "hd2_live_registration_state_16m_verification_v1",
+  "build": 25480438,
+  "pid": 41576,
+  "source_files": [
+    "five_player_feasibility_20260927/live_dispatcher_data_20261003_r4.json",
+    "five_player_feasibility_20260927/live_session_snapshot_20261003_r9.json",
+    "five_player_feasibility_20260927/live_registration_state_20261003_16m.json"
+  ],
+  "checks": [
+    {
+      "name": "fixed_build",
+      "passed": true,
+      "detail": "[25480438, 25480438, 25480438]"
+    },
+    {
+      "name": "single_pid",
+      "passed": true,
+      "detail": "[41576, 41576, 41576]"
+    },
+    {
+      "name": "image_identity",
+      "passed": true,
+      "detail": "pinned image hashes match"
+    },
+    {
+      "name": "bounded_scan_coverage",
+      "passed": true,
+      "detail": "16 MiB prefix reached exactly"
+    },
+    {
+      "name": "postflight_stable",
+      "passed": true,
+      "detail": "image/module/disk identity stable"
+    },
+    {
+      "name": "bounded_scan_negative",
+      "passed": true,
+      "detail": "zero hits in the verified prefix"
+    },
+    {
+      "name": "dispatcher_signature",
+      "passed": true,
+      "detail": "code-side hits only"
+    },
+    {
+      "name": "session_baseline",
+      "passed": true,
+      "detail": "one peer observed"
+    },
+    {
+      "name": "roster_boundary",
+      "passed": true,
+      "detail": "slots 4..7 remain out of contract"
+    },
+    {
+      "name": "read_only",
+      "passed": true,
+      "detail": "no calls/writes/hooks"
+    },
+    {
+      "name": "runtime_gate",
+      "passed": true,
+      "detail": "runtime/install/multiplayer remain false"
+    }
+  ],
+  "checks_passed": 11,
+  "checks_total": 11,
+  "verification_passed": true,
+  "read_only": true,
+  "calls_made": false,
+  "writes_made": false,
+  "hooks_installed": false,
+  "resolver_closed": false,
+  "installable": false,
+  "multiplayer_verified": false,
+  "meaning": "This is a valid bounded 16 MiB MEM_PRIVATE negative observation with postflight identity stability. It does not prove absence of a registry outside the prefix and does not demonstrate fifth-peer admission, player creation, installation or multiplayer success."
+}

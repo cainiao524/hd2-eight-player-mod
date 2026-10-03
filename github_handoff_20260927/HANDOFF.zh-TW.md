@@ -338,3 +338,9 @@ Player-chain 審計又補進三個 client layout 固定四人位點：`0x1087122
 先前的 1 GiB registry 12/12 收據已撤回：舊工具以相同的 `limit_mib=1024`／`max_read_mib=1024` 執行，原始輸出實際只有 262141 pages，且沒有 postflight image/module 穩定性欄位；`truncated=false` 不能支持完整負面結論。原始 JSON 保留，但已加上 `audit_correction`，验证收据标记为 superseded。
 
 修正 scanner 现在分开记录读取终止原因、coverage、错误与 postflight。PID `6884` 的修正版 128 MiB 重读达到请求上限，但 postflight 未能证明 module list 稳定，因此也保持 `incomplete`；当前没有任何有效的 registry-negative、hash→selector、安装或多人成功结论。详见 `five_player_feasibility_20260927/registration_scan_correction_20261003.json`。
+
+## 2026-10-03 corrected scanner validation
+
+新原版 PID `41576` 以修正 scanner 完成 16 MiB readable `MEM_PRIVATE` prefix：`coverage_complete=true`、`postflight_verified=true`、executable/module/disk identity 全部保持一致，目标指针、事件 hash 与七个 static registration hash 均 0 命中；收据 `live_registration_state_16m_verification_20261003.json` 11/11 通過。
+
+同一 PID 的 dispatcher/session 捕获仍只有 code-side send/receiver hits、1 個 peer 與 4 槽文件化 roster。這證明校正工具的有界負面觀察流程有效，但不證明整個 registry 不存在，也不提供第五 peer、player creation、安裝或八人任務驗收。

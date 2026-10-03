@@ -996,7 +996,7 @@
     "five_player_feasibility_20260927/verification/native_peer_admission_bridge_boundary_verification_20261002.json": "f30a4b9517d3add9050cd24ff3fcd010d9ea1a72cb937bdddb6db250384abad0",
     "five_player_feasibility_20260927/verification/peer_admission_adapter_verification.json": "0b4f84491adeff2b424d02e6fa614c3630381dc12eaf4bc20af39914ff4319fc",
     "five_player_feasibility_20260927/verify_native_peer_admission_bridge_boundary.py": "6cf6d5d4e9898fab0083ea135f8ea13dbc129ff0f1d68d4e83f1c8bd34214ad7",
-    "github_handoff_20260927/HANDOFF.zh-TW.md": "7e5b7e59caecd3ed6a8eb1a2066244cb457b62af4226e2b10c074db504dd3a76",
+    "github_handoff_20260927/HANDOFF.zh-TW.md": "e653767a7787413c1789e4605a216baa68c87c1502001dc3ba6cc7c876cebf35",
     "github_handoff_20260927/SETUP.zh-TW.md": "1c362594a6a8e70fe5fb9fce5f0d23dcf6d160a6338345f2f4b717d538d8003b",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_disasm_20261002.json": "48f504badebad800a8439494bc386e3dff61e1818168a40916d8cffd618790c9",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_patch.py": "9808f073e958fdc464d47bc10a459f328d14ebde9a765f429e13153786a5734a",
@@ -1231,7 +1231,13 @@
     "five_player_feasibility_20260927/test_scan_live_registration_state_20261003.py": "9383e4f83647626af4969018238786b531d979618f6ef6e6f50af9e7b20af88a",
     "five_player_feasibility_20260927/live_registration_state_20261003_r2.json": "cf5671f47fd8c673c074516343bf46c07bb00584ef8e8729c1644b26e39ca351",
     "five_player_feasibility_20260927/registration_scan_correction_20261003.json": "911fac85fcc42c06201505da6fe02711f4b36ae8c96c0fbf20d2b8da476374a3",
-    "five_player_feasibility_20260927/REGISTRATION_SCAN_CORRECTION_20261003.zh-TW.md": "8bafdf0b4dd80961a4a0b3a7acfd72943811ee10ee3ae8c855cc73a0a6ccad85"
+    "five_player_feasibility_20260927/REGISTRATION_SCAN_CORRECTION_20261003.zh-TW.md": "8bafdf0b4dd80961a4a0b3a7acfd72943811ee10ee3ae8c855cc73a0a6ccad85",
+    "five_player_feasibility_20260927/live_dispatcher_data_20261003_r4.json": "9383793daf339de1831636dd558f5e7d9a36983adbdd7773cad1f7de2f75ae4f",
+    "five_player_feasibility_20260927/live_session_snapshot_20261003_r9.json": "6925b01a0fca0a84d7bdc7c4b4d1356d6fbe0f742a987bb376a6d16312db3f9b",
+    "five_player_feasibility_20260927/live_registration_state_20261003_16m.json": "db339e9dce7350b3fcf9847e8dc502766c1a1e04c33af772bec2ae3fa19ed232",
+    "five_player_feasibility_20260927/live_registration_state_16m_verification_20261003.json": "caf23ea5549ea0b93a8054665255a63b6956afd5a18db29ccafed268ce3aee8a",
+    "five_player_feasibility_20260927/test_live_registration_state_16m_20261003.py": "863b262471f811f017e2b8f5195aa88c9e5e53c1b7c61b4a82b42d9ecaba3b2a",
+    "five_player_feasibility_20260927/LIVE_REGISTRATION_STATE_16M_20261003.zh-TW.md": "93d1858c0c40c9345355343db110264e98730eaf6a3d3e3ab94793dc70afc501"
   },
   "missing_release_files": [],
   "remaining_release_work": [
@@ -1338,7 +1344,8 @@
     "保存 PID 36536 的 1 GiB private-registry 掃描未完成收據；進程消失且沒有輸出，不把未完成嘗試誤記成 registry 陰性。",
     "Completed a fixed-build dynamic registration caller audit: no direct E8 caller targets 0x1094680, the runtime hash remains caller-supplied through EDX, and 0x4804FCF4 is absent from seven static registration immediates; 4/4 checks pass without runtime or install claims.",
     "重新啟動固定 build 25480438 的 PID 6884，完成 dispatcher/session、128 MiB registry 及包含七個 static registration hash 的未截斷約 1 GiB MEM_PRIVATE 掃描；12/12 checks 通過，所有 bounded private-state 命中均為 0，程序仍在空 menu baseline。",
-    "撤回旧版 1 GiB private-registry 12/12 收据：其 max_read 与 limit 相同、实际只读 262141 pages 且没有 postflight validity，不能称为完整负面证据；修正 scanner 增加 coverage/termination/postflight 字段，PID 6884 的修正版 128 MiB 重读因 module-list 稳定性未通过而保持 incomplete。"
+    "撤回旧版 1 GiB private-registry 12/12 收据：其 max_read 与 limit 相同、实际只读 262141 pages 且没有 postflight validity，不能称为完整负面证据；修正 scanner 增加 coverage/termination/postflight 字段，PID 6884 的修正版 128 MiB 重读因 module-list 稳定性未通过而保持 incomplete。",
+    "使用修正 scanner 对新原版 PID 41576 完成有效 16 MiB 私有区重读：coverage_complete、postflight_verified、module/disk identity 全部通过，0 命中；同 PID session 仍为 1 peer 与四槽 roster，11/11 收据通过。"
   ],
   "next_offline_work": [
     "Keep the join-handler fixed-four inventory bound to any future native bridge; only the five capacity/slot sites are patch candidates and the three protocol/metadata literals remain protected.",
@@ -1379,7 +1386,7 @@
   },
   "latest_research_update_date": "2026-10-03",
   "priority_assessment": "five_player_feasibility_20260927/PEER_ADMISSION_PRIORITY.zh-TW.md",
-  "last_update_scope": "Corrected the prior private-registry scan accounting. The old 1 GiB 12/12 receipt is superseded because max-read headroom and postflight validity were not proven; the repaired scanner records exact termination and the available PID 6884 rerun is incomplete after module-list instability. No registry-negative, installation or multiplayer claim remains from that scan.",
+  "last_update_scope": "Corrected the historical registry accounting, then validated the repaired scanner on a fresh PID 41576: 16 MiB prefix reached exactly with stable postflight identity and zero hits. This remains bounded evidence; native admission, installation and multiplayer remain unproven.",
   "live_preflight_20261003": {
     "pid": 36900,
     "build": 25480438,
@@ -1443,7 +1450,13 @@
       "five_player_feasibility_20260927/registration_scan_correction_20261003.json",
       "five_player_feasibility_20260927/REGISTRATION_SCAN_CORRECTION_20261003.zh-TW.md",
       "five_player_feasibility_20260927/live_preflight_continuation_verification_20261003.json",
-      "five_player_feasibility_20260927/test_live_preflight_continuation_20261003.py"
+      "five_player_feasibility_20260927/test_live_preflight_continuation_20261003.py",
+      "five_player_feasibility_20260927/live_dispatcher_data_20261003_r4.json",
+      "five_player_feasibility_20260927/live_session_snapshot_20261003_r9.json",
+      "five_player_feasibility_20260927/live_registration_state_20261003_16m.json",
+      "five_player_feasibility_20260927/live_registration_state_16m_verification_20261003.json",
+      "five_player_feasibility_20260927/test_live_registration_state_16m_20261003.py",
+      "five_player_feasibility_20260927/LIVE_REGISTRATION_STATE_16M_20261003.zh-TW.md"
     ],
     "native_site_count": 6,
     "session_site_count": 5,
@@ -1557,7 +1570,16 @@
     "corrected_registration_scan_r2_status": "incomplete",
     "corrected_registration_scan_r2_coverage_complete": false,
     "corrected_registration_scan_r2_postflight_verified": false,
-    "historical_continuation_verification": "superseded: 22/23 effective checks; private 1 GiB coverage invalid"
+    "historical_continuation_verification": "superseded: 22/23 effective checks; private 1 GiB coverage invalid",
+    "rerun_r4_pid": 41576,
+    "rerun_r4_checks": "11/11",
+    "rerun_r4_registration_prefix_mib": 16,
+    "rerun_r4_registration_prefix_hits": 0,
+    "rerun_r4_registration_prefix_coverage_complete": true,
+    "rerun_r4_registration_prefix_postflight_verified": true,
+    "rerun_r4_session_peer_count": 1,
+    "rerun_r4_documented_roster_slots": 4,
+    "rerun_r4_meaning": "Valid bounded 16 MiB negative observation with stable postflight identity; not a whole-process registry proof and not peer-admission evidence."
   },
   "offline_continuation_20261003": {
     "build": 25480438,
