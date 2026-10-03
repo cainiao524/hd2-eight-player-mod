@@ -370,3 +370,7 @@ Player-chain 審計又補進三個 client layout 固定四人位點：`0x1087122
 新增 `eight_player_candidate_20260927/Native/OfficialPlugin`：依 Autodesk Stingray 公開 `engine_plugin_api` 介面，提供固定 `PLUGIN_API_ID=0`、`C_API_ID=31` 的最小 `get_plugin_api` DLL、版本化 callback table、unload 清理與本機 stub harness。`ep_official_plugin_test.exe` 已通過 API ID、未知 ID 拒絕、C API callback 捕獲和 unload 清除四項合成檢查。
 
 這個 DLL 只保存 `get_engine_api(31)` 返回指標，不呼叫遊戲函式、不讀寫遊戲程序、不建立 peer 或 player entity。它是合法官方 plugin 入口的 ABI 骨架，不是可玩的八人 Mod；報告 `official_plugin_probe_report_20261003.json` 仍固定 `production_executable=false`、`custom_mod_entry_proven=false`、`player_admission_proven=false`、`installable=false`、`multiplayer_verified=false`。下一閘門是固定 build 的 `ScriptApi`／`GameSessionCApi` layout 與受許可的 plugin 載入觀察，之後才可把 sidecar 接到實際 admission/creation callback。
+
+## 2026-10-03 Official Plugin → GameSession 路線
+
+新增 [OFFICIAL_PLUGIN_GAME_SESSION_ROUTE_20261003.zh-TW.md](../five_player_feasibility_20260927/OFFICIAL_PLUGIN_GAME_SESSION_ROUTE_20261003.zh-TW.md)。公開 Stingray C API 確認 `C_API_ID=31` 的 `ScriptApi` 有 `Network` slot `+0x38`、`GameSession` slot `+0x40`，而 `GameSessionCApi` 具備 `add_peer`、`num_peers`、`peer`、`remove_peer`、`create_game_object`、`migrate_game_object` 等方法。這是目前最實際的合法實作路線，但只是通用 ABI；HD2 實際 table、Party member 到 GameSession 的事件與第五至第八個 Player Clone 建立仍未證明。現有 probe 只保存 table 指標，不呼叫任何遊戲 API；`game_session_table_observed=false`、`player_admission_proven=false`、`installable=false`、`multiplayer_verified=false`。
