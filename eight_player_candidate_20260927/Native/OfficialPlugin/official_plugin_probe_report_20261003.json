@@ -11,8 +11,8 @@
       "bytes": 2353
     },
     "ep_official_plugin.cpp": {
-      "sha256": "f675e6bf5d0bb713d736470626a0f7e83cb2538386ace559128988c658f4cf37",
-      "bytes": 10462
+      "sha256": "81d6d3baf7ba0651637d2f549b9f0a1febca3de5b748f3aad99139a1fff55af1",
+      "bytes": 11126
     },
     "ep_official_plugin_test.cpp": {
       "sha256": "99859e8e05296b13d924ce3be7c0a032e83936a4e42ce32776f09500ec0b755a",
@@ -23,8 +23,8 @@
       "bytes": 910
     },
     "README.zh-TW.md": {
-      "sha256": "2004914c64578c98e79dcffd8d87ce9f4df619891568a33adaeb534569f91efa",
-      "bytes": 2253
+      "sha256": "342ccf060c514d56332656b61b41d12e0b20aa9bca52aca5b14e6a862c07a41c",
+      "bytes": 2497
     },
     "ep_official_plugin_load_test.cpp": {
       "sha256": "b1005bc5ea2a2a93ff612e4633060e3dbe339dede9435068a8723e0eece7ff95",
@@ -33,20 +33,20 @@
   },
   "build_artifacts": {
     "ep_official_plugin.dll": {
-      "sha256": "1618ccf1ad3a45aebec990d0a4f58ff16f7aff449790806684227f78ebc03bc8",
-      "bytes": 282112
+      "sha256": "a9ee51bcccf536544ed02521b98e804502552002f878f98561abf8b969a75ef6",
+      "bytes": 284672
     },
     "ep_official_plugin_test.exe": {
-      "sha256": "52455535fbd4cb8e57c7b93fbbbc1273c8a78493816389f7f356fa3aceb1cd19",
-      "bytes": 306176
+      "sha256": "389477dfc7ed43a16451cbab8b90c99ed694ed0768f2027414649609dea1e564",
+      "bytes": 309760
     },
     "ep_official_plugin_load_test.exe": {
-      "sha256": "47bb8b660668d960cf966a0df696a2da4d41ffcf0aae8b597cdb8e55dc8ea308",
+      "sha256": "915b2051589ebe7624d9832267b008ebbecda3337e6c163bc93f76dd69383f2e",
       "bytes": 153088
     },
     "eight_player_pluginw64_release.dll": {
-      "sha256": "565ffe0c6a0b3d1ddeea2c43c3c73daf44127c4cf01a0247b0c4a4d7ea782ade",
-      "bytes": 282112
+      "sha256": "dd2ee67c3beab3c4a5e2730045ad4a4c1281053a7df0e77b89047174f0e873be",
+      "bytes": 284672
     },
     "eight_player_pluginw64_release.lib": {
       "sha256": "42448ecda608f32f4bb6810f41f07950265fab55fd9808d187bffcfdb3c63517",
@@ -57,7 +57,7 @@
       "bytes": 1936
     }
   },
-  "synthetic_harness": "ep_official_plugin_test.exe and ep_official_plugin_load_test.exe passed; only fixed-code Network game_session getter is callable; GameSession peer methods remain unbound and are not called",
+  "synthetic_harness": "ep_official_plugin_test.exe and ep_official_plugin_load_test.exe passed; session snapshot uses game.dll context globals and does not call engine functions; GameSession peer methods remain unbound and are not called",
   "production_executable": false,
   "runtime_verified": true,
   "custom_mod_entry_proven": true,
@@ -117,6 +117,21 @@
     "session_snapshot": "Native/SessionObservation/ep_session_snapshot.h",
     "snapshot_engine_functions_called": false,
     "snapshot_memory_writes": false,
-    "snapshot_player_admission_proven": false
+    "snapshot_player_admission_proven": false,
+    "snapshot_layout": "game.dll context globals; four documented roster records; slots 4..7 out of contract"
+  },
+  "snapshot_contract": {
+    "source": "Native/SessionObservation/ep_session_snapshot.h",
+    "identity": {
+      "timestamp": 1790161983,
+      "image_size": 74727424,
+      "game_dll_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e"
+    },
+    "layout": "game.dll context/roster/game-state globals; peer stride 0x20; documented roster stride 0xc0",
+    "documented_roster_slots": 4,
+    "roster_slots_4_to_7_in_contract": false,
+    "engine_functions_called": false,
+    "memory_writes": false,
+    "player_admission_proven": false
   }
 }

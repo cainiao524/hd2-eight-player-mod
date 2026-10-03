@@ -10,4 +10,4 @@
 
 收据中的旧版本 `peer_count` 字段现已标为 superseded：固定 build 的 live GameSession wrapper 与公开 SDK 的表布局不一致，旧探针把未闭合的 wrapper 偏移当成 `num_peers`，因此不能把那些数值当作可靠的只读 peer 观测。旧原始日志仍保留用于审计，但不再支持 `peer_count` 结论。修正后的 capacity plugin 只在已固定代码字节的 Network getter 上读取 session 指针，明确不读取 `peer()`、`num_peers()`、`in_session()` 或 `host()`。
 
-修正后的合成快照测试为 `session_snapshot_synthetic_passed`，它只接受固定 EXE 身份、Network getter bytes、GameSession 底层 vtable bytes、bounded record count、稳定双读和最多八项记录；任一不匹配都拒绝。这样仍只证明容量常数补丁可以在该 build 的官方插件入口执行，不能证明第五账号、confirmed-peer、Player Clone、客户端同步或完整任务流程。验证后已停止游戏并移除自制 DLL 和 marker。
+修正后的合成快照测试为 `session_snapshot_synthetic_passed`，它只接受固定 `game.dll` 身份、已知 context/roster/game-state globals、bounded peer count、唯一且小于 8 的 network index、四笔 documented roster records 与稳定双读；任一不匹配都拒绝。这样仍只证明容量常数补丁可以在该 build 的官方插件入口执行，不能证明第五账号、confirmed-peer、Player Clone、客户端同步或完整任务流程。验证后已停止游戏并移除自制 DLL 和 marker。

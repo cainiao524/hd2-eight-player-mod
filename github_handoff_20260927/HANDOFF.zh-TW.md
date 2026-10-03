@@ -1,4 +1,10 @@
 # 接續狀態：2026-09-28 已恢復離線工作
+## 2026-10-03 game.dll session snapshot contract alignment
+
+已將 `Native/SessionObservation/ep_session_snapshot.h` 從未閉合的 EXE engine-session vtable 假設改為與既有四人實機捕獲相同的 `game.dll` bounded layout：核對固定 `game.dll` PE identity，讀取 context、roster、game-state globals、local/host/session owner、mode、最多八筆 `0x20` stride peer records，以及四筆 documented `0xC0` stride roster records。network index 必須唯一且小於 8；roster slot `4..7` 保持 out-of-contract。Windows wrapper 現在明確取得 `game.dll`，不再把主 EXE 當作映像來源。
+
+`session_snapshot_synthetic_passed`、官方 plugin build、`ep_official_plugin_test.exe` 與 `ep_official_plugin_load_test.exe` 均通過。這只讓官方插件的診斷讀取契約和保存的四人基線一致；沒有新增程序擷取、沒有呼叫 peer／GameSession 方法、沒有第五至第八人證據，`installable=false`、`multiplayer_verified=false` 維持不變。
+
 ## 2026-10-03 固定版本容量補丁實機載入
 
 新增 `Native/CapacityPatch` 原生插件候選，固定 `Build 25480438` 與 35 個四人容量／枚舉／加入／狀態更新 site。插件先完成全 site fingerprint preflight，才以單一交易寫入 `8`；任一 site 不符就拒絕，卸載路徑按逆序恢復 bytes。

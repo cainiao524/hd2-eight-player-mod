@@ -6,7 +6,7 @@
 
 `unloaded` callback 會清除所有保存的指標，避免使用 stale API。`build_x64.bat` 會建置探針 DLL、synthetic harness 和 `LoadLibrary`/`GetProcAddress` smoke test。
 
-同一 DLL 也會透過 `Native/SessionObservation` 做無函式呼叫的 bounded snapshot：先核對固定 EXE、Network getter、底層 vtable 和 `session+0x130` record header，再穩定重讀最多八筆 `48` bytes stride 的 opaque record。任何 fingerprint mismatch、count 超過 8、缺失 backing 或重讀變化都 fail-closed；這是 layout 觀察，不是玩家 admission。
+同一 DLL 也會透過 `Native/SessionObservation` 做無函式呼叫的 bounded snapshot：先核對固定 `game.dll` PE identity，再從已保存的 context、roster 與 game-state globals 讀取 local/host/session owner、mode、peer count、最多八筆 `0x20` stride peer record，以及四筆有文檔依據的 `0xC0` stride roster record。roster slot `4..7` 保持 out-of-contract，confirmed-peer window 只保留在外部原始捕獲中，未作語義解碼。任何版本不匹配、count 超過 8、peer index 越界或重複、欄位缺失或重讀變化都 fail-closed；這是 layout 觀察，不是玩家 admission。
 
 ABI 參考：[Autodesk Stingray plugin API samples](https://github.com/AutodeskGames/stingray-plugin-api-samples) 與 [Stingray engine plugin 文件](https://help.autodesk.com/cloudhelp/ENU/Stingray-SDK-Help/sdk_help/extend_engine.html)。
 

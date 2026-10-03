@@ -116,19 +116,29 @@ void write_snapshot_log(const ep_session::Snapshot& snapshot) {
     std::ofstream out(path, std::ios::app);
     if (!out) return;
     out << "{\n"
-        << "  \"schema\": \"hd2_official_plugin_session_snapshot_v1\",\n"
+        << "  \"schema\": \"hd2_official_plugin_session_snapshot_v2\",\n"
         << "  \"event\": \"session_snapshot\",\n"
         << "  \"status\": \"" << snapshot.status << "\",\n"
-        << "  \"session\": \"0x" << std::hex << snapshot.session << "\",\n"
-        << "  \"host_value\": \"0x" << snapshot.host_value << "\",\n"
-        << "  \"record_count\": " << std::dec << snapshot.record_count << ",\n"
-        << "  \"record_ids\": [";
-    for (uint32_t i = 0; i < snapshot.record_count && i < snapshot.record_ids.size(); ++i) {
+        << "  \"context\": \"0x" << std::hex << snapshot.context << "\",\n"
+        << "  \"roster\": \"0x" << snapshot.roster << "\",\n"
+        << "  \"game_state\": \"0x" << snapshot.game_state << "\",\n"
+        << "  \"session_owner\": \"0x" << snapshot.session_owner << "\",\n"
+        << "  \"local_peer\": \"0x" << snapshot.local_peer << "\",\n"
+        << "  \"host_peer\": \"0x" << snapshot.host_peer << "\",\n"
+        << "  \"mode\": " << std::dec << snapshot.mode << ",\n"
+        << "  \"peer_count\": " << snapshot.peer_count << ",\n"
+        << "  \"peers\": [";
+    for (uint32_t i = 0; i < snapshot.peer_count && i < snapshot.peers.size(); ++i) {
         if (i) out << ",";
-        out << "\"0x" << std::hex << snapshot.record_ids[i] << "\"";
+        out << "{\"ordinal\":" << snapshot.peers[i].ordinal
+            << ",\"peer_id\":\"0x" << std::hex << snapshot.peers[i].peer_id
+            << "\",\"network_index\":" << std::dec << snapshot.peers[i].network_index << "}";
     }
     out << "],\n"
-        << "  \"fixed_build_code_pins\": true,\n"
+        << "  \"roster_count\": " << snapshot.roster_count << ",\n"
+        << "  \"documented_roster_slots\": 4,\n"
+        << "  \"roster_slots_4_to_7_in_contract\": false,\n"
+        << "  \"game_dll_context_offsets\": true,\n"
         << "  \"engine_functions_called\": false,\n"
         << "  \"memory_writes\": false,\n"
         << "  \"process_id\": " << std::dec << GetCurrentProcessId() << "\n"
@@ -137,9 +147,10 @@ void write_snapshot_log(const ep_session::Snapshot& snapshot) {
 
 void observe_snapshot() {
     const auto snapshot = ep_session::capture_current_process();
-    const auto old_session = g_last_snapshot_session.exchange(snapshot.session, std::memory_order_acq_rel);
-    const auto old_count = g_last_snapshot_count.exchange(snapshot.record_count, std::memory_order_acq_rel);
-    if (old_session != snapshot.session || old_count != snapshot.record_count || std::strcmp(snapshot.status, "stable_bounded_records_not_player_proof") != 0) {
+    const auto old_session = g_last_snapshot_session.exchange(snapshot.session_owner, std::memory_order_acq_rel);
+    const auto old_count = g_last_snapshot_count.exchange(snapshot.peer_count, std::memory_order_acq_rel);
+    if (old_session != snapshot.session_owner || old_count != snapshot.peer_count ||
+        std::strcmp(snapshot.status, "observed_context_not_player_proof") != 0) {
         write_snapshot_log(snapshot);
     }
 }

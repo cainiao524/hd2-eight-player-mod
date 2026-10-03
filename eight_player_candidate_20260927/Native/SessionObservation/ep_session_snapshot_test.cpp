@@ -8,40 +8,75 @@
 
 struct Image {
     uintptr_t base = 0x10000000;
-    std::vector<uint8_t> bytes = std::vector<uint8_t>(0x3000000);
+    std::vector<uint8_t> bytes = std::vector<uint8_t>(0x5000000);
     bool read(uintptr_t address, void* out, size_t size) {
-        if (address < base || address - base > bytes.size() || size > bytes.size() - (address-base)) return false;
-        std::memcpy(out, bytes.data() + (address-base), size); return true;
+        if (address < base || address - base > bytes.size() || size > bytes.size() - (address - base)) return false;
+        std::memcpy(out, bytes.data() + (address - base), size); return true;
     }
     template<class T> void put(uintptr_t address, const T& value) {
-        assert(address >= base && address-base+sizeof(T) <= bytes.size());
-        std::memcpy(bytes.data()+(address-base), &value, sizeof(T));
+        assert(address >= base && address - base + sizeof(T) <= bytes.size());
+        std::memcpy(bytes.data() + (address - base), &value, sizeof(T));
     }
-    void put_bytes(uintptr_t address, const uint8_t* value, size_t size) {
-        assert(address >= base && address-base+size <= bytes.size());
-        std::memcpy(bytes.data()+(address-base), value, size);
+    void put_bytes(uintptr_t address, const void* value, size_t size) {
+        assert(address >= base && address - base + size <= bytes.size());
+        std::memcpy(bytes.data() + (address - base), value, size);
     }
 };
 
 int main() {
     Image image;
-    const uintptr_t b=image.base, root=b+0x200000, session=b+0x210000, data=b+0x220000;
-    uint16_t mz=0x5a4d, machine=0x8664, magic=0x20b; uint32_t pe=0x1000, sig=0x4550, ts=1790149348u, image_size=60719104u;
-    image.put(b+0,mz); image.put(b+0x3c,pe); image.put(b+pe,sig); image.put(b+pe+4,machine); image.put(b+pe+8,ts); image.put(b+pe+24,magic); image.put(b+pe+24+56,image_size);
-    const uint8_t getter[]={0x48,0x8b,0x05,0x81,0x04,0x6c,0x01,0x48,0x8b,0x80,0xa8,0,0,0,0xc3};
-    const uint8_t count[]={0x8b,0x81,0x38,0x01,0,0,0xc3};
-    const uint8_t peer[]={0x8b,0xc2,0x48,0x8d,0x14,0x40,0x48,0x8b,0x81,0x40,0x01,0,0,0x48,0x03,0xd2,0x48,0x8b,0x04,0xd0,0xc3};
-    const uint8_t host[]={0x48,0x8b,0x81,0x30,0x01,0,0,0xc3};
-    image.put_bytes(b+0x34fdf0,getter,sizeof(getter)); image.put_bytes(b+0x292be0,count,sizeof(count)); image.put_bytes(b+0x292bf0,peer,sizeof(peer)); image.put_bytes(b+0x292cc0,host,sizeof(host));
-    uintptr_t vtable=b+0x1675b70, fn_count=b+0x292be0, fn_peer=b+0x292bf0, fn_host=b+0x292cc0;
-    image.put(b+0x1a10278,root); image.put(root+0xa8,session); image.put(session,vtable); image.put(vtable+0x70,fn_count); image.put(vtable+0x78,fn_peer); image.put(vtable+0x98,fn_host);
-    uint64_t host_id=0x1234; uint32_t count_value=2; uint32_t padding=0; image.put(session+0x130,host_id); image.put(session+0x138,count_value); image.put(session+0x13c,padding); image.put(session+0x140,data);
-    uint64_t id0=0x1111,id1=0x2222; image.put(data,id0); image.put(data+48,id1);
-    auto ok=ep_session::capture(b,[&](uintptr_t address,void* out,size_t size){return image.read(address,out,size);});
-    assert(ok.status==std::string("stable_bounded_records_not_player_proof")); assert(ok.record_count==2 && ok.record_ids[0]==id0 && ok.record_ids[1]==id1);
-    image.put(session+0x138,uint32_t(9)); auto rejected=ep_session::capture(b,[&](uintptr_t address,void* out,size_t size){return image.read(address,out,size);});
-    assert(rejected.status==std::string("count_exceeds_observation_bound"));
-    image.put(session+0x138,count_value); image.put_bytes(b+0x292be0,count+1,sizeof(count)-1);
-    auto mismatch=ep_session::capture(b,[&](uintptr_t address,void* out,size_t size){return image.read(address,out,size);}); assert(mismatch.status==std::string("code_identity_refused"));
+    const uintptr_t b = image.base;
+    const uintptr_t context = b + 0x200000;
+    const uintptr_t roster = b + 0x210000;
+    const uintptr_t state = b + 0x220000;
+    uint16_t mz = 0x5a4d, machine = 0x8664, magic = 0x20b;
+    uint32_t pe = 0x1000, signature = 0x4550;
+    image.put(b + 0, mz); image.put(b + 0x3c, pe);
+    image.put(b + pe, signature); image.put(b + pe + 4, machine);
+    image.put(b + pe + 8, ep_session::kGameTimestamp);
+    image.put(b + pe + 24, magic);
+    image.put(b + pe + 24 + 56, ep_session::kGameImageSize);
+    image.put(b + ep_session::kContextGlobalRva, context);
+    image.put(b + ep_session::kRosterGlobalRva, roster);
+    image.put(b + ep_session::kGameStateGlobalRva, state);
+    image.put(state + ep_session::kModeOffset, uint32_t(4));
+    image.put(context + ep_session::kLocalOffset, uint64_t(0xaaa1));
+    image.put(context + ep_session::kHostOffset, uint64_t(0xbbb2));
+    image.put(context + ep_session::kSessionOwnerOffset, b + 0x230000);
+    image.put(context + ep_session::kPeerCountOffset, uint32_t(2));
+    for (uint32_t i = 0; i < 2; ++i) {
+        const uintptr_t entry = context + ep_session::kPeersOffset + uintptr_t(i) * ep_session::kPeerStride;
+        image.put(entry, uint32_t(0x1000 + i));
+        image.put(entry + 4, uint32_t(0x2000 + i));
+        image.put(entry + ep_session::kPeerIndexOffset, i);
+    }
+    for (uint32_t i = 0; i < ep_session::kDocumentedRosterSlots; ++i) {
+        const uintptr_t record = roster + uintptr_t(i) * ep_session::kRosterStride;
+        image.put(record, uint64_t(0x5000 + i));
+        char name[ep_session::kRosterNameLimit]{};
+        name[0] = char('A' + i);
+        image.put_bytes(record + ep_session::kRosterNameOffset, name, sizeof(name));
+    }
+    auto read = [&](uintptr_t address, void* out, size_t size) { return image.read(address, out, size); };
+    auto ok = ep_session::capture_game_context(b, read);
+    assert(ok.status == std::string("observed_context_not_player_proof"));
+    assert(ok.mode == 4 && ok.peer_count == 2 && ok.roster_count == 4);
+    assert(ok.peers[0].peer_id == 0x200000001000ULL && ok.peers[0].network_index == 0);
+    assert(ok.peers[1].peer_id == 0x200100001001ULL && ok.peers[1].network_index == 1);
+    assert(ok.roster_ids[0] == 0x5000 && ok.roster_names[0] == 'A');
+
+    image.put(context + ep_session::kPeerCountOffset, uint32_t(9));
+    auto over = ep_session::capture_game_context(b, read);
+    assert(over.status == std::string("peer_count_over_capacity"));
+
+    image.put(context + ep_session::kPeerCountOffset, uint32_t(2));
+    image.put(context + ep_session::kPeersOffset + ep_session::kPeerStride + ep_session::kPeerIndexOffset, uint32_t(0));
+    auto duplicate = ep_session::capture_game_context(b, read);
+    assert(duplicate.status == std::string("peer_index_duplicate"));
+
+    image.put(context + ep_session::kPeersOffset + ep_session::kPeerStride + ep_session::kPeerIndexOffset, uint32_t(1));
+    image.put(b + pe + 8, uint32_t(ep_session::kGameTimestamp + 1));
+    auto mismatch = ep_session::capture_game_context(b, read);
+    assert(mismatch.status == std::string("image_identity_refused"));
     std::cout << "session_snapshot_synthetic_passed\n";
 }

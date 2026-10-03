@@ -1,87 +1,175 @@
 #pragma once
+
 #include <array>
+#include <cstddef>
 #include <cstdint>
 #include <cstring>
 #include <limits>
 
-// Build 25480438 only. Reads bytes through an injected reader; never invokes an
-// engine function. Source: live_engine_session_vtable_20261003.json.
+// Build 25480438 only. This is the native equivalent of
+// capture_live_session_snapshot_20261003.py. It reads the known game.dll
+// globals and bounded context/roster fields. It never calls an engine
+// function, follows an unknown pointer, or writes to the process.
 namespace ep_session {
+
+constexpr uint32_t kBuild = 25480438u;
+constexpr uint32_t kGameTimestamp = 1790161983u;
+constexpr uint32_t kGameImageSize = 74727424u;
+
+constexpr uintptr_t kContextGlobalRva = 0x347CEF0;
+constexpr uintptr_t kRosterGlobalRva = 0x347CED8;
+constexpr uintptr_t kGameStateGlobalRva = 0x3326340;
+constexpr uintptr_t kModeOffset = 0xAC21C;
+constexpr uintptr_t kLocalOffset = 0xB398;
+constexpr uintptr_t kHostOffset = 0xB3A8;
+constexpr uintptr_t kSessionOwnerOffset = 0xB390;
+constexpr uintptr_t kPeerCountOffset = 0x16390;
+constexpr uintptr_t kPeersOffset = 0x16398;
+constexpr uintptr_t kPeerStride = 0x20;
+constexpr uintptr_t kPeerIndexOffset = 0x14;
+constexpr uintptr_t kRosterStride = 0xC0;
+constexpr uintptr_t kRosterIdOffset = 0;
+constexpr uintptr_t kRosterNameOffset = 8;
+constexpr size_t kRosterNameLimit = 0x78;
+constexpr uint32_t kMaxSlots = 8;
+constexpr uint32_t kDocumentedRosterSlots = 4;
+
+struct PeerRecord {
+    uint64_t peer_id{};
+    uint32_t network_index{};
+    uint32_t ordinal{};
+    bool operator==(const PeerRecord&) const = default;
+};
+
 struct Snapshot {
-    uintptr_t session{};
-    uint64_t host_value{};
-    uint32_t record_count{};
-    std::array<uint64_t, 8> record_ids{};
+    uintptr_t context{};
+    uintptr_t roster{};
+    uintptr_t game_state{};
+    uintptr_t session_owner{};
+    uint64_t local_peer{};
+    uint64_t host_peer{};
+    uint32_t mode{};
+    uint32_t peer_count{};
+    uint32_t roster_count{};
+    std::array<PeerRecord, kMaxSlots> peers{};
+    std::array<uint64_t, kDocumentedRosterSlots> roster_ids{};
+    std::array<uint8_t, kDocumentedRosterSlots * kRosterNameLimit> roster_names{};
     const char* status{"unread"};
 };
+
 template<class Reader, class T>
 bool read_at(Reader& read, uintptr_t base, uintptr_t offset, T& out) {
     if (base > std::numeric_limits<uintptr_t>::max() - offset) return false;
     return read(base + offset, &out, sizeof(out));
 }
-template<class Reader, size_t N>
-bool pin(Reader& read, uintptr_t base, uintptr_t offset, const uint8_t (&expected)[N]) {
-    uint8_t actual[N]{};
-    return read_at(read, base, offset, actual) && std::memcmp(actual, expected, N) == 0;
-}
+
 template<class Reader>
-Snapshot capture(uintptr_t image, Reader read) {
-    Snapshot out;
+bool read_payload(Reader& read, uintptr_t image, Snapshot& out) {
+    out = Snapshot{};
+    out.status = "unread_context";
+    if (!read_at(read, image, kContextGlobalRva, out.context) ||
+        !read_at(read, image, kRosterGlobalRva, out.roster) ||
+        !read_at(read, image, kGameStateGlobalRva, out.game_state)) {
+        out.status = "unread_context_globals";
+        return false;
+    }
+    if (!out.context) {
+        out.status = "no_context";
+        return false;
+    }
+    if (out.game_state && !read_at(read, out.game_state, kModeOffset, out.mode)) {
+        out.status = "unread_game_state";
+        return false;
+    }
+    if (!read_at(read, out.context, kLocalOffset, out.local_peer) ||
+        !read_at(read, out.context, kHostOffset, out.host_peer) ||
+        !read_at(read, out.context, kSessionOwnerOffset, out.session_owner) ||
+        !read_at(read, out.context, kPeerCountOffset, out.peer_count)) {
+        out.status = "unread_context_fields";
+        return false;
+    }
+    if (out.peer_count > kMaxSlots) {
+        out.status = "peer_count_over_capacity";
+        return false;
+    }
+    uint8_t seen[kMaxSlots]{};
+    for (uint32_t i = 0; i < out.peer_count; ++i) {
+        const uintptr_t entry_offset = kPeersOffset + uintptr_t(i) * kPeerStride;
+        uint32_t lo{}, hi{}, index{};
+        if (!read_at(read, out.context, entry_offset, lo) ||
+            !read_at(read, out.context, entry_offset + 4, hi) ||
+            !read_at(read, out.context, entry_offset + kPeerIndexOffset, index)) {
+            out.status = "unread_peer_record";
+            return false;
+        }
+        if (index >= kMaxSlots) {
+            out.status = "peer_index_invalid";
+            return false;
+        }
+        if (seen[index]) {
+            out.status = "peer_index_duplicate";
+            return false;
+        }
+        seen[index] = 1;
+        out.peers[i] = PeerRecord{(uint64_t(hi) << 32) | lo, index, i};
+    }
+    if (!out.roster) {
+        out.status = "no_roster";
+        return false;
+    }
+    out.roster_count = kDocumentedRosterSlots;
+    for (uint32_t i = 0; i < kDocumentedRosterSlots; ++i) {
+        const uintptr_t record = out.roster + uintptr_t(i) * kRosterStride;
+        if (!read_at(read, record, kRosterIdOffset, out.roster_ids[i]) ||
+            !read(out.roster + uintptr_t(i) * kRosterStride + kRosterNameOffset,
+                  out.roster_names.data() + size_t(i) * kRosterNameLimit,
+                  kRosterNameLimit)) {
+            out.status = "unread_roster_record";
+            return false;
+        }
+    }
+    out.status = "payload_read";
+    return true;
+}
+
+inline bool payload_equal(const Snapshot& a, const Snapshot& b) {
+    return a.context == b.context && a.roster == b.roster &&
+        a.game_state == b.game_state && a.session_owner == b.session_owner &&
+        a.local_peer == b.local_peer && a.host_peer == b.host_peer &&
+        a.mode == b.mode && a.peer_count == b.peer_count &&
+        a.roster_count == b.roster_count &&
+        a.peers == b.peers && a.roster_ids == b.roster_ids &&
+        a.roster_names == b.roster_names;
+}
+
+template<class Reader>
+Snapshot capture_game_context(uintptr_t image, Reader read) {
+    Snapshot out{};
     out.status = "image_identity_refused";
     uint16_t mz{}, machine{}, magic{};
-    uint32_t pe{}, signature{}, timestamp{}, size{};
-    if (!image || !read_at(read,image,0,mz) || mz != 0x5a4d ||
-        !read_at(read,image,0x3c,pe) || pe > 0x1000 ||
-        !read_at(read,image,pe,signature) || signature != 0x4550 ||
-        !read_at(read,image,pe+4,machine) || machine != 0x8664 ||
-        !read_at(read,image,pe+8,timestamp) || timestamp != 1790149348u ||
-        !read_at(read,image,pe+24,magic) || magic != 0x20b ||
-        !read_at(read,image,pe+24+56,size) || size != 60719104u) return out;
-    constexpr uint8_t getter[] = {0x48,0x8b,0x05,0x81,0x04,0x6c,0x01,0x48,0x8b,0x80,0xa8,0,0,0,0xc3};
-    constexpr uint8_t count[] = {0x8b,0x81,0x38,0x01,0,0,0xc3};
-    constexpr uint8_t peer[] = {0x8b,0xc2,0x48,0x8d,0x14,0x40,0x48,0x8b,0x81,0x40,0x01,0,0,0x48,0x03,0xd2,0x48,0x8b,0x04,0xd0,0xc3};
-    constexpr uint8_t host[] = {0x48,0x8b,0x81,0x30,0x01,0,0,0xc3};
-    out.status = "code_identity_refused";
-    if (!pin(read,image,0x34fdf0,getter) || !pin(read,image,0x292be0,count) ||
-        !pin(read,image,0x292bf0,peer) || !pin(read,image,0x292cc0,host)) return out;
-    uintptr_t root{}, session{}, vtable{}, fn_count{}, fn_peer{}, fn_host{};
-    out.status = "unreadable_root";
-    if (!read_at(read,image,0x1a10278,root)) return out;
-    if (!root) {out.status="no_root"; return out;}
-    if (!read_at(read,root,0xa8,session)) return out;
-    if (!session) {out.status="no_session"; return out;}
-    out.status = "vtable_identity_refused";
-    if (!read_at(read,session,0,vtable) || vtable != image+0x1675b70 ||
-        !read_at(read,vtable,0x70,fn_count) || fn_count != image+0x292be0 ||
-        !read_at(read,vtable,0x78,fn_peer) || fn_peer != image+0x292bf0 ||
-        !read_at(read,vtable,0x98,fn_host) || fn_host != image+0x292cc0) return out;
-    struct Header {uint64_t host; uint32_t count; uint32_t padding; uintptr_t data;};
-    static_assert(sizeof(Header)==24);
-    Header before{}, after{};
-    out.status = "unreadable_header";
-    if (!read_at(read,session,0x130,before)) return out;
-    out.status = "count_exceeds_observation_bound";
-    if (before.count > out.record_ids.size()) return out;
-    out.status = "missing_record_storage";
-    if (before.count && !before.data) return out;
-    std::array<uint64_t,8> ids{};
-    out.status = "unreadable_records";
-    for (uint32_t i=0;i<before.count;++i) {
-        if (!read_at(read,before.data,uintptr_t(i)*48,ids[i])) return out;
+    uint32_t pe{}, signature{}, timestamp{}, image_size{};
+    if (!image || !read_at(read, image, 0, mz) || mz != 0x5a4d ||
+        !read_at(read, image, 0x3c, pe) || pe > 0x1000 ||
+        !read_at(read, image, pe, signature) || signature != 0x4550 ||
+        !read_at(read, image, pe + 4, machine) || machine != 0x8664 ||
+        !read_at(read, image, pe + 8, timestamp) || timestamp != kGameTimestamp ||
+        !read_at(read, image, pe + 24, magic) || magic != 0x20b ||
+        !read_at(read, image, pe + 24 + 56, image_size) || image_size != kGameImageSize) {
+        return out;
     }
-    out.status = "snapshot_changed";
-    for (uint32_t i=0;i<before.count;++i) {
-        uint64_t again{};
-        if (!read_at(read,before.data,uintptr_t(i)*48,again) || again != ids[i]) return out;
+    Snapshot first{};
+    if (!read_payload(read, image, first)) return first;
+    Snapshot second{};
+    if (!read_payload(read, image, second)) {
+        second.status = "snapshot_changed";
+        return second;
     }
-    uintptr_t root_after{}, session_after{}, vtable_after{};
-    if (!read_at(read,session,0x130,after) || std::memcmp(&before,&after,sizeof(before)) ||
-        !read_at(read,image,0x1a10278,root_after) || root_after != root ||
-        !read_at(read,root,0xa8,session_after) || session_after != session ||
-        !read_at(read,session,0,vtable_after) || vtable_after != vtable) return out;
-    out.session=session; out.host_value=before.host;
-    out.record_count=before.count; out.record_ids=ids;
-    out.status="stable_bounded_records_not_player_proof";
-    return out;
+    if (!payload_equal(first, second)) {
+        first.status = "snapshot_changed";
+        return first;
+    }
+    first.status = "observed_context_not_player_proof";
+    return first;
 }
+
 } // namespace ep_session
