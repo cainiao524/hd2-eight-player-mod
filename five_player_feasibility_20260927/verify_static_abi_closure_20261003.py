@@ -27,6 +27,7 @@ REPORTS = {
     "confirmed_peer_live_abi": HERE.parent / "eight_player_candidate_20260927" / "Native" / "SessionMembers" / "confirmed_peer_admission_live_abi_20261002.json",
     "public_runtime_entry_audit": HERE / "public_runtime_entry_audit_20261003.json",
     "join_handler_fixed_four_inventory": HERE / "join_handler_fixed_four_inventory_20261003.json",
+    "external_party_playfab_capacity": HERE / "external_party_playfab_capacity_audit_20261003.json",
 }
 
 PRODUCTION_FALSE = ("production_patch_ready", "runtime_verified", "installable", "multiplayer_verified")
@@ -41,7 +42,10 @@ def _read(path: Path) -> dict[str, Any]:
 
 def _build(report: dict[str, Any]) -> Any:
     build = report.get("build", report.get("steam_build"))
-    return build.get("steam_build") if isinstance(build, dict) else build
+    value = build.get("steam_build") if isinstance(build, dict) else build
+    if isinstance(value, str) and value.isdigit():
+        return int(value)
+    return value
 
 
 def _all_named_checks_true(report: dict[str, Any], names: list[str]) -> bool:
@@ -136,6 +140,20 @@ def verify() -> dict[str, Any]:
             and len(reports["join_handler_fixed_four_inventory"].get("fixed_four_sites", [])) == 5
             and len(reports["join_handler_fixed_four_inventory"].get("protected_four_literals", [])) == 3
             and reports["join_handler_fixed_four_inventory"].get("decision", {}).get("production_patch_ready") is False
+        ),
+        "external_party_playfab_boundary_is_not_game_bridge": (
+            reports["external_party_playfab_capacity"].get("read_only") is True
+            and reports["external_party_playfab_capacity"].get("dlls_loaded") is False
+            and reports["external_party_playfab_capacity"].get("process_accessed") is False
+            and reports["external_party_playfab_capacity"].get("writes_made") is False
+            and reports["external_party_playfab_capacity"].get("hooks_installed") is False
+            and reports["external_party_playfab_capacity"].get("party_api_exposes_network_configuration") is True
+            and reports["external_party_playfab_capacity"].get("playfab_lobby_exposes_max_member_count") is True
+            and reports["external_party_playfab_capacity"].get("target_event_hash_hits") == []
+            and reports["external_party_playfab_capacity"].get("game_native_peer_admission_resolved") is False
+            and reports["external_party_playfab_capacity"].get("game_native_player_creation_resolved") is False
+            and reports["external_party_playfab_capacity"].get("installable") is False
+            and reports["external_party_playfab_capacity"].get("multiplayer_verified") is False
         ),
     }
 

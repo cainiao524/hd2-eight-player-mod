@@ -58,3 +58,15 @@ def test_closure_requires_join_handler_four_literal_inventory(monkeypatch, tmp_p
     reports["join_handler_fixed_four_inventory"] = copy
     monkeypatch.setattr(closure, "REPORTS", reports)
     assert closure.verify()["checks"]["join_handler_four_literals_classified"] is False
+
+
+def test_closure_rejects_a_claimed_external_game_bridge(monkeypatch, tmp_path):
+    reports = dict(closure.REPORTS)
+    path = reports["external_party_playfab_capacity"]
+    data = json.loads(path.read_text(encoding="utf-8"))
+    data["game_native_peer_admission_resolved"] = True
+    copy = tmp_path / path.name
+    copy.write_text(json.dumps(data), encoding="utf-8")
+    reports["external_party_playfab_capacity"] = copy
+    monkeypatch.setattr(closure, "REPORTS", reports)
+    assert closure.verify()["checks"]["external_party_playfab_boundary_is_not_game_bridge"] is False

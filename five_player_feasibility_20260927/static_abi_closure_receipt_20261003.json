@@ -16,6 +16,7 @@
     "confirmed_peer_abi_remains_blocked": true,
     "public_runtime_bridge_remains_unavailable": true,
     "join_handler_four_literals_classified": true,
+    "external_party_playfab_boundary_is_not_game_bridge": true,
     "player_resource_callback_abi_production_patch_ready_false": true,
     "player_resource_callback_abi_runtime_verified_false": true,
     "player_resource_callback_abi_installable_false": true,
@@ -35,7 +36,9 @@
     "loadout_lifecycle_installable_false": true,
     "loadout_lifecycle_multiplayer_verified_false": true,
     "native_admission_plan_multiplayer_verified_false": true,
-    "native_admission_capture_multiplayer_verified_false": true
+    "native_admission_capture_multiplayer_verified_false": true,
+    "external_party_playfab_capacity_installable_false": true,
+    "external_party_playfab_capacity_multiplayer_verified_false": true
   },
   "source_reports": {
     "player_resource_callback_abi": {
@@ -103,6 +106,12 @@
       "sha256": "fbd4a26ba86837750be8c33f9a4438c13d1b32d9d82abf8bb6179452944e024d",
       "schema": "hd2_join_handler_fixed_four_inventory_v1",
       "build": 25480438
+    },
+    "external_party_playfab_capacity": {
+      "path": "E:\\File\\Codes\\0\\26.10.1\\HD2\\five_player_feasibility_20260927\\external_party_playfab_capacity_audit_20261003.json",
+      "sha256": "4db637aad3aecb73332057a8316cec7bfe1b202d18502f41eabab39e781940fc",
+      "schema": "hd2_external_party_playfab_capacity_audit_v1",
+      "build": 25480438
     }
   },
   "production_flags": {
@@ -143,7 +152,11 @@
     "confirmed_peer_external_chain": {},
     "confirmed_peer_live_abi": {},
     "public_runtime_entry_audit": {},
-    "join_handler_fixed_four_inventory": {}
+    "join_handler_fixed_four_inventory": {},
+    "external_party_playfab_capacity": {
+      "installable": false,
+      "multiplayer_verified": false
+    }
   },
   "limits": [
     "This receipt proves only static evidence consistency and fail-closed state.",
