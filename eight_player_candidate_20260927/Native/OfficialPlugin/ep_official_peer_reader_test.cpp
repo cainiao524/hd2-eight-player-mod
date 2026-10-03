@@ -70,6 +70,7 @@ void make_observation(ep_session_vtable::Snapshot& snapshot,
     snapshot.entries[0].address = 0x3000;
     snapshot.entries[1].address = 0x3100;
     semantics.count = 2;
+    semantics.owner_opaque = 0x2000;
     semantics.self_match_count = 1;
     semantics.self_ordinal = 0;
     semantics.status = "opaque_record_relationships_verified";
@@ -142,6 +143,12 @@ int main() {
                            callbacks(missing_guard)) ==
            Status::kSnapshotUnproven);
 
+    make_observation(snapshot, semantics);
+    semantics.owner_opaque = 0x3000;
+    Adapter owner_mismatch;
+    assert(owner_mismatch.enable(pinned_identity(), snapshot, semantics,
+                                 callbacks(missing_guard)) ==
+           Status::kOwnerInvalid);
+
     std::cout << "official_peer_reader_contract_synthetic_passed\n";
 }
-

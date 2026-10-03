@@ -167,6 +167,7 @@ public:
         }
         if (!snapshot.session || !snapshot.owner ||
             snapshot.count > kMaxPeers || semantics.count != snapshot.count ||
+            semantics.owner_opaque != snapshot.owner ||
             semantics.self_match_count != 1 ||
             semantics.self_ordinal >= snapshot.count) {
             return snapshot.count > kMaxPeers ? Status::kRecordCountInvalid
