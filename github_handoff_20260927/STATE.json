@@ -1291,7 +1291,13 @@
     "five_player_feasibility_20260927/LIVE_OFFICIAL_PLUGIN_PROBE_20261003_R2.zh-TW.md": "e5be8de0495d65ba194814e23cba6cca6162eaa1f9b3c866b05d8918b86bee4f",
     "five_player_feasibility_20260927/live_official_plugin_probe_20261003_r3.json": "1a55c99fd6d2f46719883aa4850bf51626d6b5669ff8b5bb2be50077e846d12c",
     "five_player_feasibility_20260927/live_official_plugin_probe_runtime_20261003_r3.jsonl": "773d85a1fbe7211e562e74af205ea7e55a32bf6e2336d730cafd8e4f0de5793c",
-    "five_player_feasibility_20260927/LIVE_OFFICIAL_PLUGIN_PROBE_20261003_R3.zh-TW.md": "771be4a806918be83de04ccd8a254465cb81ab18192cf23f6fc34345c848e5aa"
+    "five_player_feasibility_20260927/LIVE_OFFICIAL_PLUGIN_PROBE_20261003_R3.zh-TW.md": "771be4a806918be83de04ccd8a254465cb81ab18192cf23f6fc34345c848e5aa",
+    "five_player_feasibility_20260927/live_c_api_table_prefixes_20261003.json": "1676c701926f3ea168b5d90d50c2ea2880a60755552fa8c767b4552c8ae833c3",
+    "five_player_feasibility_20260927/OFFICIAL_PLUGIN_C_API_TABLE_PREFIX_20261003.zh-TW.md": "22f5f2eff131888695d3454976253d6102487888205a6e3615c667bdb45d9753",
+    "five_player_feasibility_20260927/live_engine_session_vtable_20261003.json": "ef35587ba76dfab0fc2d814c161d73f91495686e258c2fee186da070060254f0",
+    "five_player_feasibility_20260927/LIVE_ENGINE_SESSION_VTABLE_20261003.zh-TW.md": "c55262e1f8d66f04c2ff720528e354f38519ed116bd5cff816c9b04ef55b9a26",
+    "five_player_feasibility_20260927/PUBLIC_CODE_RESEARCH_20261003_NEW_REPOS.zh-TW.md": "0b5907511063707d33ce7937db73be36de5b26a340de3e74f6e12d5b5764d030",
+    "five_player_feasibility_20260927/PUBLIC_CODE_RESEARCH_20261003_NEW_REPOS.json": "ee907cd597932124afe8ae22616e77c9755cb610438b1d3f78e61b3f095f191d"
   },
   "missing_release_files": [],
   "remaining_release_work": [
@@ -1408,9 +1414,13 @@
     "Documented the public Stingray GameSessionCApi route: C_API_ID 31, ScriptApi Network/GameSession slots 0x38/0x40, and generic add_peer/num_peers/create_game_object methods; HD2 runtime table and Party admission remain unresolved.",
     "Captured fixed-build PID 20472 loading the custom OfficialPlugin probe: get_plugin_api IDs 0, 18, 19 and loaded callback were observed; C_API_ID 31 returned null, with no calls, writes, hooks, injection, peer admission or player creation.",
     "Added public PluginApi.setup_game callback handling and captured non-null ScriptApi/Network/GameSession tables on fixed-build PID 42132.",
-    "Called only NetworkCApi.game_session and GameSessionCApi.num_peers through the verified read-only C API path on PID 38132; GameSession changed null to non-null while peer_count remained 0, with no write API calls."
+    "Called only NetworkCApi.game_session and GameSessionCApi.num_peers through the verified read-only C API path on PID 38132; GameSession changed null to non-null while peer_count remained 0, with no write API calls.",
+    "Captured fixed-build Network and GameSession C API table prefixes with bounded read-only reads and repeat-read equality; no captured function was called and no process memory was written.",
+    "Captured a static candidate engine-session vtable prefix for build 25480438; wrapper and underlying vtable layers are documented separately and remain non-semantic ABI candidates.",
+    "Reviewed the pinned public repositories hd2-lua-mod-skill, junze-hd2-lua-mod and hd2-mod-update-skill; adopted their offline/read-only, UI-slot safety and build/hash fail-closed lessons without treating them as multiplayer capacity proof."
   ],
   "next_offline_work": [
+    "Use the pinned C API/table and engine-vtable evidence only as version gates; recover a permitted callback or service-side event-hash to selector trace before any write path.",
     "Keep the join-handler fixed-four inventory bound to any future native bridge; only the five capacity/slot sites are patch candidates and the three protocol/metadata literals remain protected.",
     "Keep the Party/PlayFab capacity audit as a service-layer boundary only; it exposes configuration/max-member APIs but supplies no game native admission or player-creation bridge.",
     "Bind the offline rollback/quiescence and peer lifecycle contracts to the real 0x1086460 -> 0xFDC140 -> 0x581320/0x581780 -> 0x540920 callback ABI, then verify partial rollback, re-entry idempotence, owner migration and thread quiescence before any native hook.",
@@ -1450,7 +1460,7 @@
   },
   "latest_research_update_date": "2026-10-03",
   "priority_assessment": "five_player_feasibility_20260927/PEER_ADMISSION_PRIORITY.zh-TW.md",
-  "last_update_scope": "Verified setup_game C API availability and bounded read-only GameSession getters in fixed build 25480438; session became non-null with peer_count 0, while peer admission/player creation remain unresolved.",
+  "last_update_scope": "Official plugin setup_game and read-only GameSession getter observation; bounded C API table-prefix and static engine-session vtable captures; review of three pinned public Lua/mod-update repositories. No peer admission, player creation, writes, hooks, injection or multiplayer verification.",
   "live_preflight_20261003": {
     "pid": 36900,
     "build": 25480438,
@@ -1855,7 +1865,13 @@
       "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_load_test.cpp",
       "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_load_test.exe",
       "five_player_feasibility_20260927/OFFICIAL_PLUGIN_GAME_SESSION_ROUTE_20261003.zh-TW.md",
-      "five_player_feasibility_20260927/game_session_c_api_contract_20261003.json"
+      "five_player_feasibility_20260927/game_session_c_api_contract_20261003.json",
+      "five_player_feasibility_20260927/live_c_api_table_prefixes_20261003.json",
+      "five_player_feasibility_20260927/OFFICIAL_PLUGIN_C_API_TABLE_PREFIX_20261003.zh-TW.md",
+      "five_player_feasibility_20260927/live_engine_session_vtable_20261003.json",
+      "five_player_feasibility_20260927/LIVE_ENGINE_SESSION_VTABLE_20261003.zh-TW.md",
+      "five_player_feasibility_20260927/PUBLIC_CODE_RESEARCH_20261003_NEW_REPOS.zh-TW.md",
+      "five_player_feasibility_20260927/PUBLIC_CODE_RESEARCH_20261003_NEW_REPOS.json"
     ],
     "player_creation_abi_pins": 43,
     "player_creation_test_groups": "1/1",
@@ -2098,6 +2114,43 @@
         "peer_count": 0
       }
     ],
-    "write_api_calls": false
+    "write_api_calls": false,
+    "static_table_prefix_capture": "five_player_feasibility_20260927/live_c_api_table_prefixes_20261003.json",
+    "static_engine_session_vtable_capture": "five_player_feasibility_20260927/live_engine_session_vtable_20261003.json",
+    "static_capture_read_only": true,
+    "static_capture_calls": false,
+    "static_capture_writes": false,
+    "static_capture_semantic_proof": false
+  },
+  "public_code_research_20261003": {
+    "build": 25480438,
+    "artifacts": [
+      "five_player_feasibility_20260927/PUBLIC_CODE_RESEARCH_20261003_NEW_REPOS.zh-TW.md",
+      "five_player_feasibility_20260927/PUBLIC_CODE_RESEARCH_20261003_NEW_REPOS.json"
+    ],
+    "repositories": [
+      {
+        "url": "https://github.com/MrChengl11/hd2-lua-mod-skill",
+        "commit": "d1811983ab4fec230ede24bdd3d274f77b0b82fd",
+        "capacity_proof": false
+      },
+      {
+        "url": "https://github.com/junze0910/junze-hd2-lua-mod",
+        "commit": "95b2d26ea10ea43281c93123a95d326a289da2ae",
+        "capacity_proof": false
+      },
+      {
+        "url": "https://github.com/starmatch666-droid/hd2-mod-update-skill",
+        "commit": "2eae30596a0886b4674567f22f549ef03e9b80e4",
+        "capacity_proof": false
+      }
+    ],
+    "adoption": [
+      "offline_first_read_only_probe",
+      "ui_slot_write_is_not_player_capacity",
+      "build_hash_table_gate"
+    ],
+    "installable": false,
+    "multiplayer_verified": false
   }
 }

@@ -1,0 +1,13 @@
+{
+  "schema": "hd2_public_code_research_v1",
+  "date": "2026-10-03",
+  "build": 25480438,
+  "repositories": [
+    {"url":"https://github.com/MrChengl11/hd2-lua-mod-skill","commit":"d1811983ab4fec230ede24bdd3d274f77b0b82fd","role":"LuaJIT FFI / Shared Loader workflow","capacity_proof":false},
+    {"url":"https://github.com/junze0910/junze-hd2-lua-mod","commit":"95b2d26ea10ea43281c93123a95d326a289da2ae","role":"scanner / registry / UI observation","capacity_proof":false,"warning":"ALLOW_5TH defaults false; fifth UI-tab write documented as crashing 0xC0000026"},
+    {"url":"https://github.com/starmatch666-droid/hd2-mod-update-skill","commit":"2eae30596a0886b4674567f22f549ef03e9b80e4","role":"build/hash/table-template fail-closed update workflow","capacity_proof":false}
+  ],
+  "adoption": ["offline_first_read_only_probe","ui_slot_write_is_not_player_capacity","build_hash_table_gate"],
+  "multiplayer_verified": false,
+  "installable": false
+}
