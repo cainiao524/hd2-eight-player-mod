@@ -360,3 +360,7 @@ Player-chain 審計又補進三個 client layout 固定四人位點：`0x1087122
 ## 2026-10-03 原生載入邊界審計
 
 新增 [NATIVE_LOADER_BOUNDARY_20261003.zh-TW.md](../five_player_feasibility_20260927/NATIVE_LOADER_BOUNDARY_20261003.zh-TW.md) 與只讀機器收據 `native_loader_boundary_20261003.json`。固定 build `25480438` 的官方鏈（`helldivers2.exe`、`game.dll`、Party、PlayFab、Steam、Lua）可辨識，但沒有找到受支援的使用者原生 loader 或 production native entry；`game.dll` 的唯一 named export 是 `get_plugin_api`，其合法 caller、callback ID 31 的返回物件與 lobby/player admission 用途仍未閉合。審計也記錄安裝目錄內的 Havoc、HH.sys、pyinjector、dxgi 等疑似注入工具檔案，全部標記為 disallowed injection artifacts，未納入任何實作或啟動路徑。`read_only=true`、`process_started=false`、`process_mutated=false`、`installable=false`、`multiplayer_verified=false` 保持不變。
+
+## 2026-10-03 官方原生 Plugin 目錄發現
+
+新增 [NATIVE_PLUGIN_DIRECTORY_AUDIT_20261003.zh-TW.md](../five_player_feasibility_20260927/NATIVE_PLUGIN_DIRECTORY_AUDIT_20261003.zh-TW.md) 與收據 `native_plugin_directory_audit_20261003.json`。固定 build 的 `bin/plugins` 含官方 `level_generation_pluginw64_release.dll` 與 `wwise_pluginw64_release.dll`，兩者都 export `get_plugin_api`；這證明存在官方原生 plugin ABI 候選，應優先於未知注入路徑研究。它仍沒有提供自訂 plugin 的合法載入證據，也沒有 Session、peer admission、player creation 或 network spawn writer。沒有新增、載入或執行 plugin；`custom_mod_entry_proven=false`、`player_admission_proven=false`、`installable=false`、`multiplayer_verified=false`。

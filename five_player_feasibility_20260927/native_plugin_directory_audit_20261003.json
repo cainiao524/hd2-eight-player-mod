@@ -1,0 +1,51 @@
+{
+  "schema": "hd2_native_plugin_directory_audit_v1",
+  "build": 25480438,
+  "game_root": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2",
+  "read_only": true,
+  "process_started": false,
+  "process_mutated": false,
+  "plugin_directory": [
+    {
+      "path": "bin/plugins/level_generation_pluginw64_release.dll",
+      "size": 541784,
+      "sha256": "67199c267805827fb2125ac4339ce7b37316357cbd361ec5130eae65750512de",
+      "get_plugin_api_exports": [
+        {
+          "name": "get_plugin_api",
+          "rva": "0x2140",
+          "file_offset": "0x1540"
+        }
+      ],
+      "imports": [
+        "KERNEL32.dll"
+      ]
+    },
+    {
+      "path": "bin/plugins/wwise_pluginw64_release.dll",
+      "size": 6089816,
+      "sha256": "c78a9fa4eb3e93a07fd65aec26eaa86c909470210012327ae747b5d5615410b3",
+      "get_plugin_api_exports": [
+        {
+          "name": "get_plugin_api",
+          "rva": "0x42d10",
+          "file_offset": "0x42110"
+        }
+      ],
+      "imports": [
+        "KERNEL32.dll",
+        "ole32.dll"
+      ]
+    }
+  ],
+  "observations": [
+    "Official bin/plugins contains native Stingray plugin modules.",
+    "Both official plugin modules expose get_plugin_api; this establishes an engine plugin ABI candidate distinct from a user mod loader.",
+    "No custom/user plugin was added, loaded, or executed; no player-admission or player-creation writer was identified."
+  ],
+  "supported_native_plugin_abi_observed": true,
+  "custom_mod_entry_proven": false,
+  "player_admission_proven": false,
+  "installable": false,
+  "multiplayer_verified": false
+}
