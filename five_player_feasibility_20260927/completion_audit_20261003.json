@@ -1,0 +1,290 @@
+{
+  "schema": "hd2_eight_player_completion_audit_v1",
+  "generated_at_utc": "2026-10-03T12:20:46.287160+00:00",
+  "status": "incomplete",
+  "authoritative_completion": false,
+  "build": 25480438,
+  "exe_version": "1.8.46015.0",
+  "objective": {
+    "goal_file": "github_handoff_20260927/GOAL_OBJECTIVE.zh-TW.md",
+    "goal_sha256": "51c7f1b7fd94e0bc2aedcd9b5bf591e105dc6c5a09f28035a402ec1ecce40a0b",
+    "state_goal_sha256": "51c7f1b7fd94e0bc2aedcd9b5bf591e105dc6c5a09f28035a402ec1ecce40a0b",
+    "goal_hash_matches_state": true
+  },
+  "required_files": {
+    "github_handoff_20260927/GOAL_OBJECTIVE.zh-TW.md": true,
+    "github_handoff_20260927/HANDOFF.zh-TW.md": true,
+    "github_handoff_20260927/STATE.json": true,
+    "five_player_feasibility_20260927/IMPLEMENTATION_WORKLIST.zh-TW.md": true,
+    "eight_player_candidate_20260927/Integration/verify_multiplayer_acceptance.py": true
+  },
+  "state_flags": {
+    "installable": false,
+    "multiplayer_verified": false,
+    "mod_installed": false,
+    "game_process_accessed": true
+  },
+  "state_manifest": {
+    "declared_entries": 1343,
+    "missing": [],
+    "bad": [
+      {
+        "path": "eight_player_candidate_20260927/Native/Bridge/ep_native_bridge.cpp",
+        "expected": "45d0c4283597ee688708995c509a315eed66b76a97a315cff5e74f5a4deeb252",
+        "actual": "b6b8045ada6ed420f09cde02b5b21573c693633e00255b3013d4f59a28f83084"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/Bridge/ep_native_bridge.h",
+        "expected": "68eac60be01b8a046c79bb1b5665cb8bf6eacb6d53db468a9e5333fa5bcfdb31",
+        "actual": "396c0ac453e7deb07d4209b99c3ee361e959fcbd0a651d4a891118e2c2908013"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/Sidecar/ep_sidecar.cpp",
+        "expected": "02aaca9f1a59ee09d5d3454318e868f765cee2e344eb474c8e66fc5d31cf8e21",
+        "actual": "ddae8b22ae4d2715d84deafacbd702b013a5685dcf7664431926c0c46a643db7"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/Sidecar/ep_sidecar.h",
+        "expected": "93450fd16d8d96fcce918fa51c9827bbfa14d5724bc74457a281f50efcb50514",
+        "actual": "045fedc963f19527a94f77d7de6b569e6052f5ceda0d665d79d20682c268fde0"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.h",
+        "expected": "db46d237521cc120e4cd69ffa55a25d4c551a12ce58c5bdb2577bec43bb940ae",
+        "actual": "84065fd484be27312929bb1f9054f14d4f634f2edbbf5d6df3145c43e9e7ec77"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.cpp",
+        "expected": "81d6d3baf7ba0651637d2f549b9f0a1febca3de5b748f3aad99139a1fff55af1",
+        "actual": "8d06a1b3c86f2bf648c306271a301834b3c0e418398836f16a21e99b075bec5e"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_test.cpp",
+        "expected": "99859e8e05296b13d924ce3be7c0a032e83936a4e42ce32776f09500ec0b755a",
+        "actual": "2538b77279df12ebb03703ff561ab17ab9759120b6c07b6911934aed9e4744ac"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/build_x64.bat",
+        "expected": "d5fee1341f0ddd73d1770fb3f641edf5c620a24384183eb5ffdfabe62cf7eb8e",
+        "actual": "e2ab6298a61ba3f99560a21f898f77dccaf7f40daade9560b8e8df3a28369bd7"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/README.zh-TW.md",
+        "expected": "342ccf060c514d56332656b61b41d12e0b20aa9bca52aca5b14e6a862c07a41c",
+        "actual": "d7b506d655c77d5d44c8c9f0adb4016692d90de96ceebdb6d7ffa3efdd482bb6"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_load_test.cpp",
+        "expected": "b1005bc5ea2a2a93ff612e4633060e3dbe339dede9435068a8723e0eece7ff95",
+        "actual": "563f70c44d4daf074632c9c1d407f0fb80464d5b054f8bb0345dc0a6649dc065"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor.cpp",
+        "expected": "3dcaeb57dc7abf2147d4bee86c04e6d0a70028083715d9dd29cdd32ab1c8c039",
+        "actual": "8ea0d3798266b0391e623824a1c7b70f057b0f849f06d11f3777de95b7d9f207"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor.h",
+        "expected": "74e3663911ad11d332e569b7082d45492ee9cbf61dd444397e0961f7e2b09be8",
+        "actual": "0ee1fc39288d9faaf73c7e6f9f8ed7702855b3d61702d8c5c44d66fc961d639e"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor_load_test.cpp",
+        "expected": "58fef32c069936e87613aa4b3499be92eebb361c08e6398b7cdf305dc35faada",
+        "actual": "5fca8dd494c0489baa64d359f01e938993f990deeebcdf85978460e84cf23208"
+      }
+    ],
+    "ok": false
+  },
+  "acceptance_receipt": null,
+  "acceptance": {
+    "criteria_count": 20,
+    "proven_count": 0,
+    "missing_proof": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "C1",
+      "C2",
+      "C3",
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "E1",
+      "E2",
+      "E3",
+      "E4",
+      "E5"
+    ],
+    "criteria": [
+      {
+        "id": "A1",
+        "requirement": "八個獨立帳號加入同一隊伍",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "A2",
+        "requirement": "房主與八個客戶端的身分及名單一致",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "A3",
+        "requirement": "離隊、重新加入及重連維持索引與資料對應",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "A4",
+        "requirement": "額外玩家不覆蓋既有玩家",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "B1",
+        "requirement": "第 5--8 名各自建立有效角色",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "B2",
+        "requirement": "所有客戶端看見並識別第 5--8 名角色",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "B3",
+        "requirement": "每位玩家能控制自己的角色",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "B4",
+        "requirement": "角色死亡、增援及移除生命週期完整",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "C1",
+        "requirement": "位置、動作、傷害、死亡與增援一致",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "C2",
+        "requirement": "敵人、目標、投射物及互動狀態一致",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "C3",
+        "requirement": "沒有本機可見而其他客戶端遺漏的玩家",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "D1",
+        "requirement": "進入、降落、遊玩、撤離與結算完成",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "D2",
+        "requirement": "離隊及重連後任務可繼續",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "D3",
+        "requirement": "房主轉移若涉及修改則已驗證",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "D4",
+        "requirement": "任務進度與結算結果可核對",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "E1",
+        "requirement": "八人負載沒有已知必現崩潰、越界或資料破壞",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "E2",
+        "requirement": "支援 build、平台及連線組合已列明並實測",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "E3",
+        "requirement": "可重現建置與安裝方式已核對",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "E4",
+        "requirement": "移除、恢復及錯誤診斷已核對",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "E5",
+        "requirement": "版本不匹配處理及未支援情境已核對",
+        "proven": false,
+        "evidence": null
+      }
+    ]
+  },
+  "remaining_release_work": {
+    "present": true,
+    "count": 3
+  },
+  "git": {
+    "head": "a3a2a4b219ad034a10550e8bacdd1ac998c7138d",
+    "latest_research_commit": "a4a5519",
+    "latest_status_receipt_commit": "e6e5250",
+    "latest_research_exists": true,
+    "latest_status_receipt_exists": true
+  },
+  "untracked_status": [
+    "M eight_player_candidate_20260927/Native/Bridge/ep_native_bridge.cpp",
+    " M eight_player_candidate_20260927/Native/Bridge/ep_native_bridge.h",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/README.zh-TW.md",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/build_x64.bat",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.cpp",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.h",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_load_test.cpp",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_test.cpp",
+    " M eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor.cpp",
+    " M eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor.h",
+    " M eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_executor_load_test.cpp",
+    " M eight_player_candidate_20260927/Native/Sidecar/ep_sidecar.cpp",
+    " M eight_player_candidate_20260927/Native/Sidecar/ep_sidecar.h",
+    "?? eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_native_callbacks.h",
+    "?? five_player_feasibility_20260927/audit_native_loader_boundary_20261003.py"
+  ],
+  "preserved_user_audit_present": true,
+  "blockers": [
+    "no_authoritative_eight_client_live_acceptance_receipt",
+    "installable_gate_false",
+    "multiplayer_verified_gate_false",
+    "state_remaining_release_work_nonempty",
+    "state_manifest_mismatch"
+  ],
+  "next_actions": [
+    "bind native admission, player creation, replication and cleanup callbacks to real HD2 ABI",
+    "run the fifth-peer then six-, seven- and eight-account mission ladder",
+    "record eight independent live client logs and run verify_multiplayer_acceptance.py",
+    "set installable/multiplayer_verified only after the receipt and package gates pass"
+  ]
+}
