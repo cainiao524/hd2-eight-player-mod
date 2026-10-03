@@ -1,6 +1,6 @@
 # 八人容量原生补丁候选（2026-10-03）
 
-新增 `eight_player_capacity_pluginw64_release.dll`，透过已验证的官方 Stingray plugin ABI 进入游戏。它不是只改一个 `MAX_PLAYERS`：会在固定 `Build 25480438` 上，对 32 个已保存的四人容量／枚举／加入／状态更新立即数做统一版本指纹检查，再以一次事务写入 `8`，任一位置不匹配即全部拒绝。成功写入后刷新指令缓存；插件卸载时尝试恢复原 bytes。
+新增 `eight_player_capacity_pluginw64_release.dll`，透过已验证的官方 Stingray plugin ABI 进入游戏。它不是只改一个 `MAX_PLAYERS`：会在固定 `Build 25480438` 上，对 35 个已保存的四人容量／枚举／加入／状态更新立即数做统一版本指纹检查，再以一次事务写入 `8`，任一位置不匹配即全部拒绝。成功写入后刷新指令缓存；插件卸载时尝试恢复原 bytes。
 
 ## 启用方式
 

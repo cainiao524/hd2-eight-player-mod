@@ -3,7 +3,7 @@
 在固定 `Build 25480438` 上将容量插件临时复制到官方 `bin/plugins`，通过 marker 启用后从 Steam 正常启动游戏。日志记录：
 
 - `loaded`：官方 loader 实际加载插件。
-- `applied`：32 个版本指纹位置全部通过并写入，`patched=32`。
+- `applied`：35 个版本指纹位置全部通过并写入，`patched=35`。
 - 插件源码包含卸载回滚；本次记录在强制停止进程前未收到 `unloaded`，因此只把回滚作为代码路径，不把它算作本次实机收据。
 
 机器记录：[live_capacity_patch_runtime_20261003.jsonl](live_capacity_patch_runtime_20261003.jsonl)，验证收据：[live_capacity_patch_runtime_verification_20261003.json](live_capacity_patch_runtime_verification_20261003.json)。

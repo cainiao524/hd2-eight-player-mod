@@ -196,6 +196,24 @@
       "old": "4283bc02ac63010004",
       "new": "4283bc02ac63010008",
       "role": "player creation gate"
+    },
+    {
+      "rva": "0x108c608",
+      "old": "bd04000000",
+      "new": "bd08000000",
+      "role": "host peer loop capacity"
+    },
+    {
+      "rva": "0x108d2d4",
+      "old": "bf04000000",
+      "new": "bf08000000",
+      "role": "host migration peer loop capacity"
+    },
+    {
+      "rva": "0x108d459",
+      "old": "41be04000000",
+      "new": "41be08000000",
+      "role": "host migration peer loop capacity"
     }
   ],
   "transaction": {
@@ -219,7 +237,7 @@
   "runtime_evidence": "five_player_feasibility_20260927/live_capacity_patch_runtime_20261003.jsonl",
   "runtime_verification": "five_player_feasibility_20260927/live_capacity_patch_runtime_verification_20261003.json",
   "runtime_loaded": true,
-  "runtime_applied_sites": 33,
+  "runtime_applied_sites": 35,
   "runtime_session_getter_observed": true,
   "runtime_peer_counts": [
     0,
@@ -228,5 +246,5 @@
   "runtime_process_mutated": true,
   "rollback_runtime_observed": false,
   "dll_sha256": "bd075af4c7b9e56e01b958b404ce727deb43154af504b7f13f02bf5f55d3ccdc",
-  "sites_count": 32
+  "sites_count": 35
 }
