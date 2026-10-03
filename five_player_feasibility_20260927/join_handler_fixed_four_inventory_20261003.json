@@ -1,0 +1,101 @@
+{
+  "schema": "hd2_join_handler_fixed_four_inventory_v1",
+  "build": 25480438,
+  "module": "game.dll",
+  "disassembly": {
+    "path": "E:\\File\\Codes\\0\\26.10.1\\HD2\\five_player_feasibility_20260927\\join_handler_disasm.json",
+    "sha256": "f0e2c853fb731fecffd27ed2bbab97f9d8ed2868b076c60ee51bcdfe472e505c"
+  },
+  "fixed_four_sites": [
+    {
+      "rva": "0x108c1b5",
+      "bytes": "b904000000",
+      "asm": "mov ecx, 4",
+      "sha256": "a1afc0d562a7b083caaff01fe7a397fd5241cfd7dcb827e5beafe15095b80329",
+      "role": "capacity_base",
+      "category": "mid_function_capacity_gate",
+      "requires_sidecar_or_continuation": true
+    },
+    {
+      "rva": "0x108c2cb",
+      "bytes": "83f804",
+      "asm": "cmp eax, 4",
+      "sha256": "ec9d1a6c95187ab3425edbcdf19a43602dabed7b1d6a5c436f9d713baec3f3d1",
+      "role": "host_peer_search_bound",
+      "category": "peer_table_loop",
+      "requires_sidecar_or_continuation": true
+    },
+    {
+      "rva": "0x108c393",
+      "bytes": "83f804",
+      "asm": "cmp eax, 4",
+      "sha256": "ec9d1a6c95187ab3425edbcdf19a43602dabed7b1d6a5c436f9d713baec3f3d1",
+      "role": "host_peer_hole_search_bound",
+      "category": "peer_table_loop",
+      "requires_sidecar_or_continuation": true
+    },
+    {
+      "rva": "0x108c3e2",
+      "bytes": "83f904",
+      "asm": "cmp ecx, 4",
+      "sha256": "e0f8e2a8fea2f143982c5ab1163b172f31e74c40937537efff6ac915f0d96567",
+      "role": "host_index_allocator_bound",
+      "category": "allocator_loop",
+      "requires_sidecar_or_continuation": true
+    },
+    {
+      "rva": "0x108c4a1",
+      "bytes": "4183fe04",
+      "asm": "cmp r14d, 4",
+      "sha256": "83fbc5cc2a3e1e7a67e46860a764a45f6679181fc7e533cc7ba33b30f1e68e00",
+      "role": "host_large_record_bound",
+      "category": "large_record_loop",
+      "requires_sidecar_or_continuation": true
+    }
+  ],
+  "protected_four_literals": [
+    {
+      "rva": "0x108be3c",
+      "bytes": "b804000000",
+      "asm": "mov eax, 4",
+      "sha256": "c94c0ee9093249de83d45017b4f3e4529b45f994fb7fb1ca382c8b9d1d872712",
+      "role": "protocol_status_code",
+      "policy": "do_not_patch"
+    },
+    {
+      "rva": "0x108c1c5",
+      "bytes": "41b804000000",
+      "asm": "mov r8d, 4",
+      "sha256": "56a8dc4971f8c1a86f125c0fa01d3c4b602b6aba306e8d86579def8f257d5f0e",
+      "role": "capacity_reject_event_code",
+      "policy": "do_not_patch"
+    },
+    {
+      "rva": "0x108c584",
+      "bytes": "c745cb04000000",
+      "asm": "mov dword ptr [rbp - 0x35], 4",
+      "sha256": "eef905ab882dd2eaa8580427633441d7a0a85294af80accd0d3162d67fe73536",
+      "role": "event_metadata_value",
+      "policy": "do_not_patch"
+    }
+  ],
+  "checks": {
+    "fixed_build": true,
+    "module": true,
+    "disassembly_identity": true,
+    "five_capacity_or_slot_sites": true,
+    "three_protected_four_literals": true,
+    "all_four_literals_classified": true,
+    "no_direct_constant_patch_ready": true
+  },
+  "checks_passed": 7,
+  "checks_total": 7,
+  "verification_passed": true,
+  "decision": {
+    "production_patch_ready": false,
+    "installable": false,
+    "runtime_verified": false,
+    "multiplayer_verified": false,
+    "meaning": "Five join-handler four-slot bounds require a coordinated sidecar/continuation bridge; three other literal-4 sites are status or metadata values and must remain unchanged."
+  }
+}

@@ -46,3 +46,15 @@ def test_closure_requires_public_runtime_audit_to_remain_observation_only(monkey
         assert closure.verify()["checks"]["public_runtime_bridge_remains_unavailable"] is False
     finally:
         copy.unlink()
+
+
+def test_closure_requires_join_handler_four_literal_inventory(monkeypatch, tmp_path):
+    reports = dict(closure.REPORTS)
+    path = reports["join_handler_fixed_four_inventory"]
+    data = json.loads(path.read_text(encoding="utf-8"))
+    data["fixed_four_sites"] = data["fixed_four_sites"][:-1]
+    copy = tmp_path / path.name
+    copy.write_text(json.dumps(data), encoding="utf-8")
+    reports["join_handler_fixed_four_inventory"] = copy
+    monkeypatch.setattr(closure, "REPORTS", reports)
+    assert closure.verify()["checks"]["join_handler_four_literals_classified"] is False

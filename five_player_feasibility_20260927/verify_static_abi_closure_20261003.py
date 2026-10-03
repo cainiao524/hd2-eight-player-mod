@@ -26,6 +26,7 @@ REPORTS = {
     "confirmed_peer_external_chain": HERE.parent / "eight_player_candidate_20260927" / "Native" / "SessionMembers" / "confirmed_peer_external_chain_20261002.json",
     "confirmed_peer_live_abi": HERE.parent / "eight_player_candidate_20260927" / "Native" / "SessionMembers" / "confirmed_peer_admission_live_abi_20261002.json",
     "public_runtime_entry_audit": HERE / "public_runtime_entry_audit_20261003.json",
+    "join_handler_fixed_four_inventory": HERE / "join_handler_fixed_four_inventory_20261003.json",
 }
 
 PRODUCTION_FALSE = ("production_patch_ready", "runtime_verified", "installable", "multiplayer_verified")
@@ -126,6 +127,15 @@ def verify() -> dict[str, Any]:
             and reports["public_runtime_entry_audit"].get("conclusion", {}).get("public_player_creation_writer_found") is False
             and reports["public_runtime_entry_audit"].get("conclusion", {}).get("public_network_spawn_writer_found") is False
             and reports["public_runtime_entry_audit"].get("conclusion", {}).get("eight_player_status") == "unverified"
+        ),
+        "join_handler_four_literals_classified": (
+            reports["join_handler_fixed_four_inventory"].get("build") == BUILD
+            and reports["join_handler_fixed_four_inventory"].get("module") == "game.dll"
+            and reports["join_handler_fixed_four_inventory"].get("verification_passed") is True
+            and reports["join_handler_fixed_four_inventory"].get("checks_total") == 7
+            and len(reports["join_handler_fixed_four_inventory"].get("fixed_four_sites", [])) == 5
+            and len(reports["join_handler_fixed_four_inventory"].get("protected_four_literals", [])) == 3
+            and reports["join_handler_fixed_four_inventory"].get("decision", {}).get("production_patch_ready") is False
         ),
     }
 
