@@ -316,3 +316,9 @@ Player-chain 審計又補進三個 client layout 固定四人位點：`0x1087122
 新增 `five_player_feasibility_20260927/recover_selector_registry_20261003.py`、JSON 與 receipt，重播固定 capture 中全部 8 個 `[RDX+0xB0]` registration call sites，其中 7 個可分類為靜態 hash 或動態 EDX 來源。`0x134D69E` 起的六個 constructor registration 與 `0x14EE278` 的另一個 registration 使用靜態 hash；`0x10946A4` 同形 registration 則由 caller 透過 `EDX` 提供 runtime 值。`0xBC2D10` callback vector 仍逐 byte 核對為 table `0x214C2E0`、selector 168→`0xBABA80`，而 `0x4804FCF4` 在 bounded capture 只命中 `0xBE4981` 送端。
 
 這縮小了 registry 缺口，但沒有取得 service heap、runtime callback state 或 hash→selector 實際 trace；`hash_to_selector_proven=false`、`service_registry_captured=false`、`production_hook_ready=false`、`installable=false`、`multiplayer_verified=false` 保持不變。不能把 registration ABI 形狀當成可安裝 hook。
+
+## 2026-10-03 live dispatcher/session rerun
+
+固定 build `25480438` 的 PID `36536` 完成新的只讀 dispatcher 與 session snapshot 重讀，收據為 `five_player_feasibility_20260927/live_capture_rerun_verification_20261003.json`，12/12 通過。dispatcher 的兩個命中仍是 send-side event hash `0x4804FCF4`（RVA `0xBE4982`）與 receiver pointer `0xBABA80`（RVA `0x214C820`）；session 仍只有 1 個 peer，文件化 roster 仍為 4 槽，4..7 維持合約外。
+
+同一 PID 的 1 GiB `MEM_PRIVATE` registry 掃描在程序消失後沒有產生結果檔，已保存 `live_private_registry_20261003_rerun.failure.json`。這被明確標成未完成嘗試，不推斷 registry 陰性，也沒有呼叫、寫入、hook、注入、安裝或多人驗收。

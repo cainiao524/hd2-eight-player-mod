@@ -1,0 +1,23 @@
+{
+  "schema": "hd2_live_private_registry_scan_failure_v1",
+  "build": 25480438,
+  "pid": 36536,
+  "attempted_tool": "five_player_feasibility_20260927/tools/scan_live_private_registry.py",
+  "attempted_output": "five_player_feasibility_20260927/live_private_registry_20261003_rerun.json",
+  "arguments": {
+    "limit_mib": 1024,
+    "max_read_mib": 1024
+  },
+  "process_state_before_attempt": "present",
+  "process_state_after_attempt": "missing",
+  "error": "result_file_missing_after_process_exit",
+  "scope": "authorized read-only bounded MEM_PRIVATE scan attempt; no calls, writes, hooks, injection or installation",
+  "read_only": true,
+  "calls_made": false,
+  "writes_made": false,
+  "hooks_installed": false,
+  "runtime_verified": false,
+  "installable": false,
+  "multiplayer_verified": false,
+  "meaning": "No private-registry result was produced. This is preserved as incomplete evidence and is not treated as a registry-negative observation."
+}

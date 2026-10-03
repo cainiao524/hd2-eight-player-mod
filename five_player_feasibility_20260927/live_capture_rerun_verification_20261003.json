@@ -1,0 +1,84 @@
+{
+  "schema": "hd2_live_capture_rerun_verification_v1",
+  "build": 25480438,
+  "pid": 36536,
+  "source_files": [
+    "five_player_feasibility_20260927/live_dispatcher_data_20261003.json",
+    "five_player_feasibility_20260927/live_dispatcher_data_20261003_rerun.json",
+    "five_player_feasibility_20260927/live_session_snapshot_20261003_rerun.json",
+    "five_player_feasibility_20260927/live_private_registry_20261003_rerun.failure.json"
+  ],
+  "checks": [
+    {
+      "name": "fixed_build",
+      "passed": true,
+      "detail": "[25480438, 25480438]"
+    },
+    {
+      "name": "dispatcher_schema",
+      "passed": true,
+      "detail": "['hd2_live_dispatcher_data_capture_v1', 'hd2_live_dispatcher_data_capture_v1']"
+    },
+    {
+      "name": "image_identity",
+      "passed": true,
+      "detail": "pinned image hashes match"
+    },
+    {
+      "name": "dispatcher_code_pin",
+      "passed": true,
+      "detail": "generic dispatcher code hash matches"
+    },
+    {
+      "name": "dispatcher_hit_signature",
+      "passed": true,
+      "detail": "[('confirmed_peer_event_hash', 'game.dll', '0xbe4982'), ('confirmed_peer_receiver', 'game.dll', '0x214c820')]"
+    },
+    {
+      "name": "confirmed_peer_hash_send_only",
+      "passed": true,
+      "detail": "[('confirmed_peer_event_hash', 'game.dll', '0xbe4982'), ('confirmed_peer_receiver', 'game.dll', '0x214c820')]"
+    },
+    {
+      "name": "read_only_flags",
+      "passed": true,
+      "detail": "calls/writes/hooks false"
+    },
+    {
+      "name": "resolver_unresolved",
+      "passed": true,
+      "detail": "runtime closure remains false"
+    },
+    {
+      "name": "session_schema",
+      "passed": true,
+      "detail": "snapshot schema"
+    },
+    {
+      "name": "session_baseline",
+      "passed": true,
+      "detail": "one-peer baseline"
+    },
+    {
+      "name": "documented_roster_boundary",
+      "passed": true,
+      "detail": "slots 4..7 remain out of contract"
+    },
+    {
+      "name": "registry_attempt_fail_closed",
+      "passed": true,
+      "detail": "incomplete scan is not treated as negative"
+    }
+  ],
+  "checks_passed": 12,
+  "checks_total": 12,
+  "verification_passed": true,
+  "read_only": true,
+  "calls_made": false,
+  "writes_made": false,
+  "hooks_installed": false,
+  "resolver_closed": false,
+  "installable": false,
+  "multiplayer_verified": false,
+  "meaning": "The fresh dispatcher and session captures match the fixed build and prior hit signature; the process exposed one peer and a four-slot documented roster. The private-registry attempt ended without a result after the process disappeared, so no registry conclusion is drawn."
+}
