@@ -1,0 +1,220 @@
+{
+  "schema": "hd2_client_fixed_four_inventory_v1",
+  "build": 25480438,
+  "module": "game.dll",
+  "capture_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "source_scans": {
+    "protocol_client_layout_scan_extended.json": "d98ff4d1f11ceb080b62d7ee52181e3d55fc6021138c93b6828b5371c19453af",
+    "client_expansion_index_scan.json": "4a1cfb1b9e032c0f226282026cec41927467fe360fb17dd5ba67e5a29311217d"
+  },
+  "layout_contract": [
+    {
+      "count_offset": "0x10",
+      "base_offset": "0x18",
+      "stride": 8,
+      "next_field_offset": "0x38",
+      "in_object_capacity": 4,
+      "provenance": "client remove root 0x1087540: 0x10876A4–0x10876CC"
+    },
+    {
+      "count_offset": "0x38",
+      "base_offset": "0x40",
+      "stride": 16,
+      "next_field_offset": "0x80",
+      "in_object_capacity": 4,
+      "provenance": "client remove root 0x1087540: 0x1087660–0x1087696"
+    },
+    {
+      "count_offset": "0x80",
+      "base_offset": "0x88",
+      "stride": 16,
+      "next_field_offset": "0xC8",
+      "in_object_capacity": 4,
+      "provenance": "client remove root 0x1087540: 0x10876D1–0x1087733"
+    },
+    {
+      "count_offset": "0xC8",
+      "base_offset": "0xD0",
+      "stride": 32,
+      "next_field_offset": "0x150",
+      "in_object_capacity": 4,
+      "record_player_index_offset": "0x14",
+      "provenance": "append roots 0xB90B20/0x10872C0; remove 0x1087540; ctor +0x150"
+    },
+    {
+      "count_offset": null,
+      "base_offset": "0x150",
+      "stride": 16,
+      "next_field_offset": null,
+      "observed_loop_end_exclusive": "0x190",
+      "in_object_capacity": 4,
+      "provenance": "separate client peer-keyed search root 0x1084F50, cmp index,4 at 0x1084F83",
+      "caveat": "one-to-one relationship with confirmed peer records not established"
+    }
+  ],
+  "fixed_four_sites": [
+    {
+      "group": "confirmed_peer_append_registry",
+      "rva": "0xb90b98",
+      "asm": "mov edx, dword ptr [rbx + 0xc8]",
+      "sha256": "c899337b097b8b197ed496d516851656a51839b5cd5cdb9803ed8006e9ad5848",
+      "role": "reader_or_writer"
+    },
+    {
+      "group": "confirmed_peer_append_registry",
+      "rva": "0xb90c03",
+      "asm": "mov dword ptr [rbx + 0xc8], eax",
+      "sha256": "4c9d6c11cbdbe894ad883cf62f259c11387efd7642abab3feb79e102c16bb01e",
+      "role": "reader_or_writer"
+    },
+    {
+      "group": "confirmed_peer_append_registry",
+      "rva": "0xb90c12",
+      "asm": "mov dword ptr [rdx + 0x14], eax",
+      "sha256": "32f43d96a2bf9e502d8dcb79ac8dd52c7cf9fbaebe5b3e03b27d458c342420f8",
+      "role": "reader_or_writer"
+    },
+    {
+      "group": "confirmed_peer_append_direct",
+      "rva": "0x10872f1",
+      "asm": "mov ecx, dword ptr [rcx + 0xc8]",
+      "sha256": "37cd317f2f44a0ee89982cd7ddd9e141d98dd3c5a479979ff205d42300ec04da",
+      "role": "reader_or_writer"
+    },
+    {
+      "group": "confirmed_peer_append_direct",
+      "rva": "0x108734c",
+      "asm": "mov dword ptr [rdi + 0xc8], eax",
+      "sha256": "a440c3274076244794ad4b0852234fe0d44b5ae6234ff131b6f13496cd1a2550",
+      "role": "reader_or_writer"
+    },
+    {
+      "group": "confirmed_peer_append_direct",
+      "rva": "0x108736a",
+      "asm": "mov dword ptr [rdx + 0x14], eax",
+      "sha256": "32f43d96a2bf9e502d8dcb79ac8dd52c7cf9fbaebe5b3e03b27d458c342420f8",
+      "role": "reader_or_writer"
+    },
+    {
+      "group": "confirmed_peer_remove_and_neighbor_arrays",
+      "rva": "0x1087612",
+      "asm": "dec dword ptr [rbx + 0xc8]",
+      "sha256": "23f9cf7b05b5ade6e55f275b512d97c251c88d0fdd036781508ea99e83a75a75",
+      "role": "reader_or_writer"
+    },
+    {
+      "group": "confirmed_peer_remove_and_neighbor_arrays",
+      "rva": "0x1087626",
+      "asm": "movups xmm0, xmmword ptr [rax + rbx + 0xd0]",
+      "sha256": "329c7a561b775325bafbb824f039b9779c828b9789ddfb831504d6489e8262f1",
+      "role": "reader_or_writer"
+    },
+    {
+      "group": "confirmed_peer_remove_and_neighbor_arrays",
+      "rva": "0x108763e",
+      "asm": "movups xmmword ptr [rsi + rbx + 0xe0], xmm1",
+      "sha256": "b31257af33c9124749ce1eaa8aa2f2dd03e196bf2e9b4a3db1c69c9056d72134",
+      "role": "reader_or_writer"
+    },
+    {
+      "group": "confirmed_peer_remove_and_neighbor_arrays",
+      "rva": "0x1087730",
+      "asm": "cmp eax, 4",
+      "sha256": "ec9d1a6c95187ab3425edbcdf19a43602dabed7b1d6a5c436f9d713baec3f3d1",
+      "role": "reader_or_writer"
+    },
+    {
+      "group": "client_reset_primary",
+      "rva": "0x10849ed",
+      "asm": "mov dword ptr [rdi + 0xc8], r12d",
+      "sha256": "a4e79035f4c094ca426f78c06eed4a5113c25dcd8ea7edb40ce5c1bec6485eb2",
+      "role": "reader_or_writer"
+    },
+    {
+      "group": "client_reset_primary",
+      "rva": "0x10849f7",
+      "asm": "movups xmmword ptr [rdi + 0xd0], xmm0",
+      "sha256": "109763881ae0f347abb997192087c2b56f41d4f8edc6feaf8bf1e6bb2a728d51",
+      "role": "reader_or_writer"
+    },
+    {
+      "group": "client_reset_secondary",
+      "rva": "0x1087251",
+      "asm": "mov dword ptr [r15 + 0xc8], r13d",
+      "sha256": "cccee191fd4ad6a3bdd007b6b42586d7e73ace1406217981dabbbc66041cc8fe",
+      "role": "reader_or_writer"
+    },
+    {
+      "group": "client_reset_secondary",
+      "rva": "0x1087260",
+      "asm": "movups xmmword ptr [r15 + 0xd0], xmm0",
+      "sha256": "8eb65b6e794734b700e550ddd0abfc2fb60563a9766721af1d04281507f5f631",
+      "role": "reader_or_writer"
+    },
+    {
+      "group": "client_adjacent_peer_keyed_array",
+      "rva": "0x1084f83",
+      "asm": "cmp edx, 4",
+      "sha256": "55a4e366acc4f85057ac7f433de4b678ffbb67e8d62d4f56d4826e1bd9443d48",
+      "role": "reader_or_writer"
+    },
+    {
+      "group": "client_adjacent_peer_keyed_array",
+      "rva": "0x1084f8e",
+      "asm": "mov qword ptr [rax], rbx",
+      "sha256": "ee877c6acb73bf61afdbdbd8c4087220421c8d1d990f34f4f39a9e886959b6b0",
+      "role": "reader_or_writer"
+    },
+    {
+      "group": "client_adjacent_peer_keyed_array",
+      "rva": "0x1084f95",
+      "asm": "mov dword ptr [rax + 0xc], r8d",
+      "sha256": "659629d93091ec71c5b9d1df223f791d1ba603370fca4afadcdc0f3a6ec58202",
+      "role": "reader_or_writer"
+    }
+  ],
+  "operation_groups": [
+    "client_adjacent_peer_keyed_array",
+    "client_constructor_alternate",
+    "client_reset_primary",
+    "client_reset_secondary",
+    "confirmed_peer_append_direct",
+    "confirmed_peer_append_registry",
+    "confirmed_peer_remove_and_neighbor_arrays",
+    "kicked_path_and_host_migration_handoff",
+    "owner_constructor"
+  ],
+  "coverage": {
+    "confirmed_peer_append": true,
+    "confirmed_peer_remove_and_neighbor_arrays": true,
+    "client_reset": true,
+    "kicked_path": true,
+    "host_migration_handoff": true,
+    "player_index_semantics": false,
+    "client_creation_gate": false,
+    "runtime_callbacks": false,
+    "cleanup_abi": false
+  },
+  "checks": {
+    "fixed_build": true,
+    "capture_identity": true,
+    "source_scan_hashes": true,
+    "five_four_slot_layouts": true,
+    "append_readers_and_writers_pinned": true,
+    "remove_and_neighbor_cleanup_pinned": true,
+    "reset_paths_pinned": true,
+    "kicked_and_migration_handoff_pinned": true,
+    "explicit_four_guards_pinned": true,
+    "no_installable_patch_emitted": true
+  },
+  "checks_passed": 10,
+  "checks_total": 10,
+  "verification_passed": true,
+  "decision": {
+    "production_patch_ready": false,
+    "installable": false,
+    "runtime_verified": false,
+    "multiplayer_verified": false,
+    "meaning": "Five client-owned four-slot arrays and their append/remove/reset paths are pinned. A sidecar still needs index semantics, callback/cleanup ABI, allocation lifetime and client runtime evidence."
+  }
+}
