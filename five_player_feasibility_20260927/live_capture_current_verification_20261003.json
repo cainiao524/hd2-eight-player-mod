@@ -13,12 +13,12 @@
     {
       "name": "fixed_build_all_artifacts",
       "passed": true,
-      "detail": "all artifacts use build 25480438"
+      "detail": "all artifacts use the expected schema and build 25480438"
     },
     {
       "name": "same_live_pid",
       "passed": true,
-      "detail": "[45904]"
+      "detail": "same PID and loaded image base/path/size/identity across the captures"
     },
     {
       "name": "native_image_identity",
@@ -73,12 +73,12 @@
     {
       "name": "read_only_flags",
       "passed": true,
-      "detail": "all runtime/install/multiplayer flags remain false"
+      "detail": "each capture's explicit production claims remain false"
     },
     {
       "name": "no_process_mutation",
       "passed": true,
-      "detail": "calls, writes and hooks are false"
+      "detail": "capture metadata explicitly reports read-only with calls, writes and hooks false"
     }
   ],
   "checks_passed": 14,
