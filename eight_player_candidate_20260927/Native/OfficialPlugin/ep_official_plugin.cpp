@@ -327,3 +327,20 @@ EP_PLUGIN_EXPORT BOOL __cdecl ep_official_plugin_runtime_install(
 EP_PLUGIN_EXPORT BOOL __cdecl ep_official_plugin_runtime_remove(EP_CONSUMER_HOOK* hook) {
     return ep_consumer_remove(hook);
 }
+
+EP_PLUGIN_EXPORT EP_CONSUMER_NATIVE_STATUS __cdecl
+ep_official_plugin_runtime_bind_native_callbacks(
+    unsigned long steam_build, HMODULE game_module,
+    EP_CONSUMER_SIDECAR_RESOLVER sidecar_resolver) {
+    return ep_consumer_native_bind(steam_build, game_module, sidecar_resolver);
+}
+
+EP_PLUGIN_EXPORT EP_CONSUMER_NATIVE_STATUS __cdecl
+ep_official_plugin_runtime_get_native_callbacks(EP_CONSUMER_CALLBACKS* out_callbacks) {
+    return ep_consumer_native_get_callbacks(out_callbacks);
+}
+
+EP_PLUGIN_EXPORT EP_CONSUMER_NATIVE_STATUS __cdecl
+ep_official_plugin_runtime_unbind_native_callbacks() {
+    return ep_consumer_native_unbind();
+}

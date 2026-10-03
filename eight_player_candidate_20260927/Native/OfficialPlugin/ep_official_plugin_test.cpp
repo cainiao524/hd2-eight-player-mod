@@ -40,6 +40,13 @@ int main() {
     assert(ep_official_plugin_network_table_pointer() == 0u);
     assert(ep_official_plugin_game_session_table_pointer() == 0u);
 
+    EP_CONSUMER_CALLBACKS native_callbacks{};
+    assert(ep_official_plugin_runtime_get_native_callbacks(&native_callbacks) ==
+           EP_CONSUMER_NATIVE_NOT_BOUND);
+    assert(ep_official_plugin_runtime_bind_native_callbacks(
+               25480438u, nullptr, nullptr) == EP_CONSUMER_NATIVE_INVALID_ARGUMENT);
+    assert(ep_official_plugin_runtime_unbind_native_callbacks() == EP_CONSUMER_NATIVE_OK);
+
     constexpr DWORD rva = 0x1093590u;
     constexpr SIZE_T module_size = 0x10a0000u;
     const auto module = static_cast<unsigned char*>(VirtualAlloc(

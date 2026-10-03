@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include "../SessionMembers/ep_consumer_executor.h"
+#include "../SessionMembers/ep_consumer_native_callbacks.h"
 
 #ifdef _WIN32
 #define EP_PLUGIN_EXPORT extern "C" __declspec(dllexport)
@@ -86,3 +87,9 @@ EP_PLUGIN_EXPORT BOOL __cdecl ep_official_plugin_runtime_install(
     const BYTE* expected_entry, SIZE_T expected_size,
     const EP_CONSUMER_CALLBACKS* callbacks, EP_CONSUMER_HOOK* out_hook);
 EP_PLUGIN_EXPORT BOOL __cdecl ep_official_plugin_runtime_remove(EP_CONSUMER_HOOK* hook);
+EP_PLUGIN_EXPORT EP_CONSUMER_NATIVE_STATUS __cdecl ep_official_plugin_runtime_bind_native_callbacks(
+    unsigned long steam_build, HMODULE game_module,
+    EP_CONSUMER_SIDECAR_RESOLVER sidecar_resolver);
+EP_PLUGIN_EXPORT EP_CONSUMER_NATIVE_STATUS __cdecl ep_official_plugin_runtime_get_native_callbacks(
+    EP_CONSUMER_CALLBACKS* out_callbacks);
+EP_PLUGIN_EXPORT EP_CONSUMER_NATIVE_STATUS __cdecl ep_official_plugin_runtime_unbind_native_callbacks();

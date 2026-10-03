@@ -35,65 +35,67 @@
       "ninth player rejected by executor",
       "remove restores original target",
       "mutated target rejected",
-      "combined DLL LoadLibrary/GetProcAddress exports"
+      "combined DLL LoadLibrary/GetProcAddress exports",
+      "OfficialPlugin native callback bind/get/unbind exports",
+      "native binder module/build/argument gates"
     ]
   },
   "artifacts_sha256": {
     "ep_official_plugin.h": {
-      "sha256": "84065fd484be27312929bb1f9054f14d4f634f2edbbf5d6df3145c43e9e7ec77",
-      "bytes": 3586
+      "sha256": "5d1c35fac1043cd2e99a790304c07758a61b6042ea7eccd14acad072a45ba308",
+      "bytes": 4099
     },
     "ep_official_plugin.cpp": {
-      "sha256": "8d06a1b3c86f2bf648c306271a301834b3c0e418398836f16a21e99b075bec5e",
-      "bytes": 14726
+      "sha256": "35f6280a2127a8c06c0a949691e31298205929a975d62cb169ebb7f3dfc19963",
+      "bytes": 15366
     },
     "ep_official_plugin_test.cpp": {
-      "sha256": "2538b77279df12ebb03703ff561ab17ab9759120b6c07b6911934aed9e4744ac",
-      "bytes": 4935
+      "sha256": "10fc0fcdf9b76cbdfa93708ea505e597e15b1d5e9c3c30af8e9a3c5bf6e42a75",
+      "bytes": 5341
     },
     "ep_official_plugin_load_test.cpp": {
-      "sha256": "563f70c44d4daf074632c9c1d407f0fb80464d5b054f8bb0345dc0a6649dc065",
-      "bytes": 798
+      "sha256": "ac5ab53bb7dab4d8dc4ea16421fddc7da7f49cf82f03ae9899f626d2f5bbba93",
+      "bytes": 979
     },
     "build_x64.bat": {
-      "sha256": "e2ab6298a61ba3f99560a21f898f77dccaf7f40daade9560b8e8df3a28369bd7",
-      "bytes": 1034
+      "sha256": "169649b99a6b7187ed1b81ed94ce318da376171a54dfd2d4e737bd5ea1acbf04",
+      "bytes": 1187
     },
     "README.zh-TW.md": {
-      "sha256": "d7b506d655c77d5d44c8c9f0adb4016692d90de96ceebdb6d7ffa3efdd482bb6",
-      "bytes": 3554
+      "sha256": "6f6bf76c701519fa580226e8093487df5c9f2770bb9ec0f4009f0289c3e0fd4b",
+      "bytes": 4313
     },
     "ep_official_plugin.dll": {
-      "sha256": "5687f2f0f50305515348894de14d8f5494f52c4b51f7e06813bdf5757942511f",
-      "bytes": 287744
+      "sha256": "c15db1124727c8a8910540714907dffd0d4cf8f4ed19d5111c2e0451f4236780",
+      "bytes": 289792
     },
     "eight_player_pluginw64_release.dll": {
-      "sha256": "6eb876a7c669a14b977bbe59f4bf80a5490ba5d1b681462ccc5721ea9899d04f",
-      "bytes": 287744
+      "sha256": "fcf6191d2cdbbdc5566e74a14cb14dbe7eb39ccbe2b652d70634f396596d13fa",
+      "bytes": 289792
     },
     "ep_official_plugin_test.exe": {
-      "sha256": "093cfdcaec08355244d5ce83431872b09f68c256654fa9257add51c04abed30d",
-      "bytes": 316416
+      "sha256": "3447d59a964e815d48393ab083f7c3fd03f2176f3e4a3fa470e203831fe92874",
+      "bytes": 318464
     },
     "ep_official_plugin_load_test.exe": {
-      "sha256": "f9bdd4d569286d2f5c1ad97fd5f05d525d27f0afcdd910472a22f50bcf395812",
+      "sha256": "6d09e7f40f0787038f51fc97e3a1266c5781bec81dde40ba8e8ccf6717a8af3e",
       "bytes": 154112
     },
     "ep_official_plugin.lib": {
-      "sha256": "1fba35d1777c048a19567487b2a30a84dce9c5d9d34e165fd0dfc1a4cd588104",
-      "bytes": 6334
+      "sha256": "020a91d01954b163894569b2914f56b5bf86f8afb402136131ac0c8ae6fbea0f",
+      "bytes": 8534
     },
     "ep_official_plugin.exp": {
-      "sha256": "282c954a5bcc0cc14b8411183a9e9b4c7a8dabbfea4b3877c8876ab398bccf52",
-      "bytes": 3326
+      "sha256": "cbe8295f84d49572a519b68e31381af4e3110d5ab1f15ceaf56943a019a1488a",
+      "bytes": 4612
     },
     "eight_player_pluginw64_release.lib": {
-      "sha256": "fe4895ebd9059ab039583e449d952349d186aba6717d891c5324631d4c3aa647",
-      "bytes": 6670
+      "sha256": "2430d8440d1b873657e501ed7c311249385483cad56a6e51b2ffc6828fa72c0c",
+      "bytes": 8954
     },
     "eight_player_pluginw64_release.exp": {
-      "sha256": "78d9396b752467a4f36c367246af940508307e7ece6b3569d3ab7c99bf389d65",
-      "bytes": 3350
+      "sha256": "9a4567b33d699b0cdf64a3a5d2cf23f86042d9604d7017a11a550801631a9d7e",
+      "bytes": 4636
     }
   },
   "gates": {
@@ -106,5 +108,57 @@
     "resolve HD2 callback addresses and owner lifetime",
     "bind Party/Session admission and Player Clone creation",
     "verify all-client mission lifecycle including reconnect and host migration"
-  ]
+  ],
+  "native_callback_bridge": {
+    "bind_export": "ep_official_plugin_runtime_bind_native_callbacks",
+    "get_export": "ep_official_plugin_runtime_get_native_callbacks",
+    "unbind_export": "ep_official_plugin_runtime_unbind_native_callbacks",
+    "fixed_build": 25480438,
+    "game_image_timestamp": 1790161983,
+    "game_image_size": 74727424,
+    "requires_sidecar_resolver": true,
+    "requires_module_identity": true,
+    "install_hook": false,
+    "writes_on_bind": false,
+    "status_errors": [
+      "EP_CONSUMER_NATIVE_INVALID_ARGUMENT",
+      "EP_CONSUMER_NATIVE_BUILD_MISMATCH",
+      "EP_CONSUMER_NATIVE_IMAGE_MISMATCH",
+      "EP_CONSUMER_NATIVE_NOT_BOUND"
+    ]
+  },
+  "native_callback_artifacts_sha256": {
+    "ep_consumer_native_callbacks.h": {
+      "sha256": "5742c33d312a4942070d2181586ca1efb2af98375662701f20a597ec799a0698",
+      "bytes": 1093
+    },
+    "ep_consumer_native_callbacks.cpp": {
+      "sha256": "edee6aa4ad409327f11d09d7ba4be4b730138139db6d02f6dccdbda66765ad12",
+      "bytes": 6736
+    },
+    "ep_consumer_native_callbacks_test.cpp": {
+      "sha256": "011bf99bcf5d535c0e0335f698189fd4f62f38cb8dd2a37243030574a074f8ac",
+      "bytes": 4182
+    },
+    "ep_consumer_native_callbacks_test.exe": {
+      "sha256": "72f681ae076ca553b1d5df7d774652524a18443de371f642ebe9d579cc75f2db",
+      "bytes": 114176
+    },
+    "ep_consumer_native_callbacks.obj": {
+      "sha256": "1e6be0482b7739f035207a1a021398e6fbdca1efbdee5a1e0dbc2562378c9f0f",
+      "bytes": 14004
+    },
+    "ep_consumer_native_callbacks_test.obj": {
+      "sha256": "af03f9f9a02112c4aa176d1ad74f8142ddcfb2cd405ff58c347b35b9da7e422c",
+      "bytes": 4571
+    },
+    "ep_consumer_native_callbacks_test.exp": {
+      "sha256": "3196efef9e10ba805870f65dc8adab1bb882e2f26503161ccd9147b575f28c2d",
+      "bytes": 1297
+    },
+    "ep_consumer_native_callbacks_test.lib": {
+      "sha256": "7a7b09fdd690cc86694c23fc4d3dfd2201a1188d9a8e4a9db316accffd4b1ec6",
+      "bytes": 3046
+    }
+  }
 }

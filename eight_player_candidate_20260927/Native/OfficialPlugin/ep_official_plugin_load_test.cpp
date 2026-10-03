@@ -13,6 +13,9 @@ int main() {
         "ep_official_plugin_runtime_preflight",
         "ep_official_plugin_runtime_install",
         "ep_official_plugin_runtime_remove",
+        "ep_official_plugin_runtime_bind_native_callbacks",
+        "ep_official_plugin_runtime_get_native_callbacks",
+        "ep_official_plugin_runtime_unbind_native_callbacks",
     };
     for (const char* name : exports) assert(GetProcAddress(module, name) != nullptr);
     auto get_api = reinterpret_cast<get_plugin_api_export>(GetProcAddress(module, "get_plugin_api"));
