@@ -19,25 +19,33 @@
       "bytes": 1456
     },
     "build_x64.bat": {
-      "sha256": "8caa23ec4d32f9600d58c68748ce4769eb8f7a451167eb7321b4356f6fde30d1",
-      "bytes": 561
+      "sha256": "1667dda827897f6d8c2651d7dc54cc43eb04ef56f3da007c98d447c672d9992e",
+      "bytes": 771
     },
     "README.zh-TW.md": {
-      "sha256": "b1773698ceb46944ca3dd4ab74e821993a8987f898a6e55d5df68641e79c91be",
-      "bytes": 1373
+      "sha256": "99cb9accd684ca1c6242f54e37f072e003160ef456c39915d0772e691e7819a7",
+      "bytes": 1450
+    },
+    "ep_official_plugin_load_test.cpp": {
+      "sha256": "b1005bc5ea2a2a93ff612e4633060e3dbe339dede9435068a8723e0eece7ff95",
+      "bytes": 510
     }
   },
   "build_artifacts": {
     "ep_official_plugin.dll": {
-      "sha256": "d7ced2d8f4ed62246f6d8c7aa9aa528b18fdeb43a337c7439c7f1bb113120b86",
+      "sha256": "bab7afb396a9f2a16d333d37b86f3c6dad7d24b90deca34eb41d673595358059",
       "bytes": 103936
     },
     "ep_official_plugin_test.exe": {
-      "sha256": "819113abca2d371664d44530fc521c0fed6625851cb0a4efd9c3e58e9ec05382",
+      "sha256": "165f4d866f8f4fc8158ea0855b8f23bd1ab0c4508c800dc5518f577b5c01667a",
       "bytes": 155648
+    },
+    "ep_official_plugin_load_test.exe": {
+      "sha256": "635474c11af0be0577629b37d400a04ab2babc1bf667237906856b0568b9b797",
+      "bytes": 153088
     }
   },
-  "synthetic_harness": "ep_official_plugin_test.exe passed: plugin API id 0, unknown ID rejection, C_API_ID callback capture, public ScriptApi Network/GameSession slot offsets 0x38/0x40, read-only table pointer capture, unload clearing",
+  "synthetic_harness": "ep_official_plugin_test.exe and ep_official_plugin_load_test.exe passed: API ID 0, unknown ID rejection, C_API_ID callback capture, public ScriptApi Network/GameSession slots 0x38/0x40, read-only table pointer capture, DLL export smoke test, unload clearing",
   "production_executable": false,
   "runtime_verified": false,
   "custom_mod_entry_proven": false,

@@ -5,7 +5,7 @@
 - 只接受 `api_id == 0`（`PLUGIN_API_ID`），未知 API ID 回傳 null。
 - `loaded` 只查詢 `C_API_ID == 31` 並保存返回指標；依公開 `ScriptApi` 順序讀取 `Network` slot `+0x38`、`GameSession` slot `+0x40` 的 table 指標並保存，但不解參照其中的 function pointer、不呼叫函式、不寫入遊戲記憶體、不建立 peer、不建立 player entity。
 - `unloaded` 清除保存的指標，避免跨生命週期使用 stale API。
-- `build_x64.bat` 會產生 DLL 並執行本機 stub harness；這個 harness 不載入遊戲、不存取程序。
+- `build_x64.bat` 會產生 DLL、執行 ABI stub harness，並以 `LoadLibrary`／`GetProcAddress` 做本機 DLL export smoke test；這些 harness 不載入遊戲、不存取遊戲程序。
 
 公開 ABI 來源：[Autodesk Stingray plugin API samples](https://github.com/AutodeskGames/stingray-plugin-api-samples) 與 [Stingray engine plugin 說明](https://help.autodesk.com/cloudhelp/ENU/Stingray-SDK-Help/sdk_help/extend_engine.html)。
 
