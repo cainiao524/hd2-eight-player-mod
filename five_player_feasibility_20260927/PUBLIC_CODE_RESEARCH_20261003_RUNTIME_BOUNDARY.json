@@ -1,0 +1,15 @@
+{
+  "schema": "hd2_public_runtime_boundary_research_v1",
+  "build": 25480438,
+  "repositories": [
+    {"url":"https://github.com/SkyeShade/HD2Runtime","commit":"96ab2d258d867a5df4f22bb7b3321d84d28de21d","data_layer":true,"session_admission":false,"player_creation":false},
+    {"url":"https://github.com/CowboyBingus/ReinforcementBeaconsFixed","commit":"daec6559a28bf287d716ee4dc3afe5d2e1f314b6","data_layer":true,"executable_patch":false,"network_capacity":false},
+    {"url":"https://github.com/CowboyBingus/ModOptionsMenu","commit":"46d693e421b44c4221ee6d984d26ea49997b948a","ui_and_version_gate":true,"capacity_proof":false}
+  ],
+  "decision": "keep Lua/Shared Loader for version gates, diagnostics and data-only helpers; native bridge remains required for Session/peer admission, Player Clone creation, cleanup and client replication",
+  "capacity_proof": false,
+  "player_admission_proven": false,
+  "player_creation_proven": false,
+  "installable": false,
+  "multiplayer_verified": false
+}
