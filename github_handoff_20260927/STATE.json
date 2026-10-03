@@ -1464,7 +1464,7 @@
     "confirmed_peer_hash_hits": 1,
     "private_registry_hits": 0,
     "verification": "five_player_feasibility_20260927/live_preflight_continuation_verification_20261003.json",
-    "checks_passed": "22/22",
+    "checks_passed": "superseded: 22/23",
     "read_only": true,
     "calls_made": false,
     "writes_made": false,
@@ -1579,7 +1579,16 @@
     "rerun_r4_registration_prefix_postflight_verified": true,
     "rerun_r4_session_peer_count": 1,
     "rerun_r4_documented_roster_slots": 4,
-    "rerun_r4_meaning": "Valid bounded 16 MiB negative observation with stable postflight identity; not a whole-process registry proof and not peer-admission evidence."
+    "rerun_r4_meaning": "Valid bounded 16 MiB negative observation with stable postflight identity; not a whole-process registry proof and not peer-admission evidence.",
+    "checks_total": 23,
+    "verification_passed": false,
+    "superseded": true,
+    "private_registry_1g_truncated": true,
+    "private_registry_1g_postflight_verified": false,
+    "private_registry_1g_negative_observation_valid": false,
+    "private_registry_1g_bytes_observed": 1073741824,
+    "private_registry_1g_bytes_note": "historical receipt field; coverage is invalidated and must not be used as a complete negative claim",
+    "last_update_scope": "Corrected historical registry accounting, then validated the repaired scanner on fresh PID 41576: 16 MiB prefix reached exactly with stable postflight identity and zero hits. Historical 1 GiB receipt is superseded; native admission, installation and multiplayer remain unproven."
   },
   "offline_continuation_20261003": {
     "build": 25480438,
