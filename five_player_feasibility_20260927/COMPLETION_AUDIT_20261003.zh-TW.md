@@ -28,9 +28,9 @@
 
 ## Git 參考
 
-- 審計 HEAD：`f81b4a7`。
+- 審計 HEAD：`586644b`。
 - STATE latest research commit：`f81b4a7`（存在：`True`）
-- STATE latest status receipt commit：`f81b4a7`（存在：`True`）
+- STATE latest status receipt commit：`586644b`（存在：`True`）
 
 ## 下一個可驗證動作
 
