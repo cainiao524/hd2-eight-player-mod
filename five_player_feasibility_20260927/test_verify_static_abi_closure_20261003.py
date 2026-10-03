@@ -31,3 +31,18 @@ def test_closure_keeps_runtime_and_install_claims_false():
     report = closure.verify()
     for flags in report["production_flags"].values():
         assert all(value is False for value in flags.values())
+
+
+def test_closure_requires_public_runtime_audit_to_remain_observation_only(monkeypatch):
+    reports = dict(closure.REPORTS)
+    path = reports["public_runtime_entry_audit"]
+    data = json.loads(path.read_text(encoding="utf-8"))
+    data["conclusion"]["public_peer_admission_abi_found"] = True
+    copy = path.parent / "_tmp_public_runtime_entry_audit.json"
+    copy.write_text(json.dumps(data), encoding="utf-8")
+    try:
+        reports["public_runtime_entry_audit"] = copy
+        monkeypatch.setattr(closure, "REPORTS", reports)
+        assert closure.verify()["checks"]["public_runtime_bridge_remains_unavailable"] is False
+    finally:
+        copy.unlink()

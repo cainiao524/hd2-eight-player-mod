@@ -25,6 +25,7 @@ REPORTS = {
     "native_admission_capture": HERE / "native_admission_confirmed_peer_live_20261002_r3.json",
     "confirmed_peer_external_chain": HERE.parent / "eight_player_candidate_20260927" / "Native" / "SessionMembers" / "confirmed_peer_external_chain_20261002.json",
     "confirmed_peer_live_abi": HERE.parent / "eight_player_candidate_20260927" / "Native" / "SessionMembers" / "confirmed_peer_admission_live_abi_20261002.json",
+    "public_runtime_entry_audit": HERE / "public_runtime_entry_audit_20261003.json",
 }
 
 PRODUCTION_FALSE = ("production_patch_ready", "runtime_verified", "installable", "multiplayer_verified")
@@ -38,7 +39,8 @@ def _read(path: Path) -> dict[str, Any]:
 
 
 def _build(report: dict[str, Any]) -> Any:
-    return report.get("build", report.get("steam_build"))
+    build = report.get("build", report.get("steam_build"))
+    return build.get("steam_build") if isinstance(build, dict) else build
 
 
 def _all_named_checks_true(report: dict[str, Any], names: list[str]) -> bool:
@@ -116,6 +118,15 @@ def verify() -> dict[str, Any]:
             and len(reports["confirmed_peer_live_abi"].get("semantic_sites", [])) >= 8
             and reports["confirmed_peer_live_abi"].get("sidecar_plan", {}).get("installable") is False
         ),
+        "public_runtime_bridge_remains_unavailable": (
+            reports["public_runtime_entry_audit"].get("build", {}).get("steam_build") == BUILD
+            and reports["public_runtime_entry_audit"].get("build", {}).get("game_dll_sha256")
+            == "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e"
+            and reports["public_runtime_entry_audit"].get("conclusion", {}).get("public_peer_admission_abi_found") is False
+            and reports["public_runtime_entry_audit"].get("conclusion", {}).get("public_player_creation_writer_found") is False
+            and reports["public_runtime_entry_audit"].get("conclusion", {}).get("public_network_spawn_writer_found") is False
+            and reports["public_runtime_entry_audit"].get("conclusion", {}).get("eight_player_status") == "unverified"
+        ),
     }
 
     production_flags: dict[str, dict[str, Any]] = {}
@@ -164,7 +175,8 @@ def main() -> int:
     if args.output.exists():
         raise FileExistsError(args.output)
     report = verify()
-    args.output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    with args.output.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(report, indent=2, ensure_ascii=False) + "\n")
     passed = sum(value is True for value in report["checks"].values())
     total = len(report["checks"])
     print(json.dumps({"schema": report["schema"], "passed": passed, "total": total, "installable": False}, ensure_ascii=False))
