@@ -42,6 +42,7 @@ class ClientSidecarTests(unittest.TestCase):
         self.assertTrue(report["adapter_contract"]["native_confirm_failure_preserves_compensation_record"])
         self.assertTrue(report["adapter_contract"]["bridge_owns_native_confirm_compensation"])
         self.assertTrue(report["adapter_contract"]["native_create_required_for_all_indexes"])
+        self.assertTrue(report["adapter_contract"]["destroy_requires_no_native_confirmed_flags"])
         self.assertTrue(report["adapter_contract"]["owner_lifetime_delegated"])
         for artifact in report["artifacts"]:
             path = ROOT / artifact["path"]

@@ -48,6 +48,9 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_client_adapter_init(
 
 extern "C" EP_BRIDGE_STATUS __cdecl ep_client_adapter_destroy(EP_CLIENT_ADAPTER* a) {
     if (!as_adapter(a)) return EP_BRIDGE_INVALID_CONTEXT;
+    for (UINT32 i = 0; i < EP_SIDECAR_CAPACITY; ++i) {
+        if (a->native_confirmed[i] != 0) return EP_BRIDGE_CLEANUP_REQUIRED;
+    }
     if (a->owner_refs != 0 || ep_client_validate(&a->client) != EP_CLIENT_OK ||
         ep_client_destroy(&a->client) != EP_CLIENT_OK) return EP_BRIDGE_CLEANUP_REQUIRED;
     a->initialized = 0;
