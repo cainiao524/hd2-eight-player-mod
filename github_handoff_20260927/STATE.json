@@ -1201,7 +1201,14 @@
     "eight_player_candidate_20260927/Native/ReceiverAdapter/ep_receiver_adapter_test.exe": "7fd652b23d09808b4477c258bc5485047ba57a728c63fce09dd70c56497c3f0f",
     "eight_player_candidate_20260927/Native/ReceiverAdapter/README.zh-TW.md": "50afc90c17a5766861703b1519d57ba47942b89970819d0c8f7cda3f1bc36e1a",
     "eight_player_candidate_20260927/Native/ReceiverAdapter/receiver_adapter_report_20261003.json": "696851b1853d70dc11d6f24cf733b157678f0307b0b0a9daa18ae0a29b169505",
-    "eight_player_candidate_20260927/Native/ReceiverAdapter/test_receiver_adapter.py": "bf2775805cec2074a2dcce8dcb134642512c21f818d5d6df4d7801f40004c2ef"
+    "eight_player_candidate_20260927/Native/ReceiverAdapter/test_receiver_adapter.py": "bf2775805cec2074a2dcce8dcb134642512c21f818d5d6df4d7801f40004c2ef",
+    "five_player_feasibility_20260927/join_handler_fixed_four_inventory_20261003.py": "62eae0c7cb807862ad187435ad1d017beba4846634f0aa02380dbfdc0379fb31",
+    "five_player_feasibility_20260927/join_handler_fixed_four_inventory_20261003.json": "fbd4a26ba86837750be8c33f9a4438c13d1b32d9d82abf8bb6179452944e024d",
+    "five_player_feasibility_20260927/test_join_handler_fixed_four_inventory_20261003.py": "c6c2514944408650647cfd713b7730548d36d24932370a2b2eb75dc4d9f4c8b6",
+    "five_player_feasibility_20260927/verify_static_abi_closure_20261003.py": "0b505db08ab008a11f3364403ade186f780f222326b9d8a6ec2ae20be00da5f1",
+    "five_player_feasibility_20260927/test_verify_static_abi_closure_20261003.py": "b68387a42dcddc3c4532370e401ed2517053af56604461dd901bef4c2dfc6723",
+    "five_player_feasibility_20260927/static_abi_closure_receipt_20261003.json": "e6a84e74985596d154fbdeaa30c700d37bae0ea5264e44a9fe95f205cb42c5f1",
+    "five_player_feasibility_20260927/STATIC_ABI_CLOSURE_20261003.zh-TW.md": "5ee0792e0093bfe1736650bd91e22d002b81cbb509ee63f844e3142ddc2387fc"
   },
   "missing_release_files": [],
   "remaining_release_work": [
@@ -1306,6 +1313,7 @@
     "Added an offline fail-closed receiver-vector adapter for the fixed callback leaf BC2D10: selector 168 and descriptor offsets +8/+18/+28/+38/+48 are pinned, unknown selectors and missing fields reject, and all five values remain opaque; C++ and Python tests pass while hash-to-selector, runtime, install and multiplayer remain false."
   ],
   "next_offline_work": [
+    "Keep the join-handler fixed-four inventory bound to any future native bridge; only the five capacity/slot sites are patch candidates and the three protocol/metadata literals remain protected.",
     "Bind the offline rollback/quiescence and peer lifecycle contracts to the real 0x1086460 -> 0xFDC140 -> 0x581320/0x581780 -> 0x540920 callback ABI, then verify partial rollback, re-entry idempotence, owner migration and thread quiescence before any native hook.",
     "Recover MenuScreenLoadout constructor/reader/writer/transition/destructor/callback ABI and choose inline relocation versus a complete sidecar; keep UI slot, network index and roster ordinal separate.",
     "Recover a permitted runtime callback or service-side event-hash to selector trace; keep the lobby-browser owner separate from confirmed-peer/player admission and do not reuse global+0x1f028 as a player registry.",
@@ -1336,13 +1344,13 @@
     "upload_receipt": "github_handoff_20260927/UPLOAD_STATUS.json",
     "verified_at_utc": "2026-09-27T20:52:54.657201+08:00",
     "remote_contains_current_delivery": true,
-    "note": "2026-10-03 native bridge/client adapter hardening and native PlayerResource transaction sidecar committed and pushed to main; installable=false, resolver_closed=false and multiplayer_verified=false remain authoritative.",
-    "latest_research_commit": "7a3b931",
+    "note": "2026-10-03 added the host join fixed-four inventory and static ABI closure update; installable=false, resolver_closed=false and multiplayer_verified=false remain authoritative.",
+    "latest_research_commit": "91c877e",
     "latest_research_commit_pushed": true
   },
   "latest_research_update_date": "2026-10-03",
   "priority_assessment": "five_player_feasibility_20260927/PEER_ADMISSION_PRIORITY.zh-TW.md",
-  "last_update_scope": "Formalized the v0.14 receipt, closed the bounded 1277920 reader candidate, added the native PlayerResource transaction sidecar, and added a fail-closed receiver-vector ABI adapter; no game ABI call, hook, installation or multiplayer validation was performed.",
+  "last_update_scope": "Classified all eight literal-4 sites in the fixed-build host join handler, added the five-site capacity/slot and three-site protected metadata inventory, and bound it into the offline static ABI closure; no game ABI call, hook, installation or multiplayer validation was performed.",
   "live_preflight_20261003": {
     "pid": 36900,
     "build": 25480438,
