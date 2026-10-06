@@ -241,7 +241,7 @@
     "five_player_feasibility_20260927/CCHUSKY_HD2_TOOLS_HOOK_ANALYSIS_20261002.zh-TW.md": "9acb089901637a724c96b41f51c853ed41ebcf2c3c4f54c1052fdceabb7e9037",
     "five_player_feasibility_20260927/EIGHT_PLAYER_CAPACITY_CONTRACT.zh-TW.md": "837ee952dd2394d7be4707f6865319cc1b106312252a96149a422789870dbd84",
     "five_player_feasibility_20260927/ENGINE_CALLEE_VERIFICATION.zh-TW.md": "835475ba4872b8047994e331bd4e7c29817a140e4e755ee42b9373b91de6e804",
-    "five_player_feasibility_20260927/IMPLEMENTATION_WORKLIST.zh-TW.md": "c92852be017ccc0b174f0db85be9d9f5ec84afabea323f2398f29ac5cc774e0d",
+    "five_player_feasibility_20260927/IMPLEMENTATION_WORKLIST.zh-TW.md": "3798010289328d0a72d3042ccc840d4cb50ff88511ddd50254dfd4b66e19bf85",
     "five_player_feasibility_20260927/INTERFACE_PROBE_LIVE_ANALYSIS_20261002.zh-TW.md": "dd28207864d3af240fa24c273d40f812656ea49dc6c73a7feb33a20e5dbf75b9",
     "five_player_feasibility_20260927/NATIVE_PEER_ADMISSION_ADAPTER.zh-TW.md": "5ac99d6a57dc73f32f0e9b986174482279aeed96f17c77565f0b0ad3dc0a7736",
     "five_player_feasibility_20260927/NATIVE_PEER_ADMISSION_BRIDGE_BOUNDARY_20261002.zh-TW.md": "1cf20cea183894296106b8f0e5b71066318ba2609df726db0f0c6122c2787267",
@@ -1363,7 +1363,7 @@
     "eight_player_candidate_20260927/Native/SessionMembers/ep_consumer_native_callbacks_test.obj": "af03f9f9a02112c4aa176d1ad74f8142ddcfb2cd405ff58c347b35b9da7e422c",
     "five_player_feasibility_20260927/COMPLETION_AUDIT_20261003.zh-TW.md": "e942cbefc83e557619641bcd5c42e526ef5003142a259e54cde767d2b941e5a5",
     "five_player_feasibility_20260927/audit_completion_state_20261003.py": "9e101fa476ca66ff24d3ab806298a4b33beb25ad2cfb63bc974443e6b67fcd04",
-    "five_player_feasibility_20260927/completion_audit_20261003.json": "f936067c70f343ff1dd4e203ec8a5d53d87b456fe0c27eda850544a641c898f2",
+    "five_player_feasibility_20260927/completion_audit_20261003.json": "17d0331186178841573b8a8e42ea8bf56bf2c01bcd201552d9e0462bdf1d65cc",
     "eight_player_candidate_20260927/Native/PlayerCreationGate/README.zh-TW.md": "7944d5197af9aea9439adc703ff18db89a480efa82ed59317ff8781c8470939b",
     "eight_player_candidate_20260927/Native/PlayerCreationGate/build_x64.bat": "602192ffe280c0e5f3028b96433597d70a58d3f69e162f1be1a4a304c011b499",
     "eight_player_candidate_20260927/Native/PlayerCreationGate/ep_player_creation_gate.cpp": "ad4361a8637c736c08d50b706133084f3fa4fddb69c1123a29b99d7cce78c0ca",
@@ -1452,7 +1452,9 @@
     "five_player_feasibility_20260927/LIVE_PROBE_ATTEMPT_20261004.json": "ac4c8fa589f33ec55ddffb1368a7a754101fff1f63e690850ab553054a8a846f",
     "five_player_feasibility_20260927/LIVE_PROBE_ATTEMPT_20261004.zh-TW.md": "498e9db26e0e3e981e3a746ef903a67a7239b8e0143ed9b857a8a2b569d084bf",
     "five_player_feasibility_20260927/MOD_OPTIONS_MENU_RESEARCH_20261004.json": "f6ad6385fbca8a0db86b839177a562ff4b9e85bbf7400d3febb0e731bbc13df2",
-    "five_player_feasibility_20260927/MOD_OPTIONS_MENU_RESEARCH_20261004.zh-TW.md": "6a01a22c2c1cbaeaaa2b9ef7fdb6f912fccfdc3ce96e20437c214b21658ee93d"
+    "five_player_feasibility_20260927/MOD_OPTIONS_MENU_RESEARCH_20261004.zh-TW.md": "6a01a22c2c1cbaeaaa2b9ef7fdb6f912fccfdc3ce96e20437c214b21658ee93d",
+    "five_player_feasibility_20260927/HD2RUNTIME_MODBUILDER_RESEARCH_20261007.json": "bbea7523982932f46a417e341012e8ba2017ae68b4db5f6511f375a2f2b49e57",
+    "five_player_feasibility_20260927/HD2RUNTIME_MODBUILDER_RESEARCH_20261007.zh-TW.md": "df08588b5f3876d33b4a7dc9bcca65519bd5ce31debab7be77b6369227699db3"
   },
   "missing_release_files": [],
   "remaining_release_work": [
@@ -1610,7 +1612,8 @@
     "Guarded the fixed-build OfficialPlugin session getter with PE/SHA-256 identity, table readability, getter RVA/fingerprint, executable-page and stable-reread checks; unload/shutdown clears all observation state.",
     "Attempted a reversible official/custom plugin launch; both observed process windows showed Fatal Error, custom DLL loading was not confirmed, and no new runtime or multiplayer evidence was accepted.",
     "After the getter-invocation probe produced Fatal Error, kept the OfficialPlugin session getter inspect-only: fixed address/fingerprint validation remains, but no native function call or session snapshot is attempted until calling convention and return lifetime are proven.",
-    "Extended HANDOFF.zh-TW.md with the latest remote commit, no-call getter boundary, clean Fatal Error probe result, reversible plugin cleanup and exact next admission-ABI prerequisites."
+    "Extended HANDOFF.zh-TW.md with the latest remote commit, no-call getter boundary, clean Fatal Error probe result, reversible plugin cleanup and exact next admission-ABI prerequisites.",
+    "Reviewed HD2Runtime-ModBuilder at fixed commit 0213552c9ea52d3dbf104f9dc5ae7efea6648c38; recorded its SDK-driven guarded Lua/ZIP authoring scope and explicit no-game-process boundary, and kept it out of the eight-player native path."
   ],
   "next_offline_work": [
     "Resolve the two admission call targets and their return/state/cleanup ABI from a permitted read-only runtime trace before binding any player or peer writer; retain the static call-shape contract as a version gate only.",
@@ -1666,9 +1669,9 @@
     "latest_research_commit_pushed": true,
     "latest_status_receipt_commit": "54691a7"
   },
-  "latest_research_update_date": "2026-10-04",
+  "latest_research_update_date": "2026-10-07",
   "priority_assessment": "five_player_feasibility_20260927/PEER_ADMISSION_PRIORITY.zh-TW.md",
-  "last_update_scope": "Updated the handoff with allocator overflow cleanup, inspect-only fixed-build getter checks, and the clean Fatal Error follow-up probe; all native and multiplayer gates remain closed.",
+  "last_update_scope": "Recorded HD2Runtime ModBuilder fixed-commit research: guarded Lua authoring and ZIP export are useful packaging helpers, but the repository explicitly does not launch, deploy or access the game and provides no peer admission or player replication bridge.",
   "live_preflight_20261003": {
     "pid": 36900,
     "build": 25480438,
@@ -2588,7 +2591,7 @@
     "installable": false,
     "multiplayer_verified": false
   },
-  "latest_research_commit": "15b6c6d",
+  "latest_research_commit": "c32ffe4",
   "session_member_consumer_executor_20261003": {
     "build": 25480438,
     "entry_rva": "0x1093590",
@@ -2623,7 +2626,7 @@
     "native_callback_synthetic_test": "ep_consumer_native_callbacks_synthetic_passed",
     "live_callback_abi_verified": false
   },
-  "latest_status_receipt_commit": "cfe188f",
+  "latest_status_receipt_commit": "c32ffe4",
   "network_index_binding_20261003": {
     "build": 25480438,
     "receipt": "eight_player_candidate_20260927/Native/Bridge/network_index_binding_receipt_20261003.json",
@@ -2682,7 +2685,7 @@
     "installable": false,
     "multiplayer_verified": false,
     "preserved_user_audit": true,
-    "generated_from_commit": "cfe188f"
+    "generated_from_commit": "c32ffe4"
   },
   "player_creation_gate_adapter_20261003": {
     "build": 25480438,
@@ -2990,7 +2993,7 @@
     "installable": false,
     "multiplayer_verified": false,
     "preserved_user_audit": true,
-    "generated_from_commit": "cfe188f"
+    "generated_from_commit": "c32ffe4"
   },
   "player_resource_lifetime_guard_20261004": {
     "build": 25480438,
@@ -3109,5 +3112,22 @@
     "custom_probe_process_id": 15724,
     "followup_probe_log_created": false,
     "getter_invocation": false
+  },
+  "public_code_research_hd2runtime_modbuilder_20261007": {
+    "build": 25480438,
+    "repository": "https://github.com/SkyeShade/HD2Runtime-ModBuilder",
+    "commit": "0213552c9ea52d3dbf104f9dc5ae7efea6648c38",
+    "report": "five_player_feasibility_20260927/HD2RUNTIME_MODBUILDER_RESEARCH_20261007.json",
+    "claimed_app_version": "1.6.0",
+    "claimed_sdk": "0.28.1",
+    "authoring_and_zip_export": true,
+    "does_not_launch_game": true,
+    "does_not_deploy_mods": true,
+    "does_not_access_game_processes": true,
+    "network_admission_proven": false,
+    "player_creation_proven": false,
+    "entity_replication_proven": false,
+    "installable": false,
+    "multiplayer_verified": false
   }
 }
