@@ -121,3 +121,8 @@ P5不可因這個元件的單元測試通過而標完成，更不能抵銷P1/P2�
 ## 2026-10-04 Mod Options Menu 公開研究
 
 已核對 `CowboyBingus/ModOptionsMenu` v1.1（commit `46d693e421b44c4221ee6d984d26ea49997b948a`）與 `MrChengl11/hd2-lua-mod-skill` v1.8.1（commit `d1811983ab4fec230ede24bdd3d274f77b0b82fd`）。Mod Options Menu 只提供本地 MODS 設定 UI 和 Lua update hook，不能改變 Session/Party、peer admission、Player Clone 或 entity replication；因此只列為可選診斷 UI，不改變 `installable=false`、`runtime_verified=false`、`multiplayer_verified=false`。詳見 [MOD_OPTIONS_MENU_RESEARCH_20261004](MOD_OPTIONS_MENU_RESEARCH_20261004.zh-TW.md) 與收據。
+
+
+## 2026-10-07 HD2Runtime ModBuilder 公開研究
+
+固定研究提交 `0213552c9ea52d3dbf104f9dc5ae7efea6648c38` 的 ModBuilder 是 HD2Runtime 的 Windows authoring GUI：它依 SDK metadata 生成 guarded Lua 與 mod ZIP，可選擇輸出 Mod Options UI。README 明確說明它不啟動遊戲、不部署 mod、不存取遊戲程序，snapshot 只讀使用者選定檔案。沒有找到 Session/Party admission、peer allocation、Player Clone、entity replication 或 host migration writer；本倉庫只列為八人專案的 authoring/package 輔助，不能替代 native multiplayer bridge。詳細收據見 `HD2RUNTIME_MODBUILDER_RESEARCH_20261007.*`。
