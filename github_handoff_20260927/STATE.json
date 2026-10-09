@@ -996,7 +996,7 @@
     "five_player_feasibility_20260927/verification/native_peer_admission_bridge_boundary_verification_20261002.json": "f30a4b9517d3add9050cd24ff3fcd010d9ea1a72cb937bdddb6db250384abad0",
     "five_player_feasibility_20260927/verification/peer_admission_adapter_verification.json": "0b4f84491adeff2b424d02e6fa614c3630381dc12eaf4bc20af39914ff4319fc",
     "five_player_feasibility_20260927/verify_native_peer_admission_bridge_boundary.py": "6cf6d5d4e9898fab0083ea135f8ea13dbc129ff0f1d68d4e83f1c8bd34214ad7",
-    "github_handoff_20260927/HANDOFF.zh-TW.md": "ce8e15c4c71f32148309db7476c0b00818bf72b1c69b5b3be41cf73c9d869091",
+    "github_handoff_20260927/HANDOFF.zh-TW.md": "d4d6548aeaa7b3d845ac47fecd7d97f17ce4e8ad95474866910e60d0d80911e5",
     "github_handoff_20260927/SETUP.zh-TW.md": "1c362594a6a8e70fe5fb9fce5f0d23dcf6d160a6338345f2f4b717d538d8003b",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_disasm_20261002.json": "48f504badebad800a8439494bc386e3dff61e1818168a40916d8cffd618790c9",
     "eight_player_candidate_20260927/Native/SessionMembers/platform_member_leaf_reader_patch.py": "9808f073e958fdc464d47bc10a459f328d14ebde9a765f429e13153786a5734a",
@@ -1634,7 +1634,10 @@
     "將 Sidecar、ClientSidecar、ClientReplication 與 PlayerResource 的 caller-owned storage provisioned to the 16-player hard contract limit；active bound 仍由 EP_CAPACITY_CONTRACT 控制，未把儲存容量當成遊戲容量證明。",
     "Native Bridge 改為在 init 時複製 capacity contract，固定 sidecar active bound，拒絕外部 contract 生命週期變更，並在每次 admission/reconnect 前驗證 contract、sidecar capacity 與 invariant。",
     "修正 ClientReplication ordinal sentinel 初始化，避免以 memset 將 16 寫成 0x10101010；重新建置 Bridge、Sidecar、ClientSidecar、ClientReplication 與 PlayerResource 合成 harness 全部通過。",
-    "同步更新 16-slot 離線收據、容量索引與 source/binary SHA-256；所有 production、installable、runtime 與 multiplayer 欄位仍為 false。"
+    "同步更新 16-slot 離線收據、容量索引與 source/binary SHA-256；所有 production、installable、runtime 與 multiplayer 欄位仍為 false。",
+    "將 Native/MidGate capacity 與 allocator stub 改為透過獨立 limit callback 傳遞 active capacity，並在 1..16 內夾限，移除中段模板固定 8 的比較。",
+    "MidGate executor 重新保存 owner、allocator destination、occupied/index 與 continuation 寄存器；capacity code 116 bytes、allocator code 122 bytes，合成 install/remove、DLL load 與 Python 4/4 verifier 通過。",
+    "MidGate 收據、verification、HANDOFF 與 STATE SHA-256 已同步；production_executable、runtime_verified、installable、multiplayer_verified 仍為 false。"
   ],
   "next_offline_work": [
     "Resolve the two admission call targets and their return/state/cleanup ABI from a permitted read-only runtime trace before binding any player or peer writer; retain the static call-shape contract as a version gate only.",
@@ -1692,7 +1695,7 @@
   },
   "latest_research_update_date": "2026-10-09",
   "priority_assessment": "five_player_feasibility_20260927/PEER_ADMISSION_PRIORITY.zh-TW.md",
-  "last_update_scope": "Added 16-slot bounded offline storage across Sidecar, client sidecar, client replication and player resource adapters; added runtime active-capacity binding to Native Bridge with contract snapshot ownership. Session/Party ABI, real Player Clone/entity creation and multiplayer gates remain closed.",
+  "last_update_scope": "Added 16-slot bounded offline storage and dynamic 1..16 MidGate limit callbacks across the capacity bridge; Session/Party ABI, real Player Clone/entity creation, client replication and multiplayer gates remain closed.",
   "live_preflight_20261003": {
     "pid": 36900,
     "build": 25480438,
@@ -3215,6 +3218,34 @@
       "real Session/Party allocator and release ABI",
       "player creation and Player Clone ABI",
       "entity replication callbacks on every client",
+      "eight-account mission lifecycle receipt"
+    ]
+  },
+  "capacity_midgate_dynamic_20261009": {
+    "status": "offline_dynamic_bridge_only",
+    "build": 25480438,
+    "capacity_range": "1..16",
+    "callbacks": [
+      "occupied_or_index",
+      "limit"
+    ],
+    "code_sizes": {
+      "capacity_stub": 116,
+      "allocator_stub": 122
+    },
+    "tests": {
+      "executor": "ep_midgate_executor_synthetic_passed",
+      "dll_exports": "ep_midgate_executor_dll_exports_passed",
+      "python": "4 passed"
+    },
+    "production_executable": false,
+    "runtime_verified": false,
+    "installable": false,
+    "multiplayer_verified": false,
+    "remaining_blockers": [
+      "real owner and callback ABI binding",
+      "confirmed-peer receiver and Player Clone creation",
+      "client entity replication and thread quiescence",
       "eight-account mission lifecycle receipt"
     ]
   }

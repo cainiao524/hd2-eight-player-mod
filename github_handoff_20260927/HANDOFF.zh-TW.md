@@ -596,3 +596,20 @@ sidecar bound 和 invariant。
 ABI、Player Clone 建立、client entity replication、安裝、實機及八帳號任務全流程
 仍未閉合。`production_executable=false`、`runtime_verified=false`、
 `installable=false`、`multiplayer_verified=false` 必須保持不變。
+
+## 2026-10-09 dynamic MidGate capacity continuation
+
+`Native/MidGate` 的 capacity 與 allocator machine-code stub 已改為接受獨立的
+`limit` callback，將有效上限夾在 `1..16`，再把 occupied count、authoritative
+network index、原生 `-1` sentinel 與 continuation 所需的寄存器完整恢復。capacity
+stub 現在使用 116-byte code，allocator stub 使用 122-byte code；owner 由非揮發
+寄存器保存，allocator 也保存原本的 destination `rdx`。這移除了中段模板內固定 8
+的比較，讓 Lua/Native 容量契約可以在同一 ABI 邊界傳遞 4、5、8、12 或 16 的已驗證
+設定值。
+
+`ep_midgate_executor_synthetic_passed`、DLL export load check、MidGate Python
+static verifier 4/4 與整合收據重算均通過。這仍是固定 build 的 caller-owned
+machine-code 候選：真實 limit/occupancy/allocator owner、confirmed-peer receiver、
+Player Clone、client entity replication、thread quiescence 與八帳號同任務驗收尚未
+綁定，因此 `executable=false`、`installable=false`、`runtime_verified=false`、
+`multiplayer_verified=false` 維持不變。
