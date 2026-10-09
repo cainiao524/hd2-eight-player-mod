@@ -10,12 +10,14 @@ extern "C" {
 
 typedef uint32_t (__cdecl *EP_MIDGATE_CAPACITY_HELPER)(void* owner, uint32_t native_base_index);
 typedef int32_t (__cdecl *EP_MIDGATE_ALLOCATOR_HELPER)(void* owner, uint32_t start_index);
+typedef uint32_t (__cdecl *EP_MIDGATE_LIMIT_HELPER)(void* owner);
 
 typedef struct EP_MIDGATE_CALLBACKS {
     // Callers own callback code, owner state and thread quiescence.  The
     // executor stores addresses in the emitted stubs but never frees them.
     EP_MIDGATE_CAPACITY_HELPER capacity;
     EP_MIDGATE_ALLOCATOR_HELPER allocator;
+    EP_MIDGATE_LIMIT_HELPER limit;
 } EP_MIDGATE_CALLBACKS;
 
 typedef struct EP_MIDGATE_SITE_HOOK {

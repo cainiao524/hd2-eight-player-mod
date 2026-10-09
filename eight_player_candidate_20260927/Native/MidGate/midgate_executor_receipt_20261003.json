@@ -3,9 +3,9 @@
   "steam_build": 25480438,
   "module": "game.dll",
   "source_files": {
-    "ep_midgate_executor.cpp": "7fcc8ef8ba88bb459a1ab70dc07735aa8e939704f2d290afa8b394999257fc5a",
-    "ep_midgate_executor.h": "e2f234c51bf65bdf940867345ef1275068264eace67950e0f5b1036f4d514f5b",
-    "ep_midgate_executor_test.cpp": "2aa2159ea348e9f429a92ff25964d44b5d594ba93222287d51b2093e16b2eae9",
+    "ep_midgate_executor.cpp": "7c1d154dac3a67a97118e676d63ce2de5c85a3f57a336c84e5449d7df94a962c",
+    "ep_midgate_executor.h": "d125f4e67ae80beeb387e46be71ce6bbd1ab2a1b4413b7f796338b2490db34e2",
+    "ep_midgate_executor_test.cpp": "8d006841aa436c3264364809981baff35b956ddcd0d3ef0f01c922668b2663c0",
     "ep_midgate_executor_load_test.cpp": "d07b7232defe97433d400f75032a4abb6cfb3c5f5ce804870213d59b14a0d96b",
     "build_x64.bat": "e087c6047948a0766fd1355b4ecc84f1f8b3e32ad051579d2bf809bfddb65635"
   },
@@ -13,12 +13,12 @@
     "capacity": {
       "rva": "0x108C18F",
       "span": 38,
-      "code_size": 77
+      "code_size": 116
     },
     "allocator": {
       "rva": "0x108C3D8",
       "span": 15,
-      "code_size": 63
+      "code_size": 122
     }
   },
   "tests": {
@@ -28,9 +28,10 @@
     "partial_remove_retry": "covered by executor harness"
   },
   "abi_fixes": {
-    "owner_move": "49 8B C9 (mov rcx,r9)",
+    "owner_move": "49 8B CF / 49 8B CD (owner copied to a nonvolatile register)",
     "index_move": "41 8B D6 (mov edx,r14d)",
-    "capacity_register": "B9 08 00 00 00 before compare and continuation"
+    "limit_callback": "uint32_t limit(void* host_owner), clamped to 1..16",
+    "capacity_register": "active limit and occupied count are restored before continuation"
   },
   "process_started": false,
   "process_accessed": false,
@@ -41,5 +42,5 @@
   "installable": false,
   "runtime_verified": false,
   "multiplayer_verified": false,
-  "note": "Synthetic PE image only; caller-supplied helper and quiescence contracts remain unresolved."
+  "note": "Synthetic PE image only; caller-supplied occupied/limit callbacks and quiescence contracts remain unresolved."
 }

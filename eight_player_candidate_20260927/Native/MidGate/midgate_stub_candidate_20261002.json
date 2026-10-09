@@ -28,8 +28,9 @@
       "patch_sha256": "9009b4ab8f7446b1cd273504866b8d836d1a8846404a767b109d9bec6343bb4c",
       "stub_template_address": "0x1111111122222222",
       "helper_template_address": "0x5555555566666666",
-      "stub_bytes": "41514154415541564157554883ec20498bc9418bd648b86666666655555555ffd04883c4205d415f415e415d415c4159b90800000083f8087605b808000000ff25000000008888888877777777",
-      "stub_sha256": "1d0078224566d5bab74691cc0c297ba53605ebae15c457a03eaee140be2b6c22",
+      "limit_helper_template_address": "0x6666666677777777",
+      "stub_bytes": "41514154415541564157554883ec204d89cf498bcf418bd648b86666666655555555ffd04189c4498bcf48b87777777766666666ffd04589e24883c4205d415f415e415d415c41598bc885c97505b90100000083f9107605b910000000418bc23bc176028bc1ff25000000008888888877777777",
+      "stub_sha256": "088f4e8f59746c0943379572c78514d7b1ffd8c09112fff1ecfb80e22c8a9eae",
       "unwind_info_bytes": "010f07000f320b500af008e006d004c002900000",
       "unwind_sha256": "c7199b557b059fdb7328ec424d204349369c5536a808c9bb0f753096a024a477",
       "unwind_prolog_size": 15,
@@ -43,8 +44,8 @@
       ],
       "runtime_function": {
         "begin_address": 0,
-        "end_address": 77,
-        "unwind_data": 80,
+        "end_address": 116,
+        "unwind_data": 116,
         "alignment": "runtime allocation must be DWORD aligned"
       }
     },
@@ -60,19 +61,22 @@
       "patch_sha256": "5ddffe27bd532e4ba6e42bae6be5bba293d7bbc8299e5a2013532e2e47862fb7",
       "stub_template_address": "0x3333333344444444",
       "helper_template_address": "0x5555555566666666",
-      "stub_bytes": "4151524883ec20498bc9418bd648b86666666655555555ffd04883c4205a415983f808720a83f8ff7405b8ffffffff448bc049bbbbbbaaaa9999999941ffe3",
-      "stub_sha256": "738eea32b471434a4810d0e16362acec2dd4d8b5d254ca19503a3bad84a9fa86",
-      "unwind_info_bytes": "010703000732032002900000",
-      "unwind_sha256": "77e7d99e32b8399d51cda89ba7fbfbf1d43e3cb56f7205e3f86e1f669473b282",
-      "unwind_prolog_size": 7,
+      "limit_helper_template_address": "0x6666666677777777",
+      "stub_bytes": "415152415441554883ec204d89cd498bcd418bd648b86666666655555555ffd04189c4498bcd48b87777777766666666ffd04189c2458bc44883c420415d415c5a41594489d185c97505b90100000083f9107605b910000000418bc083f8ff74093bc17205b8ffffffff448bc049bbbbbbaaaa9999999941ffe3",
+      "stub_sha256": "beecad48fe465996a28900c1dd69c20a2a31d4878a0bc76cc5d046178d2b3c41",
+      "unwind_info_bytes": "010b05000b3207d005c0032002900000",
+      "unwind_sha256": "603799a2d4ea648e0f095b78a666eec9f2038a74d06f8c9371523a6e899519d9",
+      "unwind_prolog_size": 11,
       "preserved_registers": [
         "r9",
-        "rdx"
+        "rdx",
+        "r12",
+        "r13"
       ],
       "runtime_function": {
         "begin_address": 0,
-        "end_address": 63,
-        "unwind_data": 64,
+        "end_address": 122,
+        "unwind_data": 124,
         "alignment": "runtime allocation must be DWORD aligned"
       }
     }
@@ -87,6 +91,7 @@
   "abi_status": {
     "capacity_helper_signature": "uint32_t helper(void* host_owner, uint32_t native_base_index)",
     "allocator_helper_signature": "int32_t helper(void* host_owner, uint32_t start_index)",
+    "limit_helper_signature": "uint32_t limit(void* host_owner)",
     "owner_lifetime_closed": false,
     "confirmed_peer_dispatch_closed": false,
     "player_creation_closed": false,

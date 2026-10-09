@@ -33,6 +33,7 @@ ALLOCATOR_CONTINUATION = 0x108C3F7  # original outer-loop continuation
 TEMPLATE_CAPACITY_STUB = 0x1111111122222222
 TEMPLATE_ALLOCATOR_STUB = 0x3333333344444444
 TEMPLATE_HELPER = 0x5555555566666666
+TEMPLATE_LIMIT_HELPER = 0x6666666677777777
 TEMPLATE_CAPACITY_CONT = 0x7777777788888888
 TEMPLATE_ALLOCATOR_CONT = 0x99999999AAAABBBB
 
@@ -47,6 +48,7 @@ class PatchSite:
     patch: bytes
     stub: bytes
     helper: int
+    limit_helper: int
     stub_address: int
     unwind: bytes
     prolog_size: int
@@ -124,86 +126,77 @@ def _register_unwind(prolog_size: int, operations: list[tuple[int, int]]) -> byt
     return bytes(encoded)
 
 
-def _capacity_stub(helper: int, continuation: int, stub_address: int) -> tuple[bytes, bytes, int, tuple[str, ...]]:
-    # At this site RSP is the already allocated game frame.  Six pushes (48)
-    # plus shadow space (32) keep RSP 16-byte aligned before CALL.  The helper
-    # returns an occupied-count in EAX.  Invalid values are clamped to 8 so the
-    # original SUB produces a fail-closed zero/negative capacity.
+def _capacity_stub(helper: int, limit_helper: int, continuation: int, stub_address: int) -> tuple[bytes, bytes, int, tuple[str, ...]]:
+    # The host owner is saved in R15 so both callbacks observe the same
+    # lifetime-owned object.  The first callback returns occupied count and
+    # the second returns the active capacity; values are clamped to 1..16.
     code = bytearray()
-    code += _push(b"\x41\x51")  # push r9 (host owner)
-    code += _push(b"\x41\x54")  # push r12 (context)
-    code += _push(b"\x41\x55")  # push r13 (request count)
-    code += _push(b"\x41\x56")  # push r14 (base/index)
-    code += _push(b"\x41\x57")  # push r15 (request list)
-    code += _push(b"\x55")      # push rbp (game frame)
-    code += b"\x48\x83\xEC\x20"  # sub rsp,32-byte shadow space
-    # R9 carries the native host owner at this mid-function site.  The
-    # helper ABI receives it in RCX; 49 8B C9 is mov rcx,r9.  4C 8B C9
-    # would move the unrelated RCX value into R9 and silently lose owner.
-    code += b"\x49\x8B\xC9"       # mov rcx,r9 (owner)
-    code += b"\x41\x8B\xD6"       # mov edx,r14d (native base/index)
+    code += b"\x41\x51"  # push r9
+    code += b"\x41\x54"  # push r12
+    code += b"\x41\x55"  # push r13
+    code += b"\x41\x56"  # push r14
+    code += b"\x41\x57"  # push r15
+    code += b"\x55"      # push rbp
+    code += b"\x48\x83\xEC\x20"
+    code += b"\x4D\x89\xCF"  # mov r15,r9
+    code += b"\x49\x8B\xCF"  # mov rcx,r15
+    code += b"\x41\x8B\xD6"  # mov edx,r14d
     code += _mov_abs("rax", helper)
-    code += b"\xFF\xD0"           # call rax
-    code += b"\x48\x83\xC4\x20"  # add rsp,32
-    code += b"\x5D"               # pop rbp
-    code += b"\x41\x5F"           # pop r15
-    code += b"\x41\x5E"           # pop r14
-    code += b"\x41\x5D"           # pop r13
-    code += b"\x41\x5C"           # pop r12
-    code += b"\x41\x59"           # pop r9
-    # Reject helper results outside [0,8] by treating them as fully occupied.
-    # The original mov ecx,4 lies inside the overwritten span.  Set the
-    # replacement capacity before both branches so the continuation's
-    # original sub ecx,eax always has a defined eight-slot capacity.
-    code += b"\xB9\x08\x00\x00\x00"  # mov ecx,8
-    code += b"\x83\xF8\x08"       # cmp eax,8
-    code += b"\x76\x05"           # jbe valid
-    code += b"\xB8\x08\x00\x00\x00"  # mov eax,8
+    code += b"\xFF\xD0"
+    code += b"\x41\x89\xC4"  # mov r12d,eax
+    code += b"\x49\x8B\xCF"  # mov rcx,r15
+    code += _mov_abs("rax", limit_helper)
+    code += b"\xFF\xD0"
+    code += b"\x45\x89\xE2"  # mov r10d,r12d
+    code += b"\x48\x83\xC4\x20"
+    code += b"\x5D\x41\x5F\x41\x5E\x41\x5D\x41\x5C\x41\x59"
+    code += b"\x8B\xC8"      # mov ecx,eax
+    code += b"\x85\xC9\x75\x05"  # zero => minimum one
+    code += b"\xB9\x01\x00\x00\x00"
+    code += b"\x83\xF9\x10\x76\x05"  # cap at sixteen
+    code += b"\xB9\x10\x00\x00\x00"
+    code += b"\x41\x8B\xC2"  # mov eax,r10d
+    code += b"\x3B\xC1\x76\x02"  # occupied <= active limit
+    code += b"\x8B\xC1"
     code += _absolute_jump(continuation)
     unwind = _register_unwind(15, [
-        (15, 0x32),  # UWOP_ALLOC_SMALL, 32 bytes
-        (11, 0x50),  # UWOP_PUSH_NONVOL RBP
-        (10, 0xF0),  # UWOP_PUSH_NONVOL R15
-        (8, 0xE0),   # UWOP_PUSH_NONVOL R14
-        (6, 0xD0),   # UWOP_PUSH_NONVOL R13
-        (4, 0xC0),   # UWOP_PUSH_NONVOL R12
-        (2, 0x90),   # UWOP_PUSH_NONVOL R9
+        (15, 0x32), (11, 0x50), (10, 0xF0), (8, 0xE0),
+        (6, 0xD0), (4, 0xC0), (2, 0x90),
     ])
     return bytes(code), unwind, 15, ("r9", "r12", "r13", "r14", "r15", "rbp")
 
 
-def _allocator_stub(helper: int, continuation: int, stub_address: int) -> tuple[bytes, bytes, int, tuple[str, ...]]:
-    # The native loop carries host in R9 and the record destination in RDX.
-    # Preserve both volatile values across the sidecar allocator call.
+def _allocator_stub(helper: int, limit_helper: int, continuation: int, stub_address: int) -> tuple[bytes, bytes, int, tuple[str, ...]]:
+    # Preserve the native owner and destination while the allocator and limit
+    # callbacks run.  The active limit is independent from the stable index.
     code = bytearray()
-    code += b"\x41\x51"           # push r9
-    code += b"\x52"               # push rdx
-    code += b"\x48\x83\xEC\x20"  # shadow space
-    # R9 carries the native host owner; pass it through the Windows x64 first
-    # argument register RCX before calling the sidecar helper.
-    code += b"\x49\x8B\xC9"       # mov rcx,r9 (owner)
-    code += b"\x41\x8B\xD6"       # mov edx,r14d (start index)
+    code += b"\x41\x51\x52\x41\x54\x41\x55"
+    code += b"\x48\x83\xEC\x20"
+    code += b"\x4D\x89\xCD"  # mov r13,r9
+    code += b"\x49\x8B\xCD"  # mov rcx,r13
+    code += b"\x41\x8B\xD6"  # mov edx,r14d
     code += _mov_abs("rax", helper)
-    code += b"\xFF\xD0"           # call rax
-    code += b"\x48\x83\xC4\x20"  # release shadow space
-    code += b"\x5A"               # pop rdx
-    code += b"\x41\x59"           # pop r9
-    # Valid return values are 0..7 or the native failure sentinel -1.
-    code += b"\x83\xF8\x08"       # cmp eax,8
-    code += b"\x72\x0A"           # jb valid
-    code += b"\x83\xF8\xFF"       # cmp eax,-1
-    code += b"\x74\x05"           # je valid
-    code += b"\xB8\xFF\xFF\xFF\xFF"  # mov eax,-1
-    code += b"\x44\x8B\xC0"       # mov r8d,eax
+    code += b"\xFF\xD0"
+    code += b"\x41\x89\xC4"  # mov r12d,eax
+    code += b"\x49\x8B\xCD"  # mov rcx,r13
+    code += _mov_abs("rax", limit_helper)
+    code += b"\xFF\xD0"
+    code += b"\x41\x89\xC2"  # mov r10d,eax
+    code += b"\x45\x8B\xC4"  # mov r8d,r12d
+    code += b"\x48\x83\xC4\x20\x41\x5D\x41\x5C\x5A\x41\x59"
+    code += b"\x44\x89\xD1"  # mov ecx,r10d
+    code += b"\x85\xC9\x75\x05\xB9\x01\x00\x00\x00"
+    code += b"\x83\xF9\x10\x76\x05\xB9\x10\x00\x00\x00"
+    code += b"\x41\x8B\xC0"  # mov eax,r8d
+    code += b"\x83\xF8\xFF\x74\x09\x3B\xC1\x72\x05"
+    code += b"\xB8\xFF\xFF\xFF\xFF"
+    code += b"\x44\x8B\xC0"
     code += _mov_abs("r11", continuation)
-    code += b"\x41\xFF\xE3"       # jmp r11
-    unwind = _register_unwind(7, [
-        (7, 0x32),  # UWOP_ALLOC_SMALL, 32 bytes
-        (3, 0x20),  # UWOP_PUSH_NONVOL RDX
-        (2, 0x90),  # UWOP_PUSH_NONVOL R9
+    code += b"\x41\xFF\xE3"
+    unwind = _register_unwind(11, [
+        (11, 0x32), (7, 0xD0), (5, 0xC0), (3, 0x20), (2, 0x90),
     ])
-    return bytes(code), unwind, 7, ("r9", "rdx")
-
+    return bytes(code), unwind, 11, ("r9", "rdx", "r12", "r13")
 
 def _patch(stub_address: int, span_length: int) -> bytes:
     jump = _absolute_jump(stub_address)
@@ -216,22 +209,22 @@ def _make_sites(rows: list[dict]) -> tuple[PatchSite, PatchSite]:
     capacity_expected = _span(rows, CAPACITY_SITE, CAPACITY_SPAN_END)
     allocator_expected = _span(rows, ALLOCATOR_SITE, ALLOCATOR_SPAN_END)
     capacity_stub, capacity_unwind, capacity_prolog, capacity_preserved = _capacity_stub(
-        TEMPLATE_HELPER, TEMPLATE_CAPACITY_CONT, TEMPLATE_CAPACITY_STUB)
+        TEMPLATE_HELPER, TEMPLATE_LIMIT_HELPER, TEMPLATE_CAPACITY_CONT, TEMPLATE_CAPACITY_STUB)
     allocator_stub, allocator_unwind, allocator_prolog, allocator_preserved = _allocator_stub(
-        TEMPLATE_HELPER, TEMPLATE_ALLOCATOR_CONT, TEMPLATE_ALLOCATOR_STUB)
+        TEMPLATE_HELPER, TEMPLATE_LIMIT_HELPER, TEMPLATE_ALLOCATOR_CONT, TEMPLATE_ALLOCATOR_STUB)
     return (
         PatchSite(
             "host_capacity_midgate", CAPACITY_SITE, CAPACITY_SPAN_END,
             CAPACITY_CONTINUATION, capacity_expected,
             _patch(TEMPLATE_CAPACITY_STUB, CAPACITY_SPAN_END - CAPACITY_SITE),
-            capacity_stub, TEMPLATE_HELPER, TEMPLATE_CAPACITY_STUB,
+            capacity_stub, TEMPLATE_HELPER, TEMPLATE_LIMIT_HELPER, TEMPLATE_CAPACITY_STUB,
             capacity_unwind, capacity_prolog, capacity_preserved,
         ),
         PatchSite(
             "host_index_allocator_midloop", ALLOCATOR_SITE, ALLOCATOR_SPAN_END,
             ALLOCATOR_CONTINUATION, allocator_expected,
             _patch(TEMPLATE_ALLOCATOR_STUB, ALLOCATOR_SPAN_END - ALLOCATOR_SITE),
-            allocator_stub, TEMPLATE_HELPER, TEMPLATE_ALLOCATOR_STUB,
+            allocator_stub, TEMPLATE_HELPER, TEMPLATE_LIMIT_HELPER, TEMPLATE_ALLOCATOR_STUB,
             allocator_unwind, allocator_prolog, allocator_preserved,
         ),
     )
@@ -277,15 +270,16 @@ def _check_stub(site: PatchSite) -> None:
     # Native mid-function inputs are R9 (owner) and R14D (index).  Verify the
     # emitted bridge performs the Windows x64 owner/index moves explicitly;
     # the old 4C 8B C9 encoding moved RCX into R9 and passed the wrong object.
-    if b"\x49\x8B\xC9" not in site.stub or b"\x4C\x8B\xC9" in site.stub:
+    owner_move = b"\x49\x8B\xCF" if site.name == "host_capacity_midgate" else b"\x49\x8B\xCD"
+    if owner_move not in site.stub or b"\x4C\x8B\xC9" in site.stub:
         raise ValueError(f"owner_move_abi:{site.name}")
     if b"\x41\x8B\xD6" not in site.stub or b"\x44\x8B\xD6" in site.stub:
         raise ValueError(f"index_move_abi:{site.name}")
     if site.name == "host_capacity_midgate":
-        capacity_move = b"\xB9\x08\x00\x00\x00"
-        compare = b"\x83\xF8\x08"
-        if capacity_move not in site.stub or site.stub.index(capacity_move) > site.stub.index(compare):
-            raise ValueError("capacity_register_not_initialized")
+        if b"\x8B\xC8" not in site.stub or b"\x83\xF9\x10" not in site.stub:
+            raise ValueError("capacity_limit_not_clamped")
+        if b"\x41\x8B\xC2" not in site.stub:
+            raise ValueError("occupied_register_not_restored")
     if site.prolog_size <= 0 or len(site.unwind) < 4:
         raise ValueError(f"unwind_missing:{site.name}")
     if site.unwind[0] & 7 != 1:
@@ -312,9 +306,8 @@ def verify() -> dict:
         raise ValueError("unexpected_patch_span")
     if capacity.continuation != 0x108C1BA or allocator.continuation != 0x108C3F7:
         raise ValueError("unexpected_continuation")
-    # The two generated stubs use stack adjustments that keep the pre-CALL RSP
-    # alignment unchanged: 6*8+32 and 2*8+32 are both divisible by 16.
-    alignment = {"capacity": (6 * 8 + 32) % 16, "allocator": (2 * 8 + 32) % 16}
+    # Both generated stubs keep the pre-CALL RSP alignment unchanged.
+    alignment = {"capacity": (6 * 8 + 32) % 16, "allocator": (4 * 8 + 32) % 16}
     if alignment != {"capacity": 0, "allocator": 0}:
         raise ValueError("call_stack_alignment")
     return {
@@ -347,6 +340,7 @@ def verify() -> dict:
                 "patch_sha256": site.patch_sha256,
                 "stub_template_address": hex(site.stub_address),
                 "helper_template_address": hex(site.helper),
+                "limit_helper_template_address": hex(site.limit_helper),
                 "stub_bytes": site.stub.hex(),
                 "stub_sha256": site.stub_sha256,
                 "unwind_info_bytes": site.unwind.hex(),
@@ -372,6 +366,7 @@ def verify() -> dict:
         "abi_status": {
             "capacity_helper_signature": "uint32_t helper(void* host_owner, uint32_t native_base_index)",
             "allocator_helper_signature": "int32_t helper(void* host_owner, uint32_t start_index)",
+            "limit_helper_signature": "uint32_t limit(void* host_owner)",
             "owner_lifetime_closed": False,
             "confirmed_peer_dispatch_closed": False,
             "player_creation_closed": False,
@@ -402,4 +397,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

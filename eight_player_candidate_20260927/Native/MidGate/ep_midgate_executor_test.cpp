@@ -23,9 +23,12 @@ unsigned char* g_owner = nullptr;
 uint32_t __cdecl capacity_helper(void* owner, uint32_t) {
     return owner == g_owner ? *reinterpret_cast<uint32_t*>(owner) : 9u;
 }
+uint32_t __cdecl limit_helper(void* owner) {
+    return owner == g_owner ? *reinterpret_cast<uint32_t*>(static_cast<unsigned char*>(owner) + 8) : 0u;
+}
 int32_t __cdecl allocator_helper(void* owner, uint32_t start) {
     if (owner != g_owner) return -1;
-    return *reinterpret_cast<uint32_t*>(static_cast<unsigned char*>(owner) + 4) == 8u ? 8 : static_cast<int32_t>(start + 2);
+    return static_cast<int32_t>(*reinterpret_cast<uint32_t*>(static_cast<unsigned char*>(owner) + 4));
 }
 
 void write_headers(unsigned char* image) {
@@ -57,7 +60,7 @@ void write_wrapper(unsigned char* wrapper, void* target, bool capacity) {
     if (capacity) {
         wrapper[offset++] = 0x41; wrapper[offset++] = 0x89; wrapper[offset++] = 0xd6; // r14d <- edx
         // The real patch begins before the original ecx=4 instruction.  The
-        // emitted capacity stub supplies ecx=8 only after the helper returns,
+        // The emitted capacity stub supplies the active limit after callbacks,
         // so the helper must receive the untouched owner pointer in rcx.
     } else {
         wrapper[offset++] = 0x45; wrapper[offset++] = 0x89; wrapper[offset++] = 0xc6; // r14d <- r8d
@@ -110,7 +113,7 @@ int main() {
     write_continuations(image);
     write_wrapper(capacity_wrapper, image + kCapacityRva, true);
     write_wrapper(allocator_wrapper, image + kAllocatorRva, false);
-    EP_MIDGATE_CALLBACKS callbacks{capacity_helper, allocator_helper};
+    EP_MIDGATE_CALLBACKS callbacks{capacity_helper, allocator_helper, limit_helper};
     EP_MIDGATE_HOOK hook{};
     if (!check(!ep_midgate_install(25480437u, reinterpret_cast<HMODULE>(image), &callbacks, &hook), "build gate")) return 11;
     EP_MIDGATE_CALLBACKS missing{};
@@ -125,6 +128,7 @@ int main() {
     auto capacity_call = reinterpret_cast<int (__cdecl*)(void*, uint32_t)>(capacity_wrapper);
     auto allocator_call = reinterpret_cast<int (__cdecl*)(void*, void*, uint32_t)>(allocator_wrapper);
     *reinterpret_cast<uint32_t*>(owner) = 3;
+    *reinterpret_cast<uint32_t*>(owner + 8) = 8;
     int capacity_result = invoke_capacity(
         reinterpret_cast<EP_MIDGATE_CAPACITY_HELPER>(capacity_call), owner, 1);
     if (!check(capacity_result == 5, "capacity result")) return 16;
@@ -138,26 +142,29 @@ int main() {
     *reinterpret_cast<uint32_t*>(owner + 4) = 8;
     if (!check(invoke_allocator(allocator_call, owner, destination, 2) == static_cast<int32_t>(-1),
                "allocator invalid clamp")) return 19;
-    if (!check(ep_midgate_remove(&hook), "remove")) return 20;
+    *reinterpret_cast<uint32_t*>(owner + 8) = 16;
+    if (!check(invoke_allocator(allocator_call, owner, destination, 2) == 8,
+               "allocator dynamic limit")) return 20;
+    if (!check(ep_midgate_remove(&hook), "remove")) return 21;
     if (!check(std::memcmp(image + kCapacityRva, kCapacityExpected, sizeof(kCapacityExpected)) == 0 &&
                std::memcmp(image + kAllocatorRva, kAllocatorExpected, sizeof(kAllocatorExpected)) == 0,
-               "original bytes restored")) return 21;
+               "original bytes restored")) return 22;
     // Exercise partial cleanup: an externally changed allocator site must not
     // prevent the independent capacity site from being restored.  Once the
     // original detour bytes reappear, a second remove retries the survivor.
-    if (!check(ep_midgate_install(25480438u, reinterpret_cast<HMODULE>(image), &callbacks, &hook), "reinstall")) return 22;
+    if (!check(ep_midgate_install(25480438u, reinterpret_cast<HMODULE>(image), &callbacks, &hook), "reinstall")) return 23;
     image[kAllocatorRva] ^= 1;
-    if (!check(!ep_midgate_remove(&hook), "partial remove reports failure")) return 23;
+    if (!check(!ep_midgate_remove(&hook), "partial remove reports failure")) return 24;
     if (!check(hook.installed &&
                std::memcmp(image + kCapacityRva, kCapacityExpected, sizeof(kCapacityExpected)) == 0 &&
                image[kAllocatorRva] != 0xff,
-               "partial remove restored independent site")) return 24;
+               "partial remove restored independent site")) return 25;
     image[kAllocatorRva] ^= 1;
-    if (!check(ep_midgate_remove(&hook), "retry remove")) return 25;
+    if (!check(ep_midgate_remove(&hook), "retry remove")) return 26;
     if (!check(!hook.installed &&
                std::memcmp(image + kCapacityRva, kCapacityExpected, sizeof(kCapacityExpected)) == 0 &&
                std::memcmp(image + kAllocatorRva, kAllocatorExpected, sizeof(kAllocatorExpected)) == 0,
-               "retry restored survivor")) return 26;
+               "retry restored survivor")) return 27;
     VirtualFree(allocator_wrapper, 0, MEM_RELEASE);
     VirtualFree(capacity_wrapper, 0, MEM_RELEASE);
     VirtualFree(destination, 0, MEM_RELEASE);

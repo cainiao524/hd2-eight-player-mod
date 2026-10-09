@@ -13,10 +13,10 @@ constexpr DWORD kAllocatorEndRva = 0x108C3E7u;
 constexpr DWORD kAllocatorContinuationRva = 0x108C3F7u;
 constexpr SIZE_T kCapacitySpan = kCapacityEndRva - kCapacityRva;
 constexpr SIZE_T kAllocatorSpan = kAllocatorEndRva - kAllocatorRva;
-constexpr SIZE_T kCapacityCodeSize = 77;
-constexpr SIZE_T kAllocatorCodeSize = 63;
+constexpr SIZE_T kCapacityCodeSize = 116;
+constexpr SIZE_T kAllocatorCodeSize = 122;
 constexpr SIZE_T kUnwindCapacitySize = 20;
-constexpr SIZE_T kUnwindAllocatorSize = 12;
+constexpr SIZE_T kUnwindAllocatorSize = 16;
 constexpr SIZE_T kCapacityUnwindOffset = (kCapacityCodeSize + 3u) & ~SIZE_T(3u);
 constexpr SIZE_T kAllocatorUnwindOffset = (kAllocatorCodeSize + 3u) & ~SIZE_T(3u);
 constexpr DWORD kImageTimestamp = 1790161983u;
@@ -31,21 +31,32 @@ constexpr BYTE kAllocatorExpected[kAllocatorSpan] = {
     0x44,0x38,0x30,0x74,0x0c,0xff,0xc1,0x48,0xff,0xc0,0x83,0xf9,0x04,0x72,0xf1};
 constexpr BYTE kCapacityCode[kCapacityCodeSize] = {
     0x41,0x51,0x41,0x54,0x41,0x55,0x41,0x56,0x41,0x57,0x55,0x48,0x83,0xec,0x20,
-    0x49,0x8b,0xc9,0x41,0x8b,0xd6,0x48,0xb8,0,0,0,0,0,0,0,0,0xff,0xd0,
-    0x48,0x83,0xc4,0x20,0x5d,0x41,0x5f,0x41,0x5e,0x41,0x5d,0x41,0x5c,0x41,0x59,
-    0xb9,0x08,0x00,0x00,0x00,0x83,0xf8,0x08,0x76,0x05,0xb8,0x08,0x00,0x00,0x00,
-    0xff,0x25,0x00,0x00,0x00,0x00,0,0,0,0,0,0,0,0};
+    0x4d,0x89,0xcf,0x49,0x8b,0xcf,0x41,0x8b,0xd6,0x48,0xb8,0x00,0x00,0x00,0x00,
+    0x00,0x00,0x00,0x00,0xff,0xd0,0x41,0x89,0xc4,0x49,0x8b,0xcf,0x48,0xb8,0x00,
+    0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xff,0xd0,0x45,0x89,0xe2,0x48,0x83,0xc4,
+    0x20,0x5d,0x41,0x5f,0x41,0x5e,0x41,0x5d,0x41,0x5c,0x41,0x59,0x8b,0xc8,0x85,
+    0xc9,0x75,0x05,0xb9,0x01,0x00,0x00,0x00,0x83,0xf9,0x10,0x76,0x05,0xb9,0x10,
+    0x00,0x00,0x00,0x41,0x8b,0xc2,0x3b,0xc1,0x76,0x02,0x8b,0xc1,0xff,0x25,0x00,
+    0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
+};
 constexpr BYTE kAllocatorCode[kAllocatorCodeSize] = {
-    0x41,0x51,0x52,0x48,0x83,0xec,0x20,0x49,0x8b,0xc9,0x41,0x8b,0xd6,
-    0x48,0xb8,0,0,0,0,0,0,0,0,0xff,0xd0,0x48,0x83,0xc4,0x20,0x5a,0x41,0x59,
-    0x83,0xf8,0x08,0x72,0x0a,0x83,0xf8,0xff,0x74,0x05,0xb8,0xff,0xff,0xff,0xff,
-    0x44,0x8b,0xc0,0x49,0xbb,0,0,0,0,0,0,0,0,0x41,0xff,0xe3};
+    0x41,0x51,0x52,0x41,0x54,0x41,0x55,0x48,0x83,0xec,0x20,0x4d,0x89,0xcd,0x49,
+    0x8b,0xcd,0x41,0x8b,0xd6,0x48,0xb8,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+    0xff,0xd0,0x41,0x89,0xc4,0x49,0x8b,0xcd,0x48,0xb8,0x00,0x00,0x00,0x00,0x00,
+    0x00,0x00,0x00,0xff,0xd0,0x41,0x89,0xc2,0x45,0x8b,0xc4,0x48,0x83,0xc4,0x20,
+    0x41,0x5d,0x41,0x5c,0x5a,0x41,0x59,0x44,0x89,0xd1,0x85,0xc9,0x75,0x05,0xb9,
+    0x01,0x00,0x00,0x00,0x83,0xf9,0x10,0x76,0x05,0xb9,0x10,0x00,0x00,0x00,0x41,
+    0x8b,0xc0,0x83,0xf8,0xff,0x74,0x09,0x3b,0xc1,0x72,0x05,0xb8,0xff,0xff,0xff,
+    0xff,0x44,0x8b,0xc0,0x49,0xbb,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x41,
+    0xff,0xe3
+};
 constexpr BYTE kCapacityUnwind[kUnwindCapacitySize] = {
     0x01,0x0f,0x07,0x00,0x0f,0x32,0x0b,0x50,0x0a,0xf0,0x08,0xe0,
-    0x06,0xd0,0x04,0xc0,0x02,0x90,0x00,0x00};
+    0x06,0xd0,0x04,0xc0,0x02,0x90,0x00,0x00
+};
 constexpr BYTE kAllocatorUnwind[kUnwindAllocatorSize] = {
-    0x01,0x07,0x03,0x00,0x07,0x32,0x03,0x20,0x02,0x90,0x00,0x00};
-static_assert(sizeof(kCapacityExpected) == kCapacitySpan);
+    0x01,0x0b,0x05,0x00,0x0b,0xd0,0x07,0xd0,0x05,0xc0,0x03,0x20,0x02,0x90,0x00,0x00
+};static_assert(sizeof(kCapacityExpected) == kCapacitySpan);
 static_assert(sizeof(kAllocatorExpected) == kAllocatorSpan);
 static_assert(sizeof(kCapacityCode) == kCapacityCodeSize);
 static_assert(sizeof(kAllocatorCode) == kAllocatorCodeSize);
@@ -125,14 +136,16 @@ void release_site(EP_MIDGATE_SITE_HOOK* site) {
 
 bool allocate_site(EP_MIDGATE_SITE_HOOK* site, const BYTE* template_bytes, SIZE_T code_size,
                    const BYTE* unwind, SIZE_T unwind_size, SIZE_T unwind_offset,
-                   void* helper, void* continuation, SIZE_T helper_offset, SIZE_T continuation_offset) {
-    if (!site || !template_bytes || !unwind || !helper || !continuation) return false;
+                   void* helper, void* limit, void* continuation,
+                   SIZE_T helper_offset, SIZE_T limit_offset, SIZE_T continuation_offset) {
+    if (!site || !template_bytes || !unwind || !helper || !limit || !continuation) return false;
     const SIZE_T allocation = unwind_offset + unwind_size;
     BYTE* code = static_cast<BYTE*>(VirtualAlloc(nullptr, allocation,
         MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE));
     if (!code) return false;
     std::memcpy(code, template_bytes, code_size);
     write_qword(code, helper_offset, reinterpret_cast<uintptr_t>(helper));
+    write_qword(code, limit_offset, reinterpret_cast<uintptr_t>(limit));
     write_qword(code, continuation_offset, reinterpret_cast<uintptr_t>(continuation));
     std::memcpy(code + unwind_offset, unwind, unwind_size);
     site->code = code;
@@ -148,15 +161,15 @@ bool allocate_site(EP_MIDGATE_SITE_HOOK* site, const BYTE* template_bytes, SIZE_
 
 bool install_site(EP_MIDGATE_SITE_HOOK* site, BYTE* target, const BYTE* expected, SIZE_T span,
                   const BYTE* template_bytes, SIZE_T code_size, const BYTE* unwind, SIZE_T unwind_size,
-                  SIZE_T unwind_offset, void* helper, void* continuation,
-                  SIZE_T helper_offset, SIZE_T continuation_offset) {
+                  SIZE_T unwind_offset, void* helper, void* limit, void* continuation,
+                  SIZE_T helper_offset, SIZE_T limit_offset, SIZE_T continuation_offset) {
     if (!site || !target || !expected || !matches(target, expected, span)) return false;
     std::memset(site, 0, sizeof(*site));
     site->target = target;
     site->stolen_size = span;
     std::memcpy(site->original, expected, span);
     if (!allocate_site(site, template_bytes, code_size, unwind, unwind_size, unwind_offset,
-                       helper, continuation, helper_offset, continuation_offset)) return false;
+                       helper, limit, continuation, helper_offset, limit_offset, continuation_offset)) return false;
     DWORD old = 0;
     if (!VirtualProtect(target, span, PAGE_EXECUTE_READWRITE, &old)) {
         release_site(site);
@@ -219,7 +232,7 @@ bool restore_site(EP_MIDGATE_SITE_HOOK* site) {
 extern "C" BOOL __cdecl ep_midgate_install(
     DWORD steam_build, HMODULE game_module,
     const EP_MIDGATE_CALLBACKS* callbacks, EP_MIDGATE_HOOK* out_hook) {
-    if (!out_hook || !game_module || !callbacks || !callbacks->capacity || !callbacks->allocator ||
+    if (!out_hook || !game_module || !callbacks || !callbacks->capacity || !callbacks->allocator || !callbacks->limit ||
         steam_build != kBuild || !module_identity(game_module)) return FALSE;
     const uintptr_t base = reinterpret_cast<uintptr_t>(game_module);
     if (!add_ok(base, kCapacityRva) || !add_ok(base, kAllocatorRva) ||
@@ -235,11 +248,11 @@ extern "C" BOOL __cdecl ep_midgate_install(
     if (!install_site(&out_hook->capacity, capacity_target, kCapacityExpected, kCapacitySpan,
                       kCapacityCode, kCapacityCodeSize, kCapacityUnwind, kUnwindCapacitySize,
                       kCapacityUnwindOffset, reinterpret_cast<void*>(callbacks->capacity),
-                      capacity_continuation, 23, 69)) return FALSE;
+                      reinterpret_cast<void*>(callbacks->limit), capacity_continuation, 26, 44, 108)) return FALSE;
     if (!install_site(&out_hook->allocator, allocator_target, kAllocatorExpected, kAllocatorSpan,
                       kAllocatorCode, kAllocatorCodeSize, kAllocatorUnwind, kUnwindAllocatorSize,
                       kAllocatorUnwindOffset, reinterpret_cast<void*>(callbacks->allocator),
-                      allocator_continuation, 15, 52)) {
+                      reinterpret_cast<void*>(callbacks->limit), allocator_continuation, 22, 40, 111)) {
         // Keep any surviving site state in out_hook so the caller can retry
         // cleanup if a protection transition failed during rollback.
         restore_site(&out_hook->capacity);
