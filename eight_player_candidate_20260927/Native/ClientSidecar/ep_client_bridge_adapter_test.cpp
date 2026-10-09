@@ -87,9 +87,9 @@ int main() {
     ep_client_adapter_release(&b);
     if (ep_client_adapter_remove(&b, 100, 900, index) != EP_BRIDGE_OK) return 16;
     if (ep_client_adapter_release_index(&b, 100, 900, index, 1) != EP_BRIDGE_OK) return 17;
-    g_forced_index = 8;
+    g_forced_index = EP_SIDECAR_CAPACITY;
     if (ep_client_adapter_allocate_index(&b, 101, 901, &index) != EP_BRIDGE_INDEX_REJECTED ||
-        index != 8 || !b.overflow[0].valid) return 171;
+        index != EP_SIDECAR_CAPACITY || !b.overflow[0].valid) return 171;
     if (ep_client_adapter_release_index(&b, 101, 901, index, 1) != EP_BRIDGE_INDEX_REJECTED ||
         !b.overflow[0].valid) return 172;
     if (ep_client_adapter_release_index(&b, 101, 901, index, 0) != EP_BRIDGE_OK ||

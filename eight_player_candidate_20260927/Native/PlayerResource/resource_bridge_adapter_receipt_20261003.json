@@ -6,10 +6,10 @@
   "contract": {
     "adapter_version": 1,
     "stage_callback_version": 1,
-    "capacity": 8,
+    "capacity": 16,
     "valid_network_indexes": [
       0,
-      7
+      15
     ],
     "transaction_order": [
       "resource_begin",
@@ -47,7 +47,7 @@
     "adapter_output": "ep_resource_bridge_adapter_synthetic_passed",
     "status": "passed",
     "coverage": [
-      "eight resource-backed admissions",
+      "sixteen resource-backed admissions",
       "three stage callbacks before publish",
       "index 4 departure and reconnect generation",
       "index 3 second-stage failure rollback",
@@ -57,14 +57,14 @@
   "source_sha256": {
     "ep_resource_bridge_adapter.h": "fd39822d24a24d6ab211b691cda4d097f3a3b1c9fd5faffe13ff03440099f3fc",
     "ep_resource_bridge_adapter.cpp": "ded758160597ce825a31f707efdeda2b18094d5d39ddd61b35b6b883f5431f37",
-    "ep_resource_bridge_adapter_test.cpp": "f1322c38ebef3fd3e87515c203f70300a3b79cddc9b66e897e5393fd9563899f",
-    "build_x64.bat": "153d3d223a96a8d2b99f2f83a2392aede864b38ec8e14bfd84fda4da220fb4c7",
+    "ep_resource_bridge_adapter_test.cpp": "1613a96b14899e26ade8e49c57c948eebfbe5a9762c47bc2b487656a2c8a6016",
+    "build_x64.bat": "aebc519d119c946ea857d8c7ef751240c3c9ed4dc23ce336909425a37d5f62fa",
     "README.zh-TW.md": "6a3a9aea44949996a96e227ee894c5a1746a2b68c636a564f8c963762e9eda01",
-    "test_resource_bridge_adapter.py": "7e4870dd26208d06a9a6717469718ff9e9c6c636d3028b631013eedcf17f9419"
+    "test_resource_bridge_adapter.py": "cc11cb3f9c29cc369858bb846da9c8e14f465876ef7707e9bebefc4f771276b9"
   },
   "binary_sha256": {
-    "ep_resource_bridge_adapter.dll": "96bfc033e0e3109db7c74c1d95554c8164051483cf49d2084ab89bcc634b39ea",
-    "ep_resource_bridge_adapter_test.exe": "72d0db4e4e09a631707ff15072eae2240fd55a418ec47db88360916ac807f0c3"
+    "ep_resource_bridge_adapter.dll": "1cbc67c517b7cf674278261b0d6c2f1828e131a57801ea0a17520070d84df7db",
+    "ep_resource_bridge_adapter_test.exe": "10fd413e5e48bd4b1dcbff0f6f7ddf63abe117a16ec3c91846ee72d164732f0e"
   },
   "checks": {
     "production_executable": false,

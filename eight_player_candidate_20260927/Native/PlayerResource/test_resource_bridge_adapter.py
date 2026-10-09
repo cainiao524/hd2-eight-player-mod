@@ -24,7 +24,7 @@ def test_transaction_contract_is_explicit_and_index_preserving():
     receipt = json.loads(RECEIPT.read_text(encoding="utf-8"))
     contract = receipt["contract"]
     assert contract["stage_callback_version"] == 1
-    assert contract["valid_network_indexes"] == [0, 7]
+    assert contract["valid_network_indexes"] == [0, 15]
     assert contract["exact_index_passthrough"] is True
     assert contract["transaction_order"][-1] == "resource_publish"
     assert "stage failure" in contract["fail_closed"]

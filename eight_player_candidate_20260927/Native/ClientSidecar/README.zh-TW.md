@@ -1,6 +1,6 @@
 # Client Sidecar 與四槽 Patch Manifest
 
-這個目錄保存 build `25480438` 的 client confirmed-peer 四槽審查結果，以及一個隔離的八槽資料模型。它涵蓋新增、移除、重排、兩條 reset 路徑、`+0x150` peer-keyed 鄰區、踢出／host migration 交接，以及 player creation gate。
+這個目錄保存 build `25480438` 的 client confirmed-peer 四槽審查結果，以及一個隔離的十六槽資料模型。它涵蓋新增、移除、重排、兩條 reset 路徑、`+0x150` peer-keyed 鄰區、踢出／host migration 交接，以及 player creation gate。
 
 `ep_client_sidecar.dll` 只操作呼叫者配置的 `EP_CLIENT_SIDECAR`。它不尋找遊戲物件、不載入 `game.dll`、不安裝 detour，也不呼叫 Session、Party 或玩家建立函式。移除保留 network index 洞位，generation 防止舊 token 清理新玩家；五組 sidecar 陣列會一起清除，模擬原本分散的固定四槽 reader/writer/cleanup 契約。
 
@@ -20,8 +20,8 @@
 
 ## Allocator-only 越界 index compensation（2026-10-04）
 
-`ep_client_bridge_adapter` 現在會保留 authoritative allocator 回傳的 `index >= 8`，將它放在獨立的 allocator-only retry table，並在 generation `0` 的 `release_index` 中用相同 peer、resource handle 和 index 完成釋放。`Native Bridge` 會在 allocator callback 已回傳 index 但同時回傳錯誤時，也走這條補償路徑。
+`ep_client_bridge_adapter` 現在會保留 authoritative allocator 回傳的 `index >= 16`，將它放在獨立的 allocator-only retry table，並在 generation `0` 的 `release_index` 中用相同 peer、resource handle 和 index 完成釋放。`Native Bridge` 會在 allocator callback 已回傳 index 但同時回傳錯誤時，也走這條補償路徑。
 
-若 allocator 回傳已被 adapter 保留的 0..7 index，adapter 不會釋放原本的 reservation，也會把 `0xFF` 當作沒有取得新 reservation 的 sentinel，避免 collision 誤刪現有玩家。
+若 allocator 回傳已被 adapter 保留的 0..15 index，adapter 不會釋放原本的 reservation，也會把 `0xFF` 當作沒有取得新 reservation 的 sentinel，避免 collision 誤刪現有玩家。
 
 這些測試只驗證離線 allocator/sidecar 交易；越界 index 不代表遊戲或 Session/Party 真的允許該 index。

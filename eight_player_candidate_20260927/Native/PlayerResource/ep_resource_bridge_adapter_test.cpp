@@ -143,8 +143,8 @@ int main() {
                     record.state == EP_RS_CONFIRMED && record.component_ordinal == 239,
                     "resource published after three stages");
     }
-    ok &= check(h.metadata_calls == 8 && h.stage_calls[0] == 8 &&
-                h.stage_calls[1] == 8 && h.stage_calls[2] == 8,
+    ok &= check(h.metadata_calls == EP_RESOURCE_CAPACITY && h.stage_calls[0] == EP_RESOURCE_CAPACITY &&
+                h.stage_calls[1] == EP_RESOURCE_CAPACITY && h.stage_calls[2] == EP_RESOURCE_CAPACITY,
                 "metadata and stage callbacks");
     ok &= check(ep_resource_validate(&adapter.resource) == EP_RS_OK,
                 "resource invariant after eight");

@@ -1,15 +1,16 @@
 #pragma once
 
 #include <windows.h>
+#include "../CapacityContract/ep_capacity_contract.h"
 
 // Offline-only contract for the client confirmed-peer replication sidecar.
 // It owns an isolated table and never locates, patches, injects, or writes a
 // game process.  A native bridge must provide reviewed callbacks before this
 // model can be used as an integration boundary.
 #define EP_CR_MAGIC 0x45504352u /* EPCR */
-#define EP_CR_VERSION 1u
+#define EP_CR_VERSION 2u
 #define EP_CR_BUILD 25480438u
-#define EP_CR_CAPACITY 8u
+#define EP_CR_CAPACITY EP_CAPACITY_HARD_LIMIT
 #define EP_CR_ARRAY_ADJACENT_8 (1u << 0)
 #define EP_CR_ARRAY_ADJACENT_16 (1u << 1)
 #define EP_CR_ARRAY_ADJACENT_16B (1u << 2)

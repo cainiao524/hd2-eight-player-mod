@@ -12,7 +12,7 @@ class ClientReplicationContractTests(unittest.TestCase):
         receipt_path = HERE / "client_replication_contract_receipt_20261004.json"
         receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
         self.assertEqual(receipt["build"], 25480438)
-        self.assertEqual(receipt["capacity"], 8)
+        self.assertEqual(receipt["capacity"], 16)
         self.assertFalse(receipt["decision"]["installable"])
         self.assertFalse(receipt["decision"]["multiplayer_verified"])
         self.assertEqual(receipt["array_groups"]["all_mask"], 0x1F)

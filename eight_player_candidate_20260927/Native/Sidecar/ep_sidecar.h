@@ -1,13 +1,17 @@
 #pragma once
 
 #include <windows.h>
+#include "../CapacityContract/ep_capacity_contract.h"
 
 // The sidecar owns only an isolated, caller-provided table.  It never locates
 // or writes a game module.  A production bridge must still wire each result
 // into the reviewed Session/Party/roster call sites.
-#define EP_SIDECAR_CAPACITY 8u
+// Storage is provisioned to the hard contract limit.  The active limit is
+// still supplied by EP_CAPACITY_CONTRACT and is checked by the bridge; this
+// table must not be confused with a proof that the game accepts 16 players.
+#define EP_SIDECAR_CAPACITY EP_CAPACITY_HARD_LIMIT
 #define EP_SIDECAR_MAGIC 0x45505343u /* "EPSC" */
-#define EP_SIDECAR_VERSION 1u
+#define EP_SIDECAR_VERSION 2u
 
 extern "C" {
 
@@ -57,12 +61,16 @@ typedef struct EP_SIDECAR {
     UINT32 initialized;
     UINT32 active_count;
     UINT32 confirmed_count;
-    UINT32 reserved;
+    UINT32 capacity;
     SRWLOCK lock;
     EP_SIDECAR_SLOT slots[EP_SIDECAR_CAPACITY];
 } EP_SIDECAR;
 
 __declspec(dllexport) EP_SIDECAR_STATUS __cdecl ep_sidecar_init(EP_SIDECAR* sidecar);
+// Caller-owned storage, initialized only while quiescent. The active bound
+// is independent from the number of slots reserved in this ABI.
+__declspec(dllexport) EP_SIDECAR_STATUS __cdecl ep_sidecar_init_capacity(
+    EP_SIDECAR* sidecar, UINT32 capacity);
 __declspec(dllexport) EP_SIDECAR_STATUS __cdecl ep_sidecar_destroy(EP_SIDECAR* sidecar);
 __declspec(dllexport) EP_SIDECAR_STATUS __cdecl ep_sidecar_reserve(
     EP_SIDECAR* sidecar, UINT64 peer_id, UINT64 resource_handle,

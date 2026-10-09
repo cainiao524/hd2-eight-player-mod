@@ -82,8 +82,8 @@ int main() {
 
     // Stable network indices and all five array groups are exercised without
     // compacting a removed slot.
-    EP_CR_TOKEN tokens[8]{};
-    for (UINT8 i = 0; i < 8; ++i) {
+    EP_CR_TOKEN tokens[EP_CR_CAPACITY]{};
+    for (UINT8 i = 0; i < EP_CR_CAPACITY; ++i) {
         if (append(&sidecar, i, 1000 + i, 9000 + i, EP_CR_ARRAY_ALL, &tokens[i]) != EP_CR_OK ||
             tokens[i].network_index != i || tokens[i].generation != 1 ||
             confirm(&sidecar, tokens[i]) != EP_CR_OK) return 14;
@@ -124,7 +124,7 @@ int main() {
 
     // Host migration requires quiescence and preserves every stable index.
     EP_CR_TOKEN invalid{};
-    if (append(&sidecar, 8, 1, 1, EP_CR_ARRAY_ALL, &invalid) != EP_CR_INDEX_REJECTED ||
+    if (append(&sidecar, EP_CR_CAPACITY, 1, 1, EP_CR_ARRAY_ALL, &invalid) != EP_CR_INDEX_REJECTED ||
         append(&sidecar, 2, 1000, 17, EP_CR_ARRAY_ALL, &invalid) != EP_CR_DUPLICATE_PEER) return 28;
     if (migration_begin(&sidecar, 0x200, 2, 7) != EP_CR_OK ||
         append(&sidecar, 2, 51, 52, EP_CR_ARRAY_ALL, &invalid) != EP_CR_MIGRATION_IN_PROGRESS ||
@@ -133,16 +133,16 @@ int main() {
         migration_abort(&sidecar, 7) != EP_CR_MIGRATION_NOT_PREPARED) return 25;
     if (append(&sidecar, 2, 51, 52, EP_CR_ARRAY_CONFIRMED_32, &invalid) != EP_CR_OK ||
         confirm(&sidecar, invalid) != EP_CR_OK) return 29;
-    UINT8 view[8]{};
+    UINT8 view[EP_CR_CAPACITY]{};
     UINT32 count = 0;
     using Array = EP_CR_STATUS(__cdecl*)(EP_CLIENT_REPLICATION_SIDECAR*, UINT32, UINT8*, UINT32*);
     auto get_array = reinterpret_cast<Array>(GetProcAddress(dll, "ep_cr_get_array"));
     using Enabled = UINT32(__cdecl*)();
     auto production_enabled = reinterpret_cast<Enabled>(GetProcAddress(dll, "ep_cr_production_enabled"));
-    if (!get_array || !production_enabled || get_array(&sidecar, 4, view, &count) != EP_CR_OK || count != 6 ||
+    if (!get_array || !production_enabled || get_array(&sidecar, 4, view, &count) != EP_CR_OK || count != EP_CR_CAPACITY - 2 ||
         view[0] != 0 || view[1] != 1 || view[2] != 5 || view[3] != 6 ||
-        view[4] != 7 || view[5] != 4 || view[6] != 8) return 30;
-    if (get_array(&sidecar, 3, view, &count) != EP_CR_OK || count != 7 || view[6] != 2) return 31;
+        view[4] != 7 || view[12] != 15 || view[13] != 4 || view[14] != EP_CR_CAPACITY) return 30;
+    if (get_array(&sidecar, 3, view, &count) != EP_CR_OK || count != EP_CR_CAPACITY - 1 || view[14] != 2) return 31;
     if (kick(&sidecar, invalid) != EP_CR_OK || production_enabled() != 0) return 32;
     if (reset(&sidecar) != EP_CR_OK || validate(&sidecar) != EP_CR_OK ||
         ctx.bad_masks != 0 || ctx.slot_events == 0 || ctx.owner_events < 2) return 26;

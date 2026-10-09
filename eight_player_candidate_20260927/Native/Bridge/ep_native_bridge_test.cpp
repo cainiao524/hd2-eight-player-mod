@@ -152,9 +152,9 @@ int main() {
                 "retry releases owner lease");
     for (UINT8 i = 0; i < EP_SIDECAR_CAPACITY; ++i)
         ok &= check(ep_bridge_admit(&bridge, 100 + i, 200 + i, &admissions[i]) == EP_BRIDGE_OK, "admit");
-    ok &= check(ep_bridge_admit(&bridge, 999, 999, &admissions[0]) == EP_BRIDGE_NO_SLOT, "ninth rejected");
-    ok &= check(harness.confirmed == 9 && harness.created == 8, "callbacks");
-    ok &= check(harness.retained == 11 && harness.released == 11, "owner lease admission");
+    ok &= check(ep_bridge_admit(&bridge, 999, 999, &admissions[0]) == EP_BRIDGE_NO_SLOT, "seventeenth rejected");
+    ok &= check(harness.confirmed == 17 && harness.created == 16, "callbacks");
+    ok &= check(harness.retained == 19 && harness.released == 19, "owner lease admission");
     ok &= check(ep_bridge_depart(&bridge, admissions[4]) == EP_BRIDGE_OK, "depart");
     EP_BRIDGE_ADMISSION reconnect{};
     ok &= check(ep_bridge_reconnect(&bridge, 1004, 2004, &reconnect) == EP_BRIDGE_OK, "reconnect");
@@ -164,7 +164,7 @@ int main() {
     ok &= check(ep_bridge_depart(&bridge, reconnect) == EP_BRIDGE_OK, "cleanup reconnect");
     ok &= check(harness.retained == harness.released, "owner lease balanced");
     ok &= check(harness.allocated_count == harness.released_indexes &&
-                harness.allocated_count == 11, "authoritative index reservations balanced");
+                harness.allocated_count == 19, "authoritative index reservations balanced");
     ok &= check(ep_bridge_destroy(&bridge) == EP_BRIDGE_OK, "destroy");
     // The legacy eight-slot harness also accepts the shared capacity contract
     // for smaller verified limits.  The sixth authoritative index must be

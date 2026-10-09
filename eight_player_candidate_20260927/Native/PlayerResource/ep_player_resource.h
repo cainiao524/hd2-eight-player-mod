@@ -1,13 +1,14 @@
 #pragma once
 
 #include <windows.h>
+#include "../CapacityContract/ep_capacity_contract.h"
 
 // Offline native-shaped player-resource transaction table.  It mirrors the
 // fixed-build callback ordering discovered in the ABI audit, but it never
 // resolves an RVA, calls game code, or writes a game process.
-#define EP_RESOURCE_CAPACITY 8u
+#define EP_RESOURCE_CAPACITY EP_CAPACITY_HARD_LIMIT
 #define EP_RESOURCE_MAGIC 0x45505253u /* "EPRS" */
-#define EP_RESOURCE_VERSION 1u
+#define EP_RESOURCE_VERSION 2u
 #define EP_RESOURCE_MAX_CALLBACKS 3u
 
 extern "C" {

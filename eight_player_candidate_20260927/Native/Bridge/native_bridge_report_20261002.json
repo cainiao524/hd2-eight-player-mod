@@ -1,6 +1,6 @@
 {
   "schema": "ep-native-bridge-report/v4",
-  "candidate": "eight-slot-native-bridge-orchestration",
+  "candidate": "sixteen-slot-native-bridge-orchestration",
   "build": {
     "steam_build": 25480438,
     "target_arch": "x64",
@@ -13,13 +13,13 @@
     "integration_test_output": "ep_bridge_client_integration_passed"
   },
   "contract": {
-    "capacity": 8,
-    "valid_network_indexes": "0..7",
+    "capacity": 16,
+    "valid_network_indexes": "0..15",
     "preflight": "build/site/callback guarded",
     "admission": "reserve-confirm-create-confirm-sidecar with rollback",
     "departure": "cleanup callback then sidecar remove",
     "reconnect": "hole preserving, generation safe",
-    "ninth_player": "rejected",
+    "ninth_player": "seventeenth player rejected",
     "owner_lifetime": "retain before callback transaction, release after confirm/create/remove or rollback; unbalanced leases fail the synthetic harness",
     "failure_cleanup": "failed native remove/sidecar cleanup retains exact admission identity and owner lease; explicit full-token retry required",
     "concurrency": "single synchronous operation guard; busy returns fail-closed",
@@ -36,23 +36,23 @@
   "artifacts": [
     {
       "path": "ep_native_bridge.h",
-      "sha256": "faa552c0cad5d6f8c56e592711bd333054b79a447b599ce285a4042f4b02b210"
+      "sha256": "242cec6a685068ee0818df190f53697642e99b86bcacc91f35dd9a333df0dd71"
     },
     {
       "path": "ep_native_bridge.cpp",
-      "sha256": "3ddb9f5a35e7b7ae0147a6d752d1f58f6b80076ed262c78005da5d3fa619ba02"
+      "sha256": "a67a1cc4e25cde794803a97f3af6bb178223de3950a2146e897720b0449c0ce4"
     },
     {
       "path": "ep_native_bridge_test.cpp",
-      "sha256": "6a00e0a0d1827da5f89bc33487def9f7fa376832ae955be165a419eeabb2b34d"
+      "sha256": "fb1e00fccb5362af50011c9dbc433400242c61274f37f35a19acfc2629220abb"
     },
     {
       "path": "build_x64.bat",
-      "sha256": "2eb7f271c2bbb1d0d4f2129a43a0afec95644680c40e81f8881b76318bd9f07a"
+      "sha256": "246903044af4b130c9083b46a32870f77d59a4453435cce31fa2283b52ee8cde"
     },
     {
       "path": "README.zh-TW.md",
-      "sha256": "def6531a702fce301ed8714a96953b736ac4c8e02c101e7711ee1b840935f455"
+      "sha256": "8deaae22922369dc1c437be17c9a535393e29c5206299c8234f4fea21eddf24e"
     },
     {
       "path": "test_native_bridge.py",
@@ -60,35 +60,35 @@
     },
     {
       "path": "ep_native_bridge.dll",
-      "sha256": "3412ccd4e6bd79a00162d874ae7c0d3f8a65d0df3c961f765031c8eabb245606"
+      "sha256": "e5c4a72580a7a44bf2149eb1f3ef2125658c72da9210cd73f0075328d87f506e"
     },
     {
       "path": "ep_native_bridge_test.exe",
-      "sha256": "53722a73519697234046eacb9a7bbc6e7f02fdc1c72b715a75e6e512e4e3d314"
+      "sha256": "8e9f48f639d531d68b6d3118cf5b57bd1ae8acc62926ace69db24aece4685a9c"
     },
     {
       "path": "ep_native_bridge.lib",
-      "sha256": "928152e7d8dfd3005070116b4ffa9bf8d0ad86853c03b20f860b5ee454e6e969"
+      "sha256": "a5435f865d99acf185169784766a9d6ca6627826fb10a61908afa1568cd2ed77"
     },
     {
       "path": "ep_native_bridge.exp",
-      "sha256": "40cee908300bc0b4158427c67b3a6593783d6b5061bd62177e2d1f3e4dfdd115"
+      "sha256": "88dee00d722916f2fccce89bfac3fd426d7b5001ccb7e89f758ecc6f05aadf90"
     },
     {
       "path": "ep_native_bridge.obj",
-      "sha256": "485cc4cf858e3542f0bec1717ee6f1a5a200545a92930a0def28d2824a07a38d"
+      "sha256": "df9656ada2910f3ef857af66e91790529697f53e5a77328f246c71c306c4fa3f"
     },
     {
       "path": "ep_native_bridge_test.obj",
-      "sha256": "c12f5e52cf176c59c6f188f8cff2954d3cfeb4bc0dbadaac161c6f6ecd466e6c"
+      "sha256": "dfd50b729304a953d46d312f1ce9cfbdce20f4960fa77e054c86f709e9a1c9c0"
     },
     {
       "path": "ep_bridge_client_integration_test.cpp",
-      "sha256": "282f3838c932407c20c3abf495c371638c9355340454081e61af7c345a7004ef"
+      "sha256": "6ddebf8f38bd31c7d2f77bf1bcc2ce688dabf453bb08d77a389950f81e0076e2"
     },
     {
       "path": "ep_bridge_client_integration_test.exe",
-      "sha256": "0b208b10fe0b0fa0dd56ca3ed22619325cb51026a5e9f40a5ad3ece29f886767"
+      "sha256": "af3b8d4377b21085b8b297d4dd906710617b470c81801dc1f5728f286406eabc"
     }
   ],
   "production": {

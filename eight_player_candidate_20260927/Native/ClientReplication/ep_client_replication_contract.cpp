@@ -138,7 +138,8 @@ EP_CR_STATUS clear_slot(EP_CLIENT_REPLICATION_SIDECAR* s, UINT8 index) {
             if (s->ordinal_to_index[group][ordinal] != index) continue;
             for (UINT32 next = ordinal + 1; next < s->array_count[group]; ++next)
                 s->ordinal_to_index[group][next - 1] = s->ordinal_to_index[group][next];
-            s->ordinal_to_index[group][--s->array_count[group]] = EP_CR_CAPACITY;
+            s->ordinal_to_index[group][--s->array_count[group]] =
+                static_cast<UINT8>(EP_CR_CAPACITY);
             break;
         }
     }
@@ -181,8 +182,10 @@ extern "C" EP_CR_STATUS __cdecl ep_cr_init(
     s->owner_epoch = owner_epoch;
     s->next_lease_id = 1;
     s->callbacks = *callbacks;
-    std::memset(s->ordinal_to_index, EP_CR_CAPACITY, sizeof(s->ordinal_to_index));
-    std::memset(s->ordinal_to_index, EP_CR_CAPACITY, sizeof(s->ordinal_to_index));
+    for (UINT32 group = 0; group < 5; ++group)
+        for (UINT32 ordinal = 0; ordinal < EP_CR_CAPACITY; ++ordinal)
+            s->ordinal_to_index[group][ordinal] =
+                static_cast<UINT8>(EP_CR_CAPACITY);
     return EP_CR_OK;
 }
 

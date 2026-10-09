@@ -1,7 +1,7 @@
 {
   "schema": "hd2_native_player_resource_sidecar_v1",
   "build": 25480438,
-  "capacity": 8,
+  "capacity": 16,
   "callback_order": [
     "first_callback",
     "second_callback",
@@ -9,15 +9,15 @@
   ],
   "roster_component": 239,
   "source_sha256": {
-    "ep_player_resource.h": "8939ab4129c286955ccc9caec41508b7b2759b1db82b0ec6631b8b93357e0d84",
+    "ep_player_resource.h": "ea00cba07c0801c3142006d077ae0742d11716122edd288385b4fecda56977ba",
     "ep_player_resource.cpp": "91bbfb84c0b86a41c022ef794775f78ae7c4c41200fdc7f21d46547cb6cf9465",
     "ep_player_resource_test.cpp": "2c08bbf965af209e6bcf8e86f5839ec04ba23552f7395db7225b2d862faa1efa",
-    "build_x64.bat": "153d3d223a96a8d2b99f2f83a2392aede864b38ec8e14bfd84fda4da220fb4c7",
+    "build_x64.bat": "aebc519d119c946ea857d8c7ef751240c3c9ed4dc23ce336909425a37d5f62fa",
     "README.zh-TW.md": "6a3a9aea44949996a96e227ee894c5a1746a2b68c636a564f8c963762e9eda01"
   },
   "binary_sha256": {
-    "ep_player_resource.dll": "6633b4dd5be7c771bb58b3903c12f6dac65e8994599738328ed239d76beee412",
-    "ep_player_resource_test.exe": "1a821dc0483ebfbf9cf473938cd75c96a9fa1c4dd7888cdaa72ca82a1b46d4e6"
+    "ep_player_resource.dll": "bde7089cf2f5a3dc9b1097884460f5a4afd7575e461345a2eefca59cb6aeb551",
+    "ep_player_resource_test.exe": "0f74eb0b4b9734cf832ee613f401b1218ec69bcd0736d4394f914d3a1c82b128"
   },
   "test": {
     "command": "cmd /c build_x64.bat",
@@ -25,8 +25,8 @@
     "output": "ep_player_resource_synthetic_passed",
     "coverage": [
       "live storage reinitialization refusal preserves pending record",
-      "all eight storage indexes 0..7 are bounded",
-      "occupied ninth admission is rejected",
+      "all sixteen storage indexes 0..15 are bounded",
+      "occupied seventeenth admission is rejected",
       "three callback stages publish only after completion",
       "third-stage failure releases the record",
       "callback-order failure releases the record",

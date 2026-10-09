@@ -4,7 +4,7 @@
 
 namespace {
 constexpr UINT32 kMagic = 0x45504341u; // EPCA
-constexpr UINT32 kVersion = 4u;
+constexpr UINT32 kVersion = 5u;
 
 EP_CLIENT_ADAPTER* as_adapter(void* owner) {
     auto* a = static_cast<EP_CLIENT_ADAPTER*>(owner);

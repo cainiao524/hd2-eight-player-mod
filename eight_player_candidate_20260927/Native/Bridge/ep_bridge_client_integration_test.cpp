@@ -104,26 +104,26 @@ int main() {
     // client table.  The adapter keeps it for generation-zero compensation,
     // and the bridge must retry a failed release without creating a sidecar
     // record.
-    f.forced_index = 8;
+    f.forced_index = 16;
     f.forced_allocate_status = EP_BRIDGE_INDEX_REJECTED;
     EP_BRIDGE_ADMISSION overflow{};
     ok &= check(ep_bridge_admit(&bridge, 30, 40, &overflow) == EP_BRIDGE_INDEX_REJECTED,
                 "out-of-range allocator result rejected after release");
-    ok &= check(!f.overflow_allocated[8] && bridge.cleanup_count == 0 &&
+    ok &= check(!f.overflow_allocated[16] && bridge.cleanup_count == 0 &&
                 client.client.confirmed_count == 0,
                 "out-of-range reservation compensated");
-    f.forced_index = 9;
+    f.forced_index = 17;
     f.fail_overflow_release = true;
     EP_BRIDGE_ADMISSION overflow_retry{};
     ok &= check(ep_bridge_admit(&bridge, 31, 41, &overflow_retry) ==
                     EP_BRIDGE_CLEANUP_REQUIRED &&
-                    overflow_retry.token.index == 9 &&
+                overflow_retry.token.index == 17 &&
                     overflow_retry.token.generation == 0 &&
                     bridge.cleanup_count == 1,
                 "out-of-range release failure retained");
     f.fail_overflow_release = false;
     ok &= check(ep_bridge_retry_cleanup(&bridge, overflow_retry) == EP_BRIDGE_OK &&
-                !f.overflow_allocated[9] && bridge.cleanup_count == 0,
+                !f.overflow_allocated[17] && bridge.cleanup_count == 0,
                 "out-of-range release retry completes");
     f.forced_index = 0xFF;
     f.forced_allocate_status = EP_BRIDGE_OK;
@@ -132,12 +132,12 @@ int main() {
     EP_BRIDGE_ADMISSION admissions[EP_SIDECAR_CAPACITY]{};
     for (UINT8 i = 0; i < EP_SIDECAR_CAPACITY; ++i) {
         ok &= check(ep_bridge_admit(&bridge, 100 + i, 200 + i, &admissions[i]) == EP_BRIDGE_OK,
-                    "eight client admissions");
+                    "sixteen client admissions");
         ok &= check(admissions[i].token.index == i, "stable network index");
     }
     ok &= check(bridge.sidecar.active_count == EP_SIDECAR_CAPACITY &&
                 client.client.confirmed_count == EP_SIDECAR_CAPACITY,
-                "native and client registries hold eight players");
+                "native and client registries hold sixteen players");
     const unsigned releases_before_collision = f.release_index_calls;
     f.forced_index = 0;
     EP_BRIDGE_ADMISSION collision{};
@@ -164,9 +164,9 @@ int main() {
                 "client reconnect cleanup");
     ok &= check(bridge.sidecar.active_count == 0 && client.client.confirmed_count == 0,
                 "both registries fully cleaned");
-    ok &= check(f.retains == f.releases, "eight-player owner leases balanced");
+    ok &= check(f.retains == f.releases, "sixteen-player owner leases balanced");
     ok &= check(f.allocate_calls == f.release_index_calls &&
-                f.allocate_calls == 13 && f.release_index_calls == 13,
+                f.allocate_calls == EP_SIDECAR_CAPACITY + 5 && f.release_index_calls == EP_SIDECAR_CAPACITY + 5,
                 "authoritative index reservations balanced");
     ok &= check(ep_bridge_destroy(&bridge) == EP_BRIDGE_OK, "bridge destroy");
     ok &= check(ep_client_adapter_destroy(&client) == EP_BRIDGE_OK, "client destroy");

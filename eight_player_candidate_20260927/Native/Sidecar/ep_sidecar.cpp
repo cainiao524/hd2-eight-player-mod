@@ -13,14 +13,15 @@ bool valid_state(UINT8 state) {
            state == EP_SC_SLOT_CONFIRMED;
 }
 
-bool valid_token(const EP_SIDECAR_TOKEN& token) {
-    return token.index < EP_SIDECAR_CAPACITY && token.generation != 0;
+bool valid_token(const EP_SIDECAR* sidecar, const EP_SIDECAR_TOKEN& token) {
+    return token.index < sidecar->capacity && token.generation != 0;
 }
 
 EP_SIDECAR_STATUS validate_unlocked(const EP_SIDECAR* sidecar) {
     if (!sidecar || sidecar->magic != EP_SIDECAR_MAGIC ||
         sidecar->version != EP_SIDECAR_VERSION || sidecar->initialized != 1 ||
-        sidecar->reserved != 0 || sidecar->active_count > EP_SIDECAR_CAPACITY ||
+        sidecar->capacity == 0 || sidecar->capacity > EP_SIDECAR_CAPACITY ||
+        sidecar->active_count > sidecar->capacity ||
         sidecar->confirmed_count > sidecar->active_count) {
         return EP_SC_INVALID_CONTEXT;
     }
@@ -29,6 +30,8 @@ EP_SIDECAR_STATUS validate_unlocked(const EP_SIDECAR* sidecar) {
     UINT32 confirmed = 0;
     for (UINT32 i = 0; i < EP_SIDECAR_CAPACITY; ++i) {
         const EP_SIDECAR_SLOT& slot = sidecar->slots[i];
+        if (i >= sidecar->capacity && slot.state != EP_SC_SLOT_FREE)
+            return EP_SC_INVARIANT_BROKEN;
         if (!valid_state(slot.state)) return EP_SC_INVARIANT_BROKEN;
         if (slot.state == EP_SC_SLOT_FREE) {
             // A freed slot may retain its last generation so stale tokens can
@@ -80,7 +83,7 @@ EP_SIDECAR_STATUS reserve_unlocked(EP_SIDECAR* sidecar, UINT64 peer_id,
     std::memset(out_token, 0, sizeof(*out_token));
 
     bool free_slot_seen = false;
-    for (UINT32 i = 0; i < EP_SIDECAR_CAPACITY; ++i) {
+    for (UINT32 i = 0; i < sidecar->capacity; ++i) {
         const EP_SIDECAR_SLOT& slot = sidecar->slots[i];
         if (slot.state == EP_SC_SLOT_FREE) {
             free_slot_seen = true;
@@ -91,7 +94,7 @@ EP_SIDECAR_STATUS reserve_unlocked(EP_SIDECAR* sidecar, UINT64 peer_id,
     }
     if (!free_slot_seen) return EP_SC_FULL;
 
-    for (UINT32 i = 0; i < EP_SIDECAR_CAPACITY; ++i) {
+    for (UINT32 i = 0; i < sidecar->capacity; ++i) {
         EP_SIDECAR_SLOT& slot = sidecar->slots[i];
         if (slot.state != EP_SC_SLOT_FREE) continue;
         const EP_SIDECAR_STATUS result = reserve_at_unlocked(
@@ -108,7 +111,7 @@ EP_SIDECAR_STATUS reserve_at_unlocked(EP_SIDECAR* sidecar, UINT8 index,
     if (!valid_identity(peer_id, resource_handle) || !out_token) {
         return EP_SC_INVALID_ARGUMENT;
     }
-    if (index >= EP_SIDECAR_CAPACITY) return EP_SC_INVALID_TOKEN;
+    if (index >= sidecar->capacity) return EP_SC_INVALID_TOKEN;
     std::memset(out_token, 0, sizeof(*out_token));
     for (UINT32 i = 0; i < EP_SIDECAR_CAPACITY; ++i) {
         const EP_SIDECAR_SLOT& slot = sidecar->slots[i];
@@ -133,7 +136,7 @@ EP_SIDECAR_STATUS reserve_at_unlocked(EP_SIDECAR* sidecar, UINT8 index,
 EP_SIDECAR_STATUS check_token_unlocked(const EP_SIDECAR* sidecar,
                                        const EP_SIDECAR_TOKEN& token,
                                        EP_SIDECAR_SLOT** out_slot) {
-    if (!valid_token(token)) return EP_SC_INVALID_TOKEN;
+    if (!valid_token(sidecar, token)) return EP_SC_INVALID_TOKEN;
     EP_SIDECAR_SLOT* slot = const_cast<EP_SIDECAR_SLOT*>(&sidecar->slots[token.index]);
     if (slot->generation != token.generation) return EP_SC_STALE_TOKEN;
     if (slot->state == EP_SC_SLOT_FREE) return EP_SC_STALE_TOKEN;
@@ -144,7 +147,14 @@ EP_SIDECAR_STATUS check_token_unlocked(const EP_SIDECAR* sidecar,
 }  // namespace
 
 extern "C" EP_SIDECAR_STATUS __cdecl ep_sidecar_init(EP_SIDECAR* sidecar) {
-    if (!sidecar) return EP_SC_INVALID_ARGUMENT;
+    return ep_sidecar_init_capacity(sidecar, EP_SIDECAR_CAPACITY);
+}
+
+extern "C" EP_SIDECAR_STATUS __cdecl ep_sidecar_init_capacity(
+    EP_SIDECAR* sidecar, UINT32 capacity) {
+    if (!sidecar || capacity == 0 || capacity > EP_SIDECAR_CAPACITY)
+        return EP_SC_INVALID_ARGUMENT;
+    if (sidecar->magic == EP_SIDECAR_MAGIC) return EP_SC_INVALID_STATE;
     // Initialization is a caller-owned quiescent operation.  The sidecar has
     // no heap allocations and can be placed in a host or client-owned arena.
     std::memset(sidecar, 0, sizeof(*sidecar));
@@ -152,6 +162,7 @@ extern "C" EP_SIDECAR_STATUS __cdecl ep_sidecar_init(EP_SIDECAR* sidecar) {
     sidecar->magic = EP_SIDECAR_MAGIC;
     sidecar->version = EP_SIDECAR_VERSION;
     sidecar->initialized = 1;
+    sidecar->capacity = capacity;
     return EP_SC_OK;
 }
 
@@ -173,7 +184,7 @@ extern "C" EP_SIDECAR_STATUS __cdecl ep_sidecar_destroy(EP_SIDECAR* sidecar) {
     sidecar->initialized = 0;
     sidecar->magic = 0;
     sidecar->version = 0;
-    sidecar->reserved = 0;
+    sidecar->capacity = 0;
     ReleaseSRWLockExclusive(&sidecar->lock);
     return EP_SC_OK;
 }
@@ -280,7 +291,7 @@ extern "C" EP_SIDECAR_STATUS __cdecl ep_sidecar_get_slot(
     std::memset(out_slot, 0, sizeof(*out_slot));
     const EP_SIDECAR_STATUS status = begin_exclusive(sidecar);
     if (status != EP_SC_OK) return status;
-    if (index >= EP_SIDECAR_CAPACITY) {
+    if (index >= sidecar->capacity) {
         ReleaseSRWLockExclusive(&sidecar->lock);
         return EP_SC_INVALID_ARGUMENT;
     }

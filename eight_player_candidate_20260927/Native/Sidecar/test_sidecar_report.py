@@ -11,8 +11,8 @@ REPORT_PATH = ROOT / "sidecar_report_20261002.json"
 class SidecarReportTests(unittest.TestCase):
     def test_report_artifacts_and_contract(self):
         report = json.loads(REPORT_PATH.read_text(encoding="utf-8"))
-        self.assertEqual(report["contract"]["capacity"], 8)
-        self.assertEqual(report["contract"]["valid_network_indexes"], "0..7")
+        self.assertEqual(report["contract"]["capacity"], 16)
+        self.assertEqual(report["contract"]["valid_network_indexes"], "0..15")
         self.assertTrue(report["contract"]["generation_safe"])
         self.assertTrue(report["contract"]["hole_preserving"])
         self.assertEqual(report["build"]["test_exit_code"], 0)

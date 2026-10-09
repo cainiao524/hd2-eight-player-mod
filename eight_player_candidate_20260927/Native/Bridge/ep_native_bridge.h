@@ -10,7 +10,7 @@
 // production installer must provide all callbacks and a matching build/site
 // observation; otherwise preflight and admission fail closed.
 #define EP_BRIDGE_MAGIC 0x45504252u /* "EPBR" */
-#define EP_BRIDGE_VERSION 4u
+#define EP_BRIDGE_VERSION 5u
 
 extern "C" {
 
@@ -78,8 +78,9 @@ typedef struct EP_BRIDGE_CONFIG {
     EP_BRIDGE_OWNER_RELEASE_CB release_owner;
     EP_BRIDGE_ALLOCATE_INDEX_CB allocate_index;
     EP_BRIDGE_RELEASE_INDEX_CB release_index;
-    // Optional for backward-compatible offline harnesses.  When present, the
-    // bridge must validate this contract before any callback is invoked.
+    // Optional for legacy harnesses. When omitted, init uses an internal
+    // hard-storage contract. Production callers should provide the host's
+    // versioned Session/Party contract.
     const EP_CAPACITY_CONTRACT* capacity;
 } EP_BRIDGE_CONFIG;
 
@@ -97,6 +98,7 @@ typedef struct EP_NATIVE_BRIDGE {
     volatile LONG operation_busy;
     UINT32 cleanup_count;
     EP_BRIDGE_CONFIG config;
+    EP_CAPACITY_CONTRACT capacity_snapshot;
     EP_SIDECAR sidecar;
     // Failed cleanup keeps the slot AND an owner lease until explicit retry.
     // Neither its index nor its resource may be reused in the meantime.

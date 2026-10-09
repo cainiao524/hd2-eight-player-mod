@@ -13,7 +13,7 @@ def sha(path: Path) -> str:
 def test_report_contract_and_hashes():
     report = json.loads(REPORT.read_text(encoding="utf-8"))
     assert report["build"] == 25480438
-    assert report["capacity"] == 8
+    assert report["capacity"] == 16
     assert report["callback_order"] == ["first_callback", "second_callback", "third_callback"]
     assert report["roster_component"] == 239
     assert report["test"]["status"] == "passed"

@@ -5,6 +5,7 @@
 #include "ep_sidecar.h"
 
 using InitFn = EP_SIDECAR_STATUS(__cdecl*)(EP_SIDECAR*);
+using InitCapacityFn = EP_SIDECAR_STATUS(__cdecl*)(EP_SIDECAR*, UINT32);
 using DestroyFn = EP_SIDECAR_STATUS(__cdecl*)(EP_SIDECAR*);
 using ReserveFn = EP_SIDECAR_STATUS(__cdecl*)(EP_SIDECAR*, UINT64, UINT64, EP_SIDECAR_TOKEN*);
 using ReserveAtFn = EP_SIDECAR_STATUS(__cdecl*)(EP_SIDECAR*, UINT8, UINT64, UINT64, EP_SIDECAR_TOKEN*);
@@ -23,6 +24,7 @@ int main() {
     HMODULE dll = LoadLibraryW(L"ep_sidecar.dll");
     if (!dll) return 10;
     auto init = reinterpret_cast<InitFn>(GetProcAddress(dll, "ep_sidecar_init"));
+    auto init_capacity = reinterpret_cast<InitCapacityFn>(GetProcAddress(dll, "ep_sidecar_init_capacity"));
     auto destroy = reinterpret_cast<DestroyFn>(GetProcAddress(dll, "ep_sidecar_destroy"));
     auto reserve = reinterpret_cast<ReserveFn>(GetProcAddress(dll, "ep_sidecar_reserve"));
     auto reserve_at = reinterpret_cast<ReserveAtFn>(GetProcAddress(dll, "ep_sidecar_reserve_at"));
@@ -32,11 +34,12 @@ int main() {
     auto get_slot = reinterpret_cast<GetSlotFn>(GetProcAddress(dll, "ep_sidecar_get_slot"));
     auto validate = reinterpret_cast<ValidateFn>(GetProcAddress(dll, "ep_sidecar_validate"));
     auto capacity = reinterpret_cast<CapacityFn>(GetProcAddress(dll, "ep_sidecar_capacity"));
-    if (!init || !destroy || !reserve || !reserve_at || !confirm || !remove || !reconnect ||
+    if (!init || !init_capacity || !destroy || !reserve || !reserve_at || !confirm || !remove || !reconnect ||
         !get_slot || !validate || !capacity) return 11;
 
     EP_SIDECAR sidecar{};
-    if (capacity() != 8 || init(&sidecar) != EP_SC_OK || validate(&sidecar) != EP_SC_OK) return 12;
+    if (capacity() != EP_SIDECAR_CAPACITY || capacity() != 16 ||
+        init(&sidecar) != EP_SC_OK || validate(&sidecar) != EP_SC_OK) return 12;
 
     // The authoritative Session/Party allocator may return a hole or a
     // non-dense ordinal.  The bridge must reserve that exact index and never
@@ -56,8 +59,8 @@ int main() {
         remove(&exact, exact_out) != EP_SC_OK ||
         destroy(&exact) != EP_SC_OK) return 35;
 
-    EP_SIDECAR_TOKEN tokens[8]{};
-    for (UINT8 i = 0; i < 8; ++i) {
+    EP_SIDECAR_TOKEN tokens[EP_SIDECAR_CAPACITY]{};
+    for (UINT8 i = 0; i < EP_SIDECAR_CAPACITY; ++i) {
         if (reserve(&sidecar, 1000 + i, 9000 + i, &tokens[i]) != EP_SC_OK ||
             tokens[i].index != i || tokens[i].generation != 1) return 13;
         if (confirm(&sidecar, tokens[i]) != EP_SC_OK) return 14;
@@ -101,7 +104,7 @@ int main() {
     if (remove(&sidecar, out) != EP_SC_OK) return 27;
 
     // A stale or out-of-range token cannot mutate a live slot.
-    EP_SIDECAR_TOKEN bad{8, {0, 0, 0}, 1};
+    EP_SIDECAR_TOKEN bad{EP_SIDECAR_CAPACITY, {0, 0, 0}, 1};
     if (confirm(&sidecar, bad) != EP_SC_INVALID_TOKEN) return 28;
     bad = tokens[0];
     bad.generation = 2;
@@ -120,6 +123,17 @@ int main() {
     if (destroy(&sidecar) != EP_SC_OK ||
         validate(&sidecar) != EP_SC_INVALID_CONTEXT ||
         reserve(&sidecar, 6000, 15000, &out) != EP_SC_INVALID_CONTEXT) return 33;
+
+    // The storage ABI is larger than an active contract.  A bounded table
+    // rejects the first index outside its active capacity without compacting
+    // or consuming a later slot.
+    EP_SIDECAR bounded{};
+    EP_SIDECAR_TOKEN bounded_token{};
+    if (init_capacity(&bounded, 8) != EP_SC_OK ||
+        reserve_at(&bounded, 7, 7000, 17000, &bounded_token) != EP_SC_OK ||
+        reserve_at(&bounded, 8, 7001, 17001, &out) != EP_SC_INVALID_TOKEN ||
+        remove(&bounded, bounded_token) != EP_SC_OK ||
+        destroy(&bounded) != EP_SC_OK) return 36;
     FreeLibrary(dll);
     std::puts("ep_sidecar_synthetic_passed");
     return 0;

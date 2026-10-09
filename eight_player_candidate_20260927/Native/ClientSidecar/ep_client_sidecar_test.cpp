@@ -25,14 +25,14 @@ int main() {
 
     EP_CLIENT_SIDECAR s{};
     if (init(&s, EP_CLIENT_SIDECAR_BUILD) != EP_CLIENT_OK) return 12;
-    UINT32 generation[8]{};
-    for (UINT32 i = 0; i < 8; ++i) {
+    UINT32 generation[EP_CLIENT_CAPACITY]{};
+    for (UINT32 i = 0; i < EP_CLIENT_CAPACITY; ++i) {
         if (gate(&s, i) != (i >= 4 ? EP_CLIENT_CREATION_REQUIRED : EP_CLIENT_OK)) return 13;
         if (append(&s, 1000 + i, 9000 + i, i, &generation[i]) != EP_CLIENT_OK || generation[i] != 1) return 14;
     }
     if (validate(&s) != EP_CLIENT_OK) return 15;
     UINT32 out = 0;
-    if (append(&s, 2000, 10000, 8, &out) != EP_CLIENT_INDEX_REJECTED) return 16;
+    if (append(&s, 2000, 10000, EP_CLIENT_CAPACITY, &out) != EP_CLIENT_INDEX_REJECTED) return 16;
     if (append(&s, 1000, 10001, 4, &out) != EP_CLIENT_DUPLICATE_PEER) return 17;
     if (remove(&s, 3, generation[3]) != EP_CLIENT_OK) return 18;
     EP_CLIENT_RECORD record{};

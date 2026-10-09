@@ -12,7 +12,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 BUILD = 25480438
-CAPACITY = 8
+CAPACITY = 16
 ARRAY_MASK = 0x1F
 REQUIRED_SOURCES = (
     "ep_client_replication_contract.h",
@@ -29,7 +29,7 @@ REQUIRED_TOKENS = (
     "EP_CR_EVENT_MIGRATION_ABORT",
     "EP_CR_ROLLBACK",
     "EP_CR_QUIESCENCE_REQUIRED",
-    "EP_CR_CAPACITY 8u",
+    "EP_CR_CAPACITY EP_CAPACITY_HARD_LIMIT",
     "ep_cr_production_enabled() { return 0; }",
 )
 
@@ -89,8 +89,8 @@ def build_receipt() -> dict:
         },
         "checks": {
             "fixed_build": True,
-            "all_indexes_0_to_7": True,
-            "index_8_rejected": True,
+            "all_indexes_0_to_15": True,
+            "index_16_rejected": True,
             "five_array_masks_explicit": True,
             "rollback_token_retained": True,
             "stale_generation_rejected": True,

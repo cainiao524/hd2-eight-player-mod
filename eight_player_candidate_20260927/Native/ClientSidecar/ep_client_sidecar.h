@@ -1,14 +1,17 @@
 #pragma once
 
 #include <windows.h>
+#include "../CapacityContract/ep_capacity_contract.h"
 
 // This is an isolated model of the client-side peer structures observed in
 // build 25480438.  It never locates or writes a game object.  The native
 // bridge must still supply the reviewed callbacks for each patch site.
 #define EP_CLIENT_SIDECAR_MAGIC 0x45504353u /* EPCS */
-#define EP_CLIENT_SIDECAR_VERSION 1u
+#define EP_CLIENT_SIDECAR_VERSION 2u
 #define EP_CLIENT_SIDECAR_BUILD 25480438u
-#define EP_CLIENT_CAPACITY 8u
+// Storage follows the versioned hard capacity contract.  Native client
+// creation remains separately gated by the reviewed build-specific adapter.
+#define EP_CLIENT_CAPACITY EP_CAPACITY_HARD_LIMIT
 
 extern "C" {
 

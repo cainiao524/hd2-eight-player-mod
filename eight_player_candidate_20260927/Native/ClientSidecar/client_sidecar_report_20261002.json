@@ -28,12 +28,12 @@
     "local_index_substitution_forbidden": true,
     "live_reinitialization_refused": "EP_BRIDGE_ALREADY_READY; active index reservations and client records are preserved",
     "zero_initialized_storage_required": true,
-    "allocator_overflow_reservation": "index >= 8 retained for generation-zero release/retry",
+    "allocator_overflow_reservation": "index >= 16 retained for generation-zero release/retry",
     "reserved_collision_no_release": true
   },
   "contract": {
-    "capacity": 8,
-    "valid_network_indexes": "0..7",
+    "capacity": 16,
+    "valid_network_indexes": "0..15",
     "holes_preserved": true,
     "generation_safe": true,
     "fixed_four_paths_manifested": true,
@@ -46,7 +46,7 @@
   "artifacts": [
     {
       "path": "ep_client_sidecar.h",
-      "sha256": "f33c11b6fbdbf0cbc50a72973a59d4e7ea74453a7f185f731e04a04fd9a6c594"
+      "sha256": "a4ff216f0f5ded40b1e103f80ea30e306230a3897cc1f93699c1b81b3e2e0f1e"
     },
     {
       "path": "ep_client_sidecar.cpp",
@@ -54,7 +54,7 @@
     },
     {
       "path": "ep_client_sidecar_test.cpp",
-      "sha256": "f0b00df6a9028691d4fc4646eba28007c1f3c048e64dad98cb3a07e1aea5c126"
+      "sha256": "f3040ad24e19693994914258191fdc7038e5a9872cb8207d5bee06a8494cbe66"
     },
     {
       "path": "ep_client_bridge_adapter.h",
@@ -62,11 +62,11 @@
     },
     {
       "path": "ep_client_bridge_adapter.cpp",
-      "sha256": "cb0be03cf633c0b634af05ccf8885586645550c0b18ea30ce5ec6b3f5638c024"
+      "sha256": "f75307257354121d53265f1bc96d5455cc67d71b3ea73ea81107600ceb6a170c"
     },
     {
       "path": "ep_client_bridge_adapter_test.cpp",
-      "sha256": "5a2cd37f015cf05d8c90d69d4a78f192513c568d88457087e1f9fe9427a79160"
+      "sha256": "3110e4d9cde05edd10cfdc6f6d859567ab0ad69f1aa4f9092b584701c7c13f4d"
     },
     {
       "path": "build_x64.bat",
@@ -74,7 +74,7 @@
     },
     {
       "path": "README.zh-TW.md",
-      "sha256": "4cb8a256e179e5becf87745fb86a146ffb802f127cb9cdc1eefe6de4073da0b1"
+      "sha256": "29c49c69f7a915f2ee6f2b5e724fa7ef1831d0d0822c8caab0a6796d36d584dc"
     },
     {
       "path": "client_four_slot_patch_manifest_20261002.json",
@@ -82,19 +82,19 @@
     },
     {
       "path": "ep_client_sidecar.dll",
-      "sha256": "5b1150d36973ff32721cb9378d53928eb767566e57245b1069e2a779e64652bd"
+      "sha256": "4f79231d0ec00ab7c754a9ca5c02feb2a7b9016fd625ead0419546cc43ca9a0d"
     },
     {
       "path": "ep_client_sidecar_test.exe",
-      "sha256": "b3d2cad8d76c33b7685c628b99e6b8df51e5f5fdc67c35cb01421441b6753da9"
+      "sha256": "97637569bbd4d70765b7996412fd76d872041291bbd57581fda34791973de22c"
     },
     {
       "path": "ep_client_bridge_adapter.dll",
-      "sha256": "abfb3a12fff959dce9d58c4dc67b3f9b75383ca436c6c24709af386543885753"
+      "sha256": "8ac1d4b435168810004e010c3798cca53dd32c86f7e20d164a70d1145df8e098"
     },
     {
       "path": "ep_client_bridge_adapter_test.exe",
-      "sha256": "e2bb318cf935228749de5bc8aa31d253ecaeacb1e5c87ada7c8926220b0e5ab5"
+      "sha256": "17ea242ce89241a5664cef5886dd58b825fa63aa96aefe1fee1276dff4db8a17"
     }
   ]
 }

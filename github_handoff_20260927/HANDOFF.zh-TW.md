@@ -571,3 +571,28 @@ generation-zero compensation，再返回容量拒絕；不會改用本機第一�
 bridge 邊界，尚未取得真實 Session/Party writer、第五至第八個 Player Clone、client
 entity replication 或同任務生命週期證據；`installable=false`、`runtime_verified=false`、
 `multiplayer_verified=false` 必須保持不變。
+## 2026-10-09 16-slot bounded storage continuation
+
+在先前的 4/5/8/12/16 Lua 容量契約與選單候選上，Native storage 現已提升到
+16 槽硬儲存上限：`Native/Sidecar`、`Native/ClientSidecar`、
+`Native/ClientReplication` 與 `Native/PlayerResource` 都使用同一份
+`EP_CAPACITY_HARD_LIMIT=16`；每次交易的 active bound 仍由
+`EP_CAPACITY_CONTRACT.effective_max_players` 決定。Sidecar 新增
+`ep_sidecar_init_capacity()`，Native Bridge 在 init 時複製 contract，避免呼叫者
+之後修改或釋放 contract 造成容量漂移，admit/reconnect 前也重新檢查 contract、
+sidecar bound 和 invariant。
+
+同一輪修正 ClientReplication ordinal sentinel 的初始化，並重新建置通過：
+`ep_sidecar_synthetic_passed`、`ep_native_bridge_synthetic_passed`、
+`ep_bridge_client_integration_passed`、`ep_client_sidecar_synthetic_passed`、
+`ep_client_bridge_adapter_synthetic_passed`、
+`ep_client_replication_contract_synthetic_passed`、
+`ep_player_resource_synthetic_passed`、
+`ep_resource_bridge_adapter_synthetic_passed`；相關 Python report/hash tests
+也通過。
+
+這只擴大隔離資料結構的安全儲存範圍，並沒有替真實遊戲移除 4 人限制。已知
+`PlayerCreationGate` 的固定 build patch、Session/Party allocator、confirmed-peer
+ABI、Player Clone 建立、client entity replication、安裝、實機及八帳號任務全流程
+仍未閉合。`production_executable=false`、`runtime_verified=false`、
+`installable=false`、`multiplayer_verified=false` 必須保持不變。

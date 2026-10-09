@@ -18,6 +18,14 @@ bool callbacks_present(const EP_BRIDGE_CONFIG& config) {
            config.release_index != nullptr;
 }
 
+bool capacity_ready(const EP_NATIVE_BRIDGE* bridge) {
+    EP_CAPACITY_REPORT report{};
+    return bridge->config.capacity == &bridge->capacity_snapshot &&
+        ep_capacity_validate(&bridge->capacity_snapshot, &report) == EP_CAPACITY_OK &&
+        report.effective_max_players == bridge->sidecar.capacity &&
+        ep_sidecar_validate(const_cast<EP_SIDECAR*>(&bridge->sidecar)) == EP_SC_OK;
+}
+
 struct OwnerLease {
     const EP_BRIDGE_CONFIG& config;
     bool held = false;
@@ -170,7 +178,7 @@ bool find_identity(const EP_NATIVE_BRIDGE* bridge, UINT64 peer_id,
                    bool* out_conflict) {
     if (out_conflict) *out_conflict = false;
     if (!bridge || !out_token) return false;
-    for (UINT8 i = 0; i < EP_SIDECAR_CAPACITY; ++i) {
+    for (UINT8 i = 0; i < bridge->sidecar.capacity; ++i) {
         EP_SIDECAR_SLOT slot{};
         if (ep_sidecar_get_slot(const_cast<EP_SIDECAR*>(&bridge->sidecar), i, &slot) != EP_SC_OK)
             return false;
@@ -204,14 +212,39 @@ int cleanup_for_identity(const EP_NATIVE_BRIDGE* bridge, UINT64 peer_id,
 extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_init(
     EP_NATIVE_BRIDGE* bridge, const EP_BRIDGE_CONFIG* config) {
     if (bridge == nullptr || config == nullptr) return EP_BRIDGE_INVALID_ARGUMENT;
-    if (bridge->magic == EP_BRIDGE_MAGIC && bridge->ready)
+    if (bridge->magic == EP_BRIDGE_MAGIC)
         return EP_BRIDGE_ALREADY_READY;
     if (!callbacks_present(*config)) return EP_BRIDGE_CALLBACK_MISSING;
+    EP_CAPACITY_CONTRACT requested_capacity{};
+    if (config->capacity != nullptr) {
+        requested_capacity = *config->capacity;
+    } else {
+        requested_capacity.version = EP_CAPACITY_CONTRACT_VERSION;
+        requested_capacity.build = EP_CAPACITY_BUILD;
+        requested_capacity.configured_max_players = EP_SIDECAR_CAPACITY;
+        requested_capacity.peer_capacity = EP_SIDECAR_CAPACITY;
+        requested_capacity.roster_capacity = EP_SIDECAR_CAPACITY;
+        requested_capacity.entity_capacity = EP_SIDECAR_CAPACITY;
+        requested_capacity.resource_capacity = EP_SIDECAR_CAPACITY;
+        requested_capacity.network_capacity = EP_SIDECAR_CAPACITY;
+        requested_capacity.verified_capacity = EP_SIDECAR_CAPACITY;
+        requested_capacity.allow_join_in_progress = TRUE;
+        requested_capacity.require_same_mod_version = TRUE;
+        requested_capacity.quiescent = TRUE;
+        requested_capacity.apply_mode = EP_CAPACITY_NEXT_LOBBY;
+    }
+    EP_CAPACITY_REPORT report{};
+    if (ep_capacity_validate(&requested_capacity, &report) != EP_CAPACITY_OK ||
+        report.effective_max_players > EP_SIDECAR_CAPACITY)
+        return EP_BRIDGE_CAPACITY_REJECTED;
     std::memset(bridge, 0, sizeof(*bridge));
     bridge->magic = EP_BRIDGE_MAGIC;
     bridge->version = EP_BRIDGE_VERSION;
     bridge->config = *config;
-    if (ep_sidecar_init(&bridge->sidecar) != EP_SC_OK) {
+    bridge->capacity_snapshot = requested_capacity;
+    bridge->capacity_snapshot.effective_max_players = report.effective_max_players;
+    bridge->config.capacity = &bridge->capacity_snapshot;
+    if (ep_sidecar_init_capacity(&bridge->sidecar, report.effective_max_players) != EP_SC_OK) {
         std::memset(bridge, 0, sizeof(*bridge));
         return EP_BRIDGE_INVALID_CONTEXT;
     }
@@ -225,12 +258,7 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_preflight(EP_NATIVE_BRIDGE* bridge
     if (bridge->config.steam_build != 25480438u) return EP_BRIDGE_BUILD_MISMATCH;
     if (!callbacks_present(bridge->config)) return EP_BRIDGE_CALLBACK_MISSING;
     if (!sites_match(bridge->config)) return EP_BRIDGE_SITE_MISMATCH;
-    if (bridge->config.capacity != nullptr) {
-        EP_CAPACITY_REPORT report{};
-        if (ep_capacity_validate(bridge->config.capacity, &report) != EP_CAPACITY_OK ||
-            report.effective_max_players > EP_SIDECAR_CAPACITY)
-            return EP_BRIDGE_CAPACITY_REJECTED;
-    }
+    if (!capacity_ready(bridge)) return EP_BRIDGE_CAPACITY_REJECTED;
     bridge->ready = 1;
     return EP_BRIDGE_OK;
 }
@@ -243,6 +271,7 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_admit(
     if (!bridge->ready) return EP_BRIDGE_NOT_READY;
     OperationGuard operation{bridge};
     if (!operation) return EP_BRIDGE_BUSY;
+    if (!capacity_ready(bridge)) return EP_BRIDGE_CAPACITY_REJECTED;
     const int identity_cleanup = cleanup_for_identity(bridge, peer_id, resource_handle);
     if (identity_cleanup >= 0) {
         *out_admission = bridge->cleanup[identity_cleanup].admission;
@@ -262,17 +291,7 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_admit(
         }
         return allocated == EP_BRIDGE_NO_SLOT ? EP_BRIDGE_NO_SLOT : EP_BRIDGE_INDEX_REJECTED;
     }
-    UINT32 allowed_capacity = EP_SIDECAR_CAPACITY;
-    if (bridge->config.capacity != nullptr) {
-        EP_CAPACITY_REPORT report{};
-        if (ep_capacity_validate(bridge->config.capacity, &report) != EP_CAPACITY_OK) {
-            const EP_BRIDGE_STATUS released = release_unreserved_index_or_remember(
-                bridge, peer_id, resource_handle, network_index, lease, out_admission);
-            if (released != EP_BRIDGE_OK) return released;
-            return EP_BRIDGE_CAPACITY_REJECTED;
-        }
-        allowed_capacity = report.effective_max_players;
-    }
+    const UINT32 allowed_capacity = bridge->sidecar.capacity;
     if (network_index >= allowed_capacity) {
         const EP_BRIDGE_STATUS released = release_unreserved_index_or_remember(
             bridge, peer_id, resource_handle, network_index, lease, out_admission);
@@ -349,6 +368,7 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_reconnect(
         return EP_BRIDGE_INVALID_ARGUMENT;
     OperationGuard operation{bridge};
     if (!operation) return EP_BRIDGE_BUSY;
+    if (!capacity_ready(bridge)) return EP_BRIDGE_CAPACITY_REJECTED;
     const int identity_cleanup = cleanup_for_identity(bridge, peer_id, resource_handle);
     if (identity_cleanup >= 0) {
         *out_admission = bridge->cleanup[identity_cleanup].admission;
@@ -375,17 +395,7 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_reconnect(
             }
             return allocated == EP_BRIDGE_NO_SLOT ? EP_BRIDGE_NO_SLOT : EP_BRIDGE_INDEX_REJECTED;
         }
-        UINT32 allowed_capacity = EP_SIDECAR_CAPACITY;
-        if (bridge->config.capacity != nullptr) {
-            EP_CAPACITY_REPORT report{};
-            if (ep_capacity_validate(bridge->config.capacity, &report) != EP_CAPACITY_OK) {
-                const EP_BRIDGE_STATUS released = release_unreserved_index_or_remember(
-                    bridge, peer_id, resource_handle, network_index, lease, out_admission);
-                if (released != EP_BRIDGE_OK) return released;
-                return EP_BRIDGE_CAPACITY_REJECTED;
-            }
-            allowed_capacity = report.effective_max_players;
-        }
+        const UINT32 allowed_capacity = bridge->sidecar.capacity;
         if (network_index >= allowed_capacity) {
             const EP_BRIDGE_STATUS released = release_unreserved_index_or_remember(
                 bridge, peer_id, resource_handle, network_index, lease, out_admission);

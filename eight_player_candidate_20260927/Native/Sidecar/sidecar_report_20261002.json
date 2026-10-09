@@ -1,6 +1,6 @@
 {
   "schema": "native-sidecar-report/v1",
-  "candidate": "eight-slot-native-sidecar",
+  "candidate": "sixteen-slot-native-sidecar",
   "build": {
     "target_arch": "x64",
     "toolchain": "MSVC BuildTools 18.8.2 / MSVC 14.51.36231",
@@ -10,8 +10,8 @@
     "test_output": "ep_sidecar_synthetic_passed"
   },
   "contract": {
-    "capacity": 8,
-    "valid_network_indexes": "0..7",
+    "capacity": 16,
+    "valid_network_indexes": "0..15",
     "states": [
       "FREE",
       "PENDING",
@@ -27,9 +27,9 @@
     "local_index_substitution_forbidden": true
   },
   "scenarios": [
-    "reserve and confirm all eight stable slots",
+    "reserve and confirm all sixteen stable slots",
     "reserve exact authoritative network index without local substitution",
-    "reject ninth reservation",
+    "reject seventeenth reservation",
     "reject duplicate peer and duplicate resource",
     "remove without compacting neighboring slots",
     "reuse a hole with an incremented generation",
@@ -42,15 +42,15 @@
   "artifacts": [
     {
       "path": "ep_sidecar.h",
-      "sha256": "045fedc963f19527a94f77d7de6b569e6052f5ceda0d665d79d20682c268fde0"
+      "sha256": "308e3feefbd9dc44c36e15cc050f9a41bc053794d60fa1ef56b9097e17670f73"
     },
     {
       "path": "ep_sidecar.cpp",
-      "sha256": "ddae8b22ae4d2715d84deafacbd702b013a5685dcf7664431926c0c46a643db7"
+      "sha256": "3a6d2caca2695bb7816ec10c33d56e8ac409be115a4be05f971f108d2bdc53cf"
     },
     {
       "path": "ep_sidecar_test.cpp",
-      "sha256": "bfa199628a8d650c84ffc879a704bb6263fdb10d3869bf6314817107301d9bcc"
+      "sha256": "a3bfad60b08fdf1cfd1c163790e2525e62ece954fca20865f978be1e1e346431"
     },
     {
       "path": "build_x64.bat",
@@ -58,19 +58,19 @@
     },
     {
       "path": "README.zh-TW.md",
-      "sha256": "8c8077a97d83079b7935d446e8d9c6a2a7e0cf0193b10affcffd0c019174a9a6"
+      "sha256": "dc654b478890552bfe72c1785bb2d8eaab517ab70d19754b726e0536e35eafb5"
     },
     {
       "path": "test_sidecar_report.py",
-      "sha256": "2181db7ac286e470af90b0b9836fc0d9758343b6b193cb4a594900803308c501"
+      "sha256": "d76974255886f5dbdeeb0ad3dfe2191a4bc3b684820a1822f65cf23014f6dd0c"
     },
     {
       "path": "ep_sidecar.dll",
-      "sha256": "ab845fdc896f6b20dbd7404df353a4123462b5f5a3d8c6af63b6bd193006625f"
+      "sha256": "eca67a26b59120dff3cceb91c4e9aa68d01683bbf34907bbe83a5d99cfd24f96"
     },
     {
       "path": "ep_sidecar_test.exe",
-      "sha256": "4e97bdd8f20ec7cd769d18bd19c2ece1b5a582987828f5e232cae577f57acd7f"
+      "sha256": "e1ae58135ecd73ae5b82c650192f89ff7e77f9c57622ba02369bf2f42819ed40"
     }
   ],
   "production": {
