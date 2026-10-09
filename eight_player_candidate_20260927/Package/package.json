@@ -1,8 +1,21 @@
 {
   "schema_version": 1,
-  "package_id": "hd2-eight-player-native-bridge",
-  "release": "0.15.0-staging",
+  "package_id": "hd2-player-capacity-native-bridge",
+  "release": "0.15.0-capacity-staging",
   "artifact_kind": "reversible_native_staging",
+  "capacity_contract": {
+    "schema_version": 1,
+    "verified_presets": [4, 5, 8, 12, 16],
+    "initial_verified_capacity": 4,
+    "hard_storage_limit": 16,
+    "host_authority": true,
+    "same_client_package_required": true
+  },
+  "dependencies": {
+    "bingus_shared_loader": ">=18",
+    "mod_options_menu": ">=1.1",
+    "hd2runtime": ">=0.28.0"
+  },
   "activation_allowed_only_when": {
     "steam_build": 25480438,
     "exe_version": "1.8.46015.0",
@@ -20,5 +33,5 @@
   },
   "rollback_manifest": "rollback.json",
   "diagnostics_output": "diagnostics.json",
-  "loader_boundary": "Lua/data loader cannot implement native Session, Party, peer admission or player creation changes"
+  "loader_boundary": "Lua/data loader supplies the Player Capacity menu and diagnostics; the native payload must implement and verify Session, Party, peer admission, roster, player creation and entity replication changes"
 }

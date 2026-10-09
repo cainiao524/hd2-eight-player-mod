@@ -225,6 +225,12 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_preflight(EP_NATIVE_BRIDGE* bridge
     if (bridge->config.steam_build != 25480438u) return EP_BRIDGE_BUILD_MISMATCH;
     if (!callbacks_present(bridge->config)) return EP_BRIDGE_CALLBACK_MISSING;
     if (!sites_match(bridge->config)) return EP_BRIDGE_SITE_MISMATCH;
+    if (bridge->config.capacity != nullptr) {
+        EP_CAPACITY_REPORT report{};
+        if (ep_capacity_validate(bridge->config.capacity, &report) != EP_CAPACITY_OK ||
+            report.effective_max_players > EP_SIDECAR_CAPACITY)
+            return EP_BRIDGE_CAPACITY_REJECTED;
+    }
     bridge->ready = 1;
     return EP_BRIDGE_OK;
 }
@@ -255,6 +261,23 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_admit(
             if (released != EP_BRIDGE_OK) return released;
         }
         return allocated == EP_BRIDGE_NO_SLOT ? EP_BRIDGE_NO_SLOT : EP_BRIDGE_INDEX_REJECTED;
+    }
+    UINT32 allowed_capacity = EP_SIDECAR_CAPACITY;
+    if (bridge->config.capacity != nullptr) {
+        EP_CAPACITY_REPORT report{};
+        if (ep_capacity_validate(bridge->config.capacity, &report) != EP_CAPACITY_OK) {
+            const EP_BRIDGE_STATUS released = release_unreserved_index_or_remember(
+                bridge, peer_id, resource_handle, network_index, lease, out_admission);
+            if (released != EP_BRIDGE_OK) return released;
+            return EP_BRIDGE_CAPACITY_REJECTED;
+        }
+        allowed_capacity = report.effective_max_players;
+    }
+    if (network_index >= allowed_capacity) {
+        const EP_BRIDGE_STATUS released = release_unreserved_index_or_remember(
+            bridge, peer_id, resource_handle, network_index, lease, out_admission);
+        if (released != EP_BRIDGE_OK) return released;
+        return EP_BRIDGE_CAPACITY_REJECTED;
     }
     if (network_index >= EP_SIDECAR_CAPACITY) {
         const EP_BRIDGE_STATUS released = release_unreserved_index_or_remember(
@@ -351,6 +374,23 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_reconnect(
                 if (released != EP_BRIDGE_OK) return released;
             }
             return allocated == EP_BRIDGE_NO_SLOT ? EP_BRIDGE_NO_SLOT : EP_BRIDGE_INDEX_REJECTED;
+        }
+        UINT32 allowed_capacity = EP_SIDECAR_CAPACITY;
+        if (bridge->config.capacity != nullptr) {
+            EP_CAPACITY_REPORT report{};
+            if (ep_capacity_validate(bridge->config.capacity, &report) != EP_CAPACITY_OK) {
+                const EP_BRIDGE_STATUS released = release_unreserved_index_or_remember(
+                    bridge, peer_id, resource_handle, network_index, lease, out_admission);
+                if (released != EP_BRIDGE_OK) return released;
+                return EP_BRIDGE_CAPACITY_REJECTED;
+            }
+            allowed_capacity = report.effective_max_players;
+        }
+        if (network_index >= allowed_capacity) {
+            const EP_BRIDGE_STATUS released = release_unreserved_index_or_remember(
+                bridge, peer_id, resource_handle, network_index, lease, out_admission);
+            if (released != EP_BRIDGE_OK) return released;
+            return EP_BRIDGE_CAPACITY_REJECTED;
         }
         if (network_index >= EP_SIDECAR_CAPACITY) {
             const EP_BRIDGE_STATUS released = release_unreserved_index_or_remember(

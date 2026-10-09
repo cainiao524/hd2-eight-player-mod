@@ -1,4 +1,21 @@
-# 八人原型候選：名冊原生程式與資源檢查
+# 可配置多人容量候選：名冊原生程式與資源檢查
+
+## 目前新增：容量設定與選單邊界
+
+新增 [player_capacity_contract.lua](Source/player_capacity_contract.lua) 與
+[player_capacity_menu.lua](Source/player_capacity_menu.lua)。前者是共用的
+4/5/8/12/16 容量契約，會計算 `effective_max_players`、驗證 host authority、
+任務中升降容量、版本 metadata、pending/apply/rollback 與診斷狀態；後者以
+Bingus Shared Loader 啟動，註冊 Mod Options Menu 的 `Player Capacity` 頁。
+
+選單可以顯示設定上限、已加入人數、可用槽位、有效上限、房主權限、客戶端
+相容性與設定狀態。Native bridge 尚未通過固定 build 的 ABI／owner lifetime／
+quiescence 門檻時，選單只保留診斷並拒絕改動遊戲容量。
+
+新增 [Native/CapacityContract](Native/CapacityContract) 是 Lua、Session／Party
+adapter 與 Native bridge 的 C ABI 邊界，支援 1～16 的已驗證容量、組件容量取最小值、
+任務中升容預留、任務中降容拒絕及房主權限檢查。這是離線契約測試，不能替代真實
+Session、Peer、Player Clone 或八帳號任務驗收。
 
 ## 接納契約（離線，未併入 v0.14 收據）
 

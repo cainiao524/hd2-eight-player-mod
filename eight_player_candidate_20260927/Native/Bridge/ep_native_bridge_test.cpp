@@ -166,6 +166,38 @@ int main() {
     ok &= check(harness.allocated_count == harness.released_indexes &&
                 harness.allocated_count == 11, "authoritative index reservations balanced");
     ok &= check(ep_bridge_destroy(&bridge) == EP_BRIDGE_OK, "destroy");
+    // The legacy eight-slot harness also accepts the shared capacity contract
+    // for smaller verified limits.  The sixth authoritative index must be
+    // compensated and rejected instead of being silently remapped.
+    EP_CAPACITY_CONTRACT capacity{};
+    capacity.version = EP_CAPACITY_CONTRACT_VERSION;
+    capacity.build = EP_CAPACITY_BUILD;
+    capacity.configured_max_players = 5;
+    capacity.peer_capacity = capacity.roster_capacity = capacity.entity_capacity = 5;
+    capacity.resource_capacity = capacity.network_capacity = 5;
+    capacity.verified_capacity = 5;
+    capacity.joined_players = 0;
+    capacity.quiescent = TRUE;
+    capacity.allow_join_in_progress = TRUE;
+    capacity.require_same_mod_version = TRUE;
+    capacity.apply_mode = EP_CAPACITY_NEXT_LOBBY;
+    config.capacity = &capacity;
+    EP_NATIVE_BRIDGE limited{};
+    ok &= check(ep_bridge_init(&limited, &config) == EP_BRIDGE_OK, "limited init");
+    ok &= check(ep_bridge_preflight(&limited) == EP_BRIDGE_OK, "limited preflight");
+    EP_BRIDGE_ADMISSION limited_admissions[5]{};
+    for (UINT8 i = 0; i < 5; ++i)
+        ok &= check(ep_bridge_admit(&limited, 300 + i, 400 + i,
+                                    &limited_admissions[i]) == EP_BRIDGE_OK,
+                    "limited admission");
+    EP_BRIDGE_ADMISSION sixth{};
+    ok &= check(ep_bridge_admit(&limited, 306, 406, &sixth) ==
+                    EP_BRIDGE_CAPACITY_REJECTED,
+                "capacity contract rejects sixth index");
+    for (UINT8 i = 0; i < 5; ++i)
+        ok &= check(ep_bridge_depart(&limited, limited_admissions[i]) == EP_BRIDGE_OK,
+                    "limited cleanup");
+    ok &= check(ep_bridge_destroy(&limited) == EP_BRIDGE_OK, "limited destroy");
     if (!ok) return 1;
     std::puts("ep_native_bridge_synthetic_passed");
     return 0;

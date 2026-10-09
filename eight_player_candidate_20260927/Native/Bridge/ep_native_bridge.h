@@ -2,6 +2,7 @@
 
 #include <windows.h>
 #include "../Sidecar/ep_sidecar.h"
+#include "../CapacityContract/ep_capacity_contract.h"
 
 // This bridge is the narrow orchestration layer between the reviewed x64
 // hook/sidecar components and the game-specific callbacks.  It deliberately
@@ -29,6 +30,7 @@ typedef enum EP_BRIDGE_STATUS : UINT32 {
     EP_BRIDGE_CLEANUP_REQUIRED = 12,
     EP_BRIDGE_INDEX_REJECTED = 13,
     EP_BRIDGE_INDEX_RELEASE_FAILED = 14,
+    EP_BRIDGE_CAPACITY_REJECTED = 15,
 } EP_BRIDGE_STATUS;
 
 typedef struct EP_BRIDGE_SITE {
@@ -76,6 +78,9 @@ typedef struct EP_BRIDGE_CONFIG {
     EP_BRIDGE_OWNER_RELEASE_CB release_owner;
     EP_BRIDGE_ALLOCATE_INDEX_CB allocate_index;
     EP_BRIDGE_RELEASE_INDEX_CB release_index;
+    // Optional for backward-compatible offline harnesses.  When present, the
+    // bridge must validate this contract before any callback is invoked.
+    const EP_CAPACITY_CONTRACT* capacity;
 } EP_BRIDGE_CONFIG;
 
 typedef struct EP_BRIDGE_ADMISSION {

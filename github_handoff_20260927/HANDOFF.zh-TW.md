@@ -549,3 +549,25 @@ PlayerCreationGate、PlayerResource、resource bridge 的 C++ marker 與 Python 
 `Native/OfficialPlugin` 的固定 build getter gate 現在只檢查 PE/SHA-256、C API/table 可讀性、`game.dll+0x34fdf0` 及 15-byte machine-code fingerprint、可執行頁與穩定重讀；不再呼叫 getter 或解碼 session/peer。先前呼叫版本在實機啟動時出現 Fatal Error，因此保留 no-call fail-closed 邊界。最新實機重試 PID `15724` 仍顯示 `Fatal Error!`，清空後的探針暫存檔沒有新回呼；自訂 DLL 已移除，官方 plugins 未修改。
 
 可核對資料：`five_player_feasibility_20260927/LIVE_PROBE_ATTEMPT_20261004.*`、`Native/OfficialPlugin/official_plugin_runtime_bridge_receipt_20261003.json`、`Native/IntegrationPreflight/integration_preflight_receipt_20261004.json`。目前 `installable=false`、`runtime_verified=false`、`multiplayer_verified=false`；下一步先診斷固定 Steam build 的 Fatal Error／合法 plugin 載入時序，再取得允許的 admission callback/owner/cleanup ABI，之後才做第五至第八帳號階梯。
+
+## 2026-10-09 configurable capacity contract and menu boundary
+
+新增 `eight_player_candidate_20260927/Source/player_capacity_contract.lua` 與
+`player_capacity_menu.lua`。Lua contract 統一 1～目前已驗證容量、4/5/8/12/16 preset、
+`effective_max_players` 最小值計算、host authority、metadata、pending/apply/rollback、
+任務中升容預留與任務中降容拒絕。Menu adapter 以 Bingus Shared Loader 啟動，透過
+Mod Options Menu 註冊 `Player Capacity`，顯示設定上限、已加入人數、可用槽位、有效
+上限、房主權限、客戶端相容性與設定狀態；沒有 Native bridge 時只顯示診斷並拒絕容量
+變更。
+
+新增 `Native/CapacityContract` C ABI，並把 `Native/Bridge` 的 preflight 與 admission
+接到這個契約。allocator 回傳超過有效容量的 authoritative index 時，bridge 會先做
+generation-zero compensation，再返回容量拒絕；不會改用本機第一個空槽。C++ harness
+輸出 `ep_capacity_contract_passed`、`ep_native_bridge_synthetic_passed` 與
+`ep_bridge_client_integration_passed`，staging 與 Lua smoke checks 也通過。
+
+套件 metadata 現在列出 Bingus Shared Loader >=18、Mod Options Menu >=1.1、HD2Runtime
+>=0.28.0、4/5/8/12/16 verified presets 與 16 hard storage limit。這些是離線設定與
+bridge 邊界，尚未取得真實 Session/Party writer、第五至第八個 Player Clone、client
+entity replication 或同任務生命週期證據；`installable=false`、`runtime_verified=false`、
+`multiplayer_verified=false` 必須保持不變。

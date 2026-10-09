@@ -1,6 +1,11 @@
-# 八人 Native Bridge staging package
+# Player Capacity Native Bridge staging package
 
-這是可匯入 Arsenal/HD2MM 格式的 staging 骨架，不是已完成的八人聯機發布包。
+這是可匯入 Arsenal/HD2MM 格式的 staging 骨架，包含 `Player Capacity` 的
+Lua 設定契約與 Mod Options Menu 入口；它仍不是已完成的八人聯機發布包。
+
+`data/mods/cainiao/hd2_capacity_contract.lua` 統一 4、5、8、12、16 的容量、
+有效容量、pending/apply/rollback 和 metadata 驗證。`hd2_capacity_menu.lua`
+只在 Bingus Shared Loader 內註冊選單，Native bridge 未通過時會拒絕修改容量。
 
 `stage_package.py` 只有在下列條件全部成立時才會產生可啟用 staging 目錄：
 
@@ -13,7 +18,7 @@
 
 腳本只讀遊戲安裝目錄，輸出 staging 目錄和 `rollback.json`；不覆寫、注入或刪除遊戲檔案。即使 staging 成功，`multiplayer_verified` 仍為 `false`，需要五至八個獨立帳號完成實機驗收後才可另行發布。
 
-Bridge 的合成 harness 只驗證 sidecar 與 callback 契約，不代表真實 Session／Party、game.dll 或多人同任務已接通。
+Bridge 的合成 harness 只驗證 sidecar 與 callback 契約，不代表真實 Session／Party、game.dll 或多人同任務已接通。只有固定 build、Native ABI、執行緒靜止、owner lifetime、confirmed-peer dispatch 與 Player Clone 建立全部通過後，才可生成可啟用 staging；即使 staging 成功，仍須以八個獨立帳號完成實機驗收。
 
 ## 為何沒有把 session admission 寫成 Lua/data patch
 
