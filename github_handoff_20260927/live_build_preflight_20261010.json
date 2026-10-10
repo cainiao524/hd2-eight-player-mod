@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "steam_build": 25480438,
+  "expected_exe_version": "1.8.46015.0",
+  "status": "blocked",
+  "build_verified": true,
+  "files_verified": true,
+  "native_peer_admission_plan": {
+    "path": "five_player_feasibility_20260927\\native_peer_admission_plan_20261002.json",
+    "valid": true,
+    "executable": false,
+    "multiplayer_verified": false,
+    "errors": []
+  },
+  "process_name": "helldivers2.exe",
+  "process_running": false,
+  "stopped_process_gate_passed": true,
+  "staging_preflight_passed": false,
+  "pre_install_gate_passed": false,
+  "live_ready": false,
+  "installation_authorized": false,
+  "multiplayer_verified": false,
+  "process_accessed": true,
+  "installation_performed": false,
+  "files": [
+    {
+      "role": "exe",
+      "path": "bin/helldivers2.exe",
+      "expected_sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+      "observed_sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+      "size": 14957160,
+      "matched": true,
+      "status": "matched"
+    },
+    {
+      "role": "game_dll",
+      "path": "data/game/game.dll",
+      "expected_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+      "observed_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+      "size": 15522408,
+      "matched": true,
+      "status": "matched"
+    },
+    {
+      "role": "party",
+      "path": "bin/PartyWin.dll",
+      "expected_sha256": "de34667c2f7084013d9c03cd5d1cb5dc3321bc36bb616a845e35534e4e7995e0",
+      "observed_sha256": "de34667c2f7084013d9c03cd5d1cb5dc3321bc36bb616a845e35534e4e7995e0",
+      "size": 4031520,
+      "matched": true,
+      "status": "matched"
+    },
+    {
+      "role": "playfab_multiplayer",
+      "path": "bin/PlayFabMultiplayerWin.dll",
+      "expected_sha256": "95bc5f958e519f612b479de4227f3bdffaba9b2b8de987eb3f7991960b8ced17",
+      "observed_sha256": "95bc5f958e519f612b479de4227f3bdffaba9b2b8de987eb3f7991960b8ced17",
+      "size": 1878048,
+      "matched": true,
+      "status": "matched"
+    },
+    {
+      "role": "data_typelib",
+      "path": "data/game/dl_library.dl_typelib",
+      "expected_sha256": "f446aa15c11871bada4839f4c8ea890cea3b46405d09954468319ef61b092c5d",
+      "observed_sha256": "f446aa15c11871bada4839f4c8ea890cea3b46405d09954468319ef61b092c5d",
+      "size": 1062706,
+      "matched": true,
+      "status": "matched"
+    },
+    {
+      "role": "data_entities",
+      "path": "data/game/generated_entities.dl_bin",
+      "expected_sha256": "7df1a07e90c61e0b8398ecbc5c088074655900943bf1cd7e09f69bccedec4a2a",
+      "observed_sha256": "7df1a07e90c61e0b8398ecbc5c088074655900943bf1cd7e09f69bccedec4a2a",
+      "size": 46612636,
+      "matched": true,
+      "status": "matched"
+    }
+  ],
+  "errors": [],
+  "blockers": [
+    "native_peer_admission_plan_not_executable"
+  ],
+  "remaining_gates": [
+    "multiplayer_verification_required_for_live_ready"
+  ]
+}

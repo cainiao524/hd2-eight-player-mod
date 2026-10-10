@@ -647,3 +647,13 @@ OfficialPlugin 的固定版本建置命令現在也編入離線 `ClientReplicati
 其 0..7 network index、pending/confirmed、owner migration、callback lease 和
 cleanup 契約可以與容量控制邊界一起編譯；建置通過，但它仍沒有被綁到真實的
 confirmed-peer receiver 或 Entity replication callback。
+
+## 2026-10-10 fixed-build live preflight
+
+在使用者授權後，以唯讀方式核對了 `F:\Game\Steam\steamapps\common\Helldivers 2`。
+六份固定 build 檔案的 SHA-256 全部相符，`helldivers2.exe` 當時未執行，且沒有
+安裝、複製、注入或寫入遊戲檔案；結果保存在
+`github_handoff_20260927/live_build_preflight_20261010.json`。結果仍是
+`blocked`，唯一 blocker 是現有 `native_peer_admission_plan_20261002.json` 的
+`executable=false`。這份檔案只證明版本與停止程序 gate，沒有產生 native provider
+或八帳號多人驗收證據。
