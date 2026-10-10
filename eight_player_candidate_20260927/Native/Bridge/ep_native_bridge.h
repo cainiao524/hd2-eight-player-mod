@@ -11,6 +11,8 @@
 // observation; otherwise preflight and admission fail closed.
 #define EP_BRIDGE_MAGIC 0x45504252u /* "EPBR" */
 #define EP_BRIDGE_VERSION 5u
+#define EP_BRIDGE_CONTROL_BOUND 1u
+#define EP_BRIDGE_CONTROL_FAULT 2u
 
 extern "C" {
 

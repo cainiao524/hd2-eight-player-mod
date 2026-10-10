@@ -2,7 +2,7 @@
   "Version": 1,
   "Guid": "f74f1e2f-9ef9-4a30-b8d5-8c2d5c6d8e81",
   "Name": "HD2 Player Capacity Native Bridge - staging",
-  "Description": "Fixed build 25480438 staging package. The Player Capacity page supports verified presets 4, 5, 8, 12 and 16; the first release gate is eight players. Requires the native admission plan to report executable=true and a separately supplied native bridge payload. The data/Lua loader path remains fail-closed until the native Session, Party, peer and player-creation callbacks are verified.",
+  "Description": "Fixed build 25480438 staging package. The Player Capacity page supports verified presets 4, 5, 8, 12 and 16 and sends epoch-checked requests through the fail-closed native control boundary. The first release gate is eight players. Requires the native admission plan to report executable=true and a separately supplied native bridge payload; this package does not claim multiplayer verification.",
   "Dependencies": [
     {
       "Name": "Bingus Shared Loader",

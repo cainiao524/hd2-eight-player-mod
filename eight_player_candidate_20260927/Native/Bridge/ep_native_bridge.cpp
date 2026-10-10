@@ -271,6 +271,7 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_admit(
     if (!bridge->ready) return EP_BRIDGE_NOT_READY;
     OperationGuard operation{bridge};
     if (!operation) return EP_BRIDGE_BUSY;
+    if (bridge->reserved & EP_BRIDGE_CONTROL_FAULT) return EP_BRIDGE_NOT_READY;
     if (!capacity_ready(bridge)) return EP_BRIDGE_CAPACITY_REJECTED;
     const int identity_cleanup = cleanup_for_identity(bridge, peer_id, resource_handle);
     if (identity_cleanup >= 0) {
@@ -368,6 +369,7 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_reconnect(
         return EP_BRIDGE_INVALID_ARGUMENT;
     OperationGuard operation{bridge};
     if (!operation) return EP_BRIDGE_BUSY;
+    if (bridge->reserved & EP_BRIDGE_CONTROL_FAULT) return EP_BRIDGE_NOT_READY;
     if (!capacity_ready(bridge)) return EP_BRIDGE_CAPACITY_REJECTED;
     const int identity_cleanup = cleanup_for_identity(bridge, peer_id, resource_handle);
     if (identity_cleanup >= 0) {
@@ -480,6 +482,7 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_destroy(EP_NATIVE_BRIDGE* bridge) 
     if (!valid_context(bridge)) return EP_BRIDGE_INVALID_CONTEXT;
     OperationGuard operation{bridge};
     if (!operation) return EP_BRIDGE_BUSY;
+    if (bridge->reserved & EP_BRIDGE_CONTROL_BOUND) return EP_BRIDGE_BUSY;
     if (bridge->cleanup_count != 0) return EP_BRIDGE_CLEANUP_REQUIRED;
     if (bridge->sidecar.active_count != 0) return EP_BRIDGE_INVALID_CONTEXT;
     ep_sidecar_destroy(&bridge->sidecar);

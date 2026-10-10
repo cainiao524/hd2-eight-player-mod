@@ -1,0 +1,36 @@
+{
+  "schema": "hd2_capacity_control_boundary_v1",
+  "build": 25480438,
+  "abi": 1,
+  "scope": "offline synthetic controller and Lua/native ABI only",
+  "features": [
+    "binding and authority epochs",
+    "generation-checked requests",
+    "atomic provider commit",
+    "compensating rollback",
+    "rollback fault admission lock",
+    "sparse network-index bound",
+    "fixed-size snapshot/request exports"
+  ],
+  "tests": {
+    "test_capacity_control.py": "3 passed",
+    "Native/Bridge": ["ep_native_bridge_synthetic_passed", "ep_bridge_client_integration_passed"],
+    "lua_sources_syntax_checked": true
+  },
+  "production": {
+    "provider_bound": false,
+    "session_party_abi_verified": false,
+    "player_clone_verified": false,
+    "client_entity_replication_verified": false,
+    "runtime_verified": false,
+    "installable": false,
+    "multiplayer_verified": false
+  },
+  "fail_closed_reasons": [
+    "provider_not_bound",
+    "host_or_client_epoch_stale",
+    "client_incompatible",
+    "reservation_or_quiescence_not_ready",
+    "commit_or_rollback_failure"
+  ]
+}

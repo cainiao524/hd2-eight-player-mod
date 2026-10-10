@@ -613,3 +613,37 @@ machine-code 候選：真實 limit/occupancy/allocator owner、confirmed-peer re
 Player Clone、client entity replication、thread quiescence 與八帳號同任務驗收尚未
 綁定，因此 `executable=false`、`installable=false`、`runtime_verified=false`、
 `multiplayer_verified=false` 維持不變。
+
+## 2026-10-10 Lua/native capacity-control boundary
+
+新增 `Native/CapacityControl/ep_capacity_control.h/.cpp` 及固定版本的控制層，並把
+它編入 OfficialPlugin 的建置命令。這一層不是猜測的 HD2 callback：provider 必須先
+以 ABI、owner lifetime、房主／客戶端 epoch、遊戲版本、quiescence 和所有層級容量
+完成綁定，否則 Lua 只能看到 `native_provider_unbound` 或 `native_not_ready`。
+
+`ep_control_submit` 會拒絕過期 generation、過期 authority epoch、客戶端、不相容
+版本、部分 reservation 及任務中非法降容；`ep_control_boundary` 將 Session/Party、
+Peer、Roster、Entity、resource 與 metadata 的變更視為單一 commit。provider 部分成功
+或失敗時必須同步 rollback；rollback 失敗會留下 fault bit，阻止 admission、reconnect
+和 destroy，直到明確清理。Lua `player_capacity_native.lua` 只解析固定大小的 snapshot/
+request，`player_capacity_runtime.lua` 將其接到 HD2Runtime 的 mod log；Menu 會把一次
+MODS APPLY 的欄位合成一筆 request，再由 native boundary 原子處理。
+
+離線驗證通過：`Native/CapacityControl/test_capacity_control.py` 3 項、
+`ep_native_bridge_synthetic_passed`、`ep_bridge_client_integration_passed`，以及六份
+Lua 檔案的語法檢查。這仍是隔離控制邊界，沒有 Session/Party provider、第五至第八個
+Player Clone、client entity replication 或多人任務收據；`executable=false`、
+`installable=false`、`runtime_verified=false`、`multiplayer_verified=false` 必須維持。
+
+同一輪新增 `Package/build_bingus_archive.py`：它依 Bingus Shared Loader v18/API 1
+的 Lua archive 格式產生 `Addon/9ba626afa44a3aa3.patch_0`，包含四個固定 hash 的
+resource，但只讓 `mods/cainiao/hd2_capacity_menu` 帶 `HD2-Addon` 宣告，另外三個
+resource 保持私有 `require` 模組。兩項封裝測試確認 ZIP 可重現、envelope/type/offset
+正確、依賴 metadata 存在，以及錯誤宣告會被拒絕。這個封裝仍然只載入選單和安全
+FFI client；找不到已載入的 ABI 相符 native provider 時保持 `Rejected`，不能把
+Lua archive 視為 Session/Party 或多人完成證據。
+
+OfficialPlugin 的固定版本建置命令現在也編入離線 `ClientReplication` sidecar，讓
+其 0..7 network index、pending/confirmed、owner migration、callback lease 和
+cleanup 契約可以與容量控制邊界一起編譯；建置通過，但它仍沒有被綁到真實的
+confirmed-peer receiver 或 Entity replication callback。

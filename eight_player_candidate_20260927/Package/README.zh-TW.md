@@ -7,6 +7,25 @@ Lua 設定契約與 Mod Options Menu 入口；它仍不是已完成的八人聯�
 有效容量、pending/apply/rollback 和 metadata 驗證。`hd2_capacity_menu.lua`
 只在 Bingus Shared Loader 內註冊選單，Native bridge 未通過時會拒絕修改容量。
 
+## Bingus Shared Loader Lua 封裝
+
+`build_bingus_archive.py` 會把選單入口與三個 `require` 模組封裝成
+`Addon/9ba626afa44a3aa3.patch_0`。只有 `mods/cainiao/hd2_capacity_menu`
+帶有 `HD2-Addon` 宣告；契約、Runtime 與 FFI 模組是同一個 archive 內的私有
+Lua resource，不會被 Shared Loader 當成四個獨立 addon 啟動。建置器固定
+UTF-8 plaintext、Lua envelope、resource hash、Steam build 與相同 GUID，並且
+不讀取遊戲目錄、不載入 DLL，也不把 staging 包標成多人完成。
+
+```powershell
+python eight_player_candidate_20260927/Package/build_bingus_archive.py `
+  --output eight_player_candidate_20260927/Package/build/HD2-Player-Capacity-Bingus-staging.zip
+```
+
+這個 ZIP 只提供 Lua 選單和安全的 native control client；找不到已載入且 ABI
+相符的 native provider 時，畫面會顯示 `Rejected`，不會套用容量。真實
+Session/Party/Peer admission、Player Clone、Entity replication 和八帳號任務
+收據仍是獨立的 release gate。
+
 `stage_package.py` 只有在下列條件全部成立時才會產生可啟用 staging 目錄：
 
 - Steam build `25480438`、EXE `1.8.46015.0` 及六份檔案 SHA-256 完全相符。
