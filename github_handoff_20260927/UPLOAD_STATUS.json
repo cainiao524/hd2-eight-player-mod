@@ -2,16 +2,16 @@
   "schema_version": 2,
   "date": "2026-10-19",
   "timezone": "Asia/Tokyo",
-  "status": "local_payload_verified_upload_blocked_by_automatic_review",
+  "status": "uploaded_and_verified",
   "repository_url": "https://github.com/cainiao524/hd2-eight-player-mod",
   "visibility": "private",
   "visibility_verified_before_attempt": true,
   "branch": "main",
   "payload_commit": "e35dedc5637a6810c7fabf7f2b25c658dbbc1f16",
   "payload_tree": "015d94719ec8762d8b9b1f918e8bccac3ff0f9d5",
-  "remote_main_last_verified": "282ee1df0399f1587cb12f37dabc3077969a277b",
-  "remote_contains_payload": false,
-  "push_command_executed": false,
+  "remote_main_last_verified": "75e1fd3a8dadbec6bc899d39ffc1c1f97b9e9c4a",
+  "remote_contains_payload": true,
+  "push_command_executed": true,
   "payload_files": 1802,
   "source_files_verified": 1801,
   "source_bytes_verified": 316067259,
@@ -29,14 +29,18 @@
     "committed_blobs_sha256": "pass",
     "private_visibility": "pass",
     "clean_export_offline_checks": "pass",
-    "remote_payload_commit": "not_uploaded",
-    "remote_payload_tree": "not_uploaded"
+    "remote_payload_commit": "pass",
+    "remote_payload_tree": "pass",
+    "remote_main_commit": "pass",
+    "remote_recursive_tree_paths_modes_blob_ids_sizes": "pass"
   },
   "approval_block": {
     "action": "git push origin HEAD:main",
     "source": "automatic approval review",
     "reason": "Requires explicit confirmation of the exact private destination and complete payload scope, including source, saved research evidence/logs and native build artifacts, before external upload.",
-    "human_confirmation_received": false
+    "human_confirmation_received": true,
+    "status": "resolved_by_explicit_user_upload_confirmation",
+    "user_confirmation_text": "上传"
   },
   "scope": {
     "included": "Existing multiplayer source and dependencies, later candidate changes, 128 saved evidence files, handoff documents and existing/native candidate test artifacts.",
@@ -46,5 +50,9 @@
   "game_process_accessed": false,
   "multiplayer_verified": false,
   "public_release_allowed": false,
-  "note": "The payload is committed locally and verified. This receipt and STATE are a later administrative commit. No push ran after the automatic review rejection; user confirmation is pending."
+  "note": "Payload and its preceding administrative commit were uploaded and verified against GitHub. This success receipt and STATE update are committed afterward without changing the frozen payload manifest.",
+  "verified_at_utc": "2026-10-19T13:33:23.098022+00:00",
+  "verified_head_tree": "dfc3e160a40591892144ada691336726a2452fb7",
+  "remote_files_verified": 1802,
+  "user_authorization": "User explicitly confirmed upload after reviewing the exact private repository, main branch and payload scope."
 }
