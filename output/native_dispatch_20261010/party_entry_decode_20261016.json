@@ -1,0 +1,404 @@
+{
+  "schema": "hd2_saved_party_entry_decode_v1",
+  "source_sha256": {
+    "party_capture_authorized_20261016_pid30776_01.json": "b5b81a890e9a0e81808bcd74a736a75ac48f59de33cf393f135ef9c5478d13ac",
+    "party_capture_plan_v2_20261015.json": "3a9fae2bba12ddf680b15a45f4f5590b98329d8153c1cb93057d8685f935528e",
+    "live_party_jump_chains_20261111_pid38492_r5.json": "dd41ee4dd10021cb2b5e91bba9702d2e5abb5b98698f6bc717017b41d8ea5254",
+    "live_party_api_pointer_probe_20261011_r13.json": "10fe30287ba16eedae2c6ebb48a99cae71215e20ab8bf5275ead65564d30433f",
+    "recovered_party_windows_20261015/manifest.json": "6fb6280868e6c16cccce899c5a47852c1226c0f31c1cf4196c3da7d4f495742b",
+    "partywin_c_handle_abi_20261015.json": "87ae7faaa947ef41c05e3125437ffb2b380047f686e9e0aa864abbbf2acf3c94"
+  },
+  "scope": "Saved current data plus historical code whose prefix hashes were verified in the current capture; isolated emulation stops before the common call.",
+  "synthetic_context": "Three different register/stack/flags patterns; same decoded target/path in all three. This is not a live register snapshot or proof of all possible inputs.",
+  "decoded_entries": [
+    {
+      "candidate_label": "create_network_candidate",
+      "entry_rva": "0x2985447",
+      "entry_value": "0xe8c31f18a7eb3aff",
+      "derived_target": "0x7ffc40bc5720",
+      "partywin_rva": "0x15720",
+      "matching_saved_export": "PartyCreateNewNetwork",
+      "runs": [
+        {
+          "instruction_rva": "0x2fc3552",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bc5720",
+          "rsp_delta": -32,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x2985447",
+              "size": 8
+            }
+          ],
+          "instruction_count": 143,
+          "instruction_path_sha256": "e6306c82206ea48cd10a4cac46246f2621cfa9a5778c0597ad1dc9aea85cbacb",
+          "seed": "0x0",
+          "stopped_before_indirect_call": true
+        },
+        {
+          "instruction_rva": "0x2fc3552",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bc5720",
+          "rsp_delta": -32,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x2985447",
+              "size": 8
+            }
+          ],
+          "instruction_count": 143,
+          "instruction_path_sha256": "e6306c82206ea48cd10a4cac46246f2621cfa9a5778c0597ad1dc9aea85cbacb",
+          "seed": "0x5555555555555555",
+          "stopped_before_indirect_call": true
+        },
+        {
+          "instruction_rva": "0x2fc3552",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bc5720",
+          "rsp_delta": -32,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x2985447",
+              "size": 8
+            }
+          ],
+          "instruction_count": 143,
+          "instruction_path_sha256": "e6306c82206ea48cd10a4cac46246f2621cfa9a5778c0597ad1dc9aea85cbacb",
+          "seed": "0xaaaaaaaaaaaaaaaa",
+          "stopped_before_indirect_call": true
+        }
+      ],
+      "actual_native_call_observed": false
+    },
+    {
+      "candidate_label": "async_or_state_candidate",
+      "entry_rva": "0x2985527",
+      "entry_value": "0xc93c09417be6817c",
+      "derived_target": "0x7ffc40bc9880",
+      "partywin_rva": "0x19880",
+      "matching_saved_export": null,
+      "runs": [
+        {
+          "instruction_rva": "0x2fcc515",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bc9880",
+          "rsp_delta": -32,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x2985527",
+              "size": 8
+            }
+          ],
+          "instruction_count": 147,
+          "instruction_path_sha256": "5b4547feb03d8917b8e436360c44fff8610c9979fe69ff53400002530b600f64",
+          "seed": "0x0",
+          "stopped_before_indirect_call": true
+        },
+        {
+          "instruction_rva": "0x2fcc515",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bc9880",
+          "rsp_delta": -32,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x2985527",
+              "size": 8
+            }
+          ],
+          "instruction_count": 147,
+          "instruction_path_sha256": "5b4547feb03d8917b8e436360c44fff8610c9979fe69ff53400002530b600f64",
+          "seed": "0x5555555555555555",
+          "stopped_before_indirect_call": true
+        },
+        {
+          "instruction_rva": "0x2fcc515",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bc9880",
+          "rsp_delta": -32,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x2985527",
+              "size": 8
+            }
+          ],
+          "instruction_count": 147,
+          "instruction_path_sha256": "5b4547feb03d8917b8e436360c44fff8610c9979fe69ff53400002530b600f64",
+          "seed": "0xaaaaaaaaaaaaaaaa",
+          "stopped_before_indirect_call": true
+        }
+      ],
+      "actual_native_call_observed": false
+    },
+    {
+      "candidate_label": "authenticate_or_state_candidate",
+      "entry_rva": "0x29848a7",
+      "entry_value": "0xb7aa506089a70337",
+      "derived_target": "0x7ffc40bcbe80",
+      "partywin_rva": "0x1be80",
+      "matching_saved_export": null,
+      "runs": [
+        {
+          "instruction_rva": "0x2f4d788",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bcbe80",
+          "rsp_delta": -32,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x29848a7",
+              "size": 8
+            }
+          ],
+          "instruction_count": 168,
+          "instruction_path_sha256": "38382d3daed74703ba1a7e47a4c01d7227e728e20cae6114d96df20475449bd6",
+          "seed": "0x0",
+          "stopped_before_indirect_call": true
+        },
+        {
+          "instruction_rva": "0x2f4d788",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bcbe80",
+          "rsp_delta": -32,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x29848a7",
+              "size": 8
+            }
+          ],
+          "instruction_count": 168,
+          "instruction_path_sha256": "38382d3daed74703ba1a7e47a4c01d7227e728e20cae6114d96df20475449bd6",
+          "seed": "0x5555555555555555",
+          "stopped_before_indirect_call": true
+        },
+        {
+          "instruction_rva": "0x2f4d788",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bcbe80",
+          "rsp_delta": -32,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x29848a7",
+              "size": 8
+            }
+          ],
+          "instruction_count": 168,
+          "instruction_path_sha256": "38382d3daed74703ba1a7e47a4c01d7227e728e20cae6114d96df20475449bd6",
+          "seed": "0xaaaaaaaaaaaaaaaa",
+          "stopped_before_indirect_call": true
+        }
+      ],
+      "actual_native_call_observed": false
+    },
+    {
+      "candidate_label": "create_endpoint_candidate",
+      "entry_rva": "0x2984b7f",
+      "entry_value": "0xed6502bb5a359c2e",
+      "derived_target": "0x7ffc40bcc050",
+      "partywin_rva": "0x1c050",
+      "matching_saved_export": "PartyNetworkCreateEndpoint",
+      "runs": [
+        {
+          "instruction_rva": "0x2f6a506",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bcc050",
+          "rsp_delta": -32,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x2984b7f",
+              "size": 8
+            }
+          ],
+          "instruction_count": 161,
+          "instruction_path_sha256": "3e70120ab9dace5dbc95aca16000271cbdf8d2c8423f7a697d19bc6ca8dcc491",
+          "seed": "0x0",
+          "stopped_before_indirect_call": true
+        },
+        {
+          "instruction_rva": "0x2f6a506",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bcc050",
+          "rsp_delta": -32,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x2984b7f",
+              "size": 8
+            }
+          ],
+          "instruction_count": 161,
+          "instruction_path_sha256": "3e70120ab9dace5dbc95aca16000271cbdf8d2c8423f7a697d19bc6ca8dcc491",
+          "seed": "0x5555555555555555",
+          "stopped_before_indirect_call": true
+        },
+        {
+          "instruction_rva": "0x2f6a506",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bcc050",
+          "rsp_delta": -32,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x2984b7f",
+              "size": 8
+            }
+          ],
+          "instruction_count": 161,
+          "instruction_path_sha256": "3e70120ab9dace5dbc95aca16000271cbdf8d2c8423f7a697d19bc6ca8dcc491",
+          "seed": "0xaaaaaaaaaaaaaaaa",
+          "stopped_before_indirect_call": true
+        }
+      ],
+      "actual_native_call_observed": false
+    },
+    {
+      "candidate_label": "connect_network_candidate",
+      "entry_rva": "0x2984c3f",
+      "entry_value": "0x86a1d09257e2b391",
+      "derived_target": "0x7ffc40bc4fe0",
+      "partywin_rva": "0x14fe0",
+      "matching_saved_export": "PartyConnectToNetwork",
+      "runs": [
+        {
+          "instruction_rva": "0x2f720a9",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bc4fe0",
+          "rsp_delta": -32,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x2984c3f",
+              "size": 8
+            }
+          ],
+          "instruction_count": 177,
+          "instruction_path_sha256": "2262b30fb69acd1f54f998b3127c01b4710294b442072173ce794ffc5c67cd76",
+          "seed": "0x0",
+          "stopped_before_indirect_call": true
+        },
+        {
+          "instruction_rva": "0x2f720a9",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bc4fe0",
+          "rsp_delta": -32,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x2984c3f",
+              "size": 8
+            }
+          ],
+          "instruction_count": 177,
+          "instruction_path_sha256": "2262b30fb69acd1f54f998b3127c01b4710294b442072173ce794ffc5c67cd76",
+          "seed": "0x5555555555555555",
+          "stopped_before_indirect_call": true
+        },
+        {
+          "instruction_rva": "0x2f720a9",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bc4fe0",
+          "rsp_delta": -32,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x2984c3f",
+              "size": 8
+            }
+          ],
+          "instruction_count": 177,
+          "instruction_path_sha256": "2262b30fb69acd1f54f998b3127c01b4710294b442072173ce794ffc5c67cd76",
+          "seed": "0xaaaaaaaaaaaaaaaa",
+          "stopped_before_indirect_call": true
+        }
+      ],
+      "actual_native_call_observed": false
+    },
+    {
+      "candidate_label": "auth_network_candidate",
+      "entry_rva": "0x298568f",
+      "entry_value": "0xf8c350e96fae72df",
+      "derived_target": "0x7ffc40bcbc80",
+      "partywin_rva": "0x1bc80",
+      "matching_saved_export": "PartyNetworkAuthenticateLocalUser",
+      "runs": [
+        {
+          "instruction_rva": "0x2fda79d",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bcbc80",
+          "rsp_delta": -32,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x298568f",
+              "size": 8
+            }
+          ],
+          "instruction_count": 154,
+          "instruction_path_sha256": "f454045c3156824c8b7542360bbb88bc7f1e86f4bab3e6df5d9904272ef6ca80",
+          "seed": "0x0",
+          "stopped_before_indirect_call": true
+        },
+        {
+          "instruction_rva": "0x2fda79d",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bcbc80",
+          "rsp_delta": -32,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x298568f",
+              "size": 8
+            }
+          ],
+          "instruction_count": 154,
+          "instruction_path_sha256": "f454045c3156824c8b7542360bbb88bc7f1e86f4bab3e6df5d9904272ef6ca80",
+          "seed": "0x5555555555555555",
+          "stopped_before_indirect_call": true
+        },
+        {
+          "instruction_rva": "0x2fda79d",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bcbc80",
+          "rsp_delta": -32,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x298568f",
+              "size": 8
+            }
+          ],
+          "instruction_count": 154,
+          "instruction_path_sha256": "f454045c3156824c8b7542360bbb88bc7f1e86f4bab3e6df5d9904272ef6ca80",
+          "seed": "0xaaaaaaaaaaaaaaaa",
+          "stopped_before_indirect_call": true
+        }
+      ],
+      "actual_native_call_observed": false
+    }
+  ],
+  "common_jump": {
+    "entry_rva": "0x2c7a94d",
+    "destination_rva": "0x2efaf2d",
+    "same_first_jump_in_historical_window": "create_network_candidate_d0.bin",
+    "destination_in_recovered_12_windows": [],
+    "jump_followed": false,
+    "destination_bytes_available_in_this_analysis": false
+  },
+  "unnamed_rvas": [
+    "0x19880",
+    "0x1be80"
+  ],
+  "native_game_calls": false,
+  "new_game_reads": 0,
+  "provider_binding_proven": false,
+  "runtime_verified": false,
+  "multiplayer_verified": false
+}

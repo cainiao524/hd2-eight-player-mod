@@ -1,0 +1,58 @@
+{
+  "schema": "hd2_completion_audit_v1",
+  "timestamp_local": "2026-10-11T10:58:28+08:00",
+  "build": 25480438,
+  "offline_validation": {
+    "status": "passed",
+    "test_count": 56,
+    "checks": [
+      "56 offline/parser/integration tests passed via system Lupa pre-load",
+      "OfficialPlugin x64 build and self-tests passed",
+      "Bridge x64 build and synthetic integration tests passed"
+    ]
+  },
+  "runtime_validation": {
+    "status": "blocked",
+    "clean_launch_attempt": {
+      "launch_options_temporarily_cleared": true,
+      "backup_created": true,
+      "process_seen": false,
+      "loader_log_updated": false,
+      "original_launch_options_restored": true
+    },
+    "last_known_gameguard_error": "114 SONYGame initialization failure from earlier attempt",
+    "party_session_lifecycle_verified": false,
+    "host_client_mission_verified": false,
+    "five_to_eight_account_acceptance_verified": false
+  },
+  "release_gates": {
+    "provider_bound": false,
+    "installable_public_mod": false,
+    "runtime_verified": false,
+    "multiplayer_verified": false,
+    "public_release_allowed": false
+  },
+  "artifacts": [
+    {
+      "path": "output/native_dispatch_20261010/HD2-Player-Capacity-staging-0.15.0.zip",
+      "sha256": "0d247c9c199fb89587283acab6f76b54db0a7f12098fc5e0ab4c96f8f2a080f4",
+      "role": "fail_closed_staging_package"
+    },
+    {
+      "path": "output/native_dispatch_20261010/hd2_party_api_probe_20261011_r9.zip",
+      "sha256": "e803165c1601e7ea77fb69e5ad1e8ba21639c0f152bc8df8ec59bd79aa97c4fe",
+      "role": "last_successful_read_only_probe_package"
+    },
+    {
+      "path": "eight_player_candidate_20260927/Native/OfficialPlugin/eight_player_pluginw64_release.dll",
+      "sha256": "2c07162dc2616acf79be220a7921a21417c61445047dea31acfe7a8fab90b9e4",
+      "role": "offline_native_plugin_build"
+    },
+    {
+      "path": "eight_player_candidate_20260927/Native/Bridge/ep_native_bridge.dll",
+      "sha256": "8b394117f4f15fdc2a9b668f7f9766c9e891c801aa814b6a1b21044b34e5a731",
+      "role": "offline_bridge_build"
+    }
+  ],
+  "conclusion": "Offline capacity and bridge contracts are validated. The delivered capacity ZIP remains fail-closed staging; no public 8-player mod is authorized until a fresh full game runtime and host/client mission acceptance are observed."
+}

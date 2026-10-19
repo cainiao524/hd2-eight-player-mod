@@ -1,0 +1,31 @@
+{
+  "schema": "hd2_single_client_verification_boundary_v1",
+  "generated_at_utc": "2026-10-10T05:30:00Z",
+  "build": 25480438,
+  "exe_version": "1.8.46015.0",
+  "available_independent_accounts": 1,
+  "available_clients": 1,
+  "required_for_eight_player_acceptance": 8,
+  "required_client_count_available": false,
+  "live_game_process_started": false,
+  "live_native_calls": false,
+  "live_memory_writes": false,
+  "multiplayer_verified": false,
+  "installable": false,
+  "runtime_verified": false,
+  "blocked_reason": "only_one_local_account_and_client_available",
+  "offline_evidence": {
+    "capacity_contract": "eight_player_candidate_20260927/Native/CapacityContract",
+    "client_replication_contract": "eight_player_candidate_20260927/Native/ClientReplication",
+    "session_dispatch_map": "five_player_feasibility_20260927/live_c_api_table_map_verification_20261010.json",
+    "getter_gate_receipt": "eight_player_candidate_20260927/Native/OfficialPlugin/official_plugin_session_getter_gate_receipt_20261010.json",
+    "completion_audit": "output/native_dispatch_20261010/completion_audit_20261010_r8.json"
+  },
+  "acceptance_receipt": null,
+  "next_required_evidence": [
+    "eight independent accounts",
+    "eight clients on the pinned build",
+    "same mission peer/roster/entity logs",
+    "death/reinforcement/leave/reconnect/host-migration/extraction/settlement logs"
+  ]
+}

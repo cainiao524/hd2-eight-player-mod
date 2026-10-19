@@ -1,0 +1,108 @@
+{
+  "schema": "hd2_completion_audit_v3",
+  "build": 25480438,
+  "scope": "real host/client multiplayer mod; no simulated completion",
+  "sources": [
+    {
+      "path": "output\\native_dispatch_20261010\\live_real_multiplayer_session_observation_20261111.json",
+      "sha256": "4567c2f41919ab7139d979b599595aa4350363be2a4168ac0ead9851247950c8"
+    },
+    {
+      "path": "output\\native_dispatch_20261010\\live_party_slots_external_capture_20261111_pid38492.json",
+      "sha256": "a1ede8f8d9718870817b6b9f38dbb4c370b990cf737583d6f8d47f4adebd770c"
+    },
+    {
+      "path": "output\\native_dispatch_20261010\\live_party_jump_chains_20261111_pid38492_r5.json",
+      "sha256": "dd41ee4dd10021cb2b5e91bba9702d2e5abb5b98698f6bc717017b41d8ea5254"
+    },
+    {
+      "path": "output\\native_dispatch_20261010\\runtime_dispatcher_import_scan_20261111.json",
+      "sha256": "8de3c88913498d947373ca1ca6f733d11d969a7cc6e40c9e4e52832a9bd6ca15"
+    },
+    {
+      "path": "output\\native_dispatch_20261010\\runtime_callsite_slot_audit_20261111.json",
+      "sha256": "5cf5d07f6c4de8fb16208671ac158ea4890da0e57440b7a16ac80e2710eac3aa"
+    },
+    {
+      "path": "output\\native_dispatch_20261010\\partywin_named_import_audit_20261111.json",
+      "sha256": "f4b41b0e9df998f5d41149bb509a6a4a62392b6c50f38b8bf7deb93e9d541fe7"
+    },
+    {
+      "path": "output\\native_dispatch_20261010\\partywin_method_abi_static_20261111.json",
+      "sha256": "fb2bea4587aa8e7d0e8699d854b06483945185789d1c83b9065d325727677b5b"
+    },
+    {
+      "path": "output\\native_dispatch_20261010\\party_session_lifecycle_gap_matrix_20261011.json",
+      "sha256": "15251b3257e2971feb1ba1e842836745dfca80f9204b8b4a20957819fb5dcfba"
+    },
+    {
+      "path": "output\\native_dispatch_20261010\\live_host_plus_one_peer_stable_20261111.json",
+      "sha256": "48e3ec18bd4575acfc8b42141e9defd98353162218d6b6851a5591de3b868325"
+    },
+    {
+      "path": "output\\native_dispatch_20261010\\live_peer_transition_20261111_pid38492\\peer_transition_monitor.json",
+      "sha256": "6bbe3a1f73facb956db36c0fdd00ed0f9cf4ff90cbe5b48d874393ac9d44f9a6"
+    },
+    {
+      "path": "output\\native_dispatch_20261010\\static_network_provider_audit_20261111.json",
+      "sha256": "5499a978586052c4f92dc6ef8b6b2aac1732cb033876409d849bc1a559ba7fe4"
+    }
+  ],
+  "evidence": {
+    "real_session_observed": true,
+    "real_four_peer_snapshot_observed": true,
+    "real_four_peer_snapshot_path": "output/native_dispatch_20261010/live_real_multiplayer_session_observation_20261111.json",
+    "current_single_player_snapshot": "output/native_dispatch_20261010/live_session_snapshot_20261111_r15_late.json",
+    "partywin_method_shapes_static_verified": true,
+    "candidate_create_connect_auth_endpoint_shapes": true,
+    "candidate_targets_directly_bound_to_partywin": false,
+    "manager_receiver_runtime_bound": false,
+    "dispatcher_party_import_reference_observed": false,
+    "host_plus_one_peer_stable_observed": true,
+    "stable_peer_transition_monitor_baseline_2": true,
+    "steam_interface_factory_named_imported": true,
+    "party_core_all_named_imported": false,
+    "playfab_core_all_named_imported": false,
+    "game_dll_has_party_or_playfab_imports": false,
+    "runtime_interface_object_binding_proven": false,
+    "provider_diagnosis": "Steam interface factory is the only named multiplayer-provider entry point in the executable; runtime object/vtable binding is still missing."
+  },
+  "requirements": {
+    "create_room": "candidate_shape_only",
+    "join_room": "candidate_shape_only",
+    "leave_room": "export_pointer_only",
+    "player_count_sync": "two_peer_stable_observation",
+    "capacity_validation": "unproven_above_four",
+    "host_migration": "unproven",
+    "cleanup": "export_address_only",
+    "mission_instance_consistency": "unproven",
+    "host_plus_client_join_leave_migration_test": "shared_two_peer_state_observed; join_transition_and_leave_migration_not_completed",
+    "five_to_eight_independent_client_test": "not_completed"
+  },
+  "gates": {
+    "installable": false,
+    "runtime_verified": false,
+    "multiplayer_verified": false,
+    "max_verified_players": 4,
+    "public_release_allowed": false
+  },
+  "blocking_gaps": [
+    "The real provider is not runtime-bound: the executable names SteamInternal_FindOrCreateUserInterface, while PartyWin core create/connect/auth/endpoint/leave methods are not named imports.",
+    "The six protected EXE indirect slots have no proven PartyWin or Steam semantics, return ABI, or state-change ABI.",
+    "Capacity acceptance, player creation, entity/resource replication, leave slot release, host migration, cleanup, and same-mission consistency remain unverified.",
+    "No 5-8 independent-client mission run has been completed."
+  ],
+  "next_required_evidence": [
+    "Use capture_live_steam_interface_factory_20261111.py on an explicitly opened room to record factory callsites and interface name/version candidates.",
+    "Bind returned Steam interface objects/vtables to the existing GameSession roster and peer-count observations without guessing an ABI.",
+    "Complete host-plus-one-client join, leave, migration and cleanup sequence.",
+    "Complete 5-8 independent-client same-mission evidence before producing a public package."
+  ],
+  "provider_audit": {
+    "path": "output/native_dispatch_20261010/static_network_provider_audit_20261111.json",
+    "sha256": "5499a978586052c4f92dc6ef8b6b2aac1732cb033876409d849bc1a559ba7fe4",
+    "tool_sha256": "00043220e0498a5931b3492c1da26ce660feb727860a37c15a7b2d1650a3ceb1",
+    "read_only": true,
+    "runtime_verified": false
+  }
+}

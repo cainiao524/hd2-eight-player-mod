@@ -1,0 +1,103 @@
+{
+  "schema": "hd2_party_create_abi_candidate_v1",
+  "build": 25480438,
+  "exe_sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+  "partywin_sha256": "de34667c2f7084013d9c03cd5d1cb5dc3321bc36bb616a845e35534e4e7995e0",
+  "live_probe_receipt": "output/native_dispatch_20261010/live_party_api_pointer_probe_20261011.json",
+  "live_probe_receipt_sha256": "93b02673b867ffe7f18794ef7355769d62e96f160caa420cdf5aaa9c6494064f",
+  "live_callsite_receipt": "output/native_dispatch_20261010/live_party_callsite_shape_20261011.json",
+  "live_callsite_receipt_sha256": "6a57def1862287beb896a9110b927840020df8ac28544d9e5e263aea2d99d1d6",
+  "live_log": "output/native_dispatch_20261010/hd2_party_api_probe_20261011_r9.log",
+  "live_log_sha256": "5a3af9980bddcd825d21cefb09bf85406602a08facc3e583a270348f533482e1",
+  "evidence": {
+    "create_entry_rva": "0x8E1370",
+    "create_entry_window": "0x1000 bytes captured at runtime",
+    "create_call": {
+      "runtime_address": "0x7ff62e4a15cb",
+      "instruction": "call qword ptr [rip+0xb157e7]",
+      "slot_rva": "0x13F6DB8",
+      "slot_target": "0x7ff63083a7c8",
+      "first_jump_target": "0x7ff630b83336"
+    },
+    "config_fields": {
+      "observed_order": [
+        "input_edx",
+        "input_edx",
+        "constant_1",
+        "constant_1",
+        "constant_1",
+        "constant_0xF"
+      ],
+      "stack_offsets": [
+        "0x80",
+        "0x84",
+        "0x88",
+        "0x8C",
+        "0x90",
+        "0x94"
+      ],
+      "official_party_network_configuration_order": [
+        "maxUserCount",
+        "maxDeviceCount",
+        "maxUsersPerDeviceCount",
+        "maxDevicesPerUserCount",
+        "maxEndpointsPerDeviceCount",
+        "directPeerConnectivityOptions"
+      ],
+      "official_reference": "https://learn.microsoft.com/en-us/xbox/playfab/multiplayer/networking/reference/structs/partynetworkconfiguration",
+      "shape_consistent": true
+    },
+    "official_create_signature": {
+      "signature": "PartyError CreateNewNetwork(const PartyLocalUser* localUser, const PartyNetworkConfiguration* networkConfiguration, uint32_t regionCount, const PartyRegion* regions, const PartyInvitationConfiguration* initialInvitationConfiguration, void* asyncIdentifier, PartyNetworkDescriptor* networkDescriptor, char* appliedInitialInvitationIdentifier)",
+      "reference": "https://learn.microsoft.com/en-us/xbox/playfab/multiplayer/networking/reference/classes/partymanager/methods/partymanager_createnewnetwork"
+    },
+    "observed_register_and_stack_mapping": {
+      "rcx": "qword ptr [rax] (candidate PartyManager receiver/holder dereference)",
+      "rdx": "rbx (candidate PartyLocalUser*)",
+      "r8": "rsp+0x80 (candidate PartyNetworkConfiguration*)",
+      "r9": "0 (regionCount)",
+      "rsp+0x20": "rsi (regions)",
+      "rsp+0x28": "rcx (initialInvitationConfiguration)",
+      "rsp+0x30": "r15 (asyncIdentifier)",
+      "rsp+0x38": "rdi (networkDescriptor)",
+      "rsp+0x40": "rsi (appliedInitialInvitationIdentifier)"
+    },
+    "manager_holder_candidate": {
+      "helper_rva": "0x8E25B0",
+      "fallback_instruction_rva": "0x8E25D0",
+      "fallback_instruction": "lea rax, [rip+0x1eec739]",
+      "holder_rva": "0x27CED10",
+      "create_path_next_instruction_rva": "0x8E15BD",
+      "create_path_next_instruction": "mov rcx, qword ptr [rax]",
+      "runtime_pointer_captured": false
+    },
+    "partywin_export_shape": {
+      "export": "PartyCreateNewNetwork",
+      "rva": "0x15720",
+      "observed_static_prologue_register_preservation": {
+        "rcx": "mov rbx, rcx",
+        "rdx": "mov r13, rdx",
+        "r8": "mov rdi, r8",
+        "r9d": "mov r12d, r9d"
+      },
+      "runtime_export_address": "0x7FFF08335720",
+      "export_address_observed": true
+    }
+  },
+  "findings": {
+    "live_callsite_shape_consistent_with_official_create_signature": true,
+    "live_config_shape_consistent_with_official_party_network_configuration": true,
+    "manager_holder_rva_static_candidate_observed": true,
+    "manager_holder_pointer_runtime_bound": false,
+    "candidate_target_semantics_proven": false,
+    "party_create_export_pointer_binding_proven": false,
+    "session_party_abi_proven": false,
+    "host_client_behavior_proven": false
+  },
+  "limits": [
+    "The official SDK signature and the observed register/stack shape establish a strong candidate mapping, but do not prove that the protected EXE slot target is the PartyWin export.",
+    "The holder at EXE+0x27CED10 has not yet been read in a successful current runtime capture; its live value and lifetime remain unbound.",
+    "The observed input_edx value was not captured as a concrete 8 at the callsite window.",
+    "No Party call, memory write, hook, host/client session, or mission test was performed."
+  ]
+}

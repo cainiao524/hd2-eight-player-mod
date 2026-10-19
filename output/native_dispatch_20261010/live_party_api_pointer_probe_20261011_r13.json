@@ -1,0 +1,719 @@
+{
+  "schema": "hd2_live_party_api_pointer_probe_v1",
+  "build": 25480438,
+  "probe": {
+    "log_sha256": "3e7d9ffa6a9ec40d45c1d9e746f69aa34b1bea7cc3527bb0dda32a396e8559bd",
+    "latest_start": "2026-10-11 17:15:32 START read_only=true party_api_probe=20261011",
+    "game_base": "0x7ffe8b680000",
+    "party_base": "0x7ffe91690000",
+    "playfab_base": "0x7ffe914c0000",
+    "exe_base": "0x7ff69e3e0000",
+    "read_only": true,
+    "calls_made": false,
+    "writes_made": false,
+    "hooks_installed": false
+  },
+  "runtime_iat": [
+    {
+      "rva": "0x29617D8",
+      "label": "PartyNetworkSetCustomContext",
+      "address": "0x7FF6A0D417D8",
+      "target": "0x7FFE916AEBF0",
+      "in_party": true,
+      "in_playfab": true,
+      "in_exe": false,
+      "raw_sha256": "39148c7375690ebc63fbe81f0a3cf10af745d2c479c7ea708129b9d1dbf04067",
+      "code64_sha256": "abffa8ce9b38287d2b2dfc7f93908a133454abd46699717a5c72d128ff4f94bb"
+    },
+    {
+      "rva": "0x29617E8",
+      "label": "PFLobbySendInvite",
+      "address": "0x7FF6A0D417E8",
+      "target": "0x7FFE914FD340",
+      "in_party": false,
+      "in_playfab": true,
+      "in_exe": false,
+      "raw_sha256": "b5ad5f2ac215a1547359bddda6de3681678fa939b60a4748ea65b677defd7df6",
+      "code64_sha256": "a63a6fd401dd718eb6d80c7a74e2394070e4df4f5951b07383decb9c81f73e06"
+    }
+  ],
+  "exe_indirect_slots": [
+    {
+      "rva": "0x13F6DB8",
+      "label": "create_network_candidate",
+      "slot_address": "0x7FF69F7D6DB8",
+      "target": "0x7FF6A105A7C8",
+      "target_rva": "0x2c7a7c8",
+      "in_party": false,
+      "in_exe": true,
+      "raw_sha256": "9655951d4174516bce50e28b3953096bc7237b2cc2e21045986942cdeb6327ce",
+      "code512_sha256": "8e3afc77d13c737b86b9743bf878ab1ff9e10317b9527f1d819aade28f3c8269",
+      "first_jump_target": "0x7ff6a13a3336"
+    },
+    {
+      "rva": "0x13F6EF8",
+      "label": "async_or_state_candidate",
+      "slot_address": "0x7FF69F7D6EF8",
+      "target": "0x7FF6A1051173",
+      "target_rva": "0x2c71173",
+      "in_party": false,
+      "in_exe": true,
+      "raw_sha256": "6b8e3c2a26e1ef15a7e2327908c5e0c3a408aa08db8481c486bc34d9289095d3",
+      "code512_sha256": "68a9491f8aed44eb14082abe60f633f19fc7da0135300ebc26540b4e24d2a463",
+      "first_jump_target": "0x7ff6a13ac2d5"
+    },
+    {
+      "rva": "0x13F6DF0",
+      "label": "authenticate_or_state_candidate",
+      "slot_address": "0x7FF69F7D6DF0",
+      "target": "0x7FF6A1052EF2",
+      "target_rva": "0x2c72ef2",
+      "in_party": false,
+      "in_exe": true,
+      "raw_sha256": "47b6f3f34c8c3a7e6148f5e80ea0257c13865eee91b686995b72a4f6426e498c",
+      "code512_sha256": "232ed4323f98130c4c6df54115ccf31478f92d7505fbb9d0fe46358bcbee332d",
+      "first_jump_target": "0x7ff6a132d507"
+    },
+    {
+      "rva": "0x13F6C30",
+      "label": "create_endpoint_candidate",
+      "slot_address": "0x7FF69F7D6C30",
+      "target": "0x7FF6A1052358",
+      "target_rva": "0x2c72358",
+      "in_party": false,
+      "in_exe": true,
+      "raw_sha256": "51d6670c833495d6b7e79dbc11407f9b2e285cbefd074215d66c727913d3e9be",
+      "code512_sha256": "0bd4c9b942a809877eee640c766a0b38c037a0ef538c9f73b4aa43c5e00753b8",
+      "first_jump_target": "0x7ff6a134a2a4"
+    },
+    {
+      "rva": "0x13F6F70",
+      "label": "connect_network_candidate",
+      "slot_address": "0x7FF69F7D6F70",
+      "target": "0x7FF6A1059D91",
+      "target_rva": "0x2c79d91",
+      "in_party": false,
+      "in_exe": true,
+      "raw_sha256": "16d2538d59c1b62dd4474d5706b1418ef7756161a2e9ac49be26467829fb7931",
+      "code512_sha256": "7c91c91cd493ecb617743e83df86f5c8a06c7215254a858158ee575a6e2a9e38",
+      "first_jump_target": "0x7ff6a1351df0"
+    },
+    {
+      "rva": "0x13F7030",
+      "label": "auth_network_candidate",
+      "slot_address": "0x7FF69F7D7030",
+      "target": "0x7FF6A105A6C6",
+      "target_rva": "0x2c7a6c6",
+      "in_party": false,
+      "in_exe": true,
+      "raw_sha256": "330e3275a88ad021e8c7f53ae0fd875faf21f5139de6a370fd5268d382c9be87",
+      "code512_sha256": "30b7c7f564b794da671139172b1c2f2f6ba1c0fb13e1f2e5c82adad742bb84f5",
+      "first_jump_target": "0x7ff6a13ba54e"
+    }
+  ],
+  "exe_slot_table_window": {
+    "address": "0x7FF69F7D6C00",
+    "size": "0x480",
+    "sha256": "dc062b0691908a377ac76b67874ff8ed2c569e129bf5b8330c2375e43d9e7398",
+    "partywin_pointer_rows": [
+      {
+        "offset": "0x8",
+        "address": "0x7ff69f7d6c08",
+        "value": "0x7ffe916ae7f0",
+        "known_export": "PartyNetworkRemoveLocalUser"
+      },
+      {
+        "offset": "0xb8",
+        "address": "0x7ff69f7d6cb8",
+        "value": "0x7ffe916a2f60",
+        "known_export": null
+      },
+      {
+        "offset": "0xf8",
+        "address": "0x7ff69f7d6cf8",
+        "value": "0x7ffe916a4980",
+        "known_export": null
+      },
+      {
+        "offset": "0x120",
+        "address": "0x7ff69f7d6d20",
+        "value": "0x7ffe916a2a50",
+        "known_export": null
+      },
+      {
+        "offset": "0x1d0",
+        "address": "0x7ff69f7d6dd0",
+        "value": "0x7ffe916a9c30",
+        "known_export": null
+      },
+      {
+        "offset": "0x210",
+        "address": "0x7ff69f7d6e10",
+        "value": "0x7ffe916ae640",
+        "known_export": "PartyNetworkLeaveNetwork"
+      },
+      {
+        "offset": "0x298",
+        "address": "0x7ff69f7d6e98",
+        "value": "0x7ffe916a4250",
+        "known_export": null
+      },
+      {
+        "offset": "0x2d8",
+        "address": "0x7ff69f7d6ed8",
+        "value": "0x7ffe916a30a0",
+        "known_export": null
+      },
+      {
+        "offset": "0x350",
+        "address": "0x7ff69f7d6f50",
+        "value": "0x7ffe916b07d0",
+        "known_export": null
+      },
+      {
+        "offset": "0x390",
+        "address": "0x7ff69f7d6f90",
+        "value": "0x7ffe9169fe60",
+        "known_export": null
+      }
+    ]
+  },
+  "exe_global_pointers": [
+    {
+      "rva": "0x27CED10",
+      "label": "party_manager_holder_candidate",
+      "address": "0x7FF6A0BAED10",
+      "target": "0x17CA93ED3EB16D00",
+      "in_party": false,
+      "in_playfab": false,
+      "in_exe": false,
+      "raw_sha256": "91017bd292a4ec62c493e3895ee25b54a99e2a28b3f1e388db70946c153bf776"
+    }
+  ],
+  "exe_callsite_windows": [
+    {
+      "rva": "0x8E1370",
+      "label": "create_network_callsite",
+      "address": "0x7FF69ECC1370",
+      "size": "0x1000",
+      "sha256": "0e6e20315ee6e64b80c48b78197feb4b968e68e2995c659496d3c3fe049a5fb2",
+      "first_bytes": "48895C241048896C241848897424205741544155415641574881ECA002000044"
+    },
+    {
+      "rva": "0x8E1970",
+      "label": "follow_on_callsite",
+      "address": "0x7FF69ECC1970",
+      "size": "0x1000",
+      "sha256": "057f43db6fd33534cfcb4c5221574830cdc873a6ad607b4b4a592d62e29fbfa9",
+      "first_bytes": "48895C241048896C2418565741564883EC40488BF9498BD8488D0DE97BDC0048"
+    }
+  ],
+  "jump_chain_windows": [
+    {
+      "label": "create_network_candidate",
+      "depth": 0,
+      "address": "0x7FF6A105A7C8",
+      "rva": "0x2c7a7c8",
+      "code256_sha256": "4b93d68b747f955b29244cc5fbcc95363ddd3982c47fe8bc2c3155e00aa496f5",
+      "first_bytes": "E9698B340000000000103A0300000000"
+    },
+    {
+      "label": "create_network_candidate",
+      "depth": 1,
+      "address": "0x7FF6A13A3336",
+      "rva": "0x2fc3336",
+      "code256_sha256": "b1ca1c84abc24902881854eebac1f0ae7e906d1bb7cc60199c49bb6253bfcd62",
+      "first_bytes": "4883EC0868FDEAFA6F4883EC08554889"
+    },
+    {
+      "label": "async_or_state_candidate",
+      "depth": 0,
+      "address": "0x7FF6A1051173",
+      "rva": "0x2c71173",
+      "code256_sha256": "8eb3c764e4c361ec72a032011b34c4708f5cde8811da86ddd34e81910ba2f838",
+      "first_bytes": "E95DB13500488B000000000000C0358C"
+    },
+    {
+      "label": "async_or_state_candidate",
+      "depth": 1,
+      "address": "0x7FF6A13AC2D5",
+      "rva": "0x2fcc2d5",
+      "code256_sha256": "0592291fb46782250ef3001efd2a5647142fb32f16ca1fd455e762643c58046f",
+      "first_bytes": "4883EC084881EC080000004881EC0800"
+    },
+    {
+      "label": "authenticate_or_state_candidate",
+      "depth": 0,
+      "address": "0x7FF6A1052EF2",
+      "rva": "0x2c72ef2",
+      "code256_sha256": "bc6db4df3a008426f75965455a9bb332dd8ebb0e29fb2dc3c4b40ae4245b3135",
+      "first_bytes": "E910A62D00E9F3313000E955BB3200E9"
+    },
+    {
+      "label": "authenticate_or_state_candidate",
+      "depth": 1,
+      "address": "0x7FF6A132D507",
+      "rva": "0x2f4d507",
+      "code256_sha256": "220cfc79092fe978f94ddad2ae97972a7b17c9a38947f5d42049c98e13611302",
+      "first_bytes": "4883EC084881EC080000004881EC0800"
+    },
+    {
+      "label": "create_endpoint_candidate",
+      "depth": 0,
+      "address": "0x7FF6A1052358",
+      "rva": "0x2c72358",
+      "code256_sha256": "b5de1619c374754fed684857e4794a23b53304754b1c7e2ee34895822d7a8ca6",
+      "first_bytes": "E9477F2F00E91B073200E98590340000"
+    },
+    {
+      "label": "create_endpoint_candidate",
+      "depth": 1,
+      "address": "0x7FF6A134A2A4",
+      "rva": "0x2f6a2a4",
+      "code256_sha256": "9104735f0b95cb491b5391ecd884ab846a299cadf7a9ed04e82e86702ee00f0f",
+      "first_bytes": "4883EC084881EC080000004881EC0800"
+    },
+    {
+      "label": "connect_network_candidate",
+      "depth": 0,
+      "address": "0x7FF6A1059D91",
+      "rva": "0x2c79d91",
+      "code256_sha256": "22fe4c3d2ab30759e832fc290a4ffbfbba0a738ec5f625b3e6c3c596d7c42890",
+      "first_bytes": "E95A802F00E971083200E98E90340057"
+    },
+    {
+      "label": "connect_network_candidate",
+      "depth": 1,
+      "address": "0x7FF6A1351DF0",
+      "rva": "0x2f71df0",
+      "code256_sha256": "7c97015efc0568f782a87b4a3c1c15dd0594059fc4758c336b1e17dbd343f5bd",
+      "first_bytes": "4883EC0868FB40DF734883EC086868B3"
+    },
+    {
+      "label": "auth_network_candidate",
+      "depth": 0,
+      "address": "0x7FF6A105A6C6",
+      "rva": "0x2c7a6c6",
+      "code256_sha256": "20ee8133334fdb0be4336a06077d6f60bf5f587bfc9e47a049ee8fa08f0391fc",
+      "first_bytes": "E983FE35000035000000000000E91E15"
+    },
+    {
+      "label": "auth_network_candidate",
+      "depth": 1,
+      "address": "0x7FF6A13BA54E",
+      "rva": "0x2fda54e",
+      "code256_sha256": "9c9fcd045f22061c68d0cd257b4e20eecd0d8447493fe981a4035efda779985c",
+      "first_bytes": "4883EC086823B8FF72683424FF57538F"
+    }
+  ],
+  "jump_chain_4096_windows": [
+    {
+      "label": "create_network_candidate",
+      "depth": 0,
+      "address": "0x7FF6A105A7C8",
+      "rva": "0x2c7a7c8",
+      "size": "0x1000",
+      "sha256": "b40d342759377a4332fd057ed10f210fe02343ed9dd378b2435c612fad37a10c",
+      "first_bytes": "E9698B340000000000103A0300000000"
+    },
+    {
+      "label": "create_network_candidate",
+      "depth": 1,
+      "address": "0x7FF6A13A3336",
+      "rva": "0x2fc3336",
+      "size": "0x1000",
+      "sha256": "4a02504284b98920d5e0fc4d8c13ff53192dd2b5cafcac7379137bca4f74ca41",
+      "first_bytes": "4883EC0868FDEAFA6F4883EC08554889"
+    },
+    {
+      "label": "async_or_state_candidate",
+      "depth": 0,
+      "address": "0x7FF6A1051173",
+      "rva": "0x2c71173",
+      "size": "0x1000",
+      "sha256": "167ebc142dcb3109a79efe19eeb3b9680f9c592a20c4f9c9db661d69c921f86f",
+      "first_bytes": "E95DB13500488B000000000000C0358C"
+    },
+    {
+      "label": "async_or_state_candidate",
+      "depth": 1,
+      "address": "0x7FF6A13AC2D5",
+      "rva": "0x2fcc2d5",
+      "size": "0x1000",
+      "sha256": "4e9e4a67a84e4ec8f02bc989c8438c38be5c6fdddf903705b39623c58ee35a37",
+      "first_bytes": "4883EC084881EC080000004881EC0800"
+    },
+    {
+      "label": "authenticate_or_state_candidate",
+      "depth": 0,
+      "address": "0x7FF6A1052EF2",
+      "rva": "0x2c72ef2",
+      "size": "0x1000",
+      "sha256": "cc8cbb580dcc4d8cf4583c29ed7026ab62034f9422172b7f488fdce918f343b2",
+      "first_bytes": "E910A62D00E9F3313000E955BB3200E9"
+    },
+    {
+      "label": "authenticate_or_state_candidate",
+      "depth": 1,
+      "address": "0x7FF6A132D507",
+      "rva": "0x2f4d507",
+      "size": "0x1000",
+      "sha256": "448bd838922e3b200ede35fc75b31d6175ea44272812c0986d06e8134aedaaf6",
+      "first_bytes": "4883EC084881EC080000004881EC0800"
+    },
+    {
+      "label": "create_endpoint_candidate",
+      "depth": 0,
+      "address": "0x7FF6A1052358",
+      "rva": "0x2c72358",
+      "size": "0x1000",
+      "sha256": "0d7b108c6eafbb23d8442c042c326bcbac362b3d4ab0dfc1050771105751af84",
+      "first_bytes": "E9477F2F00E91B073200E98590340000"
+    },
+    {
+      "label": "create_endpoint_candidate",
+      "depth": 1,
+      "address": "0x7FF6A134A2A4",
+      "rva": "0x2f6a2a4",
+      "size": "0x1000",
+      "sha256": "837304362319ab47ce8c3555f00428488c3b51c72faeddff44f3a9548ab29a14",
+      "first_bytes": "4883EC084881EC080000004881EC0800"
+    },
+    {
+      "label": "connect_network_candidate",
+      "depth": 0,
+      "address": "0x7FF6A1059D91",
+      "rva": "0x2c79d91",
+      "size": "0x1000",
+      "sha256": "caabe9baeb41e821a66a656fa2baf8227818b7a123361ef441138c84a69e1008",
+      "first_bytes": "E95A802F00E971083200E98E90340057"
+    },
+    {
+      "label": "connect_network_candidate",
+      "depth": 1,
+      "address": "0x7FF6A1351DF0",
+      "rva": "0x2f71df0",
+      "size": "0x1000",
+      "sha256": "fee99588003c628e7dea822d7002b23b021ec6c21f7b7756726838ce4fbced47",
+      "first_bytes": "4883EC0868FB40DF734883EC086868B3"
+    },
+    {
+      "label": "auth_network_candidate",
+      "depth": 0,
+      "address": "0x7FF6A105A6C6",
+      "rva": "0x2c7a6c6",
+      "size": "0x1000",
+      "sha256": "dd4b0ee6e4c1f352763c0c374636cc0c776bbc642f5a9afb1368e212fd808dd9",
+      "first_bytes": "E983FE35000035000000000000E91E15"
+    },
+    {
+      "label": "auth_network_candidate",
+      "depth": 1,
+      "address": "0x7FF6A13BA54E",
+      "rva": "0x2fda54e",
+      "size": "0x1000",
+      "sha256": "c1151f00d9255c075790d8b0b956c12b60e97ed52c42e985fba6bdee2b4d8318",
+      "first_bytes": "4883EC086823B8FF72683424FF57538F"
+    }
+  ],
+  "rip_indirect_targets": [],
+  "heuristic_direct_call_targets": [
+    {
+      "label": "create_network_candidate_d1",
+      "instruction": "0x7FF6A13A339F",
+      "target": "0x7FF6A0D591F8",
+      "target_rva": "0x29791f8",
+      "heuristic_code_scan": true,
+      "code128_sha256": "3e0778060384e47eae5feef084feb84042562fae71a9aec22877d3d9ef7b4587",
+      "first_bytes": "E8000000005D4881EDFD010000C3E800"
+    },
+    {
+      "label": "async_or_state_candidate_d1",
+      "instruction": "0x7FF6A13AC327",
+      "target": "0x7FF6A0D590D2",
+      "target_rva": "0x29790d2",
+      "heuristic_code_scan": true,
+      "code128_sha256": "708efbc0c9c6ddb7944d00741673119611fa9d6cdc03651938a28ea8fb243fbb",
+      "first_bytes": "E8000000005D4881EDD7000000C3E800"
+    },
+    {
+      "label": "authenticate_or_state_candidate_d1",
+      "instruction": "0x7FF6A132D555",
+      "target": "0x7FF6A0D5909A",
+      "target_rva": "0x297909a",
+      "heuristic_code_scan": true,
+      "code128_sha256": "54ee36ec0b1556e2cbc23503becdf2746400e2d77249edb702601cd8544a2d5b",
+      "first_bytes": "E8000000005D4881ED9F000000C3E800"
+    },
+    {
+      "label": "create_endpoint_candidate_d1",
+      "instruction": "0x7FF6A134A2EF",
+      "target": "0x7FF6A0D59206",
+      "target_rva": "0x2979206",
+      "heuristic_code_scan": true,
+      "code128_sha256": "6eaa5f85276fecc2f1bb3e91d9a7647c34aa40ebfe63aa02afac2cb254d01450",
+      "first_bytes": "E8000000005D4881ED0B020000C3A7AE"
+    },
+    {
+      "label": "connect_network_candidate_d0",
+      "instruction": "0x7FF6A1059E0A",
+      "target": "0x7FF6A1859DAC",
+      "target_rva": "0x3479dac",
+      "heuristic_code_scan": true,
+      "code128_sha256": "c0434f5789ae898b09b0b6ebdc5470d25c019ddab4e48ff0a652e8192c7e8b56",
+      "first_bytes": "070907E3FF1617977C4C357CAAE21FC4"
+    },
+    {
+      "label": "connect_network_candidate_d0",
+      "instruction": "0x7FF6A1059E14",
+      "target": "0x7FF6A179D7D0",
+      "target_rva": "0x33bd7d0",
+      "heuristic_code_scan": true,
+      "code128_sha256": "b2ac87c3ae6d7fcb83f17c14d81991bc8fa267d8953a0dfb8dfbe70864206dbd",
+      "first_bytes": "B980D3CD202F85B0E8FEA1C08214D502"
+    },
+    {
+      "label": "connect_network_candidate_d1",
+      "instruction": "0x7FF6A1351E3E",
+      "target": "0x7FF6A0D590EE",
+      "target_rva": "0x29790ee",
+      "heuristic_code_scan": true,
+      "code128_sha256": "99e16a5d9e54de97fa17cb6508c4ba725aa995ee0b39efa7a58b554035f985ac",
+      "first_bytes": "E8000000005D4881EDF3000000C3E800"
+    },
+    {
+      "label": "auth_network_candidate_d1",
+      "instruction": "0x7FF6A13BA58D",
+      "target": "0x7FF6A0D59038",
+      "target_rva": "0x2979038",
+      "heuristic_code_scan": true,
+      "code128_sha256": "2c5f7099b5fa53e89f43091a50be429bcc2f02ab9cf97e6605c838b0569e8026",
+      "first_bytes": "E8000000005D4881ED3D000000C3E800"
+    }
+  ],
+  "partywin_exports": [
+    {
+      "name": "PartyCreateNewNetwork",
+      "rva": "0x15720",
+      "address": "0x7FFE916A5720",
+      "code64_sha256": "dc495f536dbc1961589ec84be2986dd8a049eebca9b429be1b42bff0635baf3b",
+      "first_bytes": "48895C24205556574154415541564157"
+    },
+    {
+      "name": "PartyConnectToNetwork",
+      "rva": "0x14FE0",
+      "address": "0x7FFE916A4FE0",
+      "code64_sha256": "ad47275049c019c608e623a6d0b587fe7ec600102dd7a85f5a5e616f69343565",
+      "first_bytes": "40535556574154415541564157B86800"
+    },
+    {
+      "name": "PartyNetworkAuthenticateLocalUser",
+      "rva": "0x1BC80",
+      "address": "0x7FFE916ABC80",
+      "code64_sha256": "7bad4048346d654ceba60541e0d5f23d9965aaec74e3ab148f3cbdebb8d1efbd",
+      "first_bytes": "40535556574154415541564157B87800"
+    },
+    {
+      "name": "PartyNetworkCreateEndpoint",
+      "rva": "0x1C050",
+      "address": "0x7FFE916AC050",
+      "code64_sha256": "32174dad9a741ac34b3a86cd499bceea0c0a88e0f55f1b12c3e061a3b9770106",
+      "first_bytes": "48895C24185556574154415541564157"
+    },
+    {
+      "name": "PartyNetworkLeaveNetwork",
+      "rva": "0x1E640",
+      "address": "0x7FFE916AE640",
+      "code64_sha256": "25e68673e866cb0bf7576fc5e450fc2d94c8c50d5a69c6a02a9cf1749df115df",
+      "first_bytes": "48895C241855565741564157B8500000"
+    },
+    {
+      "name": "PartyNetworkKickUser",
+      "rva": "0x1E500",
+      "address": "0x7FFE916AE500",
+      "code64_sha256": "93e34c593b23727c4e86ff41ee46c94f5fb1a79edc09e9dfdf14845654ed4a76",
+      "first_bytes": "48895C242055565741564157B8500000"
+    },
+    {
+      "name": "PartyNetworkRemoveLocalUser",
+      "rva": "0x1E7F0",
+      "address": "0x7FFE916AE7F0",
+      "code64_sha256": "f59b78be607bb93c640cffdce5ce9e00d19ee26bba0d743f39148d1eddb9dfe7",
+      "first_bytes": "4053555657415441564157B870000000"
+    },
+    {
+      "name": "PartyCleanup",
+      "rva": "0x14DC0",
+      "address": "0x7FFE916A4DC0",
+      "code64_sha256": "2ebb2f159fa9d174dd21914fb1d4d18275619bc89e2cb84ea280e40529c9f743",
+      "first_bytes": "48895C241048896C2418488974242057"
+    },
+    {
+      "name": "PartyNetworkGetNetworkConfiguration",
+      "rva": "0x1DB30",
+      "address": "0x7FFE916ADB30",
+      "code64_sha256": "da39ea7fc809e00144a588b170d3ede352cf5284ecf7fd03da64a56da508ce88",
+      "first_bytes": "48895C241855565741564157B8500000"
+    },
+    {
+      "name": "PartyNetworkGetNetworkDescriptor",
+      "rva": "0x1DCD0",
+      "address": "0x7FFE916ADCD0",
+      "code64_sha256": "1947f1464c3c5adaa8a115820bdbfaf9e4c940c0a8caae5d8ea4d16b10efe813",
+      "first_bytes": "48895C241855565741564157B8500000"
+    },
+    {
+      "name": "PartyNetworkSetCustomContext",
+      "rva": "0x1EBF0",
+      "address": "0x7FFE916AEBF0",
+      "code64_sha256": "abffa8ce9b38287d2b2dfc7f93908a133454abd46699717a5c72d128ff4f94bb",
+      "first_bytes": "48895C241855565741564157B8500000"
+    },
+    {
+      "name": "PartyStartProcessingStateChanges",
+      "rva": "0x1FEE0",
+      "address": "0x7FFE916AFEE0",
+      "code64_sha256": "b37328b484d9d0ecde8b0c2946a6f4723d4618e4cb8f258f79032fe5b712c94f",
+      "first_bytes": "48895C24205556574154415541564157"
+    },
+    {
+      "name": "PartyFinishProcessingStateChanges",
+      "rva": "0x193C0",
+      "address": "0x7FFE916A93C0",
+      "code64_sha256": "4722f5ba39b19b2d104d28898a116c420a46d8b97908de0ff19ff11d4c57fa1d",
+      "first_bytes": "48895C24105556574154415541564157"
+    },
+    {
+      "name": "PartyDoWork",
+      "rva": "0x17350",
+      "address": "0x7FFE916A7350",
+      "code64_sha256": "dbd3c3a2509a306f5fb5863a6c06518ac5620d1d8b9826494b540abe7a12ef40",
+      "first_bytes": "48895C241848896C2420565741544156"
+    }
+  ],
+  "prior_full_scan_pointer_refs": [
+    {
+      "name": "PartyCreateNewNetwork",
+      "rva": "0x15720",
+      "address": "0x7FFF27055720",
+      "pointer_refs": 0,
+      "code64_sha256": "dc495f536dbc1961589ec84be2986dd8a049eebca9b429be1b42bff0635baf3b"
+    },
+    {
+      "name": "PartyConnectToNetwork",
+      "rva": "0x14FE0",
+      "address": "0x7FFF27054FE0",
+      "pointer_refs": 0,
+      "code64_sha256": "ad47275049c019c608e623a6d0b587fe7ec600102dd7a85f5a5e616f69343565"
+    },
+    {
+      "name": "PartyNetworkAuthenticateLocalUser",
+      "rva": "0x1BC80",
+      "address": "0x7FFF2705BC80",
+      "pointer_refs": 0,
+      "code64_sha256": "7bad4048346d654ceba60541e0d5f23d9965aaec74e3ab148f3cbdebb8d1efbd"
+    },
+    {
+      "name": "PartyNetworkCreateEndpoint",
+      "rva": "0x1C050",
+      "address": "0x7FFF2705C050",
+      "pointer_refs": 0,
+      "code64_sha256": "32174dad9a741ac34b3a86cd499bceea0c0a88e0f55f1b12c3e061a3b9770106"
+    },
+    {
+      "name": "PartyNetworkLeaveNetwork",
+      "rva": "0x1E640",
+      "address": "0x7FFF2705E640",
+      "pointer_refs": 1,
+      "code64_sha256": "25e68673e866cb0bf7576fc5e450fc2d94c8c50d5a69c6a02a9cf1749df115df"
+    },
+    {
+      "name": "PartyNetworkKickUser",
+      "rva": "0x1E500",
+      "address": "0x7FFF2705E500",
+      "pointer_refs": 0,
+      "code64_sha256": "93e34c593b23727c4e86ff41ee46c94f5fb1a79edc09e9dfdf14845654ed4a76"
+    },
+    {
+      "name": "PartyNetworkRemoveLocalUser",
+      "rva": "0x1E7F0",
+      "address": "0x7FFF2705E7F0",
+      "pointer_refs": 1,
+      "code64_sha256": "f59b78be607bb93c640cffdce5ce9e00d19ee26bba0d743f39148d1eddb9dfe7"
+    },
+    {
+      "name": "PartyCleanup",
+      "rva": "0x14DC0",
+      "address": "0x7FFF27054DC0",
+      "pointer_refs": 0,
+      "code64_sha256": "2ebb2f159fa9d174dd21914fb1d4d18275619bc89e2cb84ea280e40529c9f743"
+    },
+    {
+      "name": "PartyNetworkGetNetworkConfiguration",
+      "rva": "0x1DB30",
+      "address": "0x7FFF2705DB30",
+      "pointer_refs": 0,
+      "code64_sha256": "da39ea7fc809e00144a588b170d3ede352cf5284ecf7fd03da64a56da508ce88"
+    },
+    {
+      "name": "PartyNetworkGetNetworkDescriptor",
+      "rva": "0x1DCD0",
+      "address": "0x7FFF2705DCD0",
+      "pointer_refs": 0,
+      "code64_sha256": "1947f1464c3c5adaa8a115820bdbfaf9e4c940c0a8caae5d8ea4d16b10efe813"
+    },
+    {
+      "name": "PartyNetworkSetCustomContext",
+      "rva": "0x1EBF0",
+      "address": "0x7FFF2705EBF0",
+      "pointer_refs": 1,
+      "code64_sha256": "abffa8ce9b38287d2b2dfc7f93908a133454abd46699717a5c72d128ff4f94bb"
+    },
+    {
+      "name": "PartyStartProcessingStateChanges",
+      "rva": "0x1FEE0",
+      "address": "0x7FFF2705FEE0",
+      "pointer_refs": 0,
+      "code64_sha256": "b37328b484d9d0ecde8b0c2946a6f4723d4618e4cb8f258f79032fe5b712c94f"
+    },
+    {
+      "name": "PartyFinishProcessingStateChanges",
+      "rva": "0x193C0",
+      "address": "0x7FFF270593C0",
+      "pointer_refs": 0,
+      "code64_sha256": "4722f5ba39b19b2d104d28898a116c420a46d8b97908de0ff19ff11d4c57fa1d"
+    },
+    {
+      "name": "PartyDoWork",
+      "rva": "0x17350",
+      "address": "0x7FFF27057350",
+      "pointer_refs": 0,
+      "code64_sha256": "dbd3c3a2509a306f5fb5863a6c06518ac5620d1d8b9826494b540abe7a12ef40"
+    }
+  ],
+  "findings": {
+    "all_six_slots_point_into_exe": true,
+    "all_six_slots_have_first_jump": true,
+    "party_create_connect_auth_endpoint_export_addresses_observed": true,
+    "named_party_iat_binding_observed": true,
+    "named_playfab_iat_binding_observed": true,
+    "party_manager_holder_candidate_runtime_observed": true,
+    "partywin_target_observed_in_candidate_windows": false,
+    "playfab_target_observed_in_candidate_windows": false,
+    "direct_party_export_pointer_binding_proven": false,
+    "call_target_semantics_proven": false,
+    "session_party_abi_proven": false
+  },
+  "production": {
+    "installable": false,
+    "runtime_verified": false,
+    "multiplayer_verified": false
+  },
+  "limits": [
+    "EXE slot targets and bounded jump/call windows were read without invoking them.",
+    "The E8 byte scan is heuristic and can match protected data; it does not prove a call edge or callee semantics.",
+    "PartyWin exports are loaded and addressable, but no create/connect/auth/endpoint slot points directly to them in the pointer scan.",
+    "Named IAT binding proves only PartyNetworkSetCustomContext and PFLobbySendInvite; it does not bind the unresolved create/connect/auth/endpoint slots.",
+    "No Session/Party method was called and no host/client or mission behavior was exercised."
+  ]
+}

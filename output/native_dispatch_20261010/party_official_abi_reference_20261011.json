@@ -1,0 +1,84 @@
+{
+  "schema": "hd2_party_official_abi_reference_v1",
+  "steam_build": 25480438,
+  "purpose": "canonical Party SDK semantics cross-check; not a permission to call game functions",
+  "methods": [
+    {
+      "name": "PartyManager::CreateNewNetwork",
+      "signature": "PartyError CreateNewNetwork(const PartyLocalUser*, const PartyNetworkConfiguration*, uint32_t, const PartyRegion*, const PartyInvitationConfiguration*, void*, PartyNetworkDescriptor*, char*)",
+      "semantic": "queues network creation; immutable network configuration is supplied here",
+      "game_candidate": "EXE+0x13F6DB8 callsite shape; PartyWin target not runtime-bound",
+      "reference": "https://learn.microsoft.com/en-us/gaming/playfab/multiplayer/networking/reference/classes/partymanager/methods/partymanager_createnewnetwork"
+    },
+    {
+      "name": "PartyManager::ConnectToNetwork",
+      "signature": "PartyError ConnectToNetwork(const PartyNetworkDescriptor*, void*, PartyNetwork**)",
+      "semantic": "queues connection to an existing network",
+      "game_candidate": "EXE+0x13F6F70 callsite shape; descriptor/output pointers not runtime-bound",
+      "reference": "https://learn.microsoft.com/th-th/xbox/playfab/multiplayer/networking/reference/classes/partymanager/methods/partymanager_connecttonetwork"
+    },
+    {
+      "name": "PartyNetwork::AuthenticateLocalUser",
+      "signature": "PartyError AuthenticateLocalUser(const PartyLocalUser*, PartyString, void*)",
+      "semantic": "queues authentication of a local user using an invitation identifier",
+      "game_candidate": "EXE+0x13F7030 callsite shape; local user/invitation owner not runtime-bound",
+      "reference": "https://learn.microsoft.com/en-us/gaming/playfab/multiplayer/networking/reference/classes/partynetwork/methods/partynetwork_authenticatelocaluser"
+    },
+    {
+      "name": "PartyNetwork::CreateEndpoint",
+      "signature": "PartyError CreateEndpoint(const PartyLocalUser*, uint32_t, const PartyString*, const PartyDataBuffer*, void*, PartyLocalEndpoint**)",
+      "semantic": "queues a local endpoint; configuration limits endpoint creation",
+      "game_candidate": "EXE+0x13F6C30 callsite shape with propertyCount=0; output lifetime unproven",
+      "reference": "https://learn.microsoft.com/es-es/gaming/playfab/multiplayer/networking/reference/classes/partynetwork/methods/partynetwork_createendpoint"
+    },
+    {
+      "name": "PartyNetwork::LeaveNetwork",
+      "signature": "PartyError LeaveNetwork(void*)",
+      "semantic": "queues graceful network leave",
+      "game_candidate": "PartyWin export pointer observed; callsite and completion unproven",
+      "reference": "https://learn.microsoft.com/en-us/xbox/playfab/multiplayer/networking/reference/classes/partynetwork/methods/partynetwork_leavenetwork"
+    },
+    {
+      "name": "PartyNetwork::RemoveLocalUser",
+      "signature": "PartyError RemoveLocalUser(const PartyLocalUser*, void*)",
+      "semantic": "queues removal of a local authenticated user and destroys associated endpoints",
+      "game_candidate": "PartyWin export pointer observed; callsite and completion unproven",
+      "reference": "https://learn.microsoft.com/en-us/xbox/playfab/multiplayer/networking/reference/classes/partynetwork/methods/partynetwork_removelocaluser"
+    },
+    {
+      "name": "PartyManager::Cleanup",
+      "signature": "PartyError Cleanup()",
+      "semantic": "reclaims Party resources; exact game shutdown ordering unproven",
+      "game_candidate": "PartyCleanup export pointer observed; owner/lifetime unproven",
+      "reference": "https://learn.microsoft.com/en-us/xbox/playfab/multiplayer/networking/reference/classes/partymanager/partymanager"
+    }
+  ],
+  "configuration_reference": {
+    "name": "PartyNetworkConfiguration",
+    "fields": [
+      "maxUserCount",
+      "maxDeviceCount",
+      "maxUsersPerDeviceCount",
+      "maxDevicesPerUserCount",
+      "maxEndpointsPerDeviceCount",
+      "directPeerConnectivityOptions"
+    ],
+    "reference": "https://learn.microsoft.com/en-us/gaming/playfab/multiplayer/networking/reference/structs/partynetworkconfiguration",
+    "game_candidate": "live create callsite writes [input,input,1,1,1,0xF]; field semantics and server behavior remain unverified"
+  },
+  "verification_boundary": {
+    "official_signatures_confirmed": true,
+    "game_wrapper_abi_confirmed": false,
+    "manager_holder_confirmed": false,
+    "return_abi_confirmed": false,
+    "state_change_receiver_confirmed": false,
+    "real_client_test_confirmed": false,
+    "public_release_allowed": false
+  },
+  "next_evidence": [
+    "r13 successful scanner-backed runtime read",
+    "manager and local-user pointer after Party initialization",
+    "per-method wrapper target binding without calling unknown code",
+    "host/client create-join-leave-count-migration-cleanup logs"
+  ]
+}

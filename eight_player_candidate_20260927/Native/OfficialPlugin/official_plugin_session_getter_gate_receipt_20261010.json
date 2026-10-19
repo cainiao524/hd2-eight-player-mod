@@ -1,0 +1,40 @@
+{
+  "schema": "ep_official_plugin_session_getter_gate_receipt_v2",
+  "build": 25480438,
+  "exe_version": "1.8.46015.0",
+  "getter": {
+    "rva": "0x34fdf0",
+    "module": "helldivers2.exe",
+    "wrong_module_rejected": true,
+    "bytes": 15,
+    "machine_code_fingerprint_gate": true,
+    "exe_pe_gate": true,
+    "game_dll_pe_gate": true,
+    "game_dll_getter_address_accepted": false,
+    "stable_c_api_reread": true,
+    "calling_convention_proven": false,
+    "return_lifetime_proven": false,
+    "semantics_proven": false,
+    "invocation_enabled": false
+  },
+  "wrapper_map": "five_player_feasibility_20260927/live_c_api_table_map_verification_20261010.json",
+  "wrapper_map_sha256": "ba6d6b50553ea77d126fd915cb760e14131e8baf843e927d4bf0f3a504814562",
+  "source_sha256": {
+    "ep_official_session_getter.h": "b6ab0dcbe306153181b75e5b0a6d07e3282c4273c94ebc4919646712bc38988d",
+    "ep_official_session_getter_test.cpp": "9ce36194a6bcafabbe8b5e64d17750935c7dc10294ea7cded8f907ded644d0d6",
+    "ep_official_plugin.cpp": "05eee811a27d5ab032f8879d3c46c20704bf8a5b1182471850ec7b64f0fae444",
+    "eight_player_pluginw64_release.dll": "9e7dd49f8fd7a2726171c2bfd6156bc15c610008f266758636b787f80c026e4a"
+  },
+  "tests": {
+    "command": "Native/OfficialPlugin/build_x64.bat",
+    "result": "ep_official_session_getter_module_boundary_passed",
+    "official_plugin_build": true
+  },
+  "side_effects": {
+    "memory_writes": false,
+    "hooks": false,
+    "game_function_calls": false,
+    "installation": false,
+    "multiplayer_verified": false
+  }
+}

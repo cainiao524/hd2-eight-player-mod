@@ -1,0 +1,32 @@
+{
+  "schema": "hd2_party_slots_capture_plan_v1",
+  "build": 25480438,
+  "file_sha256": {
+    "helldivers2.exe": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+    "game.dll": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+    "PartyWin.dll": "de34667c2f7084013d9c03cd5d1cb5dc3321bc36bb616a845e35534e4e7995e0"
+  },
+  "manager_data_reads": {
+    "game_holder": "helldivers2.exe+0x27ced10",
+    "party_manager_global": "PartyWin.dll+0x3b6460",
+    "stored_handle": "[party_manager_global]+0x600",
+    "maximum_bytes_with_rereads": 48,
+    "opaque_handle_dereferenced": false
+  },
+  "also_reads": [
+    "loaded module headers and fixed code fingerprints",
+    "six existing candidate slots and their bounded code prefixes",
+    "two existing callsite windows and singleton helper"
+  ],
+  "total_memory_read_budget_bytes": 65536,
+  "capture_count": 1,
+  "required_game_state": "user-reported stable solo ship",
+  "starts_game": false,
+  "native_game_calls": false,
+  "memory_writes": false,
+  "hooks_installed": false,
+  "changes_game_files": false,
+  "provider_binding_proven": false,
+  "multiplayer_verified": false,
+  "execution": "Re-run this script with --pid <current PID> and a new --output path after user authorizes the capture."
+}

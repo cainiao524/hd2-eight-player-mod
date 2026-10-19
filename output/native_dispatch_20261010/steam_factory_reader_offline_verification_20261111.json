@@ -1,0 +1,33 @@
+{
+  "schema": "hd2_steam_factory_reader_offline_verification_v1",
+  "build": 25480438,
+  "verified_at_utc": "2026-10-11T11:48:28.409757+00:00",
+  "runtime_capture": false,
+  "read_only": true,
+  "calls_made": false,
+  "writes_made": false,
+  "hooks_installed": false,
+  "tool": {
+    "path": "E:\\File\\Codes\\0\\26.10.1\\HD2\\five_player_feasibility_20260927\\tools\\capture_live_steam_interface_factory_20261111.py",
+    "sha256": "d6b16cacd3b24dc0fcdeaedb8740a2a7d0d673c5eb8408ac339e570edc95b725"
+  },
+  "test": {
+    "path": "E:\\File\\Codes\\0\\26.10.1\\HD2\\five_player_feasibility_20260927\\tools\\test_capture_live_steam_interface_factory_20261111.py",
+    "sha256": "ebbc6d77a85be3ed1482a7e383da8cfb725899ac9b36a37e584dd9c1f0e8fdaa",
+    "command": "py -3.14 -m unittest -v five_player_feasibility_20260927.tools.test_capture_live_steam_interface_factory_20261111",
+    "tests_run": 2,
+    "tests_passed": 2,
+    "tests_failed": 0
+  },
+  "verified_behaviors": [
+    "RIP-relative Steam factory IAT target decoding",
+    "RIP-relative interface name candidate decoding",
+    "RIP-relative return-value store candidate decoding",
+    "rejecting non-ASCII data as an interface name"
+  ],
+  "limits": [
+    "No live process was read by this verification.",
+    "No Steam interface was invoked or runtime-bound.",
+    "No Session/Party ABI or multiplayer behavior is proven."
+  ]
+}

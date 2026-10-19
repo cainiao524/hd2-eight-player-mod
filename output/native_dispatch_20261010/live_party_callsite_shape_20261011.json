@@ -1,0 +1,123 @@
+{
+  "schema": "hd2_live_party_callsite_shape_v1",
+  "build": 25480438,
+  "exe_sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+  "probe_receipt": "output/native_dispatch_20261010/live_party_api_pointer_probe_20261011.json",
+  "probe_receipt_sha256": "93b02673b867ffe7f18794ef7355769d62e96f160caa420cdf5aaa9c6494064f",
+  "log": "output/native_dispatch_20261010/hd2_party_api_probe_20261011_r9.log",
+  "log_sha256": "5a3af9980bddcd825d21cefb09bf85406602a08facc3e583a270348f533482e1",
+  "latest_start": "2026-10-11 03:55:45 START read_only=true party_api_probe=20261011",
+  "runtime": {
+    "game_base": "0x7ffec2c90000",
+    "exe_base": "0x7ff62dbc0000",
+    "party_base": "0x7fff08320000",
+    "playfab_base": "0x7fff96f80000",
+    "read_only": true,
+    "calls_made": false,
+    "writes_made": false,
+    "hooks_installed": false
+  },
+  "windows": [
+    {
+      "rva": "0x8e1370",
+      "label": "create_network_callsite",
+      "address": "0x7ff62e4a1370",
+      "size": "0x1000",
+      "sha256": "0e6e20315ee6e64b80c48b78197feb4b968e68e2995c659496d3c3fe049a5fb2",
+      "first_bytes": "48895c241048896c2418488974242057"
+    },
+    {
+      "rva": "0x8e1970",
+      "label": "follow_on_callsite",
+      "address": "0x7ff62e4a1970",
+      "size": "0x1000",
+      "sha256": "057f43db6fd33534cfcb4c5221574830cdc873a6ad607b4b4a592d62e29fbfa9",
+      "first_bytes": "48895c241048896c2418565741564883"
+    }
+  ],
+  "create_network_callsite": {
+    "window_label": "create_network_callsite",
+    "entry_rva": "0x8E1370",
+    "config_shape_observed": {
+      "fields": [
+        "input_edx",
+        "input_edx",
+        "constant_1",
+        "constant_1",
+        "constant_1",
+        "constant_0xF"
+      ],
+      "stack_offsets": [
+        "0x80",
+        "0x84",
+        "0x88",
+        "0x8C",
+        "0x90",
+        "0x94"
+      ],
+      "evidence_offsets": [
+        "0x1E1",
+        "0x1E9",
+        "0x1F1",
+        "0x1FC",
+        "0x207",
+        "0x212"
+      ]
+    },
+    "candidate_call_reference": [
+      {
+        "address": "0x7ff62e4a15cb",
+        "offset": "0x25b",
+        "mnemonic": "call",
+        "instruction_bytes": "ff15e757b100",
+        "slot_address": "0x7ff62efb6db8",
+        "slot_rva": "0x13F6DB8"
+      }
+    ],
+    "call_argument_shape": {
+      "rcx": "qword ptr [rax]",
+      "rdx": "rbx",
+      "r8": "rsp+0x80",
+      "r9": "0",
+      "stack_arg_rsp_0x20": "rsi"
+    },
+    "return_checked": true
+  },
+  "follow_on_callsite": {
+    "window_label": "follow_on_callsite",
+    "entry_rva": "0x8E1970",
+    "candidate_slot_references": [
+      {
+        "address": "0x7ff62e4a27a0",
+        "offset": "0xe30",
+        "mnemonic": "jmp",
+        "instruction_bytes": "48ff251146b100",
+        "slot_address": "0x7ff62efb6db8",
+        "slot_rva": "0x13F6DB8"
+      }
+    ]
+  },
+  "known_candidate_slot": {
+    "rva": "0x13F6DB8",
+    "address": "0x7ff62efb6db8",
+    "target": "0x7FF63083A7C8",
+    "first_jump_target": "0x7ff630b83336"
+  },
+  "findings": {
+    "live_create_callsite_references_candidate_slot": true,
+    "live_follow_on_window_references_candidate_slot": true,
+    "live_config_shape_prefix_observed": true,
+    "official_sdk_parameter_shape_consistent": true,
+    "party_export_semantics_proven": false,
+    "session_party_abi_proven": false,
+    "runtime_host_acceptance_proven": false,
+    "runtime_client_join_proven": false,
+    "eight_player_multiplayer_proven": false
+  },
+  "limits": [
+    "The capture only reads bounded code and pointer bytes; it never calls, patches, hooks, or writes these targets.",
+    "The input_edx values are not observed as concrete 8 in this callsite window; only the repeated input field shape and constants 1,1,1,0xF are captured.",
+    "The indirect target and first jump chain are observed, but export semantics and function ABI remain unproven.",
+    "No host/client session was created and no 5-8 account test was run."
+  ]
+}

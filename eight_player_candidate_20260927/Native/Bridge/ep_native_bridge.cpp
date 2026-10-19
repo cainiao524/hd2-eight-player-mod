@@ -263,9 +263,9 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_preflight(EP_NATIVE_BRIDGE* bridge
     return EP_BRIDGE_OK;
 }
 
-extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_admit(
+static EP_BRIDGE_STATUS admit_with_expected_index(
     EP_NATIVE_BRIDGE* bridge, UINT64 peer_id, UINT64 resource_handle,
-    EP_BRIDGE_ADMISSION* out_admission) {
+    UINT8 expected_index, EP_BRIDGE_ADMISSION* out_admission) {
     if (!valid_context(bridge) || out_admission == nullptr || peer_id == 0 || resource_handle == 0)
         return EP_BRIDGE_INVALID_ARGUMENT;
     if (!bridge->ready) return EP_BRIDGE_NOT_READY;
@@ -278,6 +278,8 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_admit(
         *out_admission = bridge->cleanup[identity_cleanup].admission;
         return EP_BRIDGE_CLEANUP_REQUIRED;
     }
+    if (expected_index != 0xFF && expected_index >= bridge->sidecar.capacity)
+        return EP_BRIDGE_CAPACITY_REJECTED;
     if (bridge->cleanup_count >= EP_SIDECAR_CAPACITY) return EP_BRIDGE_CLEANUP_REQUIRED;
     OwnerLease lease{bridge->config};
     if (!lease.acquire()) return EP_BRIDGE_CALLBACK_REJECTED;
@@ -301,6 +303,12 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_admit(
     }
     if (network_index >= EP_SIDECAR_CAPACITY) {
         const EP_BRIDGE_STATUS released = release_unreserved_index_or_remember(
+            bridge, peer_id, resource_handle, network_index, lease, out_admission);
+        if (released != EP_BRIDGE_OK) return released;
+        return EP_BRIDGE_INDEX_REJECTED;
+    }
+    if (expected_index != 0xFF && network_index != expected_index) {
+        const auto released = release_unreserved_index_or_remember(
             bridge, peer_id, resource_handle, network_index, lease, out_admission);
         if (released != EP_BRIDGE_OK) return released;
         return EP_BRIDGE_INDEX_REJECTED;
@@ -337,6 +345,19 @@ extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_admit(
     }
     *out_admission = admission;
     return EP_BRIDGE_OK;
+}
+
+extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_admit(
+    EP_NATIVE_BRIDGE* bridge, UINT64 peer_id, UINT64 resource_handle,
+    EP_BRIDGE_ADMISSION* out_admission) {
+    return admit_with_expected_index(bridge, peer_id, resource_handle, 0xFF, out_admission);
+}
+
+extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_admit_at(
+    EP_NATIVE_BRIDGE* bridge, UINT64 peer_id, UINT64 resource_handle,
+    UINT8 expected_index, EP_BRIDGE_ADMISSION* out_admission) {
+    if (expected_index >= EP_SIDECAR_CAPACITY) return EP_BRIDGE_INDEX_REJECTED;
+    return admit_with_expected_index(bridge, peer_id, resource_handle, expected_index, out_admission);
 }
 
 extern "C" EP_BRIDGE_STATUS __cdecl ep_bridge_depart(

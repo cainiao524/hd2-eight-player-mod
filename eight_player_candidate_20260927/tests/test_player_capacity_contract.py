@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import sys
 import unittest
+import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -111,6 +112,109 @@ class CapacityContractTests(unittest.TestCase):
         mismatch = self.module.validate_metadata(local, remote)
         self.assertFalse(mismatch["accepted"])
         self.assertEqual(mismatch["reason"], "metadata_mismatch")
+
+    def test_metadata_requires_all_component_capacities(self):
+        state = self.state()
+        local, result = self.module.metadata(state, "0.15.0", self.lua({}))
+        self.assertTrue(result["accepted"])
+        missing = self.lua({key: value for key, value in local.items()})
+        missing["entity_capacity"] = None
+        rejected = self.module.validate_metadata(local, missing)
+        self.assertFalse(rejected["accepted"])
+        self.assertEqual(rejected["reason"], "metadata_missing")
+
+        inconsistent = self.lua({key: value for key, value in local.items()})
+        inconsistent["entity_capacity"] = 4
+        rejected = self.module.validate_metadata(local, inconsistent)
+        self.assertFalse(rejected["accepted"])
+        self.assertEqual(rejected["reason"], "metadata_mismatch")
+
+    def test_metadata_rejects_effective_capacity_not_derived_from_components(self):
+        state = self.state()
+        local, result = self.module.metadata(state, "0.15.0", self.lua({}))
+        self.assertTrue(result["accepted"])
+        forged = self.lua({key: value for key, value in local.items()})
+        local["effective_max_players"] = 7
+        forged["effective_max_players"] = 7
+        rejected = self.module.validate_metadata(local, forged)
+        self.assertFalse(rejected["accepted"])
+        self.assertEqual(rejected["reason"], "effective_capacity_invalid")
+
+    def test_metadata_rejects_fingerprint_drift(self):
+        state = self.state()
+        local, result = self.module.metadata(
+            state, "0.15.0", self.lua({"game.dll": "pinned"}))
+        self.assertTrue(result["accepted"])
+        remote = self.lua({key: value for key, value in local.items()})
+        remote["fingerprints"] = self.lua({"game.dll": "different"})
+        rejected = self.module.validate_metadata(local, remote)
+        self.assertFalse(rejected["accepted"])
+        self.assertEqual(rejected["reason"], "metadata_mismatch")
+        self.assertEqual(rejected["field"], "fingerprints")
+
+    def test_profile_matches_pinned_build_evidence(self):
+        profile = json.loads((ROOT / "Integration/profile_template.json").read_text())
+        spec = self.module.spec()
+        for field, role in (("exe_sha256", "exe"), ("game_dll_sha256", "game_dll")):
+            self.assertEqual(spec[field], profile["required_fingerprints"][role]["sha256"])
+
+    def test_apply_rechecks_players_who_joined_after_staging(self):
+        state = self.state(joined_players=2)
+        self.assertTrue(self.module.stage(state, self.lua({"preset": 4}))["accepted"])
+        state["joined_players"] = 6
+        result = self.module.apply(state)
+        self.assertFalse(result["accepted"])
+        self.assertEqual(state["configured_max_players"], 8)
+        self.assertEqual(state["joined_players"], 6)
+        self.assertEqual(state["generation"], 0)
+
+    def test_apply_preserves_current_lifecycle_and_component_capacities(self):
+        state = self.state(configured_max_players=4, joined_players=1)
+        self.assertTrue(self.module.stage(state, self.lua({"preset": 8}))["accepted"])
+        state["joined_players"] = 3
+        state["peer_capacity"] = 5
+        state["quiescent"] = False
+        result = self.module.apply(state)
+        self.assertTrue(result["accepted"])
+        self.assertEqual(result["effective_max_players"], 5)
+        self.assertEqual(state["peer_capacity"], 5)
+        self.assertEqual(state["joined_players"], 3)
+        self.assertFalse(state["quiescent"])
+
+    def test_lobby_request_cannot_reduce_capacity_after_mission_starts(self):
+        state = self.state()
+        self.assertTrue(self.module.stage(state, self.lua({"preset": 4}))["accepted"])
+        state["mission_active"] = True
+        result = self.module.apply(state)
+        self.assertFalse(result["accepted"])
+        self.assertEqual(result["reason"], "mission_capacity_cannot_decrease")
+        self.assertTrue(state["mission_active"])
+
+    def test_apply_rechecks_generation_and_quiescence(self):
+        state = self.state(configured_max_players=4)
+        self.module.stage(state, self.lua({"preset": 8}))
+        state["generation"] = 1
+        self.assertFalse(self.module.apply(state)["accepted"])
+        self.assertEqual(state["configured_max_players"], 4)
+        state = self.state(configured_max_players=4, mission_active=True, apply_mode="next_mission")
+        self.module.stage(state, self.lua({"preset": 8}))
+        state["quiescent"] = False
+        self.assertFalse(self.module.apply(state, self.lua({"ready": True, "quiescent": True}))["accepted"])
+
+    def test_generation_has_same_uint32_bound_as_native(self):
+        state = self.state(configured_max_players=4)
+        state["generation"] = 0xFFFFFFFF
+        self.module.stage(state, self.lua({"preset": 8}))
+        self.assertFalse(self.module.apply(state)["accepted"])
+        self.assertEqual(state["configured_max_players"], 4)
+
+    def test_invalid_configuration_is_not_coerced(self):
+        for field, value in (("allow_join_in_progress", 1), ("require_same_mod_version", "false"),
+                             ("apply_mode", "immediately")):
+            with self.subTest(field=field):
+                state = self.state(configured_max_players=4)
+                self.assertFalse(self.module.stage(state, self.lua({"preset": 8, field: value}))["accepted"])
+                self.assertIsNone(state["pending"])
 
 
 if __name__ == "__main__":

@@ -21,6 +21,17 @@ int main() {
         "ep_official_plugin_update_ticks",
         "ep_official_plugin_last_snapshot_session",
         "ep_official_plugin_last_snapshot_count",
+        "ep_replication_bridge_init",
+        "ep_replication_bridge_destroy",
+        "ep_resource_bridge_init",
+        "ep_resource_bridge_configure",
+        "ep_resource_bridge_destroy",
+        "ep_pcr_init",
+        "ep_pcr_destroy",
+        "ep_pcr_admit",
+        "ep_pcr_depart",
+        "ep_pcr_validate",
+        "ep_bridge_admit_at",
     };
     for (const char* name : exports) assert(GetProcAddress(module, name) != nullptr);
     auto get_api = reinterpret_cast<get_plugin_api_export>(GetProcAddress(module, "get_plugin_api"));

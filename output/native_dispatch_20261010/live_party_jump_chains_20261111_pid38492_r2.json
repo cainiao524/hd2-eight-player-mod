@@ -1,0 +1,125 @@
+{
+  "schema": "hd2_live_party_jump_chains_v1",
+  "build": 25480438,
+  "pid": 38492,
+  "captured_at_utc": "2026-10-11T10:42:14.588413+00:00",
+  "pinned_images": {
+    "helldivers2.exe": {
+      "base": 140697193545728,
+      "size": 60719104,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\helldivers2.exe",
+      "sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+      "pe_identity": {
+        "timestamp": 1790149348,
+        "image_size": 60719104
+      }
+    },
+    "game.dll": {
+      "base": 140730315374592,
+      "size": 74727424,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\data\\game\\game.dll",
+      "sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+      "pe_identity": {
+        "timestamp": 1790161983,
+        "image_size": 74727424
+      }
+    }
+  },
+  "read_only": true,
+  "calls_made": false,
+  "writes_made": false,
+  "hooks_installed": false,
+  "max_depth": 4,
+  "window_size": 256,
+  "chains": [
+    {
+      "label": "create_network_candidate",
+      "slot_rva": "0x13f6db8",
+      "hops": [
+        {
+          "depth": 0,
+          "address": "0x7ff69f7d6db8",
+          "rva": "0x13f6db8",
+          "stop": "read_failed",
+          "error": "Unreadable/guard/non-executable region"
+        }
+      ]
+    },
+    {
+      "label": "async_or_state_candidate",
+      "slot_rva": "0x13f6ef8",
+      "hops": [
+        {
+          "depth": 0,
+          "address": "0x7ff69f7d6ef8",
+          "rva": "0x13f6ef8",
+          "stop": "read_failed",
+          "error": "Unreadable/guard/non-executable region"
+        }
+      ]
+    },
+    {
+      "label": "authenticate_or_state_candidate",
+      "slot_rva": "0x13f6df0",
+      "hops": [
+        {
+          "depth": 0,
+          "address": "0x7ff69f7d6df0",
+          "rva": "0x13f6df0",
+          "stop": "read_failed",
+          "error": "Unreadable/guard/non-executable region"
+        }
+      ]
+    },
+    {
+      "label": "create_endpoint_candidate",
+      "slot_rva": "0x13f6c30",
+      "hops": [
+        {
+          "depth": 0,
+          "address": "0x7ff69f7d6c30",
+          "rva": "0x13f6c30",
+          "stop": "read_failed",
+          "error": "Unreadable/guard/non-executable region"
+        }
+      ]
+    },
+    {
+      "label": "connect_network_candidate",
+      "slot_rva": "0x13f6f70",
+      "hops": [
+        {
+          "depth": 0,
+          "address": "0x7ff69f7d6f70",
+          "rva": "0x13f6f70",
+          "stop": "read_failed",
+          "error": "Unreadable/guard/non-executable region"
+        }
+      ]
+    },
+    {
+      "label": "auth_network_candidate",
+      "slot_rva": "0x13f7030",
+      "hops": [
+        {
+          "depth": 0,
+          "address": "0x7ff69f7d7030",
+          "rva": "0x13f7030",
+          "stop": "read_failed",
+          "error": "Unreadable/guard/non-executable region"
+        }
+      ]
+    }
+  ],
+  "findings": {
+    "all_chain_reads_inside_exe": true,
+    "all_chains_direct_e9_only": true,
+    "partywin_target_observed": false,
+    "abi_or_semantics_proven": false
+  },
+  "limits": [
+    "Only direct E9 targets within the pinned EXE image were followed.",
+    "No indirect jump, call, data pointer, or function was followed or invoked.",
+    "A chain endpoint is not assigned a Party semantic without a direct binding and return/state proof."
+  ]
+}

@@ -1,4 +1,4 @@
-"""Fail-closed verifier for the real five-to-eight account acceptance logs.
+"""Fail-closed verifier for real configurable-capacity acceptance logs.
 
 The verifier consumes caller-supplied JSON logs only.  It never starts the
 game, contacts Steam/Party/PlayFab, or treats synthetic fixtures as success.
@@ -17,6 +17,7 @@ from typing import Any
 
 BUILD = 25480438
 EXE_VERSION = "1.8.46015.0"
+SUPPORTED_CAPACITIES = (4, 5, 8, 12, 16)
 REQUIRED_EVENTS = (
     "ship_join",
     "mission_join",
@@ -52,19 +53,23 @@ def _digest(paths: list[Path]) -> str:
     return h.hexdigest()
 
 
-def verify(paths: list[Path]) -> dict[str, Any]:
-    if len(paths) != 8:
-        raise AcceptanceError("exactly_eight_logs_required")
+def verify(paths: list[Path], capacity: int = 8) -> dict[str, Any]:
+    if capacity not in SUPPORTED_CAPACITIES:
+        raise AcceptanceError("unsupported_capacity")
+    if len(paths) != capacity:
+        raise AcceptanceError(f"exactly_{capacity}_logs_required")
     logs = [_load(path) for path in paths]
     account_ids = [str(log.get("account_id", "")) for log in logs]
     client_ids = [str(log.get("client_id", "")) for log in logs]
-    if any(not value for value in account_ids) or len(set(account_ids)) != 8:
-        raise AcceptanceError("account_ids_must_be_eight_unique_nonempty")
-    if any(not value for value in client_ids) or len(set(client_ids)) != 8:
-        raise AcceptanceError("client_ids_must_be_eight_unique_nonempty")
+    if any(not value for value in account_ids) or len(set(account_ids)) != capacity:
+        raise AcceptanceError(f"account_ids_must_be_{capacity}_unique_nonempty")
+    if any(not value for value in client_ids) or len(set(client_ids)) != capacity:
+        raise AcceptanceError(f"client_ids_must_be_{capacity}_unique_nonempty")
     for log in logs:
         if log.get("steam_build") != BUILD or log.get("exe_version") != EXE_VERSION:
             raise AcceptanceError("build_mismatch")
+        if log.get("capacity") != capacity:
+            raise AcceptanceError("capacity_declaration_mismatch")
         if log.get("multiplayer_verified") is not True:
             raise AcceptanceError("input_log_not_marked_live_multiplayer")
     mission_ids = {str(log.get("mission_id", "")) for log in logs}
@@ -88,9 +93,9 @@ def verify(paths: list[Path]) -> dict[str, Any]:
         index = log.get("network_index")
         if not peer or not resource or not entity or not isinstance(roster, int):
             raise AcceptanceError("missing_peer_resource_entity_roster")
-        if not isinstance(index, int) or index < 0 or index > 7:
+        if not isinstance(index, int) or index < 0 or index >= capacity:
             raise AcceptanceError("network_index_out_of_range")
-        if roster < 0 or roster > 7:
+        if roster < 0 or roster >= capacity:
             raise AcceptanceError("roster_ordinal_out_of_range")
         if peer in peer_ids:
             raise AcceptanceError("duplicate_peer_id")
@@ -125,8 +130,8 @@ def verify(paths: list[Path]) -> dict[str, Any]:
             "roster_ordinal": roster,
             "event_count": len(events),
         })
-    if sorted(indexes) != list(range(8)):
-        raise AcceptanceError("network_indexes_must_be_exactly_0_to_7")
+    if sorted(indexes) != list(range(capacity)):
+        raise AcceptanceError(f"network_indexes_must_be_exactly_0_to_{capacity - 1}")
     global_events = {
         event.get("name")
         for log in logs
@@ -137,14 +142,15 @@ def verify(paths: list[Path]) -> dict[str, Any]:
     if missing_global:
         raise AcceptanceError("global_lifecycle_missing:" + ",".join(missing_global))
     return {
-        "schema": "hd2_eight_player_multiplayer_acceptance_v1",
+        "schema": "hd2_configurable_capacity_multiplayer_acceptance_v2",
         "status": "passed_live_multiplayer_acceptance",
         "steam_build": BUILD,
         "exe_version": EXE_VERSION,
+        "capacity": capacity,
         "mission_id": next(iter(mission_ids)),
         "session_id": next(iter(session_ids)),
-        "account_count": 8,
-        "client_count": 8,
+        "account_count": capacity,
+        "client_count": capacity,
         "network_indexes": sorted(indexes),
         "rows": sorted(rows, key=lambda row: row["network_index"]),
         "input_sha256": _digest(paths),
@@ -155,12 +161,13 @@ def verify(paths: list[Path]) -> dict[str, Any]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--capacity", type=int, choices=SUPPORTED_CAPACITIES, default=8)
     parser.add_argument("--log", type=Path, action="append", required=True,
-                        help="one live client JSON log; pass exactly eight times")
+                        help="one live client JSON log; pass exactly --capacity times")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     try:
-        result = verify(args.log)
+        result = verify(args.log, args.capacity)
     except (AcceptanceError, OSError) as exc:
         print(json.dumps({"status": "blocked", "error": str(exc)}, ensure_ascii=False))
         return 2

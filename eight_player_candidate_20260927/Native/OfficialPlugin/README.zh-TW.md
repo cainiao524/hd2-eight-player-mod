@@ -16,20 +16,23 @@ ABI 參考：[Autodesk Stingray plugin API samples](https://github.com/AutodeskG
 
 `ep_official_plugin.dll` 現在會一起編譯 `SessionMembers/ep_consumer_executor.cpp`，並輸出三個明確的橋接入口：`ep_official_plugin_runtime_preflight()`、`ep_official_plugin_runtime_install()` 與 `ep_official_plugin_runtime_remove()`。`preflight` 只做唯讀檢查：固定 build、entry RVA、14-byte target fingerprint、executor ABI、可讀記憶體範圍與五個 callback 是否全部存在；任一項不通過就不會寫入遊戲記憶體。
 
+OfficialPlugin build 也包含 `ClientReplication/ep_replication_bridge.cpp`、`PlayerResource/ep_player_resource.cpp`、`PlayerResource/ep_resource_bridge_adapter.cpp` 與 `PlayerCreationGate/ep_player_creation_replication_adapter.cpp`，並保留它們的版本化 exports，包括要求固定 network index 的 `ep_bridge_admit_at`。這個入口會在 sidecar reservation、native confirm/create 和 replication event 之前拒絕 allocator index mismatch，release 失敗則保留到 cleanup retry；這些 exports 只提供 caller-owned 的離線協調邊界。沒有 provider 綁定時仍不會啟用 admission、entity 建立或容量 patch。
+
 `runtime_install` 先完整通過相同 preflight，再呼叫可回滾的 consumer executor；`runtime_remove` 只接受自己擁有的 detour。synthetic harness 覆蓋 4 人相容、5--8 人計數、第 9 人拒絕、callback 缺失、target fingerprint 變更、install/remove 還原與 DLL export。這個整合仍未綁定 HD2 的真實 callback、Party admission 或 Player Clone 建立，因此沒有把 `installable`、`runtime_verified` 或 `multiplayer_verified` 門檻改成 true，也沒有將 DLL 放入遊戲目錄。
 
 ### Native callback bridge
 
 同一個 OfficialPlugin 也輸出 `ep_official_plugin_runtime_bind_native_callbacks()`、`ep_official_plugin_runtime_get_native_callbacks()` 與 `ep_official_plugin_runtime_unbind_native_callbacks()`。這三個入口只轉接固定 build 的 native callback binder：它會核對 `game.dll` PE timestamp `1790161983` 與 image size `74727424`，並要求 sidecar resolver；未綁定時 getter 會回傳 `EP_CONSUMER_NATIVE_NOT_BOUND`，錯誤參數或 build 不符會拒絕。合成測試驗證 OfficialPlugin 的轉接 export、未綁定 getter、錯誤 bind 與 native callback 自身的 resolver/mode/identity/lookup/status 路徑。這仍然是 ABI 候選，不等同於已驗證的 HD2 player admission 或安裝流程。
-### Session getter gate（2026-10-04）
+### Session getter gate（2026-10-10 修正模組歸屬）
 
 setup_game 與每 60 tick 的 update_game 現在共用 ep_official_session_getter.h 的唯讀 gate；不再直接從 network + 8 解參考 function pointer，也不在實機呼叫尚未完成 ABI 綁定的 getter。gate 必須同時通過：
 
 - EXE/game.dll 的實際 PE timestamp、image size 與 SHA-256 對固定 build 25480438 的核對；
 - C API prefix、Network table、GameSession table 與 getter 欄位的可讀性；
-- getter 必須是 game.dll 0x34fdf0，且 15 bytes machine-code fingerprint 完全相符；
+- 保存的 live C API prefix 明確把 getter 指向 `helldivers2.exe+0x34fdf0`；gate 會分別核對 EXE 與 game.dll 的 PE identity，絕不把此 RVA 套到 game.dll；
+- EXE getter 的 15 bytes machine-code fingerprint 必須完全相符；
 - function page 必須可執行，C API table 重讀必須穩定。
 
-任一條件不符都停止觀察，不呼叫 getter，也不更新 session 或 peer snapshot。所有條件通過也只證明固定版本的 getter 位址可被安全檢查；getter 的結果仍不是 PeerId、player index 或 admission 證據。
+任一條件不符都停止觀察，不呼叫 getter，也不更新 session 或 peer snapshot。所有條件通過也只證明固定版本、正確模組的 getter 位址可被安全檢查；getter 的結果仍不是 PeerId、player index 或 admission 證據。`GameSession` C API 的 `+0x40`／`+0x50` wrapper 目前只保留 live prefix 與重讀穩定性；不能套用公開 SDK 的 method 名稱，直到 HD2 自身的參數、返回值與副作用完成證明。
 
 unloaded 和 shutdown_game 會清除 C API、兩張 table、session、peer count、update tick、last snapshot session/count，防止下一次載入沿用 stale 狀態。新增的 synthetic getter test 覆蓋未知 function、不可讀 table、錯誤 build 與固定 getter 通過；plugin test 也核對 unload 後所有計數器歸零。

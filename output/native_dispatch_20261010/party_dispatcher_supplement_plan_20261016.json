@@ -1,0 +1,105 @@
+{
+  "schema": "hd2_party_dispatcher_supplement_plan_v1",
+  "build": 25480438,
+  "requires_new_explicit_authorization": true,
+  "capture_count": 1,
+  "automatic_retries": 0,
+  "file_sha256": {
+    "helldivers2.exe": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+    "game.dll": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+    "PartyWin.dll": "de34667c2f7084013d9c03cd5d1cb5dc3321bc36bb616a845e35534e4e7995e0"
+  },
+  "fixed_memory_reads": [
+    {
+      "label": "loaded_pe_header",
+      "module": "helldivers2.exe",
+      "rva": "0x0",
+      "bytes_per_read": 4096,
+      "maximum_reads": 2
+    },
+    {
+      "label": "loaded_pe_header",
+      "module": "game.dll",
+      "rva": "0x0",
+      "bytes_per_read": 4096,
+      "maximum_reads": 2
+    },
+    {
+      "label": "loaded_pe_header",
+      "module": "PartyWin.dll",
+      "rva": "0x0",
+      "bytes_per_read": 4096,
+      "maximum_reads": 2
+    },
+    {
+      "label": "game_code_pin",
+      "module": "game.dll",
+      "rva": "0x108c18f",
+      "bytes_per_read": 76,
+      "maximum_reads": 2,
+      "sha256": "e56eba5ea8a480553db61f70a65f1e036bd9ef81946ad7c8208832e1c700858a"
+    },
+    {
+      "label": "game_code_pin",
+      "module": "game.dll",
+      "rva": "0x4edaa4",
+      "bytes_per_read": 36,
+      "maximum_reads": 2,
+      "sha256": "3647ce88ba32769a28256de285303692863403e763ee6bffcdca69a3f0320562"
+    },
+    {
+      "label": "common_call_slot",
+      "module": "helldivers2.exe",
+      "rva": "0x2c75fec",
+      "bytes_per_read": 8,
+      "maximum_reads": 2,
+      "required_value": "EXE+0x2c7a94d"
+    },
+    {
+      "label": "known_entry_jump",
+      "module": "helldivers2.exe",
+      "rva": "0x2c7a94d",
+      "bytes_per_read": 5,
+      "maximum_reads": 2,
+      "required_bytes": "e9db052800"
+    },
+    {
+      "label": "fixed_dispatcher_window",
+      "module": "helldivers2.exe",
+      "rva": "0x2efaf2d",
+      "bytes_per_read": 4096,
+      "maximum_reads": 2,
+      "rule": "Executable MEM_IMAGE; whole range inside verified EXE; bytes must agree on reread."
+    }
+  ],
+  "planned_maximum_memory_bytes": 33018,
+  "hard_memory_read_budget_bytes": 65536,
+  "budget_accounting": "Every requested process-memory payload byte, including validation, rereads and failed reads. Disk bytes and OS metadata are separate.",
+  "disk_reads": "Full contents of loaded helldivers2.exe, game.dll and PartyWin.dll for fixed hashes. Parse the same PartyWin bytes for exact export names/ordinals at 0x19880 and 0x1be80; no other game files or logs.",
+  "disk_export_rvas": [
+    "0x19880",
+    "0x1be80"
+  ],
+  "export_lookup_rule": "Exact RVA matches only. Preserve aliases/ordinal-only matches and forwarders; report no_exact_export_match without guessing a name.",
+  "metadata_queries": "Executable path and loaded module names/paths/base/size for one explicit PID; memory-region protection checks for fixed requests.",
+  "required_user_state": "Current PID supplied by the user in stable solo ship state after new authorization.",
+  "stops_on": [
+    "file/header/code identity mismatch",
+    "changed slot or entry jump",
+    "unreadable/short read",
+    "changed dispatcher bytes",
+    "out-of-image range",
+    "budget exhausted"
+  ],
+  "follows_new_jumps": false,
+  "follows_heap_pointers": false,
+  "starts_game": false,
+  "native_game_calls": false,
+  "memory_writes": false,
+  "hooks_installed": false,
+  "changes_game_files": false,
+  "provider_binding_proven": false,
+  "runtime_verified": false,
+  "multiplayer_verified": false,
+  "limit": "A 4096-byte window is not guaranteed to cover the full dispatcher. Any missing continuation is reported, never followed automatically."
+}

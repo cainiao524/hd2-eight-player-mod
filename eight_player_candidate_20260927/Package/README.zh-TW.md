@@ -7,6 +7,12 @@ Lua 設定契約與 Mod Options Menu 入口；它仍不是已完成的八人聯�
 有效容量、pending/apply/rollback 和 metadata 驗證。`hd2_capacity_menu.lua`
 只在 Bingus Shared Loader 內註冊選單，Native bridge 未通過時會拒絕修改容量。
 
+Host metadata 會帶出 Peer、Roster、Entity、Resource、Network、verified capacity、
+apply generation、apply mode 及版本 fingerprints；Client 會重新計算 effective capacity，
+任何欄位缺失、不一致或指紋漂移都拒絕加入。選單註冊使用 Bingus Shared Loader 的
+API 1 `after_startup` 入口與 Mod Options Menu API 1，並保留第一個 game update 的
+診斷輪詢。
+
 ## Bingus Shared Loader Lua 封裝
 
 `build_bingus_archive.py` 會把選單入口與三個 `require` 模組封裝成

@@ -34,13 +34,19 @@ retain owner
 
 `ep_pc_install_gate_patch` 還會要求 `downstream_ready` callback 回報所有 resource、component、roster、cleanup backing 已接通，才把 gate immediate 暫時改成 `8`。移除時使用原始 9 bytes 還原。模組本身沒有 `VirtualProtect`、`WriteProcessMemory` 或注入器，因此目前不能單獨安裝到遊戲。
 
+## PlayerCreationGate 與 replication 組合
+
+`ep_player_creation_replication_adapter` 把固定 network index 的建立交易接到已完成 preflight 的 `EP_REPLICATION_BRIDGE`。建立交易仍由 `ep_pc_admit` 管理 generation、owner epoch、components 與 rollback；roster 階段透過 `ep_bridge_admit_at` 要求 allocator 回傳的 authoritative index 與 caller 傳入的 index 完全一致。索引不一致會在 sidecar reservation、native confirm/create 和 replication event 之前被拒絕；若 allocator index release 本身失敗，generation-zero 的清理記錄會保留到 `ep_bridge_retry_cleanup` 重試，避免本地 roster 與複製表分裂。
+
+離隊或 failed-admit rollback 若遇到 replication/resource cleanup failure，組合層會保留 bridge admission，下一次 `ep_pcr_depart` 會使用 `ep_bridge_retry_cleanup` 繼續原交易；它不會重新建立第二份玩家。這條組合路徑仍只接受 caller-owned resolver、component callbacks 與 replication provider，沒有推導 HD2 原生 Session/Party callback ABI。
+
 ## 建置與範圍
 
 ```powershell
 cmd /c build_x64.bat
 ```
 
-`ep_player_creation_gate_synthetic_passed` 覆蓋固定 build/site preflight、下游未就緒拒絕、可回滾 gate、八個權威 index、重複 identity、離隊 cleanup retry、rollback retry、post-callback invariant compensation 及 resource/roster rollback。這些是離線 ABI 測試，不是第五至第八名玩家的實機驗收；`runtime_verified=false`、`installable=false`、`multiplayer_verified=false`。
+`cmd /c build_x64.bat` 會同時執行 `ep_player_creation_gate_synthetic_passed`、`ep_player_creation_replication_adapter_integration_passed` 與 `ep_player_creation_resource_integration_passed`。後兩者覆蓋八個固定 index、sidecar/native/replication 副作用前的 index mismatch rejection、index release retry、component failure、跨層 rollback retry、departure cleanup retry，以及實際 `PlayerResource` stage failure 的完整回滾。這些是離線 ABI 測試，不是第五至第八名玩家的實機驗收；`runtime_verified=false`、`installable=false`、`multiplayer_verified=false`。
 ## v3 互斥與生命週期
 
 `EP_PC_VERSION=3` 為所有同步變更操作加入單一 operation guard。`ep_pc_admit`、`ep_pc_depart`、patch 安裝/移除、prepare 和 destroy 在外部 callback 或 quiesce/write 期間保持交易忙碌；同執行緒重入與另一執行緒重疊呼叫都回傳 `EP_PC_BUSY`，不會第二次清理、釋放 owner 或覆寫 live adapter。

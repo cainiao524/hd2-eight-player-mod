@@ -1,6 +1,6 @@
 {
   "schema": "hd2_player_creation_gate_adapter_v1",
-  "date": "2026-10-03",
+  "date": "2026-10-13",
   "build": 25480438,
   "module": "game.dll",
   "module_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
@@ -73,12 +73,24 @@
       "overlap_policy": "same-thread and worker-thread overlap rejected while external callbacks or quiesce/write are active",
       "init_policy": "live adapter reinitialization rejected; caller owns storage and callback lifetime"
     },
-    "precommit_invariant_failure": "reserved slot is synchronously unwound before any external retain/resolve callback; duplicate/invalid requests return directly"
+    "precommit_invariant_failure": "reserved slot is synchronously unwound before any external retain/resolve callback; duplicate/invalid requests return directly",
+    "composition": {
+      "roster_provider": "EP_REPLICATION_BRIDGE",
+      "index_contract": "creation index must equal replication admission token index",
+      "cleanup_retry": "EP_BRIDGE_CLEANUP_REQUIRED is retained and retried through ep_bridge_retry_cleanup",
+      "native_abi": "caller supplied; unresolved for live HD2 Session/Party objects",
+      "resource_provider": "EP_RESOURCE_BRIDGE_ADAPTER",
+      "resource_stage_failure": "stage failure is compensated through replication bridge remove before PlayerCreationGate rollback completes"
+    }
   },
   "tests": {
     "command": "cmd /c build_x64.bat",
     "status": "passed",
-    "output": "ep_player_creation_gate_synthetic_passed",
+    "output": [
+      "ep_player_creation_gate_synthetic_passed",
+      "ep_player_creation_replication_adapter_integration_passed",
+      "ep_player_creation_resource_integration_passed"
+    ],
     "coverage": [
       "fixed build and gate/downstream site fingerprints",
       "downstream readiness refusal before gate write",
@@ -94,20 +106,33 @@
       "same-thread callback re-entry rejected without duplicate departure",
       "worker-thread overlapping departure rejected without duplicate cleanup or owner release",
       "same-thread and worker-thread failed-admit rollback overlap rejected",
-      "pre-commit invariant failure unwinds PENDING reservation without owner callback"
+      "pre-commit invariant failure unwinds PENDING reservation without owner callback",
+      "creation transaction composed with replication bridge",
+      "authoritative index mismatch compensation",
+      "cross-layer rollback retry",
+      "cross-layer departure cleanup retry",
+      "PlayerCreationGate to Replication Bridge to PlayerResource composition",
+      "resource stage failure unwinds creation, replication and resource state",
+      "authoritative index mismatch release retry before sidecar reservation"
     ]
   },
   "source_sha256": {
     "ep_player_creation_gate.h": "8d2fffbcfd535d339b4f408559b625676906616c32a9ebcf0cb3f6386f88b17d",
     "ep_player_creation_gate.cpp": "ad4361a8637c736c08d50b706133084f3fa4fddb69c1123a29b99d7cce78c0ca",
     "ep_player_creation_gate_test.cpp": "24eb67e3aac06d13c5cc062f3b01dedbc4bc70604c4d693b1f18421df8b80d78",
-    "build_x64.bat": "602192ffe280c0e5f3028b96433597d70a58d3f69e162f1be1a4a304c011b499",
-    "README.zh-TW.md": "7944d5197af9aea9439adc703ff18db89a480efa82ed59317ff8781c8470939b",
-    "test_player_creation_gate.py": "30a5db66eb24305e0b0d42642941935b4b64395982491787ba91fba941398fd1"
+    "ep_player_creation_replication_adapter.h": "7a04326db3907a0139e04db4b8191e5d30402a255dee944b06d328a5408b644f",
+    "ep_player_creation_replication_adapter.cpp": "356f2565b7042a086af5345be7c7dcfc90ed254c06c6328d7b57d54a9c633c5a",
+    "ep_player_creation_replication_adapter_test.cpp": "a959126597e3fbd5424a2d2a9c5ce7fd281c6b2a7d84dd748dd354e21c07b093",
+    "build_x64.bat": "7de16c04d97b2766d97e4a147403d8ca78d63f972051a0f16d8eed3b78cf75b0",
+    "README.zh-TW.md": "09def776e3e7a2bc4870c2229d07c358731e4e733e7800bee6b29f7cb8313a94",
+    "test_player_creation_gate.py": "c6efe090efd00bc5c8f8fc9248b5b8b461848ba13f09f9e00a216e16024b1193",
+    "ep_player_creation_resource_integration_test.cpp": "c5d3e0cc1cf5d4d5bbbd8456be5b0b33c77dba337182a3982df9b6c428da7ca0"
   },
   "binary_sha256": {
-    "ep_player_creation_gate.dll": "5248c9503b5dbf88ef260c85e80e2161555f82112b324a274492744adef064d7",
-    "ep_player_creation_gate_test.exe": "6767ccc15a50bd6c4a0ab31a3c708376ab89561d6f27276e2a59953856efe252"
+    "ep_player_creation_gate.dll": "f4bddc670fd2bbb31dcb7a184d0ba16dfd467d9a30e30c4e8c8ae53af41d9ba7",
+    "ep_player_creation_gate_test.exe": "fb24ecb5f783fbc9c7110eba8b47fc4e8cf7cf095167151fa81c838b51069149",
+    "ep_player_creation_replication_adapter_test.exe": "d5048ea71c31dc6a903fe85ac7e733183222d099f5af142e64b48db8a3c57b5e",
+    "ep_player_creation_resource_integration_test.exe": "14234a97488fddd45766fbd5d6b464d17b3f417e4f1458820fef2ff51afa6c8e"
   },
   "test": {
     "binary": "ep_player_creation_gate_test.exe",
@@ -126,5 +151,15 @@
     "The gate patch is not a standalone mod and refuses installation unless all downstream continuation providers report ready.",
     "Operation serialization is verified only by injected offline callbacks; it does not prove the unresolved native game callback ABI."
   ],
-  "adapter_version": 3
+  "adapter_version": 3,
+  "integration_test": {
+    "binary": "ep_player_creation_replication_adapter_test.exe",
+    "output": "ep_player_creation_replication_adapter_integration_passed",
+    "scope": "offline composition of PlayerCreationGate and EP_REPLICATION_BRIDGE"
+  },
+  "resource_integration_test": {
+    "binary": "ep_player_creation_resource_integration_test.exe",
+    "output": "ep_player_creation_resource_integration_passed",
+    "scope": "offline composition of PlayerCreationGate, EP_REPLICATION_BRIDGE and EP_RESOURCE_BRIDGE_ADAPTER"
+  }
 }

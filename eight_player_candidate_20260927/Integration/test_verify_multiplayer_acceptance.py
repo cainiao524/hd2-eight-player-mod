@@ -14,7 +14,7 @@ acceptance = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(acceptance)
 
 
-def make_log(index: int, *, live: bool = True) -> dict:
+def make_log(index: int, *, capacity: int = 8, live: bool = True) -> dict:
     events = [{"name": name} for name in acceptance.REQUIRED_EVENTS]
     events.append({"name": "host_migration"})
     return {
@@ -22,6 +22,7 @@ def make_log(index: int, *, live: bool = True) -> dict:
         "client_id": f"client-{index}",
         "steam_build": acceptance.BUILD,
         "exe_version": acceptance.EXE_VERSION,
+        "capacity": capacity,
         "mission_id": "mission-1",
         "session_id": "session-1",
         "network_index": index,
@@ -45,33 +46,49 @@ class AcceptanceTests(unittest.TestCase):
         return paths
 
     def test_eight_live_clients_pass(self):
-        result = acceptance.verify(self.write_logs([make_log(i) for i in range(8)]))
+        result = acceptance.verify(self.write_logs([make_log(i) for i in range(8)]), 8)
         self.assertEqual(result["status"], "passed_live_multiplayer_acceptance")
+        self.assertEqual(result["capacity"], 8)
         self.assertEqual(result["network_indexes"], list(range(8)))
         self.assertFalse(result["synthetic"])
 
+    def test_five_live_clients_pass(self):
+        result = acceptance.verify(self.write_logs([make_log(i, capacity=5) for i in range(5)]), 5)
+        self.assertEqual(result["account_count"], 5)
+        self.assertEqual(result["network_indexes"], list(range(5)))
+
     def test_seven_logs_fail_closed(self):
         with self.assertRaises(acceptance.AcceptanceError):
-            acceptance.verify(self.write_logs([make_log(i) for i in range(7)]))
+            acceptance.verify(self.write_logs([make_log(i) for i in range(7)]), 8)
 
     def test_duplicate_index_fails_closed(self):
         logs = [make_log(i) for i in range(8)]
         logs[7]["network_index"] = 6
         with self.assertRaises(acceptance.AcceptanceError):
-            acceptance.verify(self.write_logs(logs))
+            acceptance.verify(self.write_logs(logs), 8)
 
     def test_not_live_input_fails_closed(self):
         with self.assertRaises(acceptance.AcceptanceError):
-            acceptance.verify(self.write_logs([make_log(i, live=(i != 3)) for i in range(8)]))
+            acceptance.verify(self.write_logs([make_log(i, live=(i != 3)) for i in range(8)]), 8)
 
     def test_shared_session_is_required(self):
         logs = [make_log(i) for i in range(8)]
         logs[7]["session_id"] = "session-other"
         with self.assertRaises(acceptance.AcceptanceError):
-            acceptance.verify(self.write_logs(logs))
+            acceptance.verify(self.write_logs(logs), 8)
 
     def test_resource_entity_and_roster_are_globally_unique(self):
         logs = [make_log(i) for i in range(8)]
         logs[7]["entity_id"] = logs[0]["entity_id"]
         with self.assertRaises(acceptance.AcceptanceError):
-            acceptance.verify(self.write_logs(logs))
+            acceptance.verify(self.write_logs(logs), 8)
+
+    def test_capacity_declaration_is_required(self):
+        logs = [make_log(i) for i in range(8)]
+        del logs[3]["capacity"]
+        with self.assertRaises(acceptance.AcceptanceError):
+            acceptance.verify(self.write_logs(logs), 8)
+
+    def test_unsupported_capacity_fails_closed(self):
+        with self.assertRaises(acceptance.AcceptanceError):
+            acceptance.verify(self.write_logs([make_log(i) for i in range(8)]), 6)

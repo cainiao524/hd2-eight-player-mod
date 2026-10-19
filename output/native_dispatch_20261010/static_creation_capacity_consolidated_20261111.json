@@ -1,0 +1,184 @@
+{
+  "schema": "hd2_creation_capacity_consolidated_audit_v1",
+  "build_id": 25480438,
+  "scope": "offline static evidence consolidation; no current game process access",
+  "sources": [
+    {
+      "path": "five_player_feasibility_20260927/creation_path_evidence_v3.json",
+      "sha256": "8d70f95de0a6fa6857cf55836c4ee54acfcfae05a73bebd304bb6b014d6f6b2e"
+    },
+    {
+      "path": "five_player_feasibility_20260927/player_roster_evidence.json",
+      "sha256": "606e6cb31fc55a1abfbc82224359fc1fc776f7a3f36838779a558700380e81a6"
+    },
+    {
+      "path": "five_player_feasibility_20260927/creation_path_findings.zh-TW.md",
+      "sha256": "ec591aa7ce90fcd4e67df5181c053f0baf8b11bb9183680d23e6e43ac2bba847"
+    },
+    {
+      "path": "five_player_feasibility_20260927/client_expansion_notes.md",
+      "sha256": "428941d38f875dc7dd4bcf1e5527406f3d17a40c2b9e3c1c85b61308ea1dee32"
+    },
+    {
+      "path": "five_player_feasibility_20260927/REPORT.zh-TW.md",
+      "sha256": "c95287e2f10546332394b5b8bd22a689910499fa264151a88dc6fb352d0357b6"
+    },
+    {
+      "path": "output/native_dispatch_20261010/completion_audit_20261111_r7.json",
+      "sha256": "edbe2fc225e90548e725f4ec97bab2f3f4ead92df624da35e65eb915daf0493c"
+    }
+  ],
+  "creation_request_shape": {
+    "observed": true,
+    "status": "shape_only",
+    "description": "The host/recreate path derives a value from owner+0x1B90 and adds 4 before an unresolved platform-interface call. In the documented zero-config branch the derived first integer is 8.",
+    "pins": [
+      {
+        "rva": "0x1091a9c",
+        "bytes": "8b8b901b0000",
+        "asm": "mov ecx, dword ptr [rbx + 0x1b90]",
+        "root": "0x1091980"
+      },
+      {
+        "rva": "0x1091aa2",
+        "bytes": "83c104",
+        "asm": "add ecx, 4",
+        "root": "0x1091980"
+      },
+      {
+        "rva": "0x1091aa5",
+        "bytes": "ffd0",
+        "asm": "call rax",
+        "root": "0x1091980"
+      },
+      {
+        "rva": "0x1093a90",
+        "bytes": "8b8f901b0000",
+        "asm": "mov ecx, dword ptr [rdi + 0x1b90]",
+        "root": "0x10937a0"
+      },
+      {
+        "rva": "0x1093a96",
+        "bytes": "83c104",
+        "asm": "add ecx, 4",
+        "root": "0x10937a0"
+      },
+      {
+        "rva": "0x1093a99",
+        "bytes": "ffd0",
+        "asm": "call rax",
+        "root": "0x10937a0"
+      }
+    ],
+    "api_name_resolved": false,
+    "service_acceptance_verified": false,
+    "player_capacity_meaning_verified": false
+  },
+  "platform_lobby_enumeration": {
+    "four_limit_observed": true,
+    "status": "explicit_four_limit",
+    "description": "The helper and recreate/update path clamp returned member counts to 4 and pass 4 as enumeration capacity.",
+    "pins": [
+      {
+        "rva": "0x1092e78",
+        "bytes": "41b804000000",
+        "asm": "mov r8d, 4",
+        "root": "0x1092e60"
+      },
+      {
+        "rva": "0x1092ecb",
+        "bytes": "83f804",
+        "asm": "cmp eax, 4",
+        "root": "0x1092e60"
+      },
+      {
+        "rva": "0x1092ed0",
+        "bytes": "c783b01b000004000000",
+        "asm": "mov dword ptr [rbx + 0x1bb0], 4",
+        "root": "0x1092e60"
+      },
+      {
+        "rva": "0x1092f31",
+        "bytes": "41b804000000",
+        "asm": "mov r8d, 4",
+        "root": "0x1092e60"
+      },
+      {
+        "rva": "0x1093c91",
+        "bytes": "83f804",
+        "asm": "cmp eax, 4",
+        "root": "0x10937a0"
+      },
+      {
+        "rva": "0x1093c96",
+        "bytes": "c787b01b000004000000",
+        "asm": "mov dword ptr [rdi + 0x1bb0], 4",
+        "root": "0x10937a0"
+      }
+    ]
+  },
+  "native_host_roster": {
+    "four_limit_observed": true,
+    "status": "explicit_four_entry_layout",
+    "description": "Both insertion paths reject tracked_count+1 above 4; the owner has four pointer positions at +0xE8, +0xF0, +0xF8 and +0x100 before another record region.",
+    "pins": [
+      {
+        "rva": "0x60ca9c",
+        "bytes": "83f804",
+        "asm": "cmp eax, 4",
+        "root": "0x60ca80"
+      },
+      {
+        "rva": "0x60cbbb",
+        "bytes": "83f804",
+        "asm": "cmp eax, 4",
+        "root": "0x60cba0"
+      }
+    ],
+    "derived_layout": {
+      "global_rva": "0x3326468",
+      "owner_subobject_offset": "0xea0818",
+      "guarded_tracked_count_offset": "0x80",
+      "gameplay_consumed_dense_count_offset": "0x84",
+      "high_water_count_offset": "0x7c",
+      "pointer_slot_offsets": [
+        "0xe8",
+        "0xf0",
+        "0xf8",
+        "0x100"
+      ],
+      "next_auxiliary_record_start": "0x108",
+      "diagnostic_owner_field_offset": "0xea0894"
+    },
+    "limits": [
+      "The two insertion functions test tracked_count + 1 <= 4 before indexed stores.",
+      "The >4 path contains a write to virtual address zero, followed by linear fallthrough; on ordinary Windows process memory this would fault. Its source-level assertion macro is unknown.",
+      "The +0xE8 pointer array has four qword positions before a distinct +0x108 0x70-stride record; merely changing the comparison cannot make a fifth pointer safe.",
+      "This proves a four-entry roster insertion layout, not a four-object entity heap allocator or platform/backend lobby capacity.",
+      "Direct-call xref scanning found no callers of 0x60CA80/0x60CBA0; indirect and computed references, uncovered leaf callers, and dynamic runtime dispatch remain unexamined.",
+      "The installed game and any runtime platform interface were not accessed; runtime_verified is false."
+    ]
+  },
+  "client_layout": {
+    "four_entry_layout_observed": true,
+    "status": "adjacent_field_collision_at_fifth_entry",
+    "description": "The confirmed-peer list starts at client+0xD0 with 0x20-byte records and ends at +0x150, which is already used. Existing reset logic clears only 0x80 bytes, covering four records.",
+    "source": "client_expansion_notes.md",
+    "requires_relayout": true
+  },
+  "decision": {
+    "eight_player_runtime_verified": false,
+    "service_acceptance_verified": false,
+    "safe_single_constant_patch": false,
+    "safe_public_package": false,
+    "max_verified_players": 4,
+    "public_release_allowed": false
+  },
+  "remaining_gaps": [
+    "Resolve the platform-interface targets and calling semantics from an explicitly authorized live room capture.",
+    "Verify service-side admission above four instead of inferring it from a static argument value.",
+    "Relayout and verify host roster, client records, cleanup, migration, entity/resource creation and consumers together.",
+    "Complete host/client join, leave, host migration and cleanup tests.",
+    "Complete an 5-8 independent-client same-mission run before any public package."
+  ]
+}

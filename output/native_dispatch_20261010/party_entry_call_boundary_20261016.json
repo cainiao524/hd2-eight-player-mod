@@ -1,0 +1,1449 @@
+{
+  "schema": "hd2_saved_party_entry_decode_v2",
+  "source_sha256": {
+    "party_capture_authorized_20261016_pid30776_01.json": "b5b81a890e9a0e81808bcd74a736a75ac48f59de33cf393f135ef9c5478d13ac",
+    "party_capture_plan_v2_20261015.json": "3a9fae2bba12ddf680b15a45f4f5590b98329d8153c1cb93057d8685f935528e",
+    "live_party_jump_chains_20261111_pid38492_r5.json": "dd41ee4dd10021cb2b5e91bba9702d2e5abb5b98698f6bc717017b41d8ea5254",
+    "live_party_api_pointer_probe_20261011_r13.json": "10fe30287ba16eedae2c6ebb48a99cae71215e20ab8bf5275ead65564d30433f",
+    "recovered_party_windows_20261015/manifest.json": "6fb6280868e6c16cccce899c5a47852c1226c0f31c1cf4196c3da7d4f495742b",
+    "partywin_c_handle_abi_20261015.json": "87ae7faaa947ef41c05e3125437ffb2b380047f686e9e0aa864abbbf2acf3c94"
+  },
+  "scope": "Saved current data plus historical code whose prefix hashes were verified in the current capture; isolated emulation stops before the common call.",
+  "synthetic_context": "Three different register/stack/flags patterns with distinct caller return/argument markers; same decoded target/path in all three. This is not a live register snapshot or proof of all possible inputs.",
+  "stack_boundary_finding": "The four argument registers are preserved at the common call in all saved cases, but RSP is entry RSP minus 32. Under a plain JMP RAX hypothesis, native argument 5 would be the original caller return marker, not original argument 5. The unavailable dispatcher must not be replaced with that assumed implementation, especially for CreateNewNetwork/CreateEndpoint stack arguments.",
+  "decoded_entries": [
+    {
+      "candidate_label": "create_network_candidate",
+      "entry_rva": "0x2985447",
+      "entry_value": "0xe8c31f18a7eb3aff",
+      "derived_target": "0x7ffc40bc5720",
+      "partywin_rva": "0x15720",
+      "matching_saved_export": "PartyCreateNewNetwork",
+      "runs": [
+        {
+          "instruction_rva": "0x2fc3552",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bc5720",
+          "rsp_delta": -32,
+          "argument_registers": {
+            "RCX": {
+              "input": "0x202020202020202",
+              "before_common_call": "0x202020202020202"
+            },
+            "RDX": {
+              "input": "0x303030303030303",
+              "before_common_call": "0x303030303030303"
+            },
+            "R8": {
+              "input": "0x707070707070707",
+              "before_common_call": "0x707070707070707"
+            },
+            "R9": {
+              "input": "0x808080808080808",
+              "before_common_call": "0x808080808080808"
+            }
+          },
+          "four_argument_registers_preserved": true,
+          "synthetic_caller_return": "0x1111222233334444",
+          "caller_stack_arguments": [
+            {
+              "argument_number": 5,
+              "input_marker": "0x5555000000000005",
+              "original_slot_before_common_call": "0x5555000000000005",
+              "plain_jump_callee_slot": "0x1111222233334444",
+              "original_slot_relative_to_current_rsp": "0x48"
+            },
+            {
+              "argument_number": 6,
+              "input_marker": "0x5555000000000006",
+              "original_slot_before_common_call": "0x5555000000000006",
+              "plain_jump_callee_slot": "0x0",
+              "original_slot_relative_to_current_rsp": "0x50"
+            },
+            {
+              "argument_number": 7,
+              "input_marker": "0x5555000000000007",
+              "original_slot_before_common_call": "0x5555000000000007",
+              "plain_jump_callee_slot": "0x0",
+              "original_slot_relative_to_current_rsp": "0x58"
+            },
+            {
+              "argument_number": 8,
+              "input_marker": "0x5555000000000008",
+              "original_slot_before_common_call": "0x5555000000000008",
+              "plain_jump_callee_slot": "0x0",
+              "original_slot_relative_to_current_rsp": "0x60"
+            },
+            {
+              "argument_number": 9,
+              "input_marker": "0x5555000000000009",
+              "original_slot_before_common_call": "0x5555000000000009",
+              "plain_jump_callee_slot": "0x0",
+              "original_slot_relative_to_current_rsp": "0x68"
+            }
+          ],
+          "dispatcher_stack_forwarding_proven": false,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x2985447",
+              "size": 8
+            }
+          ],
+          "instruction_count": 143,
+          "instruction_path_sha256": "e6306c82206ea48cd10a4cac46246f2621cfa9a5778c0597ad1dc9aea85cbacb",
+          "seed": "0x0",
+          "stopped_before_indirect_call": true
+        },
+        {
+          "instruction_rva": "0x2fc3552",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bc5720",
+          "rsp_delta": -32,
+          "argument_registers": {
+            "RCX": {
+              "input": "0x5757575757575757",
+              "before_common_call": "0x5757575757575757"
+            },
+            "RDX": {
+              "input": "0x5656565656565656",
+              "before_common_call": "0x5656565656565656"
+            },
+            "R8": {
+              "input": "0x5252525252525252",
+              "before_common_call": "0x5252525252525252"
+            },
+            "R9": {
+              "input": "0x5d5d5d5d5d5d5d5d",
+              "before_common_call": "0x5d5d5d5d5d5d5d5d"
+            }
+          },
+          "four_argument_registers_preserved": true,
+          "synthetic_caller_return": "0x4444777766661111",
+          "caller_stack_arguments": [
+            {
+              "argument_number": 5,
+              "input_marker": "0x555555555550",
+              "original_slot_before_common_call": "0x555555555550",
+              "plain_jump_callee_slot": "0x4444777766661111",
+              "original_slot_relative_to_current_rsp": "0x48"
+            },
+            {
+              "argument_number": 6,
+              "input_marker": "0x555555555553",
+              "original_slot_before_common_call": "0x555555555553",
+              "plain_jump_callee_slot": "0x5555555555555555",
+              "original_slot_relative_to_current_rsp": "0x50"
+            },
+            {
+              "argument_number": 7,
+              "input_marker": "0x555555555552",
+              "original_slot_before_common_call": "0x555555555552",
+              "plain_jump_callee_slot": "0x5555555555555555",
+              "original_slot_relative_to_current_rsp": "0x58"
+            },
+            {
+              "argument_number": 8,
+              "input_marker": "0x55555555555d",
+              "original_slot_before_common_call": "0x55555555555d",
+              "plain_jump_callee_slot": "0x5555555555555555",
+              "original_slot_relative_to_current_rsp": "0x60"
+            },
+            {
+              "argument_number": 9,
+              "input_marker": "0x55555555555c",
+              "original_slot_before_common_call": "0x55555555555c",
+              "plain_jump_callee_slot": "0x5555555555555555",
+              "original_slot_relative_to_current_rsp": "0x68"
+            }
+          ],
+          "dispatcher_stack_forwarding_proven": false,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x2985447",
+              "size": 8
+            }
+          ],
+          "instruction_count": 143,
+          "instruction_path_sha256": "e6306c82206ea48cd10a4cac46246f2621cfa9a5778c0597ad1dc9aea85cbacb",
+          "seed": "0x5555555555555555",
+          "stopped_before_indirect_call": true
+        },
+        {
+          "instruction_rva": "0x2fc3552",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bc5720",
+          "rsp_delta": -32,
+          "argument_registers": {
+            "RCX": {
+              "input": "0xa8a8a8a8a8a8a8a8",
+              "before_common_call": "0xa8a8a8a8a8a8a8a8"
+            },
+            "RDX": {
+              "input": "0xa9a9a9a9a9a9a9a9",
+              "before_common_call": "0xa9a9a9a9a9a9a9a9"
+            },
+            "R8": {
+              "input": "0xadadadadadadadad",
+              "before_common_call": "0xadadadadadadadad"
+            },
+            "R9": {
+              "input": "0xa2a2a2a2a2a2a2a2",
+              "before_common_call": "0xa2a2a2a2a2a2a2a2"
+            }
+          },
+          "four_argument_registers_preserved": true,
+          "synthetic_caller_return": "0xbbbb88889999eeee",
+          "caller_stack_arguments": [
+            {
+              "argument_number": 5,
+              "input_marker": "0xffffaaaaaaaaaaaf",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaaf",
+              "plain_jump_callee_slot": "0xbbbb88889999eeee",
+              "original_slot_relative_to_current_rsp": "0x48"
+            },
+            {
+              "argument_number": 6,
+              "input_marker": "0xffffaaaaaaaaaaac",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaac",
+              "plain_jump_callee_slot": "0xaaaaaaaaaaaaaaaa",
+              "original_slot_relative_to_current_rsp": "0x50"
+            },
+            {
+              "argument_number": 7,
+              "input_marker": "0xffffaaaaaaaaaaad",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaad",
+              "plain_jump_callee_slot": "0xaaaaaaaaaaaaaaaa",
+              "original_slot_relative_to_current_rsp": "0x58"
+            },
+            {
+              "argument_number": 8,
+              "input_marker": "0xffffaaaaaaaaaaa2",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaa2",
+              "plain_jump_callee_slot": "0xaaaaaaaaaaaaaaaa",
+              "original_slot_relative_to_current_rsp": "0x60"
+            },
+            {
+              "argument_number": 9,
+              "input_marker": "0xffffaaaaaaaaaaa3",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaa3",
+              "plain_jump_callee_slot": "0xaaaaaaaaaaaaaaaa",
+              "original_slot_relative_to_current_rsp": "0x68"
+            }
+          ],
+          "dispatcher_stack_forwarding_proven": false,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x2985447",
+              "size": 8
+            }
+          ],
+          "instruction_count": 143,
+          "instruction_path_sha256": "e6306c82206ea48cd10a4cac46246f2621cfa9a5778c0597ad1dc9aea85cbacb",
+          "seed": "0xaaaaaaaaaaaaaaaa",
+          "stopped_before_indirect_call": true
+        }
+      ],
+      "actual_native_call_observed": false
+    },
+    {
+      "candidate_label": "async_or_state_candidate",
+      "entry_rva": "0x2985527",
+      "entry_value": "0xc93c09417be6817c",
+      "derived_target": "0x7ffc40bc9880",
+      "partywin_rva": "0x19880",
+      "matching_saved_export": null,
+      "runs": [
+        {
+          "instruction_rva": "0x2fcc515",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bc9880",
+          "rsp_delta": -32,
+          "argument_registers": {
+            "RCX": {
+              "input": "0x202020202020202",
+              "before_common_call": "0x202020202020202"
+            },
+            "RDX": {
+              "input": "0x303030303030303",
+              "before_common_call": "0x303030303030303"
+            },
+            "R8": {
+              "input": "0x707070707070707",
+              "before_common_call": "0x707070707070707"
+            },
+            "R9": {
+              "input": "0x808080808080808",
+              "before_common_call": "0x808080808080808"
+            }
+          },
+          "four_argument_registers_preserved": true,
+          "synthetic_caller_return": "0x1111222233334444",
+          "caller_stack_arguments": [
+            {
+              "argument_number": 5,
+              "input_marker": "0x5555000000000005",
+              "original_slot_before_common_call": "0x5555000000000005",
+              "plain_jump_callee_slot": "0x1111222233334444",
+              "original_slot_relative_to_current_rsp": "0x48"
+            },
+            {
+              "argument_number": 6,
+              "input_marker": "0x5555000000000006",
+              "original_slot_before_common_call": "0x5555000000000006",
+              "plain_jump_callee_slot": "0x0",
+              "original_slot_relative_to_current_rsp": "0x50"
+            },
+            {
+              "argument_number": 7,
+              "input_marker": "0x5555000000000007",
+              "original_slot_before_common_call": "0x5555000000000007",
+              "plain_jump_callee_slot": "0x0",
+              "original_slot_relative_to_current_rsp": "0x58"
+            },
+            {
+              "argument_number": 8,
+              "input_marker": "0x5555000000000008",
+              "original_slot_before_common_call": "0x5555000000000008",
+              "plain_jump_callee_slot": "0x0",
+              "original_slot_relative_to_current_rsp": "0x60"
+            },
+            {
+              "argument_number": 9,
+              "input_marker": "0x5555000000000009",
+              "original_slot_before_common_call": "0x5555000000000009",
+              "plain_jump_callee_slot": "0x0",
+              "original_slot_relative_to_current_rsp": "0x68"
+            }
+          ],
+          "dispatcher_stack_forwarding_proven": false,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x2985527",
+              "size": 8
+            }
+          ],
+          "instruction_count": 147,
+          "instruction_path_sha256": "5b4547feb03d8917b8e436360c44fff8610c9979fe69ff53400002530b600f64",
+          "seed": "0x0",
+          "stopped_before_indirect_call": true
+        },
+        {
+          "instruction_rva": "0x2fcc515",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bc9880",
+          "rsp_delta": -32,
+          "argument_registers": {
+            "RCX": {
+              "input": "0x5757575757575757",
+              "before_common_call": "0x5757575757575757"
+            },
+            "RDX": {
+              "input": "0x5656565656565656",
+              "before_common_call": "0x5656565656565656"
+            },
+            "R8": {
+              "input": "0x5252525252525252",
+              "before_common_call": "0x5252525252525252"
+            },
+            "R9": {
+              "input": "0x5d5d5d5d5d5d5d5d",
+              "before_common_call": "0x5d5d5d5d5d5d5d5d"
+            }
+          },
+          "four_argument_registers_preserved": true,
+          "synthetic_caller_return": "0x4444777766661111",
+          "caller_stack_arguments": [
+            {
+              "argument_number": 5,
+              "input_marker": "0x555555555550",
+              "original_slot_before_common_call": "0x555555555550",
+              "plain_jump_callee_slot": "0x4444777766661111",
+              "original_slot_relative_to_current_rsp": "0x48"
+            },
+            {
+              "argument_number": 6,
+              "input_marker": "0x555555555553",
+              "original_slot_before_common_call": "0x555555555553",
+              "plain_jump_callee_slot": "0x5555555555555555",
+              "original_slot_relative_to_current_rsp": "0x50"
+            },
+            {
+              "argument_number": 7,
+              "input_marker": "0x555555555552",
+              "original_slot_before_common_call": "0x555555555552",
+              "plain_jump_callee_slot": "0x5555555555555555",
+              "original_slot_relative_to_current_rsp": "0x58"
+            },
+            {
+              "argument_number": 8,
+              "input_marker": "0x55555555555d",
+              "original_slot_before_common_call": "0x55555555555d",
+              "plain_jump_callee_slot": "0x5555555555555555",
+              "original_slot_relative_to_current_rsp": "0x60"
+            },
+            {
+              "argument_number": 9,
+              "input_marker": "0x55555555555c",
+              "original_slot_before_common_call": "0x55555555555c",
+              "plain_jump_callee_slot": "0x5555555555555555",
+              "original_slot_relative_to_current_rsp": "0x68"
+            }
+          ],
+          "dispatcher_stack_forwarding_proven": false,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x2985527",
+              "size": 8
+            }
+          ],
+          "instruction_count": 147,
+          "instruction_path_sha256": "5b4547feb03d8917b8e436360c44fff8610c9979fe69ff53400002530b600f64",
+          "seed": "0x5555555555555555",
+          "stopped_before_indirect_call": true
+        },
+        {
+          "instruction_rva": "0x2fcc515",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bc9880",
+          "rsp_delta": -32,
+          "argument_registers": {
+            "RCX": {
+              "input": "0xa8a8a8a8a8a8a8a8",
+              "before_common_call": "0xa8a8a8a8a8a8a8a8"
+            },
+            "RDX": {
+              "input": "0xa9a9a9a9a9a9a9a9",
+              "before_common_call": "0xa9a9a9a9a9a9a9a9"
+            },
+            "R8": {
+              "input": "0xadadadadadadadad",
+              "before_common_call": "0xadadadadadadadad"
+            },
+            "R9": {
+              "input": "0xa2a2a2a2a2a2a2a2",
+              "before_common_call": "0xa2a2a2a2a2a2a2a2"
+            }
+          },
+          "four_argument_registers_preserved": true,
+          "synthetic_caller_return": "0xbbbb88889999eeee",
+          "caller_stack_arguments": [
+            {
+              "argument_number": 5,
+              "input_marker": "0xffffaaaaaaaaaaaf",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaaf",
+              "plain_jump_callee_slot": "0xbbbb88889999eeee",
+              "original_slot_relative_to_current_rsp": "0x48"
+            },
+            {
+              "argument_number": 6,
+              "input_marker": "0xffffaaaaaaaaaaac",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaac",
+              "plain_jump_callee_slot": "0xaaaaaaaaaaaaaaaa",
+              "original_slot_relative_to_current_rsp": "0x50"
+            },
+            {
+              "argument_number": 7,
+              "input_marker": "0xffffaaaaaaaaaaad",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaad",
+              "plain_jump_callee_slot": "0xaaaaaaaaaaaaaaaa",
+              "original_slot_relative_to_current_rsp": "0x58"
+            },
+            {
+              "argument_number": 8,
+              "input_marker": "0xffffaaaaaaaaaaa2",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaa2",
+              "plain_jump_callee_slot": "0xaaaaaaaaaaaaaaaa",
+              "original_slot_relative_to_current_rsp": "0x60"
+            },
+            {
+              "argument_number": 9,
+              "input_marker": "0xffffaaaaaaaaaaa3",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaa3",
+              "plain_jump_callee_slot": "0xaaaaaaaaaaaaaaaa",
+              "original_slot_relative_to_current_rsp": "0x68"
+            }
+          ],
+          "dispatcher_stack_forwarding_proven": false,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x2985527",
+              "size": 8
+            }
+          ],
+          "instruction_count": 147,
+          "instruction_path_sha256": "5b4547feb03d8917b8e436360c44fff8610c9979fe69ff53400002530b600f64",
+          "seed": "0xaaaaaaaaaaaaaaaa",
+          "stopped_before_indirect_call": true
+        }
+      ],
+      "actual_native_call_observed": false
+    },
+    {
+      "candidate_label": "authenticate_or_state_candidate",
+      "entry_rva": "0x29848a7",
+      "entry_value": "0xb7aa506089a70337",
+      "derived_target": "0x7ffc40bcbe80",
+      "partywin_rva": "0x1be80",
+      "matching_saved_export": null,
+      "runs": [
+        {
+          "instruction_rva": "0x2f4d788",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bcbe80",
+          "rsp_delta": -32,
+          "argument_registers": {
+            "RCX": {
+              "input": "0x202020202020202",
+              "before_common_call": "0x202020202020202"
+            },
+            "RDX": {
+              "input": "0x303030303030303",
+              "before_common_call": "0x303030303030303"
+            },
+            "R8": {
+              "input": "0x707070707070707",
+              "before_common_call": "0x707070707070707"
+            },
+            "R9": {
+              "input": "0x808080808080808",
+              "before_common_call": "0x808080808080808"
+            }
+          },
+          "four_argument_registers_preserved": true,
+          "synthetic_caller_return": "0x1111222233334444",
+          "caller_stack_arguments": [
+            {
+              "argument_number": 5,
+              "input_marker": "0x5555000000000005",
+              "original_slot_before_common_call": "0x5555000000000005",
+              "plain_jump_callee_slot": "0x1111222233334444",
+              "original_slot_relative_to_current_rsp": "0x48"
+            },
+            {
+              "argument_number": 6,
+              "input_marker": "0x5555000000000006",
+              "original_slot_before_common_call": "0x5555000000000006",
+              "plain_jump_callee_slot": "0x0",
+              "original_slot_relative_to_current_rsp": "0x50"
+            },
+            {
+              "argument_number": 7,
+              "input_marker": "0x5555000000000007",
+              "original_slot_before_common_call": "0x5555000000000007",
+              "plain_jump_callee_slot": "0x0",
+              "original_slot_relative_to_current_rsp": "0x58"
+            },
+            {
+              "argument_number": 8,
+              "input_marker": "0x5555000000000008",
+              "original_slot_before_common_call": "0x5555000000000008",
+              "plain_jump_callee_slot": "0x0",
+              "original_slot_relative_to_current_rsp": "0x60"
+            },
+            {
+              "argument_number": 9,
+              "input_marker": "0x5555000000000009",
+              "original_slot_before_common_call": "0x5555000000000009",
+              "plain_jump_callee_slot": "0x0",
+              "original_slot_relative_to_current_rsp": "0x68"
+            }
+          ],
+          "dispatcher_stack_forwarding_proven": false,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x29848a7",
+              "size": 8
+            }
+          ],
+          "instruction_count": 168,
+          "instruction_path_sha256": "38382d3daed74703ba1a7e47a4c01d7227e728e20cae6114d96df20475449bd6",
+          "seed": "0x0",
+          "stopped_before_indirect_call": true
+        },
+        {
+          "instruction_rva": "0x2f4d788",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bcbe80",
+          "rsp_delta": -32,
+          "argument_registers": {
+            "RCX": {
+              "input": "0x5757575757575757",
+              "before_common_call": "0x5757575757575757"
+            },
+            "RDX": {
+              "input": "0x5656565656565656",
+              "before_common_call": "0x5656565656565656"
+            },
+            "R8": {
+              "input": "0x5252525252525252",
+              "before_common_call": "0x5252525252525252"
+            },
+            "R9": {
+              "input": "0x5d5d5d5d5d5d5d5d",
+              "before_common_call": "0x5d5d5d5d5d5d5d5d"
+            }
+          },
+          "four_argument_registers_preserved": true,
+          "synthetic_caller_return": "0x4444777766661111",
+          "caller_stack_arguments": [
+            {
+              "argument_number": 5,
+              "input_marker": "0x555555555550",
+              "original_slot_before_common_call": "0x555555555550",
+              "plain_jump_callee_slot": "0x4444777766661111",
+              "original_slot_relative_to_current_rsp": "0x48"
+            },
+            {
+              "argument_number": 6,
+              "input_marker": "0x555555555553",
+              "original_slot_before_common_call": "0x555555555553",
+              "plain_jump_callee_slot": "0x5555555555555555",
+              "original_slot_relative_to_current_rsp": "0x50"
+            },
+            {
+              "argument_number": 7,
+              "input_marker": "0x555555555552",
+              "original_slot_before_common_call": "0x555555555552",
+              "plain_jump_callee_slot": "0x5555555555555555",
+              "original_slot_relative_to_current_rsp": "0x58"
+            },
+            {
+              "argument_number": 8,
+              "input_marker": "0x55555555555d",
+              "original_slot_before_common_call": "0x55555555555d",
+              "plain_jump_callee_slot": "0x5555555555555555",
+              "original_slot_relative_to_current_rsp": "0x60"
+            },
+            {
+              "argument_number": 9,
+              "input_marker": "0x55555555555c",
+              "original_slot_before_common_call": "0x55555555555c",
+              "plain_jump_callee_slot": "0x5555555555555555",
+              "original_slot_relative_to_current_rsp": "0x68"
+            }
+          ],
+          "dispatcher_stack_forwarding_proven": false,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x29848a7",
+              "size": 8
+            }
+          ],
+          "instruction_count": 168,
+          "instruction_path_sha256": "38382d3daed74703ba1a7e47a4c01d7227e728e20cae6114d96df20475449bd6",
+          "seed": "0x5555555555555555",
+          "stopped_before_indirect_call": true
+        },
+        {
+          "instruction_rva": "0x2f4d788",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bcbe80",
+          "rsp_delta": -32,
+          "argument_registers": {
+            "RCX": {
+              "input": "0xa8a8a8a8a8a8a8a8",
+              "before_common_call": "0xa8a8a8a8a8a8a8a8"
+            },
+            "RDX": {
+              "input": "0xa9a9a9a9a9a9a9a9",
+              "before_common_call": "0xa9a9a9a9a9a9a9a9"
+            },
+            "R8": {
+              "input": "0xadadadadadadadad",
+              "before_common_call": "0xadadadadadadadad"
+            },
+            "R9": {
+              "input": "0xa2a2a2a2a2a2a2a2",
+              "before_common_call": "0xa2a2a2a2a2a2a2a2"
+            }
+          },
+          "four_argument_registers_preserved": true,
+          "synthetic_caller_return": "0xbbbb88889999eeee",
+          "caller_stack_arguments": [
+            {
+              "argument_number": 5,
+              "input_marker": "0xffffaaaaaaaaaaaf",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaaf",
+              "plain_jump_callee_slot": "0xbbbb88889999eeee",
+              "original_slot_relative_to_current_rsp": "0x48"
+            },
+            {
+              "argument_number": 6,
+              "input_marker": "0xffffaaaaaaaaaaac",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaac",
+              "plain_jump_callee_slot": "0xaaaaaaaaaaaaaaaa",
+              "original_slot_relative_to_current_rsp": "0x50"
+            },
+            {
+              "argument_number": 7,
+              "input_marker": "0xffffaaaaaaaaaaad",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaad",
+              "plain_jump_callee_slot": "0xaaaaaaaaaaaaaaaa",
+              "original_slot_relative_to_current_rsp": "0x58"
+            },
+            {
+              "argument_number": 8,
+              "input_marker": "0xffffaaaaaaaaaaa2",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaa2",
+              "plain_jump_callee_slot": "0xaaaaaaaaaaaaaaaa",
+              "original_slot_relative_to_current_rsp": "0x60"
+            },
+            {
+              "argument_number": 9,
+              "input_marker": "0xffffaaaaaaaaaaa3",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaa3",
+              "plain_jump_callee_slot": "0xaaaaaaaaaaaaaaaa",
+              "original_slot_relative_to_current_rsp": "0x68"
+            }
+          ],
+          "dispatcher_stack_forwarding_proven": false,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x29848a7",
+              "size": 8
+            }
+          ],
+          "instruction_count": 168,
+          "instruction_path_sha256": "38382d3daed74703ba1a7e47a4c01d7227e728e20cae6114d96df20475449bd6",
+          "seed": "0xaaaaaaaaaaaaaaaa",
+          "stopped_before_indirect_call": true
+        }
+      ],
+      "actual_native_call_observed": false
+    },
+    {
+      "candidate_label": "create_endpoint_candidate",
+      "entry_rva": "0x2984b7f",
+      "entry_value": "0xed6502bb5a359c2e",
+      "derived_target": "0x7ffc40bcc050",
+      "partywin_rva": "0x1c050",
+      "matching_saved_export": "PartyNetworkCreateEndpoint",
+      "runs": [
+        {
+          "instruction_rva": "0x2f6a506",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bcc050",
+          "rsp_delta": -32,
+          "argument_registers": {
+            "RCX": {
+              "input": "0x202020202020202",
+              "before_common_call": "0x202020202020202"
+            },
+            "RDX": {
+              "input": "0x303030303030303",
+              "before_common_call": "0x303030303030303"
+            },
+            "R8": {
+              "input": "0x707070707070707",
+              "before_common_call": "0x707070707070707"
+            },
+            "R9": {
+              "input": "0x808080808080808",
+              "before_common_call": "0x808080808080808"
+            }
+          },
+          "four_argument_registers_preserved": true,
+          "synthetic_caller_return": "0x1111222233334444",
+          "caller_stack_arguments": [
+            {
+              "argument_number": 5,
+              "input_marker": "0x5555000000000005",
+              "original_slot_before_common_call": "0x5555000000000005",
+              "plain_jump_callee_slot": "0x1111222233334444",
+              "original_slot_relative_to_current_rsp": "0x48"
+            },
+            {
+              "argument_number": 6,
+              "input_marker": "0x5555000000000006",
+              "original_slot_before_common_call": "0x5555000000000006",
+              "plain_jump_callee_slot": "0x0",
+              "original_slot_relative_to_current_rsp": "0x50"
+            },
+            {
+              "argument_number": 7,
+              "input_marker": "0x5555000000000007",
+              "original_slot_before_common_call": "0x5555000000000007",
+              "plain_jump_callee_slot": "0x0",
+              "original_slot_relative_to_current_rsp": "0x58"
+            },
+            {
+              "argument_number": 8,
+              "input_marker": "0x5555000000000008",
+              "original_slot_before_common_call": "0x5555000000000008",
+              "plain_jump_callee_slot": "0x0",
+              "original_slot_relative_to_current_rsp": "0x60"
+            },
+            {
+              "argument_number": 9,
+              "input_marker": "0x5555000000000009",
+              "original_slot_before_common_call": "0x5555000000000009",
+              "plain_jump_callee_slot": "0x0",
+              "original_slot_relative_to_current_rsp": "0x68"
+            }
+          ],
+          "dispatcher_stack_forwarding_proven": false,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x2984b7f",
+              "size": 8
+            }
+          ],
+          "instruction_count": 161,
+          "instruction_path_sha256": "3e70120ab9dace5dbc95aca16000271cbdf8d2c8423f7a697d19bc6ca8dcc491",
+          "seed": "0x0",
+          "stopped_before_indirect_call": true
+        },
+        {
+          "instruction_rva": "0x2f6a506",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bcc050",
+          "rsp_delta": -32,
+          "argument_registers": {
+            "RCX": {
+              "input": "0x5757575757575757",
+              "before_common_call": "0x5757575757575757"
+            },
+            "RDX": {
+              "input": "0x5656565656565656",
+              "before_common_call": "0x5656565656565656"
+            },
+            "R8": {
+              "input": "0x5252525252525252",
+              "before_common_call": "0x5252525252525252"
+            },
+            "R9": {
+              "input": "0x5d5d5d5d5d5d5d5d",
+              "before_common_call": "0x5d5d5d5d5d5d5d5d"
+            }
+          },
+          "four_argument_registers_preserved": true,
+          "synthetic_caller_return": "0x4444777766661111",
+          "caller_stack_arguments": [
+            {
+              "argument_number": 5,
+              "input_marker": "0x555555555550",
+              "original_slot_before_common_call": "0x555555555550",
+              "plain_jump_callee_slot": "0x4444777766661111",
+              "original_slot_relative_to_current_rsp": "0x48"
+            },
+            {
+              "argument_number": 6,
+              "input_marker": "0x555555555553",
+              "original_slot_before_common_call": "0x555555555553",
+              "plain_jump_callee_slot": "0x5555555555555555",
+              "original_slot_relative_to_current_rsp": "0x50"
+            },
+            {
+              "argument_number": 7,
+              "input_marker": "0x555555555552",
+              "original_slot_before_common_call": "0x555555555552",
+              "plain_jump_callee_slot": "0x5555555555555555",
+              "original_slot_relative_to_current_rsp": "0x58"
+            },
+            {
+              "argument_number": 8,
+              "input_marker": "0x55555555555d",
+              "original_slot_before_common_call": "0x55555555555d",
+              "plain_jump_callee_slot": "0x5555555555555555",
+              "original_slot_relative_to_current_rsp": "0x60"
+            },
+            {
+              "argument_number": 9,
+              "input_marker": "0x55555555555c",
+              "original_slot_before_common_call": "0x55555555555c",
+              "plain_jump_callee_slot": "0x5555555555555555",
+              "original_slot_relative_to_current_rsp": "0x68"
+            }
+          ],
+          "dispatcher_stack_forwarding_proven": false,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x2984b7f",
+              "size": 8
+            }
+          ],
+          "instruction_count": 161,
+          "instruction_path_sha256": "3e70120ab9dace5dbc95aca16000271cbdf8d2c8423f7a697d19bc6ca8dcc491",
+          "seed": "0x5555555555555555",
+          "stopped_before_indirect_call": true
+        },
+        {
+          "instruction_rva": "0x2f6a506",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bcc050",
+          "rsp_delta": -32,
+          "argument_registers": {
+            "RCX": {
+              "input": "0xa8a8a8a8a8a8a8a8",
+              "before_common_call": "0xa8a8a8a8a8a8a8a8"
+            },
+            "RDX": {
+              "input": "0xa9a9a9a9a9a9a9a9",
+              "before_common_call": "0xa9a9a9a9a9a9a9a9"
+            },
+            "R8": {
+              "input": "0xadadadadadadadad",
+              "before_common_call": "0xadadadadadadadad"
+            },
+            "R9": {
+              "input": "0xa2a2a2a2a2a2a2a2",
+              "before_common_call": "0xa2a2a2a2a2a2a2a2"
+            }
+          },
+          "four_argument_registers_preserved": true,
+          "synthetic_caller_return": "0xbbbb88889999eeee",
+          "caller_stack_arguments": [
+            {
+              "argument_number": 5,
+              "input_marker": "0xffffaaaaaaaaaaaf",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaaf",
+              "plain_jump_callee_slot": "0xbbbb88889999eeee",
+              "original_slot_relative_to_current_rsp": "0x48"
+            },
+            {
+              "argument_number": 6,
+              "input_marker": "0xffffaaaaaaaaaaac",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaac",
+              "plain_jump_callee_slot": "0xaaaaaaaaaaaaaaaa",
+              "original_slot_relative_to_current_rsp": "0x50"
+            },
+            {
+              "argument_number": 7,
+              "input_marker": "0xffffaaaaaaaaaaad",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaad",
+              "plain_jump_callee_slot": "0xaaaaaaaaaaaaaaaa",
+              "original_slot_relative_to_current_rsp": "0x58"
+            },
+            {
+              "argument_number": 8,
+              "input_marker": "0xffffaaaaaaaaaaa2",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaa2",
+              "plain_jump_callee_slot": "0xaaaaaaaaaaaaaaaa",
+              "original_slot_relative_to_current_rsp": "0x60"
+            },
+            {
+              "argument_number": 9,
+              "input_marker": "0xffffaaaaaaaaaaa3",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaa3",
+              "plain_jump_callee_slot": "0xaaaaaaaaaaaaaaaa",
+              "original_slot_relative_to_current_rsp": "0x68"
+            }
+          ],
+          "dispatcher_stack_forwarding_proven": false,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x2984b7f",
+              "size": 8
+            }
+          ],
+          "instruction_count": 161,
+          "instruction_path_sha256": "3e70120ab9dace5dbc95aca16000271cbdf8d2c8423f7a697d19bc6ca8dcc491",
+          "seed": "0xaaaaaaaaaaaaaaaa",
+          "stopped_before_indirect_call": true
+        }
+      ],
+      "actual_native_call_observed": false
+    },
+    {
+      "candidate_label": "connect_network_candidate",
+      "entry_rva": "0x2984c3f",
+      "entry_value": "0x86a1d09257e2b391",
+      "derived_target": "0x7ffc40bc4fe0",
+      "partywin_rva": "0x14fe0",
+      "matching_saved_export": "PartyConnectToNetwork",
+      "runs": [
+        {
+          "instruction_rva": "0x2f720a9",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bc4fe0",
+          "rsp_delta": -32,
+          "argument_registers": {
+            "RCX": {
+              "input": "0x202020202020202",
+              "before_common_call": "0x202020202020202"
+            },
+            "RDX": {
+              "input": "0x303030303030303",
+              "before_common_call": "0x303030303030303"
+            },
+            "R8": {
+              "input": "0x707070707070707",
+              "before_common_call": "0x707070707070707"
+            },
+            "R9": {
+              "input": "0x808080808080808",
+              "before_common_call": "0x808080808080808"
+            }
+          },
+          "four_argument_registers_preserved": true,
+          "synthetic_caller_return": "0x1111222233334444",
+          "caller_stack_arguments": [
+            {
+              "argument_number": 5,
+              "input_marker": "0x5555000000000005",
+              "original_slot_before_common_call": "0x5555000000000005",
+              "plain_jump_callee_slot": "0x1111222233334444",
+              "original_slot_relative_to_current_rsp": "0x48"
+            },
+            {
+              "argument_number": 6,
+              "input_marker": "0x5555000000000006",
+              "original_slot_before_common_call": "0x5555000000000006",
+              "plain_jump_callee_slot": "0x0",
+              "original_slot_relative_to_current_rsp": "0x50"
+            },
+            {
+              "argument_number": 7,
+              "input_marker": "0x5555000000000007",
+              "original_slot_before_common_call": "0x5555000000000007",
+              "plain_jump_callee_slot": "0x0",
+              "original_slot_relative_to_current_rsp": "0x58"
+            },
+            {
+              "argument_number": 8,
+              "input_marker": "0x5555000000000008",
+              "original_slot_before_common_call": "0x5555000000000008",
+              "plain_jump_callee_slot": "0x0",
+              "original_slot_relative_to_current_rsp": "0x60"
+            },
+            {
+              "argument_number": 9,
+              "input_marker": "0x5555000000000009",
+              "original_slot_before_common_call": "0x5555000000000009",
+              "plain_jump_callee_slot": "0x0",
+              "original_slot_relative_to_current_rsp": "0x68"
+            }
+          ],
+          "dispatcher_stack_forwarding_proven": false,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x2984c3f",
+              "size": 8
+            }
+          ],
+          "instruction_count": 177,
+          "instruction_path_sha256": "2262b30fb69acd1f54f998b3127c01b4710294b442072173ce794ffc5c67cd76",
+          "seed": "0x0",
+          "stopped_before_indirect_call": true
+        },
+        {
+          "instruction_rva": "0x2f720a9",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bc4fe0",
+          "rsp_delta": -32,
+          "argument_registers": {
+            "RCX": {
+              "input": "0x5757575757575757",
+              "before_common_call": "0x5757575757575757"
+            },
+            "RDX": {
+              "input": "0x5656565656565656",
+              "before_common_call": "0x5656565656565656"
+            },
+            "R8": {
+              "input": "0x5252525252525252",
+              "before_common_call": "0x5252525252525252"
+            },
+            "R9": {
+              "input": "0x5d5d5d5d5d5d5d5d",
+              "before_common_call": "0x5d5d5d5d5d5d5d5d"
+            }
+          },
+          "four_argument_registers_preserved": true,
+          "synthetic_caller_return": "0x4444777766661111",
+          "caller_stack_arguments": [
+            {
+              "argument_number": 5,
+              "input_marker": "0x555555555550",
+              "original_slot_before_common_call": "0x555555555550",
+              "plain_jump_callee_slot": "0x4444777766661111",
+              "original_slot_relative_to_current_rsp": "0x48"
+            },
+            {
+              "argument_number": 6,
+              "input_marker": "0x555555555553",
+              "original_slot_before_common_call": "0x555555555553",
+              "plain_jump_callee_slot": "0x5555555555555555",
+              "original_slot_relative_to_current_rsp": "0x50"
+            },
+            {
+              "argument_number": 7,
+              "input_marker": "0x555555555552",
+              "original_slot_before_common_call": "0x555555555552",
+              "plain_jump_callee_slot": "0x5555555555555555",
+              "original_slot_relative_to_current_rsp": "0x58"
+            },
+            {
+              "argument_number": 8,
+              "input_marker": "0x55555555555d",
+              "original_slot_before_common_call": "0x55555555555d",
+              "plain_jump_callee_slot": "0x5555555555555555",
+              "original_slot_relative_to_current_rsp": "0x60"
+            },
+            {
+              "argument_number": 9,
+              "input_marker": "0x55555555555c",
+              "original_slot_before_common_call": "0x55555555555c",
+              "plain_jump_callee_slot": "0x5555555555555555",
+              "original_slot_relative_to_current_rsp": "0x68"
+            }
+          ],
+          "dispatcher_stack_forwarding_proven": false,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x2984c3f",
+              "size": 8
+            }
+          ],
+          "instruction_count": 177,
+          "instruction_path_sha256": "2262b30fb69acd1f54f998b3127c01b4710294b442072173ce794ffc5c67cd76",
+          "seed": "0x5555555555555555",
+          "stopped_before_indirect_call": true
+        },
+        {
+          "instruction_rva": "0x2f720a9",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bc4fe0",
+          "rsp_delta": -32,
+          "argument_registers": {
+            "RCX": {
+              "input": "0xa8a8a8a8a8a8a8a8",
+              "before_common_call": "0xa8a8a8a8a8a8a8a8"
+            },
+            "RDX": {
+              "input": "0xa9a9a9a9a9a9a9a9",
+              "before_common_call": "0xa9a9a9a9a9a9a9a9"
+            },
+            "R8": {
+              "input": "0xadadadadadadadad",
+              "before_common_call": "0xadadadadadadadad"
+            },
+            "R9": {
+              "input": "0xa2a2a2a2a2a2a2a2",
+              "before_common_call": "0xa2a2a2a2a2a2a2a2"
+            }
+          },
+          "four_argument_registers_preserved": true,
+          "synthetic_caller_return": "0xbbbb88889999eeee",
+          "caller_stack_arguments": [
+            {
+              "argument_number": 5,
+              "input_marker": "0xffffaaaaaaaaaaaf",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaaf",
+              "plain_jump_callee_slot": "0xbbbb88889999eeee",
+              "original_slot_relative_to_current_rsp": "0x48"
+            },
+            {
+              "argument_number": 6,
+              "input_marker": "0xffffaaaaaaaaaaac",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaac",
+              "plain_jump_callee_slot": "0xaaaaaaaaaaaaaaaa",
+              "original_slot_relative_to_current_rsp": "0x50"
+            },
+            {
+              "argument_number": 7,
+              "input_marker": "0xffffaaaaaaaaaaad",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaad",
+              "plain_jump_callee_slot": "0xaaaaaaaaaaaaaaaa",
+              "original_slot_relative_to_current_rsp": "0x58"
+            },
+            {
+              "argument_number": 8,
+              "input_marker": "0xffffaaaaaaaaaaa2",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaa2",
+              "plain_jump_callee_slot": "0xaaaaaaaaaaaaaaaa",
+              "original_slot_relative_to_current_rsp": "0x60"
+            },
+            {
+              "argument_number": 9,
+              "input_marker": "0xffffaaaaaaaaaaa3",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaa3",
+              "plain_jump_callee_slot": "0xaaaaaaaaaaaaaaaa",
+              "original_slot_relative_to_current_rsp": "0x68"
+            }
+          ],
+          "dispatcher_stack_forwarding_proven": false,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x2984c3f",
+              "size": 8
+            }
+          ],
+          "instruction_count": 177,
+          "instruction_path_sha256": "2262b30fb69acd1f54f998b3127c01b4710294b442072173ce794ffc5c67cd76",
+          "seed": "0xaaaaaaaaaaaaaaaa",
+          "stopped_before_indirect_call": true
+        }
+      ],
+      "actual_native_call_observed": false
+    },
+    {
+      "candidate_label": "auth_network_candidate",
+      "entry_rva": "0x298568f",
+      "entry_value": "0xf8c350e96fae72df",
+      "derived_target": "0x7ffc40bcbc80",
+      "partywin_rva": "0x1bc80",
+      "matching_saved_export": "PartyNetworkAuthenticateLocalUser",
+      "runs": [
+        {
+          "instruction_rva": "0x2fda79d",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bcbc80",
+          "rsp_delta": -32,
+          "argument_registers": {
+            "RCX": {
+              "input": "0x202020202020202",
+              "before_common_call": "0x202020202020202"
+            },
+            "RDX": {
+              "input": "0x303030303030303",
+              "before_common_call": "0x303030303030303"
+            },
+            "R8": {
+              "input": "0x707070707070707",
+              "before_common_call": "0x707070707070707"
+            },
+            "R9": {
+              "input": "0x808080808080808",
+              "before_common_call": "0x808080808080808"
+            }
+          },
+          "four_argument_registers_preserved": true,
+          "synthetic_caller_return": "0x1111222233334444",
+          "caller_stack_arguments": [
+            {
+              "argument_number": 5,
+              "input_marker": "0x5555000000000005",
+              "original_slot_before_common_call": "0x5555000000000005",
+              "plain_jump_callee_slot": "0x1111222233334444",
+              "original_slot_relative_to_current_rsp": "0x48"
+            },
+            {
+              "argument_number": 6,
+              "input_marker": "0x5555000000000006",
+              "original_slot_before_common_call": "0x5555000000000006",
+              "plain_jump_callee_slot": "0x0",
+              "original_slot_relative_to_current_rsp": "0x50"
+            },
+            {
+              "argument_number": 7,
+              "input_marker": "0x5555000000000007",
+              "original_slot_before_common_call": "0x5555000000000007",
+              "plain_jump_callee_slot": "0x0",
+              "original_slot_relative_to_current_rsp": "0x58"
+            },
+            {
+              "argument_number": 8,
+              "input_marker": "0x5555000000000008",
+              "original_slot_before_common_call": "0x5555000000000008",
+              "plain_jump_callee_slot": "0x0",
+              "original_slot_relative_to_current_rsp": "0x60"
+            },
+            {
+              "argument_number": 9,
+              "input_marker": "0x5555000000000009",
+              "original_slot_before_common_call": "0x5555000000000009",
+              "plain_jump_callee_slot": "0x0",
+              "original_slot_relative_to_current_rsp": "0x68"
+            }
+          ],
+          "dispatcher_stack_forwarding_proven": false,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x298568f",
+              "size": 8
+            }
+          ],
+          "instruction_count": 154,
+          "instruction_path_sha256": "f454045c3156824c8b7542360bbb88bc7f1e86f4bab3e6df5d9904272ef6ca80",
+          "seed": "0x0",
+          "stopped_before_indirect_call": true
+        },
+        {
+          "instruction_rva": "0x2fda79d",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bcbc80",
+          "rsp_delta": -32,
+          "argument_registers": {
+            "RCX": {
+              "input": "0x5757575757575757",
+              "before_common_call": "0x5757575757575757"
+            },
+            "RDX": {
+              "input": "0x5656565656565656",
+              "before_common_call": "0x5656565656565656"
+            },
+            "R8": {
+              "input": "0x5252525252525252",
+              "before_common_call": "0x5252525252525252"
+            },
+            "R9": {
+              "input": "0x5d5d5d5d5d5d5d5d",
+              "before_common_call": "0x5d5d5d5d5d5d5d5d"
+            }
+          },
+          "four_argument_registers_preserved": true,
+          "synthetic_caller_return": "0x4444777766661111",
+          "caller_stack_arguments": [
+            {
+              "argument_number": 5,
+              "input_marker": "0x555555555550",
+              "original_slot_before_common_call": "0x555555555550",
+              "plain_jump_callee_slot": "0x4444777766661111",
+              "original_slot_relative_to_current_rsp": "0x48"
+            },
+            {
+              "argument_number": 6,
+              "input_marker": "0x555555555553",
+              "original_slot_before_common_call": "0x555555555553",
+              "plain_jump_callee_slot": "0x5555555555555555",
+              "original_slot_relative_to_current_rsp": "0x50"
+            },
+            {
+              "argument_number": 7,
+              "input_marker": "0x555555555552",
+              "original_slot_before_common_call": "0x555555555552",
+              "plain_jump_callee_slot": "0x5555555555555555",
+              "original_slot_relative_to_current_rsp": "0x58"
+            },
+            {
+              "argument_number": 8,
+              "input_marker": "0x55555555555d",
+              "original_slot_before_common_call": "0x55555555555d",
+              "plain_jump_callee_slot": "0x5555555555555555",
+              "original_slot_relative_to_current_rsp": "0x60"
+            },
+            {
+              "argument_number": 9,
+              "input_marker": "0x55555555555c",
+              "original_slot_before_common_call": "0x55555555555c",
+              "plain_jump_callee_slot": "0x5555555555555555",
+              "original_slot_relative_to_current_rsp": "0x68"
+            }
+          ],
+          "dispatcher_stack_forwarding_proven": false,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x298568f",
+              "size": 8
+            }
+          ],
+          "instruction_count": 154,
+          "instruction_path_sha256": "f454045c3156824c8b7542360bbb88bc7f1e86f4bab3e6df5d9904272ef6ca80",
+          "seed": "0x5555555555555555",
+          "stopped_before_indirect_call": true
+        },
+        {
+          "instruction_rva": "0x2fda79d",
+          "call_operand": "qword ptr [rbp + 0x2fcfec]",
+          "common_slot_rva": "0x2c75fec",
+          "derived_rax": "0x7ffc40bcbc80",
+          "rsp_delta": -32,
+          "argument_registers": {
+            "RCX": {
+              "input": "0xa8a8a8a8a8a8a8a8",
+              "before_common_call": "0xa8a8a8a8a8a8a8a8"
+            },
+            "RDX": {
+              "input": "0xa9a9a9a9a9a9a9a9",
+              "before_common_call": "0xa9a9a9a9a9a9a9a9"
+            },
+            "R8": {
+              "input": "0xadadadadadadadad",
+              "before_common_call": "0xadadadadadadadad"
+            },
+            "R9": {
+              "input": "0xa2a2a2a2a2a2a2a2",
+              "before_common_call": "0xa2a2a2a2a2a2a2a2"
+            }
+          },
+          "four_argument_registers_preserved": true,
+          "synthetic_caller_return": "0xbbbb88889999eeee",
+          "caller_stack_arguments": [
+            {
+              "argument_number": 5,
+              "input_marker": "0xffffaaaaaaaaaaaf",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaaf",
+              "plain_jump_callee_slot": "0xbbbb88889999eeee",
+              "original_slot_relative_to_current_rsp": "0x48"
+            },
+            {
+              "argument_number": 6,
+              "input_marker": "0xffffaaaaaaaaaaac",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaac",
+              "plain_jump_callee_slot": "0xaaaaaaaaaaaaaaaa",
+              "original_slot_relative_to_current_rsp": "0x50"
+            },
+            {
+              "argument_number": 7,
+              "input_marker": "0xffffaaaaaaaaaaad",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaad",
+              "plain_jump_callee_slot": "0xaaaaaaaaaaaaaaaa",
+              "original_slot_relative_to_current_rsp": "0x58"
+            },
+            {
+              "argument_number": 8,
+              "input_marker": "0xffffaaaaaaaaaaa2",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaa2",
+              "plain_jump_callee_slot": "0xaaaaaaaaaaaaaaaa",
+              "original_slot_relative_to_current_rsp": "0x60"
+            },
+            {
+              "argument_number": 9,
+              "input_marker": "0xffffaaaaaaaaaaa3",
+              "original_slot_before_common_call": "0xffffaaaaaaaaaaa3",
+              "plain_jump_callee_slot": "0xaaaaaaaaaaaaaaaa",
+              "original_slot_relative_to_current_rsp": "0x68"
+            }
+          ],
+          "dispatcher_stack_forwarding_proven": false,
+          "nonstack_data_reads": [
+            {
+              "rva": "0x298568f",
+              "size": 8
+            }
+          ],
+          "instruction_count": 154,
+          "instruction_path_sha256": "f454045c3156824c8b7542360bbb88bc7f1e86f4bab3e6df5d9904272ef6ca80",
+          "seed": "0xaaaaaaaaaaaaaaaa",
+          "stopped_before_indirect_call": true
+        }
+      ],
+      "actual_native_call_observed": false
+    }
+  ],
+  "common_jump": {
+    "entry_rva": "0x2c7a94d",
+    "destination_rva": "0x2efaf2d",
+    "same_first_jump_in_historical_window": "create_network_candidate_d0.bin",
+    "destination_in_recovered_12_windows": [],
+    "jump_followed": false,
+    "destination_bytes_available_in_this_analysis": false
+  },
+  "unnamed_rvas": [
+    "0x19880",
+    "0x1be80"
+  ],
+  "native_game_calls": false,
+  "new_game_reads": 0,
+  "provider_binding_proven": false,
+  "runtime_verified": false,
+  "multiplayer_verified": false
+}

@@ -5,6 +5,8 @@
 
 namespace ep_official_session_getter {
 constexpr uintptr_t kGetterRva = 0x34fdf0;
+// live_c_api_table_prefixes_20261003.json identifies this wrapper in the EXE,
+// independently of the game.dll caller. Never apply this RVA to game.dll.
 constexpr uintptr_t kGetterSlot = sizeof(uintptr_t);
 constexpr std::array<uint8_t, 15> kGetterBytes{
     0x48, 0x8b, 0x05, 0x81, 0x04, 0x6c, 0x01,
@@ -25,40 +27,51 @@ bool at(Read& read, uintptr_t base, uintptr_t offset, T& out) {
         read(base + offset, &out, sizeof(T));
 }
 
+template<class Read>
+bool image_matches(Read& read, uintptr_t image, uint32_t expected_timestamp,
+                   uint32_t expected_size) {
+    uint16_t mz{}, machine{}, magic{};
+    uint32_t pe_offset{}, signature{}, timestamp{}, image_size{};
+    return at(read, image, 0, mz) && mz == 0x5a4d &&
+        at(read, image, 0x3c, pe_offset) && pe_offset <= 0x1000 &&
+        at(read, image, pe_offset, signature) && signature == 0x4550 &&
+        at(read, image, pe_offset + 4, machine) && machine == 0x8664 &&
+        at(read, image, pe_offset + 8, timestamp) && timestamp == expected_timestamp &&
+        at(read, image, pe_offset + 24, magic) && magic == 0x20b &&
+        at(read, image, pe_offset + 24 + 56, image_size) && image_size == expected_size;
+}
+
 // No engine function is called here. The supplied reader must copy exactly
 // the requested bytes, never dereference an untrusted pointer directly.
 template<class Read, class Executable>
 Result inspect(const ep_official_peer_reader::BuildIdentity& build,
-               uintptr_t image, uintptr_t c_api, Read read, Executable executable) {
+               uintptr_t game_image, uintptr_t executable_image,
+               uintptr_t c_api, Read read, Executable executable) {
     Result out{};
     if (!build.matches_pinned()) { out.status = "build_identity_mismatch"; return out; }
-    if (!image || image > UINTPTR_MAX - build.game_image_size ||
-        kGetterRva + kGetterBytes.size() > build.game_image_size) {
-        out.status = "invalid_game_image"; return out;
+    if (!game_image || game_image > UINTPTR_MAX - build.game_image_size ||
+        !executable_image || executable_image > UINTPTR_MAX - build.exe_image_size ||
+        kGetterRva + kGetterBytes.size() > build.exe_image_size) {
+        out.status = "invalid_module_image"; return out;
     }
-    uint16_t mz{}, machine{}, magic{};
-    uint32_t pe_offset{}, signature{}, timestamp{}, image_size{};
-    if (!at(read, image, 0, mz) || mz != 0x5a4d ||
-        !at(read, image, 0x3c, pe_offset) || pe_offset > 0x1000 ||
-        !at(read, image, pe_offset, signature) || signature != 0x4550 ||
-        !at(read, image, pe_offset + 4, machine) || machine != 0x8664 ||
-        !at(read, image, pe_offset + 8, timestamp) || timestamp != build.game_timestamp ||
-        !at(read, image, pe_offset + 24, magic) || magic != 0x20b ||
-        !at(read, image, pe_offset + 24 + 56, image_size) || image_size != build.game_image_size) {
+    if (!image_matches(read, game_image, build.game_timestamp, build.game_image_size)) {
         out.status = "unread_or_unknown_game_image"; return out;
+    }
+    if (!image_matches(read, executable_image, build.exe_timestamp, build.exe_image_size)) {
+        out.status = "unread_or_unknown_executable_image"; return out;
     }
     std::array<uintptr_t, 9> prefix{}, repeat{};
     if (!at(read, c_api, 0, prefix) || !prefix[7] || !prefix[8]) {
         out.status = "unread_or_missing_c_api_tables"; return out;
     }
-    uintptr_t function{}, repeat_function{}, session_prefix{};
+    uintptr_t function{}, repeat_function{}, session_prefix{}, repeat_session_prefix{};
     if (!at(read, prefix[7], kGetterSlot, function) ||
         !at(read, prefix[8], 0, session_prefix)) {
         out.status = "unread_api_table"; return out;
     }
     // Bytes alone are insufficient: an arbitrary function or copied wrapper
-    // outside the pinned game.dll RVA must never be invoked.
-    if (function != image + kGetterRva) {
+    // outside the pinned EXE RVA must never be accepted, even in game.dll.
+    if (function != executable_image + kGetterRva) {
         out.status = "unknown_getter_address"; return out;
     }
     std::array<uint8_t, kGetterBytes.size()> bytes{};
@@ -66,8 +79,11 @@ Result inspect(const ep_official_peer_reader::BuildIdentity& build,
         !executable(function, bytes.size())) {
         out.status = "unread_or_unknown_getter_code"; return out;
     }
+    std::array<uint8_t, kGetterBytes.size()> repeat_bytes{};
     if (!at(read, c_api, 0, repeat) || repeat != prefix ||
-        !at(read, prefix[7], kGetterSlot, repeat_function) || repeat_function != function) {
+        !at(read, prefix[7], kGetterSlot, repeat_function) || repeat_function != function ||
+        !at(read, prefix[8], 0, repeat_session_prefix) || repeat_session_prefix != session_prefix ||
+        !at(read, function, 0, repeat_bytes) || repeat_bytes != bytes) {
         out.status = "unstable_api_tables"; return out;
     }
     out.network = prefix[7];

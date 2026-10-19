@@ -1,0 +1,86 @@
+{
+  "schema": "hd2_real_multiplayer_session_observation_v1",
+  "build": 25480438,
+  "source_snapshot": "output\\native_dispatch_20261010\\live_monitor_20261111b\\live_session_snapshot_20261011_monitor_001.json",
+  "source_snapshot_sha256": "7b23abb05e56425cafe38ffff0643362c6b8e93cde117e438093f081f0c755e8",
+  "captured_at_utc": "2026-10-11T10:11:51.509748+00:00",
+  "read_only": true,
+  "calls_made": false,
+  "writes_made": false,
+  "hooks_installed": false,
+  "observed": {
+    "mode": 4,
+    "peer_count_raw": 4,
+    "session_owner": "0x2563b830080",
+    "local_peer_hex": "f869ad7b51e7da3f",
+    "host_peer_hex": "f869ad7b51e7da3f",
+    "host_equals_local": true,
+    "peer_records": [
+      {
+        "ordinal": 0,
+        "lo": 2074962424,
+        "hi": 1071310673,
+        "network_index": 0
+      },
+      {
+        "ordinal": 1,
+        "lo": 2588255867,
+        "hi": 133852666,
+        "network_index": 1
+      },
+      {
+        "ordinal": 2,
+        "lo": 3120311323,
+        "hi": 4616986,
+        "network_index": 3
+      },
+      {
+        "ordinal": 3,
+        "lo": 921194960,
+        "hi": 3686609540,
+        "network_index": 2
+      }
+    ],
+    "documented_roster_slot_count": 4,
+    "nonzero_roster_slots": 4,
+    "roster_records": [
+      {
+        "ordinal": 0,
+        "peer_id_hex": "f869ad7b51e7da3f",
+        "name": "男可可蘿"
+      },
+      {
+        "ordinal": 1,
+        "peer_id_hex": "7ba6459afa6dfa07",
+        "name": "Kettenoeljunkie"
+      },
+      {
+        "ordinal": 2,
+        "peer_id_hex": "1b2cfcb91a734600",
+        "name": "ATTACK"
+      },
+      {
+        "ordinal": 3,
+        "peer_id_hex": "d051e8368432bddb",
+        "name": "\"Tech_Supp.\""
+      }
+    ]
+  },
+  "gates": {
+    "real_session_observed": true,
+    "host_with_at_least_one_other_peer_observed": true,
+    "peer_count_stable_across_two_reads": false,
+    "join_leave_slot_release_verified": false,
+    "host_migration_verified": false,
+    "cleanup_verified": false,
+    "eight_peer_capacity_verified": false,
+    "five_to_eight_independent_clients_verified": false,
+    "public_release_ready": false
+  },
+  "current_followup_process": {
+    "snapshot": "output\\native_dispatch_20261010\\live_session_snapshot_20261011_r15_start.json",
+    "snapshot_sha256": "2061804909314a694c8cf6f056e3a80062688f7887213d2c139b1408a9214dde",
+    "status": "observed_context",
+    "peer_count_raw": 1
+  }
+}

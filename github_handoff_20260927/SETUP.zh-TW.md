@@ -1,8 +1,8 @@
-# 快照交接、環境與來源
+# 環境重建、離線驗證與來源 — 2026-10-19
 
 ## 目前交付範圍
 
-本倉庫保存研究與必要依賴。2026-09-28已恢復離線工作並收尾 `0.14.0-offline`；6054F0審查、文件與交付收據已更新。原快照清單與上傳收據仍對應2026-09-27資料提交；比對目前工作區出現後續研發差異是預期結果，若要核原快照應使用其指定提交。現有歷史版本、絕對路徑及報告保留原文。
+本倉庫保存研究與必要依賴，最新狀態見 [CURRENT](CURRENT.zh-TW.md)。快照清單與最新上傳收據對應本次整理的資料提交；原 2026-09-27 收據保存在 `archive/UPLOAD_STATUS_20260927.json`，可使用其中的提交編號核對舊快照。歷史版本、絕對路徑及報告保留原文，並不要求在原機器路徑上重播。
 
 `research_handoff_20260927` 也保存較早 projectile 等研究的來源沿革。該歷史內容可能引用其他工作目錄；本次可重建範圍是目前八人研究及其已核對的必要依賴。其他 Mod、遊戲安裝、語音包及 FileDiver 完整建置環境不包含於本倉庫。
 
@@ -21,7 +21,52 @@ py -3.12 -B github_handoff_20260927/verify_snapshot.py
 
 上傳收據與 `STATE.json` 的上傳欄位是在資料提交成功後另行提交的行政更新。它們不會改寫資料提交或其快照清單；資料提交內原本的 `workspace_uploaded: false` 記錄的是推送前狀態。目前上傳結果以最新 `HEAD` 的收據與狀態為準。
 
-## 重建離線 Python 依賴
+## 最新接手的最小離線驗證
+
+以下在倉庫根目錄執行。建立專用 Python 3.12 環境，避免把原生重播依賴裝入其他專案；此節不需要遊戲啟動或遊戲安裝檔。
+
+```powershell
+py -3.12 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r github_handoff_20260927/requirements-handoff.txt
+$handoffRunDir = Join-Path 'work' ('handoff-' + [guid]::NewGuid().ToString('N'))
+New-Item -ItemType Directory -Path $handoffRunDir | Out-Null
+.\.venv\Scripts\python.exe -B -m pytest -q -p no:cacheprovider `
+  five_player_feasibility_20260927/tools/test_party_manager_binding.py `
+  five_player_feasibility_20260927/tools/test_capture_live_party_slots.py `
+  five_player_feasibility_20260927/tools/test_party_dispatcher_supplement.py `
+  --basetemp (Join-Path $handoffRunDir 'pytest') `
+  --junitxml (Join-Path $handoffRunDir 'sampler-tests.xml')
+if ($LASTEXITCODE -ne 0) { throw 'Offline sampler checks failed' }
+.\.venv\Scripts\python.exe -B five_player_feasibility_20260927/tools/capture_party_dispatcher_supplement_20261016.py `
+  --plan --output (Join-Path $handoffRunDir 'supplement-plan.json')
+if ($LASTEXITCODE -ne 0) { throw 'Offline plan failed' }
+.\.venv\Scripts\python.exe -B five_player_feasibility_20260927/tools/decode_captured_party_entries_20261016.py `
+  --output (Join-Path $handoffRunDir 'entry-call-boundary.json')
+if ($LASTEXITCODE -ne 0) { throw 'Offline replay failed' }
+```
+
+三個測試檔使用假讀取器及工作區證據，預期合計 63 項通過。計畫輸出應為 16 筆請求、33,018 bytes、65,536 bytes 硬上限，且 `process_accessed=false`。入口重播應得到六個固定 PartyWin RVA，其中 `0x19880`、`0x1BE80` 仍未命名，`new_game_reads=0`。這些結果不證明實機 ABI 或多人功能。新輸出使用新目錄，不覆寫保存證據。
+
+工具會優先搜尋既有 `.native-test-deps`；新 clone 沒有該目錄時，使用虛擬環境中的固定依賴即可。保存的歷史 pytest／Unicorn 日誌含 Windows access-violation 診斷；接手時應保留實際 stderr 和退出碼，不能只看 passed 數量。
+
+檢查既有 v0.14 離線交付內容，可另執行：
+
+```powershell
+.\.venv\Scripts\python.exe -B eight_player_candidate_20260927/verify_v014_delivery.py
+```
+
+此驗證核對來源指紋、固定報告、文件連結及離線 CLI bundle，不連接遊戲。不要為消除不符而直接使用 `--write`；先查明來源與收據差異。本次實際結果見 [VALIDATION_20261019.json](VALIDATION_20261019.json)。
+
+## 原生候選的建置入口
+
+原生部分使用 Windows x64、MSVC C++20 與 Windows SDK。現有 `Native/*/build_x64.bat` 多數固定呼叫 `C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\Common7\Tools\VsDevCmd.bat`；新機器若安裝位置不同，先調整該路徑，再在獨立 clone 建置。這是現有可移植性限制，本次沒有重建所有 native 產物。
+
+- 整合入口：`eight_player_candidate_20260927/Native/OfficialPlugin/build_x64.bat`。
+- 個別元件：`Native/Bridge/`、`Native/ClientReplication/`、`Native/PlayerResource/`、`Native/PlayerCreationGate/` 內的建置腳本與 README。
+- 腳本會編譯並執行各自的合成測試，部分工具會更新 receipt。保留原快照後再建置，按實際結果更新指紋。
+- 建置完成的 DLL／EXE 是研究候選與測試工具；安裝至遊戲與實機載入仍是另行授權和驗收的步驟。
+
+## 歷史工具的原路徑依賴配置
 
 原工作環境為 Python 3.12.10。依賴版本已由需求檔固定，可從倉庫根目錄重建到既有程式使用的位置：
 
@@ -60,7 +105,7 @@ try {
 
 此 replay 只接受 `--evidence`、`--output`，且輸出父目錄必須先存在。它讀取已保存的 code/readonly bytes，不建立遊戲程序連線。若使用共用 `inspect_capture.py --function`，輸出僅涵蓋該 unwind fragment；完整 6054F0 body 應明確使用 `--dump 0x6054F0 0x457`。
 
-多份測試腳本直接執行時會重寫 `verification` 報告。僅驗證既有 arrival 測試而保留原收據，可在恢復研究後使用 `py -3.12 -B -m unittest discover -s eight_player_candidate_20260927/tests -p test_native_roster_arrival.py -v`。本次上傳驗收只核對檔案與 Git 物件，未重新執行研究套件。
+多份測試腳本直接執行時會重寫 `verification` 報告。僅驗證既有 arrival 測試而保留原收據，可在恢復研究後使用 `py -3.12 -B -m unittest discover -s eight_player_candidate_20260927/tests -p test_native_roster_arrival.py -v`。本次交接只重跑上列限定離線檢查，未重新執行完整研究套件或全部 native build。
 
 ## 外部來源子集
 

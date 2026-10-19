@@ -31,16 +31,18 @@
     "release_generation": "passed to release_index; failed release pins slot and owner lease",
     "allocator_failure_cleanup": "generation-zero allocator-only retry record preserves authoritative index and owner lease when release_index fails before sidecar reservation",
     "allocator_error_index_passthrough": "non-FF allocator error result enters generation-zero release/retry",
-    "reserved_index_collision": "0xFF no-reservation sentinel prevents release of existing reservation"
+    "reserved_index_collision": "0xFF no-reservation sentinel prevents release of existing reservation",
+    "fixed_index_admission": "ep_bridge_admit_at rejects a returned index different from the caller index before sidecar reservation, native confirm/create or replication event",
+    "fixed_index_release_retry": "release_index failure after fixed-index rejection is retained as generation-zero cleanup for ep_bridge_retry_cleanup"
   },
   "artifacts": [
     {
       "path": "ep_native_bridge.h",
-      "sha256": "242cec6a685068ee0818df190f53697642e99b86bcacc91f35dd9a333df0dd71"
+      "sha256": "63c43f44d594abcf541debae32ab908bdd0e790178ba11fd8f18845fe9662691"
     },
     {
       "path": "ep_native_bridge.cpp",
-      "sha256": "a67a1cc4e25cde794803a97f3af6bb178223de3950a2146e897720b0449c0ce4"
+      "sha256": "b6cdadbebf1fa5448001b28a2aa645483c8c33301c1927a2a580d9f04744301d"
     },
     {
       "path": "ep_native_bridge_test.cpp",
@@ -52,7 +54,7 @@
     },
     {
       "path": "README.zh-TW.md",
-      "sha256": "8deaae22922369dc1c437be17c9a535393e29c5206299c8234f4fea21eddf24e"
+      "sha256": "052e8a9dc306cc3dd8141ad21c90427c145a894d41e41791820bc23f2ba5bf0a"
     },
     {
       "path": "test_native_bridge.py",
@@ -60,27 +62,27 @@
     },
     {
       "path": "ep_native_bridge.dll",
-      "sha256": "e5c4a72580a7a44bf2149eb1f3ef2125658c72da9210cd73f0075328d87f506e"
+      "sha256": "3a40544070e817f8e6e27599328a43bbc37f05bbb191541879ca2870c6a815a4"
     },
     {
       "path": "ep_native_bridge_test.exe",
-      "sha256": "8e9f48f639d531d68b6d3118cf5b57bd1ae8acc62926ace69db24aece4685a9c"
+      "sha256": "46d61d5be37d7757ffc94409cdd83c065e26a271fd9b68af0cf8fbbbf6301695"
     },
     {
       "path": "ep_native_bridge.lib",
-      "sha256": "a5435f865d99acf185169784766a9d6ca6627826fb10a61908afa1568cd2ed77"
+      "sha256": "9e448402feb642a5775a73eab362e035d4f3351ff8b2eae88649d91dac1c1878"
     },
     {
       "path": "ep_native_bridge.exp",
-      "sha256": "88dee00d722916f2fccce89bfac3fd426d7b5001ccb7e89f758ecc6f05aadf90"
+      "sha256": "265b27cb77dc3b7476cb04c2fb375cea16f79e2fcc45ed064753e573dee621c9"
     },
     {
       "path": "ep_native_bridge.obj",
-      "sha256": "df9656ada2910f3ef857af66e91790529697f53e5a77328f246c71c306c4fa3f"
+      "sha256": "4a7453ee7483c6339f5b0d3a91a84fff1a97f5b02535f69f1419e16548ab264e"
     },
     {
       "path": "ep_native_bridge_test.obj",
-      "sha256": "dfd50b729304a953d46d312f1ce9cfbdce20f4960fa77e054c86f709e9a1c9c0"
+      "sha256": "82b4f53f405bdaa596de033950538dc544941a74122ce6562b4b7835846f79fb"
     },
     {
       "path": "ep_bridge_client_integration_test.cpp",
@@ -88,7 +90,7 @@
     },
     {
       "path": "ep_bridge_client_integration_test.exe",
-      "sha256": "af3b8d4377b21085b8b297d4dd906710617b470c81801dc1f5728f286406eabc"
+      "sha256": "1ef62b4ab61ee2a3523ab44604589682e31106ef017e91c9ef9764f9ddc4bb8b"
     }
   ],
   "production": {

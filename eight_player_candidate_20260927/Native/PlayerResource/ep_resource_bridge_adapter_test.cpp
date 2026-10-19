@@ -1,6 +1,7 @@
 #include "ep_resource_bridge_adapter.h"
 
 #include <cstdio>
+#include <stdexcept>
 
 struct Harness {
     bool fail_confirm = false;
@@ -8,6 +9,7 @@ struct Harness {
     bool fail_remove = false;
     bool fail_release_index = false;
     bool fail_stage[3]{};
+    bool throw_stage[3]{};
     bool allocated[EP_RESOURCE_CAPACITY]{};
     UINT32 metadata_calls = 0;
     UINT32 stage_calls[3]{};
@@ -83,18 +85,21 @@ static EP_RESOURCE_STATUS __cdecl stage_first(
     void* raw, UINT64, UINT64, UINT8, EP_RESOURCE_TOKEN) {
     auto& h = *static_cast<Harness*>(raw);
     ++h.stage_calls[0];
+    if (h.throw_stage[0]) throw std::runtime_error("stage first failed");
     return h.fail_stage[0] ? EP_RS_CALLBACK_FAILED : EP_RS_OK;
 }
 static EP_RESOURCE_STATUS __cdecl stage_second(
     void* raw, UINT64, UINT64, UINT8, EP_RESOURCE_TOKEN) {
     auto& h = *static_cast<Harness*>(raw);
     ++h.stage_calls[1];
+    if (h.throw_stage[1]) throw std::runtime_error("stage second failed");
     return h.fail_stage[1] ? EP_RS_CALLBACK_FAILED : EP_RS_OK;
 }
 static EP_RESOURCE_STATUS __cdecl stage_third(
     void* raw, UINT64, UINT64, UINT8, EP_RESOURCE_TOKEN) {
     auto& h = *static_cast<Harness*>(raw);
     ++h.stage_calls[2];
+    if (h.throw_stage[2]) throw std::runtime_error("stage third failed");
     return h.fail_stage[2] ? EP_RS_CALLBACK_FAILED : EP_RS_OK;
 }
 
@@ -161,8 +166,20 @@ int main() {
                 reconnect.token.generation != admissions[4].token.generation,
                 "reconnect generation and index");
 
+    // A throwing stage callback must release its lease and leave the resource
+    // available for a later admission rather than wedging cleanup.
     ok &= check(ep_bridge_depart(&bridge, admissions[3]) == EP_BRIDGE_OK,
-                "free failure-test index");
+                "free exception-test index");
+    h.throw_stage[2] = true;
+    EP_BRIDGE_ADMISSION thrown{};
+    ok &= check(ep_bridge_admit(&bridge, 903, 1903, &thrown) == EP_BRIDGE_CALLBACK_REJECTED,
+                "throwing stage rejects admission");
+    h.throw_stage[2] = false;
+    EP_RESOURCE_RECORD thrown_record{};
+    ok &= check(ep_resource_get(&adapter.resource, 3, &thrown_record) == EP_RS_OK &&
+                thrown_record.state == EP_RS_FREE && thrown_record.inflight == 0,
+                "throwing stage releases resource lease");
+
     h.fail_stage[1] = true;
     EP_BRIDGE_ADMISSION failed{};
     ok &= check(ep_bridge_admit(&bridge, 900, 1900, &failed) == EP_BRIDGE_CALLBACK_REJECTED,

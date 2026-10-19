@@ -119,6 +119,13 @@ __declspec(dllexport) EP_BRIDGE_STATUS __cdecl ep_bridge_preflight(
 __declspec(dllexport) EP_BRIDGE_STATUS __cdecl ep_bridge_admit(
     EP_NATIVE_BRIDGE* bridge, UINT64 peer_id, UINT64 resource_handle,
     EP_BRIDGE_ADMISSION* out_admission);
+// The allocator still owns index selection. Reject a different returned index
+// before reserving a sidecar slot or calling confirm/create. A failed index
+// release returns a generation-zero admission for ep_bridge_retry_cleanup.
+// expected_index=0xFF is invalid here (it is only an internal unconstrained sentinel).
+__declspec(dllexport) EP_BRIDGE_STATUS __cdecl ep_bridge_admit_at(
+    EP_NATIVE_BRIDGE* bridge, UINT64 peer_id, UINT64 resource_handle,
+    UINT8 expected_index, EP_BRIDGE_ADMISSION* out_admission);
 __declspec(dllexport) EP_BRIDGE_STATUS __cdecl ep_bridge_depart(
     EP_NATIVE_BRIDGE* bridge, EP_BRIDGE_ADMISSION admission);
 __declspec(dllexport) EP_BRIDGE_STATUS __cdecl ep_bridge_reconnect(

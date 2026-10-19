@@ -8,7 +8,7 @@
 local M = {}
 
 local MAX_DIAGNOSTICS = 256
-local MAX_GENERATION = 9007199254740991
+local MAX_GENERATION = 4294967295
 local PRESETS = {4, 5, 8, 12, 16}
 local PRESET_NAMES = {
     [4] = "Original: 4",
@@ -22,7 +22,7 @@ local SPEC = {
     schema_version = 1,
     build = 25480438,
     exe_sha256 = "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
-    game_dll_sha256 = "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cdd0d1813c718f51e",
+    game_dll_sha256 = "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
     max_verified_players = 4,
     hard_storage_limit = 16,
 }
@@ -105,7 +105,8 @@ end
 
 function M.validate_capacity_fields(fields)
     if type(fields) ~= "table" then return reject("capacity_fields_not_table") end
-    local verified = fields.verified_capacity or SPEC.max_verified_players
+    local verified = fields.verified_capacity
+    if verified == nil then verified = SPEC.max_verified_players end
     if not integer(verified, 1, SPEC.hard_storage_limit) then
         return reject("verified_capacity_invalid")
     end
@@ -122,7 +123,8 @@ function M.validate_capacity_fields(fields)
         verified_capacity = verified,
     })
     if not effective then return reject("component_capacity_invalid", {field = missing}) end
-    local joined_players = fields.joined_players or 0
+    local joined_players = fields.joined_players
+    if joined_players == nil then joined_players = 0 end
     if not integer(joined_players, 0, SPEC.hard_storage_limit) then
         return reject("joined_players_invalid")
     end
@@ -144,6 +146,14 @@ local function state_shape(state)
     if not integer(state.joined_players, 0, SPEC.hard_storage_limit) then
         return reject("joined_players_invalid")
     end
+    if type(state.allow_join_in_progress) ~= "boolean" or
+        type(state.require_same_mod_version) ~= "boolean" then
+        return reject("configuration_flags_invalid")
+    end
+    if state.apply_mode ~= "next_lobby" and state.apply_mode ~= "next_mission" and
+        state.apply_mode ~= "restart_required" then
+        return reject("apply_mode_invalid")
+    end
     return M.validate_capacity_fields(state)
 end
 
@@ -152,30 +162,34 @@ function M.new_state(options)
     local profile = options.profile or SPEC
     local profile_result = M.validate_profile(profile)
     if not profile_result.accepted then return nil, profile_result end
-    local verified = options.verified_capacity or SPEC.max_verified_players
+    local verified = options.verified_capacity
+    if verified == nil then verified = SPEC.max_verified_players end
     if not integer(verified, 1, SPEC.hard_storage_limit) then return nil, reject("verified_capacity_invalid") end
-    local configured = options.configured_max_players or math.min(4, verified)
+    local configured = options.configured_max_players
+    if configured == nil then configured = math.min(4, verified) end
     local fields = {
         configured_max_players = configured,
-        peer_capacity = options.peer_capacity or verified,
-        roster_capacity = options.roster_capacity or verified,
-        entity_capacity = options.entity_capacity or verified,
-        resource_capacity = options.resource_capacity or verified,
-        network_capacity = options.network_capacity or verified,
+        peer_capacity = options.peer_capacity == nil and verified or options.peer_capacity,
+        roster_capacity = options.roster_capacity == nil and verified or options.roster_capacity,
+        entity_capacity = options.entity_capacity == nil and verified or options.entity_capacity,
+        resource_capacity = options.resource_capacity == nil and verified or options.resource_capacity,
+        network_capacity = options.network_capacity == nil and verified or options.network_capacity,
         verified_capacity = verified,
-        joined_players = options.joined_players or 0,
+        joined_players = options.joined_players == nil and 0 or options.joined_players,
     }
     local valid = M.validate_capacity_fields(fields)
     if not valid.accepted then return nil, valid end
     local state = copy(fields)
     state.profile = copy(SPEC)
     state.generation = 0
-    state.authority = options.authority or "host"
+    state.authority = options.authority == nil and "host" or options.authority
     state.mission_active = options.mission_active == true
     state.quiescent = options.quiescent ~= false
-    state.allow_join_in_progress = options.allow_join_in_progress ~= false
-    state.require_same_mod_version = options.require_same_mod_version ~= false
-    state.apply_mode = options.apply_mode or "next_lobby"
+    state.allow_join_in_progress = options.allow_join_in_progress == nil and true or options.allow_join_in_progress
+    state.require_same_mod_version = options.require_same_mod_version == nil and true or options.require_same_mod_version
+    state.apply_mode = options.apply_mode == nil and "next_lobby" or options.apply_mode
+    local shaped = state_shape(state)
+    if not shaped.accepted then return nil, shaped end
     state.pending = nil
     state.diagnostics = {}
     return state, accept("state_created", {effective_max_players = valid.effective_max_players})
@@ -205,6 +219,16 @@ function M.stage(state, request)
     if not integer(configured, 1, state.verified_capacity) then
         M.record(state, "menu", "stage", "rejected", "configured_capacity_invalid")
         return reject("configured_capacity_invalid", {maximum = state.verified_capacity})
+    end
+    if request.allow_join_in_progress ~= nil and type(request.allow_join_in_progress) ~= "boolean" then
+        return reject("configuration_flags_invalid", {field = "allow_join_in_progress"})
+    end
+    if request.require_same_mod_version ~= nil and type(request.require_same_mod_version) ~= "boolean" then
+        return reject("configuration_flags_invalid", {field = "require_same_mod_version"})
+    end
+    if request.apply_mode ~= nil and request.apply_mode ~= "next_lobby" and
+        request.apply_mode ~= "next_mission" and request.apply_mode ~= "restart_required" then
+        return reject("apply_mode_invalid")
     end
     local pending = copy(state)
     pending.pending = nil
@@ -237,23 +261,59 @@ function M.apply(state, reservation)
     if state.authority ~= "host" then return reject("host_authority_required") end
     if state.pending == nil then return accept("no_pending_change", {effective_max_players = valid.effective_max_players}) end
     local pending = state.pending
-    if state.mission_active and pending.configured_max_players > state.configured_max_players then
+    if type(pending) ~= "table" then
+        state.pending = nil
+        return reject("pending_state_invalid")
+    end
+    if pending.generation ~= state.generation then
+        state.pending = nil
+        M.record(state, "capacity", "apply", "rejected", "stale_generation")
+        return reject("stale_generation")
+    end
+    local candidate = copy(state)
+    candidate.pending = nil
+    candidate.configured_max_players = pending.configured_max_players
+    candidate.allow_join_in_progress = pending.allow_join_in_progress
+    candidate.require_same_mod_version = pending.require_same_mod_version
+    candidate.apply_mode = pending.apply_mode
+    local candidate_valid = state_shape(candidate)
+    if not candidate_valid.accepted then
+        state.pending = nil
+        M.record(state, "capacity", "apply", "rejected", candidate_valid.reason)
+        return candidate_valid
+    end
+    if state.mission_active and candidate.configured_max_players < state.configured_max_players then
+        state.pending = nil
+        M.record(state, "capacity", "apply", "rejected", "mission_capacity_cannot_decrease")
+        return reject("mission_capacity_cannot_decrease")
+    end
+    if state.mission_active and candidate.configured_max_players > state.configured_max_players
+        and (candidate.apply_mode ~= "next_mission" or not state.quiescent) then
+        state.pending = nil
+        M.record(state, "capacity", "apply", "rejected", "live_increase_requires_quiescence")
+        return reject("live_increase_requires_quiescence")
+    end
+    if state.mission_active and candidate.configured_max_players > state.configured_max_players then
         if type(reservation) ~= "table" or reservation.ready ~= true or reservation.quiescent ~= true then
             M.record(state, "capacity", "apply", "rejected", "reservation_not_ready")
             return reject("reservation_not_ready")
         end
     end
-    local capacity = M.validate_capacity_fields(pending)
+    local capacity = M.validate_capacity_fields(candidate)
     if not capacity.accepted then
         state.pending = nil
         M.record(state, "capacity", "apply", "rejected", capacity.reason)
         return capacity
     end
     local generation = state.generation + 1
-    if generation > MAX_GENERATION then return reject("generation_exhausted") end
-    for key, value in pairs(pending) do
-        if key ~= "pending" and key ~= "diagnostics" and key ~= "generation" then state[key] = copy(value) end
+    if state.generation >= MAX_GENERATION then
+        state.pending = nil
+        return reject("generation_exhausted")
     end
+    state.configured_max_players = candidate.configured_max_players
+    state.allow_join_in_progress = candidate.allow_join_in_progress
+    state.require_same_mod_version = candidate.require_same_mod_version
+    state.apply_mode = candidate.apply_mode
     state.generation = generation
     state.pending = nil
     M.record(state, "capacity", "apply", "accepted", "applied", {
@@ -278,23 +338,83 @@ function M.metadata(state, mod_version, fingerprints)
         entity_capacity = state.entity_capacity,
         resource_capacity = state.resource_capacity,
         network_capacity = state.network_capacity,
+        verified_capacity = state.verified_capacity,
         allow_join_in_progress = state.allow_join_in_progress,
         require_same_mod_version = state.require_same_mod_version,
+        apply_mode = state.apply_mode,
         generation = state.generation,
     }, accept("metadata_ready")
+end
+
+local function equal_value(left, right, seen)
+    if type(left) ~= type(right) then return false end
+    if type(left) ~= "table" then return left == right end
+    seen = seen or {}
+    seen[left] = seen[left] or {}
+    if seen[left][right] then return true end
+    seen[left][right] = true
+    for key, value in pairs(left) do
+        if not equal_value(value, right[key], seen) then return false end
+    end
+    for key, value in pairs(right) do
+        if not equal_value(value, left[key], seen) then return false end
+    end
+    return true
 end
 
 function M.validate_metadata(local_metadata, remote_metadata)
     if type(local_metadata) ~= "table" or type(remote_metadata) ~= "table" then
         return reject("metadata_not_table")
     end
-    for _, key in ipairs({"schema_version", "build", "mod_version", "configured_max_players", "effective_max_players"}) do
+    if type(local_metadata.fingerprints) ~= "table" or
+        type(remote_metadata.fingerprints) ~= "table" then
+        return reject("metadata_missing", {field = "fingerprints"})
+    end
+    if not equal_value(local_metadata.fingerprints, remote_metadata.fingerprints) then
+        return reject("metadata_mismatch", {field = "fingerprints"})
+    end
+    local keys = {
+        "schema_version", "build", "configured_max_players", "effective_max_players",
+        "peer_capacity", "roster_capacity", "entity_capacity", "resource_capacity",
+        "network_capacity", "verified_capacity", "allow_join_in_progress",
+        "require_same_mod_version", "apply_mode", "generation",
+    }
+    for _, key in ipairs(keys) do
+        if local_metadata[key] == nil or remote_metadata[key] == nil then
+            return reject("metadata_missing", {field = key})
+        end
         if local_metadata[key] ~= remote_metadata[key] then return reject("metadata_mismatch", {field = key}) end
     end
-    if local_metadata.require_same_mod_version and local_metadata.mod_version ~= remote_metadata.mod_version then
+    if local_metadata.require_same_mod_version and
+        (type(local_metadata.mod_version) ~= "string" or
+         local_metadata.mod_version ~= remote_metadata.mod_version) then
         return reject("mod_version_mismatch")
     end
-    if local_metadata.effective_max_players < 1 then return reject("effective_capacity_invalid") end
+    local function fields(metadata)
+        return {
+            configured_max_players = metadata.configured_max_players,
+            peer_capacity = metadata.peer_capacity,
+            roster_capacity = metadata.roster_capacity,
+            entity_capacity = metadata.entity_capacity,
+            resource_capacity = metadata.resource_capacity,
+            network_capacity = metadata.network_capacity,
+            verified_capacity = metadata.verified_capacity,
+            joined_players = 0,
+        }
+    end
+    local local_capacity = M.validate_capacity_fields(fields(local_metadata))
+    if not local_capacity.accepted then
+        return reject("metadata_capacity_invalid", {side = "local", reason = local_capacity.reason})
+    end
+    local remote_capacity = M.validate_capacity_fields(fields(remote_metadata))
+    if not remote_capacity.accepted then
+        return reject("metadata_capacity_invalid", {side = "remote", reason = remote_capacity.reason})
+    end
+    if local_metadata.effective_max_players ~= local_capacity.effective_max_players or
+        remote_metadata.effective_max_players ~= remote_capacity.effective_max_players or
+        local_metadata.effective_max_players ~= remote_metadata.effective_max_players then
+        return reject("effective_capacity_invalid")
+    end
     return accept("metadata_compatible")
 end
 

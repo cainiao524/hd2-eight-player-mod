@@ -1,0 +1,456 @@
+{
+  "schema": "hd2_eight_player_completion_audit_v1",
+  "generated_at_utc": "2026-10-10T04:51:42.469822+00:00",
+  "status": "incomplete",
+  "authoritative_completion": false,
+  "build": 25480438,
+  "exe_version": "1.8.46015.0",
+  "objective": {
+    "goal_file": "github_handoff_20260927/GOAL_OBJECTIVE.zh-TW.md",
+    "goal_sha256": "51c7f1b7fd94e0bc2aedcd9b5bf591e105dc6c5a09f28035a402ec1ecce40a0b",
+    "state_goal_sha256": "51c7f1b7fd94e0bc2aedcd9b5bf591e105dc6c5a09f28035a402ec1ecce40a0b",
+    "goal_hash_matches_state": true
+  },
+  "required_files": {
+    "github_handoff_20260927/GOAL_OBJECTIVE.zh-TW.md": true,
+    "github_handoff_20260927/HANDOFF.zh-TW.md": true,
+    "github_handoff_20260927/STATE.json": true,
+    "five_player_feasibility_20260927/IMPLEMENTATION_WORKLIST.zh-TW.md": true,
+    "eight_player_candidate_20260927/Integration/verify_multiplayer_acceptance.py": true
+  },
+  "state_flags": {
+    "installable": false,
+    "multiplayer_verified": false,
+    "mod_installed": false,
+    "game_process_accessed": true
+  },
+  "state_manifest": {
+    "declared_entries": 1474,
+    "missing": [],
+    "bad": [
+      {
+        "path": "github_handoff_20260927/HANDOFF.zh-TW.md",
+        "expected": "040005eeab67b225bfe85f3950a5ce96cf14a377178b8de41188fe4e9c5f3956",
+        "actual": "5cb41bc678763c47dc51a3a626a995f05226273c1750bbace78a0726e0ff7ee5"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.cpp",
+        "expected": "f49edce1ed7b65d52f7e9d7960b970c4fa1f1d0efac09c8c7bc896d31ac103e8",
+        "actual": "05eee811a27d5ab032f8879d3c46c20704bf8a5b1182471850ec7b64f0fae444"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/README.zh-TW.md",
+        "expected": "36b3f6680eaf5ba11fed082248648c7e775f6f7d3bdf4aaab93ccb22122bbaa6",
+        "actual": "19032634165c6dbff70a38d38b99681e6e7f6077dde319e8164fb6ebdc3b782f"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.dll",
+        "expected": "797f01a30dbca3cd1acffbe681acb66ad00b1bc28fb3957f04cb1bc36a387d66",
+        "actual": "48da75d2078f55aef358157017213b40a27bae626dcf3122a1416ea4ab139da3"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_test.exe",
+        "expected": "a1d96435bf2b50af9a4d4172ad6d06e664455af7657c0eec9a77072866c7458f",
+        "actual": "68245733448b088d83f2ab4fe11ffe6181931f7eba9fae1da464801fdedb1ca2"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.exp",
+        "expected": "d00b2668dc0719d45688247a8b42400095569bd9c74ad3016a8b9e5c8f891692",
+        "actual": "44ed149685f28b3af6ee2881970815fdf0f8c4b7acd7805f4564cfdc00199da8"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.lib",
+        "expected": "e67b164858ff09e39786e377f4a0c04058e1da1b0dc319d04c0173cffcfe8a47",
+        "actual": "459c677cec7d2cefd78fe0576b16286564c0503d849dfc0edada2cb1b4a212cc"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.obj",
+        "expected": "d7b857c1eb1264f2f4c34632e776a1f15b1db1df4bf0b0db6acc64b89b848cc2",
+        "actual": "4752cad6e1f8d4fbcdb72b26464f400104037b45c49e174a76ca77041ead326b"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_test.exp",
+        "expected": "6a130b5effbe94c2a60a0009711099339cb767c9ae1a9d3f70d76b06e6f987d8",
+        "actual": "a35e1fa22efb390d04c765307b8a2e694eb62ce82b61649b57945ade7ebb4b83"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_test.lib",
+        "expected": "b02f10bfb4d9ee12a7840718bdc6767b124c1cd8fa28d4f0b2068d8c6e245acf",
+        "actual": "027b50021edb8e68b83f421dfc1e0fa29023a298cc36f78178bba9de4f0b640b"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_test.obj",
+        "expected": "538baa0a0566c66c4f05a5df218a45c046d1e575e725bed43a38bf7d9451c41f",
+        "actual": "707f8c380bc7fa35876d6a8089baf95c6f3e355f99cd61b8c03a36c2f191c68f"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_load_test.exe",
+        "expected": "d1e57be73a457f27f0ebbdd5476a474035f4be556ee33928bf6560aaeaef9143",
+        "actual": "54070009301ef05d65ba8c6605ddc19dd9d7188862e50495fe1e872bf570bb0c"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_load_test.obj",
+        "expected": "9375e6e8cada9f2332c4aa1e29b38248394de1b1b1a68f7ea697a8fee9545c2a",
+        "actual": "5855543b00216fcc7329f64726bca3711a9565fea15ded94300a1ba55412864c"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/eight_player_pluginw64_release.dll",
+        "expected": "3cb3b1ff1737b281efe8762f668e919db2f35a9db6f4f860f0b39ee03bc373bc",
+        "actual": "9e7dd49f8fd7a2726171c2bfd6156bc15c610008f266758636b787f80c026e4a"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/eight_player_pluginw64_release.exp",
+        "expected": "f0b92188e975f8b9d5f93786d7149befe0e0989b075d59f97afb6701ce795d01",
+        "actual": "2c6210cc884433082a2613d6f056b7d0596982e0a7ce6d4d9bb1e600b1ba9cce"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/eight_player_pluginw64_release.lib",
+        "expected": "6710f745c39c869d66718043795da4c361fbd12fe5568f616c03a42d6064fdf9",
+        "actual": "84f1666e06ccc79c2b56c0f01f20e50dc2239b32598c1e4fdbc97166de811241"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/SessionObservation/ep_session_snapshot.h",
+        "expected": "12fe961b9c37fe8b468c7a6e7a427475d201a87774f546954ce1c6b8b5a40c4a",
+        "actual": "3fc9e768a02ea76356de595106755d671e4660706a9505e153c2000798f86032"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/SessionObservation/ep_session_snapshot_test.cpp",
+        "expected": "5f1e80cf13b44e46d98754f88d4e31523799947f7bbb139860fd23aa4487419a",
+        "actual": "f741d39f0f11b00c8b92978d41a547fd3d6a84eeefed9840237ba26151390969"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/SessionObservation/ep_session_snapshot_test.exe",
+        "expected": "6f42e8f612f27c71978183280e0e2c714eaa4535273eecc4c56d5dc365a0578d",
+        "actual": "acb7810415c8ed6fb87f1f4f61a21bb4cd5f75f2c0a5372e79b8d6bf7013f6c4"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/SessionObservation/ep_session_snapshot_test.obj",
+        "expected": "bc1fbdb3518bd1b24ffa4b490e58367480c601d27a9727d3180aa62f1d93b129",
+        "actual": "d1f1617ef49aedf784b8830b227429da6f1abd6124ffa2e1e2fb1d52671e11ba"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/SessionObservation/ep_session_vtable_snapshot.h",
+        "expected": "e8bbdcea54d6992bf4734fe9369af3be0aab15cd0f3f2e408ba2b0e1591d3628",
+        "actual": "e9430c6ae3a37135621b0502aca85e8a369cb244648cfdd50df5796ba28f86fb"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/SessionObservation/ep_session_vtable_snapshot_test.cpp",
+        "expected": "bf67b8bdd86b70fe65195e047379918aef81619464490f08d5789645d56ccaea",
+        "actual": "05044b91000cc529d467d250f3d57d1723516598dbf70e74e9de36a4ce87d643"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_peer_reader.h",
+        "expected": "807794de2a72edc84bd3e3376023c8320bc804d89157243fbf37e4c23410adf7",
+        "actual": "f2bb23f3352e147cea3bc879fb77240fbc81d0a99b33707bae02ae39dee087ed"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_peer_reader_test.cpp",
+        "expected": "7c4ad6bb697834af68bf6dccb314ebaf854743f3bb5e951e97282890c083184a",
+        "actual": "3472495c5c42b1a0e3a0f62f25754fc30c4185fc6b6964bd8547515556e99835"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_session_getter.h",
+        "expected": "addd223c35fc01b6d092150e4bb91cad089366e5c3467bbab538413d531a9f5a",
+        "actual": "b6ab0dcbe306153181b75e5b0a6d07e3282c4273c94ebc4919646712bc38988d"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_session_getter_test.cpp",
+        "expected": "1d5ed4a2f00581b225f2826abf44c6a03f164b7cd91b88080b4a7217a685e879",
+        "actual": "9ce36194a6bcafabbe8b5e64d17750935c7dc10294ea7cded8f907ded644d0d6"
+      },
+      {
+        "path": "eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_session_getter_test.exe",
+        "expected": "f7978a8989ede88c9ed570194f8ce0b4140ec4bc1017549546fbb496b3598a9b",
+        "actual": "62a11efc62eb8f59a9e6c380fdc097fe72a1fc784d3a2c7e6d52f2f0f240fd20"
+      }
+    ],
+    "ok": false
+  },
+  "acceptance_receipt": null,
+  "acceptance": {
+    "criteria_count": 20,
+    "proven_count": 0,
+    "missing_proof": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "C1",
+      "C2",
+      "C3",
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "E1",
+      "E2",
+      "E3",
+      "E4",
+      "E5"
+    ],
+    "criteria": [
+      {
+        "id": "A1",
+        "requirement": "八個獨立帳號加入同一隊伍",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "A2",
+        "requirement": "房主與八個客戶端的身分及名單一致",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "A3",
+        "requirement": "離隊、重新加入及重連維持索引與資料對應",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "A4",
+        "requirement": "額外玩家不覆蓋既有玩家",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "B1",
+        "requirement": "第 5--8 名各自建立有效角色",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "B2",
+        "requirement": "所有客戶端看見並識別第 5--8 名角色",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "B3",
+        "requirement": "每位玩家能控制自己的角色",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "B4",
+        "requirement": "角色死亡、增援及移除生命週期完整",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "C1",
+        "requirement": "位置、動作、傷害、死亡與增援一致",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "C2",
+        "requirement": "敵人、目標、投射物及互動狀態一致",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "C3",
+        "requirement": "沒有本機可見而其他客戶端遺漏的玩家",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "D1",
+        "requirement": "進入、降落、遊玩、撤離與結算完成",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "D2",
+        "requirement": "離隊及重連後任務可繼續",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "D3",
+        "requirement": "房主轉移若涉及修改則已驗證",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "D4",
+        "requirement": "任務進度與結算結果可核對",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "E1",
+        "requirement": "八人負載沒有已知必現崩潰、越界或資料破壞",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "E2",
+        "requirement": "支援 build、平台及連線組合已列明並實測",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "E3",
+        "requirement": "可重現建置與安裝方式已核對",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "E4",
+        "requirement": "移除、恢復及錯誤診斷已核對",
+        "proven": false,
+        "evidence": null
+      },
+      {
+        "id": "E5",
+        "requirement": "版本不匹配處理及未支援情境已核對",
+        "proven": false,
+        "evidence": null
+      }
+    ]
+  },
+  "remaining_release_work": {
+    "present": true,
+    "count": 3
+  },
+  "git": {
+    "head": "91d778f277dc5e6a4f6836c1f3c97ba594d8e8ce",
+    "latest_research_commit": "c32ffe4",
+    "latest_status_receipt_commit": "c32ffe4",
+    "latest_research_exists": true,
+    "latest_status_receipt_exists": true
+  },
+  "untracked_status": [
+    "M eight_player_candidate_20260927/Native/OfficialPlugin/README.zh-TW.md",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/eight_player_pluginw64_release.dll",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/eight_player_pluginw64_release.exp",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/eight_player_pluginw64_release.lib",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_peer_reader.h",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_peer_reader_test.cpp",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.cpp",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.dll",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.exp",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.lib",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin.obj",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_load_test.exe",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_load_test.obj",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_test.exe",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_test.exp",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_test.lib",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_plugin_test.obj",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_session_getter.h",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_session_getter_test.cpp",
+    " M eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_session_getter_test.exe",
+    " M eight_player_candidate_20260927/Native/SessionObservation/ep_session_snapshot.h",
+    " M eight_player_candidate_20260927/Native/SessionObservation/ep_session_snapshot_test.cpp",
+    " M eight_player_candidate_20260927/Native/SessionObservation/ep_session_snapshot_test.exe",
+    " M eight_player_candidate_20260927/Native/SessionObservation/ep_session_snapshot_test.obj",
+    " M eight_player_candidate_20260927/Native/SessionObservation/ep_session_vtable_snapshot.h",
+    " M eight_player_candidate_20260927/Native/SessionObservation/ep_session_vtable_snapshot_test.cpp",
+    " M github_handoff_20260927/HANDOFF.zh-TW.md",
+    " M github_handoff_20260927/STATE.json",
+    "?? eight_player_candidate_20260927/Native/Bridge/ep_bridge_client_integration_test.exp",
+    "?? eight_player_candidate_20260927/Native/Bridge/ep_bridge_client_integration_test.lib",
+    "?? eight_player_candidate_20260927/Native/Bridge/ep_bridge_client_integration_test.obj",
+    "?? eight_player_candidate_20260927/Native/Bridge/ep_capacity_contract.obj",
+    "?? eight_player_candidate_20260927/Native/Bridge/ep_client_bridge_adapter.obj",
+    "?? eight_player_candidate_20260927/Native/Bridge/ep_client_sidecar.obj",
+    "?? eight_player_candidate_20260927/Native/CapacityContract/ep_capacity_contract.dll",
+    "?? eight_player_candidate_20260927/Native/CapacityContract/ep_capacity_contract.exp",
+    "?? eight_player_candidate_20260927/Native/CapacityContract/ep_capacity_contract.lib",
+    "?? eight_player_candidate_20260927/Native/CapacityContract/ep_capacity_contract.obj",
+    "?? eight_player_candidate_20260927/Native/CapacityContract/ep_capacity_contract_test.exe",
+    "?? eight_player_candidate_20260927/Native/CapacityContract/ep_capacity_contract_test.exp",
+    "?? eight_player_candidate_20260927/Native/CapacityContract/ep_capacity_contract_test.lib",
+    "?? eight_player_candidate_20260927/Native/CapacityContract/ep_capacity_contract_test.obj",
+    "?? eight_player_candidate_20260927/Native/ClientReplication/ep_client_replication_contract.exp",
+    "?? eight_player_candidate_20260927/Native/ClientReplication/ep_client_replication_contract.lib",
+    "?? eight_player_candidate_20260927/Native/ClientReplication/ep_client_replication_contract.obj",
+    "?? eight_player_candidate_20260927/Native/ClientReplication/ep_client_replication_contract_test.exp",
+    "?? eight_player_candidate_20260927/Native/ClientReplication/ep_client_replication_contract_test.lib",
+    "?? eight_player_candidate_20260927/Native/ClientReplication/ep_client_replication_contract_test.obj",
+    "?? eight_player_candidate_20260927/Native/IntegrationPreflight/ep_eight_preflight.exp",
+    "?? eight_player_candidate_20260927/Native/IntegrationPreflight/ep_eight_preflight.lib",
+    "?? eight_player_candidate_20260927/Native/IntegrationPreflight/ep_eight_preflight.obj",
+    "?? eight_player_candidate_20260927/Native/IntegrationPreflight/ep_eight_preflight_test.exp",
+    "?? eight_player_candidate_20260927/Native/IntegrationPreflight/ep_eight_preflight_test.lib",
+    "?? eight_player_candidate_20260927/Native/IntegrationPreflight/ep_eight_preflight_test.obj",
+    "?? eight_player_candidate_20260927/Native/MidGate/dbg_build.bat",
+    "?? eight_player_candidate_20260927/Native/MidGate/ep_midgate_executor.dll",
+    "?? eight_player_candidate_20260927/Native/MidGate/ep_midgate_executor.exp",
+    "?? eight_player_candidate_20260927/Native/MidGate/ep_midgate_executor.lib",
+    "?? eight_player_candidate_20260927/Native/MidGate/ep_midgate_executor.obj",
+    "?? eight_player_candidate_20260927/Native/MidGate/ep_midgate_executor_load_test.exe",
+    "?? eight_player_candidate_20260927/Native/MidGate/ep_midgate_executor_load_test.obj",
+    "?? eight_player_candidate_20260927/Native/MidGate/ep_midgate_executor_test.cod",
+    "?? eight_player_candidate_20260927/Native/MidGate/ep_midgate_executor_test.exe",
+    "?? eight_player_candidate_20260927/Native/MidGate/ep_midgate_executor_test.exp",
+    "?? eight_player_candidate_20260927/Native/MidGate/ep_midgate_executor_test.lib",
+    "?? eight_player_candidate_20260927/Native/MidGate/ep_midgate_executor_test.obj",
+    "?? eight_player_candidate_20260927/Native/MidGate/test_dbg.obj",
+    "?? eight_player_candidate_20260927/Native/MidGate/tiny_build.bat",
+    "?? eight_player_candidate_20260927/Native/MidGate/tiny_call.cpp",
+    "?? eight_player_candidate_20260927/Native/MidGate/tiny_call.exe",
+    "?? eight_player_candidate_20260927/Native/MidGate/tiny_call.obj",
+    "?? eight_player_candidate_20260927/Native/MidGate/verification/midgate_stub_candidate_verification_20261003.json",
+    "?? eight_player_candidate_20260927/Native/OfficialPlugin/ep_capacity_contract.obj",
+    "?? eight_player_candidate_20260927/Native/OfficialPlugin/ep_capacity_control.obj",
+    "?? eight_player_candidate_20260927/Native/OfficialPlugin/ep_client_replication_contract.obj",
+    "?? eight_player_candidate_20260927/Native/OfficialPlugin/ep_consumer_executor.obj",
+    "?? eight_player_candidate_20260927/Native/OfficialPlugin/ep_consumer_native_callbacks.obj",
+    "?? eight_player_candidate_20260927/Native/OfficialPlugin/ep_native_bridge.obj",
+    "?? eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_peer_reader_test.exe",
+    "?? eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_peer_reader_test.obj",
+    "?? eight_player_candidate_20260927/Native/OfficialPlugin/ep_official_session_getter_test.obj",
+    "?? eight_player_candidate_20260927/Native/OfficialPlugin/ep_sidecar.obj",
+    "?? eight_player_candidate_20260927/Native/PlayerCreationGate/ep_player_creation_gate.exp",
+    "?? eight_player_candidate_20260927/Native/PlayerCreationGate/ep_player_creation_gate.lib",
+    "?? eight_player_candidate_20260927/Native/PlayerCreationGate/ep_player_creation_gate.obj",
+    "?? eight_player_candidate_20260927/Native/PlayerCreationGate/ep_player_creation_gate_test.exp",
+    "?? eight_player_candidate_20260927/Native/PlayerCreationGate/ep_player_creation_gate_test.lib",
+    "?? eight_player_candidate_20260927/Native/PlayerCreationGate/ep_player_creation_gate_test.obj",
+    "?? eight_player_candidate_20260927/Native/PlayerResource/ep_capacity_contract.obj",
+    "?? eight_player_candidate_20260927/Native/PlayerResource/ep_native_bridge.obj",
+    "?? eight_player_candidate_20260927/Native/PlayerResource/ep_player_resource.exp",
+    "?? eight_player_candidate_20260927/Native/PlayerResource/ep_player_resource.lib",
+    "?? eight_player_candidate_20260927/Native/PlayerResource/ep_player_resource.obj",
+    "?? eight_player_candidate_20260927/Native/PlayerResource/ep_player_resource_test.exp",
+    "?? eight_player_candidate_20260927/Native/PlayerResource/ep_player_resource_test.lib",
+    "?? eight_player_candidate_20260927/Native/PlayerResource/ep_player_resource_test.obj",
+    "?? eight_player_candidate_20260927/Native/PlayerResource/ep_resource_bridge_adapter.exp",
+    "?? eight_player_candidate_20260927/Native/PlayerResource/ep_resource_bridge_adapter.lib",
+    "?? eight_player_candidate_20260927/Native/PlayerResource/ep_resource_bridge_adapter.obj",
+    "?? eight_player_candidate_20260927/Native/PlayerResource/ep_resource_bridge_adapter_test.exp",
+    "?? eight_player_candidate_20260927/Native/PlayerResource/ep_resource_bridge_adapter_test.lib",
+    "?? eight_player_candidate_20260927/Native/PlayerResource/ep_resource_bridge_adapter_test.obj",
+    "?? eight_player_candidate_20260927/Native/PlayerResource/ep_sidecar.obj",
+    "?? eight_player_candidate_20260927/Native/SessionObservation/ep_session_record_semantics_test.exe",
+    "?? eight_player_candidate_20260927/Native/SessionObservation/ep_session_record_semantics_test.obj",
+    "?? eight_player_candidate_20260927/Native/SessionObservation/ep_session_vtable_snapshot_test.exe",
+    "?? eight_player_candidate_20260927/Native/SessionObservation/ep_session_vtable_snapshot_test.obj",
+    "?? eight_player_candidate_20260927/Native/Sidecar/ep_sidecar_test.exp",
+    "?? eight_player_candidate_20260927/Native/Sidecar/ep_sidecar_test.lib",
+    "?? five_player_feasibility_20260927/audit_native_loader_boundary_20261003.py",
+    "?? five_player_feasibility_20260927/live_c_api_table_map_verification_20261010.json"
+  ],
+  "preserved_user_audit_present": true,
+  "blockers": [
+    "no_authoritative_eight_client_live_acceptance_receipt",
+    "installable_gate_false",
+    "multiplayer_verified_gate_false",
+    "state_remaining_release_work_nonempty",
+    "state_manifest_mismatch"
+  ],
+  "next_actions": [
+    "bind native admission, player creation, replication and cleanup callbacks to real HD2 ABI",
+    "run the fifth-peer then six-, seven- and eight-account mission ladder",
+    "record eight independent live client logs and run verify_multiplayer_acceptance.py",
+    "set installable/multiplayer_verified only after the receipt and package gates pass"
+  ]
+}

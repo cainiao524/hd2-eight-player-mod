@@ -1,0 +1,354 @@
+{
+  "schema": "hd2_admission_callback_abi_contract_v1",
+  "status": "static_abi_contract_fail_closed",
+  "build": 25480438,
+  "module": "game.dll",
+  "version_lock": {
+    "game_image_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+    "source_sha256": {
+      "five_player_feasibility_20260927/host_expansion_disasm_108d9f0.json": "5e065ebbac9e6274ab59f486155e06fed146d1ba5e42bc3bebf22e5f5803e888",
+      "five_player_feasibility_20260927/protocol_host_to_client_dispatch.json": "a485b4b0559181a85fa43b7fbc288edce9a278469e876218166c888c78e1c565",
+      "five_player_feasibility_20260927/protocol_confirmed_peer_sender.json": "1bf9a21b46bf125d2f6565ee944047b6c4af49d61e0ab88c72faf44dc4210dda",
+      "five_player_feasibility_20260927/join_handler_disasm.json": "f0e2c853fb731fecffd27ed2bbab97f9d8ed2868b076c60ee51bcdfe472e505c",
+      "five_player_feasibility_20260927/native_admission_sites_live_20261002_r2.json": "31a75196a5afd3b8d102a160225bb0a7066a42af3d47b614ed4eac7be67b304e",
+      "five_player_feasibility_20260927/native_admission_confirmed_peer_live_20261002_r3.json": "50cc6fcb8fa4224791a7d40cdd37dafa719664d92a01b7a6d3505655b5f30f7e",
+      "five_player_feasibility_20260927/protocol_b90b20_disasm.json": "2c3aca7050821bc93c26653faa7815f21074b95a9139c2407d4003f704b2c85f"
+    },
+    "calling_convention": "Windows x64 register ABI (RCX, RDX, R8, R9); indirect target ownership is unresolved"
+  },
+  "callbacks": [
+    {
+      "id": "host_admission_table_0x08",
+      "kind": "indirect_vtable_target",
+      "call_site": {
+        "rva": "0x108ddc7",
+        "bytes": "41ff5008",
+        "asm": "call qword ptr [r8 + 8]"
+      },
+      "target": {
+        "table_base": "R8",
+        "table_offset": "0x08",
+        "resolved": false,
+        "address": null
+      },
+      "inputs": {
+        "RCX": "[network_context+0xB390] opaque owner",
+        "RDX": "[r12] opaque peer/player id",
+        "R8": "interface table pointer"
+      },
+      "return": {
+        "value": "unknown",
+        "semantics_proven": false,
+        "caller_dependency": "unknown"
+      },
+      "state_effect": {
+        "linked_site": {
+          "rva": "0x108ddf2",
+          "bytes": "41c744242007000000",
+          "asm": "mov dword ptr [r12 + 0x20], 7"
+        },
+        "location": "[r12+0x20]",
+        "value": 7,
+        "meaning_proven": false
+      },
+      "cleanup": {
+        "callback": null,
+        "abi_proven": false,
+        "required": [
+          "reject unwind",
+          "departure",
+          "host migration",
+          "owner release"
+        ]
+      },
+      "proven": false
+    },
+    {
+      "id": "host_admission_table_0x50",
+      "kind": "indirect_vtable_target",
+      "call_site": {
+        "rva": "0x108de09",
+        "bytes": "41ff5050",
+        "asm": "call qword ptr [r8 + 0x50]"
+      },
+      "target": {
+        "table_base": "R8",
+        "table_offset": "0x50",
+        "resolved": false,
+        "address": null
+      },
+      "inputs": {
+        "RCX": "[network_context+0xB390] opaque owner",
+        "RDX": "[r12] opaque peer/player id",
+        "R8": "interface table pointer"
+      },
+      "return": {
+        "value": "unknown",
+        "semantics_proven": false,
+        "caller_dependency": "unknown"
+      },
+      "state_effect": {
+        "linked_site": {
+          "rva": "0x108de17",
+          "bytes": "b9dda297a4",
+          "asm": "mov ecx, 0xa497a2dd"
+        },
+        "event_hash": "0xa497a2dd",
+        "meaning_proven": false
+      },
+      "cleanup": {
+        "callback": null,
+        "abi_proven": false,
+        "required": [
+          "reject unwind",
+          "departure",
+          "host migration",
+          "owner release"
+        ]
+      },
+      "proven": false
+    },
+    {
+      "id": "host_to_client_confirmed_peer_sender",
+      "kind": "direct_call_target",
+      "call_site": {
+        "rva": "0x108c923",
+        "bytes": "e8e87fb5ff",
+        "asm": "call 0xbe4910"
+      },
+      "target": {
+        "address_rva": "0xbe4910",
+        "resolved": true,
+        "semantic_name": "confirmed-peer sender candidate"
+      },
+      "inputs": {
+        "RCX": "RBX opaque recipient",
+        "RDX": "[RDI-0x20] record opaque id",
+        "R8": "[RDI-0x18] opaque qword",
+        "R9D": "[RDI-0x10] opaque dword",
+        "caller_rsp+0x20": "[RDI-0x0c] opaque dword",
+        "caller_rsp+0x28": "unsigned([RDI]) >= 7 byte flag"
+      },
+      "return": {
+        "value": "unconsumed along saved caller continuation",
+        "semantics_proven": false,
+        "evidence": "0x108c928 overwrites RAX after the call; no void ABI is inferred"
+      },
+      "state_effect": {
+        "slot_loop_count": 4,
+        "record_stride": "0x38",
+        "state_field": "record+0x20 (RDI)",
+        "dispatch_condition": "opaque id nonzero and unsigned state >=5",
+        "meaning_proven": false
+      },
+      "cleanup": {
+        "callback": null,
+        "abi_proven": false,
+        "required": [
+          "record release",
+          "departure",
+          "migration",
+          "serializer unwind"
+        ]
+      },
+      "proven": false
+    },
+    {
+      "id": "client_confirmed_peer_insert",
+      "kind": "direct_call_target",
+      "call_site": {
+        "rva": "0x108c960",
+        "bytes": "e8bb41b0ff",
+        "asm": "call 0xb90b20"
+      },
+      "target": {
+        "address_rva": "0xb90b20",
+        "resolved": true,
+        "semantic_name": "client confirmed-peer insert candidate"
+      },
+      "inputs": {
+        "RCX": "RSI opaque id",
+        "RDX": "RBX opaque recipient",
+        "R8": "[R15+R14+0x28] opaque qword",
+        "R9D": "[R15+R14+0x30] opaque dword",
+        "caller_rsp+0x20": "[R15+R14+0x34] opaque dword",
+        "caller_rsp+0x28": "unsigned([R15+R14+0x40]) >=7 byte flag",
+        "receiver_owner": "unresolved"
+      },
+      "return": {
+        "value": "unknown",
+        "semantics_proven": false
+      },
+      "state_effect": {
+        "sender_loop_count": 4,
+        "sender_record_stride": "0x38",
+        "client_storage_capacity": "unresolved",
+        "meaning_proven": false
+      },
+      "cleanup": {
+        "callback": null,
+        "abi_proven": false,
+        "required": [
+          "duplicate rejection",
+          "remove",
+          "reset",
+          "reconnect"
+        ]
+      },
+      "proven": false
+    },
+    {
+      "id": "join_nested_status_probe",
+      "kind": "nested_indirect_target",
+      "call_site": {
+        "rva": "0x108bfc1",
+        "bytes": "41ffd0",
+        "asm": "call r8"
+      },
+      "target": {
+        "load_chain": "[object+0x50] -> [returned+0x28] -> call r8",
+        "resolved": false,
+        "address": null
+      },
+      "inputs": {
+        "registers": "unresolved",
+        "object_owner": "unresolved"
+      },
+      "return": {
+        "value": "EAX low32 opaque status",
+        "semantics_proven": false,
+        "checks": [
+          "ECX=EAX-1 modulo 2^32",
+          "test ecx, 0xfffffffa",
+          "cmp eax, 2"
+        ],
+        "mask_pass_values": [
+          1,
+          2,
+          5,
+          6
+        ],
+        "branch_0x108c043_without_cleanup_candidate": [
+          1,
+          5,
+          6
+        ],
+        "other_values": "fall through to 0x108bfd4; includes value 2"
+      },
+      "state_effect": {
+        "meaning": "join state or result candidate",
+        "meaning_proven": false
+      },
+      "cleanup": {
+        "callback": "0x13eff30 candidate",
+        "abi_proven": false,
+        "required": [
+          "reject cleanup",
+          "partial admission rollback"
+        ]
+      },
+      "proven": false
+    },
+    {
+      "id": "join_reject_cleanup_candidate",
+      "kind": "direct_call_candidate",
+      "call_site": {
+        "rva": "0x108bfd7",
+        "bytes": "e8543f3600",
+        "asm": "call 0x13eff30"
+      },
+      "target": {
+        "address_rva": "0x13eff30",
+        "resolved": true,
+        "semantic_name": "reject/cleanup candidate only"
+      },
+      "inputs": {
+        "RDX": "RBX opaque candidate",
+        "other_registers": "unresolved or volatile after nested probe"
+      },
+      "return": {
+        "value": "AL predicate",
+        "semantics_proven": false,
+        "consumer": {
+          "rva": "0x108bfdc",
+          "bytes": "84c0",
+          "asm": "test al, al"
+        }
+      },
+      "state_effect": {
+        "meaning": "reject or cleanup predicate",
+        "meaning_proven": false
+      },
+      "cleanup": {
+        "callback": null,
+        "abi_proven": false,
+        "required": [
+          "owner release",
+          "pending removal",
+          "partial resource rollback"
+        ]
+      },
+      "proven": false
+    }
+  ],
+  "state_contract": {
+    "state_write_7": {
+      "site": {
+        "rva": "0x108ddf2",
+        "bytes": "41c744242007000000",
+        "asm": "mov dword ptr [r12 + 0x20], 7"
+      },
+      "field": "r12+0x20",
+      "value": 7,
+      "enum_meaning": "unresolved"
+    },
+    "event_hashes": [
+      "0xa497a2dd",
+      "0x8fe70196",
+      "0x4bfb3315",
+      "0x1ab72826",
+      "0x9bf86d8c"
+    ],
+    "player_index_4_to_7_proven": false,
+    "state_transition_abi_proven": false,
+    "dispatch_state_tests": {
+      "field": "record+0x20",
+      "lower_bound_inclusive": 5,
+      "bool_flag_lower_bound_inclusive": 7,
+      "upper_bound": null,
+      "network_index_gate": false
+    }
+  },
+  "cleanup_contract": {
+    "required_paths": [
+      "reject",
+      "departure",
+      "reconnect",
+      "host migration",
+      "reset/unload"
+    ],
+    "bound_callbacks": [],
+    "target_and_return_abi_proven": false,
+    "cleanup_abi_proven": false,
+    "fail_closed_reason": "no saved evidence binds a complete inverse path with owner lifetime and resource release"
+  },
+  "safety": {
+    "process_started": false,
+    "process_accessed": false,
+    "function_calls_made": false,
+    "memory_writes": false,
+    "hooks_installed": false,
+    "injection": false,
+    "production_executable": false,
+    "installable": false,
+    "runtime_verified": false,
+    "multiplayer_verified": false
+  },
+  "blockers": [
+    "indirect table+0x08 and table+0x50 target addresses and return ABIs are unresolved",
+    "state value 7 has no decoded enum meaning and is not a player index",
+    "dispatcher and client insert call targets do not prove receiver storage, index, or player creation semantics",
+    "reject/cleanup candidate has no resolved input, return, owner lifetime, or inverse path ABI",
+    "static and read-only evidence cannot produce an installable callback patch"
+  ]
+}

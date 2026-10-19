@@ -4,7 +4,7 @@
   "entry_rva": "0x1093590",
   "target_stolen_bytes": 14,
   "executor_code_bytes": 270,
-  "scope": "OfficialPlugin and consumer executor are linked into one DLL; bridge remains explicit and fail-closed; fixed-build session getter is inspect-only until calling convention and return lifetime are proven",
+  "scope": "OfficialPlugin, consumer executor, ClientReplication, PlayerResource and PlayerCreationGate composition are linked into the staging DLL; all runtime and multiplayer gates remain explicit and fail-closed.",
   "preflight": {
     "read_only": true,
     "build_gate": true,
@@ -42,7 +42,10 @@
       "unknown getter address rejected",
       "unreadable C API table rejected",
       "wrong build identity rejected",
-      "shutdown and unload clear session/snapshot counters"
+      "shutdown and unload clear session/snapshot counters",
+      "PlayerCreationGate and replication bridge composition exports",
+      "fixed-index creation transaction remains caller-owned",
+      "cross-layer cleanup retry remains offline-only"
     ],
     "test_exit_code": 0
   },
@@ -52,68 +55,92 @@
       "bytes": 4495
     },
     "ep_official_plugin.cpp": {
-      "sha256": "f49edce1ed7b65d52f7e9d7960b970c4fa1f1d0efac09c8c7bc896d31ac103e8",
-      "bytes": 20303
+      "sha256": "87231e7db7892897a96e0ae9d6c0682ba5aa925298102b0199de621ec8a80f7b",
+      "bytes": 20716
     },
     "ep_official_plugin_test.cpp": {
       "sha256": "6529290e28927e92e09454ba72a4165b72a598f401288618bc2250b2a851dcea",
       "bytes": 5770
     },
     "ep_official_plugin_load_test.cpp": {
-      "sha256": "eeddc65a60fb53685c27e321869e7d72c391d8c5b18422bb91a1bf05ef3adf2b",
-      "bytes": 1211
+      "sha256": "920e2e04563d1635708638c24ef013a511f891a9f8f900d4c0f849e0ac85428e",
+      "bytes": 1558
     },
     "build_x64.bat": {
-      "sha256": "17805abe3b448a983d1d1732d97211b1b8d67241ee4c81223625d90e5d1fc2b3",
-      "bytes": 1387
+      "sha256": "de12793fe99afc9eeba279ff6801c7cb6d0f59e859ed8d8f6b400dd63c05dd02",
+      "bytes": 2749
     },
     "README.zh-TW.md": {
-      "sha256": "36b3f6680eaf5ba11fed082248648c7e775f6f7d3bdf4aaab93ccb22122bbaa6",
-      "bytes": 5560
+      "sha256": "c28a7e1c20bd2aaa7f9d060a005fd7235f9008b7bcb912f2bdb7d85f09c9474c",
+      "bytes": 6612
     },
     "ep_official_plugin.dll": {
-      "sha256": "797f01a30dbca3cd1acffbe681acb66ad00b1bc28fb3957f04cb1bc36a387d66",
-      "bytes": 286720
+      "sha256": "139ddb6840a2f4892f7cc49b071289e8ef14ee91acfd52f6baaba298cc1fc011",
+      "bytes": 335872
     },
     "eight_player_pluginw64_release.dll": {
-      "sha256": "3cb3b1ff1737b281efe8762f668e919db2f35a9db6f4f860f0b39ee03bc373bc",
-      "bytes": 286720
+      "sha256": "0a4116948f693689364ecc6026f1c279f5a443f9006892f1a711ea29ed93bc1d",
+      "bytes": 335872
     },
     "ep_official_plugin_test.exe": {
-      "sha256": "a1d96435bf2b50af9a4d4172ad6d06e664455af7657c0eec9a77072866c7458f",
-      "bytes": 316416
+      "sha256": "1bd41f951ca5ec8863b3ca0a39ee1626c26b589d0b362f5f9def29e8755b8622",
+      "bytes": 366080
     },
     "ep_official_plugin_load_test.exe": {
-      "sha256": "d1e57be73a457f27f0ebbdd5476a474035f4be556ee33928bf6560aaeaef9143",
-      "bytes": 154112
+      "sha256": "9bd0e21b3805c997f62d353195cf756508276b1f18158ab58e06076ad096c815",
+      "bytes": 154624
     },
     "ep_official_plugin.lib": {
-      "sha256": "e67b164858ff09e39786e377f4a0c04058e1da1b0dc319d04c0173cffcfe8a47",
-      "bytes": 10076
+      "sha256": "f13d4f8755d12aa70ede0e178e7c6ffb06db1d46fc5dfa399dd7d29e7b3aaba7",
+      "bytes": 31452
     },
     "ep_official_plugin.exp": {
-      "sha256": "d00b2668dc0719d45688247a8b42400095569bd9c74ad3016a8b9e5c8f891692",
-      "bytes": 5512
+      "sha256": "e856e88cea2d2c62501efca9bf7ae465917041cd4555324683a246e9136372d1",
+      "bytes": 17882
     },
     "eight_player_pluginw64_release.lib": {
-      "sha256": "6710f745c39c869d66718043795da4c361fbd12fe5568f616c03a42d6064fdf9",
-      "bytes": 10556
+      "sha256": "e33cb517bfe2015a134c1b7bab13e232359e88539428acc818f01e043f1de147",
+      "bytes": 33048
     },
     "eight_player_pluginw64_release.exp": {
-      "sha256": "f0b92188e975f8b9d5f93786d7149befe0e0989b075d59f97afb6701ce795d01",
-      "bytes": 5536
+      "sha256": "1fbd7f2ee96b07e6fb006c8cd01e89aac1fc59ec13db5deee9e5fbc23cc7a069",
+      "bytes": 17906
     },
     "ep_official_session_getter.h": {
-      "sha256": "addd223c35fc01b6d092150e4bb91cad089366e5c3467bbab538413d531a9f5a",
-      "bytes": 3438
+      "sha256": "b6ab0dcbe306153181b75e5b0a6d07e3282c4273c94ebc4919646712bc38988d",
+      "bytes": 4412
     },
     "ep_official_session_getter_test.cpp": {
-      "sha256": "1d5ed4a2f00581b225f2826abf44c6a03f164b7cd91b88080b4a7217a685e879",
-      "bytes": 4529
+      "sha256": "9ce36194a6bcafabbe8b5e64d17750935c7dc10294ea7cded8f907ded644d0d6",
+      "bytes": 8699
     },
     "ep_official_session_getter_test.exe": {
-      "sha256": "f7978a8989ede88c9ed570194f8ce0b4140ec4bc1017549546fbb496b3598a9b",
-      "bytes": 157696
+      "sha256": "7a28bf29e9debdf4bc8e445643855fb7e5e70b11768a28e8c7c2a4d67a001231",
+      "bytes": 167936
+    },
+    "../PlayerCreationGate/ep_player_creation_gate.h": {
+      "sha256": "8d2fffbcfd535d339b4f408559b625676906616c32a9ebcf0cb3f6386f88b17d",
+      "bytes": 7167
+    },
+    "../PlayerCreationGate/ep_player_creation_gate.cpp": {
+      "sha256": "ad4361a8637c736c08d50b706133084f3fa4fddb69c1123a29b99d7cce78c0ca",
+      "bytes": 22238
+    },
+    "../PlayerCreationGate/ep_player_creation_replication_adapter.h": {
+      "sha256": "7a04326db3907a0139e04db4b8191e5d30402a255dee944b06d328a5408b644f",
+      "bytes": 2743
+    },
+    "../PlayerCreationGate/ep_player_creation_replication_adapter.cpp": {
+      "sha256": "356f2565b7042a086af5345be7c7dcfc90ed254c06c6328d7b57d54a9c633c5a",
+      "bytes": 10690
+    },
+    "../Bridge/ep_native_bridge.h": {
+      "sha256": "63c43f44d594abcf541debae32ab908bdd0e790178ba11fd8f18845fe9662691",
+      "bytes": 6149
+    },
+    "../Bridge/ep_native_bridge.cpp": {
+      "sha256": "b6cdadbebf1fa5448001b28a2aa645483c8c33301c1927a2a580d9f04744301d",
+      "bytes": 24086
     }
   },
   "gates": {
@@ -225,5 +252,31 @@
     "unloaded_clears_update_ticks": true,
     "unloaded_clears_snapshot_counters": true,
     "shutdown_game_uses_same_cleanup": true
+  },
+  "composition": {
+    "player_creation_gate_source": "../PlayerCreationGate/ep_player_creation_gate.cpp",
+    "player_creation_replication_source": "../PlayerCreationGate/ep_player_creation_replication_adapter.cpp",
+    "linked_into": [
+      "ep_official_plugin.dll",
+      "eight_player_pluginw64_release.dll",
+      "ep_official_plugin_test.exe"
+    ],
+    "exports_checked": [
+      "ep_pcr_init",
+      "ep_pcr_destroy",
+      "ep_pcr_admit",
+      "ep_pcr_depart",
+      "ep_pcr_validate",
+      "ep_bridge_admit_at"
+    ],
+    "offline_composition_verified": true,
+    "live_hd2_callback_binding": false,
+    "multiplayer_verified": false,
+    "index_admission_contract": {
+      "export": "ep_bridge_admit_at",
+      "rejects_allocator_index_mismatch_before_sidecar_or_native_callbacks": true,
+      "release_failure_retained_for_retry": true,
+      "offline_only": true
+    }
   }
 }

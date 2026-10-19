@@ -1,0 +1,42 @@
+{
+  "schema": "hd2_partywin_named_import_audit_v1",
+  "build": 25480438,
+  "exe": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\helldivers2.exe",
+  "exe_sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+  "read_only": true,
+  "named_imports": [
+    {
+      "dll": "PartyWin.dll",
+      "name": "PartyNetworkSetCustomContext",
+      "ordinal": null,
+      "iat_rva": "0x29617d8"
+    },
+    {
+      "dll": "PlayFabMultiplayerWin.dll",
+      "name": "PFLobbySendInvite",
+      "ordinal": null,
+      "iat_rva": "0x29617e8"
+    }
+  ],
+  "known_named_party_imports": [
+    "PartyNetworkSetCustomContext"
+  ],
+  "known_named_playfab_imports": [
+    "PFLobbySendInvite"
+  ],
+  "core_party_methods_absent_from_named_imports": [
+    "PartyCleanup",
+    "PartyConnectToNetwork",
+    "PartyCreateNewNetwork",
+    "PartyNetworkAuthenticateLocalUser",
+    "PartyNetworkCreateEndpoint",
+    "PartyNetworkLeaveNetwork",
+    "PartyNetworkRemoveLocalUser"
+  ],
+  "core_party_methods_all_named_imported": false,
+  "direct_named_core_binding_proven": false,
+  "limits": [
+    "A missing named import does not prove that no internal EXE thunk exists.",
+    "This audit does not call an entrypoint and does not infer an ABI from a slot address."
+  ]
+}

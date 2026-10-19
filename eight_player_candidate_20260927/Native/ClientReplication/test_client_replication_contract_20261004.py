@@ -39,6 +39,22 @@ class ClientReplicationContractTests(unittest.TestCase):
         self.assertEqual(completed.returncode, 0, completed.stdout + completed.stderr)
         self.assertIn("ep_client_replication_contract_synthetic_passed", completed.stdout)
 
+    def test_admission_replication_integration_binary(self):
+        completed = subprocess.run(
+            [str(HERE / "ep_replication_bridge_test.exe")], cwd=HERE,
+            capture_output=True, text=True, check=False,
+        )
+        self.assertEqual(completed.returncode, 0, completed.stdout + completed.stderr)
+        self.assertIn("ep_replication_bridge_integration_passed", completed.stdout)
+
+    def test_resource_replication_integration_binary(self):
+        completed = subprocess.run(
+            [str(HERE / "ep_replication_resource_integration_test.exe")], cwd=HERE,
+            capture_output=True, text=True, check=False,
+        )
+        self.assertEqual(completed.returncode, 0, completed.stdout + completed.stderr)
+        self.assertIn("ep_replication_resource_integration_passed", completed.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()

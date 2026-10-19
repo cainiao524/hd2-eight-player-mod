@@ -1,0 +1,67 @@
+{
+  "schema": "hd2_saved_party_prefix_analysis_v1",
+  "prefixes": [
+    {
+      "label": "create_network_candidate",
+      "wrapper_sha256": "4a02504284b98920d5e0fc4d8c13ff53192dd2b5cafcac7379137bca4f74ca41",
+      "first_unavailable_data_read": {
+        "instruction_rva": "0x2fc33cd",
+        "read_rva": "0x2985447",
+        "size": 8
+      }
+    },
+    {
+      "label": "async_or_state_candidate",
+      "wrapper_sha256": "4e9e4a67a84e4ec8f02bc989c8438c38be5c6fdddf903705b39623c58ee35a37",
+      "first_unavailable_data_read": {
+        "instruction_rva": "0x2fcc37d",
+        "read_rva": "0x2985527",
+        "size": 8
+      }
+    },
+    {
+      "label": "authenticate_or_state_candidate",
+      "wrapper_sha256": "448bd838922e3b200ede35fc75b31d6175ea44272812c0986d06e8134aedaaf6",
+      "first_unavailable_data_read": {
+        "instruction_rva": "0x2f4d5b7",
+        "read_rva": "0x29848a7",
+        "size": 8
+      }
+    },
+    {
+      "label": "create_endpoint_candidate",
+      "wrapper_sha256": "837304362319ab47ce8c3555f00428488c3b51c72faeddff44f3a9548ab29a14",
+      "first_unavailable_data_read": {
+        "instruction_rva": "0x2f6a337",
+        "read_rva": "0x2984b7f",
+        "size": 8
+      }
+    },
+    {
+      "label": "connect_network_candidate",
+      "wrapper_sha256": "fee99588003c628e7dea822d7002b23b021ec6c21f7b7756726838ce4fbced47",
+      "first_unavailable_data_read": {
+        "instruction_rva": "0x2f71e88",
+        "read_rva": "0x2984c3f",
+        "size": 8
+      }
+    },
+    {
+      "label": "auth_network_candidate",
+      "wrapper_sha256": "c1151f00d9255c075790d8b0b956c12b60e97ed52c42e985fba6bdee2b4d8318",
+      "first_unavailable_data_read": {
+        "instruction_rva": "0x2fda5d6",
+        "read_rva": "0x298568f",
+        "size": 8
+      }
+    }
+  ],
+  "scope": "offline replay of saved instructions through the first unavailable data read",
+  "initial_state": "Unicorn default registers and a zeroed synthetic stack; no live register snapshot",
+  "missing_values_supplied": false,
+  "game_process_access": false,
+  "native_game_calls": false,
+  "provider_binding_proven": false,
+  "runtime_verified": false,
+  "multiplayer_verified": false
+}

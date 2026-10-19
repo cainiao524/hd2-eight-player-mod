@@ -1,0 +1,57 @@
+{
+  "schema": "hd2_startup_baseline_isolation_v1",
+  "timestamp_local": "2026-10-11T04:50:00+08:00",
+  "build": 25480438,
+  "exe_sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+  "game_dll_sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+  "diagnostic_package": {
+    "path": "output/native_dispatch_20261010/hd2_party_api_probe_20261011_r9.zip",
+    "sha256": "e803165c1601e7ea77fb69e5ad1e8ba21639c0f152bc8df8ec59bd79aa97c4fe",
+    "installed_archive_path": "F:/Game/Steam/steamapps/common/Helldivers 2/data/9ba626afa44a3aa3.patch_128",
+    "restored_after_test": true
+  },
+  "tests": [
+    {
+      "name": "r9_package_normal_start_attempt",
+      "launch": "Steam -applaunch 553850",
+      "observed": "helldivers2 process exposed Fatal Error; no new BingusSharedLoader or HD2PartyApiProbe START line",
+      "accepted_runtime_evidence": false
+    },
+    {
+      "name": "clean_launch_without_connect_lobby",
+      "launch": "Steam -applaunch 553850 after empty LaunchOptions",
+      "observed": "process command was --bundle-dir data --release, then Fatal Error; no new loader START",
+      "accepted_runtime_evidence": false
+    },
+    {
+      "name": "baseline_without_diagnostic_archive",
+      "launch": "Steam -applaunch 553850 while patch_128 was moved aside",
+      "observed": "no helldivers2 process remained at 15 seconds; archive was restored",
+      "accepted_runtime_evidence": false,
+      "validity": "invalid_no_game_process_steam_app_error_16"
+    }
+  ],
+  "logs": {
+    "bingus_loader_last_write": "2026-10-11T03:55:46+08:00",
+    "hd2_scanner_last_write": "2026-10-11T03:55:52+08:00",
+    "party_probe_last_start": "2026-10-11T03:55:45+08:00",
+    "new_probe_start_observed": false
+  },
+  "safety": {
+    "native_calls": false,
+    "memory_writes": false,
+    "hooks_installed": false,
+    "archive_deleted": false,
+    "archive_restored": true
+  },
+  "conclusion": "baseline_without_diagnostic_archive_invalidated_by_steam_app_error_16; r9 ZIP package format remains consistent with the last successful loader session; current runtime still lacks a fresh start",
+  "release_gates": {
+    "production_installable": false,
+    "runtime_verified": false,
+    "multiplayer_verified": false
+  },
+  "validity": {
+    "valid": false,
+    "reason": "Steam console log shows AppError_16 WaitingPrevProcess during the alleged baseline; no helldivers2 process was created, so it is not a game-runtime baseline"
+  }
+}

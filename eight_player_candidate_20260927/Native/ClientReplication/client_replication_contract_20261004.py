@@ -18,6 +18,10 @@ REQUIRED_SOURCES = (
     "ep_client_replication_contract.h",
     "ep_client_replication_contract.cpp",
     "ep_client_replication_contract_test.cpp",
+    "ep_replication_bridge.h",
+    "ep_replication_bridge.cpp",
+    "ep_replication_bridge_test.cpp",
+    "ep_replication_resource_integration_test.cpp",
     "build_x64.bat",
     "CLIENT_REPLICATION_SIDECAR_CONTRACT_20261004.zh-TW.md",
 )
@@ -52,11 +56,16 @@ def verify_sources() -> dict:
 def build_receipt() -> dict:
     source_hashes = verify_sources()
     artifacts = [{"path": name, "sha256": value} for name, value in source_hashes.items()]
-    for name in ("ep_client_replication_contract.dll", "ep_client_replication_contract_test.exe"):
+    for name in ("ep_client_replication_contract.dll", "ep_client_replication_contract_test.exe",
+                 "ep_replication_bridge.dll", "ep_replication_bridge_test.exe"):
         path = HERE / name
         if not path.is_file():
             raise FileNotFoundError(path)
         artifacts.append({"path": name, "sha256": sha256(path)})
+    integration = HERE / "ep_replication_resource_integration_test.exe"
+    if not integration.is_file():
+        raise FileNotFoundError(integration)
+    artifacts.append({"path": integration.name, "sha256": sha256(integration)})
     return {
         "schema": "hd2_client_replication_sidecar_contract_v1",
         "build": BUILD,
@@ -86,6 +95,10 @@ def build_receipt() -> dict:
             "callback_lease_quiescence": True,
             "host_migration_transaction": True,
             "holes_preserved_in_network_index_table": True,
+            "admission_replication_bridge": True,
+            "native_then_replication_then_player_creation": True,
+            "replication_then_native_then_index_release": True,
+            "cleanup_retry_preserves_index_and_owner": True,
         },
         "checks": {
             "fixed_build": True,
@@ -99,11 +112,18 @@ def build_receipt() -> dict:
             "production_gate_false": True,
             "no_process_access": True,
             "no_patch_emitted": True,
+            "four_eight_sixteen_slot_integration": True,
+            "ninth_player_rejected_at_eight_slot_limit": True,
+            "stale_admission_cannot_remove_reconnect": True,
         },
         "artifacts": artifacts,
         "build_result": {
             "test_output": "ep_client_replication_contract_synthetic_passed",
             "test_exit_code": 0,
+            "integration_test_output": "ep_replication_bridge_integration_passed",
+            "integration_test_exit_code": 0,
+            "resource_integration_test_output": "ep_replication_resource_integration_passed",
+            "resource_integration_test_exit_code": 0,
         },
         "decision": {
             "production_patch_ready": False,

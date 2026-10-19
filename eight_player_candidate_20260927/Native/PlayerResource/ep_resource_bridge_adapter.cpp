@@ -87,9 +87,16 @@ EP_RESOURCE_STATUS run_stage(EP_RESOURCE_BRIDGE_ADAPTER* adapter,
     EP_RESOURCE_STATUS status = ep_resource_begin_callback(
         &adapter->resource, token, &lease);
     if (status != EP_RS_OK) return status;
-    const EP_RESOURCE_STATUS callback = cb(
-        adapter->config.native_owner, peer_id, resource_handle,
-        network_index, token);
+    EP_RESOURCE_STATUS callback = EP_RS_CALLBACK_FAILED;
+    try {
+        callback = cb(adapter->config.native_owner, peer_id, resource_handle,
+                      network_index, token);
+    } catch (...) {
+        // External stage callbacks are part of the transaction boundary.  A
+        // thrown callback must consume its lease as a failed stage so the
+        // outer bridge can run its normal remove/retry path.
+        callback = EP_RS_CALLBACK_FAILED;
+    }
     const EP_RESOURCE_STATUS completed = ep_resource_complete_callback(
         &adapter->resource, lease, stage, callback == EP_RS_OK ? TRUE : FALSE);
     if (callback != EP_RS_OK) return callback;

@@ -1,0 +1,107 @@
+{
+  "schema": "hd2_live_admission_registry_probe_v1",
+  "build": 25480438,
+  "probe": {
+    "log_path": "E:\\File\\Codes\\0\\26.10.1\\HD2\\output\\native_dispatch_20261010\\hd2_admission_registry_probe_20261011_r3.log",
+    "log_sha256": "3f9d48418e56663a53f82284a48eea3a987b672361c587927576a65c7bd6e9be",
+    "request_id": "hd2_admission_probe_20261010_1",
+    "game_base": "0x7ffec2c90000",
+    "read_only": true,
+    "calls_made": false,
+    "writes_made": false,
+    "hooks_installed": false,
+    "latest_completed_run_only": true
+  },
+  "marker_observations": {
+    "marker": "rpc_from_host_peer_c",
+    "event_hash": "0x4804FCF4",
+    "all_marker_rows": [
+      {
+        "occurrence": 1,
+        "address": "0x7eca5859",
+        "stable_reread": true,
+        "event_offsets": [],
+        "record_address": "0x7eca5839",
+        "context_sha256": "be7d5193d41db4e584b71381f8ff5778e81afc85ef7689f970dae9f66c7f3b24",
+        "marker_is_inline_in_context": true,
+        "contains_event_hash": false
+      },
+      {
+        "occurrence": 2,
+        "address": "0x249d0fa0f0c",
+        "stable_reread": true,
+        "event_offsets": [],
+        "record_address": "0x249d0fa0eec",
+        "context_sha256": "931f01f0d7d06a4d675956e32e40a80f16e74725c9730767f509eb2c4f4b1a34",
+        "marker_is_inline_in_context": true,
+        "contains_event_hash": false
+      },
+      {
+        "occurrence": 3,
+        "address": "0x249d0fa15e4",
+        "stable_reread": true,
+        "event_offsets": [],
+        "record_address": "0x249d0fa15c4",
+        "context_sha256": "4a52858e018b0470b82749c94dc5817b2fa52d8db1649732f4e56e79568df758",
+        "marker_is_inline_in_context": true,
+        "contains_event_hash": false
+      },
+      {
+        "occurrence": 4,
+        "address": "0x24a836144cc",
+        "stable_reread": true,
+        "event_offsets": [
+          "0x14"
+        ],
+        "record_address": "0x24a836144ac",
+        "context_sha256": "617bae812789a39649ef7b24b6437ea1e5c328c24ba1c5517d1fb0d74957157b",
+        "marker_is_inline_in_context": true,
+        "contains_event_hash": true
+      }
+    ],
+    "stable_marker_rows_with_event_hash": [
+      {
+        "occurrence": 4,
+        "address": "0x24a836144cc",
+        "stable_reread": true,
+        "event_offsets": [
+          "0x14"
+        ],
+        "record_address": "0x24a836144ac",
+        "context_sha256": "617bae812789a39649ef7b24b6437ea1e5c328c24ba1c5517d1fb0d74957157b",
+        "marker_is_inline_in_context": true,
+        "contains_event_hash": true
+      }
+    ],
+    "event_hash_and_marker_cooccurred": true,
+    "record_or_hash_pointer_rows": [
+      {
+        "key": "ptr_to_record_1",
+        "target_kind": "record",
+        "label": "record",
+        "target": "0x24a836144ac",
+        "count": 0
+      },
+      {
+        "key": "ptr_to_event_hash_1",
+        "target_kind": "event_hash",
+        "label": "event_hash",
+        "target": "0x24a836144c0",
+        "count": 0
+      }
+    ],
+    "record_or_hash_pointer_count": 0
+  },
+  "interpretation": {
+    "inline_data_record_observed": true,
+    "pointer_to_record_or_hash_observed": false,
+    "callback_registry_binding_proven": false,
+    "session_party_api_binding_proven": false,
+    "capacity_semantics_proven": false
+  },
+  "production": {
+    "installable": false,
+    "runtime_verified": false,
+    "multiplayer_verified": false
+  }
+}

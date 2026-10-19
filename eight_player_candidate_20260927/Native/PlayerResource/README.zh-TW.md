@@ -31,6 +31,10 @@ second → third → publish`。任一 callback 失敗都讓 Bridge 走既有 re
 離隊／重連 generation、index 3 的第二階段失敗回滾與完整清理。這是離線 ABI-shaped
 adapter；它沒有解析 RVA、呼叫 game.dll、安裝 hook 或證明第五至第八位真人聯機。
 
+stage callback 若拋出 C++ exception，adapter 會把它轉成 failed stage，先消耗並釋放
+callback lease，再交回 Bridge 的 remove/retry compensation。這避免 exception 把
+resource record 留在 `inflight` 狀態而阻塞後續 cleanup；測試已覆蓋第三階段拋出例外。
+
 ## Live storage lifetime guard（2026-10-04）
 
 `ep_resource_init()` 現在會拒絕對仍帶有 `EP_RESOURCE_MAGIC` 的 live table

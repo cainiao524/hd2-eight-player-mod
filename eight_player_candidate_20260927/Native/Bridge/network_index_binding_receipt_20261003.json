@@ -14,7 +14,8 @@
     "generation_passed_to_release": true,
     "allocator_only_retry": "Generation-zero retry record preserves an allocator index and owner lease when release_index fails before sidecar reservation.",
     "allocator_error_index_passthrough": "A non-FF index returned with an allocator error is released immediately or retained in a generation-zero retry record.",
-    "overflow_index_generation": 0
+    "overflow_index_generation": 0,
+    "fixed_index_entry": "ep_bridge_admit_at rejects allocator index mismatch before sidecar/native/replication side effects; failed release remains retryable"
   },
   "components": {
     "sidecar_exact_reserve": "Native/Sidecar/ep_sidecar_reserve_at",
@@ -48,7 +49,8 @@
       "allocator-only release failure retry before sidecar reservation",
       "allocator error with out-of-range result immediate compensation",
       "allocator error with out-of-range release failure retry",
-      "reserved index collision leaves existing reservation intact"
+      "reserved index collision leaves existing reservation intact",
+      "fixed-index mismatch rejection before side effects"
     ]
   },
   "production_executable": false,
@@ -62,11 +64,11 @@
     "Sidecar/ep_sidecar_test.cpp": "a3bfad60b08fdf1cfd1c163790e2525e62ece954fca20865f978be1e1e346431",
     "Sidecar/build_x64.bat": "c8c0c1dd674109d32fb03455ea27ebbd1e2cde1c4929a59621da6f0bf4d40b64",
     "Sidecar/README.zh-TW.md": "dc654b478890552bfe72c1785bb2d8eaab517ab70d19754b726e0536e35eafb5",
-    "Bridge/ep_native_bridge.h": "242cec6a685068ee0818df190f53697642e99b86bcacc91f35dd9a333df0dd71",
-    "Bridge/ep_native_bridge.cpp": "a67a1cc4e25cde794803a97f3af6bb178223de3950a2146e897720b0449c0ce4",
+    "Bridge/ep_native_bridge.h": "63c43f44d594abcf541debae32ab908bdd0e790178ba11fd8f18845fe9662691",
+    "Bridge/ep_native_bridge.cpp": "b6cdadbebf1fa5448001b28a2aa645483c8c33301c1927a2a580d9f04744301d",
     "Bridge/ep_native_bridge_test.cpp": "fb1e00fccb5362af50011c9dbc433400242c61274f37f35a19acfc2629220abb",
     "Bridge/ep_bridge_client_integration_test.cpp": "6ddebf8f38bd31c7d2f77bf1bcc2ce688dabf453bb08d77a389950f81e0076e2",
-    "Bridge/README.zh-TW.md": "8deaae22922369dc1c437be17c9a535393e29c5206299c8234f4fea21eddf24e",
+    "Bridge/README.zh-TW.md": "052e8a9dc306cc3dd8141ad21c90427c145a894d41e41791820bc23f2ba5bf0a",
     "ClientSidecar/ep_client_bridge_adapter.h": "96efa1712c71a22da49749073119934de2205f195547df479accd21d8650ae3f",
     "ClientSidecar/ep_client_bridge_adapter.cpp": "f75307257354121d53265f1bc96d5455cc67d71b3ea73ea81107600ceb6a170c",
     "ClientSidecar/ep_client_bridge_adapter_test.cpp": "3110e4d9cde05edd10cfdc6f6d859567ab0ad69f1aa4f9092b584701c7c13f4d",

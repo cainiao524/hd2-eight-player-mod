@@ -69,3 +69,24 @@ __pycache__/
 .ruff_cache/
 .venv/
 .git/
+
+# Saved multiplayer evidence; no generated installation archives or full images.
+!/output/
+/output/*
+!/output/native_dispatch_20261010/
+/output/native_dispatch_20261010/*
+!/output/native_dispatch_20261010/*.json
+!/output/native_dispatch_20261010/*.xml
+!/output/native_dispatch_20261010/offline_candidate_test_run_20261011.log
+!/output/native_dispatch_20261010/party_entry_call_boundary_tests_20261016.log
+!/output/native_dispatch_20261010/recovered_party_windows_20261015/
+
+# New temporary build outputs stay local; existing tracked history is preserved.
+*.obj
+*.exp
+*.lib
+*.cod
+/eight_player_candidate_20260927/Native/MidGate/dbg_build.bat
+/eight_player_candidate_20260927/Native/MidGate/tiny_build.bat
+/eight_player_candidate_20260927/Native/MidGate/tiny_call.cpp
+/eight_player_candidate_20260927/Native/MidGate/tiny_call.exe

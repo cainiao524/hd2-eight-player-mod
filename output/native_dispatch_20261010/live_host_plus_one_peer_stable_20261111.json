@@ -1,0 +1,68 @@
+{
+  "schema": "hd2_host_plus_one_peer_observation_v1",
+  "build": 25480438,
+  "source_snapshots": [
+    {
+      "path": "output\\native_dispatch_20261010\\live_session_snapshot_20261111_r16a.json",
+      "sha256": "e2cb756aa06d5592fd4e53dad4bd36bf4dffd2dfa30f8d284f6687b3e6ced273",
+      "captured_at_utc": "2026-10-11T10:55:10.752654+00:00"
+    },
+    {
+      "path": "output\\native_dispatch_20261010\\live_session_snapshot_20261111_r16b.json",
+      "sha256": "07a9790b10cacf82eefa5b74d5502a7a552380eaef3b312bfa508f00ada91125",
+      "captured_at_utc": "2026-10-11T10:55:15.843120+00:00"
+    }
+  ],
+  "party_slot_capture": {
+    "path": "output\\native_dispatch_20261010\\live_party_slots_external_capture_20261111_pid38492_r16.json",
+    "sha256": "30fee57681d3e0a46abccf20d2571281a189cf1108a02f60ff8e1556fa475d78",
+    "manager_holder": {
+      "rva": "0x27ced10",
+      "address": "0x7ff6a0baed10",
+      "raw": "c2f0008d77431d11",
+      "value": "0x111d43778d00f0c2",
+      "owner": {
+        "module": null,
+        "rva": null
+      }
+    }
+  },
+  "read_only": true,
+  "calls_made": false,
+  "writes_made": false,
+  "hooks_installed": false,
+  "observed": {
+    "mode": 4,
+    "peer_count_raw": 2,
+    "stable_across_two_reads": true,
+    "session_owner": "0x1cc78177e90",
+    "local_peer_hex": "f869ad7b51e7da3f",
+    "host_peer_hex": "f869ad7b51e7da3f",
+    "host_equals_local": true,
+    "remote_peer_records": [
+      {
+        "ordinal": 1,
+        "lo": 3740369642,
+        "hi": 1800538805,
+        "network_index": 1
+      }
+    ],
+    "nonzero_roster_slots": 2,
+    "remote_roster_names": [
+      "MonkeyDsBankai"
+    ]
+  },
+  "gates": {
+    "host_plus_one_peer_stable_observed": true,
+    "join_transition_observed": false,
+    "leave_slot_release_verified": false,
+    "host_migration_verified": false,
+    "cleanup_verified": false,
+    "capacity_above_four_verified": false,
+    "public_release_allowed": false
+  },
+  "limits": [
+    "Two stable snapshots prove a shared two-peer state, not the preceding join transition.",
+    "No Party method was called and no memory was written."
+  ]
+}\n

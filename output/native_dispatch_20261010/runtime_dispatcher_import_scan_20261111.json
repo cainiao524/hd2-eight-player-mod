@@ -1,0 +1,57 @@
+{
+  "schema": "hd2_runtime_dispatcher_import_scan_v1",
+  "source": "output\\native_dispatch_20261010\\live_party_jump_chains_20261111_pid38492_r5.json",
+  "source_sha256": "dd41ee4dd10021cb2b5e91bba9702d2e5abb5b98698f6bc717017b41d8ea5254",
+  "read_only": true,
+  "calls_made": false,
+  "writes_made": false,
+  "hooks_installed": false,
+  "dispatcher_windows": [
+    {
+      "chain": "create_network_candidate",
+      "dispatcher_target_rva": "0x29791f8",
+      "code_sha256": "46390d253b52e062fb2b71b80db4b5f062d8bc913a0a4342d06357993a717c74",
+      "iat_or_indirect_import_refs": []
+    },
+    {
+      "chain": "async_or_state_candidate",
+      "dispatcher_target_rva": "0x29790d2",
+      "code_sha256": "d3112e879cad599d64da898f765308a691958e898335237ef932aad8b59940d7",
+      "iat_or_indirect_import_refs": []
+    },
+    {
+      "chain": "authenticate_or_state_candidate",
+      "dispatcher_target_rva": "0x297909a",
+      "code_sha256": "8f9a336cbef37f35c33e191f6beba28e0ebf5467cd29564b8e0103bd86a15e3c",
+      "iat_or_indirect_import_refs": []
+    },
+    {
+      "chain": "create_endpoint_candidate",
+      "dispatcher_target_rva": "0x2979206",
+      "code_sha256": "af15dfc2799cdac8d15ff5cb10790eb3dab4bce8ab0c8e4720d8fb9f470c8f42",
+      "iat_or_indirect_import_refs": []
+    },
+    {
+      "chain": "connect_network_candidate",
+      "dispatcher_target_rva": "0x29790ee",
+      "code_sha256": "058b106eb00c6b7a138c202a1caad88f2017764399093be7b2501c019af7e5eb",
+      "iat_or_indirect_import_refs": []
+    },
+    {
+      "chain": "auth_network_candidate",
+      "dispatcher_target_rva": "0x2979038",
+      "code_sha256": "bfaea876af00ba8a86ce4b5622e07f51efc5eba4e9ca78ca73631c1154c8ad29",
+      "iat_or_indirect_import_refs": []
+    }
+  ],
+  "findings": {
+    "dispatcher_windows_scanned": 6,
+    "ff15_or_ff25_refs_found": 0,
+    "partywin_binding_proven": false,
+    "abi_proven": false
+  },
+  "limits": [
+    "Only the bounded 0x100-byte runtime windows already captured were scanned.",
+    "No dispatcher was invoked and no indirect target was followed."
+  ]
+}\n

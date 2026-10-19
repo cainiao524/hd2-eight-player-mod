@@ -1,0 +1,34 @@
+{
+  "schema": "hd2_gameguard_startup_block_v1",
+  "timestamp_local": "2026-10-11T04:57:10+08:00",
+  "build": 25480438,
+  "exe_sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+  "launch_method": "steam://run/553850",
+  "command_line": "helldivers2.exe --bundle-dir data --release +connect_lobby -212",
+  "process_observation": {
+    "window_title": "Fatal Error!",
+    "loader_start_emitted": false,
+    "party_probe_start_emitted": false,
+    "game_process_stopped": true
+  },
+  "external_signals": {
+    "steam_gameprocess": "GameGuard\\ggerror.des tracked after game launch",
+    "faq_process": "msedge.exe https://gameguardfaq.nprotect.com/cn/con_01.html",
+    "gameguard_recent_files": [
+      "bin/GameGuard/npgl.erl",
+      "bin/GameGuard/npgg.erl",
+      "bin/GameGuard/npgm.erl"
+    ]
+  },
+  "safety": {
+    "native_calls": false,
+    "memory_writes": false,
+    "hooks_installed": false
+  },
+  "conclusion": "GameGuard or external launch environment blocks runtime before loader initialization; no Session/Party or multiplayer evidence accepted",
+  "release_gates": {
+    "production_installable": false,
+    "runtime_verified": false,
+    "multiplayer_verified": false
+  }
+}

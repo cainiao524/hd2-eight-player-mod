@@ -1,0 +1,495 @@
+{
+  "schema": "hd2_runtime_callsite_slot_audit_v1",
+  "build": 25480438,
+  "log_sha256": "9b808271d099d882ea61eede167ff5265bf457aa7ed683f8b4aae328e811823b",
+  "probe_section": "2026-10-11 17:15:32 START read_only=true party_api_probe=20261011\r",
+  "modules": {
+    "game_base": "0x7ffe8b680000",
+    "party_base": "0x7ffe91690000",
+    "playfab_base": "0x7ffe914c0000",
+    "exe_base": "0x7ff69e3e0000"
+  },
+  "read_only": true,
+  "calls_made": false,
+  "writes_made": false,
+  "hooks_installed": false,
+  "runtime_captured_windows": [
+    {
+      "rva": "0x8E1370",
+      "label": "create_network_callsite",
+      "address": "0x7ff69ecc1370",
+      "size": 4096,
+      "sha256": "0e6e20315ee6e64b80c48b78197feb4b968e68e2995c659496d3c3fe049a5fb2"
+    },
+    {
+      "rva": "0x8E1970",
+      "label": "follow_on_callsite",
+      "address": "0x7ff69ecc1970",
+      "size": 4096,
+      "sha256": "057f43db6fd33534cfcb4c5221574830cdc873a6ad607b4b4a592d62e29fbfa9"
+    }
+  ],
+  "indirect_call_count": 36,
+  "indirect_calls": [
+    {
+      "window": "create_network_callsite",
+      "instruction": "0x7ff69ecc1466",
+      "instruction_rva": "0x8e1466",
+      "slot": "0x7ff69f7d7ba8",
+      "slot_rva": "0x13f7ba8",
+      "bytes": "ff153c67b100"
+    },
+    {
+      "window": "create_network_callsite",
+      "instruction": "0x7ff69ecc15cb",
+      "instruction_rva": "0x8e15cb",
+      "slot": "0x7ff69f7d6db8",
+      "slot_rva": "0x13f6db8",
+      "bytes": "ff15e757b100",
+      "exe_slot": {
+        "rva": "0x13F6DB8",
+        "label": "create_network_candidate",
+        "target": "0x7FF6A105A7C8",
+        "in_party": false,
+        "in_exe": true
+      }
+    },
+    {
+      "window": "create_network_callsite",
+      "instruction": "0x7ff69ecc15f1",
+      "instruction_rva": "0x8e15f1",
+      "slot": "0x7ff69f7d6ef8",
+      "slot_rva": "0x13f6ef8",
+      "bytes": "ff150159b100",
+      "exe_slot": {
+        "rva": "0x13F6EF8",
+        "label": "async_or_state_candidate",
+        "target": "0x7FF6A1051173",
+        "in_party": false,
+        "in_exe": true
+      }
+    },
+    {
+      "window": "create_network_callsite",
+      "instruction": "0x7ff69ecc16d0",
+      "instruction_rva": "0x8e16d0",
+      "slot": "0x7ff69f7d6c48",
+      "slot_rva": "0x13f6c48",
+      "bytes": "ff157255b100"
+    },
+    {
+      "window": "create_network_callsite",
+      "instruction": "0x7ff69ecc16f0",
+      "instruction_rva": "0x8e16f0",
+      "slot": "0x7ff69f7d6ef8",
+      "slot_rva": "0x13f6ef8",
+      "bytes": "ff150258b100",
+      "exe_slot": {
+        "rva": "0x13F6EF8",
+        "label": "async_or_state_candidate",
+        "target": "0x7FF6A1051173",
+        "in_party": false,
+        "in_exe": true
+      }
+    },
+    {
+      "window": "create_network_callsite",
+      "instruction": "0x7ff69ecc1723",
+      "instruction_rva": "0x8e1723",
+      "slot": "0x7ff69f7d6e10",
+      "slot_rva": "0x13f6e10",
+      "bytes": "ff15e756b100"
+    },
+    {
+      "window": "create_network_callsite",
+      "instruction": "0x7ff69ecc1743",
+      "instruction_rva": "0x8e1743",
+      "slot": "0x7ff69f7d6ef8",
+      "slot_rva": "0x13f6ef8",
+      "bytes": "ff15af57b100",
+      "exe_slot": {
+        "rva": "0x13F6EF8",
+        "label": "async_or_state_candidate",
+        "target": "0x7FF6A1051173",
+        "in_party": false,
+        "in_exe": true
+      }
+    },
+    {
+      "window": "create_network_callsite",
+      "instruction": "0x7ff69ecc18ca",
+      "instruction_rva": "0x8e18ca",
+      "slot": "0x7ff69f7d6f80",
+      "slot_rva": "0x13f6f80",
+      "bytes": "ff15b056b100"
+    },
+    {
+      "window": "create_network_callsite",
+      "instruction": "0x7ff69ecc18f5",
+      "instruction_rva": "0x8e18f5",
+      "slot": "0x7ff69f7d6ef8",
+      "slot_rva": "0x13f6ef8",
+      "bytes": "ff15fd55b100",
+      "exe_slot": {
+        "rva": "0x13F6EF8",
+        "label": "async_or_state_candidate",
+        "target": "0x7FF6A1051173",
+        "in_party": false,
+        "in_exe": true
+      }
+    },
+    {
+      "window": "create_network_callsite",
+      "instruction": "0x7ff69ecc19ac",
+      "instruction_rva": "0x8e19ac",
+      "slot": "0x7ff69f7d6f70",
+      "slot_rva": "0x13f6f70",
+      "bytes": "ff15be55b100",
+      "exe_slot": {
+        "rva": "0x13F6F70",
+        "label": "connect_network_candidate",
+        "target": "0x7FF6A1059D91",
+        "in_party": false,
+        "in_exe": true
+      }
+    },
+    {
+      "window": "create_network_callsite",
+      "instruction": "0x7ff69ecc19d3",
+      "instruction_rva": "0x8e19d3",
+      "slot": "0x7ff69f7d6ef8",
+      "slot_rva": "0x13f6ef8",
+      "bytes": "ff151f55b100",
+      "exe_slot": {
+        "rva": "0x13F6EF8",
+        "label": "async_or_state_candidate",
+        "target": "0x7FF6A1051173",
+        "in_party": false,
+        "in_exe": true
+      }
+    },
+    {
+      "window": "create_network_callsite",
+      "instruction": "0x7ff69ecc1a0e",
+      "instruction_rva": "0x8e1a0e",
+      "slot": "0x7ff69f7d7030",
+      "slot_rva": "0x13f7030",
+      "bytes": "ff151c56b100",
+      "exe_slot": {
+        "rva": "0x13F7030",
+        "label": "auth_network_candidate",
+        "target": "0x7FF6A105A6C6",
+        "in_party": false,
+        "in_exe": true
+      }
+    },
+    {
+      "window": "create_network_callsite",
+      "instruction": "0x7ff69ecc1a37",
+      "instruction_rva": "0x8e1a37",
+      "slot": "0x7ff69f7d6ef8",
+      "slot_rva": "0x13f6ef8",
+      "bytes": "ff15bb54b100",
+      "exe_slot": {
+        "rva": "0x13F6EF8",
+        "label": "async_or_state_candidate",
+        "target": "0x7FF6A1051173",
+        "in_party": false,
+        "in_exe": true
+      }
+    },
+    {
+      "window": "create_network_callsite",
+      "instruction": "0x7ff69ecc1a6b",
+      "instruction_rva": "0x8e1a6b",
+      "slot": "0x7ff69f7d6df0",
+      "slot_rva": "0x13f6df0",
+      "bytes": "ff157f53b100",
+      "exe_slot": {
+        "rva": "0x13F6DF0",
+        "label": "authenticate_or_state_candidate",
+        "target": "0x7FF6A1052EF2",
+        "in_party": false,
+        "in_exe": true
+      }
+    },
+    {
+      "window": "create_network_callsite",
+      "instruction": "0x7ff69ecc1a8b",
+      "instruction_rva": "0x8e1a8b",
+      "slot": "0x7ff69f7d6ef8",
+      "slot_rva": "0x13f6ef8",
+      "bytes": "ff156754b100",
+      "exe_slot": {
+        "rva": "0x13F6EF8",
+        "label": "async_or_state_candidate",
+        "target": "0x7FF6A1051173",
+        "in_party": false,
+        "in_exe": true
+      }
+    },
+    {
+      "window": "create_network_callsite",
+      "instruction": "0x7ff69ecc1ad8",
+      "instruction_rva": "0x8e1ad8",
+      "slot": "0x7ff69f7d6c30",
+      "slot_rva": "0x13f6c30",
+      "bytes": "ff155251b100",
+      "exe_slot": {
+        "rva": "0x13F6C30",
+        "label": "create_endpoint_candidate",
+        "target": "0x7FF6A1052358",
+        "in_party": false,
+        "in_exe": true
+      }
+    },
+    {
+      "window": "create_network_callsite",
+      "instruction": "0x7ff69ecc1af8",
+      "instruction_rva": "0x8e1af8",
+      "slot": "0x7ff69f7d6ef8",
+      "slot_rva": "0x13f6ef8",
+      "bytes": "ff15fa53b100",
+      "exe_slot": {
+        "rva": "0x13F6EF8",
+        "label": "async_or_state_candidate",
+        "target": "0x7FF6A1051173",
+        "in_party": false,
+        "in_exe": true
+      }
+    },
+    {
+      "window": "create_network_callsite",
+      "instruction": "0x7ff69ecc1bfc",
+      "instruction_rva": "0x8e1bfc",
+      "slot": "0x7ff69f7d6fc8",
+      "slot_rva": "0x13f6fc8",
+      "bytes": "ff15c653b100"
+    },
+    {
+      "window": "create_network_callsite",
+      "instruction": "0x7ff69ecc1c21",
+      "instruction_rva": "0x8e1c21",
+      "slot": "0x7ff69f7d6ef8",
+      "slot_rva": "0x13f6ef8",
+      "bytes": "ff15d152b100",
+      "exe_slot": {
+        "rva": "0x13F6EF8",
+        "label": "async_or_state_candidate",
+        "target": "0x7FF6A1051173",
+        "in_party": false,
+        "in_exe": true
+      }
+    },
+    {
+      "window": "create_network_callsite",
+      "instruction": "0x7ff69ecc1d75",
+      "instruction_rva": "0x8e1d75",
+      "slot": "0x7ff69f7d7000",
+      "slot_rva": "0x13f7000",
+      "bytes": "ff158552b100"
+    },
+    {
+      "window": "create_network_callsite",
+      "instruction": "0x7ff69ecc1e75",
+      "instruction_rva": "0x8e1e75",
+      "slot": "0x7ff69f7d6b90",
+      "slot_rva": "0x13f6b90",
+      "bytes": "ff15154db100"
+    },
+    {
+      "window": "follow_on_callsite",
+      "instruction": "0x7ff69ecc19ac",
+      "instruction_rva": "0x8e19ac",
+      "slot": "0x7ff69f7d6f70",
+      "slot_rva": "0x13f6f70",
+      "bytes": "ff15be55b100",
+      "exe_slot": {
+        "rva": "0x13F6F70",
+        "label": "connect_network_candidate",
+        "target": "0x7FF6A1059D91",
+        "in_party": false,
+        "in_exe": true
+      }
+    },
+    {
+      "window": "follow_on_callsite",
+      "instruction": "0x7ff69ecc19d3",
+      "instruction_rva": "0x8e19d3",
+      "slot": "0x7ff69f7d6ef8",
+      "slot_rva": "0x13f6ef8",
+      "bytes": "ff151f55b100",
+      "exe_slot": {
+        "rva": "0x13F6EF8",
+        "label": "async_or_state_candidate",
+        "target": "0x7FF6A1051173",
+        "in_party": false,
+        "in_exe": true
+      }
+    },
+    {
+      "window": "follow_on_callsite",
+      "instruction": "0x7ff69ecc1a0e",
+      "instruction_rva": "0x8e1a0e",
+      "slot": "0x7ff69f7d7030",
+      "slot_rva": "0x13f7030",
+      "bytes": "ff151c56b100",
+      "exe_slot": {
+        "rva": "0x13F7030",
+        "label": "auth_network_candidate",
+        "target": "0x7FF6A105A6C6",
+        "in_party": false,
+        "in_exe": true
+      }
+    },
+    {
+      "window": "follow_on_callsite",
+      "instruction": "0x7ff69ecc1a37",
+      "instruction_rva": "0x8e1a37",
+      "slot": "0x7ff69f7d6ef8",
+      "slot_rva": "0x13f6ef8",
+      "bytes": "ff15bb54b100",
+      "exe_slot": {
+        "rva": "0x13F6EF8",
+        "label": "async_or_state_candidate",
+        "target": "0x7FF6A1051173",
+        "in_party": false,
+        "in_exe": true
+      }
+    },
+    {
+      "window": "follow_on_callsite",
+      "instruction": "0x7ff69ecc1a6b",
+      "instruction_rva": "0x8e1a6b",
+      "slot": "0x7ff69f7d6df0",
+      "slot_rva": "0x13f6df0",
+      "bytes": "ff157f53b100",
+      "exe_slot": {
+        "rva": "0x13F6DF0",
+        "label": "authenticate_or_state_candidate",
+        "target": "0x7FF6A1052EF2",
+        "in_party": false,
+        "in_exe": true
+      }
+    },
+    {
+      "window": "follow_on_callsite",
+      "instruction": "0x7ff69ecc1a8b",
+      "instruction_rva": "0x8e1a8b",
+      "slot": "0x7ff69f7d6ef8",
+      "slot_rva": "0x13f6ef8",
+      "bytes": "ff156754b100",
+      "exe_slot": {
+        "rva": "0x13F6EF8",
+        "label": "async_or_state_candidate",
+        "target": "0x7FF6A1051173",
+        "in_party": false,
+        "in_exe": true
+      }
+    },
+    {
+      "window": "follow_on_callsite",
+      "instruction": "0x7ff69ecc1ad8",
+      "instruction_rva": "0x8e1ad8",
+      "slot": "0x7ff69f7d6c30",
+      "slot_rva": "0x13f6c30",
+      "bytes": "ff155251b100",
+      "exe_slot": {
+        "rva": "0x13F6C30",
+        "label": "create_endpoint_candidate",
+        "target": "0x7FF6A1052358",
+        "in_party": false,
+        "in_exe": true
+      }
+    },
+    {
+      "window": "follow_on_callsite",
+      "instruction": "0x7ff69ecc1af8",
+      "instruction_rva": "0x8e1af8",
+      "slot": "0x7ff69f7d6ef8",
+      "slot_rva": "0x13f6ef8",
+      "bytes": "ff15fa53b100",
+      "exe_slot": {
+        "rva": "0x13F6EF8",
+        "label": "async_or_state_candidate",
+        "target": "0x7FF6A1051173",
+        "in_party": false,
+        "in_exe": true
+      }
+    },
+    {
+      "window": "follow_on_callsite",
+      "instruction": "0x7ff69ecc1bfc",
+      "instruction_rva": "0x8e1bfc",
+      "slot": "0x7ff69f7d6fc8",
+      "slot_rva": "0x13f6fc8",
+      "bytes": "ff15c653b100"
+    },
+    {
+      "window": "follow_on_callsite",
+      "instruction": "0x7ff69ecc1c21",
+      "instruction_rva": "0x8e1c21",
+      "slot": "0x7ff69f7d6ef8",
+      "slot_rva": "0x13f6ef8",
+      "bytes": "ff15d152b100",
+      "exe_slot": {
+        "rva": "0x13F6EF8",
+        "label": "async_or_state_candidate",
+        "target": "0x7FF6A1051173",
+        "in_party": false,
+        "in_exe": true
+      }
+    },
+    {
+      "window": "follow_on_callsite",
+      "instruction": "0x7ff69ecc1d75",
+      "instruction_rva": "0x8e1d75",
+      "slot": "0x7ff69f7d7000",
+      "slot_rva": "0x13f7000",
+      "bytes": "ff158552b100"
+    },
+    {
+      "window": "follow_on_callsite",
+      "instruction": "0x7ff69ecc1e75",
+      "instruction_rva": "0x8e1e75",
+      "slot": "0x7ff69f7d6b90",
+      "slot_rva": "0x13f6b90",
+      "bytes": "ff15154db100"
+    },
+    {
+      "window": "follow_on_callsite",
+      "instruction": "0x7ff69ecc2395",
+      "instruction_rva": "0x8e2395",
+      "slot": "0x7ff69f7d6ed8",
+      "slot_rva": "0x13f6ed8",
+      "bytes": "ff153d4bb100"
+    },
+    {
+      "window": "follow_on_callsite",
+      "instruction": "0x7ff69ecc270d",
+      "instruction_rva": "0x8e270d",
+      "slot": "0x7ff69f7d6fd8",
+      "slot_rva": "0x13f6fd8",
+      "bytes": "ff15c548b100"
+    },
+    {
+      "window": "follow_on_callsite",
+      "instruction": "0x7ff69ecc273c",
+      "instruction_rva": "0x8e273c",
+      "slot": "0x7ff69f7d6d38",
+      "slot_rva": "0x13f6d38",
+      "bytes": "ff15f645b100"
+    }
+  ],
+  "findings": {
+    "indirect_calls_to_partywin_targets_observed": false,
+    "named_party_iat_calls_observed": false,
+    "candidate_exe_slot_calls_observed": true,
+    "call_semantics_proven": false,
+    "session_party_abi_proven": false
+  },
+  "limits": [
+    "This disassembles only runtime-captured windows; it does not follow or invoke targets.",
+    "A register/stack shape remains an ABI candidate until direct target and return/state behavior are verified."
+  ]
+}

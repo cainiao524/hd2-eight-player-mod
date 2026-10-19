@@ -1,0 +1,127 @@
+{
+  "schema": "hd2_party_session_lifecycle_gap_matrix_v1",
+  "build": 25480438,
+  "source_receipts": [
+    {
+      "path": "output/native_dispatch_20261010/party_session_abi_candidates_20261011.json",
+      "sha256": "140800dd343b2f3116322f8bc37cf267e83c813807a8ca6a0e2c5db38b05fe3b"
+    },
+    {
+      "path": "output/native_dispatch_20261010/live_party_api_pointer_probe_20261011.json",
+      "sha256": "93b02673b867ffe7f18794ef7355769d62e96f160caa420cdf5aaa9c6494064f"
+    },
+    {
+      "path": "output/native_dispatch_20261010/live_session_vtable_object_probe_20261011_ship_full.json",
+      "sha256": "ebf7a427240f8ab9c61c0dc058afa1c0ed37dadf89bb00ae1f9a42e92eb7d7ee"
+    }
+  ],
+  "requirements": {
+    "create_room": {
+      "status": "candidate_shape_only",
+      "evidence": [
+        "EXE+0x8E1370 -> EXE+0x13F6DB8",
+        "PartyNetworkConfiguration shape [input,input,1,1,1,0xF]"
+      ],
+      "missing": [
+        "PartyWin export binding",
+        "initialized PartyManager/localUser pointer",
+        "return/state-change ABI",
+        "service acceptance"
+      ]
+    },
+    "join_room": {
+      "status": "candidate_shape_only",
+      "evidence": [
+        "connect candidate EXE+0x13F6F70",
+        "authenticate candidate EXE+0x13F7030"
+      ],
+      "missing": [
+        "descriptor/invitation runtime values",
+        "PartyWin binding",
+        "client completion state",
+        "remote visibility"
+      ]
+    },
+    "leave_room": {
+      "status": "export_pointer_observed_only",
+      "evidence": [
+        "bounded pointer table contains PartyNetworkLeaveNetwork"
+      ],
+      "missing": [
+        "callsite/owner",
+        "async completion",
+        "endpoint/user removal sequence",
+        "client observation"
+      ]
+    },
+    "player_count_sync": {
+      "status": "unproven",
+      "evidence": [
+        "GameSession object/vtable observation",
+        "Party configuration candidate"
+      ],
+      "missing": [
+        "authoritative player count field",
+        "host/client replication trace",
+        "departure slot release"
+      ]
+    },
+    "capacity_validation": {
+      "status": "configuration_shape_only",
+      "evidence": [
+        "official PartyNetworkConfiguration field order matches live shape"
+      ],
+      "missing": [
+        "server NetworkLimitReached behavior at 8",
+        "game admission gate",
+        "client capacity gate"
+      ]
+    },
+    "host_migration": {
+      "status": "unproven",
+      "evidence": [
+        "no live migration event"
+      ],
+      "missing": [
+        "game host owner transition",
+        "Party relay/network transition",
+        "resource/roster rebind",
+        "post-migration task continuity"
+      ]
+    },
+    "cleanup": {
+      "status": "export_address_only",
+      "evidence": [
+        "PartyCleanup export address observed"
+      ],
+      "missing": [
+        "leave-before-cleanup ordering",
+        "owner lifetime",
+        "rollback/re-entry",
+        "task and lobby teardown"
+      ]
+    },
+    "mission_instance_consistency": {
+      "status": "unproven",
+      "evidence": [],
+      "missing": [
+        "same mission/session id across independent clients",
+        "entity/resource/roster binding"
+      ]
+    }
+  },
+  "gates": {
+    "installable": false,
+    "runtime_verified": false,
+    "multiplayer_verified": false,
+    "public_release_allowed": false
+  },
+  "required_next_runtime_evidence": [
+    "successful full menu/ship-state launch with loader START/DONE after current Fatal Error condition is resolved",
+    "read EXE+0x27CED10 after Party initialization",
+    "bind candidate targets to PartyWin or prove game wrapper semantics with permitted trace",
+    "host plus one client create/join/leave/migration cleanup test",
+    "5-8 independent client logs accepted by verify_multiplayer_acceptance.py"
+  ],
+  "synthetic_or_indirect_evidence_is_not_completion": true
+}

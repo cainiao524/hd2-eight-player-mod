@@ -1,0 +1,387 @@
+{
+  "schema": "hd2_party_slots_capture_plan_v2",
+  "build": 25480438,
+  "file_sha256": {
+    "helldivers2.exe": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+    "game.dll": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+    "PartyWin.dll": "de34667c2f7084013d9c03cd5d1cb5dc3321bc36bb616a845e35534e4e7995e0"
+  },
+  "disk_reads": "Full contents of exactly the three verified loaded image files; PE/Party checks also read those files. No other game files or logs.",
+  "metadata_queries": "One explicit PID: executable path, loaded module names/paths/base/size, and memory-region protection for requested ranges. No process search.",
+  "fixed_memory_reads": [
+    {
+      "label": "loaded_pe_header",
+      "module": "helldivers2.exe",
+      "rva": "0x0",
+      "bytes_per_read": 4096,
+      "maximum_reads": 2,
+      "sha256": null
+    },
+    {
+      "label": "loaded_pe_header",
+      "module": "game.dll",
+      "rva": "0x0",
+      "bytes_per_read": 4096,
+      "maximum_reads": 2,
+      "sha256": null
+    },
+    {
+      "label": "loaded_pe_header",
+      "module": "PartyWin.dll",
+      "rva": "0x0",
+      "bytes_per_read": 4096,
+      "maximum_reads": 2,
+      "sha256": null
+    },
+    {
+      "label": "game_code_pin",
+      "module": "game.dll",
+      "rva": "0x108c18f",
+      "bytes_per_read": 76,
+      "maximum_reads": 2,
+      "sha256": "e56eba5ea8a480553db61f70a65f1e036bd9ef81946ad7c8208832e1c700858a"
+    },
+    {
+      "label": "game_code_pin",
+      "module": "game.dll",
+      "rva": "0x4edaa4",
+      "bytes_per_read": 36,
+      "maximum_reads": 2,
+      "sha256": "3647ce88ba32769a28256de285303692863403e763ee6bffcdca69a3f0320562"
+    },
+    {
+      "label": "manager_helper_pin",
+      "module": "helldivers2.exe",
+      "rva": "0x8e25b0",
+      "bytes_per_read": 91,
+      "maximum_reads": 2,
+      "sha256": "6bbb8b0531d8caf268b2f2fd083edd0316bf2f30ca14048bd22b3d24a6edab9d"
+    },
+    {
+      "label": "manager_code_pin",
+      "module": "PartyWin.dll",
+      "rva": "0x15720",
+      "bytes_per_read": 960,
+      "maximum_reads": 2,
+      "sha256": "7f58b941e3b4315fd5a9f42c24597c1f9cf0ea6e677f8088a75b12efdf33e164"
+    },
+    {
+      "label": "manager_code_pin",
+      "module": "PartyWin.dll",
+      "rva": "0x26860",
+      "bytes_per_read": 496,
+      "maximum_reads": 2,
+      "sha256": "7762fe35724e7cd67b85070003ecbd1c17449261f8fc015b54a4ccfad9fc9c21"
+    },
+    {
+      "label": "manager_code_pin",
+      "module": "PartyWin.dll",
+      "rva": "0x26db0",
+      "bytes_per_read": 188,
+      "maximum_reads": 2,
+      "sha256": "0e0d1d83f285dd70b91e77a8ea74bfe02582b8b3d43cf5632d962a25aadaf58c"
+    },
+    {
+      "label": "create_network_candidate_wrapper_pin",
+      "module": "helldivers2.exe",
+      "rva": "0x2fc3336",
+      "bytes_per_read": 1024,
+      "maximum_reads": 2,
+      "sha256": "8c8da15b4aac8db61ff494d411144bcd738552d73958f7281a2209e223b0b468"
+    },
+    {
+      "label": "create_network_candidate_position_helper",
+      "module": "helldivers2.exe",
+      "rva": "0x29791f8",
+      "bytes_per_read": 14,
+      "maximum_reads": 2,
+      "sha256": "636428f5332e3bddbb28cc4cf9e4546a247ab572ab0c643807bae32981e6d9c4"
+    },
+    {
+      "label": "create_network_candidate_entry_qword",
+      "module": "helldivers2.exe",
+      "rva": "0x2985447",
+      "bytes_per_read": 8,
+      "maximum_reads": 2,
+      "sha256": null
+    },
+    {
+      "label": "async_or_state_candidate_wrapper_pin",
+      "module": "helldivers2.exe",
+      "rva": "0x2fcc2d5",
+      "bytes_per_read": 1024,
+      "maximum_reads": 2,
+      "sha256": "722c8831526d02887b3cbcfa74c8b3119edc15dd5a7d9179457ea8088e7316d7"
+    },
+    {
+      "label": "async_or_state_candidate_position_helper",
+      "module": "helldivers2.exe",
+      "rva": "0x29790d2",
+      "bytes_per_read": 14,
+      "maximum_reads": 2,
+      "sha256": "e3406065f8a0a48beb85aefbdd54fee2ec496dce3352473f393d886d11975a6c"
+    },
+    {
+      "label": "async_or_state_candidate_entry_qword",
+      "module": "helldivers2.exe",
+      "rva": "0x2985527",
+      "bytes_per_read": 8,
+      "maximum_reads": 2,
+      "sha256": null
+    },
+    {
+      "label": "authenticate_or_state_candidate_wrapper_pin",
+      "module": "helldivers2.exe",
+      "rva": "0x2f4d507",
+      "bytes_per_read": 1024,
+      "maximum_reads": 2,
+      "sha256": "59cf8dc8bbc006ed18bf5da807f418d3bcf30c7ed7917b4b818a8038dc2377b4"
+    },
+    {
+      "label": "authenticate_or_state_candidate_position_helper",
+      "module": "helldivers2.exe",
+      "rva": "0x297909a",
+      "bytes_per_read": 14,
+      "maximum_reads": 2,
+      "sha256": "4fb5871da1468fa763e2b93999a5a1f22cc3be3e2f99cd6167817c9e96cd636c"
+    },
+    {
+      "label": "authenticate_or_state_candidate_entry_qword",
+      "module": "helldivers2.exe",
+      "rva": "0x29848a7",
+      "bytes_per_read": 8,
+      "maximum_reads": 2,
+      "sha256": null
+    },
+    {
+      "label": "create_endpoint_candidate_wrapper_pin",
+      "module": "helldivers2.exe",
+      "rva": "0x2f6a2a4",
+      "bytes_per_read": 1024,
+      "maximum_reads": 2,
+      "sha256": "8e8287f94115ef2a976a32bd64a8b260cbef498907d66158f2ce81a96d5d2c9d"
+    },
+    {
+      "label": "create_endpoint_candidate_position_helper",
+      "module": "helldivers2.exe",
+      "rva": "0x2979206",
+      "bytes_per_read": 14,
+      "maximum_reads": 2,
+      "sha256": "e8319002fa39f54cb77fb9824404cdb5e5fa565d90a298c5ee10986c9e0b6cbb"
+    },
+    {
+      "label": "create_endpoint_candidate_entry_qword",
+      "module": "helldivers2.exe",
+      "rva": "0x2984b7f",
+      "bytes_per_read": 8,
+      "maximum_reads": 2,
+      "sha256": null
+    },
+    {
+      "label": "connect_network_candidate_wrapper_pin",
+      "module": "helldivers2.exe",
+      "rva": "0x2f71df0",
+      "bytes_per_read": 1024,
+      "maximum_reads": 2,
+      "sha256": "27fe8a7f90af543c0c777a83ae23d58a08960fa432628d0f1d1e541879f2b7b4"
+    },
+    {
+      "label": "connect_network_candidate_position_helper",
+      "module": "helldivers2.exe",
+      "rva": "0x29790ee",
+      "bytes_per_read": 14,
+      "maximum_reads": 2,
+      "sha256": "562518a822a723bb8e0652083bcf4ef5d85812baf84d9c610b990e0ad9735856"
+    },
+    {
+      "label": "connect_network_candidate_entry_qword",
+      "module": "helldivers2.exe",
+      "rva": "0x2984c3f",
+      "bytes_per_read": 8,
+      "maximum_reads": 2,
+      "sha256": null
+    },
+    {
+      "label": "auth_network_candidate_wrapper_pin",
+      "module": "helldivers2.exe",
+      "rva": "0x2fda54e",
+      "bytes_per_read": 1024,
+      "maximum_reads": 2,
+      "sha256": "9589d3e2b53b3946b5e2f1616a7494149aae1141f390f7c5b029b04f116e6038"
+    },
+    {
+      "label": "auth_network_candidate_position_helper",
+      "module": "helldivers2.exe",
+      "rva": "0x2979038",
+      "bytes_per_read": 14,
+      "maximum_reads": 2,
+      "sha256": "4264d78c37cd350b38529b80671afa327d70038bd14f8dfafa7a25d4bf3f49a4"
+    },
+    {
+      "label": "auth_network_candidate_entry_qword",
+      "module": "helldivers2.exe",
+      "rva": "0x298568f",
+      "bytes_per_read": 8,
+      "maximum_reads": 2,
+      "sha256": null
+    },
+    {
+      "label": "create_network_candidate_existing_slot",
+      "module": "helldivers2.exe",
+      "rva": "0x13f6db8",
+      "bytes_per_read": 8,
+      "maximum_reads": 2,
+      "sha256": null
+    },
+    {
+      "label": "async_or_state_candidate_existing_slot",
+      "module": "helldivers2.exe",
+      "rva": "0x13f6ef8",
+      "bytes_per_read": 8,
+      "maximum_reads": 2,
+      "sha256": null
+    },
+    {
+      "label": "authenticate_or_state_candidate_existing_slot",
+      "module": "helldivers2.exe",
+      "rva": "0x13f6df0",
+      "bytes_per_read": 8,
+      "maximum_reads": 2,
+      "sha256": null
+    },
+    {
+      "label": "create_endpoint_candidate_existing_slot",
+      "module": "helldivers2.exe",
+      "rva": "0x13f6c30",
+      "bytes_per_read": 8,
+      "maximum_reads": 2,
+      "sha256": null
+    },
+    {
+      "label": "connect_network_candidate_existing_slot",
+      "module": "helldivers2.exe",
+      "rva": "0x13f6f70",
+      "bytes_per_read": 8,
+      "maximum_reads": 2,
+      "sha256": null
+    },
+    {
+      "label": "auth_network_candidate_existing_slot",
+      "module": "helldivers2.exe",
+      "rva": "0x13f7030",
+      "bytes_per_read": 8,
+      "maximum_reads": 2,
+      "sha256": null
+    },
+    {
+      "label": "common_call_slot",
+      "module": "helldivers2.exe",
+      "rva": "0x2c75fec",
+      "bytes_per_read": 8,
+      "maximum_reads": 2,
+      "sha256": null
+    },
+    {
+      "label": "opaque_game_handle",
+      "module": "helldivers2.exe",
+      "rva": "0x27ced10",
+      "bytes_per_read": 8,
+      "maximum_reads": 2,
+      "sha256": null
+    },
+    {
+      "label": "party_manager_pointer",
+      "module": "PartyWin.dll",
+      "rva": "0x3b6460",
+      "bytes_per_read": 8,
+      "maximum_reads": 2,
+      "sha256": null
+    },
+    {
+      "label": "existing_helper_window",
+      "module": "helldivers2.exe",
+      "rva": "0x8e25b0",
+      "bytes_per_read": 1280,
+      "maximum_reads": 1,
+      "sha256": null
+    },
+    {
+      "label": "create_network_callsite",
+      "module": "helldivers2.exe",
+      "rva": "0x8e1370",
+      "bytes_per_read": 1024,
+      "maximum_reads": 1,
+      "sha256": null
+    },
+    {
+      "label": "follow_on_callsite",
+      "module": "helldivers2.exe",
+      "rva": "0x8e1970",
+      "bytes_per_read": 1024,
+      "maximum_reads": 1,
+      "sha256": null
+    }
+  ],
+  "manager_data_reads": {
+    "game_holder": "helldivers2.exe+0x27ced10",
+    "party_manager_global": "PartyWin.dll+0x3b6460",
+    "stored_handle": "[party_manager_global]+0x600",
+    "bytes_per_read": 8,
+    "maximum_reads_per_field": 2,
+    "maximum_bytes_with_rereads": 48,
+    "opaque_handle_dereferenced": false
+  },
+  "conditional_memory_reads": [
+    {
+      "source": "canonical manager object pointer",
+      "offset": "0x600",
+      "bytes_per_read": 8,
+      "maximum_reads": 2
+    },
+    {
+      "source": "six existing candidate slots",
+      "bytes_per_read": 512,
+      "maximum_reads": 6,
+      "allowed_images": [
+        "helldivers2.exe"
+      ]
+    },
+    {
+      "source": "common_call_slot",
+      "bytes_per_read": 512,
+      "maximum_reads": 1,
+      "allowed_images": [
+        "helldivers2.exe",
+        "game.dll",
+        "PartyWin.dll"
+      ]
+    }
+  ],
+  "code_target_rule": "Whole 512-byte range inside one allowed verified image, executable MEM_IMAGE; otherwise no prefix read. No jump or decoded-value following.",
+  "new_core_unique_bytes_including_manager": 80,
+  "new_core_maximum_bytes_with_rereads": 160,
+  "fixed_maximum_bytes_with_rereads": 44294,
+  "conditional_maximum_bytes": 3600,
+  "planned_maximum_memory_bytes": 47894,
+  "total_memory_read_budget_bytes": 65536,
+  "budget_accounting": "All requested process-memory payload bytes, including validation, rereads and failed requests. Excludes OS metadata and whole-file disk hashing.",
+  "capture_count": 1,
+  "automatic_retries": 0,
+  "required_game_state": "user-reported stable solo ship; one PC/account",
+  "starts_game": false,
+  "native_game_calls": false,
+  "memory_writes": false,
+  "hooks_installed": false,
+  "changes_game_files": false,
+  "provider_binding_proven": false,
+  "runtime_verified": false,
+  "multiplayer_verified": false,
+  "stop_conditions": [
+    "unsupported file or loaded-code fingerprint",
+    "unreadable/short read",
+    "budget exhausted",
+    "changed qword reread",
+    "invalid fixed image range"
+  ],
+  "execution": "Only after explicit user authorization: --pid <current user-supplied PID> --output <new receipt path>. No elevation or fallback on denied access."
+}

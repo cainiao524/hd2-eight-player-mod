@@ -1,0 +1,71 @@
+{
+  "schema": "hd2_party_capture_saved_analysis_v1",
+  "analysis_scope": "Workspace receipt and historical workspace ABI/formula only; no additional process or installed-file reads.",
+  "sources": {
+    "output\\native_dispatch_20261010\\party_capture_authorized_20261016_pid30776_01.json": "b5b81a890e9a0e81808bcd74a736a75ac48f59de33cf393f135ef9c5478d13ac",
+    "output\\native_dispatch_20261010\\party_capture_plan_v2_20261015.json": "3a9fae2bba12ddf680b15a45f4f5590b98329d8153c1cb93057d8685f935528e",
+    "output\\native_dispatch_20261010\\partywin_c_handle_abi_20261015.json": "87ae7faaa947ef41c05e3125437ffb2b380047f686e9e0aa864abbbf2acf3c94"
+  },
+  "captured_at_taipei": "2026-10-16T20:53:34.425287+08:00",
+  "pid": 30776,
+  "process_capture_attempts": 1,
+  "additional_game_reads_during_analysis": 0,
+  "checks": {
+    "ledger_matches_exact_v2_read_ranges_and_counts": true,
+    "all_fixed_code_fingerprints_match": true,
+    "all_84_read_requests_succeeded": true,
+    "all_16_qword_fields_unchanged_on_reread": true
+  },
+  "memory_bytes_requested": 47894,
+  "hard_cap_bytes": 65536,
+  "manager_observation": {
+    "status": "manager_handle_relationship_observed",
+    "game_holder_address": "0x7ff6e2a7ed10",
+    "game_handle": "0x18c30ca1fe92b322",
+    "party_manager_global_address": "0x7ffc40f66460",
+    "party_manager_object": "0x218c7012af0",
+    "stored_handle_offset": "0x600",
+    "stored_handle": "0x18c30ca1fe92b322",
+    "tagged_manager_path": true,
+    "handle_equality_observed": true,
+    "unchanged_on_reread": true,
+    "atomic_snapshot": false,
+    "manager_data_relationship_observed": true,
+    "target_binding_proven": false,
+    "owner_lifetime_proven": false,
+    "runtime_provider_ready": false,
+    "multiplayer_verified": false,
+    "handle_dereferenced": false
+  },
+  "common_slot": {
+    "slot_rva": "0x2c75fec",
+    "target": "0x7ff6e2f2a94d",
+    "target_owner": {
+      "module": "helldivers2.exe",
+      "rva": "0x2c7a94d"
+    },
+    "saved_prefix_bytes": 512,
+    "first_instruction_bytes": "e9db052800",
+    "first_instruction": "jmp rel32",
+    "jump_target": "0x7ff6e31aaf2d",
+    "jump_target_rva": "0x2efaf2d",
+    "jump_destination_covered_by_this_capture": false,
+    "jump_followed_in_game": false
+  },
+  "connect_candidate_offline_derivation": {
+    "entry_rva": "0x2984c3f",
+    "entry_value": "0x86a1d09257e2b391",
+    "low32_expression": "u32(u32(x)-0x38c38943) XOR 0x5fa365ae",
+    "high32_expression": "u32(x>>32) XOR 0x86a1af6e",
+    "derived_rax_before_common_call": "0x7ffc40bc4fe0",
+    "owner": "PartyWin.dll",
+    "rva": "0x14fe0",
+    "matching_saved_export": "PartyConnectToNetwork",
+    "interpretation": "The captured entry decodes to the pinned export address under the saved wrapper formula. The shared dispatcher has not been followed or invoked; full call semantics and ABI remain unverified."
+  },
+  "provider_binding_proven": false,
+  "runtime_verified": false,
+  "multiplayer_verified": false,
+  "authorization_remaining_captures": 0,
+  "next_action": "Offline analysis of these saved values and existing code only. No further live process access is authorized by this single-capture grant."
+}

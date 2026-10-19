@@ -131,7 +131,11 @@ void write_session_log(uintptr_t session) {
         << "  \"peer_state_read\": false,\n"
         << "  \"process_id\": " << GetCurrentProcessId() << ",\n"
         << "  \"memory_writes\": false,\n"
-        << "  \"game_calls\": true\n"
+        // This log is emitted only by the no-call observation boundary.  Keep
+        // the receipt truthful even if a future caller records a session
+        // pointer before the getter ABI is proven.
+        << "  \"game_calls\": false,\n"
+        << "  \"getter_invoked\": false\n"
         << "}\n";
 }
 
@@ -207,7 +211,7 @@ bool readable_bytes(const void* address, SIZE_T size) {
     if (VirtualQuery(address, &mbi, sizeof(mbi)) != sizeof(mbi) ||
         mbi.State != MEM_COMMIT) return false;
     const DWORD protect = mbi.Protect & 0xffu;
-    if (protect == PAGE_NOACCESS || protect == PAGE_GUARD) return false;
+    if (protect == PAGE_NOACCESS || (mbi.Protect & PAGE_GUARD) != 0) return false;
     const uintptr_t region_begin = reinterpret_cast<uintptr_t>(mbi.BaseAddress);
     if (mbi.RegionSize > UINTPTR_MAX - region_begin ||
         size > UINTPTR_MAX - begin) return false;
@@ -302,8 +306,9 @@ bool runtime_build_identity(ep_official_peer_reader::BuildIdentity& identity) {
 void observe_snapshot() {
     ep_official_peer_reader::BuildIdentity identity{};
     const uintptr_t c_api = g_c_api.load(std::memory_order_acquire);
-    const uintptr_t image = reinterpret_cast<uintptr_t>(GetModuleHandleA("game.dll"));
-    if (!runtime_build_identity(identity) || c_api == 0 || image == 0) return;
+    const uintptr_t game_image = reinterpret_cast<uintptr_t>(GetModuleHandleA("game.dll"));
+    const uintptr_t executable_image = reinterpret_cast<uintptr_t>(GetModuleHandleA(nullptr));
+    if (!runtime_build_identity(identity) || c_api == 0 || game_image == 0 || executable_image == 0) return;
     const auto read = [](uintptr_t address, void* output, size_t size) {
         return read_current(reinterpret_cast<const void*>(address), output, size);
     };
@@ -311,7 +316,7 @@ void observe_snapshot() {
         return executable_bytes(reinterpret_cast<const void*>(address), size);
     };
     const auto getter = ep_official_session_getter::inspect(
-        identity, image, c_api, read, executable);
+        identity, game_image, executable_image, c_api, read, executable);
     if (!getter.ready) return;
     // The getter address and machine-code fingerprint are now version-gated,
     // but its native calling convention and return-object lifetime are still

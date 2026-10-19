@@ -15,10 +15,20 @@ def test_receipt_is_fail_closed_and_hashes_match():
     assert receipt["test"]["output"] == "ep_eight_preflight_synthetic_passed"
     assert receipt["test"]["status"] == "passed"
     assert all(value is False for value in receipt["gates"].values())
-    for name, digest in receipt["source_sha256"].items():
-        assert hashlib.sha256((HERE / name).read_bytes()).hexdigest() == digest
-    for name, digest in receipt["binary_sha256"].items():
-        assert hashlib.sha256((HERE / name).read_bytes()).hexdigest() == digest
+    for name, record in receipt["source_sha256"].items():
+        digest = record["sha256"] if isinstance(record, dict) else record
+        expected_bytes = record.get("bytes") if isinstance(record, dict) else None
+        path = HERE / name
+        assert hashlib.sha256(path.read_bytes()).hexdigest() == digest
+        if expected_bytes is not None:
+            assert path.stat().st_size == expected_bytes
+    for name, record in receipt["binary_sha256"].items():
+        digest = record["sha256"] if isinstance(record, dict) else record
+        expected_bytes = record.get("bytes") if isinstance(record, dict) else None
+        path = HERE / name
+        assert hashlib.sha256(path.read_bytes()).hexdigest() == digest
+        if expected_bytes is not None:
+            assert path.stat().st_size == expected_bytes
 
 
 def test_contract_rejects_partial_configuration():

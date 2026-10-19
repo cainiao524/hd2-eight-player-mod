@@ -1,0 +1,104 @@
+{
+  "schema": "hd2_live_session_snapshot_v1",
+  "build": 25480438,
+  "pid": 38492,
+  "captured_at_utc": "2026-10-11T11:11:17.726639+00:00",
+  "scope": "authorized bounded read-only session/context/roster fields; no calls, writes, hooks, injection, or unknown pointer traversal",
+  "pinned_images": {
+    "helldivers2.exe": {
+      "base": 140697193545728,
+      "size": 60719104,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\helldivers2.exe",
+      "sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+      "pe_identity": {
+        "timestamp": 1790149348,
+        "image_size": 60719104
+      }
+    },
+    "game.dll": {
+      "base": 140730315374592,
+      "size": 74727424,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\data\\game\\game.dll",
+      "sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+      "pe_identity": {
+        "timestamp": 1790161983,
+        "image_size": 74727424
+      }
+    }
+  },
+  "game_base": "0x7ffe54750000",
+  "read_limit": 32768,
+  "read_bytes": 9120,
+  "read_only": true,
+  "calls_made": false,
+  "writes_made": false,
+  "hooks_installed": false,
+  "status": "observed_context",
+  "errors": [],
+  "roots": {
+    "context": "0x1d1356a5f70",
+    "roster": "0x1d139afdc88",
+    "game_state": "0x1d1329f0080"
+  },
+  "mode": 3,
+  "session": {
+    "local_peer_hex": "f869ad7b51e7da3f",
+    "host_peer_hex": "f869ad7b51e7da3f",
+    "session_owner": "0x1cc78177e90",
+    "peer_count_raw": 2,
+    "peers": [
+      {
+        "ordinal": 0,
+        "lo": 2074962424,
+        "hi": 1071310673,
+        "network_index": 0
+      },
+      {
+        "ordinal": 1,
+        "lo": 3740369642,
+        "hi": 1800538805,
+        "network_index": 1
+      }
+    ]
+  },
+  "confirmed_peer_window": {
+    "owner": "0x1cc78177e90",
+    "offset": "0x20",
+    "size": 224,
+    "sha256": "16700214702d1e3a7c9bef7881f9247b27db8a5e860da9972c2b989a3c6bab98",
+    "bytes": "f869ad7b51e7da3fa0b5a69ff67f0000c058a59ff67f000020f65269d1010000387f1778cc010000500ddf9ff67f0000dc03000000000000e0720c0000000000dd0300000000000020241a00000000000100000000000000ffffffffffffffffffffffff0000000000000000000000000000000000000000a00f000000000000c058a59ff67f0000a0b5a69ff67f0000d058a59ff67f0000b87e1778cc010000d893a66fd1010000500ddf9ff67f0000aa0000000000000080460600000000005401000000000000404e0c00000000000100000000000000ffffffffffffffff",
+    "semantic_decode": false
+  },
+  "roster": {
+    "documented_slot_count": 4,
+    "records": [
+      {
+        "ordinal": 0,
+        "peer_id_hex": "f869ad7b51e7da3f",
+        "name": "男可可蘿"
+      },
+      {
+        "ordinal": 1,
+        "peer_id_hex": "ea82f1deb50a526b",
+        "name": "MonkeyDsBankai"
+      },
+      {
+        "ordinal": 2,
+        "peer_id_hex": "0000000000000000",
+        "name": ""
+      },
+      {
+        "ordinal": 3,
+        "peer_id_hex": "0000000000000000",
+        "name": ""
+      }
+    ],
+    "out_of_contract_slots": [
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  "snapshot_sha256": "03d95b6279cde106b7998173908a3bba1ae13a574c3da076dc72477af004b96a"
+}

@@ -13,11 +13,11 @@
     "ep_player_resource.cpp": "91bbfb84c0b86a41c022ef794775f78ae7c4c41200fdc7f21d46547cb6cf9465",
     "ep_player_resource_test.cpp": "2c08bbf965af209e6bcf8e86f5839ec04ba23552f7395db7225b2d862faa1efa",
     "build_x64.bat": "aebc519d119c946ea857d8c7ef751240c3c9ed4dc23ce336909425a37d5f62fa",
-    "README.zh-TW.md": "6a3a9aea44949996a96e227ee894c5a1746a2b68c636a564f8c963762e9eda01"
+    "README.zh-TW.md": "288092b3730b7a8ba1bbdb8972dabc3d9e703b3b24522b0e0ca7c57f45c429c1"
   },
   "binary_sha256": {
-    "ep_player_resource.dll": "bde7089cf2f5a3dc9b1097884460f5a4afd7575e461345a2eefca59cb6aeb551",
-    "ep_player_resource_test.exe": "0f74eb0b4b9734cf832ee613f401b1218ec69bcd0736d4394f914d3a1c82b128"
+    "ep_player_resource.dll": "af184b8167f1b42738d2eef8a7b706e4b7ee7400a0525b591a199cfb16be15c4",
+    "ep_player_resource_test.exe": "053b803bb88343d924fc8ab1a045dbc220728efd9450e3f18c539a1bf6e3b954"
   },
   "test": {
     "command": "cmd /c build_x64.bat",
@@ -33,7 +33,8 @@
       "release is idempotent through a generation token",
       "owner migration requires quiescence",
       "Bridge adapter binds exact index, resource metadata and all three callback stages",
-      "reinit after destroy succeeds"
+      "reinit after destroy succeeds",
+      "resource bridge stage exception is converted to failed callback"
     ]
   },
   "checks": {

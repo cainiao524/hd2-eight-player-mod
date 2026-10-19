@@ -1,0 +1,46 @@
+{
+  "schema": "hd2_live_session_snapshot_v1",
+  "build": 25480438,
+  "pid": 37092,
+  "captured_at_utc": "2026-10-11T10:12:57.404224+00:00",
+  "scope": "authorized bounded read-only session/context/roster fields; no calls, writes, hooks, injection, or unknown pointer traversal",
+  "pinned_images": {
+    "helldivers2.exe": {
+      "base": 140697193545728,
+      "size": 60719104,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\helldivers2.exe",
+      "sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+      "pe_identity": {
+        "timestamp": 1790149348,
+        "image_size": 60719104
+      }
+    },
+    "game.dll": {
+      "base": 140731237269504,
+      "size": 74727424,
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\data\\game\\game.dll",
+      "sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+      "pe_identity": {
+        "timestamp": 1790161983,
+        "image_size": 74727424
+      }
+    }
+  },
+  "game_base": "0x7ffe8b680000",
+  "read_limit": 32768,
+  "read_bytes": 8332,
+  "read_only": true,
+  "calls_made": false,
+  "writes_made": false,
+  "hooks_installed": false,
+  "status": "blocked_snapshot_read",
+  "errors": [
+    "snapshot_read_failed:ValueError:Unreadable/guard/non-executable region"
+  ],
+  "roots": {
+    "context": "0x255fbb35f70",
+    "roster": "0x255fff8dc88",
+    "game_state": "0x255f8e80080"
+  },
+  "snapshot_sha256": "44c50877b9c5b09ffc4f6726e53a871fe98893bfe43e10ed44447f60d00603be"
+}

@@ -26,7 +26,11 @@
     "rollback_retry": true,
     "callback_lease_quiescence": true,
     "host_migration_transaction": true,
-    "holes_preserved_in_network_index_table": true
+    "holes_preserved_in_network_index_table": true,
+    "admission_replication_bridge": true,
+    "native_then_replication_then_player_creation": true,
+    "replication_then_native_then_index_release": true,
+    "cleanup_retry_preserves_index_and_owner": true
   },
   "checks": {
     "fixed_build": true,
@@ -39,7 +43,10 @@
     "migration_epoch_and_quiescence": true,
     "production_gate_false": true,
     "no_process_access": true,
-    "no_patch_emitted": true
+    "no_patch_emitted": true,
+    "four_eight_sixteen_slot_integration": true,
+    "ninth_player_rejected_at_eight_slot_limit": true,
+    "stale_admission_cannot_remove_reconnect": true
   },
   "artifacts": [
     {
@@ -48,32 +55,64 @@
     },
     {
       "path": "ep_client_replication_contract.cpp",
-      "sha256": "e1eb11a5e8e736b96fe87e1429d10f562b967131a14d17feb124ae59cf1ee424"
+      "sha256": "c2267760da51d46405dc4e93834b2e9d3db4b5fb6b37b14f1eaca092f29c1a02"
     },
     {
       "path": "ep_client_replication_contract_test.cpp",
-      "sha256": "d033a0303d96fa124d81fa69ba4fb9e308ea1c65a430278f270c38b604219ae0"
+      "sha256": "5eead639ed1cd9622dd628215376b4cd46e94916190da5fdd191a3c23d9228c3"
+    },
+    {
+      "path": "ep_replication_bridge.h",
+      "sha256": "cc525e77e05966b5d13d758d27dcb73bea543be0f1febd414217bcda068e6d39"
+    },
+    {
+      "path": "ep_replication_bridge.cpp",
+      "sha256": "fbdbe250c79762091497a82e28dc6a1ea1f8a5f105ba166fdaa3e4012a0ff1e9"
+    },
+    {
+      "path": "ep_replication_bridge_test.cpp",
+      "sha256": "0c7c25e14624cea6164c94f4a2f0d8fe648106715f67d67f5cf900fb9ded1d07"
+    },
+    {
+      "path": "ep_replication_resource_integration_test.cpp",
+      "sha256": "51685e4e3a130a94adb438aecd8a6ada2dd154d8e349bd2fbf4909777b87c82b"
     },
     {
       "path": "build_x64.bat",
-      "sha256": "1e895dbd61cec85040122b1fa1b92b11cd0fb36a42c7e51145d8ffecb1c448a4"
+      "sha256": "f17d5ed9655bcc10c3a9b805299b31fc83a4d792d5183ae1671045dbfad0193f"
     },
     {
       "path": "CLIENT_REPLICATION_SIDECAR_CONTRACT_20261004.zh-TW.md",
-      "sha256": "3646f59804b47a724cbcd0ee4ed5fda7d974e98c54a54c1506bb6a410056bf82"
+      "sha256": "e62879552194e814594a485f0ad9e71696e810b4cb8fe5b1d478b781d72dc17a"
     },
     {
       "path": "ep_client_replication_contract.dll",
-      "sha256": "c587d55acbc5cabb5f1a28d54a57329967359e414202ae0f9ca37c187d7b47a7"
+      "sha256": "e84298d2ca80e648ccec76fd82e6187d94fb52178175254c03e732b240a13bbb"
     },
     {
       "path": "ep_client_replication_contract_test.exe",
-      "sha256": "40539847ec4f4793e042d593e24f3c910e356b6a8914e9c05a4126e6addcaee9"
+      "sha256": "18ac9ca36036faf55f9b75e5ae9c889c55add7349bb37bd3f0586d5fe02f39cf"
+    },
+    {
+      "path": "ep_replication_bridge.dll",
+      "sha256": "b6a98a08d7977f679d6bfb1dbf067b140d2559ad0e7813590649ed0f0f9dd0da"
+    },
+    {
+      "path": "ep_replication_bridge_test.exe",
+      "sha256": "85cbd2224bbfab83fd1706e690cfbc609d5cfda2ccf4851e9c32f290e15ceb38"
+    },
+    {
+      "path": "ep_replication_resource_integration_test.exe",
+      "sha256": "ec23e64103d9dcc306896f56c1c5274401c11626e2e87040bb5bf9385050ae3a"
     }
   ],
   "build_result": {
     "test_output": "ep_client_replication_contract_synthetic_passed",
-    "test_exit_code": 0
+    "test_exit_code": 0,
+    "integration_test_output": "ep_replication_bridge_integration_passed",
+    "integration_test_exit_code": 0,
+    "resource_integration_test_output": "ep_replication_resource_integration_passed",
+    "resource_integration_test_exit_code": 0
   },
   "decision": {
     "production_patch_ready": false,

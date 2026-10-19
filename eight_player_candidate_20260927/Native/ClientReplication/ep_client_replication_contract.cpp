@@ -84,26 +84,6 @@ EP_CR_STATUS validate_unlocked(const EP_CLIENT_REPLICATION_SIDECAR* s) {
             if (s->ordinal_to_index[group][ordinal] != EP_CR_CAPACITY)
                 return EP_CR_INVARIANT_BROKEN;
     }
-    for (UINT32 group = 0; group < 5; ++group) {
-        if (s->array_count[group] > EP_CR_CAPACITY) return EP_CR_INVARIANT_BROKEN;
-        UINT32 seen = 0;
-        for (UINT32 ordinal = 0; ordinal < s->array_count[group]; ++ordinal) {
-            UINT8 index = s->ordinal_to_index[group][ordinal];
-            if (index >= EP_CR_CAPACITY || (seen & (1u << index)) != 0 ||
-                s->slots[index].state == EP_CR_FREE ||
-                (s->slots[index].array_membership_mask & (1u << group)) == 0)
-                return EP_CR_INVARIANT_BROKEN;
-            seen |= 1u << index;
-        }
-        for (UINT32 index = 0; index < EP_CR_CAPACITY; ++index) {
-            bool member = s->slots[index].state != EP_CR_FREE &&
-                (s->slots[index].array_membership_mask & (1u << group)) != 0;
-            if (member != ((seen & (1u << index)) != 0)) return EP_CR_INVARIANT_BROKEN;
-        }
-        for (UINT32 ordinal = s->array_count[group]; ordinal < EP_CR_CAPACITY; ++ordinal)
-            if (s->ordinal_to_index[group][ordinal] != EP_CR_CAPACITY)
-                return EP_CR_INVARIANT_BROKEN;
-    }
     if (active != s->active_count || confirmed != s->confirmed_count ||
         leases != s->callback_leases) return EP_CR_INVARIANT_BROKEN;
     return EP_CR_OK;
@@ -151,6 +131,14 @@ EP_CR_STATUS callback_slot(EP_CLIENT_REPLICATION_SIDECAR* s, EP_CR_EVENT event,
     try {
         return s->callbacks.slot_callback(s->callbacks.context, event, &slot,
             event == EP_CR_EVENT_RESET ? EP_CR_ARRAY_ALL : slot.array_membership_mask);
+    } catch (...) { return EP_CR_CALLBACK_REJECTED; }
+}
+
+EP_CR_STATUS callback_owner(EP_CLIENT_REPLICATION_SIDECAR* s, EP_CR_EVENT event,
+                            UINT64 owner_key, UINT32 owner_epoch) {
+    try {
+        return s->callbacks.owner_callback(s->callbacks.context, event,
+                                           owner_key, owner_epoch);
     } catch (...) { return EP_CR_CALLBACK_REJECTED; }
 }
 
@@ -216,7 +204,6 @@ extern "C" EP_CR_STATUS __cdecl ep_cr_append(
     if (s->callback_leases != 0) { release(s); return EP_CR_QUIESCENCE_REQUIRED; }
     std::memset(out, 0, sizeof(*out));
     if (s->migration_in_progress) { release(s); return EP_CR_MIGRATION_IN_PROGRESS; }
-    if (s->migration_in_progress) { release(s); return EP_CR_MIGRATION_IN_PROGRESS; }
     for (UINT32 i = 0; i < EP_CR_CAPACITY; ++i) {
         const auto& prior = s->slots[i];
         if (prior.state == EP_CR_FREE) continue;
@@ -260,7 +247,6 @@ extern "C" EP_CR_STATUS __cdecl ep_cr_confirm(
     if (status != EP_CR_OK) return status;
     if (s->callback_leases != 0) { release(s); return EP_CR_QUIESCENCE_REQUIRED; }
     if (s->migration_in_progress) { release(s); return EP_CR_MIGRATION_IN_PROGRESS; }
-    if (s->migration_in_progress) { release(s); return EP_CR_MIGRATION_IN_PROGRESS; }
     EP_CR_SLOT* slot = nullptr;
     status = lookup_unlocked(s, token, &slot);
     if (status != EP_CR_OK) { release(s); return status; }
@@ -287,12 +273,10 @@ extern "C" EP_CR_STATUS __cdecl ep_cr_remove(
     if (status != EP_CR_OK) return status;
     if (s->callback_leases != 0) { release(s); return EP_CR_QUIESCENCE_REQUIRED; }
     if (s->migration_in_progress) { release(s); return EP_CR_MIGRATION_IN_PROGRESS; }
-    if (s->migration_in_progress) { release(s); return EP_CR_MIGRATION_IN_PROGRESS; }
     EP_CR_SLOT* slot = nullptr;
     status = lookup_unlocked(s, token, &slot);
     if (status != EP_CR_OK) { release(s); return status; }
     if (s->lease_id[token.network_index] != 0) { release(s); return EP_CR_QUIESCENCE_REQUIRED; }
-    if (slot->state == EP_CR_ROLLBACK) { release(s); return EP_CR_ROLLBACK_REQUIRED; }
     if (slot->state == EP_CR_ROLLBACK) { release(s); return EP_CR_ROLLBACK_REQUIRED; }
     status = callback_slot(s, EP_CR_EVENT_REMOVE, *slot);
     if (status == EP_CR_OK) clear_slot(s, token.network_index);
@@ -307,12 +291,10 @@ extern "C" EP_CR_STATUS __cdecl ep_cr_kick(
     if (status != EP_CR_OK) return status;
     if (s->callback_leases != 0) { release(s); return EP_CR_QUIESCENCE_REQUIRED; }
     if (s->migration_in_progress) { release(s); return EP_CR_MIGRATION_IN_PROGRESS; }
-    if (s->migration_in_progress) { release(s); return EP_CR_MIGRATION_IN_PROGRESS; }
     EP_CR_SLOT* slot = nullptr;
     status = lookup_unlocked(s, token, &slot);
     if (status != EP_CR_OK) { release(s); return status; }
     if (s->lease_id[token.network_index] != 0) { release(s); return EP_CR_QUIESCENCE_REQUIRED; }
-    if (slot->state == EP_CR_ROLLBACK) { release(s); return EP_CR_ROLLBACK_REQUIRED; }
     if (slot->state == EP_CR_ROLLBACK) { release(s); return EP_CR_ROLLBACK_REQUIRED; }
     status = callback_slot(s, EP_CR_EVENT_KICKED, *slot);
     if (status == EP_CR_OK) clear_slot(s, token.network_index);
@@ -326,7 +308,6 @@ extern "C" EP_CR_STATUS __cdecl ep_cr_retry_rollback(
     auto status = begin(s);
     if (status != EP_CR_OK) return status;
     if (s->callback_leases != 0) { release(s); return EP_CR_QUIESCENCE_REQUIRED; }
-    if (s->migration_in_progress) { release(s); return EP_CR_MIGRATION_IN_PROGRESS; }
     if (s->migration_in_progress) { release(s); return EP_CR_MIGRATION_IN_PROGRESS; }
     EP_CR_SLOT* slot = nullptr;
     status = lookup_unlocked(s, token, &slot);
@@ -360,11 +341,10 @@ extern "C" EP_CR_STATUS __cdecl ep_cr_callback_enter(
     auto status = begin(s);
     if (status != EP_CR_OK) return status;
     if (s->migration_in_progress) { release(s); return EP_CR_MIGRATION_IN_PROGRESS; }
-    if (s->migration_in_progress) { release(s); return EP_CR_MIGRATION_IN_PROGRESS; }
     EP_CR_SLOT* slot = nullptr;
     status = lookup_unlocked(s, token, &slot);
     if (status != EP_CR_OK) { release(s); return status; }
-    if (s->migration_in_progress || s->lease_id[token.network_index] != 0) {
+    if (s->lease_id[token.network_index] != 0) {
         release(s); return EP_CR_QUIESCENCE_REQUIRED;
     }
     if (slot->state != EP_CR_CONFIRMED) { release(s); return EP_CR_ROLLBACK_REQUIRED; }
@@ -382,7 +362,6 @@ extern "C" EP_CR_STATUS __cdecl ep_cr_callback_leave(
     if (!s || lease_id == 0) return EP_CR_INVALID_ARGUMENT;
     auto status = begin(s);
     if (status != EP_CR_OK) return status;
-    if (s->migration_in_progress) { release(s); return EP_CR_MIGRATION_IN_PROGRESS; }
     if (s->migration_in_progress) { release(s); return EP_CR_MIGRATION_IN_PROGRESS; }
     EP_CR_SLOT* slot = nullptr;
     status = lookup_unlocked(s, token, &slot);
@@ -405,7 +384,7 @@ extern "C" EP_CR_STATUS __cdecl ep_cr_migration_begin(
     if (owner_epoch <= s->owner_epoch) { release(s); return EP_CR_STALE_GENERATION; }
     for (const auto& slot : s->slots)
         if (slot.state == EP_CR_PENDING || slot.state == EP_CR_ROLLBACK) { release(s); return EP_CR_QUIESCENCE_REQUIRED; }
-    status = s->callbacks.owner_callback(s->callbacks.context, EP_CR_EVENT_MIGRATION_BEGIN, owner_key, owner_epoch);
+    status = callback_owner(s, EP_CR_EVENT_MIGRATION_BEGIN, owner_key, owner_epoch);
     if (status != EP_CR_OK) { release(s); return EP_CR_CALLBACK_REJECTED; }
     s->migration_in_progress = 1;
     s->pending_owner_key = owner_key;
@@ -421,7 +400,7 @@ extern "C" EP_CR_STATUS __cdecl ep_cr_migration_commit(
     auto status = begin(s);
     if (status != EP_CR_OK) return status;
     if (!s->migration_in_progress || s->pending_transaction_id != transaction_id) { release(s); return EP_CR_MIGRATION_NOT_PREPARED; }
-    status = s->callbacks.owner_callback(s->callbacks.context, EP_CR_EVENT_MIGRATION_COMMIT, s->pending_owner_key, s->pending_owner_epoch);
+    status = callback_owner(s, EP_CR_EVENT_MIGRATION_COMMIT, s->pending_owner_key, s->pending_owner_epoch);
     if (status != EP_CR_OK) { release(s); return EP_CR_CALLBACK_REJECTED; }
     s->owner_key = s->pending_owner_key;
     s->owner_epoch = s->pending_owner_epoch;
@@ -439,7 +418,7 @@ extern "C" EP_CR_STATUS __cdecl ep_cr_migration_abort(
     auto status = begin(s);
     if (status != EP_CR_OK) return status;
     if (!s->migration_in_progress || s->pending_transaction_id != transaction_id) { release(s); return EP_CR_MIGRATION_NOT_PREPARED; }
-    status = s->callbacks.owner_callback(s->callbacks.context, EP_CR_EVENT_MIGRATION_ABORT, s->pending_owner_key, s->pending_owner_epoch);
+    status = callback_owner(s, EP_CR_EVENT_MIGRATION_ABORT, s->pending_owner_key, s->pending_owner_epoch);
     if (status != EP_CR_OK) { release(s); return EP_CR_CALLBACK_REJECTED; }
     s->migration_in_progress = 0;
     s->pending_owner_key = 0;

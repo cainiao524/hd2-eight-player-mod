@@ -1,0 +1,115 @@
+{
+  "schema": "hd2_party_session_abi_candidates_v1",
+  "build": 25480438,
+  "probe_receipt": {
+    "path": "output/native_dispatch_20261010/live_party_api_pointer_probe_20261011.json",
+    "sha256": "93b02673b867ffe7f18794ef7355769d62e96f160caa420cdf5aaa9c6494064f"
+  },
+  "callsite_receipt": {
+    "path": "output/native_dispatch_20261010/live_party_callsite_shape_20261011.json",
+    "sha256": "6a57def1862287beb896a9110b927840020df8ac28544d9e5e263aea2d99d1d6"
+  },
+  "live_log": {
+    "path": "output/native_dispatch_20261010/hd2_party_api_probe_20261011_r9.log",
+    "sha256": "5a3af9980bddcd825d21cefb09bf85406602a08facc3e583a270348f533482e1"
+  },
+  "candidate_calls": {
+    "create_network": {
+      "slot_rva": "0x13F6DB8",
+      "runtime_call": "0x7ff62e4a15cb",
+      "official_method": "PartyManager::CreateNewNetwork",
+      "signature": "PartyError CreateNewNetwork(const PartyLocalUser*, const PartyNetworkConfiguration*, uint32_t, const PartyRegion*, const PartyInvitationConfiguration*, void*, PartyNetworkDescriptor*, char*)",
+      "reference": "https://learn.microsoft.com/en-us/gaming/playfab/multiplayer/networking/reference/classes/partymanager/methods/partymanager_createnewnetwork",
+      "observed_shape": {
+        "rcx": "[rax] candidate manager receiver",
+        "rdx": "rbx candidate localUser",
+        "r8": "rsp+0x80 candidate config",
+        "r9d": "0",
+        "stack": [
+          "rsp+0x20=regions",
+          "rsp+0x28=initialInvitationConfiguration",
+          "rsp+0x30=asyncIdentifier",
+          "rsp+0x38=networkDescriptor",
+          "rsp+0x40=appliedInitialInvitationIdentifier"
+        ]
+      },
+      "shape_consistent": true
+    },
+    "connect_network": {
+      "slot_rva": "0x13F6F70",
+      "runtime_call": "0x7ff62e4a19ac",
+      "official_method": "PartyManager::ConnectToNetwork",
+      "signature": "PartyError ConnectToNetwork(const PartyNetworkDescriptor*, void*, PartyNetwork**)",
+      "reference": "https://learn.microsoft.com/th-th/xbox/playfab/multiplayer/networking/reference/classes/partymanager/methods/partymanager_connecttonetwork",
+      "observed_shape": {
+        "rcx": "[rax] candidate manager receiver",
+        "rdx": "rbx candidate networkDescriptor",
+        "r8": "rdi candidate asyncIdentifier",
+        "r9": "[rdi+0x80] candidate output PartyNetwork**"
+      },
+      "shape_consistent": true
+    },
+    "authenticate_local_user": {
+      "slot_rva": "0x13F7030",
+      "runtime_call": "0x7ff62e4a1a0e",
+      "official_method": "PartyNetwork::AuthenticateLocalUser",
+      "signature": "PartyError AuthenticateLocalUser(const PartyLocalUser*, PartyString, void*)",
+      "reference": "https://learn.microsoft.com/en-us/gaming/playfab/multiplayer/networking/reference/classes/partynetwork/methods/partynetwork_authenticatelocaluser",
+      "observed_shape": {
+        "rcx": "[rdi+0x80] candidate PartyNetwork receiver",
+        "rdx": "[rdi+0x88] candidate localUser",
+        "r8": "rsi candidate invitationIdentifier",
+        "r9d": "0 candidate asyncIdentifier"
+      },
+      "shape_consistent": true
+    },
+    "create_endpoint": {
+      "slot_rva": "0x13F6C30",
+      "runtime_call": "0x7ff62e4a1ad8",
+      "official_method": "PartyNetwork::CreateEndpoint",
+      "signature": "PartyError CreateEndpoint(const PartyLocalUser*, uint32_t, const PartyString*, const PartyDataBuffer*, void*, PartyLocalEndpoint**)",
+      "reference": "https://learn.microsoft.com/es-es/gaming/playfab/multiplayer/networking/reference/classes/partynetwork/methods/partynetwork_createendpoint",
+      "observed_shape": {
+        "rcx": "[rdi+0x80] candidate PartyNetwork receiver",
+        "rdx": "[rdi+0x88] candidate PartyLocalUser*",
+        "r8d": "0 (propertyCount)",
+        "r9": "0 (keys)",
+        "rsp+0x20": "rsi (values; propertyCount is zero)",
+        "rsp+0x28": "rdi (asyncIdentifier)",
+        "rsp+0x30": "&rdi+0x90 (PartyLocalEndpoint** output)"
+      },
+      "shape_consistent": true
+    }
+  },
+  "lifecycle_references": {
+    "leave_network": {
+      "official_method": "PartyNetwork::LeaveNetwork",
+      "reference": "https://learn.microsoft.com/en-us/xbox/playfab/multiplayer/networking/reference/classes/partynetwork/methods/partynetwork_leavenetwork",
+      "runtime_binding": false
+    },
+    "configuration_fields": {
+      "reference": "https://learn.microsoft.com/en-us/xbox/playfab/multiplayer/networking/reference/structs/partynetworkconfiguration",
+      "runtime_shape_consistent": true
+    },
+    "state_change_types_reference": "https://learn.microsoft.com/en-us/xbox/playfab/multiplayer/networking/reference/enums/partystatechangetype"
+  },
+  "findings": {
+    "create_shape_consistent": true,
+    "connect_shape_consistent": true,
+    "authenticate_shape_consistent": true,
+    "endpoint_shape_bound": true,
+    "manager_holder_pointer_runtime_bound": false,
+    "candidate_targets_bound_to_partywin_exports": false,
+    "return_abi_runtime_verified": false,
+    "state_change_receiver_runtime_verified": false,
+    "host_client_tested": false,
+    "five_to_eight_account_tested": false,
+    "public_mod_ready": false
+  },
+  "limits": [
+    "These are call-shape candidates from a fixed-build live code window plus official SDK signatures; they do not prove the six protected slot targets are the named PartyWin exports.",
+    "The PartyManager holder, local user, network descriptor, invitation identifier, callback/state-change owner and cleanup lifetime still require a successful permitted runtime read/trace.",
+    "No unknown function was called and no memory was written.",
+    "The endpoint callsite shape also matches CreateEndpoint with propertyCount=0 and a local endpoint output slot; the pointer values and completion states remain unobserved."
+  ]
+}

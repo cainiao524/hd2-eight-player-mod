@@ -1,0 +1,182 @@
+{
+  "schema": "hd2_static_network_provider_audit_v1",
+  "build": 25480438,
+  "audited_at_utc": "2026-10-11T11:33:29.477601+00:00",
+  "read_only": true,
+  "calls_made": false,
+  "writes_made": false,
+  "hooks_installed": false,
+  "files": {
+    "helldivers2.exe": {
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\helldivers2.exe",
+      "size": 14957160,
+      "sha256": "f5fee03dcfdb2e553a4752c283590950ac13316b376d8196aa556ff0400d5f06",
+      "relevant_imports": [
+        {
+          "dll": "steam_api64.dll",
+          "names": [
+            "SteamInternal_FindOrCreateUserInterface"
+          ]
+        },
+        {
+          "dll": "PartyWin.dll",
+          "names": [
+            "PartyNetworkSetCustomContext"
+          ]
+        },
+        {
+          "dll": "PlayFabMultiplayerWin.dll",
+          "names": [
+            "PFLobbySendInvite"
+          ]
+        }
+      ],
+      "imported_dlls": [
+        "kernel32.dll",
+        "WINMM.dll",
+        "lua51.dll",
+        "steam_api64.dll",
+        "WINHTTP.dll",
+        "bink2w64.dll",
+        "HID.DLL",
+        "WinPixEventRuntime.dll",
+        "crs-client.dll",
+        "USER32.dll",
+        "GDI32.dll",
+        "SHELL32.dll",
+        "ole32.dll",
+        "OLEAUT32.dll",
+        "ADVAPI32.dll",
+        "SHLWAPI.dll",
+        "api-ms-win-core-synch-l1-2-0.dll",
+        "SETUPAPI.dll",
+        "WININET.dll",
+        "NETAPI32.dll",
+        "WS2_32.dll",
+        "IMM32.dll",
+        "IPHLPAPI.DLL",
+        "DINPUT8.dll",
+        "amd_fidelityfx_upscaler_dx12.dll",
+        "libxess.dll",
+        "libcurl.dll",
+        "PartyWin.dll",
+        "PlayFabMultiplayerWin.dll"
+      ]
+    },
+    "game.dll": {
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\data\\game\\game.dll",
+      "size": 15522408,
+      "sha256": "2e2c3b7c2500646dadd5f2b4c6e0504dbb7e7896139f64cddc0d1813c718f51e",
+      "relevant_imports": [],
+      "imported_dlls": [
+        "kernel32.dll",
+        "USER32.dll",
+        "DWrite.dll"
+      ]
+    },
+    "PartyWin.dll": {
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\PartyWin.dll",
+      "size": 4031520,
+      "sha256": "de34667c2f7084013d9c03cd5d1cb5dc3321bc36bb616a845e35534e4e7995e0"
+    },
+    "PlayFabMultiplayerWin.dll": {
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\PlayFabMultiplayerWin.dll",
+      "size": 1878048,
+      "sha256": "95bc5f958e519f612b479de4227f3bdffaba9b2b8de987eb3f7991960b8ced17"
+    },
+    "steam_api64.dll": {
+      "path": "F:\\Game\\Steam\\steamapps\\common\\Helldivers 2\\bin\\steam_api64.dll",
+      "size": 298384,
+      "sha256": "1db3fd414039d3e5815a5721925dd2e0a3a9f2549603c6cab7c49b84966a1af3"
+    }
+  },
+  "named_imports": {
+    "game_exe_partywin": [
+      "PartyNetworkSetCustomContext"
+    ],
+    "game_exe_playfab": [
+      "PFLobbySendInvite"
+    ],
+    "game_exe_steam": [
+      "SteamInternal_FindOrCreateUserInterface"
+    ],
+    "game_dll_partywin": [],
+    "game_dll_playfab": [],
+    "game_dll_steam": []
+  },
+  "available_exports": {
+    "party_core_present": [
+      "PartyCleanup",
+      "PartyConnectToNetwork",
+      "PartyCreateNewNetwork",
+      "PartyNetworkAuthenticateLocalUser",
+      "PartyNetworkCreateEndpoint",
+      "PartyNetworkLeaveNetwork",
+      "PartyNetworkRemoveLocalUser"
+    ],
+    "party_core_missing": [],
+    "playfab_core_present": [
+      "PFLobbyLeave",
+      "PFLobbyPostUpdate",
+      "PFMultiplayerConnectToLobby",
+      "PFMultiplayerCreateAndJoinLobby",
+      "PFMultiplayerInitialize",
+      "PFMultiplayerJoinLobby"
+    ],
+    "playfab_core_missing": []
+  },
+  "selected_static_strings": {
+    "helldivers2.exe": [
+      {
+        "file_offset": "0x7e5868",
+        "text": "SteamInternal_FindOrCreateUserInterface"
+      },
+      {
+        "file_offset": "0x7e5ad8",
+        "text": "NetworkParams"
+      },
+      {
+        "file_offset": "0x7e5b74",
+        "text": "PartyWin.dll"
+      },
+      {
+        "file_offset": "0x7e5b83",
+        "text": "PartyNetworkSetCustomContext"
+      },
+      {
+        "file_offset": "0x7e5ba0",
+        "text": "PlayFabMultiplayerWin.dll"
+      },
+      {
+        "file_offset": "0x7e5bbe",
+        "text": "LobbySendInvite"
+      }
+    ],
+    "game.dll": []
+  },
+  "findings": {
+    "steam_interface_factory_named_imported": true,
+    "party_core_named_imports": [],
+    "party_core_all_named_imported": false,
+    "playfab_core_named_imports": [],
+    "playfab_core_all_named_imported": false,
+    "game_dll_has_party_or_playfab_imports": false,
+    "runtime_interface_object_binding_proven": false,
+    "session_party_abi_proven": false,
+    "eight_player_mod_proven": false
+  },
+  "interpretation": [
+    "The executable's only named PartyWin import is PartyNetworkSetCustomContext; its core create/connect/auth/endpoint/leave methods are not named imports.",
+    "The executable's only named PlayFab import is PFLobbySendInvite; lobby initialization, create/join and connect methods are not named imports.",
+    "SteamInternal_FindOrCreateUserInterface is a named import, so the next runtime capture must identify the returned Steam interface objects and their vtable calls before assigning session semantics.",
+    "The six protected EXE indirect slots remain unbound; their shape alone is insufficient to call or patch them."
+  ],
+  "next_runtime_evidence": [
+    "capture a live callsite to SteamInternal_FindOrCreateUserInterface and the interface name/version argument",
+    "capture the returned Steam interface pointer and vtable targets for matchmaking/networking/session operations",
+    "bind those objects to the existing GameSession roster and peer-count observations",
+    "exercise host/client join, leave, migration and capacity transitions before any write or public package"
+  ],
+  "tool_path": "E:\\File\\Codes\\0\\26.10.1\\HD2\\five_player_feasibility_20260927\\tools\\audit_static_network_provider_20261111.py",
+  "tool_sha256": "00043220e0498a5931b3492c1da26ce660feb727860a37c15a7b2d1650a3ceb1"
+}

@@ -32,7 +32,8 @@ class BuildProfileTests(unittest.TestCase):
     def test_candidate_manifest_and_all_declared_sources_match(self) -> None:
         result = gate.verify_manifest(PACKAGE_ROOT, "candidate-manifest.json")
         self.assertTrue(result["verified"], result["errors"])
-        self.assertEqual(len(result["files"]), 16)
+        manifest = json.loads((PACKAGE_ROOT / "candidate-manifest.json").read_text(encoding="utf-8"))
+        self.assertEqual(len(result["files"]), len(manifest["source_sha256"]))
 
     def test_unresolved_observed_party_hash_is_never_trusted(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

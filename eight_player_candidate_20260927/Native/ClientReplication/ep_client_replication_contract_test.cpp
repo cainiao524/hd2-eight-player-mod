@@ -1,5 +1,6 @@
 #include <windows.h>
 #include <cstdio>
+#include <stdexcept>
 
 #include "ep_client_replication_contract.h"
 
@@ -7,6 +8,8 @@ struct TestContext {
     EP_CR_EVENT fail_event = static_cast<EP_CR_EVENT>(0);
     bool fail_once = false;
     bool fail_rollback = false;
+    EP_CR_EVENT owner_fail_event = static_cast<EP_CR_EVENT>(0);
+    bool owner_throws = false;
     UINT32 slot_events = 0;
     UINT32 owner_events = 0;
     UINT32 bad_masks = 0;
@@ -28,10 +31,15 @@ static EP_CR_STATUS __cdecl slot_callback(void* raw, EP_CR_EVENT event,
     return EP_CR_OK;
 }
 
-static EP_CR_STATUS __cdecl owner_callback(void* raw, EP_CR_EVENT, UINT64 owner,
+static EP_CR_STATUS __cdecl owner_callback(void* raw, EP_CR_EVENT event, UINT64 owner,
                                            UINT32 epoch) {
     auto* ctx = static_cast<TestContext*>(raw);
     ++ctx->owner_events;
+    if (event == ctx->owner_fail_event) {
+        ctx->owner_fail_event = static_cast<EP_CR_EVENT>(0);
+        if (ctx->owner_throws) throw std::runtime_error("owner callback failed");
+        return EP_CR_CALLBACK_REJECTED;
+    }
     return owner != 0 && epoch != 0 ? EP_CR_OK : EP_CR_CALLBACK_REJECTED;
 }
 
@@ -131,6 +139,47 @@ int main() {
         remove(&sidecar, tokens[0]) != EP_CR_MIGRATION_IN_PROGRESS ||
         migration_commit(&sidecar, 7) != EP_CR_OK ||
         migration_abort(&sidecar, 7) != EP_CR_MIGRATION_NOT_PREPARED) return 25;
+
+    // Rejected and throwing owner callbacks must release the lock and leave
+    // the transaction retryable. Exercise the DLL boundary, not a mock lock.
+    auto rejected = [](auto operation) {
+        try { return operation() == EP_CR_CALLBACK_REJECTED; }
+        catch (...) {
+            std::puts("owner callback exception escaped the DLL boundary");
+            return false;
+        }
+    };
+    for (int failure_mode = 0; failure_mode < 2; ++failure_mode) {
+        ctx.owner_throws = failure_mode == 1;
+        const UINT64 old_owner = sidecar.owner_key;
+        const UINT32 old_epoch = sidecar.owner_epoch;
+        ctx.owner_fail_event = EP_CR_EVENT_MIGRATION_BEGIN;
+        if (!rejected([&] { return migration_begin(&sidecar, old_owner + 1, old_epoch + 1, 8); }) ||
+            validate(&sidecar) != EP_CR_OK || sidecar.migration_in_progress ||
+            sidecar.pending_transaction_id != 0 || sidecar.owner_key != old_owner ||
+            sidecar.owner_epoch != old_epoch) return 33;
+
+        if (migration_begin(&sidecar, old_owner + 1, old_epoch + 1, 8) != EP_CR_OK) return 34;
+        ctx.owner_fail_event = EP_CR_EVENT_MIGRATION_COMMIT;
+        if (!rejected([&] { return migration_commit(&sidecar, 8); }) ||
+            validate(&sidecar) != EP_CR_OK || !sidecar.migration_in_progress ||
+            sidecar.pending_transaction_id != 8 || sidecar.owner_key != old_owner ||
+            sidecar.owner_epoch != old_epoch ||
+            migration_commit(&sidecar, 8) != EP_CR_OK ||
+            sidecar.owner_key != old_owner + 1 || sidecar.owner_epoch != old_epoch + 1) return 35;
+
+        if (migration_begin(&sidecar, old_owner + 2, old_epoch + 2, 9) != EP_CR_OK) return 36;
+        ctx.owner_fail_event = EP_CR_EVENT_MIGRATION_ABORT;
+        if (!rejected([&] { return migration_abort(&sidecar, 9); }) ||
+            validate(&sidecar) != EP_CR_OK || !sidecar.migration_in_progress ||
+            sidecar.pending_transaction_id != 9 ||
+            migration_abort(&sidecar, 9) != EP_CR_OK || sidecar.migration_in_progress ||
+            sidecar.pending_transaction_id != 0 || sidecar.pending_owner_key != 0 ||
+            sidecar.pending_owner_epoch != 0 || sidecar.owner_key != old_owner + 1 ||
+            sidecar.owner_epoch != old_epoch + 1 ||
+            get(&sidecar, 0, &slot) != EP_CR_OK || slot.peer_id != 1000 ||
+            slot.generation != tokens[0].generation || slot.state != EP_CR_CONFIRMED) return 37;
+    }
     if (append(&sidecar, 2, 51, 52, EP_CR_ARRAY_CONFIRMED_32, &invalid) != EP_CR_OK ||
         confirm(&sidecar, invalid) != EP_CR_OK) return 29;
     UINT8 view[EP_CR_CAPACITY]{};
