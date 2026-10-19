@@ -1,33 +1,50 @@
 {
-  "schema_version": 1,
-  "status": "uploaded_and_verified",
+  "schema_version": 2,
+  "date": "2026-10-19",
+  "timezone": "Asia/Tokyo",
+  "status": "local_payload_verified_upload_blocked_by_automatic_review",
   "repository_url": "https://github.com/cainiao524/hd2-eight-player-mod",
   "visibility": "private",
+  "visibility_verified_before_attempt": true,
   "branch": "main",
-  "payload_commit": "e621f8dba44a9d2ed0ea045d2c63711748b4ebaf",
-  "payload_tree": "6a7b398548b5fe5592ac6351552bd2375aa86c64",
-  "verified_at_utc": "2026-09-27T12:52:54.657201+00:00",
-  "payload_files": 914,
-  "payload_total_bytes": 194268128,
+  "payload_commit": "e35dedc5637a6810c7fabf7f2b25c658dbbc1f16",
+  "payload_tree": "015d94719ec8762d8b9b1f918e8bccac3ff0f9d5",
+  "remote_main_last_verified": "282ee1df0399f1587cb12f37dabc3077969a277b",
+  "remote_contains_payload": false,
+  "push_command_executed": false,
+  "payload_files": 1802,
+  "source_files_verified": 1801,
+  "source_bytes_verified": 316067259,
   "snapshot_manifest": "github_handoff_20260927/SNAPSHOT_SHA256.json",
-  "snapshot_manifest_sha256": "1d4371af5f16ecdc1808e7de821c392775583739a4a355e9f27a57261ca5213e",
-  "source_files_verified": 913,
-  "source_bytes_verified": 194076017,
+  "snapshot_manifest_sha256": "28d06d3a6c9cccd8437ee0bab4f340266c61834593fcdbc60f5c4e5bc654c2c6",
+  "changes_against_last_verified_remote": {
+    "new_paths": 235,
+    "modified_paths": 125,
+    "new_reachable_blobs": 405,
+    "uncompressed_new_blob_bytes": 15237094,
+    "note": "These are payload changes relative to origin/main, including seven previously local commits. The entire existing snapshot is not all new transfer data. The subsequent administrative receipt adds a small amount."
+  },
   "verification": {
     "source_to_index_bytes": "pass",
     "committed_blobs_sha256": "pass",
-    "remote_main_commit": "pass",
-    "remote_recursive_tree_paths_modes_blob_ids_sizes": "pass",
     "private_visibility": "pass",
-    "paused_state_pins": "14 files and original goal SHA-256 passed",
-    "original_capture_pins": "both passed",
-    "documentation_independent_review": "pass"
+    "clean_export_offline_checks": "pass",
+    "remote_payload_commit": "not_uploaded",
+    "remote_payload_tree": "not_uploaded"
   },
-  "research_status": "paused_by_user",
-  "last_completed_delivery": "0.13.0-offline",
-  "planned_v014_status": "unfinished_at_pause",
-  "multiplayer_verified": false,
+  "approval_block": {
+    "action": "git push origin HEAD:main",
+    "source": "automatic approval review",
+    "reason": "Requires explicit confirmation of the exact private destination and complete payload scope, including source, saved research evidence/logs and native build artifacts, before external upload.",
+    "human_confirmation_received": false
+  },
+  "scope": {
+    "included": "Existing multiplayer source and dependencies, later candidate changes, 128 saved evidence files, handoff documents and existing/native candidate test artifacts.",
+    "excluded_from_new_upload": "Full installed game images, local dependency caches, new temporary compiler outputs, new probe installation archives and unrelated mod workspaces."
+  },
+  "historical_upload_receipt": "github_handoff_20260927/archive/UPLOAD_STATUS_20260927.json",
   "game_process_accessed": false,
-  "research_tests_rerun": false,
-  "note": "This receipt records the verified payload commit. It and the STATE upload fields are published in a later administrative commit; the frozen snapshot manifest is unchanged."
+  "multiplayer_verified": false,
+  "public_release_allowed": false,
+  "note": "The payload is committed locally and verified. This receipt and STATE are a later administrative commit. No push ran after the automatic review rejection; user confirmation is pending."
 }
