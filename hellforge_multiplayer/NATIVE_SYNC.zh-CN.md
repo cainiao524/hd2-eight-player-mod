@@ -15,6 +15,8 @@
 
 ## 结果与证据
 
+发送端现已使用 [Windows unwind 适配变体](NATIVE_UNWIND.zh-CN.md)：规范化 prologue、修正两个拒绝跳转并生成回溯资料。八端测试执行新代码；元数据另由真实 Windows API 在自有进程验证。接收端仍为旧候选，尚无对应 Windows unwind 验证。
+
 | 范围 | 结果 |
 |---|---|
 | 原生插入 | 64 次成功 |

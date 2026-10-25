@@ -57,6 +57,8 @@ py -3.12 -B hellforge_multiplayer/tools/build_offline.py `
 
 原生玩家读取扩展的契约、MinHook 准备和独立重建命令见 [engine/README.zh-CN.md](engine/README.zh-CN.md)。该补丁只改变加载器读取路径；原位玩家数组仍最多四项，独立计分/customization 四槽限制仍保留。
 
+属性发送候选已加入 [Windows x64 栈回溯资料](NATIVE_UNWIND.zh-CN.md)，修正拒绝跳转被当作尾调用的问题；12 个场景的 1,308 个指令位置通过真实 Windows 回溯接口验证，并接回八端转发测试。接收端及其他候选的回溯、生产 hook 安装和游戏内验证仍未完成。
+
 ## 后续实机步骤：尚未执行
 
 1. 先完成交接说明列出的玩家容器和 provider 适配，评估是否已适合实机测试。

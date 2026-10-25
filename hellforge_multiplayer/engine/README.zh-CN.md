@@ -50,3 +50,5 @@ py -3.12 -B hellforge_multiplayer/tools/build_engine_offline.py `
 入口还会运行 [八端原生属性转发链路](../NATIVE_SYNC.zh-CN.md)，需要 .NET 10 SDK。结果为后端集成模式 264 次检查、56 次原生接收、1,678 次消费者断言；该链路用显式测试桥接代替完整游戏封包和实体分派，不能作为八人实机同步证据。
 
 补丁按 HellForge 引擎的 GPL-3.0 条款维护；原文及 Mod 例外保存在 `licenses/`。MinHook 许可证同目录保留。完整 loader 仍需要对应上游源码，这份 patch 不替代它的源代码义务。
+
+完整构建还自动运行 [原生发送候选的 Windows 栈回溯验证](../NATIVE_UNWIND.zh-CN.md)：1,308 个指令上下文通过、3 次旧拒绝跳转错误由对照组复现。该测试仅注册自有不可执行数据映像的函数表，用完后撤销；没有加载或运行游戏。独立收据为 `evidence/native-producer-unwind-validation.json`，其 SHA-256 同时写入总引擎收据。

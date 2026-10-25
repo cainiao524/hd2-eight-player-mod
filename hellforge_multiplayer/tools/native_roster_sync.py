@@ -11,6 +11,7 @@ import importlib.util
 import json
 from pathlib import Path
 import struct
+import native_producer_unwind
 
 ROOT = Path(__file__).resolve().parents[2]
 PROJECT = ROOT / 'hellforge_multiplayer'
@@ -35,6 +36,10 @@ def modules():
     insert = load('sync_insert', ROOT / 'eight_player_candidate_20260927/tests/test_native_roster_insert.py')
     producer = load('sync_producer', ROOT / 'eight_player_candidate_20260927/tests/test_native_roster_producer.py')
     require(insert.unicorn.__version__ == lock['unicorn'] and insert.capstone.__version__ == lock['capstone'], 'Dependency version mismatch')
+    original = producer.native.build
+    def with_windows_unwind(source, **addresses):
+        return native_producer_unwind.with_unwind(original(source, **addresses))['candidate']
+    producer.native.build = with_windows_unwind
     return insert, producer
 
 

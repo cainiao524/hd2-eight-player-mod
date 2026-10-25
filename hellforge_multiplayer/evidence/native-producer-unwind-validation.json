@@ -1,0 +1,138 @@
+{
+  "schema": "hellforge_native_producer_unwind_v1",
+  "verified_at_utc": "2026-10-25T10:42:52.459222+00:00",
+  "passed": true,
+  "windows_unwind_contexts": 1308,
+  "legacy_valid_contexts": 1302,
+  "legacy_rejection_failures_reproduced": 3,
+  "game_access": false,
+  "placement_and_source_refusals": 3,
+  "game_build": 25480438,
+  "producer_rva": "0x60C640",
+  "scenarios": [
+    {
+      "input": {
+        "ordinal": 0,
+        "network": 2
+      },
+      "outcome": "return",
+      "instructions": 191
+    },
+    {
+      "input": {
+        "ordinal": 1,
+        "network": 5
+      },
+      "outcome": "return",
+      "instructions": 191
+    },
+    {
+      "input": {
+        "ordinal": 2,
+        "network": 0
+      },
+      "outcome": "return",
+      "instructions": 191
+    },
+    {
+      "input": {
+        "ordinal": 3,
+        "network": 3
+      },
+      "outcome": "return",
+      "instructions": 191
+    },
+    {
+      "input": {
+        "ordinal": 4,
+        "network": 6
+      },
+      "outcome": "return",
+      "instructions": 191
+    },
+    {
+      "input": {
+        "ordinal": 5,
+        "network": 1
+      },
+      "outcome": "return",
+      "instructions": 191
+    },
+    {
+      "input": {
+        "ordinal": 6,
+        "network": 4
+      },
+      "outcome": "return",
+      "instructions": 191
+    },
+    {
+      "input": {
+        "ordinal": 7,
+        "network": 7
+      },
+      "outcome": "return",
+      "instructions": 191
+    },
+    {
+      "input": {
+        "ordinal": 8
+      },
+      "outcome": "reject",
+      "instructions": 40
+    },
+    {
+      "input": {
+        "ordinal": 4294967295
+      },
+      "outcome": "reject",
+      "instructions": 40
+    },
+    {
+      "input": {
+        "actual_roster": 1657858556928
+      },
+      "outcome": "reject",
+      "instructions": 43
+    },
+    {
+      "input": {
+        "index_mode": "empty"
+      },
+      "outcome": "return",
+      "instructions": 141
+    }
+  ],
+  "code_bytes": 670,
+  "unwind_hex": "01180a0018640a00135409000e340800093205f003e00170",
+  "table_offset": 696,
+  "unwind_offset": 672,
+  "image_protection": "PAGE_READWRITE; no native execution of candidate code",
+  "negative_control": "Same normalized prologue and unwind metadata, but original E9 rejection branches",
+  "function_tables_registered_and_removed_in_test": 2,
+  "real_game_hooks_installed": false,
+  "receiver_unwind_implemented": false,
+  "runtime_verified": false,
+  "multiplayer_verified": false,
+  "source_sha256": {
+    "hellforge_multiplayer/tools/native_producer_unwind.py": "83a0116a5cb6e000a9ea43cc1d3b3decb4ad66d8b6b7669994703f82bdf0c47c",
+    "hellforge_multiplayer/tools/build_unwind_offline.py": "ece2cb2245953ab0ff29dfa233bf37b8937bdc691527fc71b3a117926666eb26",
+    "hellforge_multiplayer/tests/native_producer_unwind_test.c": "8b8a61c67404d1f67e45040c7b28cb86e1a9c6dc270edb01a59beb7b48966400",
+    "hellforge_multiplayer/native-storage.lock.json": "aab48a8486c69e94fd53ff8615a978ebf68be5e92167ad01f6af832645da2ef0",
+    "hellforge_multiplayer/upstream.lock.json": "1d9274d0040561997c6a3d3ba34279f5e8c83bd788e38cd2f97a99fb946ed0f3"
+  },
+  "artifacts": {
+    "native_producer_unwind_test.exe": {
+      "bytes": 223232,
+      "sha256": "61cb2dd88259ac25a8d3296d38352b5b1cb174ce3652bc88156a11a6f6da3609"
+    },
+    "producer-unwind-contexts.bin": {
+      "bytes": 869112,
+      "sha256": "e027a3d4eece354123c46c71f56a9f810087f24434e5b907ab23f3ab5a31d70a"
+    },
+    "producer-unwind-image.bin": {
+      "bytes": 708,
+      "sha256": "c39451fa830598eb280d2b7654897325bb50c81465b9356b75e9d92304ef2c1c"
+    }
+  }
+}

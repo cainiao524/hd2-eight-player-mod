@@ -91,6 +91,8 @@ def main():
     native_match = re.fullmatch(r'native roster source: (\d+) checks passed; emitted native insert storage to real loader consumers', native_output)
     if not native_match:
         raise RuntimeError('Missing native storage result: ' + native_output)
+    unwind_output = json.loads(run([sys.executable, '-B', PROJECT / 'tools/build_unwind_offline.py', '--zig', zig]))
+    unwind_receipt = PROJECT / 'evidence/native-producer-unwind-validation.json'
     sync_input, sync_routed, sync_received = (build / n for n in ('native-sync-input.json', 'native-sync-routed.json', 'native-sync-received.json'))
     sync_script = PROJECT / 'tools/native_roster_sync.py'
     run([sys.executable, '-B', sync_script, 'produce', '--output', sync_input])
@@ -115,6 +117,7 @@ def main():
                     'relay_checks': json.loads(sync_routed.read_bytes())['relay_checks'],
                     'game_serializer_executed': False, 'game_entity_dispatch_executed': False,
                     'real_admission_executed': False, 'passed': True}
+    sync_receipt['producer_has_windows_unwind_variant'] = True
     receipt = {
         'schema': 'hellforge_engine_roster_validation_v1',
         'verified_at_utc': datetime.now(timezone.utc).isoformat(),
@@ -122,11 +125,13 @@ def main():
         'private_extension_version': 1, 'checks': int(match[1]), 'passed': True,
         'native_storage_checks': int(native_match[1]), 'native_storage_fixture': fixture_receipt,
         'native_property_sync': sync_receipt,
+        'native_producer_unwind': {**unwind_output, 'validation_sha256': digest(unwind_receipt)},
         'replayed_patch': patch_lock['patch'], 'patch_sha256': digest(patch),
         'patched_source_sha256': patch_lock['patched_source_sha256'],
         'test_source_sha256': {p: digest(PROJECT / p) for p in (
             'tests/engine_roster_test.c', 'tests/native_roster_test.c', 'tools/native_roster_fixture.py',
             'tests/native_fixture.h', 'tests/native_roster_sync_test.c', 'tools/native_roster_sync.py',
+            'tools/native_producer_unwind.py', 'tools/build_unwind_offline.py', 'tests/native_producer_unwind_test.c',
             'tests/backend/Program.cs', 'tests/backend/Backend.csproj',
             'mod/src/ep_native_roster.cpp', 'mod/src/ep_native_roster.h', 'mod/src/ep_roster_api.h',
             'native-storage.lock.json', 'tools/build_engine_offline.py', 'engine/patch.lock.json', 'upstream.lock.json')},
