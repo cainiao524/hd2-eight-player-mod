@@ -1,0 +1,190 @@
+{
+  "schema": "hellforge_roster_gate_validation_v1",
+  "verified_at_utc": "2026-10-25T14:56:41.731469+00:00",
+  "passed": true,
+  "branch_cases": 72,
+  "placement_refusals": 105,
+  "variants": {
+    "producer": {
+      "bytes": 756,
+      "function_count": 2,
+      "windows_unwind_contexts": 1308,
+      "reference_negative_controls_rejected": 3
+    },
+    "receiver": {
+      "bytes": 484,
+      "function_count": 2,
+      "windows_unwind_contexts": 1313,
+      "reference_negative_controls_rejected": 7
+    },
+    "getter": {
+      "bytes": 436,
+      "function_count": 2,
+      "windows_unwind_contexts": 4548,
+      "reference_negative_controls_rejected": 1
+    },
+    "mover": {
+      "bytes": 660,
+      "function_count": 3,
+      "windows_unwind_contexts": 8231,
+      "reference_negative_controls_rejected": 1
+    },
+    "insert-dense_legacy": {
+      "bytes": 688,
+      "function_count": 3,
+      "windows_unwind_contexts": 195,
+      "reference_negative_controls_rejected": 1
+    },
+    "insert-append_legacy": {
+      "bytes": 588,
+      "function_count": 3,
+      "windows_unwind_contexts": 134,
+      "reference_negative_controls_rejected": 1
+    },
+    "insert-append_registered": {
+      "bytes": 592,
+      "function_count": 3,
+      "windows_unwind_contexts": 136,
+      "reference_negative_controls_rejected": 1
+    },
+    "insert-dense_registered": {
+      "bytes": 684,
+      "function_count": 3,
+      "windows_unwind_contexts": 195,
+      "reference_negative_controls_rejected": 1
+    },
+    "remove-legacy": {
+      "bytes": 824,
+      "function_count": 3,
+      "windows_unwind_contexts": 2802,
+      "reference_negative_controls_rejected": 2
+    },
+    "remove-registered": {
+      "bytes": 808,
+      "function_count": 3,
+      "windows_unwind_contexts": 1868,
+      "reference_negative_controls_rejected": 2
+    },
+    "classify-enter": {
+      "bytes": 2344,
+      "function_count": 3,
+      "windows_unwind_contexts": 8904,
+      "reference_negative_controls_rejected": 2
+    },
+    "classify-leave": {
+      "bytes": 2816,
+      "function_count": 3,
+      "windows_unwind_contexts": 12001,
+      "reference_negative_controls_rejected": 2
+    }
+  },
+  "windows_unwind_contexts": 41635,
+  "source_sha256": {
+    "mod/src/ep_roster_gate.h": "db05104eecf40dea4d2ba6c7b72928534441a9e7c627ce591d994777f97df38b",
+    "mod/src/ep_roster_gate.cpp": "5dc7bc36b87aec4fa6192b5d3a6bd07f992a16ffe14572458101e1250ce737c1",
+    "tests/native_producer_unwind_test.c": "953012d62e102b19243a3982d7b962e7cbeb68d1b209c2e2101aba672958b953",
+    "tests/property_image_dll.cpp": "a0adced81972f0379efd93bd1cf54d520c855bc27c4b80dbff2ab33494fe63c2",
+    "tools/validate_roster_gates.py": "8d43ac813aa5dde0a3534f52e96fdc6083e71bf3aed8eafab5e664cf1bcf9a66",
+    "tools/validate_property_gates.py": "cda98e2cc88558016af28d0ba14a52c4d1ce56f0d9b22adb5abe601a84bfd281",
+    "tools/native_property_library.py": "9499969c43ff4a2d7b9dc6e209baa2e57adaab2ca89ec218658174e683330fd9",
+    "mod/src/ep_property_gate.h": "731c5e84adf165c58274385196d9ef49bcb1042f5e0e316bdd5d321907c93aef",
+    "mod/src/ep_property_gate.cpp": "5b8aa7af60d0801be4247a9fa6e9ebb11b749981e6e795a1ae7a72ae95668778",
+    "mod/src/ep_property_image.h": "9c1a17f0d0e7106adeae947246edc49be4012341e21811a3ffb68b63aec1a1d4",
+    "mod/src/ep_property_image.cpp": "22bb0edac87be485da57effaf477d562d35816fba392c3403027270652ec941f",
+    "mod/src/ep_getter_image.h": "b11c74c1bf00d6f4500e5ce5180ab7a316a7d77b2c4cca887fea62f7fcfbbdca",
+    "mod/src/ep_getter_image.cpp": "0c8f8cf1fcd55d82becb396c24637c524e38d3f1a67e2c880e5a18086869d163",
+    "mod/src/ep_mover_image.h": "1daf80633229a689ab0d716af7d7a9fd1d035d6aadd2c2c0741a146fa28f1998",
+    "mod/src/ep_mover_image.cpp": "1de15b0de5bdfc087f63566b5040b6b19cbd32ddd2e083204b82f8c5d59e4c4c",
+    "mod/src/ep_insert_image.h": "8b23f7df46ba1133f1369660d0976b671850e539e95b461b074f92af9f1de122",
+    "mod/src/ep_insert_image.cpp": "154398c26c4b17716a91ba556af77c7a2e24f8aedf5ee911ceb6a7a7f0f46b79",
+    "mod/src/ep_remove_image.h": "f96f183a2481703af5c93600b7cb701acab417021071b861cbf07e552804fc64",
+    "mod/src/ep_remove_image.cpp": "e1fd51851094405298261902e2a297ff0ab8a2dc8180c88522084b309591140a",
+    "mod/src/ep_classify_image.h": "dd701a49a15f1cdf15d9df837960a0acf90d49b4abe9125ff968c9e7ac99e0ba",
+    "mod/src/ep_classify_image.cpp": "41260521458c574b9d7e34ecd43ab23f9308241bd4f7e508bfcd1f3b82c662f0"
+  },
+  "artifacts": {
+    "native_roster_gate_unwind_test.exe": {
+      "bytes": 225280,
+      "sha256": "f1bd726ad76c8b478e20878a516582ad8007d657149de0af1f67fb9e228d4920"
+    },
+    "property_image_test.dll": {
+      "bytes": 264192,
+      "sha256": "535b304ad05a98159302c1b121a882084911c049fa21f9458b5b964d6c48337c"
+    },
+    "producer-roster-gated-contexts.bin": {
+      "bytes": 869160,
+      "sha256": "5f17caa212c03ec551d17f01b56a12610959b5628163e65162431c98dc98672e"
+    },
+    "receiver-roster-gated-contexts.bin": {
+      "bytes": 870608,
+      "sha256": "cf58f38c31cd4ee2637996820c9d1d647816caabf99a87d90d14a7f795963987"
+    },
+    "getter-roster-gated-contexts.bin": {
+      "bytes": 1511280,
+      "sha256": "ea2d3c2e64a3663dd2ffcc8cf12a4808cad319845667a956deb5beda3c2091a1"
+    },
+    "mover-roster-gated-contexts.bin": {
+      "bytes": 2734484,
+      "sha256": "c78854f94d10ade52bd49273f7b14f4b554e8f3a05bccccf40139ae1cb4a4cb5"
+    },
+    "insert-dense_legacy-roster-gated-contexts.bin": {
+      "bytes": 66588,
+      "sha256": "b2fd9876d474ffebddebae872b6f98617cf4335c6670aa2f44e12bccc02b9785"
+    },
+    "insert-append_legacy-roster-gated-contexts.bin": {
+      "bytes": 46136,
+      "sha256": "c84d7ebaeb5b483f50de10184e582e658869746381643424baaaaa8bafe23bcb"
+    },
+    "insert-append_registered-roster-gated-contexts.bin": {
+      "bytes": 46808,
+      "sha256": "d842021fba8a455c76acea68c9fb3da47cdf3b25bfab5961a9d2d207d74a4ace"
+    },
+    "insert-dense_registered-roster-gated-contexts.bin": {
+      "bytes": 66580,
+      "sha256": "d8afb56e11193403dc6143313db8156252f793a080499b85c077d1043f9aeaf7"
+    },
+    "remove-legacy-roster-gated-contexts.bin": {
+      "bytes": 932716,
+      "sha256": "f1e5d77e1028f3f5ec0fa2f387d7c34c3f3397a2ef5b28ee98fd8ec3049b9371"
+    },
+    "remove-registered-roster-gated-contexts.bin": {
+      "bytes": 622596,
+      "sha256": "8ab39e82a15d316fd7e83f97397e0027948aa99a39f5f986b8278b6480f9cf08"
+    },
+    "classify-enter-roster-gated-contexts.bin": {
+      "bytes": 2961620,
+      "sha256": "d9207867b3d95fa4abd270fd3f159eff6ee10b4372d91941a885388603da84cc"
+    },
+    "classify-leave-roster-gated-contexts.bin": {
+      "bytes": 3990768,
+      "sha256": "c0715c38472646a9786513eacc20d96b1f30b18809e249bb5d538f0ccaa285a7"
+    }
+  },
+  "inputs_sha256": {
+    "producer-unwind-contexts.bin": "e027a3d4eece354123c46c71f56a9f810087f24434e5b907ab23f3ab5a31d70a",
+    "receiver-unwind-contexts.bin": "ea336ca8dcd6126c4c295132c8666812e86bd0ece04afe7521e048760b206365",
+    "getter-unwind-contexts.bin": "28be01d1e858fac35e6c3e27b61e482cdde98f882408798c0d0d1c32f23c7ccc",
+    "mover-unwind-contexts.bin": "e26892033420a77f8e7dd4cdafb3da5802d4587706e7d1f216452b3d45d8e3f8",
+    "insert-dense_legacy-unwind-contexts.bin": "6001022a286eb743750840cb14af4493d7c2b1fecd7e31f1d911a6f9368bf3bb",
+    "insert-append_legacy-unwind-contexts.bin": "4ed13c98155dec5918bf86c346844073485863f2af2e2cd14f970a99f57c29e2",
+    "insert-append_registered-unwind-contexts.bin": "6f1c3ea2e26201b64fd80ca9e8c873d8b530b9e73a5f6f01920c90e730ce226b",
+    "insert-dense_registered-unwind-contexts.bin": "3bc8b1d7962814e7641ed0bf1c30e374c8448a8e97f849dcbbf5b62bcdb9576b",
+    "remove-legacy-unwind-contexts.bin": "385659262b4dff3f7be1e42c1cc0068e13b5ac352eadaa886c33f8311843f6e0",
+    "remove-registered-unwind-contexts.bin": "c2e8acb877f9c57cf35a93048e0d265a68ab5eec2f4f1ea383645f82e7b0711b",
+    "classify-enter-unwind-contexts.bin": "c50228641fde5c782ee7b5489e6f601fba39c6e5dd668c6b0968d061f5513f2c",
+    "classify-leave-unwind-contexts.bin": "3e8bd53337aed1b347043592dc913260401210bd986fc95e8f6c0e4f449dc002"
+  },
+  "reference_validation_sha256": {
+    "property-image-validation.json": "22b31f625268a01aad08241fb1ee9ef363a03fa900fd862ede9e64c7dbed9c83",
+    "native-getter-validation.json": "3626ebe3db901a6ccff281adf1b63436998a81cebdfecec8bb446bf7c3dea254",
+    "native-mover-validation.json": "fad11a833536f19fcafc799938717fb6b500158f248cc337137d1a18501e5678",
+    "native-insert-validation.json": "3d41c4b0112bae48d58a895c8717db44706a2445a00b9399410dabedf5370a3a",
+    "native-remove-validation.json": "ac1b571479db104c5861780288dd9c431e73dff734c5224c385a1b36aa622d63",
+    "native-classify-validation.json": "183aca1ac96f2d5365165ab882e8dd45e2c3e6eac6dd49dfbeacd514b75d713a",
+    "property-gate-validation.json": "0127f8fe3c98e4dc9e9e08cad60e05636a159c1e358798e57c84fe22d53e26f6"
+  },
+  "game_access": false,
+  "native_execution_of_game_bodies": false,
+  "runtime_verified": false,
+  "multiplayer_verified": false
+}

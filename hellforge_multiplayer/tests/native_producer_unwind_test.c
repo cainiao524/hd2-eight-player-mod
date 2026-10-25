@@ -34,17 +34,22 @@ int main(int argc, char** argv) {
         uint32_t size=u32(f), code_size=u32(f), table_offset=u32(f), count=u32(f);
         check(size<4096 && code_size<size && table_offset<size && (size-table_offset)%sizeof(RUNTIME_FUNCTION)==0 && count<EP_CONTEXT_LIMIT, "invalid image bounds");
         uint32_t functions=(size-table_offset)/sizeof(RUNTIME_FUNCTION);
-        check(functions==1 || functions==2,"invalid function count");
+        check(functions>=1 && functions<=3,"invalid function count");
         uint8_t* image=VirtualAlloc(NULL,size,MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE);
         check(image!=NULL,"allocation failed"); take(f,image,size);
         PRUNTIME_FUNCTION table=(PRUNTIME_FUNCTION)(image+table_offset);
         check(table->BeginAddress==0 && table[functions-1].EndAddress==code_size && table[functions-1].UnwindData<=table_offset && table_offset-table[functions-1].UnwindData>=4,"invalid function entry");
         uint8_t* unwind=image+table[functions-1].UnwindData;
         check(unwind[0]==1 && unwind[3]==0 && 4u+((unwind[2]+1u)&~1u)*2u<=table_offset-table[functions-1].UnwindData,"invalid unwind extent");
-        if (functions==2) {
-            check(table[0].EndAddress>0 && table[0].EndAddress==table[1].BeginAddress,"invalid leaf extent");
+        for (uint32_t index=1;index<functions;index++) check(table[index-1].EndAddress==table[index].BeginAddress,"invalid contiguous functions");
+        if (functions>=2) {
+            check(table[0].EndAddress>0,"invalid leaf extent");
             check(table[0].UnwindData>=code_size && table[0].UnwindData<=size-4,"invalid preflight unwind location");
-#ifdef EP_STACK_PREFLIGHT
+#if defined(EP_ROSTER_GATES)
+            const uint8_t prefix[]={1,9,7,0,9,0x70,8,0x60,7,0x30,6,2,4,2,2,2,1,2,0,0};
+            check(!memcmp(image+table[0].UnwindData,"\1\0\0\0",4) ||
+                  (size-table[0].UnwindData>=sizeof(prefix) && !memcmp(image+table[0].UnwindData,prefix,sizeof(prefix))),"unknown prefix unwind");
+#elif defined(EP_STACK_PREFLIGHT)
             const uint8_t prefix[]={1,9,7,0,9,0x70,8,0x60,7,0x30,6,2,4,2,2,2,1,2,0,0};
             check(size-table[0].UnwindData>=sizeof(prefix) && !memcmp(image+table[0].UnwindData,prefix,sizeof(prefix)),"invalid saved-argument preflight");
 #else
@@ -63,7 +68,8 @@ int main(int argc, char** argv) {
             c.Rip=(DWORD64)image+pc; c.Rsp=(DWORD64)entry+delta;
             DWORD64 base=0, frame=0; PVOID data=NULL;
             PRUNTIME_FUNCTION found=RtlLookupFunctionEntry(c.Rip,&base,NULL);
-            check(found==table+(functions==2 && pc>=table[1].BeginAddress ? 1 : 0) && base==(DWORD64)image,"lookup did not find owned table");
+            uint32_t row=0;while (row+1<functions && pc>=table[row+1].BeginAddress) row++;
+            check(found==table+row && base==(DWORD64)image,"lookup did not find owned table");
             PEXCEPTION_ROUTINE handler=RtlVirtualUnwind(UNW_FLAG_NHANDLER,base,c.Rip,found,&c,&data,&frame,NULL);
             int ok=handler==NULL && c.Rip==return_pc && c.Rsp==(DWORD64)entry+8 && same(&c,expected);
             if (ok == (int)should_fail) {

@@ -30,7 +30,7 @@ int ep_session_code_reserve(const HfApi*, HfMod*, uintptr_t desired_base,
  * property emitters. This checks structure, not instruction equivalence. */
 int ep_session_code_seal(HfMod*, uint64_t handle, const void* image,
                          uint32_t bytes, uint32_t table_offset);
-/* One or two sorted, nonoverlapping functions, with separate unwind blocks
+/* One to three sorted, nonoverlapping functions, with separate unwind blocks
  * after all code and before the final table. Used by gate + candidate images. */
 int ep_session_code_seal_table(HfMod*, uint64_t handle, const void* image,
                               uint32_t bytes, uint32_t table_offset, uint32_t count);

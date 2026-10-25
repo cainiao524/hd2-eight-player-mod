@@ -1,6 +1,6 @@
 # 属性入口成组发布与共同切换
 
-固定上游、SDK 13 与游戏 build 25480438 不变。`ep_property_gate.*` 为属性发送、属性接收与实体到网络索引查询三份候选生成默认关闭的转发入口，`ep_property_group.*` 通过实际 HellForge SDK 成组发布并持有会话资源。研究 Mod 初始化不会调用这些接口。**这不是完整容量事务，也没有生产环境的暂停/排空提供者。**
+固定上游、SDK 13 与游戏 build 25480438 不变。`ep_property_gate.*` 为属性发送、属性接收与实体到网络索引查询三份候选生成默认关闭的转发入口，`ep_property_group.*` 通过实际 HellForge SDK 成组发布并持有会话资源。研究 Mod 初始化不会调用这些接口。插入/分类/移除/搬移的共同集成见 [十二入口组](ROSTER_GROUP.zh-CN.md)；本文件继续描述保留的三入口接口。**这不是完整容量事务，也没有生产环境的暂停/排空提供者。**
 
 ## 代码与所有权
 
@@ -14,7 +14,7 @@
 | 接收 | 484 bytes | 32 | 460 | 432 / 456 |
 | 实体到网络索引查询 | 436 bytes | 32 | 412 | 388 / 408 |
 
-两条 RUNTIME_FUNCTION 分别描述无栈帧入口和原候选。`ep_session_code_seal_table` 只接受一条或两条，不接受任意数量；检查排序、范围、回溯区间及重复/重叠。旧 `seal` 保留单条行为。Windows 注册时传入真实条数，见 [RtlAddFunctionTable](https://learn.microsoft.com/en-us/windows/win32/api/winnt/nf-winnt-rtladdfunctiontable)。
+两条 RUNTIME_FUNCTION 分别描述无栈帧入口和原候选。`ep_session_code_seal_table` 现在接受一至三条，不接受任意数量；检查排序、范围、回溯区间及重复/重叠。旧 `seal` 保留单条行为。Windows 注册时传入真实条数，见 [RtlAddFunctionTable](https://learn.microsoft.com/en-us/windows/win32/api/winnt/nf-winnt-rtladdfunctiontable)。
 
 最多 16 个组；句柄单调递增，不复用身份。组、共同开关、代码所有者和稳定下一跳变量在同一个 DLL 中，发布前由所有者将这个 DLL 固定到进程退出。组内三份代码句柄的控制权交给组，调用者只能查询，不能单独发布或释放；否则违反 API 所有权契约。
 

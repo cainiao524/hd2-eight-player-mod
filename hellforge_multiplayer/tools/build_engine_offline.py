@@ -102,7 +102,7 @@ def main():
     property_dll=build/'property_image_test.dll'
     run([zig,'c++','-std=c++17','-target','x86_64-windows-gnu','-shared','-O1','-Wall','-Werror','-Wno-unused-parameter',
          '-I',source/'native/mod-sdk',PROJECT/'mod/src/ep_property_image.cpp',PROJECT/'mod/src/ep_property_code.cpp',PROJECT/'mod/src/ep_property_gate.cpp',PROJECT/'mod/src/ep_getter_image.cpp',PROJECT/'mod/src/ep_mover_image.cpp',PROJECT/'mod/src/ep_insert_image.cpp',
-         PROJECT/'mod/src/ep_remove_image.cpp',PROJECT/'mod/src/ep_classify_image.cpp',PROJECT/'tests/property_image_dll.cpp','-o',property_dll])
+         PROJECT/'mod/src/ep_remove_image.cpp',PROJECT/'mod/src/ep_classify_image.cpp',PROJECT/'mod/src/ep_roster_gate.cpp',PROJECT/'tests/property_image_dll.cpp','-o',property_dll])
     property_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_property_images.py','--library',property_dll]))
     property_receipt=PROJECT/'evidence/property-image-validation.json'
     getter_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_getter_image.py','--library',property_dll,'--zig',zig]))
@@ -139,6 +139,24 @@ def main():
     group_output=run([group_test,group_dll]).decode('utf-8').strip()
     group_match=re.fullmatch(r'property group: (\d+) checks passed; real HellForge chains, synthetic bodies only',group_output)
     if not group_match: raise RuntimeError('Missing property group result: '+group_output)
+    roster_gate_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_roster_gates.py','--library',property_dll,'--zig',zig]))
+    roster_gate_receipt=PROJECT/'evidence/roster-gate-validation.json'
+    roster_group_dll,roster_group_test=build/'roster_group_test.dll',build/'roster_group_test.exe'
+    roster_emitters=[PROJECT/'mod/src'/('ep_'+n+'.cpp') for n in ('property_image','property_gate','getter_image','mover_image','insert_image','remove_image','classify_image','roster_gate')]
+    run([zig,'c++','-std=c++17','-target','x86_64-windows-gnu','-shared','-O1','-Wall','-Werror','-Wno-unused-parameter',
+         '-I',source/'native/mod-sdk',*roster_emitters,PROJECT/'tests/roster_group_dll.cpp','-o',roster_group_dll])
+    run([*common,'-O1',PROJECT/'tests/roster_group_test.c',*deps,'-o',roster_group_test])
+    roster_scenarios=[]
+    for index,after in [(0,0)]+[(i,j) for i in range(1,13) for j in (0,1)]:
+        arguments=[] if not index else [index,after]
+        result=run([roster_group_test,roster_group_dll,*arguments]).decode('utf-8').strip()
+        found=re.fullmatch(r'roster group: (\d+) checks passed; scenario (\d+) (\d+)',result)
+        if not found or (int(found[2]),int(found[3]))!=(index,after):raise RuntimeError('Missing roster group result: '+result)
+        roster_scenarios.append(dict(failure_position=index,after_sdk=bool(after),checks=int(found[1])))
+    roster_group_result=dict(checks=sum(x['checks'] for x in roster_scenarios),scenarios=roster_scenarios,entries=12,
+        shared_storage_and_latch=True,internal_mover_bound_to_group=True,actual_hellforge_chains=True,
+        cooperative_quiescence_tested=True,production_quiescence_provider_bound=False,active_data_rollback_implemented=False,
+        native_execution_of_game_bodies=False,game_access=False)
     sync_input, sync_routed, sync_received = (build / n for n in ('native-sync-input.json', 'native-sync-routed.json', 'native-sync-received.json'))
     sync_script = PROJECT / 'tools/native_roster_sync.py'
     run([sys.executable, '-B', sync_script, 'produce', '--output', sync_input, '--property-library', property_dll])
@@ -184,6 +202,8 @@ def main():
         'native_mover':{**mover_output,'validation_sha256':digest(mover_receipt)},
         'native_insert':{**insert_output,'validation_sha256':digest(insert_receipt)},
         'native_remove':{**remove_output,'validation_sha256':digest(remove_receipt)},
+        'roster_group':roster_group_result,
+        'roster_gates':{**roster_gate_output,'validation_sha256':digest(roster_gate_receipt)},
         'native_classify':{**classify_output,'validation_sha256':digest(classify_receipt)},
         'native_classify_storage':{'checks':int(classify_match[1]),**classify_fixture_receipt},
         'native_property_gates':{**gate_output,'validation_sha256':digest(gate_receipt)},
@@ -222,18 +242,20 @@ def main():
             'native-classify.lock.json','tools/native_classify_image.py','tools/generate_classify_templates.py','tools/validate_classify_images.py',
             'mod/src/ep_classify_image.h','mod/src/ep_classify_image.cpp','mod/src/ep_classify_templates.h',
             'tools/native_classify_fixture.py','tests/native_classify_roster_test.c',
+            'mod/src/ep_roster_gate.h','mod/src/ep_roster_gate.cpp','mod/src/ep_roster_group.h','mod/src/ep_roster_group.cpp',
+            'tests/roster_group_dll.h','tests/roster_group_dll.cpp','tests/roster_group_test.c','tools/validate_roster_gates.py',
             'native-getter.lock.json','tools/native_getter_image.py','tools/generate_getter_template.py','tools/validate_getter_image.py',
             'mod/src/ep_getter_image.h','mod/src/ep_getter_image.cpp','mod/src/ep_getter_template.h',
             'tests/backend/Program.cs', 'tests/backend/Backend.csproj',
             'mod/src/ep_native_roster.cpp', 'mod/src/ep_native_roster.h', 'mod/src/ep_roster_api.h',
             'native-storage.lock.json', 'tools/build_engine_offline.py', 'engine/patch.lock.json', 'upstream.lock.json')},
-        'artifacts': {p.name: {'bytes': p.stat().st_size, 'sha256': digest(p)} for p in (dll, test, native_test, code_test, code_dll, property_dll, group_dll, group_test, classify_test, classify_fixture, classify_fixture.with_suffix('.enter.bin'), classify_fixture.with_suffix('.leave.bin'), fixture, fixture.with_suffix('.removed.bin'), fixture.with_suffix('.rejoined.bin'), sync_test, sync_input, sync_routed, sync_received, *sync_images)},
+        'artifacts': {p.name: {'bytes': p.stat().st_size, 'sha256': digest(p)} for p in (roster_group_dll,roster_group_test,dll, test, native_test, code_test, code_dll, property_dll, group_dll, group_test, classify_test, classify_fixture, classify_fixture.with_suffix('.enter.bin'), classify_fixture.with_suffix('.leave.bin'), fixture, fixture.with_suffix('.removed.bin'), fixture.with_suffix('.rejoined.bin'), sync_test, sync_input, sync_routed, sync_received, *sync_images)},
         'game_started': False, 'game_checked': False, 'game_read': False, 'installed': False,
         'native_game_storage_expanded': False, 'production_provider_bound': False,
         'runtime_verified': False, 'multiplayer_verified': False, 'public_release_allowed': False,
     }
     (PROJECT / 'evidence/engine-roster-validation.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
-    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'native_storage_checks': receipt['native_storage_checks'], 'session_code_checks': int(code_match[1]), 'property_images':property_output,'property_gates':gate_output,'property_group_checks':int(group_match[1]),'getter':getter_output,'mover':mover_output,'insert':insert_output,'remove':remove_output,'classify':classify_output,'classify_storage_checks':int(classify_match[1]),'native_getter_queries':sync_receipt['native_getter_queries'], 'sync_consumer_checks': sync_receipt['consumer_checks'], 'native_receivers': sync_receipt['native_receivers'], 'patch_replayed': True, 'game_access': False}))
+    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'native_storage_checks': receipt['native_storage_checks'], 'session_code_checks': int(code_match[1]), 'property_images':property_output,'property_gates':gate_output,'property_group_checks':int(group_match[1]),'getter':getter_output,'mover':mover_output,'insert':insert_output,'remove':remove_output,'classify':classify_output,'classify_storage_checks':int(classify_match[1]),'roster_gates':roster_gate_output,'roster_group_checks':roster_group_result['checks'],'native_getter_queries':sync_receipt['native_getter_queries'], 'sync_consumer_checks': sync_receipt['consumer_checks'], 'native_receivers': sync_receipt['native_receivers'], 'patch_replayed': True, 'game_access': False}))
 
 
 if __name__ == '__main__':

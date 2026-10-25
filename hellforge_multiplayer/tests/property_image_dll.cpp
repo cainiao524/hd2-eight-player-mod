@@ -246,3 +246,6 @@ extern "C" __declspec(dllexport) int classify_image_test_prepare(uint32_t kind,E
     CHECK(!memcmp(&info,&cleared,sizeof(info)));CHECK(!hook_calls);return 0;
 #undef CHECK
 }
+#include "../mod/src/ep_roster_gate.h"
+extern "C" __declspec(dllexport) EpPropertyResult roster_gate_test_build(uint32_t kind,const EpInsertAddresses* a,uint64_t control,uint64_t next,EpRosterGateImage* out)
+{ return ep_roster_gate_build(kind,a,control,next,out); }
