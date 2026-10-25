@@ -1,0 +1,58 @@
+{
+  "schema": "hd2_hellforge_migration_validation_v1",
+  "verified_at_utc": "2026-10-25T09:52:58.335621+00:00",
+  "upstream_commit": "a4dd089eb56cdd5cd96c3cefe6e80eba5848d6fa",
+  "sdk": 13,
+  "game_build": "25480438",
+  "adapter": {
+    "suite": "hellforge_adapter",
+    "checks": 26,
+    "passed": true,
+    "game_access": false
+  },
+  "backend": {
+    "suite": "hellforge_backend_eight_nodes",
+    "checks": 132,
+    "passed": true,
+    "synthetic_nodes": 8,
+    "game_clients": 0,
+    "game_access": false,
+    "steam_transport_tested": false,
+    "multiplayer_verified": false
+  },
+  "source_sha256": {
+    "mod/hellforge-mod.json": "b48339cd86b3ca4ca00011aca96b50b5609ecf4c7f30df32d95c600a001453a5",
+    "mod/src/core/ep_capacity_contract.cpp": "e1f21698de8515819b5e91137e42a188c4bdec298111bc64c34f4b99922f92ef",
+    "mod/src/core/ep_capacity_contract.h": "041ddfd9558edcd8d6c0b68aec48784e4dbbfa7b5448dec2a222553b13ec2ad7",
+    "mod/src/ep_hellforge.cpp": "a0584c7a2185f85311b5ed3df6a1f625962265c1e83642e0e945f4c7df7ca30e",
+    "mod/src/ep_hellforge.h": "7726e27b9d081682a22f4f47908a919edbb89c15436f26a61745ecbbc42dc8ca"
+  },
+  "test_source_sha256": {
+    "tests/adapter_test.cpp": "d663c6c0c988c4adc47b597dfcb213d24869cc9838e628ae9ecac9f5f4028b2f",
+    "tests/backend/Program.cs": "86a98f59b83477766079e663c26ea0e49fa919f5a82860f1f22f8aec00454360",
+    "tests/backend/Backend.csproj": "04026b5adc828a3e86cd100d0cafa443397669660a83044882256e8aee38be0b",
+    "tools/build_offline.py": "9bc046f36e5eea2fd6cc499cfbb8deb94efe160d25f69b870fb59f08d43a98ca",
+    "upstream.lock.json": "1d9274d0040561997c6a3d3ba34279f5e8c83bd788e38cd2f97a99fb946ed0f3"
+  },
+  "artifacts": {
+    "ep_hellforge.dll": {
+      "bytes": 74240,
+      "sha256": "3365f656f2ebcceebdf3f0dbde009b59d1f0692fb74f94090daa1d4f0d8a9d2e"
+    },
+    "adapter_test.exe": {
+      "bytes": 410624,
+      "sha256": "bfc7cb4553fac68c50f5ed2fc9955f2b1e92a0ecd2444d407bd4fdbada386d7d"
+    },
+    "eight-player-research-hellforge-0.1.0-source.zip": {
+      "bytes": 5623,
+      "sha256": "becbfeda49f15b3700876bb936a3d284a9d651537a26aeca59e0d49221f21c52"
+    }
+  },
+  "game_started": false,
+  "game_checked": false,
+  "game_read": false,
+  "installed": false,
+  "runtime_verified": false,
+  "multiplayer_verified": false,
+  "public_release_allowed": false
+}

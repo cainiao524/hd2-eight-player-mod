@@ -1,6 +1,8 @@
 # 多人 Mod 接手說明 — 2026-10-19
 
-本文件是目前進度入口；日期採 Asia/Tokyo。保存證據原有時區、檔名和 bytes 不改寫。歷史授權、測試次數與當時的程序狀態，應按其收據日期理解。
+> **2026-10-25 主線已轉移到 [HellForge 適配](../hellforge_multiplayer/README.zh-CN.md)，下一步見[新交接](../hellforge_multiplayer/HANDOFF.zh-CN.md)。** 以下是 2026-10-19 舊路線狀態。共同 dispatcher 採樣不再是當前 HellForge 源碼工作的前置條件，也沒有獲得新的執行授權。
+
+本文件保留舊路線進度；原日期採 Asia/Tokyo。保存證據原有時區、檔名和 bytes 不改寫。歷史授權、測試次數與當時的程序狀態，應按其收據日期理解。
 
 ## 交付判定
 

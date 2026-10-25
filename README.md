@@ -1,20 +1,20 @@
-# HD2 多人容量 Mod：原始碼、證據與交接
+# HD2 多人容量 Mod：HellForge 適配主線
 
-Helldivers 2 eight-player mod research, offline native candidates, evidence, and handoff.
+Helldivers 2 eight-player research targeting HellForge, with preserved legacy candidates and evidence.
 
-**2026-10-19 交接：目前沒有已驗證可玩的五人／八人 Mod。** 倉庫包含 `0.14.0-offline` 離線候選、後續容量與生命週期整合、只讀採樣工具及保存證據。六個 Party 入口已解碼，但共同 dispatcher、完整呼叫契約、真實加入／角色建立／同步仍未閉合。
+**2026-10-25：開發主線已轉向 HellForge 0.2.0-beta / SDK 13。** 新入口是 [HellForge 專案](hellforge_multiplayer/README.zh-CN.md)與[適配交接](hellforge_multiplayer/HANDOFF.zh-CN.md)。已有可編譯的 SDK 接入層與八個模擬後端節點測試；目前仍沒有已驗證可玩的五人／八人 Mod。
 
-`installable=false`、`runtime_verified=false`、`multiplayer_verified=false`、`public_release_allowed=false`。歷史基線 `max_verified_players=4`；本次整理沒有重新進行遊戲或多人驗證。
+`installable=false`、`runtime_verified=false`、`multiplayer_verified=false`、`public_release_allowed=false`。歷史官方環境基線 `max_verified_players=4`；HellForge 實機驗證人數為 0。這次適配沒有安裝、啟動、檢查或讀取遊戲。
 
 ## 接手入口
 
-1. **[目前狀態與下一步](github_handoff_20260927/CURRENT.zh-TW.md)**：先讀這份，包含阻礙、授權狀態、工作順序和通過條件。
-2. **[環境重建與離線驗證](github_handoff_20260927/SETUP.zh-TW.md)**：依賴、離線命令、原生建置說明。
-3. **[證據索引](github_handoff_20260927/EVIDENCE_INDEX.zh-TW.md)**：最新報告、原始採樣、測試收據及其用途。
+1. **[HellForge 適配與離線重建](hellforge_multiplayer/README.zh-CN.md)**：新 SDK Mod、固定上游、編譯命令和驗證結果。
+2. **[目前阻礙與下一步](hellforge_multiplayer/HANDOFF.zh-CN.md)**：玩家容器的四槽限制、舊核心遷移關係及後續實施順序。
+3. [舊路線交接](github_handoff_20260927/CURRENT.zh-TW.md)、[重建方法](github_handoff_20260927/SETUP.zh-TW.md)與[證據索引](github_handoff_20260927/EVIDENCE_INDEX.zh-TW.md)：保留歷史重播能力。
 4. [完整目標](github_handoff_20260927/GOAL_OBJECTIVE.zh-TW.md)：八名真人、八個獨立帳號同任務的驗收範圍。
 5. [機器可讀狀態](github_handoff_20260927/STATE.json)與[歷史交接](github_handoff_20260927/HANDOFF.zh-TW.md)：保留過往研究、已撤回判斷及來源指紋。
 
-本次使用者授權的是整理與上傳。先前 PID 30776 的一次 v2 只讀採樣已完成，讀取 47,894 bytes；六入口解碼可確認四個命名 export。新的 dispatcher 補充工具預計讀取 33,018 bytes，硬上限 65,536 bytes，但尚未獲准執行。歷史文件中的實機、注入、安裝或測試授權不能自動延用。
+目前授權是遷移專案並適配 HellForge 源碼。先前 PID 30776 的一次 v2 只讀採樣已完成，讀取 47,894 bytes。舊 dispatcher 補充工具仍未獲准執行，亦不再作為 HellForge 源碼工作的第一前置條件。歷史文件中的實機、注入、安裝或測試授權不能自動延用。
 
 容量契約支援 4/5/8/12/16 的設定與儲存邊界，這只屬離線設計能力。真實加入、角色建立、跨客戶端同步、增援與任務全流程仍須逐項驗證。
 
@@ -22,10 +22,11 @@ Helldivers 2 eight-player mod research, offline native candidates, evidence, and
 
 | 目錄 | 內容 |
 |---|---|
+| `hellforge_multiplayer` | **目前主線**：SDK 13 Mod、原容量核心、八節點後端測試、固定來源與適配交接 |
 | `eight_player_candidate_20260927` | 離線候選、測試、合成產物與交付紀錄，包含尚未發布的後續工作 |
 | `five_player_feasibility_20260927` | 研究工具、固定證據、重播結果與工作清單 |
 | `research_handoff_20260927` | 共用 capture reader 與歷史研究來源沿革 |
-| `github_handoff_20260927` | 完整目標、暫停狀態、重建說明及上傳清單 |
+| `github_handoff_20260927` | 完整目標、舊交接、重建說明及歷史上傳清單 |
 | `output/native_dispatch_20261010` | 精選保存證據與收據；保留原路徑供固定雜湊重播使用 |
 | `evidence/existing-code-evidence-25480438` | 已有擷取的原始 report/data，供離線重播使用 |
 | `FileDiver` 與三個參考目錄 | 已核對的必要資料及個別來源檔；來源子集詳見 SETUP |
@@ -34,7 +35,7 @@ Helldivers 2 eight-player mod research, offline native candidates, evidence, and
 
 ## 快照及上傳結果
 
-[SNAPSHOT_SHA256.json](github_handoff_20260927/SNAPSHOT_SHA256.json) 列出目前資料提交中的檔案、大小及 SHA-256，清單本身不列入自身雜湊。遠端核對後由 [UPLOAD_STATUS.json](github_handoff_20260927/UPLOAD_STATUS.json) 記錄資料提交與驗證結果，再另行提交收據。2026-09-27 原始收據另存於 [archive/UPLOAD_STATUS_20260927.json](github_handoff_20260927/archive/UPLOAD_STATUS_20260927.json)，舊快照可按其 `payload_commit` 核對。
+[SNAPSHOT_SHA256.json](github_handoff_20260927/SNAPSHOT_SHA256.json) 對應 **2026-10-19 歷史資料提交**，不是本次 HellForge 適配工作區。當時的遠端核對由 [UPLOAD_STATUS.json](github_handoff_20260927/UPLOAD_STATUS.json) 記錄；本次適配有獨立[驗證收據](hellforge_multiplayer/evidence/offline-validation.json)。2026-09-27 原始收據另存於 [archive/UPLOAD_STATUS_20260927.json](github_handoff_20260927/archive/UPLOAD_STATUS_20260927.json)，舊快照可按其 `payload_commit` 核對。
 
 快照清單對應收據中的 `payload_commit`；後續上傳狀態更新不改寫原始快照清單。可執行：
 
