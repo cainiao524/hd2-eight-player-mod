@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 import struct
 import native_producer_unwind
+import native_receiver_unwind
 
 ROOT = Path(__file__).resolve().parents[2]
 PROJECT = ROOT / 'hellforge_multiplayer'
@@ -40,6 +41,10 @@ def modules():
     def with_windows_unwind(source, **addresses):
         return native_producer_unwind.with_unwind(original(source, **addresses))['candidate']
     producer.native.build = with_windows_unwind
+    old_receiver = producer.receiver.build
+    def receiver_with_windows_unwind(source, **addresses):
+        return native_receiver_unwind.with_unwind(old_receiver(source, **addresses))['candidate']
+    producer.receiver.build = receiver_with_windows_unwind
     return insert, producer
 
 

@@ -3,7 +3,7 @@
   "updated_date": "2026-10-25",
   "timezone": "Asia/Taipei",
   "active_target": "HellForge",
-  "stage": "native_producer_unwind_and_eight_node_roundtrip_offline_verified",
+  "stage": "native_producer_receiver_unwind_and_eight_node_roundtrip_offline_verified",
   "upstream_commit": "a4dd089eb56cdd5cd96c3cefe6e80eba5848d6fa",
   "release": "0.2.0-beta",
   "engine_version": "0.1.28",
@@ -27,7 +27,7 @@
   "live_capture_authorized": false,
   "remaining_authorized_captures": 0,
   "legacy_dispatcher_capture": "deferred_legacy_route_not_authorized",
-  "next_source_work": "Implement receiver conditional-save unwind and verify original exception handler metadata; add production registration/retirement ownership. Continue mutation-exclusion owner leases, authoritative identity tickets, native player storage/creation/replication and full mission validation. Keep game access closed.",
+  "next_source_work": "Verify original exception handler metadata and add production registration/retirement ownership; implement unwind support for remaining native candidates. Continue mutation-exclusion owner leases, authoritative identity tickets, native player storage/creation/replication and full mission validation. Keep game access closed.",
   "validation": "evidence/offline-validation.json",
   "handoff": "HANDOFF.zh-CN.md",
   "branch": "codex/hellforge-migration",
@@ -53,7 +53,12 @@
   "offline_native_producer_rejection_failures_reproduced": 3,
   "native_producer_unwind_validation": "evidence/native-producer-unwind-validation.json",
   "native_unwind_handoff": "NATIVE_UNWIND.zh-CN.md",
-  "native_receiver_unwind_verified": false,
   "native_unwind_production_registered": false,
-  "native_exception_handlers_verified": false
+  "native_exception_handlers_verified": false,
+  "offline_native_receiver_unwind_contexts": 1313,
+  "offline_native_receiver_unwind_scenarios": 17,
+  "offline_native_receiver_unwind_unique_instruction_positions": 101,
+  "offline_native_receiver_rejection_failures_reproduced": 7,
+  "native_receiver_unwind_offline_verified": true,
+  "native_receiver_unwind_validation": "evidence/native-receiver-unwind-validation.json"
 }

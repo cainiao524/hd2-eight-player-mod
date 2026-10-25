@@ -1,6 +1,6 @@
 {
   "schema": "hellforge_engine_roster_validation_v1",
-  "verified_at_utc": "2026-10-25T10:43:02.258484+00:00",
+  "verified_at_utc": "2026-10-25T10:51:27.424243+00:00",
   "upstream_commit": "a4dd089eb56cdd5cd96c3cefe6e80eba5848d6fa",
   "sdk": 13,
   "game_build": "25480438",
@@ -105,7 +105,8 @@
     "game_entity_dispatch_executed": false,
     "real_admission_executed": false,
     "passed": true,
-    "producer_has_windows_unwind_variant": true
+    "producer_has_windows_unwind_variant": true,
+    "receiver_has_windows_unwind_variant": true
   },
   "native_producer_unwind": {
     "passed": true,
@@ -114,7 +115,17 @@
     "legacy_rejection_failures_reproduced": 3,
     "game_access": false,
     "placement_and_source_refusals": 3,
-    "validation_sha256": "1c05488a99784a503b22ca1cd602cb205ed57f1789516767a19d2f69e4448447"
+    "validation_sha256": "b7f63caf7835417a25ec7cf913cf7acfa9091b546e37231e05b12521f6f78eae"
+  },
+  "native_receiver_unwind": {
+    "passed": true,
+    "windows_unwind_contexts": 1313,
+    "legacy_valid_contexts": 1299,
+    "legacy_rejection_failures_reproduced": 7,
+    "game_access": false,
+    "placement_and_source_refusals": 3,
+    "unique_instruction_positions": 101,
+    "validation_sha256": "b17d3c37369f489f5a1151efd590af2a4694762b5c5255e4b30012358d03d9f0"
   },
   "replayed_patch": "engine/0001-shared-player-roster.patch",
   "patch_sha256": "c9096a42fb2bc20e1c09d404b98f91f7f618a95bc9de4b5651a34b8f489b23ee",
@@ -132,17 +143,19 @@
     "tools/native_roster_fixture.py": "bbcbfd2a5f3cdbfbc9e680145da596e7b9ff89f7a00e3665501066d51b9605b8",
     "tests/native_fixture.h": "a5f842280c255f25756fdfb5441a1aae8ddaa91ff1dc5c3426de98b8eb732933",
     "tests/native_roster_sync_test.c": "b7e90b1f1bb262132c59bf74b547e107a070a13019f389fd5cf726e0e873ad6b",
-    "tools/native_roster_sync.py": "dbed8274c53a02bfa845ffbadd5f387a4de56aed381107d2b7e7620d6d4171e9",
+    "tools/native_roster_sync.py": "7e647a25367dfba2bf6bb5585a2384de887e5142656324c0507ecb46dd83085f",
     "tools/native_producer_unwind.py": "83a0116a5cb6e000a9ea43cc1d3b3decb4ad66d8b6b7669994703f82bdf0c47c",
-    "tools/build_unwind_offline.py": "ece2cb2245953ab0ff29dfa233bf37b8937bdc691527fc71b3a117926666eb26",
+    "tools/build_unwind_offline.py": "2f513abc0c03fa535d06cd27bca72a8f00da4942bdc204356313f65613623024",
     "tests/native_producer_unwind_test.c": "8b8a61c67404d1f67e45040c7b28cb86e1a9c6dc270edb01a59beb7b48966400",
+    "tools/native_receiver_unwind.py": "c38d85b0e9986f81010da29a36b087c5517c89113a335c2e437c4456f7c8e7a7",
+    "tools/build_receiver_unwind_offline.py": "0bfe51e7c3bc04d9a7628549023ca7ddbc38a4b82c7e6bdd4b49b168fea36ea0",
     "tests/backend/Program.cs": "79ef51fd5827f59cd3007d271e3bf17000b6898914eb6bbee5fdace63b8b61c8",
     "tests/backend/Backend.csproj": "04026b5adc828a3e86cd100d0cafa443397669660a83044882256e8aee38be0b",
     "mod/src/ep_native_roster.cpp": "94a7608c6ae1eaed3492834f572e8b300a0962197f03e4b48259fc7977c2080f",
     "mod/src/ep_native_roster.h": "30116c76318c97ae2954530ad161cc56345428216592abb6dfa5e4961c941f26",
     "mod/src/ep_roster_api.h": "75bfdbf3ca86fa172a2ace0c81aa1de7d74035665094c85257f1d323a09a5816",
-    "native-storage.lock.json": "aab48a8486c69e94fd53ff8615a978ebf68be5e92167ad01f6af832645da2ef0",
-    "tools/build_engine_offline.py": "bbc385a6f88ad64c8b32ea6358fa8632da4f0e11cc81fe3f12c4edac919c7a49",
+    "native-storage.lock.json": "ec2a0cafe60941a36c09b87bd40f8098fc904120ce68b027f9de3edf5093161f",
+    "tools/build_engine_offline.py": "fdb88eeaa72198b2a10adb3db773feee0d7146ddd119982fa708508e4fb8b021",
     "engine/patch.lock.json": "dc6ca3a022c8879eab5a3244989077125614b510b2575837961693d861dd981b",
     "upstream.lock.json": "1d9274d0040561997c6a3d3ba34279f5e8c83bd788e38cd2f97a99fb946ed0f3"
   },
@@ -153,11 +166,11 @@
     },
     "engine_roster_test.exe": {
       "bytes": 765952,
-      "sha256": "640f52ebb45e7526454a9024dd67236a7b06d5a1012dc7e9e2aff0696c8b0bd3"
+      "sha256": "69f7f5bd3d4b515e27f52cc8dfe019223fbbad7633aff390e5fd84f127983a7e"
     },
     "native_roster_test.exe": {
       "bytes": 764928,
-      "sha256": "dd5b074f79ef0eae7d60b7d56bace909437423bb1a9e275244da3171bb6957ad"
+      "sha256": "216305dd2f3ade25259eba44ed58025469f5b0da90adb98d444a2c8aac0f192d"
     },
     "native-roster-fixture.bin": {
       "bytes": 2284,
@@ -173,7 +186,7 @@
     },
     "native_roster_sync_test.exe": {
       "bytes": 761344,
-      "sha256": "95b5cffaaf6c8d2cae42b3566b09706066ef46b703a6f20c14c7a40e873df727"
+      "sha256": "3c7ab1a75456a8aabf8a5a4beb11643c6b83bfc3843b8e28a4a213a919cf15b2"
     },
     "native-sync-input.json": {
       "bytes": 3925,
@@ -184,8 +197,8 @@
       "sha256": "ec3e23679a554c1f150cb10faf003d8ccbca32585cd092c161add1e2c34b0463"
     },
     "native-sync-received.json": {
-      "bytes": 9343,
-      "sha256": "807fcee0605f778bcf77bee306442bf558cc66542941e89f83e7475f50e998b6"
+      "bytes": 9350,
+      "sha256": "7cb35f37ab12b93f46ab0f7d592f8e3d4797e99470d92fc961e3ec7544536651"
     },
     "native-sync-1-before.bin": {
       "bytes": 2284,

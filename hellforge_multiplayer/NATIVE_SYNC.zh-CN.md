@@ -15,7 +15,7 @@
 
 ## 结果与证据
 
-发送端现已使用 [Windows unwind 适配变体](NATIVE_UNWIND.zh-CN.md)：规范化 prologue、修正两个拒绝跳转并生成回溯资料。八端测试执行新代码；元数据另由真实 Windows API 在自有进程验证。接收端仍为旧候选，尚无对应 Windows unwind 验证。
+发送端和接收端现已分别使用 [Windows unwind 适配变体](NATIVE_UNWIND.zh-CN.md)：规范化 prologue、修正各自两个拒绝跳转并生成独立回溯资料。接收端把条件保存移至入口，让 sentinel 等早退路径也具备完整的非易失寄存器保存。八端测试执行两份新代码；元数据另由真实 Windows API 在自有进程验证。生成映像和函数表不代表已经安装生产 hook 或验证原异常处理器。
 
 | 范围 | 结果 |
 |---|---|
