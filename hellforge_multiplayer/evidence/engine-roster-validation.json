@@ -1,0 +1,45 @@
+{
+  "schema": "hellforge_engine_roster_validation_v1",
+  "verified_at_utc": "2026-10-25T10:04:48.907804+00:00",
+  "upstream_commit": "a4dd089eb56cdd5cd96c3cefe6e80eba5848d6fa",
+  "sdk": 13,
+  "game_build": "25480438",
+  "private_extension_version": 1,
+  "checks": 100,
+  "passed": true,
+  "replayed_patch": "engine/0001-shared-player-roster.patch",
+  "patch_sha256": "c9096a42fb2bc20e1c09d404b98f91f7f618a95bc9de4b5651a34b8f489b23ee",
+  "patched_source_sha256": {
+    "native/mod-loader/ep_roster.c": "2124cb555ec91ffa5b51c9326619750fea3f4f4ba8f1c279cfa8b5fc03b37c27",
+    "native/mod-loader/ep_roster.h": "75bfdbf3ca86fa172a2ace0c81aa1de7d74035665094c85257f1d323a09a5816",
+    "native/mod-loader/event_polls.c": "eda9efb559db472079ffeccfb4a62104dfbf79eba1c298c96e092403e9c19eec",
+    "native/mod-loader/event_sources.c": "4d7dd6c0218fc6ac7ea97905632720e8fe5662a5ab752eac49b8afd9d3b53b9f",
+    "native/mod-loader/hellforge_modloader.c": "6b3b9a873106244c34a170f30750b0087311230a22277c38a4bda5b47737de63",
+    "native/mod-loader/passives.c": "28eaebf2a3682bb8bf3668f71e2178c7de02c03a638c10d11625b3da60198f90"
+  },
+  "test_source_sha256": {
+    "tests/engine_roster_test.c": "2a8029348b06074fa61e64a6a248df266316fb5ced7f88f000a3316d8e67f0d1",
+    "tools/build_engine_offline.py": "608eef826d1d4edc1d94e7c9b2703faabc85bd71e7de8c21c158de94c0ff28aa",
+    "engine/patch.lock.json": "dc6ca3a022c8879eab5a3244989077125614b510b2575837961693d861dd981b",
+    "upstream.lock.json": "1d9274d0040561997c6a3d3ba34279f5e8c83bd788e38cd2f97a99fb946ed0f3"
+  },
+  "artifacts": {
+    "hellforge_modloader-research.dll": {
+      "bytes": 599552,
+      "sha256": "d65fa1719f952a31dcd53205bced7de14abf7712d610efceb24d36bb10b8948f"
+    },
+    "engine_roster_test.exe": {
+      "bytes": 765952,
+      "sha256": "9b65a24ad2e751edc740d68e356173c607025d56e8912be68de9dafcfc7c524c"
+    }
+  },
+  "game_started": false,
+  "game_checked": false,
+  "game_read": false,
+  "installed": false,
+  "native_game_storage_expanded": false,
+  "production_provider_bound": false,
+  "runtime_verified": false,
+  "multiplayer_verified": false,
+  "public_release_allowed": false
+}

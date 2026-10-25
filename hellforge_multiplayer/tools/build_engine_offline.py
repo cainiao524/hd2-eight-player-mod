@@ -1,0 +1,103 @@
+"""Replay the private engine patch and test real consumers in our synthetic process.
+
+Never invoke upstream launch/setup/build scripts. Source, compiler and MinHook
+paths are explicit; no installation or game process discovery takes place.
+"""
+from __future__ import annotations
+import argparse
+from datetime import datetime, timezone
+import hashlib
+import io
+import json
+from pathlib import Path
+import re
+import subprocess
+import tarfile
+import tempfile
+
+PROJECT = Path(__file__).resolve().parents[1]
+
+
+def digest(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def run(args, cwd=PROJECT):
+    r = subprocess.run([str(a) for a in args], cwd=cwd, capture_output=True)
+    if r.returncode:
+        raise RuntimeError(r.stdout.decode('utf-8', errors='replace') + r.stderr.decode('utf-8', errors='replace'))
+    return r.stdout
+
+
+def check(path, expected):
+    if digest(path) != expected:
+        raise RuntimeError(f'Source/tool pin mismatch: {path.name}')
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    for name in ('upstream', 'zig', 'minhook'):
+        parser.add_argument('--' + name, required=True, type=Path)
+    args = parser.parse_args()
+    upstream, zig, minhook = args.upstream.resolve(), args.zig.resolve(), args.minhook.resolve()
+    lock = json.loads((PROJECT / 'upstream.lock.json').read_text(encoding='utf-8'))
+    patch_lock = json.loads((PROJECT / 'engine/patch.lock.json').read_text(encoding='utf-8'))
+    if run(['git', 'rev-parse', 'HEAD'], upstream).decode().strip() != lock['commit'] or lock['commit'] != patch_lock['upstream_commit']:
+        raise RuntimeError('Use the pinned upstream commit')
+    if run(['git', 'status', '--porcelain', '--untracked-files=no'], upstream).strip():
+        raise RuntimeError('The original upstream checkout must stay unmodified')
+    for path, sha in lock['source_sha256'].items():
+        check(upstream / path, sha)
+    check(zig, lock['zig']['exe_sha256'])
+    if run([zig, 'version']).decode().strip() != lock['zig']['version']:
+        raise RuntimeError('Wrong compiler version')
+    for path, sha in patch_lock['minhook']['source_sha256'].items():
+        check(minhook / path, sha)
+    patch = PROJECT / patch_lock['patch']
+    check(patch, patch_lock['patch_sha256'])
+    build = PROJECT / 'build'
+    build.mkdir(exist_ok=True)
+    # A fresh preserved export avoids deleting or resetting any prior work.
+    source = Path(tempfile.mkdtemp(prefix='engine-source-', dir=build)).resolve()
+    if not source.is_relative_to(build.resolve()):
+        raise RuntimeError('Export escaped build directory')
+    archive = run(['git', 'archive', '--format=tar', lock['commit']], upstream)
+    with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+        tar.extractall(source, filter='data')
+    run(['git', 'init', '-q'], source)
+    run(['git', 'config', 'core.autocrlf', 'false'], source)
+    run(['git', 'apply', '--check', patch], source)
+    run(['git', 'apply', patch], source)
+    for path, sha in patch_lock['patched_source_sha256'].items():
+        check(source / path, sha)
+    common = [zig, 'cc', '-target', 'x86_64-windows-gnu', '-std=c11', '-Wall', '-Werror', '-Wno-unused-parameter',
+              '-I', source / 'native/mod-sdk', '-I', source / 'native/mod-loader',
+              '-I', minhook / 'include', '-I', minhook / 'src']
+    deps = [minhook / p for p in ('src/buffer.c', 'src/hook.c', 'src/trampoline.c', 'src/hde/hde64.c')]
+    dll, test = build / 'hellforge_modloader-research.dll', build / 'engine_roster_test.exe'
+    run([*common, '-shared', '-O2', '-s', source / 'native/mod-loader/hellforge_modloader.c', *deps, '-o', dll])
+    run([*common, '-O1', PROJECT / 'tests/engine_roster_test.c', *deps, '-o', test])
+    output = run([test, dll]).decode('utf-8').strip()
+    match = re.fullmatch(r'engine roster: (\d+) checks passed; real patched consumers, synthetic process only', output)
+    if not match:
+        raise RuntimeError('Missing successful native test result: ' + output)
+    receipt = {
+        'schema': 'hellforge_engine_roster_validation_v1',
+        'verified_at_utc': datetime.now(timezone.utc).isoformat(),
+        'upstream_commit': lock['commit'], 'sdk': 13, 'game_build': '25480438',
+        'private_extension_version': 1, 'checks': int(match[1]), 'passed': True,
+        'replayed_patch': patch_lock['patch'], 'patch_sha256': digest(patch),
+        'patched_source_sha256': patch_lock['patched_source_sha256'],
+        'test_source_sha256': {p: digest(PROJECT / p) for p in (
+            'tests/engine_roster_test.c', 'tools/build_engine_offline.py', 'engine/patch.lock.json', 'upstream.lock.json')},
+        'artifacts': {p.name: {'bytes': p.stat().st_size, 'sha256': digest(p)} for p in (dll, test)},
+        'game_started': False, 'game_checked': False, 'game_read': False, 'installed': False,
+        'native_game_storage_expanded': False, 'production_provider_bound': False,
+        'runtime_verified': False, 'multiplayer_verified': False, 'public_release_allowed': False,
+    }
+    (PROJECT / 'evidence/engine-roster-validation.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
+    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'patch_replayed': True, 'game_access': False}))
+
+
+if __name__ == '__main__':
+    main()

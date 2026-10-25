@@ -3,7 +3,7 @@
   "updated_date": "2026-10-25",
   "timezone": "Asia/Taipei",
   "active_target": "HellForge",
-  "stage": "sdk_adapter_and_backend_offline_baseline_verified",
+  "stage": "sdk_backend_and_native_roster_consumers_offline_verified",
   "upstream_commit": "a4dd089eb56cdd5cd96c3cefe6e80eba5848d6fa",
   "release": "0.2.0-beta",
   "engine_version": "0.1.28",
@@ -27,9 +27,13 @@
   "live_capture_authorized": false,
   "remaining_authorized_captures": 0,
   "legacy_dispatcher_capture": "deferred_legacy_route_not_authorized",
-  "next_source_work": "Adapt fixed four-slot player storage and its consumers; bind transactional native capacity provider; keep all runtime gates closed.",
+  "next_source_work": "Bind a real lifetime-safe player storage producer; adapt independent score/customization/resource/replication limits. Keep runtime gates closed.",
   "validation": "evidence/offline-validation.json",
   "handoff": "HANDOFF.zh-CN.md",
   "branch": "codex/hellforge-migration",
-  "github_uploaded": false
+  "github_uploaded": false,
+  "offline_engine_roster_checks": 100,
+  "engine_roster_validation": "evidence/engine-roster-validation.json",
+  "engine_patch": "engine/0001-shared-player-roster.patch",
+  "native_game_storage_expanded": false
 }

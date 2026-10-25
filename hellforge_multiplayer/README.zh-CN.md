@@ -2,7 +2,7 @@
 
 2026-10-25，Asia/Taipei。当前开发目标转向 **HellForge 0.2.0-beta / SDK 13 / 游戏 build 25480438**。完整目标仍是八名真人、八个独立账号同任务；第五人是中间验收点。
 
-当前完成的是可编译的 SDK 接入层和真实后端源码的离线验证，**尚未实现可玩的五人或八人 Mod**。源码包名称中的 Research 有意保留；启用它不会增加玩家槽位。
+当前完成的是可编译的 SDK 接入层、真实后端源码的离线验证，以及原生玩家读取扩展，**尚未实现可玩的五人或八人 Mod**。源码包名称中的 Research 有意保留；启用它不会增加玩家槽位。
 
 ## 当前交付
 
@@ -15,6 +15,9 @@
 | 固定版本与来源 | `upstream.lock.json` | 上游 commit、源码校验、编译器指纹、旧核心对应关系 |
 | 离线构建入口 | `tools/build_offline.py` | 编译、运行两组测试、生成源码 ZIP 与验证收据 |
 | 证据 | `evidence/offline-validation.json` | 实际检查数量、源码和产物指纹、实机门槛 |
+| 引擎玩家读取补丁 | `engine/` | 固定 commit、可重放；实际加载器消费者支持外部名册 |
+| 原生消费者测试 | `tests/engine_roster_test.c` | 合成进程直接执行补丁后的枚举、生命周期、治疗及本地选择 |
+| 引擎构建与证据 | `tools/build_engine_offline.py` / `evidence/engine-roster-validation.json` | 单独编译研究 loader；100 项检查，仍未绑定真实 provider |
 | 继续开发说明 | `HANDOFF.zh-CN.md` | 旧代码迁移关系、已知限制、下一步及授权范围 |
 
 适配器使用 `hellforge_mod_init`、`HfApi::session`、`subscribe`、`on_game_thread` 和 `game_state`。接入失败后已注册的回调保持停用，避免半初始化状态继续运行。初始化与游戏线程之间通过原子标志发布状态。
@@ -47,6 +50,8 @@ py -3.12 -B hellforge_multiplayer/tools/build_offline.py `
 ```
 
 产物在 `build/`：`ep_hellforge.dll`、`adapter_test.exe`、`eight-player-research-hellforge-0.1.0-source.zip`。这些产物被 Git 忽略，可从源码重建。ZIP 只带清单与 `src/`；HellForge 按标准源码 Mod 流程自行编译。DLL 只在本项目的模拟测试进程中加载过。
+
+原生玩家读取扩展的契约、MinHook 准备和独立重建命令见 [engine/README.zh-CN.md](engine/README.zh-CN.md)。该补丁只改变加载器读取路径；原位玩家数组仍最多四项，独立计分/customization 四槽限制仍保留。
 
 ## 后续实机步骤：尚未执行
 

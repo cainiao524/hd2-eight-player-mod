@@ -29,17 +29,23 @@
 4. 这些代码的玩家记录为 `manager + 0x2C8 + 0x38*i`，avatar 网络表为 `manager + 0x3A8 + 0x20*i`。根据源码偏移计算，第五条玩家记录起点 `0x2C8 + 4*0x38 = 0x3A8`，与另一张表相交。因此只把 `EVT_MAX_PLAYERS` 改成 8 会把邻接字段当成玩家记录，不能视为正确扩容。
 5. 上游明确将房主退出处理为关闭房间；这轮模拟后端验证相同行为，不宣称房主迁移成功。
 
+## 已落地的引擎读取扩展
+
+`engine/0001-shared-player-roster.patch` 已针对固定上游提交重放并编译。新私有接口接入了实际 PollPlayers、EvpPlayers 与 PassivesLocal；经 EvpPlayers 消费的动作人数、本地玩家、治疗、统计和武器读取随之使用统一快照。原版数组仍拒绝超过四项，加载器自己的缓冲区上限为 16。提供者可声明八容量；无效/不可用时不回退到四人视图，解绑等待在途读取，初始化失败释放绑定。
+
+100 项原生合成测试覆盖实际消费者；详细契约、来源、重建命令和局限见 [engine/README.zh-CN.md](engine/README.zh-CN.md)，证据在 `evidence/engine-roster-validation.json`。这一步完成的是加载器读取接口，不是游戏内存储扩容。计分 index<4、customization 四条记录和角色创建/复制的限制仍未解决。
+
 ## 继续实施顺序
 
 1. **玩家存储适配**：将既有 Sidecar/Bridge 的权威索引、归属和清理契约逐项映射到 HellForge 所用游戏构建。列出所有固定四项数组及创建/遍历/删除消费者，设计统一外部存储接入，避免只改变数量字段。
-2. **引擎扩展边界**：如需替换上游事件枚举，准备固定 commit 的引擎补丁与合成内存测试。先支持可注入、可撤销的玩家列表 provider，再讨论第五槽，不能原地扩大四项结构。
+2. **引擎扩展边界**：读取接口与可撤销 provider 已完成离线验证；下一步为其接入真实且有生命周期保证的存储生产者。保持 epoch、generation、稀疏索引和绑定失效语义，不能用模拟八条名册冒充八个已创建角色。
 3. **容量事务**：通过有明确生命周期的 native provider，将房间、Party、peer、roster、entity、资源及复制容量作为一个事务提交；失败可回滚，客户端相容性必须检查。现有 SDK 没有可直接完成这一事务的“set_max_players”调用。
 4. **生命周期与同步**：加入、角色创建、控制权、复制、死亡/增援、离开/重连、撤离与清理分别测试；与 HellForge 的 hook 链及 netreap 协作。
 5. **实机验证**：仅在新的明确授权后进行。先两台电脑各一个客户端，再第五人，最终八个独立账号完整任务。离线八节点从不算真人或游戏客户端。
 
 ## 验证及重现
 
-入口见 [README](README.zh-CN.md)。`evidence/offline-validation.json` 记录两组实际执行的测试和产物指纹。原始容量核心逐字节相同；上游源码无改动；新接入层使用真实 SDK 头编译，但测试的 SDK 回调均为模拟值。
+入口见 [README](README.zh-CN.md)。`evidence/offline-validation.json` 记录两组实际执行的测试和产物指纹。原始容量核心逐字节相同；固定上游 checkout 无改动；引擎补丁仅在新的源码导出目录重放；新接入层使用真实 SDK 头编译，但测试的 SDK 回调均为模拟值。
 
 不执行上游 `Launch.cmd`、`Build-Engine.ps1`、`Publish-HellForge.ps1` 或 setup：前者会启动应用，后两种流程可能寻找并读取已安装游戏、生成 stand-in 或写入安装目录。这轮只调用本项目显式限定的源码构建入口。
 

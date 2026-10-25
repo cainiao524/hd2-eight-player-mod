@@ -1,0 +1,450 @@
+diff --git a/native/mod-loader/ep_roster.c b/native/mod-loader/ep_roster.c
+new file mode 100644
+index 0000000..31bcf12
+--- /dev/null
++++ b/native/mod-loader/ep_roster.c
+@@ -0,0 +1,136 @@
++/* GPL-3.0-only. Included after SafeRead, before events/passives/actions.
++ * The private provider's lifetime is protected by a shared reader lock: unbind
++ * waits for every callback, then forgets its context. Invalid snapshots never
++ * fall through to the game's fixed four-slot arrays. */
++#include "ep_roster.h"
++static SRWLOCK g_epRosterLock = SRWLOCK_INIT;
++static HfMod* g_epRosterOwner;
++static EpHfRosterProvider g_epRosterProvider;
++static uint64_t g_epRosterLease, g_epRosterNext;
++static _Thread_local int g_epRosterReading;
++
++static uint64_t EpRosterBind(HfMod* owner, const EpHfRosterProvider* provider)
++{
++    if (g_epRosterReading || !owner || !provider || strcmp(g_build, "25480438") ||
++        provider->size != sizeof *provider || provider->version != EP_HF_ROSTER_VERSION ||
++        !provider->read || !provider->context || !provider->capacity ||
++        provider->capacity > EP_HF_ROSTER_LIMIT || provider->reserved) return 0;
++    int known = 0;
++    for (int i = 0; i < g_modCount; i++) if (owner == &g_mods[i]) known = 1;
++    if (!known || !owner->loaded) return 0;
++    AcquireSRWLockExclusive(&g_epRosterLock);
++    uint64_t lease = 0;
++    if (!g_epRosterOwner && g_epRosterNext != UINT64_MAX)
++    {
++        g_epRosterOwner = owner;
++        g_epRosterProvider = *provider;
++        lease = g_epRosterLease = ++g_epRosterNext;
++    }
++    ReleaseSRWLockExclusive(&g_epRosterLock);
++    return lease;
++}
++
++static int EpRosterUnbind(HfMod* owner, uint64_t lease)
++{
++    if (g_epRosterReading || !owner || !lease) return 0;
++    AcquireSRWLockExclusive(&g_epRosterLock);
++    int ok = owner == g_epRosterOwner && lease == g_epRosterLease;
++    if (ok)
++    {
++        g_epRosterOwner = NULL;
++        g_epRosterLease = 0;
++        memset(&g_epRosterProvider, 0, sizeof g_epRosterProvider);
++    }
++    ReleaseSRWLockExclusive(&g_epRosterLock);
++    return ok;
++}
++
++/* A declined init must not leave a dead provider or block subsequent mods. */
++static void EpRosterDeclined(HfMod* owner)
++{
++    AcquireSRWLockExclusive(&g_epRosterLock);
++    if (g_epRosterOwner == owner)
++    {
++        g_epRosterOwner = NULL;
++        g_epRosterLease = 0;
++        memset(&g_epRosterProvider, 0, sizeof g_epRosterProvider);
++    }
++    ReleaseSRWLockExclusive(&g_epRosterLock);
++}
++
++__declspec(dllexport) const EpHfRosterApi* hellforge_ep_roster_api_v1(void)
++{
++    static const EpHfRosterApi api = {EP_HF_ROSTER_MAGIC, sizeof api, EP_HF_ROSTER_VERSION,
++                                    EP_HF_ROSTER_LIMIT, EpRosterBind, EpRosterUnbind};
++    return &api;
++}
++
++static int EpRosterValid(const EpHfRosterSnapshot* out, uint32_t capacity)
++{
++    if (out->size != sizeof *out || out->version != EP_HF_ROSTER_VERSION || !out->epoch || out->binding ||
++        out->capacity != capacity || out->count > capacity) return 0;
++    uint32_t locals = 0;
++    for (uint32_t i = 0; i < out->count; i++)
++    {
++        const EpHfPlayer* p = &out->players[i];
++        if (!p->peer || !p->generation || p->network_index >= capacity || p->local > 1 || p->reserved) return 0;
++        locals += p->local;
++        for (uint32_t j = 0; j < i; j++)
++        {
++            const EpHfPlayer* q = &out->players[j];
++            if (p->peer == q->peer || p->network_index == q->network_index ||
++                (p->player && p->player == q->player) || (p->avatar && p->avatar == q->avatar)) return 0;
++        }
++    }
++    return locals <= 1;
++}
++
++/* Reads only the reviewed four-slot layout. The raw count is checked BEFORE a
++ * record read, even though all loader-side buffers can now hold sixteen. */
++static int EpRosterVanilla(uintptr_t game, EpHfRosterSnapshot* out)
++{
++    uintptr_t manager = 0, user = 0;
++    uint32_t count = 0;
++    uint64_t local = 0;
++    if (!game || SafeRead(game + 0x3326468u, &manager, 8) || !manager ||
++        SafeRead(manager + 0x84, &count, 4) || count > 4) return -1;
++    if (!SafeRead(game + 0x347CEF0u, &user, 8) && user) SafeRead(user + 0xB398, &local, 8);
++    out->size = sizeof *out; out->version = EP_HF_ROSTER_VERSION; out->capacity = 4;
++    for (uint32_t i = 0; i < count; i++)
++    {
++        EpHfPlayer p = {0};
++        uintptr_t descriptor = 0;
++        if (SafeRead(manager + 0x2C8 + 0x38 * i, &p.peer, 8) ||
++            SafeRead(manager + 0x2E0 + 0x38 * i, &p.life, 4) ||
++            SafeRead(manager + 0xE8 + 8 * i, &descriptor, 8)) return -1;
++        if (descriptor && SafeRead(descriptor + 8, &p.player, 4)) return -1;
++        p.local = p.peer != 0 && p.peer == local; p.network_index = i;
++        p.network_id = 0x7FFF;
++        if (SafeRead(manager + 0x3A8 + 0x20 * i, &p.network_id, 4)) p.network_id = 0x7FFF;
++        out->players[out->count++] = p;
++    }
++    return (int)out->count;
++}
++
++/* Success count (including zero), -1 unavailable. Caller gets no partial data. */
++static int EpRosterRead(uintptr_t game, EpHfRosterSnapshot* out)
++{
++    memset(out, 0, sizeof *out);
++    if (g_epRosterReading) return -1;
++    EpHfRosterSnapshot next = {0};
++    next.size = sizeof next; next.version = EP_HF_ROSTER_VERSION;
++    AcquireSRWLockShared(&g_epRosterLock);
++    int count;
++    if (g_epRosterOwner)
++    {
++        g_epRosterReading = 1;
++        int ok = g_epRosterOwner->loaded ? g_epRosterProvider.read(g_epRosterProvider.context, game, &next) : 0;
++        g_epRosterReading = 0;
++        count = ok == 1 && EpRosterValid(&next, g_epRosterProvider.capacity) ? (int)next.count : -1;
++        next.binding = g_epRosterLease;
++    }
++    else count = EpRosterVanilla(game, &next);
++    if (count >= 0) *out = next;
++    ReleaseSRWLockShared(&g_epRosterLock);
++    return count;
++}
+diff --git a/native/mod-loader/ep_roster.h b/native/mod-loader/ep_roster.h
+new file mode 100644
+index 0000000..4cb0f33
+--- /dev/null
++++ b/native/mod-loader/ep_roster.h
+@@ -0,0 +1,46 @@
++/* GPL-3.0-only. Private eight-player research extension, NOT an upstream SDK version.
++ * Resolve hellforge_ep_roster_api_v1 from the patched loader and check magic/size/version.
++ * Binding only redirects loader readers; it never expands the game's native storage. */
++#ifndef EP_HF_ROSTER_H
++#define EP_HF_ROSTER_H
++#include <stdint.h>
++#include <stddef.h>
++#define EP_HF_ROSTER_MAGIC 0x45505231u
++#define EP_HF_ROSTER_VERSION 1u
++#define EP_HF_ROSTER_LIMIT 16u
++#ifdef __cplusplus
++extern "C" {
++#endif
++typedef struct HfMod HfMod;
++typedef struct EpHfPlayer {
++    uint64_t peer;
++    uint32_t player, avatar, life, local;
++    uint32_t network_index, generation;
++    /* Avatar network entity ID is not the player's slot index. 0x7FFF: absent.
++     * A provider normally supplies avatar directly and leaves network_id absent. */
++    uint32_t network_id, reserved;
++} EpHfPlayer;
++typedef struct EpHfRosterSnapshot {
++    uint32_t size, version, count, capacity;
++    uint64_t binding; /* reserved: provider returns zero, loader fills its lease */
++    uint64_t epoch; /* nonzero session/owner epoch; change it on replacement */
++    EpHfPlayer players[EP_HF_ROSTER_LIMIT];
++} EpHfRosterSnapshot;
++typedef struct EpHfRosterProvider {
++    uint32_t size, version, capacity, reserved;
++    void* context;
++    /* Called synchronously on either game or watch thread. Must be thread-safe.
++     * Return 1 with a coherent owned snapshot; 0 means unavailable (NO fallback).
++     * Do not reenter this API. Keep context/code alive until unbind returns. */
++    int (*read)(void* context, uintptr_t game, EpHfRosterSnapshot* out);
++} EpHfRosterProvider;
++typedef struct EpHfRosterApi {
++    uint32_t magic, size, version, limit;
++    uint64_t (*bind)(HfMod* owner, const EpHfRosterProvider* provider);
++    int (*unbind)(HfMod* owner, uint64_t lease);
++} EpHfRosterApi;
++typedef const EpHfRosterApi* (*EpHfGetRosterApi)(void);
++#ifdef __cplusplus
++}
++#endif
++#endif
+diff --git a/native/mod-loader/event_polls.c b/native/mod-loader/event_polls.c
+index 7fa59d7..8234594 100644
+--- a/native/mod-loader/event_polls.c
++++ b/native/mod-loader/event_polls.c
+@@ -172,36 +172,32 @@ static int EvpAlive(uint32_t entity)
+         !SafeRead(gens + index, &gen, 1) && gen == ((entity >> 22) & 0xFF);
+ }
+ 
+-typedef struct EvpPlayer { uint64_t peer; uint32_t player, avatar, life; int local; } EvpPlayer;
++typedef struct EvpPlayer { uint64_t peer; uint32_t player, avatar, life; int local; uint64_t epoch, binding; uint32_t generation; } EvpPlayer;
++static int EvpSameSource(const EvpPlayer* a, const EvpPlayer* b)
++{ return a->peer == b->peer && a->epoch == b->epoch && a->binding == b->binding && a->generation == b->generation; }
+ /* The player list: peer, player entity, Helldiver (0: none), lifecycle, local. Their count, -1 unreadable. */
+ static int EvpPlayers(uintptr_t game, EvpPlayer* out)
+ {
+-    uintptr_t manager, user, em = 0;
+-    uint64_t local = 0;
+-    if (!EvpPtr(game + EVT_PLAYERS, &manager)) return -1;
+-    if (EvpPtr(game + EVT_LOCAL_PEER, &user)) SafeRead(user + EVT_LOCAL_PEER_AT, &local, 8);
+-    uint32_t count = EvpU32(manager + 0x84, 99);
+-    if (count > EVT_MAX_PLAYERS) return -1;
++    EpHfRosterSnapshot roster;
++    int count = EpRosterRead(game, &roster);
++    if (count < 0) return -1;
++    uintptr_t em = 0;
+     EvpPtr(game + EVP_ENTITIES, &em);
+-    for (uint32_t i = 0; i < count; i++)
++    for (int i = 0; i < count; i++)
+     {
+-        EvpPlayer* p = &out[i];
+-        memset(p, 0, sizeof *p);
+-        uintptr_t descriptor;
+-        SafeRead(manager + 0x2C8 + 0x38 * i, &p->peer, 8);
+-        p->life = EvpU32(manager + 0x2E0 + 0x38 * i, 0);
+-        if (EvpPtr(manager + 0xE8 + 8 * i, &descriptor)) p->player = EvpU32(descriptor + 8, 0);
+-        p->local = p->peer != 0 && p->peer == local;
+-        uint32_t network = EvpU32(manager + 0x3A8 + 0x20 * i, 0x7FFF), slot;
+-        if (em && network != 0x7FFF && EvpHash(em + EVP_NETWORK_MAP, network, 8, 4, &slot))
+-            p->avatar = EvpU32(em + EVP_NETWORK_ENTITY + (uintptr_t)slot * 24, 0);
++        const EpHfPlayer* p = &roster.players[i];
++        out[i] = (EvpPlayer){p->peer, p->player, p->avatar, p->life, (int)p->local, roster.epoch, roster.binding, p->generation};
++        uint32_t slot;
++        if (!out[i].avatar && em && p->network_id != 0x7FFF &&
++            EvpHash(em + EVP_NETWORK_MAP, p->network_id, 8, 4, &slot))
++            out[i].avatar = EvpU32(em + EVP_NETWORK_ENTITY + (uintptr_t)slot * 24, 0);
+     }
+-    return (int)count;
++    return count;
+ }
+ 
+ /* ---- heal ---------------------------------------------------------------------------------------------------------- */
+ 
+-typedef struct EvpHealth { uint32_t avatar; uintptr_t record; int32_t health; uint32_t life; int seen; } EvpHealth;
++typedef struct EvpHealth { uint32_t avatar; uintptr_t record; int32_t health; uint32_t life; int seen; EvpPlayer source; } EvpHealth;
+ static EvpHealth g_evpHealth[EVT_MAX_PLAYERS * 2];
+ static int g_evpHealthCount;
+ 
+@@ -231,11 +227,11 @@ static void PollHeal(uintptr_t game)
+         uintptr_t record; int32_t health, max; uint32_t life;
+         if (!p->avatar || !EvpHealthOf(game, p->avatar, &record, &health, &life, &max)) continue;
+         EvpHealth* known = NULL;
+-        for (int k = 0; k < g_evpHealthCount; k++) if (g_evpHealth[k].avatar == p->avatar) known = &g_evpHealth[k];
++        for (int k = 0; k < g_evpHealthCount; k++) if (g_evpHealth[k].avatar == p->avatar && EvpSameSource(&g_evpHealth[k].source, p)) known = &g_evpHealth[k];
+         if (known == NULL && g_evpHealthCount < (int)(sizeof g_evpHealth / sizeof g_evpHealth[0]))
+         {
+             known = &g_evpHealth[g_evpHealthCount++];
+-            *known = (EvpHealth){p->avatar, record, health, life, 1}; /* the start: no heal on first sight */
++            *known = (EvpHealth){p->avatar, record, health, life, 1, *p}; /* the start: no heal on first sight */
+             continue;
+         }
+         if (known == NULL) continue;
+@@ -299,13 +295,19 @@ static int EvpStatsOf(uintptr_t game, uint32_t player, EvpStats* out)
+ 
+ static void PollStats(uintptr_t game)
+ {
++    static EvpPlayer source;
+     ULONGLONG now = GetTickCount64();
+     if (now < g_evpStatsNext) return;
+     g_evpStatsNext = now + 100;
+     EvpPlayer players[EVT_MAX_PLAYERS];
+     int count = EvpPlayers(game, players);
+     uint32_t player = 0;
+-    for (int i = 0; i < count; i++) if (players[i].local) player = players[i].player;
++    for (int i = 0; i < count; i++) if (players[i].local)
++    {
++        player = players[i].player;
++        if (!EvpSameSource(&source, &players[i])) g_evpStatsHeld = 0;
++        source = players[i];
++    }
+     if (!player) { g_evpStatsHeld = 0; return; }
+     static EvpStats now_;
+     if (!EvpStatsOf(game, player, &now_)) return; /* unreadable: the last one stays the start */
+@@ -364,6 +366,7 @@ static int EvpHeld(uintptr_t game, uint32_t avatar, uint32_t* entity, uint64_t*
+ 
+ static void PollWeapon(uintptr_t game)
+ {
++    static EvpPlayer source;
+     ULONGLONG now = GetTickCount64();
+     if (now < g_evpWeaponNext) return;
+     g_evpWeaponNext = now + 100;
+@@ -373,7 +376,12 @@ static void PollWeapon(uintptr_t game)
+     uint32_t avatar = 0, entity = 0, selection = 0;
+     uint64_t resource = 0;
+     int local = 0;
+-    for (int i = 0; i < count; i++) if (players[i].local) { local = 1; avatar = players[i].avatar; }
++    for (int i = 0; i < count; i++) if (players[i].local)
++    {
++        local = 1; avatar = players[i].avatar;
++        if (!EvpSameSource(&source, &players[i])) g_evpWeaponHeld = 0;
++        source = players[i];
++    }
+     if (avatar && !EvpHeld(game, avatar, &entity, &resource, &selection)) return; /* unreadable: the last state stays */
+     int changed = g_evpWeaponHeld && local && (avatar != g_evpWeaponAvatar || entity != g_evpWeaponEntity || resource != g_evpWeaponResource);
+     if (changed)
+diff --git a/native/mod-loader/event_sources.c b/native/mod-loader/event_sources.c
+index 8e72bc8..455a013 100644
+--- a/native/mod-loader/event_sources.c
++++ b/native/mod-loader/event_sources.c
+@@ -26,7 +26,7 @@
+ #define EVT_PLAYERS_BYTES 0x430u
+ #define EVT_LOCAL_PEER 0x347CEF0u
+ #define EVT_LOCAL_PEER_AT 0xB398u
+-#define EVT_MAX_PLAYERS 4
++#define EVT_MAX_PLAYERS EP_HF_ROSTER_LIMIT /* loader storage, NOT native array size */
+ 
+ static const uint8_t kConsumeDamagePin[32] = {0x40, 0x55, 0x53, 0x57, 0x41, 0x55, 0x41, 0x56, 0x41, 0x57, 0x48, 0x8d, 0xac, 0x24, 0x68, 0xff,
+     0xff, 0xff, 0x48, 0x81, 0xec, 0xb8, 0x01, 0x00, 0x00, 0x48, 0x8b, 0x05, 0xb0, 0x42, 0x39, 0x01};
+@@ -186,47 +186,41 @@ static uint32_t ReadState(uintptr_t game)
+ 
+ #include "event_polls.c"
+ 
+-typedef struct KnownPlayer { uint64_t peer; uint32_t lifecycle; int seen; } KnownPlayer;
++typedef struct KnownPlayer { uint64_t peer; uint32_t lifecycle; int seen; uint32_t generation; } KnownPlayer;
+ static KnownPlayer g_players[EVT_MAX_PLAYERS * 2];
+ static int g_playerCount;
+ static uint32_t g_lastState;
++static uint64_t g_playerRosterEpoch, g_playerRosterBinding;
+ 
+-/* Each player's lifecycle against the last update's: spawned (to 3), down (3 to 2). */
++/* Peers and generations are stable identities; provider order is not a slot. */
+ static void PollPlayers(uintptr_t game)
+ {
+-    uintptr_t manager = 0, peers = 0;
+-    uint8_t m[EVT_PLAYERS_BYTES];
+-    if (SafeRead(game + EVT_PLAYERS, &manager, 8) || manager == 0 || SafeRead(manager, m, sizeof m)) return;
+-    uint64_t local = 0;
+-    if (!SafeRead(game + EVT_LOCAL_PEER, &peers, 8) && peers != 0) SafeRead(peers + EVT_LOCAL_PEER_AT, &local, 8);
+-    uint32_t count;
+-    memcpy(&count, m + 0x84, 4);
+-    if (count > EVT_MAX_PLAYERS) return; /* not a player list this build has */
++    EpHfRosterSnapshot roster;
++    int count = EpRosterRead(game, &roster);
++    if (count < 0) return;
++    if (g_playerRosterEpoch != roster.epoch || g_playerRosterBinding != roster.binding)
++    { g_playerCount = 0; g_playerRosterEpoch = roster.epoch; g_playerRosterBinding = roster.binding; }
+     for (int k = 0; k < g_playerCount; k++) g_players[k].seen = 0;
+-    for (uint32_t i = 0; i < count; i++)
++    for (int i = 0; i < count; i++)
+     {
+-        uint64_t peer;
+-        uint32_t lifecycle, entity = 0;
+-        uintptr_t player = 0;
+-        memcpy(&peer, m + 0x2C8 + 0x38 * i, 8);
+-        memcpy(&lifecycle, m + 0x2E0 + 0x38 * i, 4);
+-        memcpy(&player, m + 0xE8 + 8 * i, 8);
+-        if (player) SafeRead(player + 8, &entity, 4);
+-        if (peer == 0) continue;
++        const EpHfPlayer* p = &roster.players[i];
++        if (!p->peer) continue;
+         KnownPlayer* known = NULL;
+-        for (int k = 0; k < g_playerCount; k++) if (g_players[k].peer == peer) known = &g_players[k];
+-        if (known == NULL && g_playerCount < EVT_MAX_PLAYERS * 2) { known = &g_players[g_playerCount++]; *known = (KnownPlayer){peer, 0, 0}; }
++        for (int k = 0; k < g_playerCount; k++) if (g_players[k].peer == p->peer) known = &g_players[k];
++        if (known == NULL && g_playerCount < EVT_MAX_PLAYERS * 2)
++        { known = &g_players[g_playerCount++]; *known = (KnownPlayer){p->peer, 0, 0, p->generation}; }
+         if (known == NULL) continue;
++        if (known->generation != p->generation) { known->lifecycle = 0; known->generation = p->generation; }
+         known->seen = 1;
+         uint32_t from = known->lifecycle;
+-        known->lifecycle = lifecycle;
+-        if (from == lifecycle) continue;
+-        uint32_t kind = lifecycle == 3 ? HF_ON_PLAYER_SPAWN : from == 3 && lifecycle == 2 ? HF_ON_PLAYER_DOWN : 0;
++        known->lifecycle = p->life;
++        if (from == p->life) continue;
++        uint32_t kind = p->life == 3 ? HF_ON_PLAYER_SPAWN : from == 3 && p->life == 2 ? HF_ON_PLAYER_DOWN : 0;
+         if (kind == 0 || !AnyListener(kind)) continue;
+-        HfPlayerEvent e = {{sizeof e, kind, 0}, peer, entity, peer == local};
++        HfPlayerEvent e = {{sizeof e, kind, 0}, p->peer, p->player, p->local};
+         Dispatch(&e.info);
+     }
+-    for (int k = 0; k < g_playerCount;) /* players who left */
++    for (int k = 0; k < g_playerCount;)
+         if (!g_players[k].seen) g_players[k] = g_players[--g_playerCount];
+         else k++;
+ }
+diff --git a/native/mod-loader/hellforge_modloader.c b/native/mod-loader/hellforge_modloader.c
+index cc1c62e..07e8ee3 100644
+--- a/native/mod-loader/hellforge_modloader.c
++++ b/native/mod-loader/hellforge_modloader.c
+@@ -646,6 +646,7 @@ static int ApiSubscribe(HfMod* mod, uint32_t kind, HfListener listener, void* us
+ #include "packages.c"
+ #include "loadout_preview.c"
+ #include "abilities.c"
++#include "ep_roster.c" /* private extensible player readers */
+ #include "events.c"
+ #include "stats.c"
+ #include "fields.c" /* after stats.c: it reports conflicts with stats edits */
+@@ -1052,6 +1053,7 @@ __declspec(dllexport) int hellforge_loader_start(const wchar_t* plan)
+         if (result != 0)
+         {
+             mod->loaded = 0;
++            EpRosterDeclined(mod);
+             Note("%s: declined to load (hellforge_mod_init returned %d)", mod->id, result);
+             continue;
+         }
+diff --git a/native/mod-loader/passives.c b/native/mod-loader/passives.c
+index 7b3197e..4261380 100644
+--- a/native/mod-loader/passives.c
++++ b/native/mod-loader/passives.c
+@@ -110,7 +110,7 @@ static int PassivesKit(uintptr_t manager, uint32_t id, uint32_t* passive, uint32
+ static int PassivesLocal(uintptr_t game, LocalPassives* out, const char** why)
+ {
+     memset(out, 0, sizeof *out);
+-    uintptr_t manager = 0, players = 0, user = 0;
++    uintptr_t manager = 0;
+     if (SafeRead(game + PSV_MANAGER, &manager, 8) || !manager) { *why = "the customization manager is not created yet"; return 0; }
+     uint32_t passiveCount = 0, records = 0;
+     int32_t index[PSV_PASSIVE_IDS];
+@@ -118,20 +118,13 @@ static int PassivesLocal(uintptr_t game, LocalPassives* out, const char** why)
+         SafeRead(manager + PSV_PASSIVE_INDEX, index, sizeof index) || !passiveCount || passiveCount > PSV_PASSIVE_IDS || records > PSV_RECORDS)
+     { *why = "the customization manager is not the reviewed one"; return 0; }
+     for (uint32_t id = 0; id < PSV_PASSIVE_IDS; id++) out->passiveValid[id] = index[id] >= 0 && (uint32_t)index[id] < passiveCount;
+-    /* the local player: the player list's entry with the local peer */
+-    uint8_t peer[8];
+-    uint32_t count = 0, entity = 0;
+-    if (SafeRead(game + PSV_PLAYERS, &players, 8) || !players || SafeRead(players + PSV_PLAYER_COUNT, &count, 4) || count > 4 ||
+-        SafeRead(game + PSV_LOCAL_USER, &user, 8) || !user || SafeRead(user + PSV_LOCAL_PEER, peer, 8))
+-    { *why = "the player list is not readable yet"; return 0; }
+-    out->players = count;
+-    for (uint32_t slot = 0; slot < count && !entity; slot++)
+-    {
+-        uint8_t block[8];
+-        uintptr_t descriptor = 0;
+-        if (SafeRead(players + PSV_PLAYER_PEERS + slot * PSV_PLAYER_STRIDE, block, 8) || memcmp(block, peer, 8)) continue;
+-        if (!SafeRead(players + PSV_PLAYER_DESCRIPTORS + slot * 8u, &descriptor, 8) && descriptor) SafeRead(descriptor + 8, &entity, 4);
+-    }
++    /* Same player source as events/actions; a fifth slot is never read in place. */
++    EpHfRosterSnapshot roster;
++    int count = EpRosterRead(game, &roster);
++    if (count < 0) { *why = "the player source is not ready"; return 0; }
++    uint32_t entity = 0;
++    out->players = (uint32_t)count;
++    for (int i = 0; i < count; i++) if (roster.players[i].local) entity = roster.players[i].player;
+     if (!entity) { *why = "the local player is not in the player list"; return 0; }
+     /* its record: the manager's entity map, linear probing from entity x multiplier */
+     uint8_t map[20];
