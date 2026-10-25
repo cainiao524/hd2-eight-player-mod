@@ -1,0 +1,177 @@
+{
+  "schema": "hellforge_roster_call_abi_v1",
+  "passed": true,
+  "verified_at_utc": "2026-10-25T15:44:39.432138+00:00",
+  "game_build": 25480438,
+  "entries": [
+    {
+      "kind": 1,
+      "name": "producer",
+      "entry": "0x60c640",
+      "stack_copy_bytes": 16,
+      "cfg_states": 130,
+      "returns": 1,
+      "external_tail_abi_pending": [],
+      "stack_arguments": [
+        {
+          "rva": "0x60c6c9",
+          "entry_rsp_offset": 48,
+          "bytes": 8,
+          "address_taken": false
+        },
+        {
+          "rva": "0x60c6df",
+          "entry_rsp_offset": 40,
+          "bytes": 8,
+          "address_taken": false
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "name": "receiver",
+      "entry": "0x60c890",
+      "stack_copy_bytes": 0,
+      "cfg_states": 72,
+      "returns": 1,
+      "external_tail_abi_pending": [],
+      "stack_arguments": []
+    },
+    {
+      "kind": 3,
+      "name": "getter",
+      "entry": "0x606ad0",
+      "stack_copy_bytes": 0,
+      "cfg_states": 43,
+      "returns": 1,
+      "external_tail_abi_pending": [],
+      "stack_arguments": []
+    },
+    {
+      "kind": 4,
+      "name": "mover",
+      "entry": "0x60c410",
+      "stack_copy_bytes": 0,
+      "cfg_states": 78,
+      "returns": 1,
+      "external_tail_abi_pending": [],
+      "stack_arguments": []
+    },
+    {
+      "kind": 5,
+      "name": "dense_legacy",
+      "entry": "0x60ca80",
+      "stack_copy_bytes": 0,
+      "cfg_states": 57,
+      "returns": 0,
+      "external_tail_abi_pending": [
+        {
+          "rva": "0x60cb9a",
+          "target": "0x172f790"
+        }
+      ],
+      "stack_arguments": []
+    },
+    {
+      "kind": 6,
+      "name": "append_legacy",
+      "entry": "0x60cba0",
+      "stack_copy_bytes": 0,
+      "cfg_states": 36,
+      "returns": 1,
+      "external_tail_abi_pending": [],
+      "stack_arguments": []
+    },
+    {
+      "kind": 7,
+      "name": "append_registered",
+      "entry": "0x540850",
+      "stack_copy_bytes": 0,
+      "cfg_states": 37,
+      "returns": 1,
+      "external_tail_abi_pending": [],
+      "stack_arguments": []
+    },
+    {
+      "kind": 8,
+      "name": "dense_registered",
+      "entry": "0x540920",
+      "stack_copy_bytes": 0,
+      "cfg_states": 57,
+      "returns": 0,
+      "external_tail_abi_pending": [
+        {
+          "rva": "0x540a39",
+          "target": "0x172f790"
+        }
+      ],
+      "stack_arguments": []
+    },
+    {
+      "kind": 9,
+      "name": "legacy",
+      "entry": "0x60cea0",
+      "stack_copy_bytes": 0,
+      "cfg_states": 43,
+      "returns": 1,
+      "external_tail_abi_pending": [],
+      "stack_arguments": []
+    },
+    {
+      "kind": 10,
+      "name": "registered",
+      "entry": "0x540a40",
+      "stack_copy_bytes": 0,
+      "cfg_states": 40,
+      "returns": 1,
+      "external_tail_abi_pending": [
+        {
+          "rva": "0x540ad5",
+          "target": "0x60c410"
+        }
+      ],
+      "stack_arguments": []
+    },
+    {
+      "kind": 11,
+      "name": "enter",
+      "entry": "0x60cf50",
+      "stack_copy_bytes": 0,
+      "cfg_states": 197,
+      "returns": 1,
+      "external_tail_abi_pending": [],
+      "stack_arguments": []
+    },
+    {
+      "kind": 12,
+      "name": "leave",
+      "entry": "0x60d300",
+      "stack_copy_bytes": 0,
+      "cfg_states": 232,
+      "returns": 1,
+      "external_tail_abi_pending": [],
+      "stack_arguments": []
+    }
+  ],
+  "test_source_sha256": {
+    "tools/verify_roster_call_abi.py": "a889858573ceb7f0b52287d785f8a8170279b65535b5d914080ffbd41ddfa089"
+  },
+  "legacy_source_sha256": {
+    "hellforge_multiplayer/native-unwind-source.lock.json": "bfefac86c12f8a761b563d4da814ed1195eb7967f024fe218b9e6d6c5a896680",
+    "five_player_feasibility_20260927/roster_property_producer_native_evidence.json": "f73ec903d06f2304f4f944c25e011a7ef86d78737cb1b197101a1c96daaabacb",
+    "five_player_feasibility_20260927/roster_property_receive_evidence.json": "bad5661771df280dd5e982b765d2f4ab1c73de9ae7e86e974751af6c3c383c10",
+    "hellforge_multiplayer/native-getter.lock.json": "2ec11c0046408233a263c86d91e84309b153458d6f3863b38a5894adb75b19d9",
+    "five_player_feasibility_20260927/roster_getter_native_evidence.json": "1360863bfe1f1f6ce640ef049776d3b31703a1cbfe2bea3f90bf20555f69e0fd",
+    "hellforge_multiplayer/native-mover.lock.json": "d871e37dfa31605cec611c4e4d2757ef7d1421862a004a9019ff40f6ac8f4a30",
+    "five_player_feasibility_20260927/roster_move_native_evidence.json": "115802c09eb15f840932667717731150aa347e7ae8a72245dd92e05a5e86a242",
+    "hellforge_multiplayer/native-insert.lock.json": "f33a753bfad144b45e6e4c6cc64bae9a53347f17034c1e932cae7ec29a27ec40",
+    "five_player_feasibility_20260927/roster_insert_native_evidence.json": "794c357a56b2aa28cfd1061374afe27c1a3a2c06d31ce4ca736e4b783e41b497",
+    "hellforge_multiplayer/native-remove.lock.json": "0d5142914bfdafe1a9e55ef4c4d5afd86287851b2d2dca2869ae1ca757045d02",
+    "five_player_feasibility_20260927/roster_remove_native_evidence.json": "67563b2d12860c814096b1d45338dd271ad13975c3ba4f96169a92473ab061af",
+    "hellforge_multiplayer/native-classify.lock.json": "41843b622018655e4d286036256ba8463ce6f638a15fd33f6cd1bf5ff87c8b03",
+    "five_player_feasibility_20260927/roster_classify_native_evidence.json": "f20165dad6823edc40fbcdf0434123139f1c80d9222a2b20d3f4c067768e9e33"
+  },
+  "live_callers_verified": false,
+  "transitive_helper_abi_verified": false,
+  "game_access": false
+}

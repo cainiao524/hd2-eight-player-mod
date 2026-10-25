@@ -17,9 +17,11 @@ static CONDITION_VARIABLE epOwnersDrained = CONDITION_VARIABLE_INIT;
 static uint64_t epOwnerSequence;
 #ifdef __cplusplus
 static thread_local EpRosterOwner* epOwnerScope;
+static thread_local unsigned epOwnerNativeDepth,epOwnerNativeDirty;
 extern "C" int EpOwnerInvoke(int (*callback)(void*),void* context,int* fault);
 #else
 static _Thread_local EpRosterOwner* epOwnerScope;
+static _Thread_local unsigned epOwnerNativeDepth,epOwnerNativeDirty;
 int EpOwnerInvoke(int (*callback)(void*),void* context,int* fault);
 #endif
 /* The pinned HellForge compiler does not enable Microsoft __try syntax. This
@@ -175,6 +177,44 @@ EpRosterOwnerResult ep_roster_owner_mutate(HfMod* mod, uint64_t id, uint64_t rev
         }
     }
     OwnerRelease(o);
+    return result;
+}
+int ep_roster_owner_in_scope(void) {return epOwnerScope!=NULL;}
+EpRosterOwnerResult ep_roster_owner_check_binding(HfMod* mod,uint64_t id,uintptr_t game,uintptr_t roster,uintptr_t storage)
+{
+    if (!mod || !id) return EP_OWNER_ARGUMENT;
+    if (epOwnerScope) return EP_OWNER_REENTRANT;
+    EpRosterOwner* o=OwnerAcquire(mod,id);if (!o) return EP_OWNER_UNAVAILABLE;
+    EpRosterOwnerResult result=o->fault ? EP_OWNER_FAULTED :
+        o->view.game==game && o->view.roster==roster && o->view.storage==storage ? EP_OWNER_OK : EP_OWNER_ARGUMENT;
+    OwnerRelease(o);return result;
+}
+EpRosterOwnerResult ep_roster_owner_call(HfMod* mod,uint64_t id,int writes,EpRosterMutation callback,void* context)
+{
+    if (!mod || !id || !callback || (writes!=0 && writes!=1)) return EP_OWNER_ARGUMENT;
+    int nested=epOwnerScope!=NULL;EpRosterOwner* o;
+    if (nested) {
+        o=epOwnerScope;
+        if (!epOwnerNativeDepth || o->mod!=mod || o->handle!=id) return EP_OWNER_REENTRANT;
+        if (epOwnerNativeDepth==32) {o->fault=EP_OWNER_REENTRANT;return EP_OWNER_REENTRANT;}
+    } else {o=OwnerAcquire(mod,id);if (!o) return EP_OWNER_UNAVAILABLE;epOwnerNativeDirty=0;}
+    EpRosterOwnerResult result=EP_OWNER_OK;
+    if (o->fault) result=EP_OWNER_FAULTED;
+    else if (!nested && InterlockedCompareExchange(&o->closing,0,0)) result=EP_OWNER_UNAVAILABLE;
+    else if (writes && o->revision==UINT64_MAX) result=EP_OWNER_EXHAUSTED;
+    else {
+        EpOwnerMutationCall call={callback,context,&o->view};int fault=0;
+        epOwnerNativeDepth++;epOwnerNativeDirty|=(unsigned)writes;
+        int completed=EpOwnerInvoke(OwnerMutationCall,&call,&fault)==1;
+        epOwnerNativeDepth--;
+        if (fault || !completed) {
+            result=fault ? EP_OWNER_CALLBACK_FAULT : EP_OWNER_CALLBACK_FAILED;
+            if (!o->fault) o->fault=(uint32_t)result;
+        } else if (o->fault) result=EP_OWNER_FAULTED;
+        if (!nested && result==EP_OWNER_OK && epOwnerNativeDirty) o->revision++;
+    }
+    if (nested && result!=EP_OWNER_OK && !o->fault) o->fault=(uint32_t)result;
+    if (!nested) {epOwnerNativeDirty=0;OwnerRelease(o);}
     return result;
 }
 static int OwnerBegin(void* context, uintptr_t game, EpNativeRosterView* out)

@@ -38,6 +38,16 @@ EpRosterOwnerResult ep_roster_owner_info(HfMod*, uint64_t, EpRosterOwnerInfo*);
  * Callbacks use C ABI and must not throw C++ exceptions or escape with longjmp. */
 EpRosterOwnerResult ep_roster_owner_mutate(HfMod*, uint64_t, uint64_t expected_revision,
     const EpRosterIdentitySet* next, EpRosterMutation, void*);
+/* Native call scope: acquires the current revision under the lock, so ordinary
+ * queued calls are not lost to optimistic-revision conflicts. Same-owner
+ * native nesting inherits the scope (max 32); snapshot/identity/close reentry
+ * remains forbidden. One outer call advances revision if any nested call wrote.
+ * Callback failure/SEH quarantines; nested faults propagate to the outer call. */
+EpRosterOwnerResult ep_roster_owner_call(HfMod*,uint64_t,int writes,EpRosterMutation,void*);
+EpRosterOwnerResult ep_roster_owner_check_binding(HfMod*,uint64_t,uintptr_t game,uintptr_t roster,uintptr_t storage);
+/* Nonblocking thread-local query for control operations that must not start
+ * inside an in-flight native/read/write scope. */
+int ep_roster_owner_in_scope(void);
 EpNativeRosterStatus ep_roster_owner_snapshot(HfMod*, uint64_t, uintptr_t game, EpHfRosterSnapshot*);
 /* Stable numerical context, no pointer into reusable owner slots. Closing an
  * owner makes an already exported provider return unavailable, never a later

@@ -27,7 +27,8 @@
 | 两个原生移除入口 | `mod/src/ep_remove_image.*` / `NATIVE_REMOVE.zh-CN.md` | C++ 生成及 READY 准备；2,293 次功能执行、4,670 组不同回溯状态、54 项准备检查通过；存储夹具执行移除后再加入，生产生命周期待接入 |
 | 两个原生分类入口 | `mod/src/ep_classify_image.*` / `NATIVE_CLASSIFY.zh-CN.md` | C++ 生成及 READY 准备；853 次功能执行、20,905 组不同回溯状态、54 项准备检查和 359 次分类存储读取断言通过；临时辅助函数是契约替身 |
 | 十二入口共同切换 | `mod/src/ep_roster_gate.*`、`ep_roster_group.*` / `ROSTER_GROUP.zh-CN.md` | 同一 S/B 和控制字、十二次发布后才允许提交；插入/移除绑定同组搬移主体；真实 guard 及数据事务未接入 |
-| 名册存储所有者 | `mod/src/ep_roster_owner.*` / `ROSTER_OWNER.zh-CN.md` | 受管读写互斥、revision/身份票据原子提交、关闭排空与异常隔离；641 次实际 DLL/loader 检查，原生入口和真实身份尚未绑定 |
+| 名册存储所有者 | `mod/src/ep_roster_owner.*` / `ROSTER_OWNER.zh-CN.md` | 受管读写互斥、revision/身份票据原子提交、关闭排空与异常隔离；641 次实际 DLL/loader 检查，生产写入覆盖和真实身份尚未绑定 |
+| 十二入口受管调用 | `mod/src/ep_roster_call.*` / `ROSTER_CALLS.zh-CN.md` | 旧/新路径整次调用进入 owner，保存六参数与返回状态；同 owner 嵌套、受管提交及异常隔离，显式选择且未接入初始化 |
 | 继续开发说明 | `HANDOFF.zh-CN.md` | 旧代码迁移关系、已知限制、下一步及授权范围 |
 | 四个原生插入入口 | `mod/src/ep_insert_image.*` / `NATIVE_INSERT.zh-CN.md` | C++ 生成及 READY 准备；515 次功能执行、660 组不同回溯状态和 108 项准备检查通过；已接入存储/同步夹具，生产共同切换待实现 |
 

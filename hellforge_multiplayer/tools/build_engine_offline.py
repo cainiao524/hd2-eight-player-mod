@@ -159,7 +159,7 @@ def main():
     roster_group_dll,roster_group_test=build/'roster_group_test.dll',build/'roster_group_test.exe'
     roster_emitters=[PROJECT/'mod/src'/('ep_'+n+'.cpp') for n in ('property_image','property_gate','getter_image','mover_image','insert_image','remove_image','classify_image','roster_gate')]
     run([zig,'c++','-std=c++17','-target','x86_64-windows-gnu','-shared','-O1','-Wall','-Werror','-Wno-unused-parameter',
-         '-I',source/'native/mod-sdk',*roster_emitters,PROJECT/'tests/roster_group_dll.cpp','-o',roster_group_dll])
+         '-I',source/'native/mod-sdk',*roster_emitters,PROJECT/'mod/src/ep_roster_call.cpp',PROJECT/'mod/src/ep_roster_owner.cpp',PROJECT/'mod/src/ep_native_roster.cpp',PROJECT/'tests/roster_group_dll.cpp','-o',roster_group_dll])
     run([*common,'-O1',PROJECT/'tests/roster_group_test.c',*deps,'-o',roster_group_test])
     roster_scenarios=[]
     for index,after in [(0,0)]+[(i,j) for i in range(1,13) for j in (0,1)]:
@@ -172,6 +172,28 @@ def main():
         shared_storage_and_latch=True,internal_mover_bound_to_group=True,actual_hellforge_chains=True,
         cooperative_quiescence_tested=True,production_quiescence_provider_bound=False,active_data_rollback_implemented=False,
         native_execution_of_game_bodies=False,game_access=False)
+    call_abi=json.loads(run([sys.executable,'-B',PROJECT/'tools/verify_roster_call_abi.py']))
+    call_abi_receipt=PROJECT/'evidence/roster-call-abi-validation.json'
+    roster_call_dll,roster_call_test=build/'roster_call_test.dll',build/'roster_call_test.exe'
+    run([zig,'c++','-std=c++17','-target','x86_64-windows-gnu','-shared','-O2','-Wall','-Werror','-Wno-unused-parameter',
+         '-I',source/'native/mod-sdk',*roster_emitters,PROJECT/'tests/roster_call_dll.cpp','-o',roster_call_dll])
+    run([*common,'-O1',PROJECT/'tests/roster_call_test.c',*deps,'-o',roster_call_test])
+    roster_bridge_fixture=build/'roster_call_test.unwind.bin'
+    roster_bridge_unwind=json.loads(run([sys.executable,'-B',PROJECT/'tools/roster_bridge_unwind.py','--library',roster_call_dll,'--output',roster_bridge_fixture]))
+    call_scenarios=[]
+    for arguments in [['normal'],['nestedfault'],['depth'],['close'],['validatefault'],['endfault'],['exhausted'],['unavailable']]+[[i,j] for i in range(1,13) for j in (0,1)]:
+        result=run([roster_call_test,roster_call_dll,*arguments]).decode('utf-8').strip()
+        found=re.fullmatch(r'roster calls: (\d+) checks passed; (?:mode \w+|scenario \d+ \d+)',result)
+        if not found:raise RuntimeError('Missing owned roster call result: '+result)
+        call_scenarios.append(dict(arguments=arguments,checks=int(found[1])))
+    roster_call_result=dict(checks=sum(x['checks'] for x in call_scenarios),scenarios=call_scenarios,entries=12,
+        actual_owner_dll=True,actual_hellforge_chains=True,old_and_new_calls_owned=True,route_selected_under_owner=True,
+        producer_six_arguments_preserved=True,float_register_arguments_and_result_preserved=True,
+        nonvolatile_gpr_and_xmm_preserved=True,volatile_return_registers_preserved=True,windows_bridge_unwind=roster_bridge_unwind,
+        nested_native_calls_share_scope=True,commit_staging_and_cleanup_owned_after_scope_entry=True,close_drains_and_cancels_queued=True,
+        callback_seh_quarantines_and_releases=True,abi=call_abi,abi_receipt_sha256=digest(call_abi_receipt),
+        native_execution_of_game_bodies=False,production_quiescence_provider_bound=False,
+        all_game_writers_covered=False,external_tail_abi_verified=False,authoritative_identity_source_bound=False,game_access=False)
     sync_input, sync_routed, sync_received = (build / n for n in ('native-sync-input.json', 'native-sync-routed.json', 'native-sync-received.json'))
     sync_script = PROJECT / 'tools/native_roster_sync.py'
     run([sys.executable, '-B', sync_script, 'produce', '--output', sync_input, '--property-library', property_dll])
@@ -219,6 +241,7 @@ def main():
         'native_remove':{**remove_output,'validation_sha256':digest(remove_receipt)},
         'roster_group':roster_group_result,
         'roster_owner':owner_result,
+        'roster_calls':roster_call_result,
         'roster_gates':{**roster_gate_output,'validation_sha256':digest(roster_gate_receipt)},
         'native_classify':{**classify_output,'validation_sha256':digest(classify_receipt)},
         'native_classify_storage':{'checks':int(classify_match[1]),**classify_fixture_receipt},
@@ -262,12 +285,15 @@ def main():
             'tests/roster_group_dll.h','tests/roster_group_dll.cpp','tests/roster_group_test.c','tools/validate_roster_gates.py',
             'mod/src/ep_roster_owner.h','mod/src/ep_roster_owner.cpp',
             'tests/roster_owner_dll.h','tests/roster_owner_dll.cpp','tests/roster_owner_test.c',
+            'mod/src/ep_roster_call.h','mod/src/ep_roster_call.cpp','tools/verify_roster_call_abi.py',
+            'tests/roster_call_dll.h','tests/roster_call_dll.cpp','tests/roster_call_test.c',
+            'tests/roster_call_abi.h','tools/roster_bridge_unwind.py',
             'native-getter.lock.json','tools/native_getter_image.py','tools/generate_getter_template.py','tools/validate_getter_image.py',
             'mod/src/ep_getter_image.h','mod/src/ep_getter_image.cpp','mod/src/ep_getter_template.h',
             'tests/backend/Program.cs', 'tests/backend/Backend.csproj',
             'mod/src/ep_native_roster.cpp', 'mod/src/ep_native_roster.h', 'mod/src/ep_roster_api.h',
             'native-storage.lock.json', 'tools/build_engine_offline.py', 'engine/patch.lock.json', 'upstream.lock.json')},
-        'artifacts': {p.name: {'bytes': p.stat().st_size, 'sha256': digest(p)} for p in (owner_dll,owner_test,roster_group_dll,roster_group_test,dll, test, native_test, code_test, code_dll, property_dll, group_dll, group_test, classify_test, classify_fixture, classify_fixture.with_suffix('.enter.bin'), classify_fixture.with_suffix('.leave.bin'), fixture, fixture.with_suffix('.removed.bin'), fixture.with_suffix('.rejoined.bin'), sync_test, sync_input, sync_routed, sync_received, *sync_images)},
+        'artifacts': {p.name: {'bytes': p.stat().st_size, 'sha256': digest(p)} for p in (roster_bridge_fixture,roster_call_dll,roster_call_test,owner_dll,owner_test,roster_group_dll,roster_group_test,dll, test, native_test, code_test, code_dll, property_dll, group_dll, group_test, classify_test, classify_fixture, classify_fixture.with_suffix('.enter.bin'), classify_fixture.with_suffix('.leave.bin'), fixture, fixture.with_suffix('.removed.bin'), fixture.with_suffix('.rejoined.bin'), sync_test, sync_input, sync_routed, sync_received, *sync_images)},
         'game_started': False, 'game_checked': False, 'game_read': False, 'installed': False,
         'native_game_storage_expanded': False, 'production_provider_bound': False,
         'runtime_verified': False, 'multiplayer_verified': False, 'public_release_allowed': False,

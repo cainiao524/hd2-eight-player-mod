@@ -72,3 +72,5 @@ py -3.12 -B hellforge_multiplayer/tools/build_engine_offline.py `
 完整入口另执行 [十二入口组](../ROSTER_GROUP.zh-CN.md)：`roster-gate-validation.json` 验证十二份实际生成开关和全部已捕获主体回溯状态；72 组分支、105 组非法配置和 41,635 个回溯上下文通过；`roster_group` 在总收据中记录 25 个自有进程场景、6,734 次检查，包括十二个发布位置各自的 SDK 前/后故障。真实 HellForge 链只运行合成 leaf 函数，生产 guard 和激活后数据回滚尚未实现。两个新测试产物及全部来源纳入总收据。
 
 完整入口另构建 [存储所有者](../ROSTER_OWNER.zh-CN.md) 的实际 C++ DLL，并用相同的三份存储夹具连接真实 loader。641 次检查验证读写互斥、revision/票据提交、离队代次保留、旧 provider 失效、关闭排空和结构化异常后的隔离与锁释放。DLL 沿用上游 ModKit 编译选项，不增加 Microsoft 扩展开关。总收据 `roster_owner` 和共同指纹表记录结果及源码、DLL/EXE；真实原生 hook、全体写入者、权威身份和底层复制尚未绑定。
+
+完整入口继续执行 [十二入口受管调用](../ROSTER_CALLS.zh-CN.md)：实际 owner、ABI 桥、SDK/MinHook 链连接自有目标，覆盖六参数、高位整数、浮点/向量返回、全部非易失 GPR/XMM、同 owner 嵌套、真实锁排空和故障隔离。两个静态桥的 76 个指令边界通过实际 PE 表执行 Windows 回溯；原十二函数直接堆叠访问另从固定证据核对。32 个新进程场景包括八种正常/故障模式和十二处 SDK 前/后失败，总收据 `roster_calls` 保存结果、源码及 DLL/EXE/回溯夹具指纹。`roster-call-abi-validation.json` 的 SHA-256 交叉写入总收据；外部辅助函数和实际调用端 ABI、生产 guard、权威身份及真实游戏绑定仍未证明。
