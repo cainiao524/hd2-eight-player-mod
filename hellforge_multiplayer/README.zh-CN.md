@@ -25,6 +25,7 @@
 | 属性成组入口 | `mod/src/ep_property_gate.*`、`ep_property_group.*` / `PROPERTY_GROUP.zh-CN.md` | 发送/接收/getter 三次发布成功后受 guard 约束共同启用；355 次链与生命周期检查，18 组入口分支和 7,169 个回溯上下文通过；生产 guard 仍缺失 |
 | 实体到网络索引查询 | `mod/src/ep_getter_image.*` / `NATIVE_GETTER.zh-CN.md` | 使用八槽 B 存储，完整 DWORD 查询；4,548 个回溯上下文、25 项准备生命周期及八端 64 次查询通过；已加入三入口共同开关，未在游戏发布 |
 | 继续开发说明 | `HANDOFF.zh-CN.md` | 旧代码迁移关系、已知限制、下一步及授权范围 |
+| 四个原生插入入口 | `mod/src/ep_insert_image.*` / `NATIVE_INSERT.zh-CN.md` | C++ 生成及 READY 准备；515 次功能执行、660 组不同回溯状态和 108 项准备检查通过；已接入存储/同步夹具，生产共同切换待实现 |
 
 适配器使用 `hellforge_mod_init`、`HfApi::session`、`subscribe`、`on_game_thread` 和 `game_state`。接入失败后已注册的回调保持停用，避免半初始化状态继续运行。初始化与游戏线程之间通过原子标志发布状态。
 
@@ -65,6 +66,8 @@ py -3.12 -B hellforge_multiplayer/tools/build_offline.py `
 
 
 新增 [四数组共用搬移器](NATIVE_MOVER.zh-CN.md)：C++ 生成 612-byte 完整映像并接入 READY 准备，100 次功能执行和 8,231 个 Windows 回溯上下文通过；保存的三段原回溯资料另核对 92 bytes。插入/删除/重新加入及八端插入夹具已改用其 C++ 输出。它尚未加入三入口共同开关，生产写入排除和其他写入入口仍待接入。
+
+[四个玩家记录插入入口](NATIVE_INSERT.zh-CN.md) 已沿用原 prologue 构造两段回溯映像，并将完整搬移器范围纳入地址检查。C++ 插入与搬移现在共同参与八笔存储和八端同步；分类、删除等其余读写入口及生产写入排除仍需接入。
 
 ## 后续实机步骤：尚未执行
 

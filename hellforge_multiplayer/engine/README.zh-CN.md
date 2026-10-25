@@ -51,6 +51,8 @@ py -3.12 -B hellforge_multiplayer/tools/build_engine_offline.py `
 
 补丁按 HellForge 引擎的 GPL-3.0 条款维护；原文及 Mod 例外保存在 `licenses/`。MinHook 许可证同目录保留。完整 loader 仍需要对应上游源码，这份 patch 不替代它的源代码义务。
 
+构建入口同时运行 [四个插入入口](../NATIVE_INSERT.zh-CN.md)：515 次功能执行、660 组不同回溯状态、108 项实际准备检查，以及 88 bytes 原元数据重放。插入和搬移的 C++ 输出共同进入存储/同步夹具；单独收据 `native-insert-validation.json` 的指纹写入总引擎收据。生产自动绑定和共同切换仍未实现。
+
 完整构建还自动运行 [原生发送与接收候选的 Windows 栈回溯验证](../NATIVE_UNWIND.zh-CN.md)：发送端 1,308 个、接收端 1,313 个指令上下文通过，对照组分别复现 3 次和 7 次旧拒绝跳转错误。测试仅注册自有不可执行数据映像的函数表，用完后撤销；没有加载或运行游戏。独立收据为 `evidence/native-producer-unwind-validation.json` 与 `evidence/native-receiver-unwind-validation.json`，两者 SHA-256 同时写入总引擎收据。
 
 构建入口先执行 10 项原异常资料来源检查测试，并从仓库已有捕获重放五条函数表记录和相应回溯资料（元数据合计 168 bytes）。每个候选生成器也强制检查来源指纹和无语言处理器条件。来源收据为 `evidence/native-unwind-source-validation.json`，总引擎收据保存其指纹。保存的 PE 头指向另一份未完整捕获的异常目录，故此步骤不代表运行期有效异常表已确认。

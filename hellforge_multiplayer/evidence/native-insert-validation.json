@@ -1,0 +1,187 @@
+{
+  "schema": "hellforge_native_insert_validation_v1",
+  "verified_at_utc": "2026-10-25T14:04:56.091050+00:00",
+  "passed": true,
+  "source_replay": {
+    "passed": true,
+    "functions": {
+      "dense_legacy": {
+        "fragments": 1,
+        "flags": [
+          0
+        ],
+        "chained_fragments": 0,
+        "language_handlers": false
+      },
+      "append_legacy": {
+        "fragments": 1,
+        "flags": [
+          0
+        ],
+        "chained_fragments": 0,
+        "language_handlers": false
+      },
+      "append_registered": {
+        "fragments": 1,
+        "flags": [
+          0
+        ],
+        "chained_fragments": 0,
+        "language_handlers": false
+      },
+      "dense_registered": {
+        "fragments": 1,
+        "flags": [
+          0
+        ],
+        "chained_fragments": 0,
+        "language_handlers": false
+      }
+    },
+    "metadata_bytes_replayed": 88,
+    "header_exception_directory_captured": false,
+    "runtime_table_verified": false,
+    "game_access": false
+  },
+  "variants": {
+    "dense_legacy": {
+      "image_bytes": 640,
+      "code_bytes": 597,
+      "unwind_offset": 604,
+      "table_offset": 616,
+      "fixups": 23
+    },
+    "append_legacy": {
+      "image_bytes": 540,
+      "code_bytes": 502,
+      "unwind_offset": 508,
+      "table_offset": 516,
+      "fixups": 22
+    },
+    "append_registered": {
+      "image_bytes": 544,
+      "code_bytes": 505,
+      "unwind_offset": 512,
+      "table_offset": 520,
+      "fixups": 22
+    },
+    "dense_registered": {
+      "image_bytes": 636,
+      "code_bytes": 596,
+      "unwind_offset": 600,
+      "table_offset": 612,
+      "fixups": 23
+    }
+  },
+  "mover_image_bytes": 612,
+  "variant_checks": {
+    "dense_legacy": {
+      "accepted": 13,
+      "rejected": 59,
+      "owner_checks": 27,
+      "executed_instruction_contexts": 5308,
+      "windows_unwind_unique_contexts": 195,
+      "injected_metadata_faults_rejected": 1
+    },
+    "append_legacy": {
+      "accepted": 16,
+      "rejected": 56,
+      "owner_checks": 27,
+      "executed_instruction_contexts": 8193,
+      "windows_unwind_unique_contexts": 134,
+      "injected_metadata_faults_rejected": 1
+    },
+    "append_registered": {
+      "accepted": 16,
+      "rejected": 56,
+      "owner_checks": 27,
+      "executed_instruction_contexts": 8342,
+      "windows_unwind_unique_contexts": 136,
+      "injected_metadata_faults_rejected": 1
+    },
+    "dense_registered": {
+      "accepted": 13,
+      "rejected": 59,
+      "owner_checks": 27,
+      "executed_instruction_contexts": 5328,
+      "windows_unwind_unique_contexts": 195,
+      "injected_metadata_faults_rejected": 1
+    }
+  },
+  "api_contract_checks": 11,
+  "source_guard_checks": 8,
+  "functional_tests": 9,
+  "functional_runs": 515,
+  "original_functional_runs": 80,
+  "functional_run_types": {
+    "append_legacy": 135,
+    "original_append_legacy": 20,
+    "append_registered": 137,
+    "original_append_registered": 20,
+    "dense_legacy": 79,
+    "original_dense_legacy": 20,
+    "dense_registered": 81,
+    "original_dense_registered": 20,
+    "other": 3
+  },
+  "source_sha256": {
+    "native-insert.lock.json": "f33a753bfad144b45e6e4c6cc64bae9a53347f17034c1e932cae7ec29a27ec40",
+    "tools/native_insert_image.py": "9db16bc5501b9d6ad6a94147a77a0b90cd49a118fa3156692a8c827c41fdcfd9",
+    "tools/generate_insert_templates.py": "a1d8720c9e64d199fc4b139f74d82fdb42418cc9095ca672562ec5d5821c7989",
+    "tools/validate_insert_images.py": "798429ef16d6e83a80e05f2a6709804b0a7554927cea91f31001fb95c5e40ddb",
+    "tools/native_unwind_source.py": "8f2b51781ae06b3f6a72959218f7c60cdf4e7f6a13e59c56f7eff99140721e4f",
+    "tools/verify_native_unwind_source.py": "af2afff2fdfa8178a80af08fc21358df4e6090a6342922e03fa6c9a407661a8d",
+    "tools/native_property_library.py": "16b6f9c9be712f375bd2cce44bfe5174da0c3ac0118922eb5ff31a2d54201f2c",
+    "tools/native_mover_image.py": "7ea40986a77b5e36e132b5e5048e50858ceaed8c3e639321adfbd91a1e9ba105",
+    "mod/src/ep_insert_image.h": "8b23f7df46ba1133f1369660d0976b671850e539e95b461b074f92af9f1de122",
+    "mod/src/ep_insert_image.cpp": "154398c26c4b17716a91ba556af77c7a2e24f8aedf5ee911ceb6a7a7f0f46b79",
+    "mod/src/ep_insert_templates.h": "091bfa59c261b244462b7e773d9f9b75d2eed9631aa985177dacf681bd2b188d",
+    "mod/src/ep_mover_image.cpp": "1de15b0de5bdfc087f63566b5040b6b19cbd32ddd2e083204b82f8c5d59e4c4c",
+    "mod/src/ep_mover_template.h": "57cc7e20d9deb2f0765097d2e8d700bcda6046cd796c052505cfe454d7e6d960",
+    "mod/src/ep_session_code.h": "612c7071e99846967bf960ba63279511133fcfc85b63a967d5bfa79f66e222dc",
+    "mod/src/ep_session_code.cpp": "fb52d6fb559ca86a0f74b30ff210fa521e2715633648adcaa1792e1104f1c301",
+    "tests/property_image_dll.cpp": "6c38c8fae312151f33306e695a4f4c95754af5db22c231c87cc17bbb3b031254",
+    "tests/native_producer_unwind_test.c": "38333e2267009562796525bf2daf2cc202f73f44da3ed3925fa72f8cee315b3d"
+  },
+  "legacy_source_sha256": {
+    "eight_player_candidate_20260927/tests/test_native_roster_insert.py": "7763f5d6664d653816f2b9ec411ec8a8ff942bf45ca1795448f1a130549e7a64"
+  },
+  "artifacts": {
+    "property_image_test.dll": {
+      "bytes": 243200,
+      "sha256": "6b4873b0ae68c71fac5d1a6b4202254f63edfe707e0271e2af9e732ecbf7ddee"
+    },
+    "native_insert_unwind_test.exe": {
+      "bytes": 224256,
+      "sha256": "ac9eac11c3e93ecd14796f7d4d06fb676a17bdd46ae32bd2ab0faf3261a71b49"
+    },
+    "insert-dense_legacy-unwind-contexts.bin": {
+      "bytes": 66540,
+      "sha256": "6001022a286eb743750840cb14af4493d7c2b1fecd7e31f1d911a6f9368bf3bb"
+    },
+    "insert-append_legacy-unwind-contexts.bin": {
+      "bytes": 46088,
+      "sha256": "4ed13c98155dec5918bf86c346844073485863f2af2e2cd14f970a99f57c29e2"
+    },
+    "insert-append_registered-unwind-contexts.bin": {
+      "bytes": 46760,
+      "sha256": "6f1c3ea2e26201b64fd80ca9e8c873d8b530b9e73a5f6f01920c90e730ce226b"
+    },
+    "insert-dense_registered-unwind-contexts.bin": {
+      "bytes": 66532,
+      "sha256": "3bc8b1d7962814e7641ed0bf1c30e374c8448a8e97f849dcbbf5b62bcdb9576b"
+    }
+  },
+  "game_access": false,
+  "native_execution_of_game_bodies": false,
+  "common_writer_activation": false,
+  "production_quiescence_provider_bound": false,
+  "runtime_verified": false,
+  "multiplayer_verified": false,
+  "accepted": 58,
+  "rejected": 230,
+  "owner_checks": 108,
+  "executed_instruction_contexts": 27171,
+  "windows_unwind_unique_contexts": 660,
+  "injected_metadata_faults_rejected": 4
+}

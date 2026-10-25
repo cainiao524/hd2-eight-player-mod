@@ -14,7 +14,7 @@ import struct
 import native_producer_unwind
 import native_receiver_unwind
 import native_getter_image
-import native_mover_image
+import native_insert_image
 from native_property_library import GetterAddresses,GateImage,Library
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -41,7 +41,7 @@ def modules(property_library):
     producer = load('sync_producer', ROOT / 'eight_player_candidate_20260927/tests/test_native_roster_producer.py')
     require(insert.unicorn.__version__ == lock['unicorn'] and insert.capstone.__version__ == lock['capstone'], 'Dependency version mismatch')
     native=Library(property_library)
-    native_mover_image.bind_insertion_fixture(insert,native)
+    native_insert_image.bind_fixture(insert,native)
     original = producer.native.build
     def with_windows_unwind(source, **addresses):
         reference=native_producer_unwind.with_unwind(original(source, **addresses))
@@ -142,7 +142,7 @@ def produce(output, property_library):
                      'network_index': (3 * node + 2) % 8, 'instructions': len(send.trace),
                      'allocator_contract_calls': len(send.alloc_calls), 'actual_index_leaf_calls': len(send.index_calls)})
     result = {'schema': 'native_roster_property_fixture_v1', 'packets': packets, 'artifacts': artifacts,
-              'native_producers': runs, 'mover_image_emitted_by_native_mod_code':True, 'game_serializer_executed': False, 'game_access': False}
+              'native_producers': runs, 'insert_images_emitted_by_native_mod_code':True, 'mover_image_emitted_by_native_mod_code':True, 'game_serializer_executed': False, 'game_access': False}
     output.write_text(json.dumps(result, indent=2) + '\n')
     return {'native_producers': len(runs), 'native_insertions': 64, 'game_access': False}
 

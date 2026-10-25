@@ -101,7 +101,7 @@ def main():
         raise RuntimeError('Missing session code ownership result: ' + code_output)
     property_dll=build/'property_image_test.dll'
     run([zig,'c++','-std=c++17','-target','x86_64-windows-gnu','-shared','-O1','-Wall','-Werror','-Wno-unused-parameter',
-         '-I',source/'native/mod-sdk',PROJECT/'mod/src/ep_property_image.cpp',PROJECT/'mod/src/ep_property_code.cpp',PROJECT/'mod/src/ep_property_gate.cpp',PROJECT/'mod/src/ep_getter_image.cpp',PROJECT/'mod/src/ep_mover_image.cpp',
+         '-I',source/'native/mod-sdk',PROJECT/'mod/src/ep_property_image.cpp',PROJECT/'mod/src/ep_property_code.cpp',PROJECT/'mod/src/ep_property_gate.cpp',PROJECT/'mod/src/ep_getter_image.cpp',PROJECT/'mod/src/ep_mover_image.cpp',PROJECT/'mod/src/ep_insert_image.cpp',
          PROJECT/'tests/property_image_dll.cpp','-o',property_dll])
     property_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_property_images.py','--library',property_dll]))
     property_receipt=PROJECT/'evidence/property-image-validation.json'
@@ -109,6 +109,8 @@ def main():
     getter_receipt=PROJECT/'evidence/native-getter-validation.json'
     mover_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_mover_image.py','--library',property_dll,'--zig',zig]))
     mover_receipt=PROJECT/'evidence/native-mover-validation.json'
+    insert_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_insert_images.py','--library',property_dll,'--zig',zig]))
+    insert_receipt=PROJECT/'evidence/native-insert-validation.json'
     fixture = build / 'native-roster-fixture.bin'
     fixture_receipt = json.loads(run([sys.executable, '-B', PROJECT / 'tools/native_roster_fixture.py', '--output', fixture, '--property-library', property_dll]))
     native_test = build / 'native_roster_test.exe'
@@ -156,6 +158,7 @@ def main():
     sync_receipt['receiver_has_windows_unwind_variant'] = True
     sync_receipt['property_images_emitted_by_native_mod_code'] = True
     sync_receipt['mover_image_emitted_by_native_mod_code'] = True
+    sync_receipt['insert_images_emitted_by_native_mod_code'] = True
     receipt = {
         'schema': 'hellforge_engine_roster_validation_v1',
         'verified_at_utc': datetime.now(timezone.utc).isoformat(),
@@ -168,6 +171,7 @@ def main():
         'native_property_images': {**property_output,'validation_sha256':digest(property_receipt)},
         'native_getter':{**getter_output,'validation_sha256':digest(getter_receipt)},
         'native_mover':{**mover_output,'validation_sha256':digest(mover_receipt)},
+        'native_insert':{**insert_output,'validation_sha256':digest(insert_receipt)},
         'native_property_gates':{**gate_output,'validation_sha256':digest(gate_receipt)},
         'property_group':{'checks':int(group_match[1]),'entries':['producer','receiver','entity_network_getter'],'shared_storage_binding':True,'actual_hellforge_chains':True,
                          'partial_publication_failure_forwards':True,'cooperative_quiescence_tested':True,
@@ -197,6 +201,8 @@ def main():
             'tests/property_group_dll.h','tests/property_group_dll.cpp','tests/property_group_test.c','tools/validate_property_gates.py',
             'native-mover.lock.json','tools/native_mover_image.py','tools/generate_mover_template.py','tools/validate_mover_image.py',
             'mod/src/ep_mover_image.h','mod/src/ep_mover_image.cpp','mod/src/ep_mover_template.h',
+            'native-insert.lock.json','tools/native_insert_image.py','tools/generate_insert_templates.py','tools/validate_insert_images.py',
+            'mod/src/ep_insert_image.h','mod/src/ep_insert_image.cpp','mod/src/ep_insert_templates.h',
             'native-getter.lock.json','tools/native_getter_image.py','tools/generate_getter_template.py','tools/validate_getter_image.py',
             'mod/src/ep_getter_image.h','mod/src/ep_getter_image.cpp','mod/src/ep_getter_template.h',
             'tests/backend/Program.cs', 'tests/backend/Backend.csproj',
@@ -208,7 +214,7 @@ def main():
         'runtime_verified': False, 'multiplayer_verified': False, 'public_release_allowed': False,
     }
     (PROJECT / 'evidence/engine-roster-validation.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
-    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'native_storage_checks': receipt['native_storage_checks'], 'session_code_checks': int(code_match[1]), 'property_images':property_output,'property_gates':gate_output,'property_group_checks':int(group_match[1]),'getter':getter_output,'mover':mover_output,'native_getter_queries':sync_receipt['native_getter_queries'], 'sync_consumer_checks': sync_receipt['consumer_checks'], 'native_receivers': sync_receipt['native_receivers'], 'patch_replayed': True, 'game_access': False}))
+    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'native_storage_checks': receipt['native_storage_checks'], 'session_code_checks': int(code_match[1]), 'property_images':property_output,'property_gates':gate_output,'property_group_checks':int(group_match[1]),'getter':getter_output,'mover':mover_output,'insert':insert_output,'native_getter_queries':sync_receipt['native_getter_queries'], 'sync_consumer_checks': sync_receipt['consumer_checks'], 'native_receivers': sync_receipt['native_receivers'], 'patch_replayed': True, 'game_access': False}))
 
 
 if __name__ == '__main__':

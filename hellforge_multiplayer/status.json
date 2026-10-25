@@ -3,7 +3,7 @@
   "updated_date": "2026-10-25",
   "timezone": "Asia/Taipei",
   "active_target": "HellForge",
-  "stage": "native_common_mover_image_ready_and_storage_integration_offline_verified",
+  "stage": "native_four_insertion_images_ready_and_storage_integration_offline_verified",
   "upstream_commit": "a4dd089eb56cdd5cd96c3cefe6e80eba5848d6fa",
   "release": "0.2.0-beta",
   "engine_version": "0.1.28",
@@ -27,7 +27,7 @@
   "live_capture_authorized": false,
   "remaining_authorized_captures": 0,
   "legacy_dispatcher_capture": "deferred_legacy_route_not_authorized",
-  "next_source_work": "Integrate the prepared common mover and remaining insertion, classification and removal readers/writers into coordinated publication and activation. Use complete generated image extents rather than the legacy 545-byte mover extent. Implement real mutation-exclusion owner leases and authoritative identity tickets, draining calls that already chose old routes. Supply runtime source/ABI/exception-table checks, production rejection handlers, full-capacity commit and active-data rollback. Continue real player creation, control, replication and full eight-account mission validation. Game access remains closed; runtime work requires new authorization.",
+  "next_source_work": "Integrate the prepared four insertion images and common mover with classification, removal and remaining readers/writers into coordinated publication and activation. Keep complete image extents, explicit caller/map prerequisites and dense D==T rejection. Implement real mutation-exclusion owner leases and authoritative identity tickets, draining calls that already chose old routes. Supply runtime source/ABI/exception-table checks, production rejection handlers, full-capacity commit and active-data rollback. Continue real player creation, control, replication and full eight-account mission validation. Game access remains closed; runtime work requires new authorization.",
   "validation": "evidence/offline-validation.json",
   "handoff": "HANDOFF.zh-CN.md",
   "branch": "codex/hellforge-migration",
@@ -152,5 +152,59 @@
   "captured_mover_unwind_source_bytes": 92,
   "captured_mover_unwind_language_handlers": false,
   "offline_native_storage_uses_native_mover_image": true,
-  "offline_native_sync_uses_native_mover_image": true
+  "offline_native_sync_uses_native_mover_image": true,
+  "native_insert_offline_verified": true,
+  "native_insert_prepare_autobound": false,
+  "native_insert_published": false,
+  "native_insert_in_property_group": false,
+  "native_insert_validation": "evidence/native-insert-validation.json",
+  "native_insert_handoff": "NATIVE_INSERT.zh-CN.md",
+  "native_insert_variants": {
+    "dense_legacy": {
+      "image_bytes": 640,
+      "code_bytes": 597,
+      "unwind_offset": 604,
+      "table_offset": 616,
+      "fixups": 23
+    },
+    "append_legacy": {
+      "image_bytes": 540,
+      "code_bytes": 502,
+      "unwind_offset": 508,
+      "table_offset": 516,
+      "fixups": 22
+    },
+    "append_registered": {
+      "image_bytes": 544,
+      "code_bytes": 505,
+      "unwind_offset": 512,
+      "table_offset": 520,
+      "fixups": 22
+    },
+    "dense_registered": {
+      "image_bytes": 636,
+      "code_bytes": 596,
+      "unwind_offset": 600,
+      "table_offset": 612,
+      "fixups": 23
+    }
+  },
+  "native_insert_function_count_per_image": 2,
+  "captured_insert_unwind_metadata_verified": true,
+  "captured_insert_unwind_fragments": 4,
+  "captured_insert_unwind_source_bytes": 88,
+  "captured_insert_unwind_language_handlers": false,
+  "offline_native_storage_uses_native_insert_images": true,
+  "offline_native_sync_uses_native_insert_images": true,
+  "offline_native_insert_functional_tests": 9,
+  "offline_native_insert_functional_runs": 515,
+  "offline_native_insert_original_runs": 80,
+  "offline_native_insert_instruction_contexts": 27171,
+  "offline_native_insert_unique_unwind_contexts": 660,
+  "offline_native_insert_injected_unwind_faults_rejected": 4,
+  "offline_native_insert_accepted_cases": 58,
+  "offline_native_insert_rejected_cases": 230,
+  "offline_native_insert_api_checks": 11,
+  "offline_native_insert_source_guard_checks": 8,
+  "offline_native_insert_prepare_checks": 108
 }

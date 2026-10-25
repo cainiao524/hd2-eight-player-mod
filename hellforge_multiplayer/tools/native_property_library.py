@@ -14,6 +14,9 @@ class GateImage(c.Structure):
 class GetterAddresses(c.Structure):
     _fields_=[(name,c.c_uint64) for name in ('game_base','code_address','roster_address','storage_address','reject_address')]
 
+class InsertAddresses(c.Structure):
+    _fields_=[(name,c.c_uint64) for name in ('game_base','code_address','roster_address','storage_address','move_code_address','reject_address')]
+
 class Library:
     def __init__(self,path):
         self.path=Path(path).resolve(strict=True)
@@ -28,8 +31,20 @@ class Library:
         self.getter.argtypes=[c.POINTER(GetterAddresses),c.POINTER(Image)];self.getter.restype=c.c_int
         self.mover=self.dll.mover_image_test_build
         self.mover.argtypes=[c.POINTER(GetterAddresses),c.POINTER(Image)];self.mover.restype=c.c_int
+        self.insert=self.dll.insert_image_test_build
+        self.insert.argtypes=[c.c_uint32,c.POINTER(InsertAddresses),c.POINTER(Image)];self.insert.restype=c.c_int
+        self.insert_prepare=self.dll.insert_image_test_prepare
+        self.insert_prepare.argtypes=[c.c_uint32,c.POINTER(InsertAddresses),c.POINTER(Image),c.POINTER(c.c_uint32)];self.insert_prepare.restype=c.c_int
         self.getter_gate=self.dll.getter_image_test_gate
         self.getter_gate.argtypes=[c.POINTER(GetterAddresses),c.c_uint64,c.c_uint64,c.POINTER(GateImage)];self.getter_gate.restype=c.c_int
+
+    def insert_candidate(self,addresses,reference):
+        kinds=('dense_legacy','append_legacy','append_registered','dense_registered')
+        out=Image();result=self.insert(kinds.index(addresses['kind'])+1,InsertAddresses(**{k:v for k,v in addresses.items() if k!='kind'}),out)
+        if result:raise RuntimeError('Native insertion generation failed: '+str(result))
+        if bytes(out.data[:out.bytes])!=reference['image'] or (out.code_bytes,out.unwind_offset,out.table_offset)!=(reference['candidate']['size_bytes'],reference['unwind_offset'],reference['table_offset']):
+            raise RuntimeError('C++ insertion image differs from pinned reference')
+        return {**reference['candidate'],'code_hex':bytes(out.data[:out.code_bytes]).hex()}
 
     def mover_candidate(self,addresses,reference):
         out=Image();result=self.mover(GetterAddresses(**addresses),out)
