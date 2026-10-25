@@ -1,6 +1,6 @@
 {
   "schema": "hellforge_engine_roster_validation_v1",
-  "verified_at_utc": "2026-10-25T14:05:56.786495+00:00",
+  "verified_at_utc": "2026-10-25T14:22:30.363921+00:00",
   "upstream_commit": "a4dd089eb56cdd5cd96c3cefe6e80eba5848d6fa",
   "sdk": 13,
   "game_build": "25480438",
@@ -78,6 +78,7 @@
       }
     },
     "native_removal_instructions": 572,
+    "remove_image_emitted_by_native_mod_code": true,
     "native_reinsert_instructions": 194,
     "native_outputs": [
       "descriptor pointers",
@@ -131,7 +132,7 @@
     "legacy_rejection_failures_reproduced": 3,
     "game_access": false,
     "placement_and_source_refusals": 3,
-    "validation_sha256": "72d956538d7dd39963d02542054139593ac7578500266a60f0a6a5ff729982fc"
+    "validation_sha256": "de292c69b45048830dc35ad8c4c398b7cf6fd89ebc3035ccdfab69e032e92808"
   },
   "native_receiver_unwind": {
     "passed": true,
@@ -141,7 +142,7 @@
     "game_access": false,
     "placement_and_source_refusals": 3,
     "unique_instruction_positions": 101,
-    "validation_sha256": "1656b0e4afc7734055d420fdd7fa715b1ab233c6d651602b6a055143acba3343"
+    "validation_sha256": "b2b447207364d3c28f0ca9ac28be3e013f2b3f4834cb753f2fb22f1de0fc697a"
   },
   "native_property_images": {
     "passed": true,
@@ -150,7 +151,7 @@
     "api_contract_checks": 4,
     "owner_checks": 50,
     "game_access": false,
-    "validation_sha256": "a3b7bf9684fb609e54cf154b6be46f5cb856ec678377e2cb1355d198f44b1ad6"
+    "validation_sha256": "c64afcabc5191c7037dab8e3dc06a24e359b42c2df4f9c3de5183a07247cd228"
   },
   "native_getter": {
     "passed": true,
@@ -161,7 +162,7 @@
     "windows_unwind_contexts": 4548,
     "owner_checks": 25,
     "game_access": false,
-    "validation_sha256": "532f54f9b35bc827f8feccb03c7394f7c7f6780afd516819e071500c429e07d3"
+    "validation_sha256": "ffaa946af5b611650f0fb9d9471a76b9977e8d9d6410628e08326e3db0b3cca8"
   },
   "native_mover": {
     "passed": true,
@@ -172,7 +173,7 @@
     "windows_unwind_contexts": 8231,
     "owner_checks": 25,
     "game_access": false,
-    "validation_sha256": "eab909917c5bb3aecdb1cb40d1ae341d14765480f11a38d7b261f957ced1313e"
+    "validation_sha256": "f40e2e9352af389c9352651780113bd18a2d20705eefc98aa484b557bf1abeda"
   },
   "native_insert": {
     "passed": true,
@@ -183,7 +184,18 @@
     "functional_runs": 515,
     "windows_unwind_unique_contexts": 660,
     "game_access": false,
-    "validation_sha256": "15c848d53932139e03795e520073d0d18d2cca7d6292295ae060acdf3ee380c1"
+    "validation_sha256": "e543440f910848e627134900cc4aac2ddd416ea62a8edd0a2f4312ddc6859200"
+  },
+  "native_remove": {
+    "passed": true,
+    "accepted": 22,
+    "rejected": 122,
+    "owner_checks": 54,
+    "functional_tests": 9,
+    "functional_runs": 2293,
+    "windows_unwind_unique_contexts": 4670,
+    "game_access": false,
+    "validation_sha256": "1ce7553d3bc1a27ed60005ca93d3891b8a1ca5f4fba4041c8b41e006cf918fea"
   },
   "native_property_gates": {
     "passed": true,
@@ -191,7 +203,7 @@
     "placement_refusals": 24,
     "windows_unwind_contexts": 7169,
     "game_access": false,
-    "validation_sha256": "8ade8a0b0e65214edf0ae7463645fb03be623a7fecaaaf7cde13347779694990"
+    "validation_sha256": "6ad20f9ea006aed24576f71c5a6958443ec3d78f2f5afc9b7fb33162c7e5f761"
   },
   "property_group": {
     "checks": 355,
@@ -249,7 +261,7 @@
       "passed": true,
       "tests": 10
     },
-    "validation_sha256": "4074404ae39f1beca028d2867483639069d04268b3b224d904a9c39d35bc284e"
+    "validation_sha256": "a2feb7b21df24a86108632073b116612d2efb83353b94ab28785ec2a3657aabc"
   },
   "replayed_patch": "engine/0001-shared-player-roster.patch",
   "patch_sha256": "c9096a42fb2bc20e1c09d404b98f91f7f618a95bc9de4b5651a34b8f489b23ee",
@@ -264,13 +276,13 @@
   "test_source_sha256": {
     "tests/engine_roster_test.c": "2a8029348b06074fa61e64a6a248df266316fb5ced7f88f000a3316d8e67f0d1",
     "tests/native_roster_test.c": "68bd21d34e244786e86662f9360278bb4db600fdd37cf8b75db6556c2e994031",
-    "tools/native_roster_fixture.py": "ddb230bb60832b8ec156ee89b0bf20800780fd74bea15c3c45f110ba91327fcb",
+    "tools/native_roster_fixture.py": "d4eebdc8d6e6f9cd6bc7f6cc65443c9f771b82987ce8f22e3657d665e8f83427",
     "tests/native_fixture.h": "a5f842280c255f25756fdfb5441a1aae8ddaa91ff1dc5c3426de98b8eb732933",
     "tests/native_roster_sync_test.c": "b7e90b1f1bb262132c59bf74b547e107a070a13019f389fd5cf726e0e873ad6b",
     "tools/native_roster_sync.py": "687ef8cb3da157449812e9dee4f58a17ec1600acb96e2d413c5861018ee53ad9",
     "tools/native_producer_unwind.py": "4cb2da68acb304be8434f786573d6b440e7057ace4a45deb355a956c5ec48832",
     "tools/build_unwind_offline.py": "576e73961921f11899c05f717e7345fa26a77d616bbc80cb06256ac1dbe09a3e",
-    "tests/native_producer_unwind_test.c": "38333e2267009562796525bf2daf2cc202f73f44da3ed3925fa72f8cee315b3d",
+    "tests/native_producer_unwind_test.c": "586e03e53712a4d49f01176add61aee221cd761d64cc8a12f7b1c902da61f8c2",
     "tools/native_receiver_unwind.py": "e501bf070a4f0266a5802a130a2ed24c052746c7a12db9b4eb9ab7f1efabf501",
     "tools/build_receiver_unwind_offline.py": "6d49282026472837ac692335b71fd34bf29b94e10e795829c7e9f02fa203d772",
     "tools/native_unwind_source.py": "8f2b51781ae06b3f6a72959218f7c60cdf4e7f6a13e59c56f7eff99140721e4f",
@@ -287,9 +299,9 @@
     "mod/src/ep_property_templates.h": "940fef65c777ad60deb8f2e92c79b6e8dc717dead972237363ec4344fe92d3f9",
     "mod/src/ep_property_code.cpp": "513600a118023e46c6b2c90720b37122a49d6f130dc1d6ffe24fb036d1fd16df",
     "mod/src/ep_property_code.h": "e8f23e9c66034911e21b95f27a38c95ca7d07e0ea4cc40f3be8eaff22adf2907",
-    "tests/property_image_dll.cpp": "6c38c8fae312151f33306e695a4f4c95754af5db22c231c87cc17bbb3b031254",
+    "tests/property_image_dll.cpp": "58a61d65f34e74d8f2595170a5471fc9cf6f65d53f17ee83b73b5dc91c835747",
     "tools/generate_property_templates.py": "4d855e6eb2f0862f618db1b77df769c0b05a4232b66ebd59009abda399d18d26",
-    "tools/native_property_library.py": "16b6f9c9be712f375bd2cce44bfe5174da0c3ac0118922eb5ff31a2d54201f2c",
+    "tools/native_property_library.py": "cf95de25eb37ccce5a6d4111ed73937e02027c8881126c2c7d1aee5d2f3d77d2",
     "tools/validate_property_images.py": "d89df719e5c70476f688d5a549b8bc01b33bf9d4cc9709068295ee5c47d97b03",
     "mod/src/ep_property_gate.h": "731c5e84adf165c58274385196d9ef49bcb1042f5e0e316bdd5d321907c93aef",
     "mod/src/ep_property_gate.cpp": "5b8aa7af60d0801be4247a9fa6e9ebb11b749981e6e795a1ae7a72ae95668778",
@@ -313,6 +325,13 @@
     "mod/src/ep_insert_image.h": "8b23f7df46ba1133f1369660d0976b671850e539e95b461b074f92af9f1de122",
     "mod/src/ep_insert_image.cpp": "154398c26c4b17716a91ba556af77c7a2e24f8aedf5ee911ceb6a7a7f0f46b79",
     "mod/src/ep_insert_templates.h": "091bfa59c261b244462b7e773d9f9b75d2eed9631aa985177dacf681bd2b188d",
+    "native-remove.lock.json": "0d5142914bfdafe1a9e55ef4c4d5afd86287851b2d2dca2869ae1ca757045d02",
+    "tools/native_remove_image.py": "fa46e06bb1d63d2000967252606023dfdda9bae8ef4d856776f75ac82e436d38",
+    "tools/generate_remove_templates.py": "52810a411908ba95ab74b2113affdc7697e6a614d1c41a325c00a3792e503178",
+    "tools/validate_remove_images.py": "8aef61e75732bfb97376b0281654197d3ebbf6b8877c06ea968525e92d30eadd",
+    "mod/src/ep_remove_image.h": "f96f183a2481703af5c93600b7cb701acab417021071b861cbf07e552804fc64",
+    "mod/src/ep_remove_image.cpp": "e1fd51851094405298261902e2a297ff0ab8a2dc8180c88522084b309591140a",
+    "mod/src/ep_remove_templates.h": "ea685def2101a4d68eb1828640b0d59ebcf0984ed0d1d540a23434082efde2bd",
     "native-getter.lock.json": "2ec11c0046408233a263c86d91e84309b153458d6f3863b38a5894adb75b19d9",
     "tools/native_getter_image.py": "3b329d319d9edd550fa237a4c8c8c04bf17d8dfcd7e688b6291d1e31c1306afb",
     "tools/generate_getter_template.py": "63441e7e961c2f07d04027bf7cceef677b88c15215845a1b23f3504727a22b95",
@@ -326,7 +345,7 @@
     "mod/src/ep_native_roster.h": "30116c76318c97ae2954530ad161cc56345428216592abb6dfa5e4961c941f26",
     "mod/src/ep_roster_api.h": "75bfdbf3ca86fa172a2ace0c81aa1de7d74035665094c85257f1d323a09a5816",
     "native-storage.lock.json": "ec2a0cafe60941a36c09b87bd40f8098fc904120ce68b027f9de3edf5093161f",
-    "tools/build_engine_offline.py": "0d5c86d85604186003e9ea484dbd06004a200e8c4c102787c7ea1b054a0f7a70",
+    "tools/build_engine_offline.py": "dd2920231164c9d0a4114d2d9a6b94494d39eda8e1911acd770c71254d386ff7",
     "engine/patch.lock.json": "dc6ca3a022c8879eab5a3244989077125614b510b2575837961693d861dd981b",
     "upstream.lock.json": "1d9274d0040561997c6a3d3ba34279f5e8c83bd788e38cd2f97a99fb946ed0f3"
   },
@@ -337,31 +356,31 @@
     },
     "engine_roster_test.exe": {
       "bytes": 765952,
-      "sha256": "439027baf02aa597f368d59620228f01b01963b2a0a1fa78d3e9508e35182358"
+      "sha256": "886ab13989680961077f56b2818e00228fa8ec360d191e6cc8b82291d1480855"
     },
     "native_roster_test.exe": {
       "bytes": 764928,
-      "sha256": "ecdf1be93c58bc4ad80667d76dab769d2c7beb4583765fed4c06628b2493d6b1"
+      "sha256": "5d02356fc89c45ad2c95897dc1c64c73efb42332adbbf4ab54eb22ee01bd7d03"
     },
     "session_code_test.exe": {
       "bytes": 773120,
-      "sha256": "d308e6c721e6e107147175f1c3b0b16e2e5f6d0e236238245ec1ec087692a4b4"
+      "sha256": "05526588c6301f828e31e1ff17941f297c1d728afd883ca98138ef45cf1cbbde"
     },
     "session_code_owner_test.dll": {
       "bytes": 221696,
-      "sha256": "9f40e31abf33c7621a7fc3ac97da5e0f2b70f4af3a4b637dd1838a1181d5a32c"
+      "sha256": "a9ef10941f092288a3f3ac6976eb8e6d5c8d08e3d56a24f756a86d55740baa94"
     },
     "property_image_test.dll": {
-      "bytes": 243200,
-      "sha256": "6b4873b0ae68c71fac5d1a6b4202254f63edfe707e0271e2af9e732ecbf7ddee"
+      "bytes": 249856,
+      "sha256": "aa284bd49cc05c2c6eb2598c4aa82853d6e474b2426bac439c63c698f944f7c2"
     },
     "property_group_test.dll": {
       "bytes": 235520,
-      "sha256": "f3ddf2721eca2f990514f1fbec887b5e9343c7b806ba78e4bef27b848de99805"
+      "sha256": "82d0c5f19424fb9330c2b8d437fb49e096d1619a6914c6cea4484570cc6b0f59"
     },
     "property_group_test.exe": {
       "bytes": 773632,
-      "sha256": "69d59967c7d12b40a64790b155dbc5c515e09a29ac045da4c70f6ad402827c99"
+      "sha256": "daa7a8fb0864b50ac33a9ddf65b40fb79ae1b1e23154ea980f19d1bb3a610a3b"
     },
     "native-roster-fixture.bin": {
       "bytes": 2284,
@@ -377,7 +396,7 @@
     },
     "native_roster_sync_test.exe": {
       "bytes": 761344,
-      "sha256": "aa579652fff2e1074a9a95ada4d082ce48f55eeaefce4cb09547a900e946db93"
+      "sha256": "f84b26291c4079ee2da7fd5e54a2da6a9991a650bf684de4c1c7794f5cb1f677"
     },
     "native-sync-input.json": {
       "bytes": 4029,

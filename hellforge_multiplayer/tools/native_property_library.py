@@ -17,6 +17,9 @@ class GetterAddresses(c.Structure):
 class InsertAddresses(c.Structure):
     _fields_=[(name,c.c_uint64) for name in ('game_base','code_address','roster_address','storage_address','move_code_address','reject_address')]
 
+class RemoveImage(c.Structure):
+    _fields_=[(name,c.c_uint32) for name in ('bytes','code_bytes','unwind_offset','table_offset')]+[('data',c.c_ubyte*776)]
+
 class Library:
     def __init__(self,path):
         self.path=Path(path).resolve(strict=True)
@@ -35,8 +38,20 @@ class Library:
         self.insert.argtypes=[c.c_uint32,c.POINTER(InsertAddresses),c.POINTER(Image)];self.insert.restype=c.c_int
         self.insert_prepare=self.dll.insert_image_test_prepare
         self.insert_prepare.argtypes=[c.c_uint32,c.POINTER(InsertAddresses),c.POINTER(Image),c.POINTER(c.c_uint32)];self.insert_prepare.restype=c.c_int
+        self.remove=self.dll.remove_image_test_build
+        self.remove.argtypes=[c.c_uint32,c.POINTER(InsertAddresses),c.POINTER(RemoveImage)];self.remove.restype=c.c_int
+        self.remove_prepare=self.dll.remove_image_test_prepare
+        self.remove_prepare.argtypes=[c.c_uint32,c.POINTER(InsertAddresses),c.POINTER(RemoveImage),c.POINTER(c.c_uint32)];self.remove_prepare.restype=c.c_int
         self.getter_gate=self.dll.getter_image_test_gate
         self.getter_gate.argtypes=[c.POINTER(GetterAddresses),c.c_uint64,c.c_uint64,c.POINTER(GateImage)];self.getter_gate.restype=c.c_int
+
+    def remove_candidate(self,addresses,reference):
+        kinds=('legacy','registered');out=RemoveImage()
+        result=self.remove(kinds.index(addresses['kind'])+1,InsertAddresses(**{k:v for k,v in addresses.items() if k!='kind'}),out)
+        if result:raise RuntimeError('Native removal generation failed: '+str(result))
+        if bytes(out.data[:out.bytes])!=reference['image'] or (out.code_bytes,out.unwind_offset,out.table_offset)!=(reference['candidate']['size_bytes'],reference['unwind_offset'],reference['table_offset']):
+            raise RuntimeError('C++ removal image differs from pinned reference')
+        return {**reference['candidate'],'code_hex':bytes(out.data[:out.code_bytes]).hex()}
 
     def insert_candidate(self,addresses,reference):
         kinds=('dense_legacy','append_legacy','append_registered','dense_registered')

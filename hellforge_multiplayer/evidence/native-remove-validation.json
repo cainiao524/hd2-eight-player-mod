@@ -1,0 +1,133 @@
+{
+  "schema": "hellforge_native_remove_validation_v1",
+  "verified_at_utc": "2026-10-25T14:21:06.360625+00:00",
+  "passed": true,
+  "source_replay": {
+    "passed": true,
+    "functions": {
+      "legacy": {
+        "fragments": 1,
+        "flags": [
+          0
+        ],
+        "chained_fragments": 0,
+        "language_handlers": false
+      },
+      "registered": {
+        "fragments": 1,
+        "flags": [
+          0
+        ],
+        "chained_fragments": 0,
+        "language_handlers": false
+      }
+    },
+    "metadata_bytes_replayed": 44,
+    "header_exception_directory_captured": false,
+    "runtime_table_verified": false,
+    "game_access": false
+  },
+  "variants": {
+    "legacy": {
+      "image_bytes": 776,
+      "code_bytes": 717,
+      "unwind_offset": 740,
+      "table_offset": 752,
+      "fixups": 18
+    },
+    "registered": {
+      "image_bytes": 760,
+      "code_bytes": 705,
+      "unwind_offset": 728,
+      "table_offset": 736,
+      "fixups": 18
+    }
+  },
+  "mover_image_bytes": 612,
+  "variant_checks": {
+    "legacy": {
+      "accepted": 11,
+      "rejected": 61,
+      "owner_checks": 27,
+      "executed_instruction_contexts": 123920,
+      "windows_unwind_unique_contexts": 2802,
+      "legacy_unwind_failures_reproduced": 2
+    },
+    "registered": {
+      "accepted": 11,
+      "rejected": 61,
+      "owner_checks": 27,
+      "executed_instruction_contexts": 126100,
+      "windows_unwind_unique_contexts": 1868,
+      "legacy_unwind_failures_reproduced": 2
+    }
+  },
+  "api_contract_checks": 7,
+  "source_guard_checks": 4,
+  "functional_tests": 9,
+  "functional_runs": 2293,
+  "original_functional_runs": 152,
+  "functional_run_types": {
+    "legacy": 1033,
+    "registered": 1108,
+    "original_legacy": 76,
+    "original_registered": 76
+  },
+  "source_sha256": {
+    "native-remove.lock.json": "0d5142914bfdafe1a9e55ef4c4d5afd86287851b2d2dca2869ae1ca757045d02",
+    "tools/native_remove_image.py": "fa46e06bb1d63d2000967252606023dfdda9bae8ef4d856776f75ac82e436d38",
+    "tools/generate_remove_templates.py": "52810a411908ba95ab74b2113affdc7697e6a614d1c41a325c00a3792e503178",
+    "tools/validate_remove_images.py": "8aef61e75732bfb97376b0281654197d3ebbf6b8877c06ea968525e92d30eadd",
+    "tools/native_unwind_source.py": "8f2b51781ae06b3f6a72959218f7c60cdf4e7f6a13e59c56f7eff99140721e4f",
+    "tools/verify_native_unwind_source.py": "af2afff2fdfa8178a80af08fc21358df4e6090a6342922e03fa6c9a407661a8d",
+    "tools/native_property_library.py": "cf95de25eb37ccce5a6d4111ed73937e02027c8881126c2c7d1aee5d2f3d77d2",
+    "tools/native_mover_image.py": "7ea40986a77b5e36e132b5e5048e50858ceaed8c3e639321adfbd91a1e9ba105",
+    "native-insert.lock.json": "f33a753bfad144b45e6e4c6cc64bae9a53347f17034c1e932cae7ec29a27ec40",
+    "native-mover.lock.json": "d871e37dfa31605cec611c4e4d2757ef7d1421862a004a9019ff40f6ac8f4a30",
+    "tools/native_insert_image.py": "9db16bc5501b9d6ad6a94147a77a0b90cd49a118fa3156692a8c827c41fdcfd9",
+    "mod/src/ep_insert_image.cpp": "154398c26c4b17716a91ba556af77c7a2e24f8aedf5ee911ceb6a7a7f0f46b79",
+    "mod/src/ep_insert_templates.h": "091bfa59c261b244462b7e773d9f9b75d2eed9631aa985177dacf681bd2b188d",
+    "mod/src/ep_remove_image.h": "f96f183a2481703af5c93600b7cb701acab417021071b861cbf07e552804fc64",
+    "mod/src/ep_remove_image.cpp": "e1fd51851094405298261902e2a297ff0ab8a2dc8180c88522084b309591140a",
+    "mod/src/ep_remove_templates.h": "ea685def2101a4d68eb1828640b0d59ebcf0984ed0d1d540a23434082efde2bd",
+    "mod/src/ep_mover_image.cpp": "1de15b0de5bdfc087f63566b5040b6b19cbd32ddd2e083204b82f8c5d59e4c4c",
+    "mod/src/ep_mover_template.h": "57cc7e20d9deb2f0765097d2e8d700bcda6046cd796c052505cfe454d7e6d960",
+    "mod/src/ep_session_code.h": "612c7071e99846967bf960ba63279511133fcfc85b63a967d5bfa79f66e222dc",
+    "mod/src/ep_session_code.cpp": "fb52d6fb559ca86a0f74b30ff210fa521e2715633648adcaa1792e1104f1c301",
+    "tests/property_image_dll.cpp": "58a61d65f34e74d8f2595170a5471fc9cf6f65d53f17ee83b73b5dc91c835747",
+    "tests/native_producer_unwind_test.c": "586e03e53712a4d49f01176add61aee221cd761d64cc8a12f7b1c902da61f8c2"
+  },
+  "legacy_source_sha256": {
+    "eight_player_candidate_20260927/tests/test_native_roster_remove.py": "0d2795a840cdf6f5522f193cae2c5587e10d2094619454d522d37a17d9ef337b"
+  },
+  "artifacts": {
+    "property_image_test.dll": {
+      "bytes": 249856,
+      "sha256": "aa284bd49cc05c2c6eb2598c4aa82853d6e474b2426bac439c63c698f944f7c2"
+    },
+    "native_remove_unwind_test.exe": {
+      "bytes": 224256,
+      "sha256": "41d20eb61d462f192ee2aa2b9c538d446640008ca1eca56bd8589c82610e7d76"
+    },
+    "remove-legacy-unwind-contexts.bin": {
+      "bytes": 932668,
+      "sha256": "385659262b4dff3f7be1e42c1cc0068e13b5ac352eadaa886c33f8311843f6e0"
+    },
+    "remove-registered-unwind-contexts.bin": {
+      "bytes": 622548,
+      "sha256": "c2e8acb877f9c57cf35a93048e0d265a68ab5eec2f4f1ea383645f82e7b0711b"
+    }
+  },
+  "game_access": false,
+  "native_execution_of_game_bodies": false,
+  "common_writer_activation": false,
+  "production_quiescence_provider_bound": false,
+  "runtime_verified": false,
+  "multiplayer_verified": false,
+  "accepted": 22,
+  "rejected": 122,
+  "owner_checks": 54,
+  "executed_instruction_contexts": 250020,
+  "windows_unwind_unique_contexts": 4670,
+  "legacy_unwind_failures_reproduced": 4
+}

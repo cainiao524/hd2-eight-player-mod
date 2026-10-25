@@ -10,6 +10,7 @@ import json
 from pathlib import Path
 import struct
 import native_insert_image
+import native_remove_image
 from native_property_library import Library
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -27,7 +28,8 @@ def generate(output,property_library):
     spec.loader.exec_module(m)
     if m.unicorn.__version__ != lock['unicorn'] or m.capstone.__version__ != lock['capstone']:
         raise RuntimeError('Emulator/disassembler version changed')
-    native_insert_image.bind_fixture(m,Library(property_library))
+    library=Library(property_library)
+    native_insert_image.bind_fixture(m,library)
     f = m.Fixture('dense_legacy', t=0, d=0, p=0, flag=1)
     f.write(m.B, bytes(0x680))
     runs = []
@@ -66,6 +68,7 @@ def generate(output,property_library):
     exported = {output.name: export(output)}
     # Remove ordinal 4 through the actual candidate and saved deletion/move code.
     remove = m.load('ep_storage_remove', ROOT / 'eight_player_candidate_20260927/Native/roster_remove.py')
+    remove.build=native_remove_image.emitter(library)
     evidence_path = ROOT / 'five_player_feasibility_20260927/roster_remove_native_evidence.json'
     bodies = remove.load_sources(evidence_path)
     evidence = json.loads(evidence_path.read_bytes())
@@ -94,7 +97,7 @@ def generate(output,property_library):
     f.write(m.B+0x580+7*0x20,m.u32(0x1004)); f.write(m.B+0x580+7*0x20+0xC,m.u32(6))
     rejoined=output.with_suffix('.rejoined.bin'); exported[rejoined.name]=export(rejoined)
     return {'insert_images_emitted_by_native_mod_code':True,'mover_image_emitted_by_native_mod_code':True,'mover_image_bytes':f.native_mover_image_bytes,'native_insertions': runs, 'ninth_refused_before_write': True,
-            'fixtures': exported, 'native_removal_instructions': removal_instructions,
+            'fixtures': exported, 'native_removal_instructions': removal_instructions,'remove_image_emitted_by_native_mod_code':True,
             'native_reinsert_instructions': len(f.trace),
             'native_outputs': ['descriptor pointers', 'tracked/dense/prefix counts', 'entity-to-ordinal map', 'primary/auxiliary initialization'],
             'synthetic_inputs': ['descriptors/entity IDs', 'peer IDs', 'lifecycles', 'avatar network IDs', 'player network indexes', 'local peer', 'generation tickets'],

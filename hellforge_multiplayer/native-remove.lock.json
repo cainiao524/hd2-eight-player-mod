@@ -1,0 +1,54 @@
+{
+  "schema": "hellforge_captured_remove_unwind_v1",
+  "build": 25480438,
+  "capture_identity_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "capture_source_sha256": {
+    "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+  },
+  "capture_reader_path": "research_handoff_20260927/indirect/inspect_capture.py",
+  "capture_reader_sha256": "108b1543003f9adb56e72a59eb50f4af4f56f68a355d3879afa35220b811e63a",
+  "captured_table": {
+    "rva": "0x37d8000",
+    "size": 1832304,
+    "entries": 152692
+  },
+  "header_directory": {
+    "rva": "0x3fd340c",
+    "size": 1832316,
+    "fully_captured": false
+  },
+  "runtime_table_verified": false,
+  "functions": {
+    "legacy": {
+      "entry": "0x60cea0",
+      "end_exclusive": "0x60cf4c",
+      "code_sha256": "0c6e7607bf93a1e9fba1b8eeba998053b316670295e7d8db432352b3ce49cc7d",
+      "evidence_path": "five_player_feasibility_20260927/roster_remove_native_evidence.json",
+      "evidence_sha256": "67563b2d12860c814096b1d45338dd271ad13975c3ba4f96169a92473ab061af",
+      "fragments": [
+        {
+          "table_entry_rva": "0x380af10",
+          "runtime_function_hex": "a0ce60004ccf6000c0574202",
+          "unwind_hex": "010a04000a3406000a320670"
+        }
+      ]
+    },
+    "registered": {
+      "entry": "0x540a40",
+      "end_exclusive": "0x540ae0",
+      "code_sha256": "35e4c996bb1466c41df455f8e5f9df1174c8c2bb958ee127a3b7ecc59f6abcf8",
+      "evidence_path": "five_player_feasibility_20260927/roster_remove_native_evidence.json",
+      "evidence_sha256": "67563b2d12860c814096b1d45338dd271ad13975c3ba4f96169a92473ab061af",
+      "fragments": [
+        {
+          "table_entry_rva": "0x37fe5ec",
+          "runtime_function_hex": "400a5400e00a5400840a4102",
+          "unwind_hex": "0106020006320230"
+        }
+      ]
+    }
+  },
+  "fixture_path": "eight_player_candidate_20260927/tests/test_native_roster_remove.py",
+  "fixture_sha256": "0d2795a840cdf6f5522f193cae2c5587e10d2094619454d522d37a17d9ef337b"
+}

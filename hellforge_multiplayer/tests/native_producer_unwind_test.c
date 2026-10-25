@@ -40,7 +40,13 @@ int main(int argc, char** argv) {
         check(unwind[0]==1 && unwind[3]==0 && 4u+((unwind[2]+1u)&~1u)*2u<=table_offset-table[functions-1].UnwindData,"invalid unwind extent");
         if (functions==2) {
             check(table[0].EndAddress>0 && table[0].EndAddress==table[1].BeginAddress,"invalid leaf extent");
-            check(table[0].UnwindData>=code_size && table[0].UnwindData<=size-4 && !memcmp(image+table[0].UnwindData,"\1\0\0\0",4),"invalid leaf unwind");
+            check(table[0].UnwindData>=code_size && table[0].UnwindData<=size-4,"invalid preflight unwind location");
+#ifdef EP_STACK_PREFLIGHT
+            const uint8_t prefix[]={1,9,7,0,9,0x70,8,0x60,7,0x30,6,2,4,2,2,2,1,2,0,0};
+            check(size-table[0].UnwindData>=sizeof(prefix) && !memcmp(image+table[0].UnwindData,prefix,sizeof(prefix)),"invalid saved-argument preflight");
+#else
+            check(!memcmp(image+table[0].UnwindData,"\1\0\0\0",4),"invalid leaf unwind");
+#endif
         }
         check(RtlAddFunctionTable(table,functions,(DWORD64)image),"function table registration failed");
         uint64_t expected[8], return_pc; take(f,expected,sizeof expected); take(f,&return_pc,8);

@@ -24,6 +24,7 @@
 | 进程内属性生成 | `mod/src/ep_property_image.*`、`ep_property_code.*` / `PROPERTY_IMAGES.zh-CN.md` | C++ 生成和重定位发送/接收映像，按实际分配地址封存；538 组有效与 132 组拒绝输入匹配，50 项所有权检查通过 |
 | 属性成组入口 | `mod/src/ep_property_gate.*`、`ep_property_group.*` / `PROPERTY_GROUP.zh-CN.md` | 发送/接收/getter 三次发布成功后受 guard 约束共同启用；355 次链与生命周期检查，18 组入口分支和 7,169 个回溯上下文通过；生产 guard 仍缺失 |
 | 实体到网络索引查询 | `mod/src/ep_getter_image.*` / `NATIVE_GETTER.zh-CN.md` | 使用八槽 B 存储，完整 DWORD 查询；4,548 个回溯上下文、25 项准备生命周期及八端 64 次查询通过；已加入三入口共同开关，未在游戏发布 |
+| 两个原生移除入口 | `mod/src/ep_remove_image.*` / `NATIVE_REMOVE.zh-CN.md` | C++ 生成及 READY 准备；2,293 次功能执行、4,670 组不同回溯状态、54 项准备检查通过；存储夹具执行移除后再加入，生产生命周期待接入 |
 | 继续开发说明 | `HANDOFF.zh-CN.md` | 旧代码迁移关系、已知限制、下一步及授权范围 |
 | 四个原生插入入口 | `mod/src/ep_insert_image.*` / `NATIVE_INSERT.zh-CN.md` | C++ 生成及 READY 准备；515 次功能执行、660 组不同回溯状态和 108 项准备检查通过；已接入存储/同步夹具，生产共同切换待实现 |
 
