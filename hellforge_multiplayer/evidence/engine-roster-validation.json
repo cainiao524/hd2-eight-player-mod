@@ -1,6 +1,6 @@
 {
   "schema": "hellforge_engine_roster_validation_v1",
-  "verified_at_utc": "2026-10-25T14:22:30.363921+00:00",
+  "verified_at_utc": "2026-10-25T14:40:31.033247+00:00",
   "upstream_commit": "a4dd089eb56cdd5cd96c3cefe6e80eba5848d6fa",
   "sdk": 13,
   "game_build": "25480438",
@@ -132,7 +132,7 @@
     "legacy_rejection_failures_reproduced": 3,
     "game_access": false,
     "placement_and_source_refusals": 3,
-    "validation_sha256": "de292c69b45048830dc35ad8c4c398b7cf6fd89ebc3035ccdfab69e032e92808"
+    "validation_sha256": "a653ee15c18020bb2d44347f1633e5f8ad626b5db960d2e9c0b99601411e2fac"
   },
   "native_receiver_unwind": {
     "passed": true,
@@ -142,7 +142,7 @@
     "game_access": false,
     "placement_and_source_refusals": 3,
     "unique_instruction_positions": 101,
-    "validation_sha256": "b2b447207364d3c28f0ca9ac28be3e013f2b3f4834cb753f2fb22f1de0fc697a"
+    "validation_sha256": "b819ef9cec6fa245a0d8b973407172f7832c1c088e4aa8a1eb4b8e53840fbed4"
   },
   "native_property_images": {
     "passed": true,
@@ -151,7 +151,7 @@
     "api_contract_checks": 4,
     "owner_checks": 50,
     "game_access": false,
-    "validation_sha256": "c64afcabc5191c7037dab8e3dc06a24e359b42c2df4f9c3de5183a07247cd228"
+    "validation_sha256": "26baf297f5d9056519f98e42dffe7d616b8a2274d61ff7645b0b804c1aa4a834"
   },
   "native_getter": {
     "passed": true,
@@ -162,7 +162,7 @@
     "windows_unwind_contexts": 4548,
     "owner_checks": 25,
     "game_access": false,
-    "validation_sha256": "ffaa946af5b611650f0fb9d9471a76b9977e8d9d6410628e08326e3db0b3cca8"
+    "validation_sha256": "f53fae380283e10419b8f8f065ec315dffbc6aabe461a82523feaede0ab0790c"
   },
   "native_mover": {
     "passed": true,
@@ -173,7 +173,7 @@
     "windows_unwind_contexts": 8231,
     "owner_checks": 25,
     "game_access": false,
-    "validation_sha256": "f40e2e9352af389c9352651780113bd18a2d20705eefc98aa484b557bf1abeda"
+    "validation_sha256": "fb5945dfa95529aee9d495ba1eda1b19a2e48bf9c4e40f616ad5d43da2f64db6"
   },
   "native_insert": {
     "passed": true,
@@ -184,7 +184,7 @@
     "functional_runs": 515,
     "windows_unwind_unique_contexts": 660,
     "game_access": false,
-    "validation_sha256": "e543440f910848e627134900cc4aac2ddd416ea62a8edd0a2f4312ddc6859200"
+    "validation_sha256": "77b7135648a7e4d84944a2b7b40bc371c031a5650c63b0bcfda851ec7b3cff2c"
   },
   "native_remove": {
     "passed": true,
@@ -195,7 +195,82 @@
     "functional_runs": 2293,
     "windows_unwind_unique_contexts": 4670,
     "game_access": false,
-    "validation_sha256": "1ce7553d3bc1a27ed60005ca93d3891b8a1ca5f4fba4041c8b41e006cf918fea"
+    "validation_sha256": "6619192d48568e5a10e5b1b4e8caf7958613993ae7582700ae200c77ba9d7365"
+  },
+  "native_classify": {
+    "passed": true,
+    "accepted": 18,
+    "rejected": 86,
+    "owner_checks": 54,
+    "functional_tests": 7,
+    "functional_runs": 853,
+    "windows_unwind_unique_contexts": 20905,
+    "game_access": false,
+    "validation_sha256": "59c0e99f4cd3ecfe99721bab4eb55f32cb5b61f58c55c47be02cb02ebf9dccc0"
+  },
+  "native_classify_storage": {
+    "checks": 359,
+    "classify_images_emitted_by_native_mod_code": true,
+    "fixtures": {
+      "native-classify-fixture.bin": {
+        "bytes": 2284,
+        "sha256": "4a22004b77bb488ac09bd4c3250538f41892c113a6a1fe07c87af30b5368724e"
+      },
+      "native-classify-fixture.enter.bin": {
+        "bytes": 2284,
+        "sha256": "78c7a9ff921a8ed4b7dee1fd07a355b9539cf047a849bae88c234d325622eb55"
+      },
+      "native-classify-fixture.leave.bin": {
+        "bytes": 2284,
+        "sha256": "a3f1c90b66d39cbe0721d55c4d23e2fa159cf69662593b2019701e7b382ce35d"
+      }
+    },
+    "runs": [
+      {
+        "kind": "enter",
+        "instructions": 597,
+        "helper_calls": 8,
+        "peer_order": [
+          0,
+          1,
+          7,
+          3,
+          4,
+          5,
+          6,
+          2
+        ],
+        "counts": [
+          8,
+          8,
+          3
+        ]
+      },
+      {
+        "kind": "leave",
+        "instructions": 535,
+        "helper_calls": 12,
+        "peer_order": [
+          7,
+          1,
+          0,
+          3,
+          4,
+          5,
+          6,
+          2
+        ],
+        "counts": [
+          8,
+          8,
+          2
+        ]
+      }
+    ],
+    "temporary_helpers_are_contract_stubs": true,
+    "caller_flags_and_identity_are_synthetic": true,
+    "real_admission_executed": false,
+    "game_access": false
   },
   "native_property_gates": {
     "passed": true,
@@ -203,7 +278,7 @@
     "placement_refusals": 24,
     "windows_unwind_contexts": 7169,
     "game_access": false,
-    "validation_sha256": "6ad20f9ea006aed24576f71c5a6958443ec3d78f2f5afc9b7fb33162c7e5f761"
+    "validation_sha256": "d19ee2c64d3105fd78efc08bfbb3561d5e7275691ba2a28c6cabfec93ebeb880"
   },
   "property_group": {
     "checks": 355,
@@ -261,7 +336,7 @@
       "passed": true,
       "tests": 10
     },
-    "validation_sha256": "a2feb7b21df24a86108632073b116612d2efb83353b94ab28785ec2a3657aabc"
+    "validation_sha256": "76a26bed59f6aad61a6e1dac054bf9257be196e75a93acaa8008356c98c8917f"
   },
   "replayed_patch": "engine/0001-shared-player-roster.patch",
   "patch_sha256": "c9096a42fb2bc20e1c09d404b98f91f7f618a95bc9de4b5651a34b8f489b23ee",
@@ -282,7 +357,7 @@
     "tools/native_roster_sync.py": "687ef8cb3da157449812e9dee4f58a17ec1600acb96e2d413c5861018ee53ad9",
     "tools/native_producer_unwind.py": "4cb2da68acb304be8434f786573d6b440e7057ace4a45deb355a956c5ec48832",
     "tools/build_unwind_offline.py": "576e73961921f11899c05f717e7345fa26a77d616bbc80cb06256ac1dbe09a3e",
-    "tests/native_producer_unwind_test.c": "586e03e53712a4d49f01176add61aee221cd761d64cc8a12f7b1c902da61f8c2",
+    "tests/native_producer_unwind_test.c": "f495730314c4909305a83e0e07d2f345ab581e53a26eddb9247299db1f8c4260",
     "tools/native_receiver_unwind.py": "e501bf070a4f0266a5802a130a2ed24c052746c7a12db9b4eb9ab7f1efabf501",
     "tools/build_receiver_unwind_offline.py": "6d49282026472837ac692335b71fd34bf29b94e10e795829c7e9f02fa203d772",
     "tools/native_unwind_source.py": "8f2b51781ae06b3f6a72959218f7c60cdf4e7f6a13e59c56f7eff99140721e4f",
@@ -299,9 +374,9 @@
     "mod/src/ep_property_templates.h": "940fef65c777ad60deb8f2e92c79b6e8dc717dead972237363ec4344fe92d3f9",
     "mod/src/ep_property_code.cpp": "513600a118023e46c6b2c90720b37122a49d6f130dc1d6ffe24fb036d1fd16df",
     "mod/src/ep_property_code.h": "e8f23e9c66034911e21b95f27a38c95ca7d07e0ea4cc40f3be8eaff22adf2907",
-    "tests/property_image_dll.cpp": "58a61d65f34e74d8f2595170a5471fc9cf6f65d53f17ee83b73b5dc91c835747",
+    "tests/property_image_dll.cpp": "e3b6593d915e317b725d6d3096690d509466f12ea4ecad9db301d0802399f0af",
     "tools/generate_property_templates.py": "4d855e6eb2f0862f618db1b77df769c0b05a4232b66ebd59009abda399d18d26",
-    "tools/native_property_library.py": "cf95de25eb37ccce5a6d4111ed73937e02027c8881126c2c7d1aee5d2f3d77d2",
+    "tools/native_property_library.py": "9499969c43ff4a2d7b9dc6e209baa2e57adaab2ca89ec218658174e683330fd9",
     "tools/validate_property_images.py": "d89df719e5c70476f688d5a549b8bc01b33bf9d4cc9709068295ee5c47d97b03",
     "mod/src/ep_property_gate.h": "731c5e84adf165c58274385196d9ef49bcb1042f5e0e316bdd5d321907c93aef",
     "mod/src/ep_property_gate.cpp": "5b8aa7af60d0801be4247a9fa6e9ebb11b749981e6e795a1ae7a72ae95668778",
@@ -332,6 +407,15 @@
     "mod/src/ep_remove_image.h": "f96f183a2481703af5c93600b7cb701acab417021071b861cbf07e552804fc64",
     "mod/src/ep_remove_image.cpp": "e1fd51851094405298261902e2a297ff0ab8a2dc8180c88522084b309591140a",
     "mod/src/ep_remove_templates.h": "ea685def2101a4d68eb1828640b0d59ebcf0984ed0d1d540a23434082efde2bd",
+    "native-classify.lock.json": "41843b622018655e4d286036256ba8463ce6f638a15fd33f6cd1bf5ff87c8b03",
+    "tools/native_classify_image.py": "1bb3a1a3a65c97350e276520352725f21690202c5758c574d843364eb186aff5",
+    "tools/generate_classify_templates.py": "4d92f229b6a6b7b683b8812ebe2c87ba7274d0e62a1aece5fcb4ad061f1d4c22",
+    "tools/validate_classify_images.py": "7a99b9baddf125e96b27bca4f292096df06313b1ffebb473aca2978f00542f46",
+    "mod/src/ep_classify_image.h": "dd701a49a15f1cdf15d9df837960a0acf90d49b4abe9125ff968c9e7ac99e0ba",
+    "mod/src/ep_classify_image.cpp": "41260521458c574b9d7e34ecd43ab23f9308241bd4f7e508bfcd1f3b82c662f0",
+    "mod/src/ep_classify_templates.h": "17478c2b7d3dc48990f7665bb91524b11a446bd3d967583d457b1e853854d3fb",
+    "tools/native_classify_fixture.py": "5470ad426714ee8a1e6b240cbc0cdd06447939f6bccb59b5cd2be3b7a41eb016",
+    "tests/native_classify_roster_test.c": "94ffb552454122f40f13850bc0930cb3798d5da0fd85de905b9fa84ab25bbe44",
     "native-getter.lock.json": "2ec11c0046408233a263c86d91e84309b153458d6f3863b38a5894adb75b19d9",
     "tools/native_getter_image.py": "3b329d319d9edd550fa237a4c8c8c04bf17d8dfcd7e688b6291d1e31c1306afb",
     "tools/generate_getter_template.py": "63441e7e961c2f07d04027bf7cceef677b88c15215845a1b23f3504727a22b95",
@@ -345,7 +429,7 @@
     "mod/src/ep_native_roster.h": "30116c76318c97ae2954530ad161cc56345428216592abb6dfa5e4961c941f26",
     "mod/src/ep_roster_api.h": "75bfdbf3ca86fa172a2ace0c81aa1de7d74035665094c85257f1d323a09a5816",
     "native-storage.lock.json": "ec2a0cafe60941a36c09b87bd40f8098fc904120ce68b027f9de3edf5093161f",
-    "tools/build_engine_offline.py": "dd2920231164c9d0a4114d2d9a6b94494d39eda8e1911acd770c71254d386ff7",
+    "tools/build_engine_offline.py": "1d486494023347e03d667c924ad6cb8b1a45b38ff62973600a903e7d0a6ce9d8",
     "engine/patch.lock.json": "dc6ca3a022c8879eab5a3244989077125614b510b2575837961693d861dd981b",
     "upstream.lock.json": "1d9274d0040561997c6a3d3ba34279f5e8c83bd788e38cd2f97a99fb946ed0f3"
   },
@@ -356,31 +440,47 @@
     },
     "engine_roster_test.exe": {
       "bytes": 765952,
-      "sha256": "886ab13989680961077f56b2818e00228fa8ec360d191e6cc8b82291d1480855"
+      "sha256": "12b3c2d222740e47e239b2724e7f3b834d3e45b89758464b4a8305f5167fe6bf"
     },
     "native_roster_test.exe": {
       "bytes": 764928,
-      "sha256": "5d02356fc89c45ad2c95897dc1c64c73efb42332adbbf4ab54eb22ee01bd7d03"
+      "sha256": "0ec10275911c203738d978e67ae2b431fd41703f47525f6f238cfa3b406eb17d"
     },
     "session_code_test.exe": {
       "bytes": 773120,
-      "sha256": "05526588c6301f828e31e1ff17941f297c1d728afd883ca98138ef45cf1cbbde"
+      "sha256": "1454bb31d318a3903bf27ab53006deecabbda99fabd8ad3c9b2484f25491572b"
     },
     "session_code_owner_test.dll": {
       "bytes": 221696,
-      "sha256": "a9ef10941f092288a3f3ac6976eb8e6d5c8d08e3d56a24f756a86d55740baa94"
+      "sha256": "719c2d2bf37de89b3e4a2c14172e4a70e551a1c8c574f7517cbf858afd3d37c3"
     },
     "property_image_test.dll": {
-      "bytes": 249856,
-      "sha256": "aa284bd49cc05c2c6eb2598c4aa82853d6e474b2426bac439c63c698f944f7c2"
+      "bytes": 261120,
+      "sha256": "4d1882f3a1ad706ebe5312255951490ef244761246b193d09a2f1e6d5aa73ae0"
     },
     "property_group_test.dll": {
       "bytes": 235520,
-      "sha256": "82d0c5f19424fb9330c2b8d437fb49e096d1619a6914c6cea4484570cc6b0f59"
+      "sha256": "43d17d63334e8a7d004437ccaa870e20e2e9eddca436e5488184d5e01670b7f5"
     },
     "property_group_test.exe": {
       "bytes": 773632,
-      "sha256": "daa7a8fb0864b50ac33a9ddf65b40fb79ae1b1e23154ea980f19d1bb3a610a3b"
+      "sha256": "ef923b40511196c21f1f2dea263b917340c815caf89be5fb91c92e8e7ee1d740"
+    },
+    "native_classify_roster_test.exe": {
+      "bytes": 760832,
+      "sha256": "ddc06f6f766f4638ddb8e51128c07362094dc02671daf18238d2347568abacb4"
+    },
+    "native-classify-fixture.bin": {
+      "bytes": 2284,
+      "sha256": "4a22004b77bb488ac09bd4c3250538f41892c113a6a1fe07c87af30b5368724e"
+    },
+    "native-classify-fixture.enter.bin": {
+      "bytes": 2284,
+      "sha256": "78c7a9ff921a8ed4b7dee1fd07a355b9539cf047a849bae88c234d325622eb55"
+    },
+    "native-classify-fixture.leave.bin": {
+      "bytes": 2284,
+      "sha256": "a3f1c90b66d39cbe0721d55c4d23e2fa159cf69662593b2019701e7b382ce35d"
     },
     "native-roster-fixture.bin": {
       "bytes": 2284,
@@ -396,7 +496,7 @@
     },
     "native_roster_sync_test.exe": {
       "bytes": 761344,
-      "sha256": "f84b26291c4079ee2da7fd5e54a2da6a9991a650bf684de4c1c7794f5cb1f677"
+      "sha256": "a6a5ca74aeac503f24e7c2a98d019f943d52dcdbe1d5a3a64a988c4b3c7dbb46"
     },
     "native-sync-input.json": {
       "bytes": 4029,

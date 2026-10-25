@@ -51,7 +51,9 @@ avatar network ID、player entity ID、peer、network index 和 ordinal 各自�
 
 后续 [八端原生属性转发验证](NATIVE_SYNC.zh-CN.md) 已将独立属性样本改为由发送/接收候选执行产生，并经过 HellForge 后端。它保留本节三映像用例，同时新增八份不同布局；游戏完整封包、实体分派和真实接纳仍未执行。
 
-插入与重新插入现使用 [四入口 C++ 生成器](NATIVE_INSERT.zh-CN.md)，共用搬移也来自 C++；完整映像先与固定 Python 参考比对。删除本体暂时仍来自旧候选。存储契约和上述合成输入边界保持不变。
+插入与重新插入现使用 [四入口 C++ 生成器](NATIVE_INSERT.zh-CN.md)，共用搬移和[移除本体](NATIVE_REMOVE.zh-CN.md)也来自 C++；完整映像先与固定 Python 参考比对。存储契约和上述合成输入边界保持不变。
+
+[分类连接](NATIVE_CLASSIFY.zh-CN.md) 另有三份映像与 359 次断言：八笔记录按 P=2→3→2 执行 C++ enter/leave，实际读取器维持 peer、network index/ID、generation 和本地身份，重排不增加生成事件。T/D 始终为 8；分类不代表真实接纳或离队。临时资源辅助函数、caller flag 与身份票据仍由夹具提供，完整失败回滚及生产写入排除尚未实现。
 
 ## 重建与下一步
 

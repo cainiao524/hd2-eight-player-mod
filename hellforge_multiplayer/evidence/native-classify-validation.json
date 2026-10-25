@@ -1,0 +1,133 @@
+{
+  "schema": "hellforge_native_classify_validation_v1",
+  "verified_at_utc": "2026-10-25T14:39:29.318253+00:00",
+  "passed": true,
+  "source_replay": {
+    "passed": true,
+    "functions": {
+      "enter": {
+        "fragments": 3,
+        "flags": [
+          0,
+          4,
+          4
+        ],
+        "chained_fragments": 2,
+        "language_handlers": false
+      },
+      "leave": {
+        "fragments": 3,
+        "flags": [
+          0,
+          4,
+          4
+        ],
+        "chained_fragments": 2,
+        "language_handlers": false
+      }
+    },
+    "metadata_bytes_replayed": 192,
+    "header_exception_directory_captured": false,
+    "runtime_table_verified": false,
+    "game_access": false
+  },
+  "variants": {
+    "enter": {
+      "image_bytes": 2296,
+      "code_bytes": 2222,
+      "unwind_offset": 2244,
+      "table_offset": 2272,
+      "fixups": 60
+    },
+    "leave": {
+      "image_bytes": 2768,
+      "code_bytes": 2693,
+      "unwind_offset": 2716,
+      "table_offset": 2744,
+      "fixups": 78
+    }
+  },
+  "variant_checks": {
+    "enter": {
+      "accepted": 9,
+      "rejected": 43,
+      "owner_checks": 27,
+      "executed_instruction_contexts": 129883,
+      "windows_unwind_unique_contexts": 8904,
+      "reintroduced_stack_regressions_rejected": 2
+    },
+    "leave": {
+      "accepted": 9,
+      "rejected": 43,
+      "owner_checks": 27,
+      "executed_instruction_contexts": 139040,
+      "windows_unwind_unique_contexts": 12001,
+      "reintroduced_stack_regressions_rejected": 2
+    }
+  },
+  "api_contract_checks": 7,
+  "source_guard_checks": 4,
+  "functional_tests": 7,
+  "functional_runs": 853,
+  "original_functional_runs": 70,
+  "functional_run_types": {
+    "enter": 392,
+    "leave": 391,
+    "original_enter": 35,
+    "original_leave": 35
+  },
+  "source_sha256": {
+    "native-classify.lock.json": "41843b622018655e4d286036256ba8463ce6f638a15fd33f6cd1bf5ff87c8b03",
+    "tools/native_classify_image.py": "1bb3a1a3a65c97350e276520352725f21690202c5758c574d843364eb186aff5",
+    "tools/generate_classify_templates.py": "4d92f229b6a6b7b683b8812ebe2c87ba7274d0e62a1aece5fcb4ad061f1d4c22",
+    "tools/validate_classify_images.py": "7a99b9baddf125e96b27bca4f292096df06313b1ffebb473aca2978f00542f46",
+    "tools/native_unwind_source.py": "8f2b51781ae06b3f6a72959218f7c60cdf4e7f6a13e59c56f7eff99140721e4f",
+    "tools/verify_native_unwind_source.py": "af2afff2fdfa8178a80af08fc21358df4e6090a6342922e03fa6c9a407661a8d",
+    "tools/native_property_library.py": "9499969c43ff4a2d7b9dc6e209baa2e57adaab2ca89ec218658174e683330fd9",
+    "native-remove.lock.json": "0d5142914bfdafe1a9e55ef4c4d5afd86287851b2d2dca2869ae1ca757045d02",
+    "tools/native_remove_image.py": "fa46e06bb1d63d2000967252606023dfdda9bae8ef4d856776f75ac82e436d38",
+    "tools/native_insert_image.py": "9db16bc5501b9d6ad6a94147a77a0b90cd49a118fa3156692a8c827c41fdcfd9",
+    "tools/native_mover_image.py": "7ea40986a77b5e36e132b5e5048e50858ceaed8c3e639321adfbd91a1e9ba105",
+    "mod/src/ep_classify_image.h": "dd701a49a15f1cdf15d9df837960a0acf90d49b4abe9125ff968c9e7ac99e0ba",
+    "mod/src/ep_classify_image.cpp": "41260521458c574b9d7e34ecd43ab23f9308241bd4f7e508bfcd1f3b82c662f0",
+    "mod/src/ep_classify_templates.h": "17478c2b7d3dc48990f7665bb91524b11a446bd3d967583d457b1e853854d3fb",
+    "mod/src/ep_session_code.h": "612c7071e99846967bf960ba63279511133fcfc85b63a967d5bfa79f66e222dc",
+    "mod/src/ep_session_code.cpp": "fb52d6fb559ca86a0f74b30ff210fa521e2715633648adcaa1792e1104f1c301",
+    "tests/property_image_dll.cpp": "e3b6593d915e317b725d6d3096690d509466f12ea4ecad9db301d0802399f0af",
+    "tests/native_producer_unwind_test.c": "f495730314c4909305a83e0e07d2f345ab581e53a26eddb9247299db1f8c4260"
+  },
+  "legacy_source_sha256": {
+    "eight_player_candidate_20260927/tests/test_native_roster_classify.py": "50ac149e11274994f4f8fa6e766e5937ff1317130eb1a16718882da7859a8593"
+  },
+  "artifacts": {
+    "property_image_test.dll": {
+      "bytes": 261120,
+      "sha256": "4d1882f3a1ad706ebe5312255951490ef244761246b193d09a2f1e6d5aa73ae0"
+    },
+    "native_classify_unwind_test.exe": {
+      "bytes": 224768,
+      "sha256": "892e713df8a14163fd45442941111dbb4e313f3d9945283f720351f76f700a05"
+    },
+    "classify-enter-unwind-contexts.bin": {
+      "bytes": 2961572,
+      "sha256": "c50228641fde5c782ee7b5489e6f601fba39c6e5dd668c6b0968d061f5513f2c"
+    },
+    "classify-leave-unwind-contexts.bin": {
+      "bytes": 3990720,
+      "sha256": "3e8bd53337aed1b347043592dc913260401210bd986fc95e8f6c0e4f449dc002"
+    }
+  },
+  "game_access": false,
+  "temporary_helpers_are_contract_stubs": true,
+  "native_execution_of_game_bodies": false,
+  "common_writer_activation": false,
+  "production_quiescence_provider_bound": false,
+  "runtime_verified": false,
+  "multiplayer_verified": false,
+  "accepted": 18,
+  "rejected": 86,
+  "owner_checks": 54,
+  "executed_instruction_contexts": 268923,
+  "windows_unwind_unique_contexts": 20905,
+  "reintroduced_stack_regressions_rejected": 4
+}

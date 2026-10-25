@@ -1,0 +1,74 @@
+{
+  "schema": "hellforge_captured_classify_unwind_v1",
+  "build": 25480438,
+  "capture_identity_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "capture_source_sha256": {
+    "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+  },
+  "capture_reader_path": "research_handoff_20260927/indirect/inspect_capture.py",
+  "capture_reader_sha256": "108b1543003f9adb56e72a59eb50f4af4f56f68a355d3879afa35220b811e63a",
+  "captured_table": {
+    "rva": "0x37d8000",
+    "size": 1832304,
+    "entries": 152692
+  },
+  "header_directory": {
+    "rva": "0x3fd340c",
+    "size": 1832316,
+    "fully_captured": false
+  },
+  "runtime_table_verified": false,
+  "functions": {
+    "enter": {
+      "entry": "0x60cf50",
+      "end_exclusive": "0x60d2f6",
+      "code_sha256": "09e5e20c35955b4f563f1e971646a8c32c67ff6afdc76e4c1aa796270a6ff33c",
+      "evidence_path": "five_player_feasibility_20260927/roster_classify_native_evidence.json",
+      "evidence_sha256": "f20165dad6823edc40fbcdf0434123139f1c80d9222a2b20d3f4c067768e9e33",
+      "fragments": [
+        {
+          "table_entry_rva": "0x380af1c",
+          "runtime_function_hex": "50cf600044d06000cc574202",
+          "unwind_hex": "01180a0018640f0018540e0018340d00187214f012e01070"
+        },
+        {
+          "table_entry_rva": "0x380af28",
+          "runtime_function_hex": "44d0600096d26000e4574202",
+          "unwind_hex": "2105020005c40c0050cf600044d06000cc574202"
+        },
+        {
+          "table_entry_rva": "0x380af34",
+          "runtime_function_hex": "96d26000f6d26000f8574202",
+          "unwind_hex": "2100000050cf600044d06000cc574202"
+        }
+      ]
+    },
+    "leave": {
+      "entry": "0x60d300",
+      "end_exclusive": "0x60d760",
+      "code_sha256": "973e04a016a90f53ba131da1590d9e647b7c9ad8ebec35018ae173d72a22cf6a",
+      "evidence_path": "five_player_feasibility_20260927/roster_classify_native_evidence.json",
+      "evidence_sha256": "f20165dad6823edc40fbcdf0434123139f1c80d9222a2b20d3f4c067768e9e33",
+      "fragments": [
+        {
+          "table_entry_rva": "0x380af40",
+          "runtime_function_hex": "00d360009ad3600008584202",
+          "unwind_hex": "0112080012540f0012340e0012720ef00c700b60"
+        },
+        {
+          "table_entry_rva": "0x380af4c",
+          "runtime_function_hex": "9ad360000bd760001c584202",
+          "unwind_hex": "211c04001ce40d0005c40c0000d360009ad3600008584202"
+        },
+        {
+          "table_entry_rva": "0x380af58",
+          "runtime_function_hex": "0bd7600060d7600034584202",
+          "unwind_hex": "2100000000d360009ad3600008584202"
+        }
+      ]
+    }
+  },
+  "fixture_path": "eight_player_candidate_20260927/tests/test_native_roster_classify.py",
+  "fixture_sha256": "50ac149e11274994f4f8fa6e766e5937ff1317130eb1a16718882da7859a8593"
+}

@@ -5,6 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifndef EP_CONTEXT_LIMIT
+#define EP_CONTEXT_LIMIT 10000u
+#endif
 
 static void take(FILE* f, void* out, size_t n) {
     if (fread(out, 1, n, f) != n) { fputs("truncated fixture\n", stderr); exit(2); }
@@ -29,7 +32,7 @@ int main(int argc, char** argv) {
     check(variants == 2, "expected legacy and corrected variants");
     for (uint32_t v=0; v<variants; ++v) {
         uint32_t size=u32(f), code_size=u32(f), table_offset=u32(f), count=u32(f);
-        check(size<4096 && code_size<size && table_offset<size && (size-table_offset)%sizeof(RUNTIME_FUNCTION)==0 && count<10000, "invalid image bounds");
+        check(size<4096 && code_size<size && table_offset<size && (size-table_offset)%sizeof(RUNTIME_FUNCTION)==0 && count<EP_CONTEXT_LIMIT, "invalid image bounds");
         uint32_t functions=(size-table_offset)/sizeof(RUNTIME_FUNCTION);
         check(functions==1 || functions==2,"invalid function count");
         uint8_t* image=VirtualAlloc(NULL,size,MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE);
@@ -67,6 +70,9 @@ int main(int argc, char** argv) {
                 fprintf(stderr,"variant=%u case=%u pc=0x%x expected_failure=%u rsp_delta=%lld rip=%llx expected=%llx regs=%d\n",
                         v,k,pc,should_fail,(long long)(c.Rsp-(DWORD64)entry),(unsigned long long)c.Rip,
                         (unsigned long long)return_pc,same(&c,expected));
+                const uint64_t actual[8]={c.Rbx,c.Rbp,c.Rsi,c.Rdi,c.R12,c.R13,c.R14,c.R15};
+                for(unsigned j=0;j<8;j++) if(actual[j]!=expected[j])
+                    fprintf(stderr,"nonvolatile[%u]=%llx expected=%llx\n",j,(unsigned long long)actual[j],(unsigned long long)expected[j]);
                 return 4;
             }
             if (should_fail) expected_failures++;

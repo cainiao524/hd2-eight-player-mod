@@ -102,7 +102,7 @@ def main():
     property_dll=build/'property_image_test.dll'
     run([zig,'c++','-std=c++17','-target','x86_64-windows-gnu','-shared','-O1','-Wall','-Werror','-Wno-unused-parameter',
          '-I',source/'native/mod-sdk',PROJECT/'mod/src/ep_property_image.cpp',PROJECT/'mod/src/ep_property_code.cpp',PROJECT/'mod/src/ep_property_gate.cpp',PROJECT/'mod/src/ep_getter_image.cpp',PROJECT/'mod/src/ep_mover_image.cpp',PROJECT/'mod/src/ep_insert_image.cpp',
-         PROJECT/'mod/src/ep_remove_image.cpp',PROJECT/'tests/property_image_dll.cpp','-o',property_dll])
+         PROJECT/'mod/src/ep_remove_image.cpp',PROJECT/'mod/src/ep_classify_image.cpp',PROJECT/'tests/property_image_dll.cpp','-o',property_dll])
     property_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_property_images.py','--library',property_dll]))
     property_receipt=PROJECT/'evidence/property-image-validation.json'
     getter_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_getter_image.py','--library',property_dll,'--zig',zig]))
@@ -113,6 +113,15 @@ def main():
     insert_receipt=PROJECT/'evidence/native-insert-validation.json'
     remove_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_remove_images.py','--library',property_dll,'--zig',zig]))
     remove_receipt=PROJECT/'evidence/native-remove-validation.json'
+    classify_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_classify_images.py','--library',property_dll,'--zig',zig]))
+    classify_receipt=PROJECT/'evidence/native-classify-validation.json'
+    classify_fixture=build/'native-classify-fixture.bin'
+    classify_fixture_receipt=json.loads(run([sys.executable,'-B',PROJECT/'tools/native_classify_fixture.py','--output',classify_fixture,'--property-library',property_dll]))
+    classify_test=build/'native_classify_roster_test.exe'
+    run([*common,'-O1',PROJECT/'tests/native_classify_roster_test.c',*deps,'-o',classify_test])
+    classify_consumer=run([classify_test,classify_fixture,classify_fixture.with_suffix('.enter.bin'),classify_fixture.with_suffix('.leave.bin')]).decode('utf-8').strip()
+    classify_match=re.fullmatch(r'native classification source: (\d+) checks passed; emitted classification storage to real loader consumers',classify_consumer)
+    if not classify_match:raise RuntimeError('Missing classification consumer result: '+classify_consumer)
     fixture = build / 'native-roster-fixture.bin'
     fixture_receipt = json.loads(run([sys.executable, '-B', PROJECT / 'tools/native_roster_fixture.py', '--output', fixture, '--property-library', property_dll]))
     native_test = build / 'native_roster_test.exe'
@@ -175,6 +184,8 @@ def main():
         'native_mover':{**mover_output,'validation_sha256':digest(mover_receipt)},
         'native_insert':{**insert_output,'validation_sha256':digest(insert_receipt)},
         'native_remove':{**remove_output,'validation_sha256':digest(remove_receipt)},
+        'native_classify':{**classify_output,'validation_sha256':digest(classify_receipt)},
+        'native_classify_storage':{'checks':int(classify_match[1]),**classify_fixture_receipt},
         'native_property_gates':{**gate_output,'validation_sha256':digest(gate_receipt)},
         'property_group':{'checks':int(group_match[1]),'entries':['producer','receiver','entity_network_getter'],'shared_storage_binding':True,'actual_hellforge_chains':True,
                          'partial_publication_failure_forwards':True,'cooperative_quiescence_tested':True,
@@ -208,18 +219,21 @@ def main():
             'mod/src/ep_insert_image.h','mod/src/ep_insert_image.cpp','mod/src/ep_insert_templates.h',
             'native-remove.lock.json','tools/native_remove_image.py','tools/generate_remove_templates.py','tools/validate_remove_images.py',
             'mod/src/ep_remove_image.h','mod/src/ep_remove_image.cpp','mod/src/ep_remove_templates.h',
+            'native-classify.lock.json','tools/native_classify_image.py','tools/generate_classify_templates.py','tools/validate_classify_images.py',
+            'mod/src/ep_classify_image.h','mod/src/ep_classify_image.cpp','mod/src/ep_classify_templates.h',
+            'tools/native_classify_fixture.py','tests/native_classify_roster_test.c',
             'native-getter.lock.json','tools/native_getter_image.py','tools/generate_getter_template.py','tools/validate_getter_image.py',
             'mod/src/ep_getter_image.h','mod/src/ep_getter_image.cpp','mod/src/ep_getter_template.h',
             'tests/backend/Program.cs', 'tests/backend/Backend.csproj',
             'mod/src/ep_native_roster.cpp', 'mod/src/ep_native_roster.h', 'mod/src/ep_roster_api.h',
             'native-storage.lock.json', 'tools/build_engine_offline.py', 'engine/patch.lock.json', 'upstream.lock.json')},
-        'artifacts': {p.name: {'bytes': p.stat().st_size, 'sha256': digest(p)} for p in (dll, test, native_test, code_test, code_dll, property_dll, group_dll, group_test, fixture, fixture.with_suffix('.removed.bin'), fixture.with_suffix('.rejoined.bin'), sync_test, sync_input, sync_routed, sync_received, *sync_images)},
+        'artifacts': {p.name: {'bytes': p.stat().st_size, 'sha256': digest(p)} for p in (dll, test, native_test, code_test, code_dll, property_dll, group_dll, group_test, classify_test, classify_fixture, classify_fixture.with_suffix('.enter.bin'), classify_fixture.with_suffix('.leave.bin'), fixture, fixture.with_suffix('.removed.bin'), fixture.with_suffix('.rejoined.bin'), sync_test, sync_input, sync_routed, sync_received, *sync_images)},
         'game_started': False, 'game_checked': False, 'game_read': False, 'installed': False,
         'native_game_storage_expanded': False, 'production_provider_bound': False,
         'runtime_verified': False, 'multiplayer_verified': False, 'public_release_allowed': False,
     }
     (PROJECT / 'evidence/engine-roster-validation.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
-    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'native_storage_checks': receipt['native_storage_checks'], 'session_code_checks': int(code_match[1]), 'property_images':property_output,'property_gates':gate_output,'property_group_checks':int(group_match[1]),'getter':getter_output,'mover':mover_output,'insert':insert_output,'remove':remove_output,'native_getter_queries':sync_receipt['native_getter_queries'], 'sync_consumer_checks': sync_receipt['consumer_checks'], 'native_receivers': sync_receipt['native_receivers'], 'patch_replayed': True, 'game_access': False}))
+    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'native_storage_checks': receipt['native_storage_checks'], 'session_code_checks': int(code_match[1]), 'property_images':property_output,'property_gates':gate_output,'property_group_checks':int(group_match[1]),'getter':getter_output,'mover':mover_output,'insert':insert_output,'remove':remove_output,'classify':classify_output,'classify_storage_checks':int(classify_match[1]),'native_getter_queries':sync_receipt['native_getter_queries'], 'sync_consumer_checks': sync_receipt['consumer_checks'], 'native_receivers': sync_receipt['native_receivers'], 'patch_replayed': True, 'game_access': False}))
 
 
 if __name__ == '__main__':

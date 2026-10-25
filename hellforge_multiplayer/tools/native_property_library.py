@@ -20,6 +20,9 @@ class InsertAddresses(c.Structure):
 class RemoveImage(c.Structure):
     _fields_=[(name,c.c_uint32) for name in ('bytes','code_bytes','unwind_offset','table_offset')]+[('data',c.c_ubyte*776)]
 
+class ClassifyImage(c.Structure):
+    _fields_=[(name,c.c_uint32) for name in ('bytes','code_bytes','unwind_offset','table_offset')]+[('data',c.c_ubyte*2768)]
+
 class Library:
     def __init__(self,path):
         self.path=Path(path).resolve(strict=True)
@@ -42,8 +45,20 @@ class Library:
         self.remove.argtypes=[c.c_uint32,c.POINTER(InsertAddresses),c.POINTER(RemoveImage)];self.remove.restype=c.c_int
         self.remove_prepare=self.dll.remove_image_test_prepare
         self.remove_prepare.argtypes=[c.c_uint32,c.POINTER(InsertAddresses),c.POINTER(RemoveImage),c.POINTER(c.c_uint32)];self.remove_prepare.restype=c.c_int
+        self.classify=self.dll.classify_image_test_build
+        self.classify.argtypes=[c.c_uint32,c.POINTER(GetterAddresses),c.POINTER(ClassifyImage)];self.classify.restype=c.c_int
+        self.classify_prepare=self.dll.classify_image_test_prepare
+        self.classify_prepare.argtypes=[c.c_uint32,c.POINTER(GetterAddresses),c.POINTER(ClassifyImage),c.POINTER(c.c_uint32)];self.classify_prepare.restype=c.c_int
         self.getter_gate=self.dll.getter_image_test_gate
         self.getter_gate.argtypes=[c.POINTER(GetterAddresses),c.c_uint64,c.c_uint64,c.POINTER(GateImage)];self.getter_gate.restype=c.c_int
+
+    def classify_candidate(self,addresses,reference):
+        kinds=('enter','leave');out=ClassifyImage()
+        result=self.classify(kinds.index(addresses['kind'])+1,GetterAddresses(**{k:v for k,v in addresses.items() if k!='kind'}),out)
+        if result:raise RuntimeError('Native classification generation failed: '+str(result))
+        if bytes(out.data[:out.bytes])!=reference['image'] or (out.code_bytes,out.unwind_offset,out.table_offset)!=(reference['candidate']['size_bytes'],reference['unwind_offset'],reference['table_offset']):
+            raise RuntimeError('C++ classification image differs from pinned reference')
+        return {**reference['candidate'],'code_hex':bytes(out.data[:out.code_bytes]).hex()}
 
     def remove_candidate(self,addresses,reference):
         kinds=('legacy','registered');out=RemoveImage()

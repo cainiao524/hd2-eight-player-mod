@@ -71,6 +71,7 @@ def main() -> None:
     mover_template=json.loads(run([sys.executable,'-B',PROJECT/'tools/generate_mover_template.py']))
     insert_templates=json.loads(run([sys.executable,'-B',PROJECT/'tools/generate_insert_templates.py']))
     remove_templates=json.loads(run([sys.executable,'-B',PROJECT/'tools/generate_remove_templates.py']))
+    classify_templates=json.loads(run([sys.executable,'-B',PROJECT/'tools/generate_classify_templates.py']))
     dll = build / "ep_hellforge.dll"
     test = build / "adapter_test.exe"
     common = [zig, "c++", "-std=c++17", "-target", "x86_64-windows-gnu", "-O2", "-Wall", "-Werror",
@@ -104,10 +105,11 @@ def main() -> None:
         "native_mover_template_sha256":mover_template['header_sha256'],
         "native_insert_template_sha256":insert_templates['header_sha256'],
         "native_remove_template_sha256":remove_templates['header_sha256'],
+        "native_classify_template_sha256":classify_templates['header_sha256'],
         "source_sha256": {p.relative_to(PROJECT).as_posix(): digest(p) for p in files},
         "test_source_sha256": {p.relative_to(PROJECT).as_posix(): digest(p) for p in [
             PROJECT / "tests/adapter_test.cpp", PROJECT / "tests/backend/Program.cs", PROJECT / "tests/backend/Backend.csproj",
-            Path(__file__).resolve(), PROJECT / "upstream.lock.json", PROJECT / 'tools/generate_property_templates.py',PROJECT/'tools/generate_getter_template.py',PROJECT/'tools/generate_mover_template.py',PROJECT/'tools/generate_insert_templates.py',PROJECT/'tools/generate_remove_templates.py']},
+            Path(__file__).resolve(), PROJECT / "upstream.lock.json", PROJECT / 'tools/generate_property_templates.py',PROJECT/'tools/generate_getter_template.py',PROJECT/'tools/generate_mover_template.py',PROJECT/'tools/generate_insert_templates.py',PROJECT/'tools/generate_remove_templates.py',PROJECT/'tools/generate_classify_templates.py']},
         "artifacts": {p.name: {"bytes": p.stat().st_size, "sha256": digest(p)} for p in [dll, test, package]},
         "game_started": False, "game_checked": False, "game_read": False, "installed": False,
         "runtime_verified": False, "multiplayer_verified": False, "public_release_allowed": False,

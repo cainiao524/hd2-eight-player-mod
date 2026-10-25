@@ -199,3 +199,50 @@ extern "C" __declspec(dllexport) int remove_image_test_prepare(uint32_t kind,EpR
     CHECK(!memcmp(&info,&cleared,sizeof(info)));CHECK(!hook_calls);return 0;
 #undef CHECK
 }
+
+#include "../mod/src/ep_classify_image.h"
+extern "C" __declspec(dllexport) int classify_image_test_build(uint32_t kind,const EpClassifyAddresses* a,EpClassifyImage* out) { return ep_classify_image_build(kind,a,out); }
+extern "C" __declspec(dllexport) int classify_image_test_prepare(uint32_t kind,EpClassifyAddresses* a,EpClassifyImage* image,uint32_t* checks)
+{
+    HfApi api={};int owner_marker=0;HfMod* owner=(HfMod*)&owner_marker;
+    EpSessionCodeInfo info={},cleared={},stale={};DWORD64 unwind_base=0;MEMORY_BASIC_INFORMATION mbi={};
+    void* hint=VirtualAlloc(NULL,65536,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE);*checks=0;
+    if (!hint) return -1;
+    *a={(uint64_t)hint-0x10000000,(uint64_t)hint,(uint64_t)hint+0x10000000,
+        (uint64_t)hint+0x20000000,(uint64_t)hint+0x10000};
+    if (!VirtualFree(hint,0,MEM_RELEASE)) return -2;
+    const uint64_t desired=kind==EP_CLASSIFY_ENTER ? (uint64_t)hint : 0;a->code_address=desired;
+    api.version=13;api.size=sizeof(api);api.build_id=Build;api.hook_ex=Hook;
+#define CHECK(x) do { ++*checks; if (!(x)) { fail_free=fail_protect=false; if (info.handle) ep_session_code_discard(owner,info.handle); return __LINE__; } } while(0)
+    CHECK(ep_classify_code_prepare(&api,owner,kind,a,&info)==EP_PROPERTY_OK);
+    CHECK((!desired || info.base==desired) && info.state==EP_CODE_READY && info.registered && !info.pinned);
+    a->code_address=info.base;
+    CHECK(ep_classify_image_build(kind,a,image)==EP_PROPERTY_OK);
+    CHECK(image->bytes==info.bytes && !memcmp((void*)info.base,image->data,image->bytes));
+    CHECK(RtlLookupFunctionEntry(info.base,&unwind_base,NULL)==(PRUNTIME_FUNCTION)(info.base+image->table_offset));
+    CHECK(unwind_base==info.base);
+    CHECK(RtlLookupFunctionEntry(info.base+image->code_bytes-1,&unwind_base,NULL)==(PRUNTIME_FUNCTION)(info.base+image->table_offset)+1);
+    CHECK(unwind_base==info.base);
+    CHECK(VirtualQuery((void*)info.base,&mbi,sizeof(mbi))==sizeof(mbi) && mbi.Protect==PAGE_EXECUTE_READ);
+    CHECK(!hook_calls);
+    CHECK(ep_session_code_discard(owner,info.handle));
+    CHECK(!ep_session_code_info(owner,info.handle,&stale));
+    CHECK(RtlLookupFunctionEntry(info.base,&unwind_base,NULL)==NULL);
+    CHECK(VirtualQuery((void*)info.base,&mbi,sizeof(mbi))==sizeof(mbi) && mbi.State==MEM_FREE);
+    info={};a->storage_address++;
+    CHECK(ep_classify_code_prepare(&api,owner,kind,a,&info)==EP_PROPERTY_POINTER);
+    CHECK(!memcmp(&info,&cleared,sizeof(info)));
+    CHECK(VirtualQuery((void*)a->code_address,&mbi,sizeof(mbi))==sizeof(mbi) && mbi.State==MEM_FREE);
+    fail_free=true;
+    CHECK(ep_classify_code_prepare(&api,owner,kind,a,&info)==EP_PROPERTY_CLEANUP);
+    CHECK(info.handle && info.state==EP_CODE_FAILED && !info.pinned && !info.registered);
+    CHECK(ep_session_code_info(owner,info.handle,&stale) && stale.handle==info.handle);
+    fail_free=false;CHECK(ep_session_code_discard(owner,info.handle));info={};a->storage_address--;
+    fail_protect=true;
+    CHECK(ep_classify_code_prepare(&api,owner,kind,a,&info)==EP_PROPERTY_SEAL);
+    CHECK(!memcmp(&info,&cleared,sizeof(info)));fail_protect=false;
+    CHECK(VirtualQuery((void*)a->code_address,&mbi,sizeof(mbi))==sizeof(mbi) && mbi.State==MEM_FREE);
+    CHECK(ep_classify_code_prepare(&api,owner,0,a,&info)==EP_PROPERTY_ARGUMENT);
+    CHECK(!memcmp(&info,&cleared,sizeof(info)));CHECK(!hook_calls);return 0;
+#undef CHECK
+}

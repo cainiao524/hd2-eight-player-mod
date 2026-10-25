@@ -55,6 +55,8 @@ py -3.12 -B hellforge_multiplayer/tools/build_engine_offline.py `
 
 同一入口还构建 [两个移除入口](../NATIVE_REMOVE.zh-CN.md)：2,293 次功能执行、4,670 组不同 Windows 回溯状态、54 项准备生命周期检查和 44 bytes 原元数据重放。四个旧候选负对照复现拒绝/额外搬移的栈契约问题。插入、移除和搬移的 C++ 输出共同进入三映像存储夹具；`native-remove-validation.json` 交叉固定于总收据。八端同步测试尚未包含离队协议，生产移除/实体清理没有接入。
 
+同一入口另构建 [两个分类入口](../NATIVE_CLASSIFY.zh-CN.md)：853 次功能执行、20,905 组不同 Windows 回溯状态、54 项准备检查和 192 bytes 原元数据重放。`native-classify-validation.json` 固定于总收据；`native_classify_roster_test.exe` 使用三个新存储映像完成 359 次实际读取断言，保留身份、网络索引和生成事件数。临时资源辅助函数、caller flag 及身份票据仍为合成契约，生产分类及分配失败回滚未接入。
+
 完整构建还自动运行 [原生发送与接收候选的 Windows 栈回溯验证](../NATIVE_UNWIND.zh-CN.md)：发送端 1,308 个、接收端 1,313 个指令上下文通过，对照组分别复现 3 次和 7 次旧拒绝跳转错误。测试仅注册自有不可执行数据映像的函数表，用完后撤销；没有加载或运行游戏。独立收据为 `evidence/native-producer-unwind-validation.json` 与 `evidence/native-receiver-unwind-validation.json`，两者 SHA-256 同时写入总引擎收据。
 
 构建入口先执行 10 项原异常资料来源检查测试，并从仓库已有捕获重放五条函数表记录和相应回溯资料（元数据合计 168 bytes）。每个候选生成器也强制检查来源指纹和无语言处理器条件。来源收据为 `evidence/native-unwind-source-validation.json`，总引擎收据保存其指纹。保存的 PE 头指向另一份未完整捕获的异常目录，故此步骤不代表运行期有效异常表已确认。
