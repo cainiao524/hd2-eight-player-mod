@@ -109,10 +109,19 @@ def main():
         raise RuntimeError('Missing session code ownership result: ' + code_output)
     property_dll=build/'property_image_test.dll'
     run([zig,'c++','-std=c++17','-target','x86_64-windows-gnu','-shared','-O1','-Wall','-Werror','-Wno-unused-parameter',
-         '-I',source/'native/mod-sdk',PROJECT/'mod/src/ep_property_image.cpp',PROJECT/'mod/src/ep_property_code.cpp',
+         '-I',source/'native/mod-sdk',PROJECT/'mod/src/ep_property_image.cpp',PROJECT/'mod/src/ep_property_code.cpp',PROJECT/'mod/src/ep_property_gate.cpp',
          PROJECT/'tests/property_image_dll.cpp','-o',property_dll])
     property_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_property_images.py','--library',property_dll]))
     property_receipt=PROJECT/'evidence/property-image-validation.json'
+    gate_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_property_gates.py','--library',property_dll]))
+    gate_receipt=PROJECT/'evidence/property-gate-validation.json'
+    group_dll,group_test=build/'property_group_test.dll',build/'property_group_test.exe'
+    run([zig,'c++','-std=c++17','-target','x86_64-windows-gnu','-shared','-O1','-Wall','-Werror','-Wno-unused-parameter',
+         '-I',source/'native/mod-sdk',PROJECT/'mod/src/ep_property_image.cpp',PROJECT/'tests/property_group_dll.cpp','-o',group_dll])
+    run([*common,'-O1',PROJECT/'tests/property_group_test.c',*deps,'-o',group_test])
+    group_output=run([group_test,group_dll]).decode('utf-8').strip()
+    group_match=re.fullmatch(r'property group: (\d+) checks passed; real HellForge chains, synthetic bodies only',group_output)
+    if not group_match: raise RuntimeError('Missing property group result: '+group_output)
     sync_input, sync_routed, sync_received = (build / n for n in ('native-sync-input.json', 'native-sync-routed.json', 'native-sync-received.json'))
     sync_script = PROJECT / 'tools/native_roster_sync.py'
     run([sys.executable, '-B', sync_script, 'produce', '--output', sync_input, '--property-library', property_dll])
@@ -150,6 +159,11 @@ def main():
         'native_producer_unwind': {**unwind_output, 'validation_sha256': digest(unwind_receipt)},
         'native_receiver_unwind': {**receiver_unwind_output, 'validation_sha256': digest(receiver_unwind_receipt)},
         'native_property_images': {**property_output,'validation_sha256':digest(property_receipt)},
+        'native_property_gates':{**gate_output,'validation_sha256':digest(gate_receipt)},
+        'property_group':{'checks':int(group_match[1]),'actual_hellforge_chains':True,
+                         'partial_publication_failure_forwards':True,'cooperative_quiescence_tested':True,
+                         'production_quiescence_provider_bound':False,'active_data_rollback_implemented':False,
+                         'native_execution_of_game_bodies':False,'game_access':False},
         'session_code_owner': {'checks': int(code_match[1]), 'actual_hellforge_hook_chain': True,
                                'synthetic_chain_links': 5, 'module_pin_survived_free_library': True,
                                'game_candidate_executed_natively': False,
@@ -170,16 +184,18 @@ def main():
             'mod/src/ep_property_image.cpp','mod/src/ep_property_image.h','mod/src/ep_property_templates.h',
             'mod/src/ep_property_code.cpp','mod/src/ep_property_code.h','tests/property_image_dll.cpp',
             'tools/generate_property_templates.py','tools/native_property_library.py','tools/validate_property_images.py',
+            'mod/src/ep_property_gate.h','mod/src/ep_property_gate.cpp','mod/src/ep_property_group.h','mod/src/ep_property_group.cpp',
+            'tests/property_group_dll.h','tests/property_group_dll.cpp','tests/property_group_test.c','tools/validate_property_gates.py',
             'tests/backend/Program.cs', 'tests/backend/Backend.csproj',
             'mod/src/ep_native_roster.cpp', 'mod/src/ep_native_roster.h', 'mod/src/ep_roster_api.h',
             'native-storage.lock.json', 'tools/build_engine_offline.py', 'engine/patch.lock.json', 'upstream.lock.json')},
-        'artifacts': {p.name: {'bytes': p.stat().st_size, 'sha256': digest(p)} for p in (dll, test, native_test, code_test, code_dll, property_dll, fixture, fixture.with_suffix('.removed.bin'), fixture.with_suffix('.rejoined.bin'), sync_test, sync_input, sync_routed, sync_received, *sync_images)},
+        'artifacts': {p.name: {'bytes': p.stat().st_size, 'sha256': digest(p)} for p in (dll, test, native_test, code_test, code_dll, property_dll, group_dll, group_test, fixture, fixture.with_suffix('.removed.bin'), fixture.with_suffix('.rejoined.bin'), sync_test, sync_input, sync_routed, sync_received, *sync_images)},
         'game_started': False, 'game_checked': False, 'game_read': False, 'installed': False,
         'native_game_storage_expanded': False, 'production_provider_bound': False,
         'runtime_verified': False, 'multiplayer_verified': False, 'public_release_allowed': False,
     }
     (PROJECT / 'evidence/engine-roster-validation.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
-    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'native_storage_checks': receipt['native_storage_checks'], 'session_code_checks': int(code_match[1]), 'property_images':property_output, 'sync_consumer_checks': sync_receipt['consumer_checks'], 'native_receivers': sync_receipt['native_receivers'], 'patch_replayed': True, 'game_access': False}))
+    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'native_storage_checks': receipt['native_storage_checks'], 'session_code_checks': int(code_match[1]), 'property_images':property_output,'property_gates':gate_output,'property_group_checks':int(group_match[1]), 'sync_consumer_checks': sync_receipt['consumer_checks'], 'native_receivers': sync_receipt['native_receivers'], 'patch_replayed': True, 'game_access': False}))
 
 
 if __name__ == '__main__':

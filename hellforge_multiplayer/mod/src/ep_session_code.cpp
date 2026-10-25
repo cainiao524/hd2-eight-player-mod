@@ -75,15 +75,26 @@ int ep_session_code_reserve(const HfApi* api, HfMod* owner, uintptr_t desired,
 }
 static int EpCodeNonvolatile(unsigned reg)
 { return reg==3 || reg==5 || reg==6 || reg==7 || (reg>=12 && reg<=15); }
-static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at)
+static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_t count)
 {
-    RUNTIME_FUNCTION rf;
-    if ((at&3) || at>bytes || bytes-at!=sizeof rf) return 0;
-    memcpy(&rf,p+at,sizeof rf);
-    if (rf.BeginAddress || !rf.EndAddress || rf.EndAddress>rf.UnwindData ||
-        (rf.UnwindData&3) || rf.UnwindData>at || at-rf.UnwindData<4) return 0;
+    RUNTIME_FUNCTION functions[2];
+    if (!count || count>2 || (at&3) || at>bytes || bytes-at!=count*sizeof(RUNTIME_FUNCTION)) return 0;
+    memcpy(functions,p+at,count*sizeof(RUNTIME_FUNCTION));
+    if (functions[0].BeginAddress) return 0;
+    for (uint32_t f=0;f<count;f++) {
+        RUNTIME_FUNCTION rf=functions[f];
+        if (rf.EndAddress<=rf.BeginAddress || (f && rf.BeginAddress<functions[f-1].EndAddress)) return 0;
+    }
+    for (uint32_t f=0;f<count;f++) {
+    RUNTIME_FUNCTION rf=functions[f]; uint32_t end=at;
+    if (rf.UnwindData<functions[count-1].EndAddress || (rf.UnwindData&3) || rf.UnwindData>at || at-rf.UnwindData<4) return 0;
+    for (uint32_t other=0;other<count;other++) if (other!=f) {
+        uint32_t offset=functions[other].UnwindData;
+        if (offset==rf.UnwindData) return 0;
+        if (offset>rf.UnwindData && offset<end) end=offset;
+    }
     const uint8_t* u=p+rf.UnwindData;
-    if (u[0]!=1 || u[3] || u[1]>rf.EndAddress || 4u+((u[2]+1u)&~1u)*2u!=at-rf.UnwindData) return 0;
+    if (u[0]!=1 || u[3] || u[1]>rf.EndAddress-rf.BeginAddress || 4u+((u[2]+1u)&~1u)*2u!=end-rf.UnwindData) return 0;
     unsigned prior=u[1];
     for (unsigned i=0;i<u[2];i++)
     {
@@ -95,9 +106,12 @@ static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at)
         else if (op==4) { if (!EpCodeNonvolatile(info) || ++i>=u[2]) return 0; }
         else return 0;
     }
+    }
     return 1;
 }
 int ep_session_code_seal(HfMod* owner, uint64_t handle, const void* image, uint32_t bytes, uint32_t tableAt)
+{ return ep_session_code_seal_table(owner,handle,image,bytes,tableAt,1); }
+int ep_session_code_seal_table(HfMod* owner, uint64_t handle, const void* image, uint32_t bytes, uint32_t tableAt, uint32_t count)
 {
     int ok=0; DWORD old;
     if (!image) return 0;
@@ -106,12 +120,12 @@ int ep_session_code_seal(HfMod* owner, uint64_t handle, const void* image, uint3
     if (!s || s->state!=EP_CODE_RESERVED || bytes!=s->bytes) goto done;
     /* Owned copy removes any later dependency on the caller's input buffer. */
     memmove(s->base,image,bytes);
-    if (!EpCodeMetadata(s->base,bytes,tableAt)) goto done;
+    if (!EpCodeMetadata(s->base,bytes,tableAt,count)) goto done;
     s->table=(PRUNTIME_FUNCTION)(s->base+tableAt);
     s->state=EP_CODE_FAILED;
     if (!VirtualProtect(s->base,bytes,PAGE_EXECUTE_READ,&old) ||
         !FlushInstructionCache(GetCurrentProcess(),s->base,bytes) ||
-        !RtlAddFunctionTable(s->table,1,(DWORD64)s->base)) goto done;
+        !RtlAddFunctionTable(s->table,count,(DWORD64)s->base)) goto done;
     s->registered=1; s->state=EP_CODE_READY; ok=1;
 done:
     ReleaseSRWLockExclusive(&epCodeLock);

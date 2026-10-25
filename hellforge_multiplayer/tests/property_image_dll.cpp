@@ -2,6 +2,9 @@
 #include <windows.h>
 #include <string.h>
 #include "../mod/src/ep_property_code.h"
+#include "../mod/src/ep_property_gate.h"
+extern "C" __declspec(dllexport) int property_image_test_gate(uint32_t kind,const EpPropertyAddresses* a,uint64_t control,uint64_t next,EpPropertyGateImage* out)
+{ return ep_property_gate_build(kind,a,control,next,out); }
 static bool fail_free,fail_protect;
 static BOOL TestFree(LPVOID p,SIZE_T n,DWORD flags)
 { return fail_free ? FALSE : VirtualFree(p,n,flags); }

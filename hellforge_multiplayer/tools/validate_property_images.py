@@ -93,6 +93,7 @@ def validate(library):
             'source_sha256':{p:producer.sha((PROJECT/p).read_bytes()) for p in (
                 'mod/src/ep_property_image.h','mod/src/ep_property_image.cpp','mod/src/ep_property_templates.h',
                 'mod/src/ep_property_code.h','mod/src/ep_property_code.cpp','mod/src/ep_session_code.h','mod/src/ep_session_code.cpp',
+                'mod/src/ep_property_gate.h','mod/src/ep_property_gate.cpp',
                 'tests/property_image_dll.cpp','tools/generate_property_templates.py','tools/native_property_library.py',
                 'tools/validate_property_images.py','tools/native_producer_unwind.py','tools/native_receiver_unwind.py',
                 'tools/native_unwind_source.py','native-unwind-source.lock.json','native-storage.lock.json')},

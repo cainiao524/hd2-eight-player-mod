@@ -8,6 +8,9 @@ class Addresses(c.Structure):
 class Image(c.Structure):
     _fields_=[(name,c.c_uint32) for name in ('bytes','code_bytes','unwind_offset','table_offset')]+[('data',c.c_ubyte*708)]
 
+class GateImage(c.Structure):
+    _fields_=[('bytes',c.c_uint32),('table_offset',c.c_uint32),('data',c.c_ubyte*756)]
+
 class Library:
     def __init__(self,path):
         self.path=Path(path).resolve(strict=True)
@@ -16,6 +19,8 @@ class Library:
         self.build.argtypes=[c.c_uint32,c.POINTER(Addresses),c.POINTER(Image)]; self.build.restype=c.c_int
         self.prepare=self.dll.property_image_test_prepare
         self.prepare.argtypes=[c.c_uint32,c.POINTER(Addresses),c.POINTER(Image),c.POINTER(c.c_uint32)]; self.prepare.restype=c.c_int
+        self.gate=self.dll.property_image_test_gate
+        self.gate.argtypes=[c.c_uint32,c.POINTER(Addresses),c.c_uint64,c.c_uint64,c.POINTER(GateImage)]; self.gate.restype=c.c_int
 
     def candidate(self,kind,addresses,reference):
         out=Image(); result=self.build(kind,Addresses(**addresses),out)

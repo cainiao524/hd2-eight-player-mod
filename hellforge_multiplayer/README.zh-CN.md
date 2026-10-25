@@ -22,6 +22,7 @@
 | 原生属性转发验证 | `NATIVE_SYNC.zh-CN.md` / `tools/native_roster_sync.py` | 八端原生属性发送、56 次后端转发与原生接收，再进入实际读取器；游戏封包与实体分派仍由测试桥接 |
 | 会话代码所有权 | `mod/src/ep_session_code.*` / `SESSION_CODE.zh-CN.md` | 封存映像、注册回溯表、稳定下一跳变量和 SDK hook 链发布；383 次自有进程检查通过，未接入 Mod 初始化 |
 | 进程内属性生成 | `mod/src/ep_property_image.*`、`ep_property_code.*` / `PROPERTY_IMAGES.zh-CN.md` | C++ 生成和重定位发送/接收映像，按实际分配地址封存；538 组有效与 132 组拒绝输入匹配，50 项所有权检查通过 |
+| 属性成组入口 | `mod/src/ep_property_gate.*`、`ep_property_group.*` / `PROPERTY_GROUP.zh-CN.md` | 默认转发、两次发布成功后受 guard 约束共同启用；258 次链与生命周期检查，12 组入口分支和 2,621 个回溯上下文通过；生产 guard 仍缺失 |
 | 继续开发说明 | `HANDOFF.zh-CN.md` | 旧代码迁移关系、已知限制、下一步及授权范围 |
 
 适配器使用 `hellforge_mod_init`、`HfApi::session`、`subscribe`、`on_game_thread` 和 `game_state`。接入失败后已注册的回调保持停用，避免半初始化状态继续运行。初始化与游戏线程之间通过原子标志发布状态。
@@ -63,7 +64,7 @@ py -3.12 -B hellforge_multiplayer/tools/build_offline.py `
 
 ## 后续实机步骤：尚未执行
 
-原生代码的会话所有权已接上真实 HellForge hook 链并完成离线验证，见 [SESSION_CODE.zh-CN.md](SESSION_CODE.zh-CN.md)。五个合成 hook 验证排序、后续指针更新、发布失败保留及 DLL 固定；实际游戏候选仅注册和查找，没有在宿主上执行。[进程内生成/重定位](PROPERTY_IMAGES.zh-CN.md) 已连接到实际分配与封存；共同激活事务和真实数据所有者仍待接入。
+原生代码的会话所有权已接上真实 HellForge hook 链并完成离线验证，见 [SESSION_CODE.zh-CN.md](SESSION_CODE.zh-CN.md)。五个合成 hook 验证排序、后续指针更新、发布失败保留及 DLL 固定；实际游戏候选仅注册和查找，没有在宿主上执行。[进程内生成/重定位](PROPERTY_IMAGES.zh-CN.md) 已连接到实际分配与封存；[成组入口](PROPERTY_GROUP.zh-CN.md) 已完成默认转发与受约束的共同开关。真实暂停/排空 guard、完整容量事务、数据回滚及真实数据所有者仍待接入。
 
 1. 先完成交接说明列出的玩家容器和 provider 适配，评估是否已适合实机测试。
 2. 由用户明确授权 HellForge 安装路径、安装/启用范围和本次运行测试内容。旧 PID、旧采样额度和此前 GitHub 上传授权都不能代替这次授权。

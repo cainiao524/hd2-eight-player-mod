@@ -29,12 +29,15 @@ int main(int argc, char** argv) {
     check(variants == 2, "expected legacy and corrected variants");
     for (uint32_t v=0; v<variants; ++v) {
         uint32_t size=u32(f), code_size=u32(f), table_offset=u32(f), count=u32(f);
-        check(size<4096 && code_size<size && table_offset+sizeof(RUNTIME_FUNCTION)==size && count<10000, "invalid image bounds");
+        check(size<4096 && code_size<size && table_offset<size && (size-table_offset)%sizeof(RUNTIME_FUNCTION)==0 && count<10000, "invalid image bounds");
+        uint32_t functions=(size-table_offset)/sizeof(RUNTIME_FUNCTION);
+        check(functions==1 || functions==2,"invalid function count");
         uint8_t* image=VirtualAlloc(NULL,size,MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE);
         check(image!=NULL,"allocation failed"); take(f,image,size);
         PRUNTIME_FUNCTION table=(PRUNTIME_FUNCTION)(image+table_offset);
-        check(table->BeginAddress==0 && table->EndAddress==code_size && table->UnwindData+24<=table_offset,"invalid function entry");
-        check(RtlAddFunctionTable(table,1,(DWORD64)image),"function table registration failed");
+        check(table->BeginAddress==0 && table[functions-1].EndAddress==code_size && table[functions-1].UnwindData+24<=table_offset,"invalid function entry");
+        if (functions==2) check(table[0].EndAddress==32 && table[1].BeginAddress==32,"invalid gate extent");
+        check(RtlAddFunctionTable(table,functions,(DWORD64)image),"function table registration failed");
         uint64_t expected[8], return_pc; take(f,expected,sizeof expected); take(f,&return_pc,8);
         for (uint32_t k=0; k<count; ++k) {
             uint32_t pc=u32(f); int32_t delta=(int32_t)u32(f); uint32_t should_fail=u32(f);
@@ -46,7 +49,7 @@ int main(int argc, char** argv) {
             c.Rip=(DWORD64)image+pc; c.Rsp=(DWORD64)entry+delta;
             DWORD64 base=0, frame=0; PVOID data=NULL;
             PRUNTIME_FUNCTION found=RtlLookupFunctionEntry(c.Rip,&base,NULL);
-            check(found==table && base==(DWORD64)image,"lookup did not find owned table");
+            check(found==table+(functions==2 && pc>=32 ? 1 : 0) && base==(DWORD64)image,"lookup did not find owned table");
             PEXCEPTION_ROUTINE handler=RtlVirtualUnwind(UNW_FLAG_NHANDLER,base,c.Rip,found,&c,&data,&frame,NULL);
             int ok=handler==NULL && c.Rip==return_pc && c.Rsp==(DWORD64)entry+8 && same(&c,expected);
             if (ok == (int)should_fail) {

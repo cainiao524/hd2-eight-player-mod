@@ -56,3 +56,5 @@ py -3.12 -B hellforge_multiplayer/tools/build_engine_offline.py `
 构建入口先执行 10 项原异常资料来源检查测试，并从仓库已有捕获重放五条函数表记录和相应回溯资料（元数据合计 168 bytes）。每个候选生成器也强制检查来源指纹和无语言处理器条件。来源收据为 `evidence/native-unwind-source-validation.json`，总引擎收据保存其指纹。保存的 PE 头指向另一份未完整捕获的异常目录，故此步骤不代表运行期有效异常表已确认。
 
 构建入口另执行 [会话代码所有权验证](../SESSION_CODE.zh-CN.md)：383 次检查使用真正的 HellForge HookAdd/ApiHookEx 和 MinHook，在测试自身的合成目标上安装五个 hook。验证注册先于发布、下一跳变量稳定且可更新、并发取消拒绝、SDK 失败后的保留，以及独立 DLL 的模块固定。此测试有别于前述 roster 测试：它实际安装自有进程 hook，但没有安装游戏 hook、运行 Watch 或执行游戏候选函数体。测试源码和两个产物均纳入总收据。
+
+入口继续构建和验证 [属性成组入口](../PROPERTY_GROUP.zh-CN.md)：258 次真实链/合成函数体检查，12 组实际入口分支、12 组错误位置拒绝，以及两条函数表下的 2,621 个 Windows 回溯上下文。`property-gate-validation.json` 单独固定输入、产物与参考收据，`engine-roster-validation.json` 交叉记录其指纹，并记录成组测试 DLL/EXE。生产 guard 和激活后数据回滚均明确标为未实现，Mod 初始化没有绑定。
