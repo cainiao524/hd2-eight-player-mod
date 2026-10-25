@@ -26,8 +26,17 @@ class Library:
         self.gate.argtypes=[c.c_uint32,c.POINTER(Addresses),c.c_uint64,c.c_uint64,c.POINTER(GateImage)]; self.gate.restype=c.c_int
         self.getter=self.dll.getter_image_test_build
         self.getter.argtypes=[c.POINTER(GetterAddresses),c.POINTER(Image)];self.getter.restype=c.c_int
+        self.mover=self.dll.mover_image_test_build
+        self.mover.argtypes=[c.POINTER(GetterAddresses),c.POINTER(Image)];self.mover.restype=c.c_int
         self.getter_gate=self.dll.getter_image_test_gate
         self.getter_gate.argtypes=[c.POINTER(GetterAddresses),c.c_uint64,c.c_uint64,c.POINTER(GateImage)];self.getter_gate.restype=c.c_int
+
+    def mover_candidate(self,addresses,reference):
+        out=Image();result=self.mover(GetterAddresses(**addresses),out)
+        if result: raise RuntimeError("Native mover generation failed: "+str(result))
+        if bytes(out.data[:out.bytes])!=reference["image"] or (out.code_bytes,out.unwind_offset,out.table_offset)!=(reference["candidate"]["size_bytes"],reference["unwind_offset"],reference["table_offset"]):
+            raise RuntimeError("C++ mover image differs from pinned reference")
+        return {**reference["candidate"],"code_hex":bytes(out.data[:out.code_bytes]).hex()}
 
     def getter_candidate(self,addresses,reference):
         out=Image();result=self.getter(GetterAddresses(**addresses),out)

@@ -1,0 +1,130 @@
+{
+  "schema": "hellforge_native_mover_validation_v1",
+  "verified_at_utc": "2026-10-25T13:54:43.116005+00:00",
+  "passed": true,
+  "source_replay": {
+    "passed": true,
+    "functions": {
+      "mover": {
+        "fragments": 3,
+        "flags": [
+          0,
+          4,
+          4
+        ],
+        "chained_fragments": 2,
+        "language_handlers": false
+      }
+    },
+    "metadata_bytes_replayed": 92,
+    "header_exception_directory_captured": false,
+    "runtime_table_verified": false,
+    "game_access": false
+  },
+  "accepted": 10,
+  "rejected": 51,
+  "api_contract_checks": 2,
+  "source_handler_guard_checks": 1,
+  "owner_checks": 25,
+  "functional_tests": 8,
+  "functional_runs": 100,
+  "original_functional_runs": 16,
+  "windows_unwind_contexts": 8231,
+  "displacement_counts": {
+    "primary": 14,
+    "auxiliary": 8,
+    "property": 4
+  },
+  "relocated_internal_branches": 4,
+  "injected_metadata_faults_rejected": 1,
+  "image_bytes": 612,
+  "code_bytes": 558,
+  "unwind_offset": 564,
+  "table_offset": 588,
+  "function_count": 2,
+  "body_offset": 96,
+  "fixups": [
+    [
+      30,
+      0,
+      2,
+      8,
+      0
+    ],
+    [
+      49,
+      0,
+      3,
+      8,
+      -232
+    ],
+    [
+      69,
+      73,
+      4,
+      4,
+      0
+    ],
+    [
+      80,
+      84,
+      4,
+      4,
+      0
+    ],
+    [
+      91,
+      95,
+      4,
+      4,
+      0
+    ],
+    [
+      418,
+      0,
+      2,
+      8,
+      0
+    ]
+  ],
+  "source_sha256": {
+    "native-mover.lock.json": "d871e37dfa31605cec611c4e4d2757ef7d1421862a004a9019ff40f6ac8f4a30",
+    "tools/native_mover_image.py": "7ea40986a77b5e36e132b5e5048e50858ceaed8c3e639321adfbd91a1e9ba105",
+    "tools/generate_mover_template.py": "ae0ec486afedcf680f74bfa2c896ace0166b94dea17d1814a2e8a980c233b6f8",
+    "tools/validate_mover_image.py": "03495f5e493249b59097d1ecfc103387b0fb4a746b8ef8d18f9543ce1e049b7b",
+    "tools/native_unwind_source.py": "8f2b51781ae06b3f6a72959218f7c60cdf4e7f6a13e59c56f7eff99140721e4f",
+    "tools/native_getter_image.py": "3b329d319d9edd550fa237a4c8c8c04bf17d8dfcd7e688b6291d1e31c1306afb",
+    "tools/verify_native_unwind_source.py": "af2afff2fdfa8178a80af08fc21358df4e6090a6342922e03fa6c9a407661a8d",
+    "tools/native_property_library.py": "247a20e730bb4f21d485f2e2f0e4cdf2baf55291cfd4c9efea6917430af6c2eb",
+    "mod/src/ep_mover_image.h": "1daf80633229a689ab0d716af7d7a9fd1d035d6aadd2c2c0741a146fa28f1998",
+    "mod/src/ep_mover_image.cpp": "1de15b0de5bdfc087f63566b5040b6b19cbd32ddd2e083204b82f8c5d59e4c4c",
+    "mod/src/ep_mover_template.h": "57cc7e20d9deb2f0765097d2e8d700bcda6046cd796c052505cfe454d7e6d960",
+    "mod/src/ep_session_code.h": "612c7071e99846967bf960ba63279511133fcfc85b63a967d5bfa79f66e222dc",
+    "mod/src/ep_session_code.cpp": "fb52d6fb559ca86a0f74b30ff210fa521e2715633648adcaa1792e1104f1c301",
+    "tests/property_image_dll.cpp": "b60f82900000b436625dc8430b1ae1a383d20633cb6688f8f766a16327cbbb6e",
+    "tests/native_producer_unwind_test.c": "38333e2267009562796525bf2daf2cc202f73f44da3ed3925fa72f8cee315b3d"
+  },
+  "legacy_source_sha256": {
+    "eight_player_candidate_20260927/tests/test_native_roster_move.py": "603259862dcc109b0be9c3227954ff771342fbfd416eb71eb9f0687e770bb687"
+  },
+  "artifacts": {
+    "mover-unwind-contexts.bin": {
+      "bytes": 2734436,
+      "sha256": "e26892033420a77f8e7dd4cdafb3da5802d4587706e7d1f216452b3d45d8e3f8"
+    },
+    "native_mover_unwind_test.exe": {
+      "bytes": 224256,
+      "sha256": "8161b8b51dc01769858ad33a8c0065b6486e0c91b4ab184d5e7a444621ab1b56"
+    },
+    "property_image_test.dll": {
+      "bytes": 234496,
+      "sha256": "5620f7994f583369fe74f4252c1cc22fe34f7a564589ca0cd99178e1384b2b30"
+    }
+  },
+  "game_access": false,
+  "native_execution_of_game_bodies": false,
+  "runtime_verified": false,
+  "multiplayer_verified": false,
+  "common_writer_activation": false,
+  "production_quiescence_provider_bound": false
+}

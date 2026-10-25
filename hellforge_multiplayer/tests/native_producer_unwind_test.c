@@ -38,7 +38,10 @@ int main(int argc, char** argv) {
         check(table->BeginAddress==0 && table[functions-1].EndAddress==code_size && table[functions-1].UnwindData<=table_offset && table_offset-table[functions-1].UnwindData>=4,"invalid function entry");
         uint8_t* unwind=image+table[functions-1].UnwindData;
         check(unwind[0]==1 && unwind[3]==0 && 4u+((unwind[2]+1u)&~1u)*2u<=table_offset-table[functions-1].UnwindData,"invalid unwind extent");
-        if (functions==2) check(table[0].EndAddress==32 && table[1].BeginAddress==32,"invalid gate extent");
+        if (functions==2) {
+            check(table[0].EndAddress>0 && table[0].EndAddress==table[1].BeginAddress,"invalid leaf extent");
+            check(table[0].UnwindData>=code_size && table[0].UnwindData<=size-4 && !memcmp(image+table[0].UnwindData,"\1\0\0\0",4),"invalid leaf unwind");
+        }
         check(RtlAddFunctionTable(table,functions,(DWORD64)image),"function table registration failed");
         uint64_t expected[8], return_pc; take(f,expected,sizeof expected); take(f,&return_pc,8);
         for (uint32_t k=0; k<count; ++k) {
@@ -51,7 +54,7 @@ int main(int argc, char** argv) {
             c.Rip=(DWORD64)image+pc; c.Rsp=(DWORD64)entry+delta;
             DWORD64 base=0, frame=0; PVOID data=NULL;
             PRUNTIME_FUNCTION found=RtlLookupFunctionEntry(c.Rip,&base,NULL);
-            check(found==table+(functions==2 && pc>=32 ? 1 : 0) && base==(DWORD64)image,"lookup did not find owned table");
+            check(found==table+(functions==2 && pc>=table[1].BeginAddress ? 1 : 0) && base==(DWORD64)image,"lookup did not find owned table");
             PEXCEPTION_ROUTINE handler=RtlVirtualUnwind(UNW_FLAG_NHANDLER,base,c.Rip,found,&c,&data,&frame,NULL);
             int ok=handler==NULL && c.Rip==return_pc && c.Rsp==(DWORD64)entry+8 && same(&c,expected);
             if (ok == (int)should_fail) {

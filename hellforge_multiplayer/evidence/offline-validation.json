@@ -1,6 +1,6 @@
 {
   "schema": "hd2_hellforge_migration_validation_v1",
-  "verified_at_utc": "2026-10-25T13:41:50.124982+00:00",
+  "verified_at_utc": "2026-10-25T13:55:38.893511+00:00",
   "upstream_commit": "a4dd089eb56cdd5cd96c3cefe6e80eba5848d6fa",
   "sdk": 13,
   "game_build": "25480438",
@@ -22,6 +22,7 @@
   },
   "native_property_template_sha256": "940fef65c777ad60deb8f2e92c79b6e8dc717dead972237363ec4344fe92d3f9",
   "native_getter_template_sha256": "d29a18df684825f7eb9a9379dd1269143131ae29db6d55f1ae11b5b41caa4db7",
+  "native_mover_template_sha256": "57cc7e20d9deb2f0765097d2e8d700bcda6046cd796c052505cfe454d7e6d960",
   "source_sha256": {
     "mod/hellforge-mod.json": "b48339cd86b3ca4ca00011aca96b50b5609ecf4c7f30df32d95c600a001453a5",
     "mod/src/core/ep_capacity_contract.cpp": "e1f21698de8515819b5e91137e42a188c4bdec298111bc64c34f4b99922f92ef",
@@ -31,6 +32,9 @@
     "mod/src/ep_getter_template.h": "d29a18df684825f7eb9a9379dd1269143131ae29db6d55f1ae11b5b41caa4db7",
     "mod/src/ep_hellforge.cpp": "a0584c7a2185f85311b5ed3df6a1f625962265c1e83642e0e945f4c7df7ca30e",
     "mod/src/ep_hellforge.h": "7726e27b9d081682a22f4f47908a919edbb89c15436f26a61745ecbbc42dc8ca",
+    "mod/src/ep_mover_image.cpp": "1de15b0de5bdfc087f63566b5040b6b19cbd32ddd2e083204b82f8c5d59e4c4c",
+    "mod/src/ep_mover_image.h": "1daf80633229a689ab0d716af7d7a9fd1d035d6aadd2c2c0741a146fa28f1998",
+    "mod/src/ep_mover_template.h": "57cc7e20d9deb2f0765097d2e8d700bcda6046cd796c052505cfe454d7e6d960",
     "mod/src/ep_native_roster.cpp": "94a7608c6ae1eaed3492834f572e8b300a0962197f03e4b48259fc7977c2080f",
     "mod/src/ep_native_roster.h": "30116c76318c97ae2954530ad161cc56345428216592abb6dfa5e4961c941f26",
     "mod/src/ep_property_code.cpp": "513600a118023e46c6b2c90720b37122a49d6f130dc1d6ffe24fb036d1fd16df",
@@ -50,23 +54,24 @@
     "tests/adapter_test.cpp": "d663c6c0c988c4adc47b597dfcb213d24869cc9838e628ae9ecac9f5f4028b2f",
     "tests/backend/Program.cs": "79ef51fd5827f59cd3007d271e3bf17000b6898914eb6bbee5fdace63b8b61c8",
     "tests/backend/Backend.csproj": "04026b5adc828a3e86cd100d0cafa443397669660a83044882256e8aee38be0b",
-    "tools/build_offline.py": "de4e7dee9d229e1e3aa642dfb5c0b258e0cc69e02ad8b66b8a14527555c265d3",
+    "tools/build_offline.py": "23e9f2b7e9d9a1e5db1de7b5efe2817b0bb701230c43413c2663ea4c8efbfc7c",
     "upstream.lock.json": "1d9274d0040561997c6a3d3ba34279f5e8c83bd788e38cd2f97a99fb946ed0f3",
     "tools/generate_property_templates.py": "4d855e6eb2f0862f618db1b77df769c0b05a4232b66ebd59009abda399d18d26",
-    "tools/generate_getter_template.py": "63441e7e961c2f07d04027bf7cceef677b88c15215845a1b23f3504727a22b95"
+    "tools/generate_getter_template.py": "63441e7e961c2f07d04027bf7cceef677b88c15215845a1b23f3504727a22b95",
+    "tools/generate_mover_template.py": "ae0ec486afedcf680f74bfa2c896ace0166b94dea17d1814a2e8a980c233b6f8"
   },
   "artifacts": {
     "ep_hellforge.dll": {
-      "bytes": 94720,
-      "sha256": "1f3fc2ebf0e5f90a1ea686a3b491b1917e7d9b0b68701353250fc740e15437c9"
+      "bytes": 96768,
+      "sha256": "27ed416e98f70a2d4813177725565a701bfad17430fc036d2cd3687922938315"
     },
     "adapter_test.exe": {
-      "bytes": 429568,
-      "sha256": "ce6e58a8af89d86354d503298a612535a1f80caf2339e164c1d872af8ae0df4c"
+      "bytes": 432128,
+      "sha256": "ddac982ce8b43c8865e045e8895ac5f9d5911a5b4c2b522685f406df6274547b"
     },
     "eight-player-research-hellforge-0.1.0-source.zip": {
-      "bytes": 27455,
-      "sha256": "2c5715fcd2ffa066376a909a8fc1882a5f2b8453e3f57350c37322cc4325275b"
+      "bytes": 30583,
+      "sha256": "b2352fd8d40e21284fa5a94bd167a647097b331c30f46608a6a17f7c4bd28e8c"
     }
   },
   "game_started": false,

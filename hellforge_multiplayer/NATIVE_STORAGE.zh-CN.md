@@ -37,7 +37,7 @@ avatar network ID、player entity ID、peer、network index 和 ordinal 各自�
 
 ## 这次验证实际执行了什么
 
-`tools/native_roster_fixture.py` 先校验 `native-storage.lock.json` 中旧代码和保存证据的指纹，再使用 Unicorn 执行既有 x64 插入、删除和搬移候选及保存的原生哈希表辅助代码。它导出三个合成内存映像：
+`tools/native_roster_fixture.py` 先校验 `native-storage.lock.json` 中旧代码和保存证据的指纹，再使用 Unicorn 执行固定 x64 插入、删除候选、[C++ 生成的共用搬移器](NATIVE_MOVER.zh-CN.md)和保存的原生哈希表辅助代码。独立运行夹具须提供 `--property-library`，总构建已自动传入。它导出三个合成内存映像：
 
 - 从空名册完成八次插入；第九次在写入前被拒绝。
 - 删除 ordinal 4，原 ordinal 7 被移动到 4，人数为 7。

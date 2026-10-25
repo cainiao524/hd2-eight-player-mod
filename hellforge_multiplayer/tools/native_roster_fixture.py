@@ -9,12 +9,14 @@ import importlib.util
 import json
 from pathlib import Path
 import struct
+import native_mover_image
+from native_property_library import Library
 
 ROOT = Path(__file__).resolve().parents[2]
 PROJECT = ROOT / 'hellforge_multiplayer'
 
 
-def generate(output):
+def generate(output,property_library):
     lock = json.loads((PROJECT / 'native-storage.lock.json').read_text(encoding='utf-8'))
     for name, digest in lock['legacy_source_sha256'].items():
         if hashlib.sha256((ROOT / name).read_bytes()).hexdigest() != digest:
@@ -25,6 +27,7 @@ def generate(output):
     spec.loader.exec_module(m)
     if m.unicorn.__version__ != lock['unicorn'] or m.capstone.__version__ != lock['capstone']:
         raise RuntimeError('Emulator/disassembler version changed')
+    native_mover_image.bind_insertion_fixture(m,Library(property_library))
     f = m.Fixture('dense_legacy', t=0, d=0, p=0, flag=1)
     f.write(m.B, bytes(0x680))
     runs = []
@@ -38,7 +41,7 @@ def generate(output):
             raise RuntimeError('Native insertion failed')
         if struct.unpack('<Q', f.read(m.B + i * 8, 8))[0] != descriptor:
             raise RuntimeError('Native pointer write differs')
-        runs.append({'ordinal': i, 'instructions': len(f.trace), 'map_calls': len(f.calls)})
+        runs.append({'ordinal': i, 'instructions': len(f.trace), 'map_calls': len(f.calls), 'mover_calls': sum(x['kind']=='move' for x in f.calls)})
     before = f.read(m.S, 0xE8) + f.read(m.B, 0x680) + f.read(m.MAP, 64)
     f.seed(); f.outcome = None; f.writes.clear(); f.run('hellforge_storage_ninth_refused')
     if f.outcome != 'reject' or f.writes or before != f.read(m.S, 0xE8) + f.read(m.B, 0x680) + f.read(m.MAP, 64):
@@ -90,7 +93,7 @@ def generate(output):
     f.write(m.B+0x3C0+7*0x38,m.u64(104)); f.write(m.B+0x3C0+7*0x38+0x18,m.u32(3))
     f.write(m.B+0x580+7*0x20,m.u32(0x1004)); f.write(m.B+0x580+7*0x20+0xC,m.u32(6))
     rejoined=output.with_suffix('.rejoined.bin'); exported[rejoined.name]=export(rejoined)
-    return {'native_insertions': runs, 'ninth_refused_before_write': True,
+    return {'mover_image_emitted_by_native_mod_code':True,'mover_image_bytes':f.native_mover_image_bytes,'native_insertions': runs, 'ninth_refused_before_write': True,
             'fixtures': exported, 'native_removal_instructions': removal_instructions,
             'native_reinsert_instructions': len(f.trace),
             'native_outputs': ['descriptor pointers', 'tracked/dense/prefix counts', 'entity-to-ordinal map', 'primary/auxiliary initialization'],
@@ -101,5 +104,6 @@ def generate(output):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', required=True, type=Path)
+    parser.add_argument('--property-library',required=True,type=Path)
     args = parser.parse_args()
-    print(json.dumps(generate(args.output.resolve())))
+    print(json.dumps(generate(args.output.resolve(),args.property_library)))

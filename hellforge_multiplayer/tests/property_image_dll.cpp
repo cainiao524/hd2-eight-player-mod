@@ -4,17 +4,22 @@
 #include "../mod/src/ep_property_code.h"
 #include "../mod/src/ep_property_gate.h"
 #include "../mod/src/ep_getter_image.h"
+#include "../mod/src/ep_mover_image.h"
+extern "C" __declspec(dllexport) int mover_image_test_build(const EpMoverAddresses* a,EpPropertyImage* out)
+{ return ep_mover_image_build(a,out); }
 extern "C" __declspec(dllexport) int getter_image_test_build(const EpGetterAddresses* a,EpPropertyImage* out)
 { return ep_getter_image_build(a,out); }
 static EpGetterAddresses GetterArguments(const EpPropertyAddresses* a)
 { return {a->game_base,a->code_address,a->roster_address,a->property_address,a->reject_address}; }
 static EpPropertyResult Prepare(const HfApi* api,HfMod* owner,uint32_t kind,const EpPropertyAddresses* a,EpSessionCodeInfo* out)
 {
+    if (kind==4) { EpMoverAddresses m={a->game_base,a->code_address,a->roster_address,a->property_address,a->reject_address}; return ep_mover_code_prepare(api,owner,&m,out); }
     if (kind==3) { EpGetterAddresses g=GetterArguments(a); return ep_getter_code_prepare(api,owner,&g,out); }
     return ep_property_code_prepare(api,owner,kind,a,out);
 }
 static EpPropertyResult ImageBuild(uint32_t kind,const EpPropertyAddresses* a,EpPropertyImage* out)
 {
+    if (kind==4) { EpMoverAddresses m={a->game_base,a->code_address,a->roster_address,a->property_address,a->reject_address}; return ep_mover_image_build(&m,out); }
     if (kind==3) { EpGetterAddresses g=GetterArguments(a); return ep_getter_image_build(&g,out); }
     return ep_property_image_build(kind,a,out);
 }
@@ -65,7 +70,7 @@ extern "C" __declspec(dllexport) int property_image_test_prepare(uint32_t kind,E
     a->code_address=info.base;
     CHECK(ImageBuild(kind,a,image)==EP_PROPERTY_OK);
     CHECK(image->bytes==info.bytes && !memcmp((void*)info.base,image->data,image->bytes));
-    CHECK(RtlLookupFunctionEntry(info.base+image->code_bytes-1,&unwind_base,NULL)==(PRUNTIME_FUNCTION)(info.base+image->table_offset));
+    CHECK(RtlLookupFunctionEntry(info.base+image->code_bytes-1,&unwind_base,NULL)==(PRUNTIME_FUNCTION)(info.base+image->table_offset)+(kind==4 ? 1 : 0));
     CHECK(unwind_base==info.base);
     CHECK(VirtualQuery((void*)info.base,&mbi,sizeof(mbi))==sizeof(mbi) && mbi.Protect==PAGE_EXECUTE_READ);
     CHECK(!hook_calls);
