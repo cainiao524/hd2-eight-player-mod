@@ -20,6 +20,7 @@
 | 引擎构建与证据 | `tools/build_engine_offline.py` / `evidence/engine-roster-validation.json` | 单独编译研究 loader；100 次消费者检查 + 589 次存储连接断言，生产 provider 未绑定 |
 | 原生存储连接 | `mod/src/ep_native_roster.*` / `NATIVE_STORAGE.zh-CN.md` | 解码旧原生候选写出的八槽存储；离线验证插入、删除压缩和重新插入 |
 | 原生属性转发验证 | `NATIVE_SYNC.zh-CN.md` / `tools/native_roster_sync.py` | 八端原生属性发送、56 次后端转发与原生接收，再进入实际读取器；游戏封包与实体分派仍由测试桥接 |
+| 会话代码所有权 | `mod/src/ep_session_code.*` / `SESSION_CODE.zh-CN.md` | 封存映像、注册回溯表、稳定下一跳变量和 SDK hook 链发布；383 次自有进程检查通过，未接入 Mod 初始化 |
 | 继续开发说明 | `HANDOFF.zh-CN.md` | 旧代码迁移关系、已知限制、下一步及授权范围 |
 
 适配器使用 `hellforge_mod_init`、`HfApi::session`、`subscribe`、`on_game_thread` 和 `game_state`。接入失败后已注册的回调保持停用，避免半初始化状态继续运行。初始化与游戏线程之间通过原子标志发布状态。
@@ -60,6 +61,8 @@ py -3.12 -B hellforge_multiplayer/tools/build_offline.py `
 属性发送和接收候选已加入各自的 [Windows x64 栈回溯资料](NATIVE_UNWIND.zh-CN.md)，修正拒绝跳转被当作尾调用的问题，并将接收端的条件寄存器保存移至入口。发送端 12 个场景的 1,308 个指令上下文、接收端 17 个场景的 1,313 个指令上下文通过真实 Windows 回溯接口验证；八端转发测试同时使用两份新候选。保存证据中的五段原异常资料已核对，并作为两个生成器的强制前置检查；10 项来源测试和原捕获重放通过。其他候选的回溯、运行期有效异常表核对、生产 hook 安装和游戏内验证仍未完成。
 
 ## 后续实机步骤：尚未执行
+
+原生代码的会话所有权已接上真实 HellForge hook 链并完成离线验证，见 [SESSION_CODE.zh-CN.md](SESSION_CODE.zh-CN.md)。五个合成 hook 验证排序、后续指针更新、发布失败保留及 DLL 固定；实际游戏候选仅注册和查找，没有在宿主上执行。进程内生成/重定位、共同激活事务和真实数据所有者仍待接入。
 
 1. 先完成交接说明列出的玩家容器和 provider 适配，评估是否已适合实机测试。
 2. 由用户明确授权 HellForge 安装路径、安装/启用范围和本次运行测试内容。旧 PID、旧采样额度和此前 GitHub 上传授权都不能代替这次授权。

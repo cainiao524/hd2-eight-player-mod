@@ -3,7 +3,7 @@
   "updated_date": "2026-10-25",
   "timezone": "Asia/Taipei",
   "active_target": "HellForge",
-  "stage": "captured_property_unwind_source_gated_eight_node_offline_verified",
+  "stage": "session_code_ownership_and_eight_node_roundtrip_offline_verified",
   "upstream_commit": "a4dd089eb56cdd5cd96c3cefe6e80eba5848d6fa",
   "release": "0.2.0-beta",
   "engine_version": "0.1.28",
@@ -27,7 +27,7 @@
   "live_capture_authorized": false,
   "remaining_authorized_captures": 0,
   "legacy_dispatcher_capture": "deferred_legacy_route_not_authorized",
-  "next_source_work": "Implement production registration and code lifetime ownership compatible with HellForge session hooks; implement unwind support for remaining native candidates. Runtime effective exception-table verification still requires new authorization. Continue mutation-exclusion owner leases, authoritative identity tickets, native player storage/creation/replication and full mission validation. Keep game access closed.",
+  "next_source_work": "Connect in-process candidate generation/relocation to session code ownership and implement a common activation/rollback transaction before any game publication. Complete external rejection handlers and unwind support for remaining candidates. Runtime effective exception-table verification still requires new authorization. Continue mutation-exclusion owner leases, authoritative identity tickets, native player storage/creation/replication and full mission validation. Keep game access closed.",
   "validation": "evidence/offline-validation.json",
   "handoff": "HANDOFF.zh-CN.md",
   "branch": "codex/hellforge-migration",
@@ -67,5 +67,11 @@
   "captured_property_unwind_language_handlers": false,
   "offline_native_unwind_source_tests": 10,
   "native_unwind_source_validation": "evidence/native-unwind-source-validation.json",
-  "runtime_exception_table_verified": false
+  "runtime_exception_table_verified": false,
+  "session_code_owner_offline_verified": true,
+  "offline_session_code_checks": 383,
+  "session_code_synthetic_chain_links": 5,
+  "session_code_module_pin_verified": true,
+  "session_code_owner_autobound": false,
+  "session_code_handoff": "SESSION_CODE.zh-CN.md"
 }

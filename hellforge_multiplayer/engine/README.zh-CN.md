@@ -54,3 +54,5 @@ py -3.12 -B hellforge_multiplayer/tools/build_engine_offline.py `
 完整构建还自动运行 [原生发送与接收候选的 Windows 栈回溯验证](../NATIVE_UNWIND.zh-CN.md)：发送端 1,308 个、接收端 1,313 个指令上下文通过，对照组分别复现 3 次和 7 次旧拒绝跳转错误。测试仅注册自有不可执行数据映像的函数表，用完后撤销；没有加载或运行游戏。独立收据为 `evidence/native-producer-unwind-validation.json` 与 `evidence/native-receiver-unwind-validation.json`，两者 SHA-256 同时写入总引擎收据。
 
 构建入口先执行 10 项原异常资料来源检查测试，并从仓库已有捕获重放五条函数表记录和相应回溯资料（元数据合计 168 bytes）。每个候选生成器也强制检查来源指纹和无语言处理器条件。来源收据为 `evidence/native-unwind-source-validation.json`，总引擎收据保存其指纹。保存的 PE 头指向另一份未完整捕获的异常目录，故此步骤不代表运行期有效异常表已确认。
+
+构建入口另执行 [会话代码所有权验证](../SESSION_CODE.zh-CN.md)：383 次检查使用真正的 HellForge HookAdd/ApiHookEx 和 MinHook，在测试自身的合成目标上安装五个 hook。验证注册先于发布、下一跳变量稳定且可更新、并发取消拒绝、SDK 失败后的保留，以及独立 DLL 的模块固定。此测试有别于前述 roster 测试：它实际安装自有进程 hook，但没有安装游戏 hook、运行 Watch 或执行游戏候选函数体。测试源码和两个产物均纳入总收据。

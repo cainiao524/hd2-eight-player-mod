@@ -99,6 +99,14 @@ def main():
     unwind_receipt = PROJECT / 'evidence/native-producer-unwind-validation.json'
     receiver_unwind_output = json.loads(run([sys.executable, '-B', PROJECT / 'tools/build_receiver_unwind_offline.py', '--zig', zig]))
     receiver_unwind_receipt = PROJECT / 'evidence/native-receiver-unwind-validation.json'
+    code_test = build / 'session_code_test.exe'
+    code_dll = build / 'session_code_owner_test.dll'
+    run([*common, '-shared', '-O1', PROJECT / 'tests/session_code_dll.c', '-o', code_dll])
+    run([*common, '-O1', PROJECT / 'tests/session_code_test.c', *deps, '-o', code_test])
+    code_output = run([code_test, build / 'producer-unwind-image.bin', build / 'receiver-unwind-image.bin', code_dll]).decode('utf-8').strip()
+    code_match = re.fullmatch(r'session code: (\d+) checks passed; real HellForge chain, synthetic code only', code_output)
+    if not code_match:
+        raise RuntimeError('Missing session code ownership result: ' + code_output)
     sync_input, sync_routed, sync_received = (build / n for n in ('native-sync-input.json', 'native-sync-routed.json', 'native-sync-received.json'))
     sync_script = PROJECT / 'tools/native_roster_sync.py'
     run([sys.executable, '-B', sync_script, 'produce', '--output', sync_input])
@@ -134,6 +142,10 @@ def main():
         'native_property_sync': sync_receipt,
         'native_producer_unwind': {**unwind_output, 'validation_sha256': digest(unwind_receipt)},
         'native_receiver_unwind': {**receiver_unwind_output, 'validation_sha256': digest(receiver_unwind_receipt)},
+        'session_code_owner': {'checks': int(code_match[1]), 'actual_hellforge_hook_chain': True,
+                               'synthetic_chain_links': 5, 'module_pin_survived_free_library': True,
+                               'game_candidate_executed_natively': False,
+                               'automatic_mod_init_binding': False, 'game_access': False},
         'original_unwind_source': {**source_replay, 'source_gate_tests': source_tests,
                                    'validation_sha256': digest(source_receipt)},
         'replayed_patch': patch_lock['patch'], 'patch_sha256': digest(patch),
@@ -145,16 +157,18 @@ def main():
             'tools/native_receiver_unwind.py', 'tools/build_receiver_unwind_offline.py',
             'tools/native_unwind_source.py', 'tools/verify_native_unwind_source.py',
             'tests/test_native_unwind_source.py', 'native-unwind-source.lock.json',
+            'tests/session_code_test.c', 'mod/src/ep_session_code.h', 'mod/src/ep_session_code.cpp',
+            'tests/session_code_dll.c', 'tests/session_code_dll.h',
             'tests/backend/Program.cs', 'tests/backend/Backend.csproj',
             'mod/src/ep_native_roster.cpp', 'mod/src/ep_native_roster.h', 'mod/src/ep_roster_api.h',
             'native-storage.lock.json', 'tools/build_engine_offline.py', 'engine/patch.lock.json', 'upstream.lock.json')},
-        'artifacts': {p.name: {'bytes': p.stat().st_size, 'sha256': digest(p)} for p in (dll, test, native_test, fixture, fixture.with_suffix('.removed.bin'), fixture.with_suffix('.rejoined.bin'), sync_test, sync_input, sync_routed, sync_received, *sync_images)},
+        'artifacts': {p.name: {'bytes': p.stat().st_size, 'sha256': digest(p)} for p in (dll, test, native_test, code_test, code_dll, fixture, fixture.with_suffix('.removed.bin'), fixture.with_suffix('.rejoined.bin'), sync_test, sync_input, sync_routed, sync_received, *sync_images)},
         'game_started': False, 'game_checked': False, 'game_read': False, 'installed': False,
         'native_game_storage_expanded': False, 'production_provider_bound': False,
         'runtime_verified': False, 'multiplayer_verified': False, 'public_release_allowed': False,
     }
     (PROJECT / 'evidence/engine-roster-validation.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
-    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'native_storage_checks': receipt['native_storage_checks'], 'sync_consumer_checks': sync_receipt['consumer_checks'], 'native_receivers': sync_receipt['native_receivers'], 'patch_replayed': True, 'game_access': False}))
+    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'native_storage_checks': receipt['native_storage_checks'], 'session_code_checks': int(code_match[1]), 'sync_consumer_checks': sync_receipt['consumer_checks'], 'native_receivers': sync_receipt['native_receivers'], 'patch_replayed': True, 'game_access': False}))
 
 
 if __name__ == '__main__':
