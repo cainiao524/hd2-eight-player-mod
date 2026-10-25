@@ -15,6 +15,8 @@
 
 ## 结果与证据
 
+两份属性映像现由 Mod 的 C++ [进程内生成器](PROPERTY_IMAGES.zh-CN.md) 输出。每次先与独立 Python 参考逐字节比对，再将 C++ 产生的代码交给 Unicorn。入口显式要求 `--property-library` 指向本次编译的 `build/property_image_test.dll`；完整引擎构建会自动传入，不加载安装目录的 DLL。仍未在宿主上原生调用游戏候选。
+
 发送端和接收端现已分别使用 [Windows unwind 适配变体](NATIVE_UNWIND.zh-CN.md)：规范化 prologue、修正各自两个拒绝跳转并生成独立回溯资料。接收端把条件保存移至入口，让 sentinel 等早退路径也具备完整的非易失寄存器保存。八端测试执行两份新代码；元数据另由真实 Windows API 在自有进程验证。生成映像和函数表不代表已经安装生产 hook 或验证原异常处理器。
 
 | 范围 | 结果 |

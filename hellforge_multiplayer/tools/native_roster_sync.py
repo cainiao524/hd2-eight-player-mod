@@ -13,6 +13,7 @@ from pathlib import Path
 import struct
 import native_producer_unwind
 import native_receiver_unwind
+from native_property_library import Library
 
 ROOT = Path(__file__).resolve().parents[2]
 PROJECT = ROOT / 'hellforge_multiplayer'
@@ -30,20 +31,23 @@ def load(name, path):
     return module
 
 
-def modules():
+def modules(property_library):
     lock = json.loads((PROJECT / 'native-storage.lock.json').read_text())
     for name, digest in lock['legacy_source_sha256'].items():
         require(hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == digest, 'Changed source: ' + name)
     insert = load('sync_insert', ROOT / 'eight_player_candidate_20260927/tests/test_native_roster_insert.py')
     producer = load('sync_producer', ROOT / 'eight_player_candidate_20260927/tests/test_native_roster_producer.py')
     require(insert.unicorn.__version__ == lock['unicorn'] and insert.capstone.__version__ == lock['capstone'], 'Dependency version mismatch')
+    native=Library(property_library)
     original = producer.native.build
     def with_windows_unwind(source, **addresses):
-        return native_producer_unwind.with_unwind(original(source, **addresses))['candidate']
+        reference=native_producer_unwind.with_unwind(original(source, **addresses))
+        return native.candidate(1,addresses,reference)
     producer.native.build = with_windows_unwind
     old_receiver = producer.receiver.build
     def receiver_with_windows_unwind(source, **addresses):
-        return native_receiver_unwind.with_unwind(old_receiver(source, **addresses))['candidate']
+        reference=native_receiver_unwind.with_unwind(old_receiver(source, **addresses))
+        return native.candidate(2,addresses,reference)
     producer.receiver.build = receiver_with_windows_unwind
     return insert, producer
 
@@ -91,8 +95,8 @@ def image(path):
     return game, roster, storage, regions
 
 
-def produce(output):
-    m, p = modules()
+def produce(output, property_library):
+    m, p = modules(property_library)
     packets, artifacts, runs = [], {}, []
     for node in range(8):
         order = order_for(node)
@@ -140,8 +144,8 @@ def produce(output):
     return {'native_producers': len(runs), 'native_insertions': 64, 'game_access': False}
 
 
-def consume(input_path, routed_path, output):
-    m, p = modules()
+def consume(input_path, routed_path, output, property_library):
+    m, p = modules(property_library)
     source = json.loads(input_path.read_text()); routed = json.loads(routed_path.read_text())
     require(routed['input_sha256'] == hashlib.sha256(input_path.read_bytes()).hexdigest(), 'Stale routed input')
     expected = {item['sender']: base64.b64decode(item['payload'], validate=True) for item in source['packets']}
@@ -201,7 +205,8 @@ if __name__ == '__main__':
     parser.add_argument('--input', type=Path)
     parser.add_argument('--routed', type=Path)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--property-library',type=Path,required=True)
     args = parser.parse_args()
     if args.mode == 'consume' and (args.input is None or args.routed is None):
         parser.error('consume requires --input and --routed')
-    print(json.dumps(produce(args.output) if args.mode == 'produce' else consume(args.input, args.routed, args.output)))
+    print(json.dumps(produce(args.output,args.property_library) if args.mode == 'produce' else consume(args.input,args.routed,args.output,args.property_library)))

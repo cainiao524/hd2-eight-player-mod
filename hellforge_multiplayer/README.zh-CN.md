@@ -21,6 +21,7 @@
 | 原生存储连接 | `mod/src/ep_native_roster.*` / `NATIVE_STORAGE.zh-CN.md` | 解码旧原生候选写出的八槽存储；离线验证插入、删除压缩和重新插入 |
 | 原生属性转发验证 | `NATIVE_SYNC.zh-CN.md` / `tools/native_roster_sync.py` | 八端原生属性发送、56 次后端转发与原生接收，再进入实际读取器；游戏封包与实体分派仍由测试桥接 |
 | 会话代码所有权 | `mod/src/ep_session_code.*` / `SESSION_CODE.zh-CN.md` | 封存映像、注册回溯表、稳定下一跳变量和 SDK hook 链发布；383 次自有进程检查通过，未接入 Mod 初始化 |
+| 进程内属性生成 | `mod/src/ep_property_image.*`、`ep_property_code.*` / `PROPERTY_IMAGES.zh-CN.md` | C++ 生成和重定位发送/接收映像，按实际分配地址封存；538 组有效与 132 组拒绝输入匹配，50 项所有权检查通过 |
 | 继续开发说明 | `HANDOFF.zh-CN.md` | 旧代码迁移关系、已知限制、下一步及授权范围 |
 
 适配器使用 `hellforge_mod_init`、`HfApi::session`、`subscribe`、`on_game_thread` 和 `game_state`。接入失败后已注册的回调保持停用，避免半初始化状态继续运行。初始化与游戏线程之间通过原子标志发布状态。
@@ -37,7 +38,7 @@ SDK 事件只算观察次数。死亡后增援会再次生成，且这些事件�
 
 ## 离线重建
 
-需要 Python 3.12、.NET 10 SDK、Git，以及固定 Zig 0.17.0。以下只处理源码和本项目产物，不寻找游戏安装：
+需要 Python 3.12、.NET 10 SDK、Git，以及固定 Zig 0.17.0。模板重建核对还使用 `native-storage.lock.json` 固定的 Capstone 5.0.7，当前工作区沿用 `eight_player_candidate_20260927/.native-test-deps`；完整引擎测试另需 Unicorn 2.1.4。以下只处理源码和本项目产物，不寻找游戏安装：
 
 ```powershell
 git clone https://github.com/SkyeShade/HellForge.git work/hellforge_upstream_20261025
@@ -62,7 +63,7 @@ py -3.12 -B hellforge_multiplayer/tools/build_offline.py `
 
 ## 后续实机步骤：尚未执行
 
-原生代码的会话所有权已接上真实 HellForge hook 链并完成离线验证，见 [SESSION_CODE.zh-CN.md](SESSION_CODE.zh-CN.md)。五个合成 hook 验证排序、后续指针更新、发布失败保留及 DLL 固定；实际游戏候选仅注册和查找，没有在宿主上执行。进程内生成/重定位、共同激活事务和真实数据所有者仍待接入。
+原生代码的会话所有权已接上真实 HellForge hook 链并完成离线验证，见 [SESSION_CODE.zh-CN.md](SESSION_CODE.zh-CN.md)。五个合成 hook 验证排序、后续指针更新、发布失败保留及 DLL 固定；实际游戏候选仅注册和查找，没有在宿主上执行。[进程内生成/重定位](PROPERTY_IMAGES.zh-CN.md) 已连接到实际分配与封存；共同激活事务和真实数据所有者仍待接入。
 
 1. 先完成交接说明列出的玩家容器和 provider 适配，评估是否已适合实机测试。
 2. 由用户明确授权 HellForge 安装路径、安装/启用范围和本次运行测试内容。旧 PID、旧采样额度和此前 GitHub 上传授权都不能代替这次授权。

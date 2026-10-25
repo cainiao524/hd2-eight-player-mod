@@ -1,0 +1,222 @@
+{
+  "schema": "hellforge_property_image_validation_v1",
+  "verified_at_utc": "2026-10-25T12:56:42.168565+00:00",
+  "passed": true,
+  "game_build": 25480438,
+  "accepted": 538,
+  "rejected": 132,
+  "api_contract_checks": 4,
+  "owner_checks": 50,
+  "failure_results": {
+    "2": 46,
+    "3": 32,
+    "4": 54
+  },
+  "template_sha256": "dbd0677fcfa914b6f7eaa8dd272645a46427894b92b179a8cc8feab27833dc51",
+  "functions": {
+    "producer": {
+      "image_bytes": 708,
+      "code_bytes": 670,
+      "table_offset": 696,
+      "unwind_offset": 672,
+      "fixups": [
+        [
+          32,
+          36,
+          0,
+          4,
+          55065632
+        ],
+        [
+          42,
+          46,
+          0,
+          4,
+          53634152
+        ],
+        [
+          155,
+          159,
+          0,
+          4,
+          24361168
+        ],
+        [
+          313,
+          317,
+          0,
+          4,
+          20246928
+        ],
+        [
+          603,
+          0,
+          2,
+          8,
+          0
+        ],
+        [
+          622,
+          0,
+          3,
+          8,
+          -936
+        ],
+        [
+          651,
+          655,
+          4,
+          4,
+          0
+        ],
+        [
+          666,
+          670,
+          4,
+          4,
+          0
+        ]
+      ],
+      "legacy_relative_ranges": [
+        [
+          32,
+          36,
+          0,
+          4,
+          55065632
+        ],
+        [
+          42,
+          46,
+          0,
+          4,
+          53634152
+        ],
+        [
+          155,
+          159,
+          0,
+          4,
+          24361168
+        ],
+        [
+          313,
+          317,
+          0,
+          4,
+          20246928
+        ],
+        [
+          647,
+          651,
+          4,
+          4,
+          0
+        ],
+        [
+          658,
+          662,
+          4,
+          4,
+          0
+        ]
+      ]
+    },
+    "receiver": {
+      "image_bytes": 436,
+      "code_bytes": 398,
+      "table_offset": 424,
+      "unwind_offset": 400,
+      "fixups": [
+        [
+          24,
+          28,
+          0,
+          4,
+          55065632
+        ],
+        [
+          330,
+          0,
+          2,
+          8,
+          0
+        ],
+        [
+          349,
+          0,
+          3,
+          8,
+          -936
+        ],
+        [
+          379,
+          383,
+          4,
+          4,
+          0
+        ],
+        [
+          394,
+          398,
+          4,
+          4,
+          0
+        ]
+      ],
+      "legacy_relative_ranges": [
+        [
+          9,
+          13,
+          0,
+          4,
+          55065632
+        ],
+        [
+          360,
+          364,
+          4,
+          4,
+          0
+        ],
+        [
+          371,
+          375,
+          4,
+          4,
+          0
+        ]
+      ]
+    }
+  },
+  "source_sha256": {
+    "mod/src/ep_property_image.h": "9c1a17f0d0e7106adeae947246edc49be4012341e21811a3ffb68b63aec1a1d4",
+    "mod/src/ep_property_image.cpp": "22bb0edac87be485da57effaf477d562d35816fba392c3403027270652ec941f",
+    "mod/src/ep_property_templates.h": "dbd0677fcfa914b6f7eaa8dd272645a46427894b92b179a8cc8feab27833dc51",
+    "mod/src/ep_property_code.h": "e8f23e9c66034911e21b95f27a38c95ca7d07e0ea4cc40f3be8eaff22adf2907",
+    "mod/src/ep_property_code.cpp": "513600a118023e46c6b2c90720b37122a49d6f130dc1d6ffe24fb036d1fd16df",
+    "mod/src/ep_session_code.h": "7c3f333dfe99032b819af64ffe49de7f6ce5e99527ef19705c09767f1ad99734",
+    "mod/src/ep_session_code.cpp": "d2b71bc5aa405b502f1cece13c5420cc35d0a85cc58a01bce5ca9b8fc6be6ce8",
+    "tests/property_image_dll.cpp": "27d3c8316555f964196d57920ccb9af46e97c3fc227ec0146daf25c87afa6823",
+    "tools/generate_property_templates.py": "4d855e6eb2f0862f618db1b77df769c0b05a4232b66ebd59009abda399d18d26",
+    "tools/native_property_library.py": "26cdeb6560f09f2b9d6c091e21a6f8a3280a52543c57c62ab5077601713248c8",
+    "tools/validate_property_images.py": "926c52c0ff893b20508a1aefbb78d75cc57984b9e1ea961ded25604d62f3e975",
+    "tools/native_producer_unwind.py": "4cb2da68acb304be8434f786573d6b440e7057ace4a45deb355a956c5ec48832",
+    "tools/native_receiver_unwind.py": "e501bf070a4f0266a5802a130a2ed24c052746c7a12db9b4eb9ab7f1efabf501",
+    "tools/native_unwind_source.py": "fd1a7a4aa48e9a7ecc3d9ca460ecda073e6ca1d4bf7761006e55b7e4312634a7",
+    "native-unwind-source.lock.json": "bfefac86c12f8a761b563d4da814ed1195eb7967f024fe218b9e6d6c5a896680",
+    "native-storage.lock.json": "ec2a0cafe60941a36c09b87bd40f8098fc904120ce68b027f9de3edf5093161f"
+  },
+  "artifacts": {
+    "property_image_test.dll": {
+      "bytes": 227328,
+      "sha256": "7a48282ccaf241d3b276cc149b4e9974d2b6ce6eb99a5205af96f6583aaf5858"
+    }
+  },
+  "game_access": false,
+  "game_candidate_executed_natively": false,
+  "hook_published": false,
+  "production_mod_autobound": false,
+  "runtime_verified": false,
+  "multiplayer_verified": false
+}

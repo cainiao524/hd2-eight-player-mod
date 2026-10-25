@@ -11,6 +11,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import sys
 import zipfile
 from datetime import datetime, timezone
 
@@ -65,6 +66,7 @@ def main() -> None:
     build = PROJECT / "build"
     build.mkdir(exist_ok=True)
     sources = sorted((PROJECT / "mod/src").rglob("*.cpp"))
+    templates=json.loads(run([sys.executable,'-B',PROJECT/'tools/generate_property_templates.py']))
     dll = build / "ep_hellforge.dll"
     test = build / "adapter_test.exe"
     common = [zig, "c++", "-std=c++17", "-target", "x86_64-windows-gnu", "-O2", "-Wall", "-Werror",
@@ -93,10 +95,11 @@ def main() -> None:
         "verified_at_utc": datetime.now(timezone.utc).isoformat(),
         "upstream_commit": lock["commit"], "sdk": 13, "game_build": "25480438",
         "adapter": adapter, "backend": backend,
+        "native_property_template_sha256": templates['header_sha256'],
         "source_sha256": {p.relative_to(PROJECT).as_posix(): digest(p) for p in files},
         "test_source_sha256": {p.relative_to(PROJECT).as_posix(): digest(p) for p in [
             PROJECT / "tests/adapter_test.cpp", PROJECT / "tests/backend/Program.cs", PROJECT / "tests/backend/Backend.csproj",
-            Path(__file__).resolve(), PROJECT / "upstream.lock.json"]},
+            Path(__file__).resolve(), PROJECT / "upstream.lock.json", PROJECT / 'tools/generate_property_templates.py']},
         "artifacts": {p.name: {"bytes": p.stat().st_size, "sha256": digest(p)} for p in [dll, test, package]},
         "game_started": False, "game_checked": False, "game_read": False, "installed": False,
         "runtime_verified": False, "multiplayer_verified": False, "public_release_allowed": False,
