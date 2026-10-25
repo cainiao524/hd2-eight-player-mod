@@ -70,3 +70,5 @@ py -3.12 -B hellforge_multiplayer/tools/build_engine_offline.py `
 同一入口继续构建 [四数组共用搬移器](../NATIVE_MOVER.zh-CN.md)：100 次功能执行、8,231 个 Windows 回溯上下文和 25 项准备生命周期检查，离线重放三段原元数据共 92 bytes。测试 DLL 先于存储夹具构建，三份存储映像与八端插入使用 C++ 搬移代码；独立收据为 `native-mover-validation.json`，总收据交叉固定指纹。搬移器尚未纳入生产共同开关。
 
 完整入口另执行 [十二入口组](../ROSTER_GROUP.zh-CN.md)：`roster-gate-validation.json` 验证十二份实际生成开关和全部已捕获主体回溯状态；72 组分支、105 组非法配置和 41,635 个回溯上下文通过；`roster_group` 在总收据中记录 25 个自有进程场景、6,734 次检查，包括十二个发布位置各自的 SDK 前/后故障。真实 HellForge 链只运行合成 leaf 函数，生产 guard 和激活后数据回滚尚未实现。两个新测试产物及全部来源纳入总收据。
+
+完整入口另构建 [存储所有者](../ROSTER_OWNER.zh-CN.md) 的实际 C++ DLL，并用相同的三份存储夹具连接真实 loader。641 次检查验证读写互斥、revision/票据提交、离队代次保留、旧 provider 失效、关闭排空和结构化异常后的隔离与锁释放。DLL 沿用上游 ModKit 编译选项，不增加 Microsoft 扩展开关。总收据 `roster_owner` 和共同指纹表记录结果及源码、DLL/EXE；真实原生 hook、全体写入者、权威身份和底层复制尚未绑定。

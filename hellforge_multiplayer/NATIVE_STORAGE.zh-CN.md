@@ -1,6 +1,6 @@
 # 原生八槽存储到 HellForge 读取者
 
-2026-10-25，游戏 build 25480438，SDK 13。当前连接已通过离线验证，生产环境的存储所有者及绑定尚未实现。研究 Mod 的初始化不会注册此 provider，也不会调用这里的读取入口。
+2026-10-25，游戏 build 25480438，SDK 13。当前连接已通过离线验证；[存储所有者](ROSTER_OWNER.zh-CN.md) 已实现并连接离线消费者，生产写入覆盖、底层复制与身份来源仍未绑定。研究 Mod 的初始化不会注册此 provider，也不会调用这里的读取入口。
 
 ## 已实现的连接
 
@@ -23,7 +23,7 @@ avatar network ID、player entity ID、peer、network index 和 ordinal 各自�
 
 ## 所有者必须提供的契约
 
-`EpNativeRosterSource` 的三个回调尚无生产实现：
+`EpNativeRosterSource` 需要以下契约。新增 `ep_roster_owner.*` 实现持锁的 begin/read/end 适配，读写共同使用 `mutate`；底层内存复制、权威票据及游戏写入入口还需生产集成：
 
 1. `begin` 同时保留所有者寿命并排除本次读取期间的写入，返回 S、B、构建号、epoch 和最多八份身份票据。只有引用计数不够；必须防止四个数组、索引表、计数及票据在读取中途变化。失败时不得遗留租约。
 2. `read` 仅在有效租约内复制指定范围，失败明确返回 0。这里没有进程查找、地址扫描、内存分配、安装、注入或写入代码。
@@ -65,4 +65,4 @@ py -3.12 -m pip install --target eight_player_candidate_20260927/.native-test-de
 
 该命令只用于尚未准备依赖的新环境，不覆盖现有环境。收据在 `evidence/engine-roster-validation.json`；三个映像、测试程序及研究 DLL 位于被忽略的 `build/`。
 
-下一步接入有并发与寿命保证的原生所有者，明确谁产生 peer/property 和代次票据、谁安装/撤销存储生产者，再处理计分、customization、角色资源及复制的独立四槽限制。生产绑定、真实存储扩容、安装整合和真人任务验收目前均未通过。本轮没有启动、检查、读取或修改游戏。
+下一步将 [存储所有者](ROSTER_OWNER.zh-CN.md) 接入原生写入入口与旧调用排空，明确谁产生 peer/property 和代次票据、谁安装/撤销存储生产者，再处理计分、customization、角色资源及复制的独立四槽限制。生产绑定、真实存储扩容、安装整合和真人任务验收目前均未通过。本轮没有启动、检查、读取或修改游戏。

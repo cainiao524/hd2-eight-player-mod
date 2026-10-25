@@ -130,6 +130,21 @@ def main():
     native_match = re.fullmatch(r'native roster source: (\d+) checks passed; emitted native insert storage to real loader consumers', native_output)
     if not native_match:
         raise RuntimeError('Missing native storage result: ' + native_output)
+    owner_dll,owner_test=build/'roster_owner_test.dll',build/'roster_owner_test.exe'
+    # Same flags as upstream ModKit: the owner must not require an unshipped
+    # launcher/compiler flag patch to compile its exception boundary.
+    run([zig,'c++','-std=c++17','-target','x86_64-windows-gnu','-shared','-O2','-Wall','-Werror','-Wno-unused-parameter',
+         PROJECT/'tests/roster_owner_dll.cpp','-o',owner_dll])
+    run([*common,'-O1',PROJECT/'tests/roster_owner_test.c',*deps,'-o',owner_test])
+    owner_output=run([owner_test,owner_dll,fixture,fixture.with_suffix('.removed.bin'),fixture.with_suffix('.rejoined.bin')]).decode('utf-8').strip()
+    owner_match=re.fullmatch(r'roster owner: (\d+) checks passed; production DLL and real loader, synthetic memory only',owner_output)
+    if not owner_match:raise RuntimeError('Missing roster owner result: '+owner_output)
+    owner_result=dict(checks=int(owner_match[1]),actual_owner_dll=True,actual_loader_consumers=True,
+        source_compiles_with_upstream_flags=True,serialized_read_write=True,stale_revision_refused_before_mutation=True,
+        slot_generation_tombstones=True,overlapping_owners_refused=True,close_drains_readers_and_queued_writers=True,
+        stale_provider_context_unavailable=True,callback_seh_quarantines_and_releases=True,
+        bound_to_roster_group=False,all_game_writers_covered=False,authoritative_identity_source_bound=False,
+        underlying_memory_reader_is_fixture=True,partial_write_rollback_implemented=False,game_access=False)
     gate_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_property_gates.py','--library',property_dll]))
     gate_receipt=PROJECT/'evidence/property-gate-validation.json'
     group_dll,group_test=build/'property_group_test.dll',build/'property_group_test.exe'
@@ -203,6 +218,7 @@ def main():
         'native_insert':{**insert_output,'validation_sha256':digest(insert_receipt)},
         'native_remove':{**remove_output,'validation_sha256':digest(remove_receipt)},
         'roster_group':roster_group_result,
+        'roster_owner':owner_result,
         'roster_gates':{**roster_gate_output,'validation_sha256':digest(roster_gate_receipt)},
         'native_classify':{**classify_output,'validation_sha256':digest(classify_receipt)},
         'native_classify_storage':{'checks':int(classify_match[1]),**classify_fixture_receipt},
@@ -244,18 +260,20 @@ def main():
             'tools/native_classify_fixture.py','tests/native_classify_roster_test.c',
             'mod/src/ep_roster_gate.h','mod/src/ep_roster_gate.cpp','mod/src/ep_roster_group.h','mod/src/ep_roster_group.cpp',
             'tests/roster_group_dll.h','tests/roster_group_dll.cpp','tests/roster_group_test.c','tools/validate_roster_gates.py',
+            'mod/src/ep_roster_owner.h','mod/src/ep_roster_owner.cpp',
+            'tests/roster_owner_dll.h','tests/roster_owner_dll.cpp','tests/roster_owner_test.c',
             'native-getter.lock.json','tools/native_getter_image.py','tools/generate_getter_template.py','tools/validate_getter_image.py',
             'mod/src/ep_getter_image.h','mod/src/ep_getter_image.cpp','mod/src/ep_getter_template.h',
             'tests/backend/Program.cs', 'tests/backend/Backend.csproj',
             'mod/src/ep_native_roster.cpp', 'mod/src/ep_native_roster.h', 'mod/src/ep_roster_api.h',
             'native-storage.lock.json', 'tools/build_engine_offline.py', 'engine/patch.lock.json', 'upstream.lock.json')},
-        'artifacts': {p.name: {'bytes': p.stat().st_size, 'sha256': digest(p)} for p in (roster_group_dll,roster_group_test,dll, test, native_test, code_test, code_dll, property_dll, group_dll, group_test, classify_test, classify_fixture, classify_fixture.with_suffix('.enter.bin'), classify_fixture.with_suffix('.leave.bin'), fixture, fixture.with_suffix('.removed.bin'), fixture.with_suffix('.rejoined.bin'), sync_test, sync_input, sync_routed, sync_received, *sync_images)},
+        'artifacts': {p.name: {'bytes': p.stat().st_size, 'sha256': digest(p)} for p in (owner_dll,owner_test,roster_group_dll,roster_group_test,dll, test, native_test, code_test, code_dll, property_dll, group_dll, group_test, classify_test, classify_fixture, classify_fixture.with_suffix('.enter.bin'), classify_fixture.with_suffix('.leave.bin'), fixture, fixture.with_suffix('.removed.bin'), fixture.with_suffix('.rejoined.bin'), sync_test, sync_input, sync_routed, sync_received, *sync_images)},
         'game_started': False, 'game_checked': False, 'game_read': False, 'installed': False,
         'native_game_storage_expanded': False, 'production_provider_bound': False,
         'runtime_verified': False, 'multiplayer_verified': False, 'public_release_allowed': False,
     }
     (PROJECT / 'evidence/engine-roster-validation.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
-    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'native_storage_checks': receipt['native_storage_checks'], 'session_code_checks': int(code_match[1]), 'property_images':property_output,'property_gates':gate_output,'property_group_checks':int(group_match[1]),'getter':getter_output,'mover':mover_output,'insert':insert_output,'remove':remove_output,'classify':classify_output,'classify_storage_checks':int(classify_match[1]),'roster_gates':roster_gate_output,'roster_group_checks':roster_group_result['checks'],'native_getter_queries':sync_receipt['native_getter_queries'], 'sync_consumer_checks': sync_receipt['consumer_checks'], 'native_receivers': sync_receipt['native_receivers'], 'patch_replayed': True, 'game_access': False}))
+    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'native_storage_checks': receipt['native_storage_checks'], 'session_code_checks': int(code_match[1]), 'property_images':property_output,'property_gates':gate_output,'property_group_checks':int(group_match[1]),'getter':getter_output,'mover':mover_output,'insert':insert_output,'remove':remove_output,'classify':classify_output,'classify_storage_checks':int(classify_match[1]),'roster_gates':roster_gate_output,'roster_group_checks':roster_group_result['checks'],'roster_owner_checks':owner_result['checks'],'native_getter_queries':sync_receipt['native_getter_queries'], 'sync_consumer_checks': sync_receipt['consumer_checks'], 'native_receivers': sync_receipt['native_receivers'], 'patch_replayed': True, 'game_access': False}))
 
 
 if __name__ == '__main__':
