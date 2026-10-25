@@ -3,7 +3,7 @@
   "updated_date": "2026-10-25",
   "timezone": "Asia/Taipei",
   "active_target": "HellForge",
-  "stage": "sdk_backend_and_native_roster_consumers_offline_verified",
+  "stage": "sdk_backend_native_storage_to_roster_consumers_offline_verified",
   "upstream_commit": "a4dd089eb56cdd5cd96c3cefe6e80eba5848d6fa",
   "release": "0.2.0-beta",
   "engine_version": "0.1.28",
@@ -27,7 +27,7 @@
   "live_capture_authorized": false,
   "remaining_authorized_captures": 0,
   "legacy_dispatcher_capture": "deferred_legacy_route_not_authorized",
-  "next_source_work": "Bind a real lifetime-safe player storage producer; adapt independent score/customization/resource/replication limits. Keep runtime gates closed.",
+  "next_source_work": "Implement lifetime and mutation-exclusion owner leases, authoritative identity ticket producers, and production binding/unbinding; then adapt independent score/customization/resource/replication limits. Keep runtime gates closed.",
   "validation": "evidence/offline-validation.json",
   "handoff": "HANDOFF.zh-CN.md",
   "branch": "codex/hellforge-migration",
@@ -35,5 +35,10 @@
   "offline_engine_roster_checks": 100,
   "engine_roster_validation": "evidence/engine-roster-validation.json",
   "engine_patch": "engine/0001-shared-player-roster.patch",
-  "native_game_storage_expanded": false
+  "native_game_storage_expanded": false,
+  "offline_native_storage_assertions": 589,
+  "native_storage_handoff": "NATIVE_STORAGE.zh-CN.md",
+  "native_storage_read_budget_bytes": 4096,
+  "native_storage_fixture_read_bytes": 2024,
+  "native_storage_owner_bound": false
 }

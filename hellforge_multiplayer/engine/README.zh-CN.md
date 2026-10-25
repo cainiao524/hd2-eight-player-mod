@@ -2,7 +2,7 @@
 
 适用上游 commit：`a4dd089eb56cdd5cd96c3cefe6e80eba5848d6fa`，SDK 13、engine 0.1.28、游戏 build 25480438。
 
-这份补丁让 HellForge 原生读取者可以消费外部提供的玩家快照。它没有扩大游戏里的玩家资源、创建角色、放宽接纳或修改复制容量；当前研究 Mod 也不会自动绑定这个接口。真实 provider 尚未实现，不能安装后期待出现第五人。
+这份补丁让 HellForge 原生读取者可以消费外部提供的玩家快照。它没有扩大游戏里的玩家资源、创建角色、放宽接纳或修改复制容量；当前研究 Mod 也不会自动绑定这个接口。B 布局读取回调已在 Mod 源码中实现，但生产环境的存储所有者与绑定尚未实现，不能安装后期待出现第五人。
 
 ## 修改范围
 
@@ -37,10 +37,14 @@ py -3.12 -B hellforge_multiplayer/tools/build_engine_offline.py `
   --minhook work/hellforge_toolchain_20261025/minhook-1.3.4
 ```
 
+新增存储测试还需要 Unicorn 2.1.4 和 Capstone 5.0.7；依赖位置、准备命令及原生代码/合成输入的界限见 [NATIVE_STORAGE.zh-CN.md](../NATIVE_STORAGE.zh-CN.md)。
+
 脚本从固定 Git 对象导出新源码目录，检查并应用补丁，验证六个修改文件的指纹，再编译原生 loader 与测试。原上游 checkout 保持原样；导出目录保留在被忽略的 `build/engine-source-*`，不会重置或删除旧工作。
 
 测试直接包含补丁后的 `hellforge_modloader.c`，调用实际枚举、事件、治疗和被动效果读取函数。合成数据只在本测试进程内；构建出的 DLL 仅用来核对私有导出，没有调用 `hellforge_loader_start`。测试不运行 watch、安装 hook、修改被动效果或执行游戏动作。
 
 结果记录在 `evidence/engine-roster-validation.json`：100 项检查，含八人读取、第八人事件、代次/epoch/绑定变化、重排/离开、稀疏索引、十六项硬上限、八容量拒绝第九项、无效数据不回退、单人判断、原位四槽边界、初始化失败清理和并发解绑等待。产物为 `build/hellforge_modloader-research.dll` 和 `build/engine_roster_test.exe`，均保持本地且不作为可安装发布物。
+
+同一入口还执行新增的 `native_roster_test.exe`：589 次断言，将原生候选实际写出的八槽映像连接到本次 B 布局读取器，再交给实际消费者。覆盖插入、删除压缩、重新插入、权威索引保持和逐次读取故障。三个映像及其来源/输入边界另列在同一收据的 `native_storage_fixture`。该数量包括每次租约/复制检查，不是独立场景数。
 
 补丁按 HellForge 引擎的 GPL-3.0 条款维护；原文及 Mod 例外保存在 `licenses/`。MinHook 许可证同目录保留。完整 loader 仍需要对应上游源码，这份 patch 不替代它的源代码义务。

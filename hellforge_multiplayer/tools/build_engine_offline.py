@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 import re
 import subprocess
+import sys
 import tarfile
 import tempfile
 
@@ -55,6 +56,7 @@ def main():
         check(minhook / path, sha)
     patch = PROJECT / patch_lock['patch']
     check(patch, patch_lock['patch_sha256'])
+    check(PROJECT / 'mod/src/ep_roster_api.h', patch_lock['patched_source_sha256']['native/mod-loader/ep_roster.h'])
     build = PROJECT / 'build'
     build.mkdir(exist_ok=True)
     # A fresh preserved export avoids deleting or resetting any prior work.
@@ -81,22 +83,33 @@ def main():
     match = re.fullmatch(r'engine roster: (\d+) checks passed; real patched consumers, synthetic process only', output)
     if not match:
         raise RuntimeError('Missing successful native test result: ' + output)
+    fixture = build / 'native-roster-fixture.bin'
+    fixture_receipt = json.loads(run([sys.executable, '-B', PROJECT / 'tools/native_roster_fixture.py', '--output', fixture]))
+    native_test = build / 'native_roster_test.exe'
+    run([*common, '-O1', PROJECT / 'tests/native_roster_test.c', *deps, '-o', native_test])
+    native_output = run([native_test, fixture, fixture.with_suffix('.removed.bin'), fixture.with_suffix('.rejoined.bin')]).decode('utf-8').strip()
+    native_match = re.fullmatch(r'native roster source: (\d+) checks passed; emitted native insert storage to real loader consumers', native_output)
+    if not native_match:
+        raise RuntimeError('Missing native storage result: ' + native_output)
     receipt = {
         'schema': 'hellforge_engine_roster_validation_v1',
         'verified_at_utc': datetime.now(timezone.utc).isoformat(),
         'upstream_commit': lock['commit'], 'sdk': 13, 'game_build': '25480438',
         'private_extension_version': 1, 'checks': int(match[1]), 'passed': True,
+        'native_storage_checks': int(native_match[1]), 'native_storage_fixture': fixture_receipt,
         'replayed_patch': patch_lock['patch'], 'patch_sha256': digest(patch),
         'patched_source_sha256': patch_lock['patched_source_sha256'],
         'test_source_sha256': {p: digest(PROJECT / p) for p in (
-            'tests/engine_roster_test.c', 'tools/build_engine_offline.py', 'engine/patch.lock.json', 'upstream.lock.json')},
-        'artifacts': {p.name: {'bytes': p.stat().st_size, 'sha256': digest(p)} for p in (dll, test)},
+            'tests/engine_roster_test.c', 'tests/native_roster_test.c', 'tools/native_roster_fixture.py',
+            'mod/src/ep_native_roster.cpp', 'mod/src/ep_native_roster.h', 'mod/src/ep_roster_api.h',
+            'native-storage.lock.json', 'tools/build_engine_offline.py', 'engine/patch.lock.json', 'upstream.lock.json')},
+        'artifacts': {p.name: {'bytes': p.stat().st_size, 'sha256': digest(p)} for p in (dll, test, native_test, fixture, fixture.with_suffix('.removed.bin'), fixture.with_suffix('.rejoined.bin'))},
         'game_started': False, 'game_checked': False, 'game_read': False, 'installed': False,
         'native_game_storage_expanded': False, 'production_provider_bound': False,
         'runtime_verified': False, 'multiplayer_verified': False, 'public_release_allowed': False,
     }
     (PROJECT / 'evidence/engine-roster-validation.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
-    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'patch_replayed': True, 'game_access': False}))
+    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'native_storage_checks': receipt['native_storage_checks'], 'patch_replayed': True, 'game_access': False}))
 
 
 if __name__ == '__main__':

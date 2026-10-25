@@ -1,12 +1,90 @@
 {
   "schema": "hellforge_engine_roster_validation_v1",
-  "verified_at_utc": "2026-10-25T10:04:48.907804+00:00",
+  "verified_at_utc": "2026-10-25T10:16:11.147692+00:00",
   "upstream_commit": "a4dd089eb56cdd5cd96c3cefe6e80eba5848d6fa",
   "sdk": 13,
   "game_build": "25480438",
   "private_extension_version": 1,
   "checks": 100,
   "passed": true,
+  "native_storage_checks": 589,
+  "native_storage_fixture": {
+    "native_insertions": [
+      {
+        "ordinal": 0,
+        "instructions": 110,
+        "map_calls": 1
+      },
+      {
+        "ordinal": 1,
+        "instructions": 122,
+        "map_calls": 1
+      },
+      {
+        "ordinal": 2,
+        "instructions": 134,
+        "map_calls": 1
+      },
+      {
+        "ordinal": 3,
+        "instructions": 146,
+        "map_calls": 1
+      },
+      {
+        "ordinal": 4,
+        "instructions": 158,
+        "map_calls": 1
+      },
+      {
+        "ordinal": 5,
+        "instructions": 170,
+        "map_calls": 1
+      },
+      {
+        "ordinal": 6,
+        "instructions": 182,
+        "map_calls": 1
+      },
+      {
+        "ordinal": 7,
+        "instructions": 194,
+        "map_calls": 1
+      }
+    ],
+    "ninth_refused_before_write": true,
+    "fixtures": {
+      "native-roster-fixture.bin": {
+        "sha256": "962d4370f3327d3c8ef4aacfa37e2a7d058a53fb6b722396b13e4303cefd1001",
+        "bytes": 2284
+      },
+      "native-roster-fixture.removed.bin": {
+        "sha256": "be3111bf13b3746478bc2684e4900f62fe950dcb4ea8b71b7aa435e1da727bbb",
+        "bytes": 2284
+      },
+      "native-roster-fixture.rejoined.bin": {
+        "sha256": "fc36ebdba09cfefb5bbb57e9761673f3a3257ba13b1f1b984cdc7770d09c10d6",
+        "bytes": 2284
+      }
+    },
+    "native_removal_instructions": 560,
+    "native_reinsert_instructions": 194,
+    "native_outputs": [
+      "descriptor pointers",
+      "tracked/dense/prefix counts",
+      "entity-to-ordinal map",
+      "primary/auxiliary initialization"
+    ],
+    "synthetic_inputs": [
+      "descriptors/entity IDs",
+      "peer IDs",
+      "lifecycles",
+      "avatar network IDs",
+      "player network indexes",
+      "local peer",
+      "generation tickets"
+    ],
+    "game_access": false
+  },
   "replayed_patch": "engine/0001-shared-player-roster.patch",
   "patch_sha256": "c9096a42fb2bc20e1c09d404b98f91f7f618a95bc9de4b5651a34b8f489b23ee",
   "patched_source_sha256": {
@@ -19,7 +97,13 @@
   },
   "test_source_sha256": {
     "tests/engine_roster_test.c": "2a8029348b06074fa61e64a6a248df266316fb5ced7f88f000a3316d8e67f0d1",
-    "tools/build_engine_offline.py": "608eef826d1d4edc1d94e7c9b2703faabc85bd71e7de8c21c158de94c0ff28aa",
+    "tests/native_roster_test.c": "2fa4b7008302c722853806ef16b92dfeeeec4b144f39a9fe0f19430093ff029b",
+    "tools/native_roster_fixture.py": "bbcbfd2a5f3cdbfbc9e680145da596e7b9ff89f7a00e3665501066d51b9605b8",
+    "mod/src/ep_native_roster.cpp": "94a7608c6ae1eaed3492834f572e8b300a0962197f03e4b48259fc7977c2080f",
+    "mod/src/ep_native_roster.h": "30116c76318c97ae2954530ad161cc56345428216592abb6dfa5e4961c941f26",
+    "mod/src/ep_roster_api.h": "75bfdbf3ca86fa172a2ace0c81aa1de7d74035665094c85257f1d323a09a5816",
+    "native-storage.lock.json": "634ef85f2c0a14d61515ce8b5d1b6258c2429fb0344210919d8611aae4727a5d",
+    "tools/build_engine_offline.py": "db0fff5b30547367da4a62b479b36d7b209c8067662c9781bcde6499201fda9f",
     "engine/patch.lock.json": "dc6ca3a022c8879eab5a3244989077125614b510b2575837961693d861dd981b",
     "upstream.lock.json": "1d9274d0040561997c6a3d3ba34279f5e8c83bd788e38cd2f97a99fb946ed0f3"
   },
@@ -30,7 +114,23 @@
     },
     "engine_roster_test.exe": {
       "bytes": 765952,
-      "sha256": "9b65a24ad2e751edc740d68e356173c607025d56e8912be68de9dafcfc7c524c"
+      "sha256": "81c28a868a8b9797ff8fe599e99d4ea08bfcc3dbfe1b9d7833d9d80b9c46c88e"
+    },
+    "native_roster_test.exe": {
+      "bytes": 764928,
+      "sha256": "8550921d3ccace96fdfdb99f44311a71f806a0fbd4f30f4adb9c3de2ea182072"
+    },
+    "native-roster-fixture.bin": {
+      "bytes": 2284,
+      "sha256": "962d4370f3327d3c8ef4aacfa37e2a7d058a53fb6b722396b13e4303cefd1001"
+    },
+    "native-roster-fixture.removed.bin": {
+      "bytes": 2284,
+      "sha256": "be3111bf13b3746478bc2684e4900f62fe950dcb4ea8b71b7aa435e1da727bbb"
+    },
+    "native-roster-fixture.rejoined.bin": {
+      "bytes": 2284,
+      "sha256": "fc36ebdba09cfefb5bbb57e9761673f3a3257ba13b1f1b984cdc7770d09c10d6"
     }
   },
   "game_started": false,
