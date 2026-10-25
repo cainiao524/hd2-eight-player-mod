@@ -26,6 +26,8 @@ class Library:
         self.gate.argtypes=[c.c_uint32,c.POINTER(Addresses),c.c_uint64,c.c_uint64,c.POINTER(GateImage)]; self.gate.restype=c.c_int
         self.getter=self.dll.getter_image_test_build
         self.getter.argtypes=[c.POINTER(GetterAddresses),c.POINTER(Image)];self.getter.restype=c.c_int
+        self.getter_gate=self.dll.getter_image_test_gate
+        self.getter_gate.argtypes=[c.POINTER(GetterAddresses),c.c_uint64,c.c_uint64,c.POINTER(GateImage)];self.getter_gate.restype=c.c_int
 
     def getter_candidate(self,addresses,reference):
         out=Image();result=self.getter(GetterAddresses(**addresses),out)

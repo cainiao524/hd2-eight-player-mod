@@ -2,8 +2,9 @@
 #include <string.h>
 #include "property_group_dll.h"
 static unsigned failures;
+static bool preparing_getter;
 static BOOL TestFree(LPVOID p,SIZE_T n,DWORD flags) { return failures&1 ? FALSE : VirtualFree(p,n,flags); }
-static BOOL TestProtect(LPVOID p,SIZE_T n,DWORD flags,PDWORD old) { return failures&2 ? FALSE : VirtualProtect(p,n,flags,old); }
+static BOOL TestProtect(LPVOID p,SIZE_T n,DWORD flags,PDWORD old) { return (failures&2) || ((failures&16) && preparing_getter) ? FALSE : VirtualProtect(p,n,flags,old); }
 #define VirtualFree TestFree
 #define VirtualProtect TestProtect
 #include "../mod/src/ep_session_code.cpp"
@@ -29,11 +30,25 @@ static EpPropertyResult FixtureBuild(uint32_t kind,const EpPropertyAddresses* a,
     memcpy(out->data+at,kind==1 ? producer : receiver,kind==1 ? sizeof(producer) : sizeof(receiver));
     return EP_PROPERTY_OK;
 }
+static EpPropertyResult FixtureGetter(const EpGetterAddresses* a,EpPropertyImage* out)
+{
+    EpPropertyResult result=ep_getter_image_build(a,out);
+    if (result!=EP_PROPERTY_OK) return result;
+    preparing_getter=true;
+    if (failures&8) { memset(out,0,sizeof(*out)); return EP_PROPERTY_POINTER; }
+    const uint8_t body[]={0x48,0x89,0xC8,0x48,0x01,0xD0,0x4C,0x01,0xC0,0x4C,0x01,0xC8,
+        0x48,0x05,0xB8,0x0B,0,0,0x48,0x8B,0x5C,0x24,8,0x48,0x8B,0x6C,0x24,0x10,
+        0x48,0x8B,0x74,0x24,0x18,0x48,0x8B,0x7C,0x24,0x20,0xC3};
+    memset(out->data+20,0x90,out->code_bytes-20); memcpy(out->data+20,body,sizeof(body));
+    return EP_PROPERTY_OK;
+}
 #define ep_property_image_build FixtureBuild
+#define ep_getter_image_build FixtureGetter
 #include "../mod/src/ep_property_gate.cpp"
 #undef ep_property_image_build
+#undef ep_getter_image_build
 #include "../mod/src/ep_property_group.cpp"
-static void SetFailure(unsigned value) { failures=value; }
+static void SetFailure(unsigned value) { failures=value; preparing_getter=false; }
 extern "C" __declspec(dllexport) const PropertyGroupTestApi* property_group_test_api(void)
 {
     static const PropertyGroupTestApi api={ep_property_group_prepare,ep_property_group_info,ep_property_group_publish,

@@ -14,7 +14,7 @@ import struct
 import native_producer_unwind
 import native_receiver_unwind
 import native_getter_image
-from native_property_library import Library
+from native_property_library import GetterAddresses,GateImage,Library
 
 ROOT = Path(__file__).resolve().parents[2]
 PROJECT = ROOT / 'hellforge_multiplayer'
@@ -192,8 +192,13 @@ def consume(input_path, routed_path, output, property_library):
                          'network_index': struct.unpack_from('<I', wire, 12)[0], 'instructions': len(f.trace)})
         bindings=dict(game_base=game,code_address=game+0x10030000,roster_address=roster,
                       storage_address=storage,reject_address=game+0x10034000)
-        getter=native.getter_candidate(bindings,native_getter_image.build(**bindings))
-        data=bytes.fromhex(getter['code_hex']);f.map(getter['entry_address'],len(data));f.write(getter['entry_address'],data)
+        control=game+0x10038000;out=GateImage()
+        require(native.getter_gate(GetterAddresses(**bindings),control,control+8,out)==0,'Getter gate failed')
+        reference=native_getter_image.build(**{**bindings,'code_address':bindings['code_address']+32})
+        data=bytes(out.data[:out.bytes]);require(data[32:32+reference['table_offset']]==reference['image'][:reference['table_offset']],'Gated getter differs')
+        getter={**reference['candidate'],'entry_address':bindings['code_address']}
+        f.map(getter['entry_address'],len(data));f.write(getter['entry_address'],data)
+        f.map(control,16);f.write(control,p.u32(1));f.write(control+8,p.u64(f.stop))
         f.reject=getter['reject_address'];f.map(f.reject,1);f.write(f.reject,b'\xCC')
         for peer in range(8):
             f.seed();f.write(p.RSP,p.u64(f.stop));f.uc.reg_write(p.reg('rsp'),p.RSP);f.uc.reg_write(p.reg('edx'),entity(node,peer))
@@ -208,7 +213,7 @@ def consume(input_path, routed_path, output, property_library):
             queries.append(dict(node=node+1,member=peer+1,entity=entity(node,peer),ordinal=order_for(node).index(peer),network_index=expected_index))
         path = output.parent / f'native-sync-{node + 1}-after.bin'
         artifacts[path.name] = export(path, m, f, node)
-    result = {'native_receivers': runs, 'native_getter_queries':queries,'artifacts': artifacts, 'passed': True,
+    result = {'native_receivers': runs, 'native_getter_queries':queries,'native_getter_gate_executed':True,'artifacts': artifacts, 'passed': True,
               'source_sha256': hashlib.sha256(input_path.read_bytes()).hexdigest(),
               'routed_sha256': hashlib.sha256(routed_path.read_bytes()).hexdigest(),
               'game_serializer_executed': False, 'game_entity_dispatch_executed': False,

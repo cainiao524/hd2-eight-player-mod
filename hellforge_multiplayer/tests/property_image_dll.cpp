@@ -20,6 +20,8 @@ static EpPropertyResult ImageBuild(uint32_t kind,const EpPropertyAddresses* a,Ep
 }
 extern "C" __declspec(dllexport) int property_image_test_gate(uint32_t kind,const EpPropertyAddresses* a,uint64_t control,uint64_t next,EpPropertyGateImage* out)
 { return ep_property_gate_build(kind,a,control,next,out); }
+extern "C" __declspec(dllexport) int getter_image_test_gate(const EpGetterAddresses* a,uint64_t control,uint64_t next,EpPropertyGateImage* out)
+{ return ep_getter_gate_build(a,control,next,out); }
 static bool fail_free,fail_protect;
 static BOOL TestFree(LPVOID p,SIZE_T n,DWORD flags)
 { return fail_free ? FALSE : VirtualFree(p,n,flags); }

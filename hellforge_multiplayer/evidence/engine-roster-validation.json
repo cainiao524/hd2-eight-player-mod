@@ -1,6 +1,6 @@
 {
   "schema": "hellforge_engine_roster_validation_v1",
-  "verified_at_utc": "2026-10-25T13:31:17.077816+00:00",
+  "verified_at_utc": "2026-10-25T13:41:23.431843+00:00",
   "upstream_commit": "a4dd089eb56cdd5cd96c3cefe6e80eba5848d6fa",
   "sdk": 13,
   "game_build": "25480438",
@@ -101,6 +101,7 @@
     "native_insertions": 64,
     "native_receivers": 56,
     "native_getter_queries": 64,
+    "native_getter_gate_executed": true,
     "relay_checks": 129,
     "game_serializer_executed": false,
     "game_entity_dispatch_executed": false,
@@ -117,7 +118,7 @@
     "legacy_rejection_failures_reproduced": 3,
     "game_access": false,
     "placement_and_source_refusals": 3,
-    "validation_sha256": "78b3366ba6485ed14bf65fd5c2f94e19b1430a1ecefd53321a62f94cf987d88c"
+    "validation_sha256": "1ed79cb3ec55d12d153ed8bb0fd9684aa781101538b79c6a2c9a08abf1b39bca"
   },
   "native_receiver_unwind": {
     "passed": true,
@@ -127,7 +128,7 @@
     "game_access": false,
     "placement_and_source_refusals": 3,
     "unique_instruction_positions": 101,
-    "validation_sha256": "2267cf9c039eb9ccef4edbb9a92df0bebf315aa5b651d3dc83c24920eb5ba62b"
+    "validation_sha256": "0abc841c907010b26e1ddb3fdda16b2313cda8f5ae174a1633eab849ed4bb59e"
   },
   "native_property_images": {
     "passed": true,
@@ -136,7 +137,7 @@
     "api_contract_checks": 4,
     "owner_checks": 50,
     "game_access": false,
-    "validation_sha256": "af90e61fa5d7bd59de70bb014d16534a4bc9e1112cc7c253e3fa77e5e4a40c60"
+    "validation_sha256": "5bf5681aeda221c37aacdc815c2cdd4d35e5f2f044785d6c383fe1d3bbc311af"
   },
   "native_getter": {
     "passed": true,
@@ -147,18 +148,24 @@
     "windows_unwind_contexts": 4548,
     "owner_checks": 25,
     "game_access": false,
-    "validation_sha256": "c30800e89ef9faadd0155741bac8ebad61bef585b15c4f861b7e82b829e2e723"
+    "validation_sha256": "667988eb2d8ad98e8b0e1c306b6c29ef816cc2a1cbeb4819d86574259d5f65ab"
   },
   "native_property_gates": {
     "passed": true,
-    "branch_cases": 12,
-    "placement_refusals": 12,
-    "windows_unwind_contexts": 2621,
+    "branch_cases": 18,
+    "placement_refusals": 24,
+    "windows_unwind_contexts": 7169,
     "game_access": false,
-    "validation_sha256": "8e54e850896a31ff6ae8262cfed8be70d0c3d90b0bcb898ce679b372571dfe1c"
+    "validation_sha256": "f9339f4a2915c57fcf27651ae353fe03996506dc6217644cb02c8172073d02c8"
   },
   "property_group": {
-    "checks": 258,
+    "checks": 355,
+    "entries": [
+      "producer",
+      "receiver",
+      "entity_network_getter"
+    ],
+    "shared_storage_binding": true,
     "actual_hellforge_chains": true,
     "partial_publication_failure_forwards": true,
     "cooperative_quiescence_tested": true,
@@ -207,7 +214,7 @@
       "passed": true,
       "tests": 10
     },
-    "validation_sha256": "085088ad77a873de8afe97889961bba6ce4951dfff337f13a6635d90f86fedcf"
+    "validation_sha256": "42662ae96f56a0609b802b0d2ce6c6052dd38b8b735e866bd5b86b135bf9cee7"
   },
   "replayed_patch": "engine/0001-shared-player-roster.patch",
   "patch_sha256": "c9096a42fb2bc20e1c09d404b98f91f7f618a95bc9de4b5651a34b8f489b23ee",
@@ -225,7 +232,7 @@
     "tools/native_roster_fixture.py": "bbcbfd2a5f3cdbfbc9e680145da596e7b9ff89f7a00e3665501066d51b9605b8",
     "tests/native_fixture.h": "a5f842280c255f25756fdfb5441a1aae8ddaa91ff1dc5c3426de98b8eb732933",
     "tests/native_roster_sync_test.c": "b7e90b1f1bb262132c59bf74b547e107a070a13019f389fd5cf726e0e873ad6b",
-    "tools/native_roster_sync.py": "4f96ff4548d549e16f127cb38908c8c23a2e953e3a5488d612a2a42d1fe77e72",
+    "tools/native_roster_sync.py": "87343f56cc7c275126e7e9c1b829fed2d0c0756a9841340c07d875023399d8c7",
     "tools/native_producer_unwind.py": "4cb2da68acb304be8434f786573d6b440e7057ace4a45deb355a956c5ec48832",
     "tools/build_unwind_offline.py": "576e73961921f11899c05f717e7345fa26a77d616bbc80cb06256ac1dbe09a3e",
     "tests/native_producer_unwind_test.c": "39556e3783126345adcb23b7376ade0d8f105ef45982a191e118c2d75431341e",
@@ -245,18 +252,18 @@
     "mod/src/ep_property_templates.h": "940fef65c777ad60deb8f2e92c79b6e8dc717dead972237363ec4344fe92d3f9",
     "mod/src/ep_property_code.cpp": "513600a118023e46c6b2c90720b37122a49d6f130dc1d6ffe24fb036d1fd16df",
     "mod/src/ep_property_code.h": "e8f23e9c66034911e21b95f27a38c95ca7d07e0ea4cc40f3be8eaff22adf2907",
-    "tests/property_image_dll.cpp": "b8042a08316ba96a16c12aa16d6f455b002be3d7604760b26b32c6c1506def69",
+    "tests/property_image_dll.cpp": "218eabbbc818600ea8e751fca6599ac390101187245b0f3dbef0f2bff673cacd",
     "tools/generate_property_templates.py": "4d855e6eb2f0862f618db1b77df769c0b05a4232b66ebd59009abda399d18d26",
-    "tools/native_property_library.py": "5d75ffe84327ed1bbd39d384afa6a2857daf816ef4394617bc0e857d3c3095c5",
+    "tools/native_property_library.py": "64242be0b5013975b476ba391bd7626cb454fda5c1e6699aa525b24fca72c090",
     "tools/validate_property_images.py": "d89df719e5c70476f688d5a549b8bc01b33bf9d4cc9709068295ee5c47d97b03",
-    "mod/src/ep_property_gate.h": "679610886ced2a47f09aab9894967d673a95c089e23c4b840307252ad9bf39a1",
-    "mod/src/ep_property_gate.cpp": "0c1b39a1ffbba07c3a4fd3e2a6f4828c859f23153fbc05c3e0b5554e6cb76674",
-    "mod/src/ep_property_group.h": "2e94801c9fc582d5a13d5e6102f1e21394c608442c472abf29a72254646a53c9",
-    "mod/src/ep_property_group.cpp": "724b76630b37ee14ce898517bba0a649299e64f5cf1e0da07c7e64b5099a2f8c",
+    "mod/src/ep_property_gate.h": "731c5e84adf165c58274385196d9ef49bcb1042f5e0e316bdd5d321907c93aef",
+    "mod/src/ep_property_gate.cpp": "5b8aa7af60d0801be4247a9fa6e9ebb11b749981e6e795a1ae7a72ae95668778",
+    "mod/src/ep_property_group.h": "33c36ccd98dfa0f406b764207374fe965f5028a44967835acafd4e614445e761",
+    "mod/src/ep_property_group.cpp": "9505965db8971f0fc03f155e26f7ae236804e4a68cd58b6b12543129dd9fc28e",
     "tests/property_group_dll.h": "c997fa88494af1d5092bdd462edf54c1983e8a70bdaaa7bbb3e3b5539ac0ded7",
-    "tests/property_group_dll.cpp": "e5f5a70c22ec516cb1433388538455b2add4ce476fdbd9de9348efec379499f7",
-    "tests/property_group_test.c": "70ae86d1066d7eed33e7fca08314b9e9d8cf6c4109503311a341608ba069db28",
-    "tools/validate_property_gates.py": "4d53c1cf3874c8bc787e9222984f8c8cb7e1abe11d6847603b8450cf7cbddd66",
+    "tests/property_group_dll.cpp": "845d3e320e3e2e56ba4f7e706f02406523d49eef6eee79b711135866104a2700",
+    "tests/property_group_test.c": "48a24bb9d1fc2d4021d152568f6d23d13ec8bc7ebf3f68454cb671cdb44d4d17",
+    "tools/validate_property_gates.py": "cda98e2cc88558016af28d0ba14a52c4d1ce56f0d9b22adb5abe601a84bfd281",
     "native-getter.lock.json": "2ec11c0046408233a263c86d91e84309b153458d6f3863b38a5894adb75b19d9",
     "tools/native_getter_image.py": "3b329d319d9edd550fa237a4c8c8c04bf17d8dfcd7e688b6291d1e31c1306afb",
     "tools/generate_getter_template.py": "63441e7e961c2f07d04027bf7cceef677b88c15215845a1b23f3504727a22b95",
@@ -270,7 +277,7 @@
     "mod/src/ep_native_roster.h": "30116c76318c97ae2954530ad161cc56345428216592abb6dfa5e4961c941f26",
     "mod/src/ep_roster_api.h": "75bfdbf3ca86fa172a2ace0c81aa1de7d74035665094c85257f1d323a09a5816",
     "native-storage.lock.json": "ec2a0cafe60941a36c09b87bd40f8098fc904120ce68b027f9de3edf5093161f",
-    "tools/build_engine_offline.py": "3b00c6a5cb3f1e5c68fab87c3083448c0b4f8769f22d489c7ac85bceec765d4f",
+    "tools/build_engine_offline.py": "ef83907b6630516c8ef478b9dbdbc07cbddfef3c756764581e3614f7fb5277fb",
     "engine/patch.lock.json": "dc6ca3a022c8879eab5a3244989077125614b510b2575837961693d861dd981b",
     "upstream.lock.json": "1d9274d0040561997c6a3d3ba34279f5e8c83bd788e38cd2f97a99fb946ed0f3"
   },
@@ -281,31 +288,31 @@
     },
     "engine_roster_test.exe": {
       "bytes": 765952,
-      "sha256": "a47b5a8042b6f6458afc1fc193a9f189b773917386b439a6ef15b0fbbe7eaa91"
+      "sha256": "0f6c18fd5fc48bc6a7ffe87abff7b2750c232f94579a80238e7f6e92500ef782"
     },
     "native_roster_test.exe": {
       "bytes": 764928,
-      "sha256": "616a27809d80bf798440278ca297559d4009b1603a6e6fa84fb8aae48409b533"
+      "sha256": "c071357869419d95c48e25e837a5aac39608414df0187bb9393cc7bdc7a87de3"
     },
     "session_code_test.exe": {
       "bytes": 773120,
-      "sha256": "f951445763374b8b166753ad046a29da4294c6dfc02f991c673f56d62f69fc35"
+      "sha256": "e113604548af22ff1c21c60bbb9ba1afc0985bc40b3b9d91fe40ee07f57be4ed"
     },
     "session_code_owner_test.dll": {
       "bytes": 221696,
-      "sha256": "e77c0b6952cad4b61b434f36d652529dd2ff18915496004c39df4ba727da5d52"
+      "sha256": "3b6469d7702801dacfb3268bddf578eeccced37aeb1e41e12a95fb5bb298bd33"
     },
     "property_image_test.dll": {
-      "bytes": 231424,
-      "sha256": "9b260f19bead691906319497d8ee725cf9eee293e5acb9ca7e1cff2ebf35c396"
+      "bytes": 232448,
+      "sha256": "844fafd42261509ac1f13dadc443107196c02575bddca19118a7f8bb82268183"
     },
     "property_group_test.dll": {
-      "bytes": 230400,
-      "sha256": "d64b7a9d958a19c630207d56b997d8610bdfaa05b5029157b5b1ed37ca7bdd89"
+      "bytes": 235520,
+      "sha256": "d015f043f5e963469a820fbc8d0ad55d614c4b9a0eae1cd86906393a7ef9bf99"
     },
     "property_group_test.exe": {
-      "bytes": 769536,
-      "sha256": "c330e55eb1ce4ec86b9cef9b903b1a59791313cea01048b51a4817b271df7b36"
+      "bytes": 773632,
+      "sha256": "f5c845fdce3e3a08819d618442abf26f869064cb573fb1797dd7063b60a0fce9"
     },
     "native-roster-fixture.bin": {
       "bytes": 2284,
@@ -321,7 +328,7 @@
     },
     "native_roster_sync_test.exe": {
       "bytes": 761344,
-      "sha256": "ba7b40a93cb9c4f01e65ee00161aba5a2ddb82261a1c5bcf25b204196805f2fa"
+      "sha256": "f756b8ed7594fc1ccced2a348b8852c6ad8ab39df0bb45ab8510bc8fcfc46efb"
     },
     "native-sync-input.json": {
       "bytes": 3925,
@@ -332,8 +339,8 @@
       "sha256": "ec3e23679a554c1f150cb10faf003d8ccbca32585cd092c161add1e2c34b0463"
     },
     "native-sync-received.json": {
-      "bytes": 17233,
-      "sha256": "11f55fe1ce4a55ce3c51c7ebe7c8993040e7486f8a76fc1b742a1faeb2234765"
+      "bytes": 17273,
+      "sha256": "38a9232f65a10885ee51d43155888d5d90af25c7b1faccd74cb1114ce330486b"
     },
     "native-sync-1-before.bin": {
       "bytes": 2284,

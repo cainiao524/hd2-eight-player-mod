@@ -1,6 +1,7 @@
 #ifndef EP_PROPERTY_GATE_H
 #define EP_PROPERTY_GATE_H
 #include "ep_property_image.h"
+#include "ep_getter_image.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -17,6 +18,8 @@ typedef struct EpPropertyGateImage {
  * Numerical inputs only; actual control/next lifetime belongs to the group. */
 EpPropertyResult ep_property_gate_build(uint32_t,const EpPropertyAddresses*,
                                         uint64_t control,uint64_t next_pointer,EpPropertyGateImage*);
+EpPropertyResult ep_getter_gate_build(const EpGetterAddresses*,
+                                      uint64_t control,uint64_t next_pointer,EpPropertyGateImage*);
 #ifdef __cplusplus
 }
 #endif

@@ -119,7 +119,7 @@ def main():
     gate_receipt=PROJECT/'evidence/property-gate-validation.json'
     group_dll,group_test=build/'property_group_test.dll',build/'property_group_test.exe'
     run([zig,'c++','-std=c++17','-target','x86_64-windows-gnu','-shared','-O1','-Wall','-Werror','-Wno-unused-parameter',
-         '-I',source/'native/mod-sdk',PROJECT/'mod/src/ep_property_image.cpp',PROJECT/'tests/property_group_dll.cpp','-o',group_dll])
+         '-I',source/'native/mod-sdk',PROJECT/'mod/src/ep_property_image.cpp',PROJECT/'mod/src/ep_getter_image.cpp',PROJECT/'tests/property_group_dll.cpp','-o',group_dll])
     run([*common,'-O1',PROJECT/'tests/property_group_test.c',*deps,'-o',group_test])
     group_output=run([group_test,group_dll]).decode('utf-8').strip()
     group_match=re.fullmatch(r'property group: (\d+) checks passed; real HellForge chains, synthetic bodies only',group_output)
@@ -146,6 +146,7 @@ def main():
     sync_receipt = {'consumer_checks': int(sync_match[1]), 'backend': backend_result,
                     'native_producers': 8, 'native_insertions': 64, 'native_receivers': len(synced['native_receivers']),
                     'native_getter_queries':len(synced['native_getter_queries']),
+                    'native_getter_gate_executed':synced['native_getter_gate_executed'],
                     'relay_checks': json.loads(sync_routed.read_bytes())['relay_checks'],
                     'game_serializer_executed': False, 'game_entity_dispatch_executed': False,
                     'real_admission_executed': False, 'passed': True}
@@ -164,7 +165,7 @@ def main():
         'native_property_images': {**property_output,'validation_sha256':digest(property_receipt)},
         'native_getter':{**getter_output,'validation_sha256':digest(getter_receipt)},
         'native_property_gates':{**gate_output,'validation_sha256':digest(gate_receipt)},
-        'property_group':{'checks':int(group_match[1]),'actual_hellforge_chains':True,
+        'property_group':{'checks':int(group_match[1]),'entries':['producer','receiver','entity_network_getter'],'shared_storage_binding':True,'actual_hellforge_chains':True,
                          'partial_publication_failure_forwards':True,'cooperative_quiescence_tested':True,
                          'production_quiescence_provider_bound':False,'active_data_rollback_implemented':False,
                          'native_execution_of_game_bodies':False,'game_access':False},
