@@ -91,25 +91,52 @@ def main():
     native_match = re.fullmatch(r'native roster source: (\d+) checks passed; emitted native insert storage to real loader consumers', native_output)
     if not native_match:
         raise RuntimeError('Missing native storage result: ' + native_output)
+    sync_input, sync_routed, sync_received = (build / n for n in ('native-sync-input.json', 'native-sync-routed.json', 'native-sync-received.json'))
+    sync_script = PROJECT / 'tools/native_roster_sync.py'
+    run([sys.executable, '-B', sync_script, 'produce', '--output', sync_input])
+    backend_output = run(['dotnet', 'run', '--project', PROJECT / 'tests/backend/Backend.csproj',
+                          f'-p:HellForgeRoot={upstream.as_posix()}', '-p:PublishAot=false', '--configuration', 'Release',
+                          '--', '--native-roster-input', sync_input, '--native-roster-output', sync_routed]).decode('utf-8')
+    backend_rows = [json.loads(line) for line in backend_output.splitlines() if line.startswith('{')]
+    backend_result = next((r for r in backend_rows if r.get('suite') == 'hellforge_backend_eight_nodes' and r.get('passed')), None)
+    if backend_result is None:
+        raise RuntimeError('Missing native property relay test result')
+    run([sys.executable, '-B', sync_script, 'consume', '--input', sync_input, '--routed', sync_routed, '--output', sync_received])
+    sync_test = build / 'native_roster_sync_test.exe'
+    sync_images = [build / f'native-sync-{node}-{phase}.bin' for node in range(1,9) for phase in ('before','after')]
+    run([*common, '-O1', PROJECT / 'tests/native_roster_sync_test.c', *deps, '-o', sync_test])
+    sync_output = run([sync_test, *sync_images]).decode('utf-8').strip()
+    sync_match = re.fullmatch(r'native roster sync: (\d+) checks passed; eight synthetic recipients, real patched consumers', sync_output)
+    if not sync_match:
+        raise RuntimeError('Missing native property consumer result: ' + sync_output)
+    synced = json.loads(sync_received.read_bytes())
+    sync_receipt = {'consumer_checks': int(sync_match[1]), 'backend': backend_result,
+                    'native_producers': 8, 'native_insertions': 64, 'native_receivers': len(synced['native_receivers']),
+                    'relay_checks': json.loads(sync_routed.read_bytes())['relay_checks'],
+                    'game_serializer_executed': False, 'game_entity_dispatch_executed': False,
+                    'real_admission_executed': False, 'passed': True}
     receipt = {
         'schema': 'hellforge_engine_roster_validation_v1',
         'verified_at_utc': datetime.now(timezone.utc).isoformat(),
         'upstream_commit': lock['commit'], 'sdk': 13, 'game_build': '25480438',
         'private_extension_version': 1, 'checks': int(match[1]), 'passed': True,
         'native_storage_checks': int(native_match[1]), 'native_storage_fixture': fixture_receipt,
+        'native_property_sync': sync_receipt,
         'replayed_patch': patch_lock['patch'], 'patch_sha256': digest(patch),
         'patched_source_sha256': patch_lock['patched_source_sha256'],
         'test_source_sha256': {p: digest(PROJECT / p) for p in (
             'tests/engine_roster_test.c', 'tests/native_roster_test.c', 'tools/native_roster_fixture.py',
+            'tests/native_fixture.h', 'tests/native_roster_sync_test.c', 'tools/native_roster_sync.py',
+            'tests/backend/Program.cs', 'tests/backend/Backend.csproj',
             'mod/src/ep_native_roster.cpp', 'mod/src/ep_native_roster.h', 'mod/src/ep_roster_api.h',
             'native-storage.lock.json', 'tools/build_engine_offline.py', 'engine/patch.lock.json', 'upstream.lock.json')},
-        'artifacts': {p.name: {'bytes': p.stat().st_size, 'sha256': digest(p)} for p in (dll, test, native_test, fixture, fixture.with_suffix('.removed.bin'), fixture.with_suffix('.rejoined.bin'))},
+        'artifacts': {p.name: {'bytes': p.stat().st_size, 'sha256': digest(p)} for p in (dll, test, native_test, fixture, fixture.with_suffix('.removed.bin'), fixture.with_suffix('.rejoined.bin'), sync_test, sync_input, sync_routed, sync_received, *sync_images)},
         'game_started': False, 'game_checked': False, 'game_read': False, 'installed': False,
         'native_game_storage_expanded': False, 'production_provider_bound': False,
         'runtime_verified': False, 'multiplayer_verified': False, 'public_release_allowed': False,
     }
     (PROJECT / 'evidence/engine-roster-validation.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
-    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'native_storage_checks': receipt['native_storage_checks'], 'patch_replayed': True, 'game_access': False}))
+    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'native_storage_checks': receipt['native_storage_checks'], 'sync_consumer_checks': sync_receipt['consumer_checks'], 'native_receivers': sync_receipt['native_receivers'], 'patch_replayed': True, 'game_access': False}))
 
 
 if __name__ == '__main__':

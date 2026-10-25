@@ -19,6 +19,7 @@
 | 原生消费者测试 | `tests/engine_roster_test.c` | 合成进程直接执行补丁后的枚举、生命周期、治疗及本地选择 |
 | 引擎构建与证据 | `tools/build_engine_offline.py` / `evidence/engine-roster-validation.json` | 单独编译研究 loader；100 次消费者检查 + 589 次存储连接断言，生产 provider 未绑定 |
 | 原生存储连接 | `mod/src/ep_native_roster.*` / `NATIVE_STORAGE.zh-CN.md` | 解码旧原生候选写出的八槽存储；离线验证插入、删除压缩和重新插入 |
+| 原生属性转发验证 | `NATIVE_SYNC.zh-CN.md` / `tools/native_roster_sync.py` | 八端原生属性发送、56 次后端转发与原生接收，再进入实际读取器；游戏封包与实体分派仍由测试桥接 |
 | 继续开发说明 | `HANDOFF.zh-CN.md` | 旧代码迁移关系、已知限制、下一步及授权范围 |
 
 适配器使用 `hellforge_mod_init`、`HfApi::session`、`subscribe`、`on_game_thread` 和 `game_state`。接入失败后已注册的回调保持停用，避免半初始化状态继续运行。初始化与游戏线程之间通过原子标志发布状态。
@@ -52,7 +53,7 @@ py -3.12 -B hellforge_multiplayer/tools/build_offline.py `
 
 产物在 `build/`：`ep_hellforge.dll`、`adapter_test.exe`、`eight-player-research-hellforge-0.1.0-source.zip`。这些产物被 Git 忽略，可从源码重建。ZIP 只带清单与 `src/`；HellForge 按标准源码 Mod 流程自行编译。DLL 只在本项目的模拟测试进程中加载过。
 
-八槽存储布局、所有者租约、身份票据、4 KiB 读取器预算及证据边界见 [NATIVE_STORAGE.zh-CN.md](NATIVE_STORAGE.zh-CN.md)。该读取器目前不会由 Mod 初始化调用。
+八槽存储布局、所有者租约、身份票据、4 KiB 读取器预算及证据边界见 [NATIVE_STORAGE.zh-CN.md](NATIVE_STORAGE.zh-CN.md)。该读取器目前不会由 Mod 初始化调用。八端原生属性数据到接收名册的后续验证见 [NATIVE_SYNC.zh-CN.md](NATIVE_SYNC.zh-CN.md)。
 
 原生玩家读取扩展的契约、MinHook 准备和独立重建命令见 [engine/README.zh-CN.md](engine/README.zh-CN.md)。该补丁只改变加载器读取路径；原位玩家数组仍最多四项，独立计分/customization 四槽限制仍保留。
 

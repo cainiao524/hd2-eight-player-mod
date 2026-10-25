@@ -53,6 +53,40 @@ Check(nodes[8].Take("lobby.result").Text(2) == LobbyService.LobbyNotJoinable.ToS
 Connect(nodes[8], false);
 
 // Every one of the eight endpoints sends to all seven others through the real router.
+// Optional integration payloads come from the native x64 property producer.
+// They are a format bridge, not complete serialized game datagrams.
+if (args.Length != 0) {
+    Check(args.Length == 4 && args[0] == "--native-roster-input" && args[2] == "--native-roster-output", "native fixture arguments");
+    var input = File.ReadAllBytes(args[1]);
+    using var fixture = JsonDocument.Parse(input);
+    var packets = fixture.RootElement.GetProperty("packets").EnumerateArray().ToArray();
+    Check(fixture.RootElement.GetProperty("schema").GetString() == "native_roster_property_fixture_v1" && packets.Length == 8,
+        "native property fixture schema");
+    Check(packets.Select(p => p.GetProperty("sender").GetInt32()).Order().SequenceEqual(Enumerable.Range(1, 8)), "one payload per sender");
+    var deliveries = new List<object>();
+    var firstCheck = checks;
+    foreach (var packet in packets) {
+        var sender = nodes[packet.GetProperty("sender").GetInt32() - 1];
+        var payload = Convert.FromBase64String(packet.GetProperty("payload").GetString()!);
+        Check(payload.Length == 32, "eight property words");
+        foreach (var n in nodes) n.Frames.Clear();
+        sender.Party.FromLocal(new Frame("party.message").Add("synthetic-network").Add(sender.Endpoint)
+            .Add(PartyService.GuaranteedDelivery).Add("").Add(payload)); bus.Drain();
+        foreach (var recipient in nodes.Take(8).Where(n => n != sender)) {
+            var message = recipient.Take("party.message");
+            Check(message.Int(1) == sender.Endpoint && message.Bytes(4).SequenceEqual(payload), "native property routing integrity");
+            Check(recipient.Frames.All(f => f.Type != "party.message"), "one delivery per recipient");
+            deliveries.Add(new { sender = (int)sender.Id, recipient = (int)recipient.Id,
+                endpoint = message.Int(1), payload = Convert.ToBase64String(message.Bytes(4)) });
+        }
+        Check(sender.Frames.All(f => f.Type != "party.message") && nodes[8].Frames.Count == 0, "native data no echo or outsider");
+    }
+    Check(deliveries.Count == 56, "all 56 native property deliveries");
+    File.WriteAllText(args[3], JsonSerializer.Serialize(new {
+        input_sha256 = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(input)).ToLowerInvariant(),
+        relay_checks = checks - firstCheck, deliveries, game_access = false, steam_transport_tested = false
+    }, new JsonSerializerOptions { WriteIndented = true }));
+}
 foreach (var sender in nodes.Take(8)) {
     foreach (var n in nodes) n.Frames.Clear();
     byte[] payload = [0, (byte)sender.Id, 255, 0, 128];

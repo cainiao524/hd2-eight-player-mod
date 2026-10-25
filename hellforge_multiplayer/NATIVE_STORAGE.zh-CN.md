@@ -49,6 +49,8 @@ avatar network ID、player entity ID、peer、network index 和 ordinal 各自�
 
 原生执行产生了 descriptor 指针、三个计数、entity→ordinal 映射和部分数组初始化/搬移。descriptor/实体编号、prefix 标志、peer、lifecycle、property 值、本地身份和 generation 票据是明确构造的测试输入。重新插入后的 peer/property 也由测试补入。因此这条链路仍不能证明真实接纳、角色分配、复制生产者或增援已完成。
 
+后续 [八端原生属性转发验证](NATIVE_SYNC.zh-CN.md) 已将独立属性样本改为由发送/接收候选执行产生，并经过 HellForge 后端。它保留本节三映像用例，同时新增八份不同布局；游戏完整封包、实体分派和真实接纳仍未执行。
+
 ## 重建与下一步
 
 运行 [引擎重建命令](engine/README.zh-CN.md#重建与证据)，会同时重建和执行这组测试。除固定 Zig、MinHook、上游源码外，Python 3.12 需要 `unicorn==2.1.4` 和 `capstone==5.0.7`；现有依赖位于被忽略的 `eight_player_candidate_20260927/.native-test-deps/`。新环境可安装到该目录，构建会校验版本：

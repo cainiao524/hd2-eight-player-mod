@@ -47,4 +47,6 @@ py -3.12 -B hellforge_multiplayer/tools/build_engine_offline.py `
 
 同一入口还执行新增的 `native_roster_test.exe`：589 次断言，将原生候选实际写出的八槽映像连接到本次 B 布局读取器，再交给实际消费者。覆盖插入、删除压缩、重新插入、权威索引保持和逐次读取故障。三个映像及其来源/输入边界另列在同一收据的 `native_storage_fixture`。该数量包括每次租约/复制检查，不是独立场景数。
 
+入口还会运行 [八端原生属性转发链路](../NATIVE_SYNC.zh-CN.md)，需要 .NET 10 SDK。结果为后端集成模式 264 次检查、56 次原生接收、1,678 次消费者断言；该链路用显式测试桥接代替完整游戏封包和实体分派，不能作为八人实机同步证据。
+
 补丁按 HellForge 引擎的 GPL-3.0 条款维护；原文及 Mod 例外保存在 `licenses/`。MinHook 许可证同目录保留。完整 loader 仍需要对应上游源码，这份 patch 不替代它的源代码义务。
