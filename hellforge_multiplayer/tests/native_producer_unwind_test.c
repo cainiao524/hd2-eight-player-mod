@@ -35,7 +35,9 @@ int main(int argc, char** argv) {
         uint8_t* image=VirtualAlloc(NULL,size,MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE);
         check(image!=NULL,"allocation failed"); take(f,image,size);
         PRUNTIME_FUNCTION table=(PRUNTIME_FUNCTION)(image+table_offset);
-        check(table->BeginAddress==0 && table[functions-1].EndAddress==code_size && table[functions-1].UnwindData+24<=table_offset,"invalid function entry");
+        check(table->BeginAddress==0 && table[functions-1].EndAddress==code_size && table[functions-1].UnwindData<=table_offset && table_offset-table[functions-1].UnwindData>=4,"invalid function entry");
+        uint8_t* unwind=image+table[functions-1].UnwindData;
+        check(unwind[0]==1 && unwind[3]==0 && 4u+((unwind[2]+1u)&~1u)*2u<=table_offset-table[functions-1].UnwindData,"invalid unwind extent");
         if (functions==2) check(table[0].EndAddress==32 && table[1].BeginAddress==32,"invalid gate extent");
         check(RtlAddFunctionTable(table,functions,(DWORD64)image),"function table registration failed");
         uint64_t expected[8], return_pc; take(f,expected,sizeof expected); take(f,&return_pc,8);

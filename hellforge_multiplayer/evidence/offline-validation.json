@@ -1,6 +1,6 @@
 {
   "schema": "hd2_hellforge_migration_validation_v1",
-  "verified_at_utc": "2026-10-25T13:18:48.438189+00:00",
+  "verified_at_utc": "2026-10-25T13:31:40.156083+00:00",
   "upstream_commit": "a4dd089eb56cdd5cd96c3cefe6e80eba5848d6fa",
   "sdk": 13,
   "game_build": "25480438",
@@ -20,11 +20,15 @@
     "steam_transport_tested": false,
     "multiplayer_verified": false
   },
-  "native_property_template_sha256": "dbd0677fcfa914b6f7eaa8dd272645a46427894b92b179a8cc8feab27833dc51",
+  "native_property_template_sha256": "940fef65c777ad60deb8f2e92c79b6e8dc717dead972237363ec4344fe92d3f9",
+  "native_getter_template_sha256": "d29a18df684825f7eb9a9379dd1269143131ae29db6d55f1ae11b5b41caa4db7",
   "source_sha256": {
     "mod/hellforge-mod.json": "b48339cd86b3ca4ca00011aca96b50b5609ecf4c7f30df32d95c600a001453a5",
     "mod/src/core/ep_capacity_contract.cpp": "e1f21698de8515819b5e91137e42a188c4bdec298111bc64c34f4b99922f92ef",
     "mod/src/core/ep_capacity_contract.h": "041ddfd9558edcd8d6c0b68aec48784e4dbbfa7b5448dec2a222553b13ec2ad7",
+    "mod/src/ep_getter_image.cpp": "0c8f8cf1fcd55d82becb396c24637c524e38d3f1a67e2c880e5a18086869d163",
+    "mod/src/ep_getter_image.h": "b11c74c1bf00d6f4500e5ce5180ab7a316a7d77b2c4cca887fea62f7fcfbbdca",
+    "mod/src/ep_getter_template.h": "d29a18df684825f7eb9a9379dd1269143131ae29db6d55f1ae11b5b41caa4db7",
     "mod/src/ep_hellforge.cpp": "a0584c7a2185f85311b5ed3df6a1f625962265c1e83642e0e945f4c7df7ca30e",
     "mod/src/ep_hellforge.h": "7726e27b9d081682a22f4f47908a919edbb89c15436f26a61745ecbbc42dc8ca",
     "mod/src/ep_native_roster.cpp": "94a7608c6ae1eaed3492834f572e8b300a0962197f03e4b48259fc7977c2080f",
@@ -37,7 +41,7 @@
     "mod/src/ep_property_group.h": "2e94801c9fc582d5a13d5e6102f1e21394c608442c472abf29a72254646a53c9",
     "mod/src/ep_property_image.cpp": "22bb0edac87be485da57effaf477d562d35816fba392c3403027270652ec941f",
     "mod/src/ep_property_image.h": "9c1a17f0d0e7106adeae947246edc49be4012341e21811a3ffb68b63aec1a1d4",
-    "mod/src/ep_property_templates.h": "dbd0677fcfa914b6f7eaa8dd272645a46427894b92b179a8cc8feab27833dc51",
+    "mod/src/ep_property_templates.h": "940fef65c777ad60deb8f2e92c79b6e8dc717dead972237363ec4344fe92d3f9",
     "mod/src/ep_roster_api.h": "75bfdbf3ca86fa172a2ace0c81aa1de7d74035665094c85257f1d323a09a5816",
     "mod/src/ep_session_code.cpp": "fb52d6fb559ca86a0f74b30ff210fa521e2715633648adcaa1792e1104f1c301",
     "mod/src/ep_session_code.h": "612c7071e99846967bf960ba63279511133fcfc85b63a967d5bfa79f66e222dc"
@@ -46,22 +50,23 @@
     "tests/adapter_test.cpp": "d663c6c0c988c4adc47b597dfcb213d24869cc9838e628ae9ecac9f5f4028b2f",
     "tests/backend/Program.cs": "79ef51fd5827f59cd3007d271e3bf17000b6898914eb6bbee5fdace63b8b61c8",
     "tests/backend/Backend.csproj": "04026b5adc828a3e86cd100d0cafa443397669660a83044882256e8aee38be0b",
-    "tools/build_offline.py": "50e87a7ea31410a9fb2269a22185d47a9cbb42cf9e609c8cec887f984c146d7a",
+    "tools/build_offline.py": "de4e7dee9d229e1e3aa642dfb5c0b258e0cc69e02ad8b66b8a14527555c265d3",
     "upstream.lock.json": "1d9274d0040561997c6a3d3ba34279f5e8c83bd788e38cd2f97a99fb946ed0f3",
-    "tools/generate_property_templates.py": "4d855e6eb2f0862f618db1b77df769c0b05a4232b66ebd59009abda399d18d26"
+    "tools/generate_property_templates.py": "4d855e6eb2f0862f618db1b77df769c0b05a4232b66ebd59009abda399d18d26",
+    "tools/generate_getter_template.py": "63441e7e961c2f07d04027bf7cceef677b88c15215845a1b23f3504727a22b95"
   },
   "artifacts": {
     "ep_hellforge.dll": {
-      "bytes": 91136,
-      "sha256": "1c78579775ca2268a10b6b6bcd2e7cabcb9f775c2bec3a08d8271c126137fd2a"
+      "bytes": 93184,
+      "sha256": "5b99ef923397242a8d94e36a84c41ddce2496f1faea4ba534b02f08e38400803"
     },
     "adapter_test.exe": {
-      "bytes": 425984,
-      "sha256": "8abfef935f751c29aa5d6955a6733a38e282b06988665d0d6cb4df7579a79eb4"
+      "bytes": 428032,
+      "sha256": "587d7687442a835bc0060fcfb0f7fc3fbcf2b64897c8d952a48e64a5ea5581f7"
     },
     "eight-player-research-hellforge-0.1.0-source.zip": {
-      "bytes": 23922,
-      "sha256": "0a17a6935065ff8e0d186418285de0495091b831f8b53bb0304dbf09b17b9252"
+      "bytes": 26827,
+      "sha256": "170f742136a4d3ca8330db976cf00be4c705e49d82801e64f3300f02742a980a"
     }
   },
   "game_started": false,

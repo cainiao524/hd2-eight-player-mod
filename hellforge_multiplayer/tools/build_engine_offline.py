@@ -109,10 +109,12 @@ def main():
         raise RuntimeError('Missing session code ownership result: ' + code_output)
     property_dll=build/'property_image_test.dll'
     run([zig,'c++','-std=c++17','-target','x86_64-windows-gnu','-shared','-O1','-Wall','-Werror','-Wno-unused-parameter',
-         '-I',source/'native/mod-sdk',PROJECT/'mod/src/ep_property_image.cpp',PROJECT/'mod/src/ep_property_code.cpp',PROJECT/'mod/src/ep_property_gate.cpp',
+         '-I',source/'native/mod-sdk',PROJECT/'mod/src/ep_property_image.cpp',PROJECT/'mod/src/ep_property_code.cpp',PROJECT/'mod/src/ep_property_gate.cpp',PROJECT/'mod/src/ep_getter_image.cpp',
          PROJECT/'tests/property_image_dll.cpp','-o',property_dll])
     property_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_property_images.py','--library',property_dll]))
     property_receipt=PROJECT/'evidence/property-image-validation.json'
+    getter_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_getter_image.py','--library',property_dll,'--zig',zig]))
+    getter_receipt=PROJECT/'evidence/native-getter-validation.json'
     gate_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_property_gates.py','--library',property_dll]))
     gate_receipt=PROJECT/'evidence/property-gate-validation.json'
     group_dll,group_test=build/'property_group_test.dll',build/'property_group_test.exe'
@@ -143,6 +145,7 @@ def main():
     synced = json.loads(sync_received.read_bytes())
     sync_receipt = {'consumer_checks': int(sync_match[1]), 'backend': backend_result,
                     'native_producers': 8, 'native_insertions': 64, 'native_receivers': len(synced['native_receivers']),
+                    'native_getter_queries':len(synced['native_getter_queries']),
                     'relay_checks': json.loads(sync_routed.read_bytes())['relay_checks'],
                     'game_serializer_executed': False, 'game_entity_dispatch_executed': False,
                     'real_admission_executed': False, 'passed': True}
@@ -159,6 +162,7 @@ def main():
         'native_producer_unwind': {**unwind_output, 'validation_sha256': digest(unwind_receipt)},
         'native_receiver_unwind': {**receiver_unwind_output, 'validation_sha256': digest(receiver_unwind_receipt)},
         'native_property_images': {**property_output,'validation_sha256':digest(property_receipt)},
+        'native_getter':{**getter_output,'validation_sha256':digest(getter_receipt)},
         'native_property_gates':{**gate_output,'validation_sha256':digest(gate_receipt)},
         'property_group':{'checks':int(group_match[1]),'actual_hellforge_chains':True,
                          'partial_publication_failure_forwards':True,'cooperative_quiescence_tested':True,
@@ -186,6 +190,8 @@ def main():
             'tools/generate_property_templates.py','tools/native_property_library.py','tools/validate_property_images.py',
             'mod/src/ep_property_gate.h','mod/src/ep_property_gate.cpp','mod/src/ep_property_group.h','mod/src/ep_property_group.cpp',
             'tests/property_group_dll.h','tests/property_group_dll.cpp','tests/property_group_test.c','tools/validate_property_gates.py',
+            'native-getter.lock.json','tools/native_getter_image.py','tools/generate_getter_template.py','tools/validate_getter_image.py',
+            'mod/src/ep_getter_image.h','mod/src/ep_getter_image.cpp','mod/src/ep_getter_template.h',
             'tests/backend/Program.cs', 'tests/backend/Backend.csproj',
             'mod/src/ep_native_roster.cpp', 'mod/src/ep_native_roster.h', 'mod/src/ep_roster_api.h',
             'native-storage.lock.json', 'tools/build_engine_offline.py', 'engine/patch.lock.json', 'upstream.lock.json')},
@@ -195,7 +201,7 @@ def main():
         'runtime_verified': False, 'multiplayer_verified': False, 'public_release_allowed': False,
     }
     (PROJECT / 'evidence/engine-roster-validation.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
-    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'native_storage_checks': receipt['native_storage_checks'], 'session_code_checks': int(code_match[1]), 'property_images':property_output,'property_gates':gate_output,'property_group_checks':int(group_match[1]), 'sync_consumer_checks': sync_receipt['consumer_checks'], 'native_receivers': sync_receipt['native_receivers'], 'patch_replayed': True, 'game_access': False}))
+    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'native_storage_checks': receipt['native_storage_checks'], 'session_code_checks': int(code_match[1]), 'property_images':property_output,'property_gates':gate_output,'property_group_checks':int(group_match[1]),'getter':getter_output,'native_getter_queries':sync_receipt['native_getter_queries'], 'sync_consumer_checks': sync_receipt['consumer_checks'], 'native_receivers': sync_receipt['native_receivers'], 'patch_replayed': True, 'game_access': False}))
 
 
 if __name__ == '__main__':

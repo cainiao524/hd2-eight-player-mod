@@ -13,6 +13,7 @@ from pathlib import Path
 import struct
 import native_producer_unwind
 import native_receiver_unwind
+import native_getter_image
 from native_property_library import Library
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -152,7 +153,8 @@ def consume(input_path, routed_path, output, property_library):
     deliveries = routed['deliveries']
     require(len(deliveries) == 56 and {(d['sender'], d['recipient']) for d in deliveries} ==
             {(s, r) for s in range(1, 9) for r in range(1, 9) if s != r}, 'Missing/duplicate delivery')
-    runs, artifacts = [], {}
+    runs, artifacts, queries = [], {}, []
+    native=Library(property_library)
     for node in range(8):
         before_path = input_path.parent / f'native-sync-{node + 1}-before.bin'
         require(hashlib.sha256(before_path.read_bytes()).hexdigest() == source['artifacts'][before_path.name]['sha256'], 'Changed sender image')
@@ -188,15 +190,31 @@ def consume(input_path, routed_path, output, property_library):
             require(not f.alloc_calls and not f.index_calls, 'Unexpected receive helper')
             runs.append({'sender': sender, 'recipient': node + 1, 'local_ordinal': ordinal,
                          'network_index': struct.unpack_from('<I', wire, 12)[0], 'instructions': len(f.trace)})
+        bindings=dict(game_base=game,code_address=game+0x10030000,roster_address=roster,
+                      storage_address=storage,reject_address=game+0x10034000)
+        getter=native.getter_candidate(bindings,native_getter_image.build(**bindings))
+        data=bytes.fromhex(getter['code_hex']);f.map(getter['entry_address'],len(data));f.write(getter['entry_address'],data)
+        f.reject=getter['reject_address'];f.map(f.reject,1);f.write(f.reject,b'\xCC')
+        for peer in range(8):
+            f.seed();f.write(p.RSP,p.u64(f.stop));f.uc.reg_write(p.reg('rsp'),p.RSP);f.uc.reg_write(p.reg('edx'),entity(node,peer))
+            f.outcome=None;f.trace.clear();f.writes.clear();f.alloc_calls.clear();f.index_calls.clear()
+            before=f.read(storage,0x680);f.run('sync_network_index_getter',getter['entry_address'])
+            expected_index=(3*peer+2)%8
+            require(f.outcome=='return' and f.uc.reg_read(p.reg('rax'))==expected_index,'Getter returned another member index')
+            require(f.uc.reg_read(p.reg('rsp'))==p.RSP+8 and f.uc.reg_read(p.reg('edx'))==entity(node,peer),'Getter argument/stack changed')
+            require(f.read(storage,0x680)==before and not f.alloc_calls and not f.index_calls,'Getter changed storage/called helper')
+            require(all(p.STACK<=address and address+size<=p.STACK+0x10000 for address,size,_ in f.writes),'Getter wrote outside stack')
+            require(all(f.uc.reg_read(p.reg(name))==value for name,value in p.SEEDS.items()),'Getter clobbered preserved register')
+            queries.append(dict(node=node+1,member=peer+1,entity=entity(node,peer),ordinal=order_for(node).index(peer),network_index=expected_index))
         path = output.parent / f'native-sync-{node + 1}-after.bin'
         artifacts[path.name] = export(path, m, f, node)
-    result = {'native_receivers': runs, 'artifacts': artifacts, 'passed': True,
+    result = {'native_receivers': runs, 'native_getter_queries':queries,'artifacts': artifacts, 'passed': True,
               'source_sha256': hashlib.sha256(input_path.read_bytes()).hexdigest(),
               'routed_sha256': hashlib.sha256(routed_path.read_bytes()).hexdigest(),
               'game_serializer_executed': False, 'game_entity_dispatch_executed': False,
               'real_admission_executed': False, 'game_access': False}
     output.write_text(json.dumps(result, indent=2) + '\n')
-    return {'native_receivers': len(runs), 'game_access': False}
+    return {'native_receivers': len(runs), 'native_getter_queries':len(queries),'game_access': False}
 
 
 if __name__ == '__main__':

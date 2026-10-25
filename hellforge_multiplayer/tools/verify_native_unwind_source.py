@@ -12,11 +12,7 @@ import native_unwind_source as source
 ROOT = source.PROJECT.parent
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--capture', type=Path, required=True)
-    args = parser.parse_args()
-    data = source.load_bytes(source.SNAPSHOT.read_bytes())
+def replay(data, capture):
     reader = ROOT / data['capture_reader_path']
     source.require(source.sha(reader.read_bytes()) == data['capture_reader_sha256'], 'Changed capture reader')
     sys.path.insert(0, str(ROOT / 'eight_player_candidate_20260927/.native-test-deps'))
@@ -25,7 +21,7 @@ def main():
     spec = importlib.util.spec_from_file_location('pinned_capture_reader', reader)
     module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
     source.require(module.EXPECTED == data['capture_source_sha256'], 'Changed capture pins')
-    image = module.Image(args.capture)
+    image = module.Image(capture)
     source.require(image.report['capture_sha256'] == data['capture_identity_sha256'], 'Wrong capture identity')
     table = data['captured_table']; header = data['header_directory']
     source.require((image.exception_rva, image.exception_size, len(image.functions)) ==
@@ -54,9 +50,17 @@ def main():
             entries.append(entry); checked_bytes += 12 + len(unwind)
         source.require(entries == [f for f in image.functions if f[0] < end and start < f[1]],
                        'Incomplete captured function coverage')
-    result = {'passed': True, 'functions': source.audit(data), 'metadata_bytes_replayed': checked_bytes,
+    return {'passed': True, 'functions': source.audit(data,schema=data['schema'],names=tuple(data['functions'])), 'metadata_bytes_replayed': checked_bytes,
               'header_exception_directory_captured': directory_captured, 'runtime_table_verified': False,
               'game_access': False}
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--capture', type=Path, required=True)
+    args = parser.parse_args()
+    data = source.load_bytes(source.SNAPSHOT.read_bytes())
+    result = replay(data,args.capture)
     paths = ('native-unwind-source.lock.json', 'tools/native_unwind_source.py',
              'tools/verify_native_unwind_source.py', 'tests/test_native_unwind_source.py')
     receipt = {'schema': 'hellforge_original_unwind_replay_v1',

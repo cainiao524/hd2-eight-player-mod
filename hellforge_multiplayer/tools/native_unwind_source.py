@@ -29,11 +29,11 @@ def load_bytes(raw):
     return data
 
 
-def audit(data):
+def audit(data, *, schema='hellforge_captured_property_unwind_v1', names=('producer','receiver')):
     """Decode the no-handler/chaining property; not an exception dispatcher."""
-    require(data['schema'] == 'hellforge_captured_property_unwind_v1' and data['build'] == 25480438,
+    require(data['schema'] == schema and data['build'] == 25480438,
             'Unsupported original unwind profile')
-    require(set(data['functions']) == {'producer', 'receiver'}, 'Incomplete function set')
+    require(set(data['functions']) == set(names), 'Incomplete function set')
     table = data['captured_table']; table_rva = int(table['rva'], 16)
     require(table['size'] == table['entries'] * 12, 'Invalid table size')
     summaries = {}

@@ -1,0 +1,40 @@
+{
+  "schema": "hellforge_captured_getter_unwind_v1",
+  "build": 25480438,
+  "capture_identity_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "capture_source_sha256": {
+    "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+  },
+  "capture_reader_path": "research_handoff_20260927/indirect/inspect_capture.py",
+  "capture_reader_sha256": "108b1543003f9adb56e72a59eb50f4af4f56f68a355d3879afa35220b811e63a",
+  "captured_table": {
+    "rva": "0x37d8000",
+    "size": 1832304,
+    "entries": 152692
+  },
+  "header_directory": {
+    "rva": "0x3fd340c",
+    "size": 1832316,
+    "fully_captured": false
+  },
+  "functions": {
+    "getter": {
+      "entry": "0x606ad0",
+      "end_exclusive": "0x606b75",
+      "code_sha256": "96ce6884140adb9ae93688e042a2b5db7ffc1e59ffb45eb03188e6bab79abcfb",
+      "evidence_path": "five_player_feasibility_20260927/roster_getter_native_evidence.json",
+      "evidence_sha256": "1360863bfe1f1f6ce640ef049776d3b31703a1cbfe2bea3f90bf20555f69e0fd",
+      "fragments": [
+        {
+          "table_entry_rva": "0x380a7f0",
+          "runtime_function_hex": "d06a6000756b60002c4c4202",
+          "unwind_hex": "01140800147404000f6403000a54020005340100"
+        }
+      ]
+    }
+  },
+  "runtime_table_verified": false,
+  "fixture_path": "eight_player_candidate_20260927/tests/test_native_roster_getter.py",
+  "fixture_sha256": "f14f3b4a314e6a92ce7dea01d7e5e37b457ef7d2a2538f80a029c9dc7e86aa13"
+}

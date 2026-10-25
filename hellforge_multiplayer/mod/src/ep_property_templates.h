@@ -2,7 +2,7 @@
  * Fixed build 25480438; numeric bindings only, no runtime origin proof.
  * tools/native_producer_unwind.py SHA256 4cb2da68acb304be8434f786573d6b440e7057ace4a45deb355a956c5ec48832
  * tools/native_receiver_unwind.py SHA256 e501bf070a4f0266a5802a130a2ed24c052746c7a12db9b4eb9ab7f1efabf501
- * tools/native_unwind_source.py SHA256 fd1a7a4aa48e9a7ecc3d9ca460ecda073e6ca1d4bf7761006e55b7e4312634a7
+ * tools/native_unwind_source.py SHA256 8f2b51781ae06b3f6a72959218f7c60cdf4e7f6a13e59c56f7eff99140721e4f
  * native-unwind-source.lock.json SHA256 bfefac86c12f8a761b563d4da814ed1195eb7967f024fe218b9e6d6c5a896680
  */
 static const uint8_t ep_producer_template[] = {

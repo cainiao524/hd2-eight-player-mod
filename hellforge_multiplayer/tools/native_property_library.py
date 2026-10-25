@@ -11,6 +11,9 @@ class Image(c.Structure):
 class GateImage(c.Structure):
     _fields_=[('bytes',c.c_uint32),('table_offset',c.c_uint32),('data',c.c_ubyte*756)]
 
+class GetterAddresses(c.Structure):
+    _fields_=[(name,c.c_uint64) for name in ('game_base','code_address','roster_address','storage_address','reject_address')]
+
 class Library:
     def __init__(self,path):
         self.path=Path(path).resolve(strict=True)
@@ -21,6 +24,15 @@ class Library:
         self.prepare.argtypes=[c.c_uint32,c.POINTER(Addresses),c.POINTER(Image),c.POINTER(c.c_uint32)]; self.prepare.restype=c.c_int
         self.gate=self.dll.property_image_test_gate
         self.gate.argtypes=[c.c_uint32,c.POINTER(Addresses),c.c_uint64,c.c_uint64,c.POINTER(GateImage)]; self.gate.restype=c.c_int
+        self.getter=self.dll.getter_image_test_build
+        self.getter.argtypes=[c.POINTER(GetterAddresses),c.POINTER(Image)];self.getter.restype=c.c_int
+
+    def getter_candidate(self,addresses,reference):
+        out=Image();result=self.getter(GetterAddresses(**addresses),out)
+        if result: raise RuntimeError('Native getter generation failed: '+str(result))
+        if bytes(out.data[:out.bytes])!=reference['image'] or (out.code_bytes,out.unwind_offset,out.table_offset)!=(reference['candidate']['size_bytes'],reference['unwind_offset'],reference['table_offset']):
+            raise RuntimeError('C++ getter image differs from pinned reference')
+        return {**reference['candidate'],'code_hex':bytes(out.data[:out.code_bytes]).hex()}
 
     def candidate(self,kind,addresses,reference):
         out=Image(); result=self.build(kind,Addresses(**addresses),out)

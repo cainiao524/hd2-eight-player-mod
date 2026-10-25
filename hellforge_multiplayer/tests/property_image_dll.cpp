@@ -3,6 +3,21 @@
 #include <string.h>
 #include "../mod/src/ep_property_code.h"
 #include "../mod/src/ep_property_gate.h"
+#include "../mod/src/ep_getter_image.h"
+extern "C" __declspec(dllexport) int getter_image_test_build(const EpGetterAddresses* a,EpPropertyImage* out)
+{ return ep_getter_image_build(a,out); }
+static EpGetterAddresses GetterArguments(const EpPropertyAddresses* a)
+{ return {a->game_base,a->code_address,a->roster_address,a->property_address,a->reject_address}; }
+static EpPropertyResult Prepare(const HfApi* api,HfMod* owner,uint32_t kind,const EpPropertyAddresses* a,EpSessionCodeInfo* out)
+{
+    if (kind==3) { EpGetterAddresses g=GetterArguments(a); return ep_getter_code_prepare(api,owner,&g,out); }
+    return ep_property_code_prepare(api,owner,kind,a,out);
+}
+static EpPropertyResult ImageBuild(uint32_t kind,const EpPropertyAddresses* a,EpPropertyImage* out)
+{
+    if (kind==3) { EpGetterAddresses g=GetterArguments(a); return ep_getter_image_build(&g,out); }
+    return ep_property_image_build(kind,a,out);
+}
 extern "C" __declspec(dllexport) int property_image_test_gate(uint32_t kind,const EpPropertyAddresses* a,uint64_t control,uint64_t next,EpPropertyGateImage* out)
 { return ep_property_gate_build(kind,a,control,next,out); }
 static bool fail_free,fail_protect;
@@ -42,11 +57,11 @@ extern "C" __declspec(dllexport) int property_image_test_prepare(uint32_t kind,E
     a->code_address=desired;
     api.version=13; api.size=sizeof(api); api.build_id=Build; api.hook_ex=Hook;
 #define CHECK(x) do { ++*checks; if (!(x)) { fail_free=fail_protect=false; if (info.handle) ep_session_code_discard(owner,info.handle); return __LINE__; } } while(0)
-    result=ep_property_code_prepare(&api,owner,kind,a,&info);
+    result=Prepare(&api,owner,kind,a,&info);
     CHECK(result==EP_PROPERTY_OK);
     CHECK((!desired || info.base==desired) && info.state==EP_CODE_READY && info.registered && !info.pinned);
     a->code_address=info.base;
-    CHECK(ep_property_image_build(kind,a,image)==EP_PROPERTY_OK);
+    CHECK(ImageBuild(kind,a,image)==EP_PROPERTY_OK);
     CHECK(image->bytes==info.bytes && !memcmp((void*)info.base,image->data,image->bytes));
     CHECK(RtlLookupFunctionEntry(info.base+image->code_bytes-1,&unwind_base,NULL)==(PRUNTIME_FUNCTION)(info.base+image->table_offset));
     CHECK(unwind_base==info.base);
@@ -59,11 +74,11 @@ extern "C" __declspec(dllexport) int property_image_test_prepare(uint32_t kind,E
     info={};
     /* Failure after reserve must return no handle and leave no allocation. */
     a->property_address++;
-    CHECK(ep_property_code_prepare(&api,owner,kind,a,&info)==EP_PROPERTY_POINTER);
+    CHECK(Prepare(&api,owner,kind,a,&info)==EP_PROPERTY_POINTER);
     CHECK(!memcmp(&info,&cleared,sizeof(info)));
     CHECK(VirtualQuery((void*)a->code_address,&mbi,sizeof(mbi))==sizeof(mbi) && mbi.State==MEM_FREE);
     fail_free=true;
-    CHECK(ep_property_code_prepare(&api,owner,kind,a,&info)==EP_PROPERTY_CLEANUP);
+    CHECK(Prepare(&api,owner,kind,a,&info)==EP_PROPERTY_CLEANUP);
     CHECK(info.handle && info.state==EP_CODE_FAILED && !info.pinned && !info.registered);
     CHECK(ep_session_code_info(owner,info.handle,&stale) && stale.handle==info.handle);
     fail_free=false;
@@ -71,7 +86,7 @@ extern "C" __declspec(dllexport) int property_image_test_prepare(uint32_t kind,E
     info={};
     a->property_address--;
     fail_protect=true;
-    CHECK(ep_property_code_prepare(&api,owner,kind,a,&info)==EP_PROPERTY_SEAL);
+    CHECK(Prepare(&api,owner,kind,a,&info)==EP_PROPERTY_SEAL);
     CHECK(!memcmp(&info,&cleared,sizeof(info)));
     fail_protect=false;
     CHECK(VirtualQuery((void*)a->code_address,&mbi,sizeof(mbi))==sizeof(mbi) && mbi.State==MEM_FREE);

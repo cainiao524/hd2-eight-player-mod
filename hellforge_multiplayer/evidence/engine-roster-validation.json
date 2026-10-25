@@ -1,6 +1,6 @@
 {
   "schema": "hellforge_engine_roster_validation_v1",
-  "verified_at_utc": "2026-10-25T13:17:54.911520+00:00",
+  "verified_at_utc": "2026-10-25T13:31:17.077816+00:00",
   "upstream_commit": "a4dd089eb56cdd5cd96c3cefe6e80eba5848d6fa",
   "sdk": 13,
   "game_build": "25480438",
@@ -100,6 +100,7 @@
     "native_producers": 8,
     "native_insertions": 64,
     "native_receivers": 56,
+    "native_getter_queries": 64,
     "relay_checks": 129,
     "game_serializer_executed": false,
     "game_entity_dispatch_executed": false,
@@ -116,7 +117,7 @@
     "legacy_rejection_failures_reproduced": 3,
     "game_access": false,
     "placement_and_source_refusals": 3,
-    "validation_sha256": "c3e577dc9df26c4b0b5ccff241a9b9584b52a3448a11b99afb49ddbcbd1cd212"
+    "validation_sha256": "78b3366ba6485ed14bf65fd5c2f94e19b1430a1ecefd53321a62f94cf987d88c"
   },
   "native_receiver_unwind": {
     "passed": true,
@@ -126,7 +127,7 @@
     "game_access": false,
     "placement_and_source_refusals": 3,
     "unique_instruction_positions": 101,
-    "validation_sha256": "6f40842ae2c7fa1e68c0730dd1011dd9138936429caac4246fc72c8bbecf41ab"
+    "validation_sha256": "2267cf9c039eb9ccef4edbb9a92df0bebf315aa5b651d3dc83c24920eb5ba62b"
   },
   "native_property_images": {
     "passed": true,
@@ -135,7 +136,18 @@
     "api_contract_checks": 4,
     "owner_checks": 50,
     "game_access": false,
-    "validation_sha256": "1f8b9f4d54d19934ea84292aab16453d84898adaac6acbf667d58389b33bcc83"
+    "validation_sha256": "af90e61fa5d7bd59de70bb014d16534a4bc9e1112cc7c253e3fa77e5e4a40c60"
+  },
+  "native_getter": {
+    "passed": true,
+    "accepted": 13,
+    "rejected": 49,
+    "functional_tests": 7,
+    "functional_runs": 84,
+    "windows_unwind_contexts": 4548,
+    "owner_checks": 25,
+    "game_access": false,
+    "validation_sha256": "c30800e89ef9faadd0155741bac8ebad61bef585b15c4f861b7e82b829e2e723"
   },
   "native_property_gates": {
     "passed": true,
@@ -143,7 +155,7 @@
     "placement_refusals": 12,
     "windows_unwind_contexts": 2621,
     "game_access": false,
-    "validation_sha256": "33db65abf1e9e50689e839892b9510da75737b3e5bbc10f42481c63681462500"
+    "validation_sha256": "8e54e850896a31ff6ae8262cfed8be70d0c3d90b0bcb898ce679b372571dfe1c"
   },
   "property_group": {
     "checks": 258,
@@ -195,7 +207,7 @@
       "passed": true,
       "tests": 10
     },
-    "validation_sha256": "12a41fae4ab34f1b28b49b75b61f29d117adddd73376fdddc02d05bf3b16346d"
+    "validation_sha256": "085088ad77a873de8afe97889961bba6ce4951dfff337f13a6635d90f86fedcf"
   },
   "replayed_patch": "engine/0001-shared-player-roster.patch",
   "patch_sha256": "c9096a42fb2bc20e1c09d404b98f91f7f618a95bc9de4b5651a34b8f489b23ee",
@@ -213,14 +225,14 @@
     "tools/native_roster_fixture.py": "bbcbfd2a5f3cdbfbc9e680145da596e7b9ff89f7a00e3665501066d51b9605b8",
     "tests/native_fixture.h": "a5f842280c255f25756fdfb5441a1aae8ddaa91ff1dc5c3426de98b8eb732933",
     "tests/native_roster_sync_test.c": "b7e90b1f1bb262132c59bf74b547e107a070a13019f389fd5cf726e0e873ad6b",
-    "tools/native_roster_sync.py": "4c6d9d5349cc2afd39f480af5675eff8260a4c0b233fb5336750fe88f10de6fb",
+    "tools/native_roster_sync.py": "4f96ff4548d549e16f127cb38908c8c23a2e953e3a5488d612a2a42d1fe77e72",
     "tools/native_producer_unwind.py": "4cb2da68acb304be8434f786573d6b440e7057ace4a45deb355a956c5ec48832",
     "tools/build_unwind_offline.py": "576e73961921f11899c05f717e7345fa26a77d616bbc80cb06256ac1dbe09a3e",
-    "tests/native_producer_unwind_test.c": "3178638c95db00179e694ca368ad50cbd7c81235201d1bd62c5e4d942e02e07e",
+    "tests/native_producer_unwind_test.c": "39556e3783126345adcb23b7376ade0d8f105ef45982a191e118c2d75431341e",
     "tools/native_receiver_unwind.py": "e501bf070a4f0266a5802a130a2ed24c052746c7a12db9b4eb9ab7f1efabf501",
     "tools/build_receiver_unwind_offline.py": "6d49282026472837ac692335b71fd34bf29b94e10e795829c7e9f02fa203d772",
-    "tools/native_unwind_source.py": "fd1a7a4aa48e9a7ecc3d9ca460ecda073e6ca1d4bf7761006e55b7e4312634a7",
-    "tools/verify_native_unwind_source.py": "4d80863d13ea4454b690fc8179b582a7c8bf3f06e98b942dade8554b0f3706d8",
+    "tools/native_unwind_source.py": "8f2b51781ae06b3f6a72959218f7c60cdf4e7f6a13e59c56f7eff99140721e4f",
+    "tools/verify_native_unwind_source.py": "af2afff2fdfa8178a80af08fc21358df4e6090a6342922e03fa6c9a407661a8d",
     "tests/test_native_unwind_source.py": "c927a123dc3f400c423dbc0cdd78991dac519ebbe5809194ce0498887c952384",
     "native-unwind-source.lock.json": "bfefac86c12f8a761b563d4da814ed1195eb7967f024fe218b9e6d6c5a896680",
     "tests/session_code_test.c": "7c5d64905642ed4d1565b55d2640eb54f241fe655742946159e63db44ff2c51f",
@@ -230,12 +242,12 @@
     "tests/session_code_dll.h": "9c48ffb50a6442f2370f1408878809f8127e352bd5e2df28537b09e00a20c2d3",
     "mod/src/ep_property_image.cpp": "22bb0edac87be485da57effaf477d562d35816fba392c3403027270652ec941f",
     "mod/src/ep_property_image.h": "9c1a17f0d0e7106adeae947246edc49be4012341e21811a3ffb68b63aec1a1d4",
-    "mod/src/ep_property_templates.h": "dbd0677fcfa914b6f7eaa8dd272645a46427894b92b179a8cc8feab27833dc51",
+    "mod/src/ep_property_templates.h": "940fef65c777ad60deb8f2e92c79b6e8dc717dead972237363ec4344fe92d3f9",
     "mod/src/ep_property_code.cpp": "513600a118023e46c6b2c90720b37122a49d6f130dc1d6ffe24fb036d1fd16df",
     "mod/src/ep_property_code.h": "e8f23e9c66034911e21b95f27a38c95ca7d07e0ea4cc40f3be8eaff22adf2907",
-    "tests/property_image_dll.cpp": "5e15e814329251b12bbd923289de1a069d5bed7fbaf70bdce0bc23d27caa9354",
+    "tests/property_image_dll.cpp": "b8042a08316ba96a16c12aa16d6f455b002be3d7604760b26b32c6c1506def69",
     "tools/generate_property_templates.py": "4d855e6eb2f0862f618db1b77df769c0b05a4232b66ebd59009abda399d18d26",
-    "tools/native_property_library.py": "5d1409cda0f52c39b5f1b9cce3e88fd7deb777141eb32a527425d91ec3bb175f",
+    "tools/native_property_library.py": "5d75ffe84327ed1bbd39d384afa6a2857daf816ef4394617bc0e857d3c3095c5",
     "tools/validate_property_images.py": "d89df719e5c70476f688d5a549b8bc01b33bf9d4cc9709068295ee5c47d97b03",
     "mod/src/ep_property_gate.h": "679610886ced2a47f09aab9894967d673a95c089e23c4b840307252ad9bf39a1",
     "mod/src/ep_property_gate.cpp": "0c1b39a1ffbba07c3a4fd3e2a6f4828c859f23153fbc05c3e0b5554e6cb76674",
@@ -245,13 +257,20 @@
     "tests/property_group_dll.cpp": "e5f5a70c22ec516cb1433388538455b2add4ce476fdbd9de9348efec379499f7",
     "tests/property_group_test.c": "70ae86d1066d7eed33e7fca08314b9e9d8cf6c4109503311a341608ba069db28",
     "tools/validate_property_gates.py": "4d53c1cf3874c8bc787e9222984f8c8cb7e1abe11d6847603b8450cf7cbddd66",
+    "native-getter.lock.json": "2ec11c0046408233a263c86d91e84309b153458d6f3863b38a5894adb75b19d9",
+    "tools/native_getter_image.py": "3b329d319d9edd550fa237a4c8c8c04bf17d8dfcd7e688b6291d1e31c1306afb",
+    "tools/generate_getter_template.py": "63441e7e961c2f07d04027bf7cceef677b88c15215845a1b23f3504727a22b95",
+    "tools/validate_getter_image.py": "fb6170b2b085d9ad822ef4ea235260a8a5b20081a02146b8dd90240e071d300f",
+    "mod/src/ep_getter_image.h": "b11c74c1bf00d6f4500e5ce5180ab7a316a7d77b2c4cca887fea62f7fcfbbdca",
+    "mod/src/ep_getter_image.cpp": "0c8f8cf1fcd55d82becb396c24637c524e38d3f1a67e2c880e5a18086869d163",
+    "mod/src/ep_getter_template.h": "d29a18df684825f7eb9a9379dd1269143131ae29db6d55f1ae11b5b41caa4db7",
     "tests/backend/Program.cs": "79ef51fd5827f59cd3007d271e3bf17000b6898914eb6bbee5fdace63b8b61c8",
     "tests/backend/Backend.csproj": "04026b5adc828a3e86cd100d0cafa443397669660a83044882256e8aee38be0b",
     "mod/src/ep_native_roster.cpp": "94a7608c6ae1eaed3492834f572e8b300a0962197f03e4b48259fc7977c2080f",
     "mod/src/ep_native_roster.h": "30116c76318c97ae2954530ad161cc56345428216592abb6dfa5e4961c941f26",
     "mod/src/ep_roster_api.h": "75bfdbf3ca86fa172a2ace0c81aa1de7d74035665094c85257f1d323a09a5816",
     "native-storage.lock.json": "ec2a0cafe60941a36c09b87bd40f8098fc904120ce68b027f9de3edf5093161f",
-    "tools/build_engine_offline.py": "68bdccd0b00dcddb50c18471b6889787826adbdceb86663390c57c0108b6a8f1",
+    "tools/build_engine_offline.py": "3b00c6a5cb3f1e5c68fab87c3083448c0b4f8769f22d489c7ac85bceec765d4f",
     "engine/patch.lock.json": "dc6ca3a022c8879eab5a3244989077125614b510b2575837961693d861dd981b",
     "upstream.lock.json": "1d9274d0040561997c6a3d3ba34279f5e8c83bd788e38cd2f97a99fb946ed0f3"
   },
@@ -262,31 +281,31 @@
     },
     "engine_roster_test.exe": {
       "bytes": 765952,
-      "sha256": "9650f191fe39ff11142c7d5133e9a965d3d149b7bda1d16a5abe3c3d178cb043"
+      "sha256": "a47b5a8042b6f6458afc1fc193a9f189b773917386b439a6ef15b0fbbe7eaa91"
     },
     "native_roster_test.exe": {
       "bytes": 764928,
-      "sha256": "f85017051818afb6f4da8f467407d5f59052d222c308239da57658438684a5f4"
+      "sha256": "616a27809d80bf798440278ca297559d4009b1603a6e6fa84fb8aae48409b533"
     },
     "session_code_test.exe": {
       "bytes": 773120,
-      "sha256": "0477f4a66665d8f41426b87ae95d73e679b2fc4d4d9a11d7968318450cae06f6"
+      "sha256": "f951445763374b8b166753ad046a29da4294c6dfc02f991c673f56d62f69fc35"
     },
     "session_code_owner_test.dll": {
       "bytes": 221696,
-      "sha256": "4c29a27f17afece684e8f31630df7cf1bad3fbf0d3870ee83c5ef0d3f46c8f0a"
+      "sha256": "e77c0b6952cad4b61b434f36d652529dd2ff18915496004c39df4ba727da5d52"
     },
     "property_image_test.dll": {
-      "bytes": 228864,
-      "sha256": "6a1031ce5ef507a2d40c86ff90e96c2e60e1511b65f32c2baad48f47cc86c6c8"
+      "bytes": 231424,
+      "sha256": "9b260f19bead691906319497d8ee725cf9eee293e5acb9ca7e1cff2ebf35c396"
     },
     "property_group_test.dll": {
       "bytes": 230400,
-      "sha256": "6b6234f57fedaedcfbfb6f029ff93fef2bf6c4afe4e139dfc262c1aa6eda41b8"
+      "sha256": "d64b7a9d958a19c630207d56b997d8610bdfaa05b5029157b5b1ed37ca7bdd89"
     },
     "property_group_test.exe": {
       "bytes": 769536,
-      "sha256": "5baa6e35119c0cc1f51e6fe0b44451b08130b9b631ebaddfd6d5390b874a0a92"
+      "sha256": "c330e55eb1ce4ec86b9cef9b903b1a59791313cea01048b51a4817b271df7b36"
     },
     "native-roster-fixture.bin": {
       "bytes": 2284,
@@ -302,7 +321,7 @@
     },
     "native_roster_sync_test.exe": {
       "bytes": 761344,
-      "sha256": "17ca0ddfe750d728b9890c648d4e6ec71ed74e3c65f2418514c5c44034430a8c"
+      "sha256": "ba7b40a93cb9c4f01e65ee00161aba5a2ddb82261a1c5bcf25b204196805f2fa"
     },
     "native-sync-input.json": {
       "bytes": 3925,
@@ -313,8 +332,8 @@
       "sha256": "ec3e23679a554c1f150cb10faf003d8ccbca32585cd092c161add1e2c34b0463"
     },
     "native-sync-received.json": {
-      "bytes": 9350,
-      "sha256": "7cb35f37ab12b93f46ab0f7d592f8e3d4797e99470d92fc961e3ec7544536651"
+      "bytes": 17233,
+      "sha256": "11f55fe1ce4a55ce3c51c7ebe7c8993040e7486f8a76fc1b742a1faeb2234765"
     },
     "native-sync-1-before.bin": {
       "bytes": 2284,

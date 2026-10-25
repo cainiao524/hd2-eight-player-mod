@@ -58,3 +58,5 @@ py -3.12 -B hellforge_multiplayer/tools/build_engine_offline.py `
 构建入口另执行 [会话代码所有权验证](../SESSION_CODE.zh-CN.md)：383 次检查使用真正的 HellForge HookAdd/ApiHookEx 和 MinHook，在测试自身的合成目标上安装五个 hook。验证注册先于发布、下一跳变量稳定且可更新、并发取消拒绝、SDK 失败后的保留，以及独立 DLL 的模块固定。此测试有别于前述 roster 测试：它实际安装自有进程 hook，但没有安装游戏 hook、运行 Watch 或执行游戏候选函数体。测试源码和两个产物均纳入总收据。
 
 入口继续构建和验证 [属性成组入口](../PROPERTY_GROUP.zh-CN.md)：258 次真实链/合成函数体检查，12 组实际入口分支、12 组错误位置拒绝，以及两条函数表下的 2,621 个 Windows 回溯上下文。`property-gate-validation.json` 单独固定输入、产物与参考收据，`engine-roster-validation.json` 交叉记录其指纹，并记录成组测试 DLL/EXE。生产 guard 和激活后数据回滚均明确标为未实现，Mod 初始化没有绑定。
+
+同一入口另构建 [实体到网络索引 getter](../NATIVE_GETTER.zh-CN.md)，核对保存的单段原回溯资料，运行 7 个功能测试、4,548 个 Windows 回溯上下文和 25 项准备生命周期检查。八端接收后增加 64 次原生 getter 查询。单独收据 `native-getter-validation.json` 固定来源和产物，总引擎收据交叉记录其指纹；getter 尚未发布或接入成组开关。
