@@ -108,10 +108,12 @@ def main():
              'image_protection':'PAGE_READWRITE; no native execution of candidate code',
              'negative_control':'Same normalized prologue and unwind metadata, but original E9 rejection branches',
              'function_tables_registered_and_removed_in_test':2,'real_game_hooks_installed':False,
+             'original_unwind_source':artifact['candidate']['original_unwind_source'],
              'receiver_unwind_tested_by_this_receipt':False,'runtime_verified':False,'multiplayer_verified':False,
              'source_sha256':{str(path.relative_to(ROOT)).replace('\\','/'):native.sha(path.read_bytes()) for path in
                               (PROJECT/'tools/native_producer_unwind.py',PROJECT/'tools/build_unwind_offline.py',
                                PROJECT/'tests/native_producer_unwind_test.c',PROJECT/'native-storage.lock.json',
+                               PROJECT/'tools/native_unwind_source.py',PROJECT/'native-unwind-source.lock.json',
                                PROJECT/'upstream.lock.json')},
              'artifacts':{x.name:{'bytes':x.stat().st_size,'sha256':native.sha(x.read_bytes())} for x in (exe,data_path,image_path)}}
     (PROJECT/'evidence/native-producer-unwind-validation.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8',newline='\n')

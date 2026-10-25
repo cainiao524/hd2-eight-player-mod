@@ -3,7 +3,7 @@
   "updated_date": "2026-10-25",
   "timezone": "Asia/Taipei",
   "active_target": "HellForge",
-  "stage": "native_producer_receiver_unwind_and_eight_node_roundtrip_offline_verified",
+  "stage": "captured_property_unwind_source_gated_eight_node_offline_verified",
   "upstream_commit": "a4dd089eb56cdd5cd96c3cefe6e80eba5848d6fa",
   "release": "0.2.0-beta",
   "engine_version": "0.1.28",
@@ -27,7 +27,7 @@
   "live_capture_authorized": false,
   "remaining_authorized_captures": 0,
   "legacy_dispatcher_capture": "deferred_legacy_route_not_authorized",
-  "next_source_work": "Verify original exception handler metadata and add production registration/retirement ownership; implement unwind support for remaining native candidates. Continue mutation-exclusion owner leases, authoritative identity tickets, native player storage/creation/replication and full mission validation. Keep game access closed.",
+  "next_source_work": "Implement production registration and code lifetime ownership compatible with HellForge session hooks; implement unwind support for remaining native candidates. Runtime effective exception-table verification still requires new authorization. Continue mutation-exclusion owner leases, authoritative identity tickets, native player storage/creation/replication and full mission validation. Keep game access closed.",
   "validation": "evidence/offline-validation.json",
   "handoff": "HANDOFF.zh-CN.md",
   "branch": "codex/hellforge-migration",
@@ -60,5 +60,12 @@
   "offline_native_receiver_unwind_unique_instruction_positions": 101,
   "offline_native_receiver_rejection_failures_reproduced": 7,
   "native_receiver_unwind_offline_verified": true,
-  "native_receiver_unwind_validation": "evidence/native-receiver-unwind-validation.json"
+  "native_receiver_unwind_validation": "evidence/native-receiver-unwind-validation.json",
+  "captured_property_unwind_metadata_verified": true,
+  "captured_property_unwind_fragments": 5,
+  "captured_property_unwind_source_bytes": 168,
+  "captured_property_unwind_language_handlers": false,
+  "offline_native_unwind_source_tests": 10,
+  "native_unwind_source_validation": "evidence/native-unwind-source-validation.json",
+  "runtime_exception_table_verified": false
 }

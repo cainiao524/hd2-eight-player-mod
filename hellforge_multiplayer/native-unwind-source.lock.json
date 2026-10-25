@@ -1,0 +1,67 @@
+{
+  "schema": "hellforge_captured_property_unwind_v1",
+  "build": 25480438,
+  "capture_identity_sha256": "5888cbfe7abe46965b752715414b550a8d09bed968c0c55109a22c30cdbeb4d8",
+  "capture_source_sha256": {
+    "capture-report.json": "132c49c2189e311f366a3a2f0ed3e67051ca4b30a4543420e49c53632671ffd5",
+    "captured-data.bin": "31b014a13f219a8e25843c5acb7e4b73db44fccca5c952fbf93d77694e3b625d"
+  },
+  "capture_reader_path": "research_handoff_20260927/indirect/inspect_capture.py",
+  "capture_reader_sha256": "108b1543003f9adb56e72a59eb50f4af4f56f68a355d3879afa35220b811e63a",
+  "captured_table": {
+    "rva": "0x37d8000",
+    "size": 1832304,
+    "entries": 152692
+  },
+  "header_directory": {
+    "rva": "0x3fd340c",
+    "size": 1832316,
+    "fully_captured": false
+  },
+  "functions": {
+    "producer": {
+      "entry": "0x60c640",
+      "end_exclusive": "0x60c882",
+      "code_sha256": "8b9a20e5207ae395e99e45f153cba1994ff50c10cb258101fd16a74285824c34",
+      "evidence_path": "five_player_feasibility_20260927/roster_property_producer_native_evidence.json",
+      "evidence_sha256": "f73ec903d06f2304f4f944c25e011a7ef86d78737cb1b197101a1c96daaabacb",
+      "fragments": [
+        {
+          "table_entry_rva": "0x380ae98",
+          "runtime_function_hex": "40c6600082c8600008574202",
+          "unwind_hex": "01180a0018640a001854090018340800183214f012e01070"
+        }
+      ]
+    },
+    "receiver": {
+      "entry": "0x60c890",
+      "end_exclusive": "0x60c9bf",
+      "code_sha256": "23d53b4f2f46ec26d23d79b958ee31d469910217ea843fb92bd98cf24c017411",
+      "evidence_path": "five_player_feasibility_20260927/roster_property_receive_evidence.json",
+      "evidence_sha256": "bad5661771df280dd5e982b765d2f4ab1c73de9ae7e86e974751af6c3c383c10",
+      "fragments": [
+        {
+          "table_entry_rva": "0x380aea4",
+          "runtime_function_hex": "90c86000bfc8600020574202",
+          "unwind_hex": "010703000754050007e00000"
+        },
+        {
+          "table_entry_rva": "0x380aeb0",
+          "runtime_function_hex": "bfc8600028c960002c574202",
+          "unwind_hex": "21170600177404000a6403000534020090c86000bfc8600020574202"
+        },
+        {
+          "table_entry_rva": "0x380aebc",
+          "runtime_function_hex": "28c96000adc9600048574202",
+          "unwind_hex": "2100000090c86000bfc8600020574202"
+        },
+        {
+          "table_entry_rva": "0x380aec8",
+          "runtime_function_hex": "adc96000bfc9600058574202",
+          "unwind_hex": "2100060000740400006403000034020090c86000bfc8600020574202"
+        }
+      ]
+    }
+  },
+  "runtime_table_verified": false
+}

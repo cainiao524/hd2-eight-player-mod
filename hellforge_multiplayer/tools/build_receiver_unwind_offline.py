@@ -100,7 +100,8 @@ def main():
     native.require(result['windows_unwind_contexts']==contexts,'Incomplete context verification')
     result.update(placement_and_source_refusals=guards,unique_instruction_positions=visited)
     paths=('tools/native_receiver_unwind.py','tools/build_receiver_unwind_offline.py','tools/native_producer_unwind.py',
-           'tools/build_unwind_offline.py','tests/native_producer_unwind_test.c','native-storage.lock.json','upstream.lock.json')
+           'tools/build_unwind_offline.py','tests/native_producer_unwind_test.c','native-storage.lock.json','upstream.lock.json',
+           'tools/native_unwind_source.py','native-unwind-source.lock.json')
     receipt={'schema':'hellforge_native_receiver_unwind_v1','verified_at_utc':datetime.now(timezone.utc).isoformat(),
              **result,'game_build':25480438,'receiver_rva':'0x60C890','scenarios':scenarios,
              'code_bytes':artifact['candidate']['size_bytes'],'unwind_hex':native.UNWIND.hex(),
@@ -109,7 +110,8 @@ def main():
              'negative_control':'Same normalized prologue and unwind data, original E9 rejection transfers',
              'image_protection':'PAGE_READWRITE; no native candidate execution',
              'function_tables_registered_and_removed_in_test':2,'real_game_hooks_installed':False,
-             'original_exception_handlers_verified':False,'runtime_verified':False,'multiplayer_verified':False,
+             'original_unwind_source':artifact['candidate']['original_unwind_source'],
+             'runtime_original_exception_table_verified':False,'runtime_verified':False,'multiplayer_verified':False,
              'source_sha256':{p:native.sha((PROJECT/p).read_bytes()) for p in paths},
              'artifacts':{p.name:{'bytes':p.stat().st_size,'sha256':native.sha(p.read_bytes())} for p in (exe,data,image)}}
     (PROJECT/'evidence/native-receiver-unwind-validation.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8',newline='\n')

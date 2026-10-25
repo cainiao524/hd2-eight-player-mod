@@ -1,6 +1,6 @@
 {
   "schema": "hellforge_native_producer_unwind_v1",
-  "verified_at_utc": "2026-10-25T10:51:19.053032+00:00",
+  "verified_at_utc": "2026-10-25T12:26:33.960387+00:00",
   "passed": true,
   "windows_unwind_contexts": 1308,
   "legacy_valid_contexts": 1302,
@@ -111,14 +111,22 @@
   "negative_control": "Same normalized prologue and unwind metadata, but original E9 rejection branches",
   "function_tables_registered_and_removed_in_test": 2,
   "real_game_hooks_installed": false,
+  "original_unwind_source": {
+    "snapshot_sha256": "bfefac86c12f8a761b563d4da814ed1195eb7967f024fe218b9e6d6c5a896680",
+    "captured_fragments": 1,
+    "captured_language_handlers": false,
+    "runtime_table_verified": false
+  },
   "receiver_unwind_tested_by_this_receipt": false,
   "runtime_verified": false,
   "multiplayer_verified": false,
   "source_sha256": {
-    "hellforge_multiplayer/tools/native_producer_unwind.py": "83a0116a5cb6e000a9ea43cc1d3b3decb4ad66d8b6b7669994703f82bdf0c47c",
-    "hellforge_multiplayer/tools/build_unwind_offline.py": "2f513abc0c03fa535d06cd27bca72a8f00da4942bdc204356313f65613623024",
+    "hellforge_multiplayer/tools/native_producer_unwind.py": "4cb2da68acb304be8434f786573d6b440e7057ace4a45deb355a956c5ec48832",
+    "hellforge_multiplayer/tools/build_unwind_offline.py": "576e73961921f11899c05f717e7345fa26a77d616bbc80cb06256ac1dbe09a3e",
     "hellforge_multiplayer/tests/native_producer_unwind_test.c": "8b8a61c67404d1f67e45040c7b28cb86e1a9c6dc270edb01a59beb7b48966400",
     "hellforge_multiplayer/native-storage.lock.json": "ec2a0cafe60941a36c09b87bd40f8098fc904120ce68b027f9de3edf5093161f",
+    "hellforge_multiplayer/tools/native_unwind_source.py": "fd1a7a4aa48e9a7ecc3d9ca460ecda073e6ca1d4bf7761006e55b7e4312634a7",
+    "hellforge_multiplayer/native-unwind-source.lock.json": "bfefac86c12f8a761b563d4da814ed1195eb7967f024fe218b9e6d6c5a896680",
     "hellforge_multiplayer/upstream.lock.json": "1d9274d0040561997c6a3d3ba34279f5e8c83bd788e38cd2f97a99fb946ed0f3"
   },
   "artifacts": {

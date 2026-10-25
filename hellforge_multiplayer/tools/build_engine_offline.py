@@ -59,6 +59,10 @@ def main():
     check(PROJECT / 'mod/src/ep_roster_api.h', patch_lock['patched_source_sha256']['native/mod-loader/ep_roster.h'])
     build = PROJECT / 'build'
     build.mkdir(exist_ok=True)
+    source_tests = json.loads(run([sys.executable, '-B', PROJECT / 'tests/test_native_unwind_source.py']))
+    source_replay = json.loads(run([sys.executable, '-B', PROJECT / 'tools/verify_native_unwind_source.py',
+                                   '--capture', PROJECT.parent / 'evidence/existing-code-evidence-25480438']))
+    source_receipt = PROJECT / 'evidence/native-unwind-source-validation.json'
     # A fresh preserved export avoids deleting or resetting any prior work.
     source = Path(tempfile.mkdtemp(prefix='engine-source-', dir=build)).resolve()
     if not source.is_relative_to(build.resolve()):
@@ -130,6 +134,8 @@ def main():
         'native_property_sync': sync_receipt,
         'native_producer_unwind': {**unwind_output, 'validation_sha256': digest(unwind_receipt)},
         'native_receiver_unwind': {**receiver_unwind_output, 'validation_sha256': digest(receiver_unwind_receipt)},
+        'original_unwind_source': {**source_replay, 'source_gate_tests': source_tests,
+                                   'validation_sha256': digest(source_receipt)},
         'replayed_patch': patch_lock['patch'], 'patch_sha256': digest(patch),
         'patched_source_sha256': patch_lock['patched_source_sha256'],
         'test_source_sha256': {p: digest(PROJECT / p) for p in (
@@ -137,6 +143,8 @@ def main():
             'tests/native_fixture.h', 'tests/native_roster_sync_test.c', 'tools/native_roster_sync.py',
             'tools/native_producer_unwind.py', 'tools/build_unwind_offline.py', 'tests/native_producer_unwind_test.c',
             'tools/native_receiver_unwind.py', 'tools/build_receiver_unwind_offline.py',
+            'tools/native_unwind_source.py', 'tools/verify_native_unwind_source.py',
+            'tests/test_native_unwind_source.py', 'native-unwind-source.lock.json',
             'tests/backend/Program.cs', 'tests/backend/Backend.csproj',
             'mod/src/ep_native_roster.cpp', 'mod/src/ep_native_roster.h', 'mod/src/ep_roster_api.h',
             'native-storage.lock.json', 'tools/build_engine_offline.py', 'engine/patch.lock.json', 'upstream.lock.json')},

@@ -21,6 +21,26 @@
 
 Windows 对动态代码函数表和回溯信息的要求见 [x64 exception handling](https://learn.microsoft.com/en-us/cpp/build/exception-handling-x64?view=msvc-170)；测试调用 [RtlVirtualUnwind](https://learn.microsoft.com/en-us/windows/win32/api/winnt/nf-winnt-rtlvirtualunwind)。
 
+## 保存的原函数异常资料与生成前置检查
+
+`native-unwind-source.lock.json` 从仓库中已有的 `evidence/existing-code-evidence-25480438` 提取，固定捕获文件、读取器、原函数代码和旧候选证据的 SHA-256。没有新增游戏采样。原函数范围及回溯链为：
+
+| 函数片段 RVA（末端不含） | UNWIND_INFO RVA | flags | 链接目标 |
+|---|---|---|---|
+| `60C640–60C882` | `2425708` | 0 | 发送主记录 |
+| `60C890–60C8BF` | `2425720` | 0 | 接收主记录 |
+| `60C8BF–60C928` | `242572C` | 4 | `60C890–60C8BF` |
+| `60C928–60C9AD` | `2425748` | 4 | `60C890–60C8BF` |
+| `60C9AD–60C9BF` | `2425758` | 4 | `60C890–60C8BF` |
+
+五条函数表记录共 60 bytes，回溯资料共 108 bytes，元数据合计 168 bytes。全部为版本 1、无 frame register；flags 4 是 CHAININFO。这五条保存记录及其链条没有 EHANDLER/UHANDLER。168 bytes 只是重放核对的元数据量；工具另外校验已有捕获文件与代码指纹，不是本次进程读取量。
+
+**来源范围不能混同：** 保存的标记函数表在 RVA `0x37D8000`，大小 1,832,304 bytes、152,692 条；保存的 PE 头异常目录却指向 `0x3FD340C`，大小 1,832,316 bytes，后者未完整捕获。因此只确认保存的五段资料，不宣称它们就是当前执行时使用的异常表。
+
+两个 `with_unwind` 入口都必须先通过 `tools/native_unwind_source.py`：固定快照指纹、候选代码与证据指纹、完整函数覆盖、链条和无语言处理器条件。出现 handler flags、缺失片段/父记录、循环链、截断或版本变化时拒绝生成。独立测试共 10 项，包含两个实际生成器在源码不匹配时拒绝；总引擎构建还用固定读取器从原捕获逐字节重放，收据为 `evidence/native-unwind-source-validation.json`。
+
+这次增加生成前置检查，没有改变两份通过验证的代码/回溯映像。捕获资料核对不能代替运行期检查，也不能证明完整异常资源清理等价。
+
 ## 实际验证
 
 1. Unicorn 执行 12 个发送场景：八个 ordinal、越界 ordinal、missing sentinel、错误绑定和缺失本地 confirmed-peer 索引。复用原独立 oracle，核对全部非栈页面、八个属性描述符、计数、分配器调用、寄存器和拒绝时无数据写入。
@@ -44,12 +64,19 @@ py -3.12 -B hellforge_multiplayer/tools/build_receiver_unwind_offline.py `
   --zig work/hellforge_toolchain_20261025/zig-x86_64-windows-0.17.0/zig.exe
 ```
 
-完整的 `tools/build_engine_offline.py` 已自动包含两组验证。依赖仍是固定 Zig、Unicorn 2.1.4 和 Capstone 5.0.7。
+完整的 `tools/build_engine_offline.py` 已自动包含来源检查的 10 项测试、保存资料重放和两组回溯验证。依赖仍是固定 Zig、Unicorn 2.1.4 和 Capstone 5.0.7。单独重放已有资料：
+
+```powershell
+py -3.12 -B hellforge_multiplayer/tools/verify_native_unwind_source.py `
+  --capture evidence/existing-code-evidence-25480438
+```
 
 `build/producer-unwind-image.bin` 和 `build/receiver-unwind-image.bin` 绑定测试的合成地址，不能直接装进游戏。若后续集成者已取得并验证真实分配，可通过对应生成器的 `--game-base`、`--code-address`、`--roster-address`、`--property-address`、`--reject-address` 和 `--output` 生成 JSON；输出必须是新文件。两个入口都只生成数据，不分配执行内存、不读取地址、不注册函数表、不安装 hook。接收端命令行已另验证生成成功、重复输出被拒绝且原文件内容不变。
 
 ## 尚未完成的接入
 
-外部拒绝处理仍必须接受已有内部栈帧，终止整个属性阶段并拥有自己的正确回溯资料；不能换成普通 RET。生产环境还需先注册函数表，再发布入口，撤销入口并等待所有执行者退出后才撤销表和释放内存。本次只验证正常栈回溯，没有实现异常资源清理、生产函数表所有者或 hook 安装事务。生成资料没有语言级异常处理器；原函数的 handler flags/扩展异常资料尚需核对，不能把回溯通过解释为完整异常处理等价。
+外部拒绝处理仍必须接受已有内部栈帧，终止整个属性阶段并拥有自己的正确回溯资料；不能换成普通 RET。生产环境还需先注册函数表，再发布入口，撤销入口并等待所有执行者退出后才撤销表和释放内存。本次只验证正常栈回溯与上述保存资料，没有实现异常资源清理、生产函数表所有者或 hook 安装事务。运行期有效异常表仍未核对；其他原生候选也未纳入这五段来源证明。
+
+固定上游的 `native/mod-loader/hooks.c` 明确让 hook 保留整个会话，`ApiHook` / `ApiHookEx` 接入共同链，没有对应的 SDK 撤销入口。生产所有者必须遵守该链及代码生命期；不能把旧独立 hook scaffold 的释放逻辑直接套到 HellForge，也不能因读取 provider 已解绑就释放仍可能被 hook 链访问的代码。本轮没有实现新的安装/撤销 API。
 
 其他原生候选、真实玩家容器与并发写入排除、身份票据、角色创建/复制及完整任务验证仍分别待完成。网络字段类型资料不足，本轮没有依据猜测修改玩家索引的编码宽度。没有新增游戏访问授权。

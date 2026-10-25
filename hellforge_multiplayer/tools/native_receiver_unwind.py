@@ -7,6 +7,7 @@ import json
 import struct
 
 import native_producer_unwind as shared
+import native_unwind_source
 from capstone.x86_const import X86_OP_IMM, X86_OP_MEM, X86_REG_RIP
 
 ROOT, PROJECT = shared.ROOT, shared.PROJECT
@@ -38,6 +39,7 @@ def with_unwind(legacy, *, conditional_rejection=True):
     bytes, retaining the body layout apart from the longer entry sequence.
     All original nonvolatile restores and the final RSP layout remain intact.
     """
+    source_proof=native_unwind_source.verify_candidate('receiver',legacy)
     base,reject=legacy['entry_address'],legacy['reject_address']
     code=bytes.fromhex(legacy['code_hex'])
     require(sha(code)==legacy['code_sha256'] and code.startswith(PROLOGUE), 'Changed code/prologue')
@@ -96,6 +98,7 @@ def with_unwind(legacy, *, conditional_rejection=True):
     candidate=dict(legacy)
     candidate.update(code_hex=result.hex(),code_sha256=sha(result),size_bytes=len(result),
                      status='offline_native_receiver_with_unwind',unwind_registered=False,
+                     original_unwind_source=source_proof,
                      trampoline_address=mapping[legacy['trampoline_address']],resume_address=mapping[legacy['resume_address']])
     splice=mapping[base+legacy['splice']['offset']]-base
     candidate['splice']={**legacy['splice'],'offset':splice,'replacement_hex':result[splice:splice+6].hex()}

@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 import struct
 import sys
+import native_unwind_source
 
 ROOT = Path(__file__).resolve().parents[2]
 PROJECT = ROOT / 'hellforge_multiplayer'
@@ -54,6 +55,7 @@ def with_unwind(legacy, *, conditional_rejection=True):
     existing nonzero R10D reason and use JNZ instead. Flags are not preserved
     by the existing rejection ABI; no GPR, stack or data value changes.
     """
+    source_proof = native_unwind_source.verify_candidate('producer', legacy)
     base, reject = legacy['entry_address'], legacy['reject_address']
     code = bytes.fromhex(legacy['code_hex'])
     require(sha(code) == legacy['code_sha256'] and code.startswith(PROLOGUE), 'Changed code/prologue')
@@ -114,7 +116,8 @@ def with_unwind(legacy, *, conditional_rejection=True):
     require(all(base >= a + n or a >= base + len(image) for a, n in protected), 'Code/unwind image overlaps a referenced region')
     candidate = dict(legacy)
     candidate.update(code_hex=result.hex(), code_sha256=sha(result), size_bytes=len(result),
-                     status='offline_native_producer_with_unwind', unwind_registered=False)
+                     status='offline_native_producer_with_unwind', unwind_registered=False,
+                     original_unwind_source=source_proof)
     return {'candidate': candidate, 'image': image, 'unwind_offset': unwind_offset,
             'table_offset': table_offset, 'function_count': 1,
             'legacy_rejection_offsets': [p - base for p in replacements],
