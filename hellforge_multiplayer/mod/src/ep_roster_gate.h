@@ -4,13 +4,13 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-#define EP_ROSTER_ENTRIES 15u
+#define EP_ROSTER_ENTRIES 16u
 #define EP_ROSTER_GATED_MAX 2816u
 typedef enum EpRosterEntry {
     EP_ROSTER_SEND=1,EP_ROSTER_RECEIVE,EP_ROSTER_GETTER,EP_ROSTER_MOVER,
     EP_ROSTER_DENSE_LEGACY,EP_ROSTER_APPEND_LEGACY,EP_ROSTER_APPEND_REGISTERED,EP_ROSTER_DENSE_REGISTERED,
     EP_ROSTER_REMOVE_LEGACY,EP_ROSTER_REMOVE_REGISTERED,EP_ROSTER_ENTER,EP_ROSTER_LEAVE,
-    EP_ROSTER_REGISTRY_UPDATE,EP_ROSTER_ASSOCIATION,EP_ROSTER_DEPARTURE
+    EP_ROSTER_REGISTRY_UPDATE,EP_ROSTER_ASSOCIATION,EP_ROSTER_DEPARTURE,EP_ROSTER_ENTITY_REMOVE
 } EpRosterEntry;
 typedef struct EpRosterGateLayout { uint32_t original_rva,original_bytes,image_bytes,function_count; } EpRosterGateLayout;
 typedef struct EpRosterGateImage {
@@ -22,6 +22,8 @@ typedef struct EpRosterGateImage {
  * For REGISTRY_UPDATE this field instead identifies the group's ASSOCIATION
  * BODY (+32). The association ID is not the network-index getter result.
  * For DEPARTURE it identifies the same group's network-index getter BODY.
+ * ENTITY_REMOVE scopes the original dispatcher; both routes follow the live
+ * SDK next-pointer slot. Its body does not clone or replace that dispatcher.
  * All addresses numeric; no game discovery, access or installation. */
 int ep_roster_gate_layout(uint32_t,EpRosterGateLayout*);
 EpPropertyResult ep_roster_gate_build(uint32_t,const EpInsertAddresses*,uint64_t control,uint64_t next,EpRosterGateImage*);

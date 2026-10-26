@@ -166,13 +166,13 @@ def main():
          '-I',source/'native/mod-sdk',*roster_emitters,PROJECT/'mod/src/ep_roster_call.cpp',PROJECT/'mod/src/ep_roster_owner.cpp',PROJECT/'mod/src/ep_native_roster.cpp',PROJECT/'tests/roster_group_dll.cpp','-o',roster_group_dll])
     run([*common,'-O1',PROJECT/'tests/roster_group_test.c',*deps,'-o',roster_group_test])
     roster_scenarios=[]
-    for index,after in [(0,0)]+[(i,j) for i in range(1,16) for j in (0,1)]:
+    for index,after in [(0,0)]+[(i,j) for i in range(1,17) for j in (0,1)]:
         arguments=[] if not index else [index,after]
         result=run([roster_group_test,roster_group_dll,*arguments]).decode('utf-8').strip()
         found=re.fullmatch(r'roster group: (\d+) checks passed; scenario (\d+) (\d+)',result)
         if not found or (int(found[2]),int(found[3]))!=(index,after):raise RuntimeError('Missing roster group result: '+result)
         roster_scenarios.append(dict(failure_position=index,after_sdk=bool(after),checks=int(found[1])))
-    roster_group_result=dict(checks=sum(x['checks'] for x in roster_scenarios),scenarios=roster_scenarios,entries=15,
+    roster_group_result=dict(checks=sum(x['checks'] for x in roster_scenarios),scenarios=roster_scenarios,entries=16,
         shared_storage_and_latch=True,internal_mover_bound_to_group=True,internal_association_bound_to_group=True,internal_departure_getter_bound_to_group=True,actual_hellforge_chains=True,
         cooperative_quiescence_tested=True,production_quiescence_provider_bound=False,active_data_rollback_implemented=False,
         native_execution_of_game_bodies=False,game_access=False)
@@ -185,15 +185,17 @@ def main():
     roster_bridge_fixture=build/'roster_call_test.unwind.bin'
     roster_bridge_unwind=json.loads(run([sys.executable,'-B',PROJECT/'tools/roster_bridge_unwind.py','--library',roster_call_dll,'--output',roster_bridge_fixture]))
     call_scenarios=[]
-    for arguments in [['normal'],['nestedfault'],['depth'],['close'],['validatefault'],['endfault'],['exhausted'],['unavailable'],['departurefault'],['departureclose'],['departurerace']]+[[i,j] for i in range(1,16) for j in (0,1)]:
+    for arguments in [['normal'],['nestedfault'],['depth'],['close'],['validatefault'],['endfault'],['exhausted'],['unavailable'],['departurefault'],['departureclose'],['departurerace'],['scopecommit'],['scopeclose'],['scopesnapshot'],['scopefault'],['scopechain']]+[[i,j] for i in range(1,17) for j in (0,1)]:
         result=run([roster_call_test,roster_call_dll,*arguments]).decode('utf-8').strip()
         found=re.fullmatch(r'roster calls: (\d+) checks passed; (?:mode \w+|scenario \d+ \d+)',result)
         if not found:raise RuntimeError('Missing owned roster call result: '+result)
         call_scenarios.append(dict(arguments=arguments,checks=int(found[1])))
-    roster_call_result=dict(checks=sum(x['checks'] for x in call_scenarios),scenarios=call_scenarios,entries=15,
+    roster_call_result=dict(checks=sum(x['checks'] for x in call_scenarios),scenarios=call_scenarios,entries=16,
         actual_owner_dll=True,actual_hellforge_chains=True,old_and_new_calls_owned=True,route_selected_under_owner=True,
         departure_synthetic_indirect_tail_owned=True,departure_nested_delete_fault_quarantines=True,departure_tail_close_and_commit_drain=True,
         departure_indirect_tail_target_abi_verified=False,departure_full_cleanup_transaction_owned=False,
+        entity_remove_original_dispatcher_scoped=True,entity_remove_two_phase_gap_drain=True,entity_remove_nested_fault_quarantines=True,
+        entity_remove_live_next_chain_preserved=True,entity_remove_original_rollback=False,full_original_dispatcher_emulated=False,
         producer_six_arguments_preserved=True,float_register_arguments_and_result_preserved=True,
         nonvolatile_gpr_and_xmm_preserved=True,volatile_return_registers_preserved=True,windows_bridge_unwind=roster_bridge_unwind,
         nested_native_calls_share_scope=True,commit_staging_and_cleanup_owned_after_scope_entry=True,close_drains_and_cancels_queued=True,
@@ -297,7 +299,7 @@ def main():
             'tests/roster_group_dll.h','tests/roster_group_dll.cpp','tests/roster_group_test.c','tools/validate_roster_gates.py',
             'mod/src/ep_roster_owner.h','mod/src/ep_roster_owner.cpp',
             'tests/roster_owner_dll.h','tests/roster_owner_dll.cpp','tests/roster_owner_test.c',
-            'mod/src/ep_roster_call.h','mod/src/ep_roster_call.cpp','tools/verify_roster_call_abi.py',
+            'mod/src/ep_roster_call.h','mod/src/ep_roster_call.cpp','tools/verify_roster_call_abi.py','native-entity-remove.lock.json',
             'tests/roster_call_dll.h','tests/roster_call_dll.cpp','tests/roster_call_test.c',
             'tests/roster_call_abi.h','tools/roster_bridge_unwind.py',
             'native-getter.lock.json','tools/native_getter_image.py','tools/generate_getter_template.py','tools/validate_getter_image.py',

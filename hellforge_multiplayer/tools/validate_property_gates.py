@@ -17,7 +17,7 @@ PROJECT=reference.PROJECT
 CONTROL=0x7FF000000000
 
 
-def gate_paths(blob,base,body):
+def gate_paths(blob,base,body,*,passthrough=False):
     regs=[r.UC_X86_REG_RBX,r.UC_X86_REG_RBP,r.UC_X86_REG_RSI,r.UC_X86_REG_RDI,
           r.UC_X86_REG_R12,r.UC_X86_REG_R13,r.UC_X86_REG_R14,r.UC_X86_REG_R15,
           r.UC_X86_REG_RCX,r.UC_X86_REG_RDX,r.UC_X86_REG_R8,r.UC_X86_REG_R9,
@@ -35,12 +35,12 @@ def gate_paths(blob,base,body):
         for destination in (fallback,fallback+16):
             uc.mem_write(CONTROL+8,struct.pack('<Q',destination)); reached=[]
             def stop(machine,address,size,data):
-                if address in (body,destination): reached.append(address); machine.emu_stop()
+                if address==destination or (address==body and not passthrough): reached.append(address); machine.emu_stop()
             hook=uc.hook_add(u.UC_HOOK_CODE,stop)
             expected={reg:0x12340000+index for index,reg in enumerate(regs)}
             for reg,value in expected.items(): uc.reg_write(reg,value)
             uc.emu_start(base,base+len(blob),count=20)
-            reference.require(reached==[body if active==1 else destination],'Gate selected wrong route')
+            reference.require(reached==[body if active==1 and not passthrough else destination],'Gate selected wrong route')
             reference.require(all(uc.reg_read(reg)==value for reg,value in expected.items()),'Gate changed an argument, stack, vector or nonvolatile register')
             uc.hook_del(hook); cases+=1
     return cases

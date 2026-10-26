@@ -1,4 +1,4 @@
-"""Verify fifteen switches and rebase all validated body unwind PCs."""
+"""Verify sixteen switches and rebase all validated body unwind PCs."""
 import argparse,ctypes as c,json,struct
 from pathlib import Path
 from datetime import datetime,timezone
@@ -72,7 +72,19 @@ def validate(path,zig):
         for control,next_pointer,bindings in bad:
             failed=Gate();c.memset(c.byref(failed),0xA5,c.sizeof(failed))
             reference.require(emit(kind,InsertAddresses(**bindings),control,next_pointer,failed)!=0 and bytes(failed)==bytes(c.sizeof(failed)),'Invalid roster gate accepted: '+name);refusals+=1
-    for kind in (0,16,0xFFFFFFFF):
+    # Scope-only entry: execute both the prefix AND forwarding body, follow
+    # a changed SDK next slot, and preserve all argument/nonvolatile registers.
+    out=Gate();reference.require(emit(16,InsertAddresses(**a),CONTROL,CONTROL+8,out)==0,'Entity removal scope gate failed')
+    blob=bytes(out.data[:out.bytes]);branches+=gate_paths(blob,a['code_address'],a['code_address']+32,passthrough=True)
+    reference.require((out.bytes,out.table_offset,out.function_count)==(80,56,2),'Entity removal scope layout changed')
+    results['entity-remove']=dict(bytes=out.bytes,function_count=out.function_count,windows_unwind_contexts=0,
+        reference_negative_controls_rejected=0,passthrough_cases=6,windows_leaf_unwind_checked_by_roster_group=True)
+    for control,next_pointer,bindings in ((CONTROL+1,CONTROL+8,a),(CONTROL,CONTROL+4,a),(CONTROL,CONTROL,a),
+        (a['roster_address'],CONTROL+8,a),(CONTROL,CONTROL+8,{**a,'reject_address':a['code_address']+79}),
+        (CONTROL,CONTROL+8,{**a,'code_address':a['game_base']+0xFDC820})):
+        failed=Gate();c.memset(c.byref(failed),0xA5,c.sizeof(failed))
+        reference.require(emit(16,InsertAddresses(**bindings),control,next_pointer,failed)!=0 and bytes(failed)==bytes(c.sizeof(failed)),'Invalid entity scope placement accepted');refusals+=1
+    for kind in (0,17,0xFFFFFFFF):
         failed=Gate();c.memset(c.byref(failed),0xA5,c.sizeof(failed));reference.require(emit(kind,InsertAddresses(**a),CONTROL,CONTROL+8,failed)==1 and bytes(failed)==bytes(c.sizeof(failed)),'Invalid kind accepted');refusals+=1
     paths=['mod/src/ep_roster_gate.h','mod/src/ep_roster_gate.cpp','tests/native_producer_unwind_test.c','tests/property_image_dll.cpp',
            'tools/validate_roster_gates.py','tools/validate_property_gates.py','tools/native_property_library.py']

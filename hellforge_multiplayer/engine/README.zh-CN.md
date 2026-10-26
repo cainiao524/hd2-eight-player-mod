@@ -73,12 +73,12 @@ py -3.12 -B hellforge_multiplayer/tools/build_engine_offline.py `
 
 同一入口继续构建 [四数组共用搬移器](../NATIVE_MOVER.zh-CN.md)：100 次功能执行、8,231 个 Windows 回溯上下文和 25 项准备生命周期检查，离线重放三段原元数据共 92 bytes。测试 DLL 先于存储夹具构建，三份存储映像与八端插入使用 C++ 搬移代码；独立收据为 `native-mover-validation.json`，总收据交叉固定指纹。搬移器尚未纳入生产共同开关。
 
-完整入口另执行 [十五入口组](../ROSTER_GROUP.zh-CN.md)：`roster-gate-validation.json` 验证十五份实际生成开关和全部已捕获主体回溯状态；90 组分支、161 组非法配置和 49,846 个回溯上下文通过；`roster_group` 在总收据中记录 31 个自有进程场景、12,956 次检查，包括十五个发布位置各自的 SDK 前/后故障。真实 HellForge 链只运行合成 leaf 函数，生产 guard 和激活后数据回滚尚未实现。两个新测试产物及全部来源纳入总收据。
+完整入口另执行 [十六入口组](../ROSTER_GROUP.zh-CN.md)：`roster-gate-validation.json` 验证十六份实际生成开关和全部已捕获主体回溯状态；96 组分支、167 组非法配置和 49,846 个回溯上下文通过；`roster_group` 在总收据中记录 33 个自有进程场景、15,158 次检查，包括十六个发布位置各自的 SDK 前/后故障。真实 HellForge 链只运行合成 leaf 函数，生产 guard 和激活后数据回滚尚未实现。两个新测试产物及全部来源纳入总收据。
 
 完整入口另构建 [存储所有者](../ROSTER_OWNER.zh-CN.md) 的实际 C++ DLL，并用相同的三份存储夹具连接真实 loader。641 次检查验证读写互斥、revision/票据提交、离队代次保留、旧 provider 失效、关闭排空和结构化异常后的隔离与锁释放。DLL 沿用上游 ModKit 编译选项，不增加 Microsoft 扩展开关。总收据 `roster_owner` 和共同指纹表记录结果及源码、DLL/EXE；真实原生 hook、全体写入者、权威身份和底层复制尚未绑定。
 
-完整入口继续执行 [十五入口受管调用](../ROSTER_CALLS.zh-CN.md)：实际 owner、ABI 桥、SDK/MinHook 链连接自有目标，覆盖六参数、高位整数、浮点/向量返回、全部非易失 GPR/XMM、同 owner 嵌套、真实锁排空和故障隔离。两个静态桥的 76 个指令边界通过实际 PE 表执行 Windows 回溯；原十五函数体的直接堆叠访问另从固定证据核对。41 个新进程场景包括十一种正常/故障模式和十五处 SDK 前/后失败，总收据 `roster_calls` 保存结果、源码及 DLL/EXE/回溯夹具指纹。`roster-call-abi-validation.json` 的 SHA-256 交叉写入总收据；外部辅助函数和实际调用端 ABI、生产 guard、权威身份及真实游戏绑定仍未证明。
+完整入口继续执行 [十六入口受管调用](../ROSTER_CALLS.zh-CN.md)：实际 owner、ABI 桥、SDK/MinHook 链连接自有目标，覆盖六参数、高位整数、浮点/向量返回、全部非易失 GPR/XMM、同 owner 嵌套、真实锁排空和故障隔离。两个静态桥的 76 个指令边界通过实际 PE 表执行 Windows 回溯；原十六函数体的直接堆叠访问另从固定证据核对。48 个新进程场景包括十六种正常/故障模式和十六处 SDK 前/后失败，总收据 `roster_calls` 保存结果、源码及 DLL/EXE/回溯夹具指纹。`roster-call-abi-validation.json` 的 SHA-256 交叉写入总收据；外部辅助函数和实际调用端 ABI、生产 guard、权威身份及真实游戏绑定仍未证明。
 
-新增 [原生注册表与关联查询](../NATIVE_REGISTRY.zh-CN.md)：RVA 0xB54E00 与 0x606520 已进入 C++ 生成、实际准备生命周期及十五入口共同所有者。8 个功能测试、87 次执行、63 项 API 检查、45 项准备检查和 3,963 个 Windows 回溯上下文通过；保存的四段原回溯资料重放 140 bytes。tag 73 直接调用同组关联主体，tag 69 使用外部 B 数组；其余 tag 回调仍为契约替身，晚期拒绝不承诺撤销此前副作用。单独证据为 `native-registry-validation.json`；生产自动绑定、游戏访问和八人实机验证仍未完成。
+新增 [原生注册表与关联查询](../NATIVE_REGISTRY.zh-CN.md)：RVA 0xB54E00 与 0x606520 已进入 C++ 生成、实际准备生命周期及十六入口共同所有者。8 个功能测试、87 次执行、63 项 API 检查、45 项准备检查和 3,963 个 Windows 回溯上下文通过；保存的四段原回溯资料重放 140 bytes。tag 73 直接调用同组关联主体，tag 69 使用外部 B 数组；其余 tag 回调仍为契约替身，晚期拒绝不承诺撤销此前副作用。单独证据为 `native-registry-validation.json`；生产自动绑定、游戏访问和八人实机验证仍未完成。
 
-[离队前清理移植](../NATIVE_DEPARTURE.zh-CN.md) 已纳入离线构建及独立 C++ 映像准备验证。它保留十三段来源回溯，新增完整栈和 XMM6 Windows 验证；已接入第 15 个共同入口及同组 getter，尾调用关闭/提交等待与嵌套删除故障另有自有程序验证。真实尾调用 ABI 和清理后直到实际删除的整个保护范围仍未证明，生产未启用。
+[离队前清理移植](../NATIVE_DEPARTURE.zh-CN.md) 已纳入离线构建及独立 C++ 映像准备验证。它保留十三段来源回溯，新增完整栈和 XMM6 Windows 验证；已接入第 15 个共同入口及同组 getter，尾调用关闭/提交等待与嵌套删除故障另有自有程序验证。第 16 个外层入口已在自有双阶段测试中保护清理返回后的间隙；真实尾调用 ABI、原 dispatcher 全部执行和副作用恢复仍未证明，生产未启用。

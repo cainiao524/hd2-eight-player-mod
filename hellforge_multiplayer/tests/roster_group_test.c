@@ -11,7 +11,7 @@ static int hooks,fail_hook,fail_after,begin_ok=1,validate_ok=1,end_calls;
 static SRWLOCK mutation=SRWLOCK_INIT;
 static HANDLE entered,resume,commit_started;
 static EpPropertyCommitGuard guard;
-static void Routes(int active) {for (unsigned i=0;i<EP_ROSTER_ENTRIES;i++) CHECK(targets[i]()==i+1+(active ? 1000u : 0u));}
+static void Routes(int active) {for (unsigned i=0;i<EP_ROSTER_ENTRIES;i++) CHECK(targets[i]()==i+1+(active && i+1!=EP_ROSTER_ENTITY_REMOVE ? 1000u : 0u));}
 static int Hook(HfMod* mod,uintptr_t target,void* detour,void** next,int32_t priority)
 {
     EpRosterGroupInfo info;hooks++;
@@ -42,7 +42,9 @@ static void End(void* unused,void* lease,int committed)
 }
 static EpRosterGroupBindings Targets(void)
 {
-    uint8_t* memory=VirtualAlloc(NULL,74727424,MEM_RESERVE,PAGE_NOACCESS);CHECK(memory!=NULL);
+    /* Reserve numerical fixture resources too, so test code cannot randomly
+     * occupy the synthetic S/B/reject ranges. Pages remain inaccessible. */
+    uint8_t* memory=VirtualAlloc(NULL,0x30000000,MEM_RESERVE,PAGE_NOACCESS);CHECK(memory!=NULL);
     EpRosterGroupBindings b={0};b.game_base=(uintptr_t)memory;
     b.roster_address=(uintptr_t)memory+0x8000000;b.storage_address=(uintptr_t)memory+0x10000000;
     for (unsigned i=0;i<EP_ROSTER_ENTRIES;i++) {
@@ -104,8 +106,9 @@ static void BadTables(const EpRosterGroupInfo* info)
 static DWORD WINAPI Commit(void* p) {(void)p;return group->commit(owner,current,&guard) ? 0 : 1;}
 static DWORD WINAPI OldCall(void* p)
 {(void)p;AcquireSRWLockShared(&mutation);Routes(0);SetEvent(entered);CHECK(WaitForSingleObject(resume,5000)==WAIT_OBJECT_0);Routes(0);ReleaseSRWLockShared(&mutation);return 0;}
-static void* next_extra;
+static void* next_extra;static void* next_scope;
 static uint64_t Extra(void) {return ((Call)next_extra)()+100;}
+static uint64_t ExtraScope(void) {return ((Call)next_scope)()+100;}
 int main(int argc,char** argv)
 {
     CHECK(argc==2 || argc==4);HMODULE dll=LoadLibraryA(argv[1]);CHECK(dll!=NULL);
@@ -162,6 +165,8 @@ int main(int argc,char** argv)
     DWORD result;CHECK(GetExitCodeThread(worker,&result) && !result);CloseHandle(reader);CloseHandle(worker);CloseHandle(entered);CloseHandle(resume);CloseHandle(commit_started);commit_started=NULL;
     CHECK(group->info(owner,current,&out) && out.state==EP_GROUP_ACTIVE && out.active);Routes(1);CHECK(!group->cancel(owner,current));
     Call active[EP_ROSTER_ENTRIES];memcpy(active,targets,sizeof(active));
+    CHECK(ApiHookEx(&g_mods[1],(uintptr_t)targets[EP_ROSTER_ENTITY_REMOVE-1],(void*)ExtraScope,&next_scope,0)==0);
+    CHECK(targets[EP_ROSTER_ENTITY_REMOVE-1]()==EP_ROSTER_ENTITY_REMOVE+100);
     b=Targets();CHECK(group->prepare(&api,owner,&b,&info));current=info.handle;CHECK(group->publish(owner,current,10));CHECK(group->cancel(owner,current));
     CHECK(ApiHookEx(&g_mods[1],(uintptr_t)targets[11],(void*)Extra,&next_extra,0)==0);CHECK(targets[11]()==112);
     EpRosterGroupInfo pending[EP_ROSTER_GROUP_SLOTS];unsigned filled=0;
@@ -170,6 +175,6 @@ int main(int argc,char** argv)
     for(unsigned i=0;i<filled;i++) CHECK(group->cancel(owner,pending[i].handle));
     CHECK(group->prepare(&api,owner,&b,&out) && out.handle!=pending[0].handle);CHECK(!group->info(owner,pending[0].handle,&info));CHECK(group->cancel(owner,out.handle));
     CHECK(FreeLibrary(dll));HMODULE pinned=NULL;CHECK(GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS|GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,(LPCSTR)(uintptr_t)group,&pinned) && pinned==dll);
-    CHECK(targets[11]()==112);for(unsigned i=0;i<EP_ROSTER_ENTRIES;i++) CHECK(active[i]()==1001+i);
+    CHECK(targets[11]()==112);for(unsigned i=0;i<EP_ROSTER_ENTRIES;i++) CHECK(active[i]()==i+1+(i+1==EP_ROSTER_ENTITY_REMOVE?100:1000));
     printf("roster group: %ld checks passed; scenario 0 0\n",checks);return 0;
 }

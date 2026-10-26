@@ -1,4 +1,4 @@
-"""Check the saved fifteen bodies' direct stack-argument accesses; no game access.
+"""Check the saved sixteen bodies' direct stack-argument accesses; no game access.
 
 This finite CFG check does not certify live callers, indirect helpers or a new
 game build. It pins original evidence and supplies the bridge's stack-copy gate.
@@ -30,7 +30,7 @@ def find(value,entry):
 def audit(code,entry):
     md=cs.Cs(cs.CS_ARCH_X86,cs.CS_MODE_64);md.detail=True
     ins=list(md.disasm(code,entry));need(sum(i.size for i in ins)==len(code),'incomplete decode')
-    by={i.address:i for i in ins};queue=[(entry,{'rsp':0})];seen=set();accesses=set();tails=set();indirect=[];returns=0
+    by={i.address:i for i in ins};queue=[(entry,{'rsp':0})];seen=set();accesses=set();tails=set();indirect=[];dynamic=set();returns=0
     while queue:
         pc,aliases=queue.pop();key=(pc,tuple(sorted(aliases.items())))
         if key in seen:continue
@@ -42,8 +42,11 @@ def audit(code,entry):
             need(index not in aliases,'stack pointer used as indexed address')
             if base in aliases:
                 need(not op.mem.index,'indexed stack access needs separate ABI proof')
-                offset=aliases[base]+op.mem.disp
-                if offset>=0x28:accesses.add((i.address,offset,op.size,i.mnemonic=='lea'))
+                if isinstance(aliases[base],tuple):
+                    dynamic.add((i.address,base,aliases[base][1],op.size,i.mnemonic=='lea'))
+                else:
+                    offset=aliases[base]+op.mem.disp
+                    if offset>=0x28:accesses.add((i.address,offset,op.size,i.mnemonic=='lea'))
         if i.mnemonic.startswith('ret'):
             need(aliases['rsp']==0 and not ops,'nonstandard return stack');returns+=1;continue
         next_alias=dict(aliases)
@@ -59,9 +62,16 @@ def audit(code,entry):
                 if i.mnemonic=='mov' and src.type==X86_OP_REG and canonical(i.reg_name(src.reg)) in aliases:
                     assign=(dest,aliases[canonical(i.reg_name(src.reg))])
                 elif i.mnemonic=='lea' and src.type==X86_OP_MEM and canonical(i.reg_name(src.mem.base)) in aliases and not src.mem.index:
-                    assign=(dest,aliases[canonical(i.reg_name(src.mem.base))]+src.mem.disp)
+                    value=aliases[canonical(i.reg_name(src.mem.base))]
+                    if entry==0xFDC820 and i.address==0xFDCAB6:
+                        # A helper supplies this loop's count. Widen the exact
+                        # saved local-buffer iterator to an UNKNOWN extent;
+                        # do not assume its requested capacity bounds the result.
+                        need(i.bytes.hex()=='488d7f08' and (value==-200 or value==('dynamic',-200)),'unrecognized local-buffer iterator')
+                        value=('dynamic',-200)
+                    assign=(dest,value if isinstance(value,tuple) else value+src.mem.disp)
                 elif i.mnemonic in ('add','sub') and dest in aliases and src.type==X86_OP_IMM:
-                    assign=(dest,aliases[dest]+src.imm*(1 if i.mnemonic=='add' else -1))
+                    value=aliases[dest];assign=(dest,value if isinstance(value,tuple) else value+src.imm*(1 if i.mnemonic=='add' else -1))
             for r in i.regs_access()[1]:
                 name=canonical(i.reg_name(r));next_alias.pop(name,None)
             if assign:next_alias[assign[0]]=assign[1]
@@ -79,27 +89,56 @@ def audit(code,entry):
             queue.append((ops[0].imm,next_alias))
             if i.mnemonic=='jmp':continue
         queue.append((pc+i.size,next_alias))
-    return {'cfg_states':len(seen),'returns':returns,'indirect_tail_abi_pending':indirect,'external_tail_abi_pending':[{'rva':hex(pc),'target':hex(target)} for pc,target in sorted(tails)],'stack_arguments':[
+    return {'cfg_states':len(seen),'returns':returns,'dynamic_stack_accesses_pending':[
+        dict(rva=hex(pc),register=reg,origin_entry_rsp_offset=origin,bytes=n,address_taken=lea,bound_verified=False) for pc,reg,origin,n,lea in sorted(dynamic)],
+        'indirect_tail_abi_pending':indirect,'external_tail_abi_pending':[{'rva':hex(pc),'target':hex(target)} for pc,target in sorted(tails)],'stack_arguments':[
         {'rva':hex(pc),'entry_rsp_offset':offset,'bytes':n,'address_taken':lea} for pc,offset,n,lea in sorted(accesses)]}
 def main():
     need(cs.__version__=='5.0.7','wrong Capstone')
     profiles=[('native-unwind-source',('producer','receiver')),('native-getter',('getter',)),('native-mover',('mover',)),
         ('native-insert',('dense_legacy','append_legacy','append_registered','dense_registered')),
         ('native-remove',('legacy','registered')),('native-classify',('enter','leave')),
-        ('native-registry',('update','association')),('native-departure',('departure',))]
-    rows=[];inputs={};indirect_rejections=0
+        ('native-registry',('update','association')),('native-departure',('departure',)),('native-entity-remove',('entity_remove',))]
+    rows=[];inputs={};indirect_rejections=0;dynamic_rejections=0
     for name,keys in profiles:
         path=PROJECT/(name+'.lock.json');inputs[path.relative_to(ROOT).as_posix()]=sha(path)
         lock=json.loads(path.read_bytes())
         for key in keys:
             f=lock['functions'][key];p=ROOT/f['evidence_path'];need(sha(p)==f['evidence_sha256'],'changed evidence')
-            inputs[f['evidence_path']]=sha(p);node=find(json.loads(p.read_bytes()),f['entry']);need(node is not None,'missing body')
-            code=b''.join(bytes.fromhex(i['bytes']) for i in node['instructions'])
+            inputs[f['evidence_path']]=sha(p);evidence=json.loads(p.read_bytes())
+            if key=='entity_remove':
+                code=bytes.fromhex(f['body_hex']);entry=int(f['entry'],16);cursor=entry
+                need(entry==0xFDC820 and len(code)==1503 and f['code_sha256']=='8ef7ad9fbf59756023045f94c796bfb96a2f43876d8c64052c0d306a8b5c6094','unrecognized dispatcher')
+                for fragment in evidence['full_function_fragments'][f['entry']]:
+                    a,b=int(fragment['start'],16),int(fragment['end_exclusive'],16)
+                    need(a==cursor and hashlib.sha256(code[a-entry:b-entry]).hexdigest()==fragment['sha256'],'changed dispatcher fragment');cursor=b
+                need(cursor==entry+len(code),'incomplete dispatcher coverage')
+                rp=ROOT/lock['registration_evidence_path'];need(sha(rp)==lock['registration_evidence_sha256'],'changed callback registration')
+                inputs[lock['registration_evidence_path']]=sha(rp);registration=json.loads(rp.read_bytes())
+                pins={int(i['rva'],16):i for i in evidence['selected_instruction_groups']['before_removal_dispatch']}
+                need(lock['original_context_to_component_owner']==64 and lock['component_index']==239,'changed callback base')
+                for table in lock['callback_tables']:
+                    matches=[x for x in registration['component_239'] if x['target_rva']==table['registered_callback']]
+                    need(len(matches)==1 and int(matches[0]['table_base_offset'],16)+64==int(table['context_table'],16),'callback table mismatch')
+                    for pc in (int(table['load_rva'],16),int(table['call_rva'],16)):
+                        blob=bytes.fromhex(pins[pc]['bytes']);need(code[pc-entry:pc-entry+len(blob)]==blob,'dispatcher call changed')
+                need([x['call_rva'] for x in lock['callback_tables']]==['0xfdc953','0xfdcc63'],'callback order changed')
+            else:
+                node=find(evidence,f['entry']);need(node is not None,'missing body')
+                code=b''.join(bytes.fromhex(i['bytes']) for i in node['instructions'])
             need(hashlib.sha256(code).hexdigest()==f['code_sha256'],'changed original bytes')
             proof=audit(code,int(f['entry'],16));kind=len(rows)+1;args=proof['stack_arguments']
             if kind==1:
                 need({a['entry_rsp_offset'] for a in args}=={40,48} and all(a['bytes']==8 and not a['address_taken'] for a in args),'producer stack ABI changed')
             else:need(not args,'unaccounted stack arguments')
+            need(bool(proof['dynamic_stack_accesses_pending'])==(key=='entity_remove'),'unexpected dynamic stack extent')
+            if key=='entity_remove':
+                for pc in (0xFDCAB6,0xFDCA99):
+                    malformed=bytearray(code);offset=pc-int(f['entry'],16)+(3 if pc==0xFDCAB6 else 4);malformed[offset]+=8
+                    try:audit(bytes(malformed),int(f['entry'],16))
+                    except ValueError as ex:
+                        need(str(ex)=='unrecognized local-buffer iterator','iterator negative control failed for unrelated reason');dynamic_rejections+=1
+                    else:raise ValueError('changed local iterator was accepted')
             need((len(proof['indirect_tail_abi_pending'])==1)==(key=='departure'),'unexpected indirect-tail contract')
             if key=='departure':
                 entry=int(f['entry'],16)
@@ -113,7 +152,8 @@ def main():
                     else:raise ValueError('unproved indirect tail was accepted')
             rows.append(dict(kind=kind,name=key,entry=f['entry'],stack_copy_bytes=16 if kind==1 else 0,**proof))
     receipt=dict(schema='hellforge_roster_call_abi_v1',passed=True,verified_at_utc=datetime.now(timezone.utc).isoformat(),
-        game_build=25480438,indirect_tail_rejection_controls=indirect_rejections,indirect_tail_target_abi_verified=False,entries=rows,test_source_sha256={Path(__file__).relative_to(PROJECT).as_posix():sha(Path(__file__))},
+        game_build=25480438,indirect_tail_rejection_controls=indirect_rejections,dynamic_iterator_rejection_controls=dynamic_rejections,
+        entity_remove_local_array_bound_verified=False,indirect_tail_target_abi_verified=False,entries=rows,test_source_sha256={Path(__file__).relative_to(PROJECT).as_posix():sha(Path(__file__))},
         legacy_source_sha256=inputs,live_callers_verified=False,transitive_helper_abi_verified=False,game_access=False)
     (PROJECT/'evidence/roster-call-abi-validation.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'passed':True,'entries':len(rows),'producer_stack_copy_bytes':16,'cfg_states':sum(r['cfg_states'] for r in rows),'game_access':False}))

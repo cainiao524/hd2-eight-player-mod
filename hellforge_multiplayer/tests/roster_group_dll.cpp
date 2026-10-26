@@ -23,7 +23,7 @@ LEAF(1) LEAF(2) LEAF(3) LEAF(4) LEAF(5) LEAF(6) LEAF(7) LEAF(8) LEAF(9) LEAF(10)
 static EpPropertyResult FixtureGate(uint32_t kind,const EpInsertAddresses* a,uint64_t control,uint64_t next,EpRosterGateImage* out)
 {
     EpPropertyResult rc=ep_roster_gate_build(kind,a,control,next,out);preparing_step=kind;
-    if (rc!=EP_PROPERTY_OK) return rc;
+    if (rc!=EP_PROPERTY_OK || kind==EP_ROSTER_ENTITY_REMOVE) return rc;
     if (kind==EP_ROSTER_GETTER) prepared_getter=a->code_address+32;
     if (kind==EP_ROSTER_DEPARTURE && a->move_code_address!=prepared_getter) return EP_PROPERTY_ARGUMENT;
     if (kind==EP_ROSTER_MOVER) prepared_mover=a->code_address+32;

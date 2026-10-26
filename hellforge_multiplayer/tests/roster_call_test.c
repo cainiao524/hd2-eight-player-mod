@@ -10,11 +10,12 @@ static const RosterCallTestApi* test;
 static HfApi api;static HfMod* mod;static uint64_t storage,current,other_storage;
 static Call targets[EP_ROSTER_ENTRIES];static int installed[EP_ROSTER_ENTRIES],hooks,fail_hook,fail_after;
 static unsigned fault_kind,nested_kind;static int block_leaf,block_commit,validate_ok=1,end_fault,validate_fault,recursive;
-static int expected_owned_end=1;
+static int expected_owned_end=1,scope_flow,scope_active,scope_chain;
+static LONG scope_departed,scope_removed,scope_postwork;static void* scope_next;
 static HANDLE leaf_enter,leaf_resume,commit_enter,validate_enter,validate_resume,end_enter,end_resume;
 static EpPropertyCommitGuard guard;static EpNativeRosterView view;static EpRosterOwnerResult last_failure;
 static uint64_t Number(unsigned kind,int active)
-{return kind+(active?1000:0)+11+3*23+5*37+7*53+(kind==1?11*71+13*97:0);}
+{return kind+(active && kind!=EP_ROSTER_ENTITY_REMOVE?1000:0)+(kind==EP_ROSTER_ENTITY_REMOVE && scope_chain?100:0)+11+3*23+5*37+7*53+(kind==1?11*71+13*97:0);}
 static uint64_t Failed(unsigned kind) {return UINT64_C(0xEE000000)+kind;}
 static uint64_t StateValue(int active,unsigned i)
 {return UINT64_C(0x1111000011110001)*(i+1)+(active?UINT64_C(0x8000000000000000):0);}
@@ -27,8 +28,24 @@ static uint64_t Body(unsigned kind,int active,uint64_t a,uint64_t b,uint64_t c,u
 {
     InterlockedIncrement(&bodies);EpRosterOwnerInfo info;
     if(installed[kind-1]) CHECK(test->owner_info(mod,storage,&info)==EP_OWNER_REENTRANT);
-    if(block_leaf==(int)kind){SetEvent(leaf_enter);CHECK(WaitForSingleObject(leaf_resume,5000)==WAIT_OBJECT_0);}
+    if(block_leaf==(int)kind && !(kind==EP_ROSTER_ENTITY_REMOVE && scope_flow)){SetEvent(leaf_enter);CHECK(WaitForSingleObject(leaf_resume,5000)==WAIT_OBJECT_0);}
     if(fault_kind==kind) RaiseException(0xE0422001,0,0,NULL);
+    if(kind==EP_ROSTER_ENTITY_REMOVE){
+        CHECK(!active); /* Poison candidate body must never replace original. */
+        if(scope_flow){
+            CHECK(targets[EP_ROSTER_DEPARTURE-1](a,b,c,d,71,97)==(fault_kind?Failed(EP_ROSTER_DEPARTURE):Number(EP_ROSTER_DEPARTURE,scope_active)));
+            InterlockedIncrement(&scope_departed);
+            /* Departure already returned. No nested departure is holding the
+             * lock at this barrier; only the complete dispatcher owns it. */
+            if(block_leaf==(int)kind){SetEvent(leaf_enter);CHECK(WaitForSingleObject(leaf_resume,5000)==WAIT_OBJECT_0);}
+            CHECK(test->owner_info(mod,storage,&info)==EP_OWNER_REENTRANT);
+            CHECK(targets[EP_ROSTER_REMOVE_REGISTERED-1](a,b,c,d,71,97)==(fault_kind?Failed(EP_ROSTER_REMOVE_REGISTERED):Number(EP_ROSTER_REMOVE_REGISTERED,scope_active)));
+            InterlockedIncrement(&scope_removed);
+            /* Failure quarantine does not undo or abort unhooked original
+             * postwork. Keep this limitation observable in the fault test. */
+            InterlockedIncrement(&scope_postwork);
+        }
+    }
     if(nested_kind==kind){
         if(recursive) targets[kind-1](a,b,c,d,e,f);
         else if(kind==EP_ROSTER_DEPARTURE){
@@ -42,7 +59,7 @@ static uint64_t Body(unsigned kind,int active,uint64_t a,uint64_t b,uint64_t c,u
 }
 #define FUNCTIONS(n) static uint64_t Old##n(uint64_t a,uint64_t b,uint64_t c,uint64_t d,uint64_t e,uint64_t f){return Body(n,0,a,b,c,d,n==1?e:0,n==1?f:0);} \
 static uint64_t New##n(uint64_t a,uint64_t b,uint64_t c,uint64_t d,uint64_t e,uint64_t f){return Body(n,1,a,b,c,d,n==1?e:0,n==1?f:0);}
-FUNCTIONS(1) FUNCTIONS(2) FUNCTIONS(5) FUNCTIONS(6) FUNCTIONS(7) FUNCTIONS(8) FUNCTIONS(9) FUNCTIONS(10) FUNCTIONS(11) FUNCTIONS(12) FUNCTIONS(13) FUNCTIONS(14)
+FUNCTIONS(1) FUNCTIONS(2) FUNCTIONS(5) FUNCTIONS(6) FUNCTIONS(7) FUNCTIONS(8) FUNCTIONS(9) FUNCTIONS(10) FUNCTIONS(11) FUNCTIONS(12) FUNCTIONS(13) FUNCTIONS(14) FUNCTIONS(16)
 #undef FUNCTIONS
 /* Own four-register tail targets. This exercises bridge lifetime across a real
  * indirect tail; it makes no claim about the unresolved game's tail target. */
@@ -96,11 +113,13 @@ static void End(void* unused,void* lease,int committed)
 }
 static EpRosterGroupBindings Targets(void)
 {
-    uint8_t* memory=VirtualAlloc(NULL,74727424,MEM_RESERVE,PAGE_NOACCESS);CHECK(memory!=NULL);
+    /* Reserve numerical fixture resources too, so test code cannot randomly
+     * occupy the synthetic S/B/reject ranges. Pages remain inaccessible. */
+    uint8_t* memory=VirtualAlloc(NULL,0x30000000,MEM_RESERVE,PAGE_NOACCESS);CHECK(memory!=NULL);
     EpRosterGroupBindings b={0};b.game_base=(uintptr_t)memory;
     b.roster_address=(uintptr_t)memory+0x8000000;b.storage_address=(uintptr_t)memory+0x10000000;
-    const uintptr_t old[EP_ROSTER_ENTRIES]={(uintptr_t)Old1,(uintptr_t)Old2,(uintptr_t)Old3,(uintptr_t)StateOld,(uintptr_t)Old5,(uintptr_t)Old6,(uintptr_t)Old7,(uintptr_t)Old8,(uintptr_t)Old9,(uintptr_t)Old10,(uintptr_t)Old11,(uintptr_t)Old12,(uintptr_t)Old13,(uintptr_t)Old14,(uintptr_t)Old15};
-    const uintptr_t next[EP_ROSTER_ENTRIES]={(uintptr_t)New1,(uintptr_t)New2,(uintptr_t)New3,(uintptr_t)StateNew,(uintptr_t)New5,(uintptr_t)New6,(uintptr_t)New7,(uintptr_t)New8,(uintptr_t)New9,(uintptr_t)New10,(uintptr_t)New11,(uintptr_t)New12,(uintptr_t)New13,(uintptr_t)New14,(uintptr_t)New15};
+    const uintptr_t old[EP_ROSTER_ENTRIES]={(uintptr_t)Old1,(uintptr_t)Old2,(uintptr_t)Old3,(uintptr_t)StateOld,(uintptr_t)Old5,(uintptr_t)Old6,(uintptr_t)Old7,(uintptr_t)Old8,(uintptr_t)Old9,(uintptr_t)Old10,(uintptr_t)Old11,(uintptr_t)Old12,(uintptr_t)Old13,(uintptr_t)Old14,(uintptr_t)Old15,(uintptr_t)Old16};
+    const uintptr_t next[EP_ROSTER_ENTRIES]={(uintptr_t)New1,(uintptr_t)New2,(uintptr_t)New3,(uintptr_t)StateNew,(uintptr_t)New5,(uintptr_t)New6,(uintptr_t)New7,(uintptr_t)New8,(uintptr_t)New9,(uintptr_t)New10,(uintptr_t)New11,(uintptr_t)New12,(uintptr_t)New13,(uintptr_t)New14,(uintptr_t)New15,(uintptr_t)New16};
     test->targets(next);
     for(unsigned i=0;i<EP_ROSTER_ENTRIES;i++){
         EpRosterGateLayout layout;CHECK(test->layout(i+1,&layout));uint8_t* at=memory+layout.original_rva;
@@ -183,6 +202,30 @@ static void NestedDeparture(int active)
     CHECK(targets[EP_ROSTER_DEPARTURE-1](11,23,37,53,71,97)==Number(EP_ROSTER_DEPARTURE,active));nested_kind=0;
     CHECK(test->owner_info(mod,storage,&after)==EP_OWNER_OK && after.revision==before.revision+1 && !after.fault);
 }
+static uint64_t ScopeExtra(uint64_t a,uint64_t b,uint64_t c,uint64_t d,uint64_t e,uint64_t f)
+{
+    EpRosterOwnerInfo info;CHECK(test->owner_info(mod,storage,&info)==EP_OWNER_REENTRANT);
+    return ((Call)scope_next)(a,b,c,d,e,f)+100;
+}
+static void NestedDispatcher(int active)
+{
+    EpRosterOwnerInfo before,after;CHECK(test->owner_info(mod,storage,&before)==EP_OWNER_OK);
+    LONG departed=scope_departed,removed=scope_removed;scope_flow=1;scope_active=active;
+    CHECK(targets[EP_ROSTER_ENTITY_REMOVE-1](11,23,37,53,71,97)==Number(EP_ROSTER_ENTITY_REMOVE,active));scope_flow=0;
+    CHECK(scope_departed==departed+1 && scope_removed==removed+1);
+    CHECK(test->owner_info(mod,storage,&after)==EP_OWNER_OK && after.revision==before.revision+1 && !after.fault);
+}
+static void ScopeSnapshot(void)
+{
+    scope_flow=1;scope_active=0;block_leaf=EP_ROSTER_ENTITY_REMOVE;leaf_enter=Event();leaf_resume=Event();
+    LONG departed=scope_departed,removed=scope_removed,reads=memory_reads;
+    HANDLE leaf=CreateThread(NULL,0,Leaf,(void*)(uintptr_t)EP_ROSTER_ENTITY_REMOVE,0,NULL);CHECK(leaf!=NULL);
+    CHECK(WaitForSingleObject(leaf_enter,5000)==WAIT_OBJECT_0 && scope_departed==departed+1 && scope_removed==removed);
+    HANDLE snapshot=CreateThread(NULL,0,Snapshot,NULL,0,NULL);CHECK(snapshot!=NULL);Pending(2,0);
+    CHECK(WaitForSingleObject(snapshot,20)==WAIT_TIMEOUT && memory_reads==reads);
+    SetEvent(leaf_resume);Join(leaf);Join(snapshot);CHECK(scope_removed==removed+1 && memory_reads==reads+1);
+    CloseHandle(leaf_enter);CloseHandle(leaf_resume);block_leaf=scope_flow=0;
+}
 static void Race(unsigned kind)
 {
     block_leaf=kind;block_commit=1;leaf_enter=Event();leaf_resume=Event();commit_enter=Event();
@@ -228,18 +271,24 @@ int main(int argc,char** argv)
     CHECK(test->call(mod,storage,0,Scope,NULL)==EP_OWNER_OK);
     CHECK(test->owner_info(mod,storage,&info)==EP_OWNER_OK && info.revision==before.revision+1);
     CHECK(test->close(mod,other_storage)==EP_OWNER_OK);
-    NestedDeparture(0);
+    NestedDeparture(0);NestedDispatcher(0);
+    if(!strcmp(mode,"scopechain")){
+        strcpy(g_mods[1].id,"scope-chain-test");g_mods[1].loaded=1;g_mods[1].log=INVALID_HANDLE_VALUE;g_modCount=2;
+        CHECK(ApiHookEx(&g_mods[1],(uintptr_t)targets[EP_ROSTER_ENTITY_REMOVE-1],(void*)ScopeExtra,&scope_next,0)==0);
+        scope_chain=1;NestedDispatcher(0);
+    }
+    if(!strcmp(mode,"scopesnapshot"))ScopeSnapshot();
     nested_kind=11;CHECK(test->owner_info(mod,storage,&before)==EP_OWNER_OK);
     CHECK(targets[10](11,23,37,53,71,97)==Number(11,0));nested_kind=0;
     CHECK(test->owner_info(mod,storage,&info)==EP_OWNER_OK && info.revision==before.revision+1);
     if(!strcmp(mode,"unavailable")){
         CHECK(test->close(mod,storage)==EP_OWNER_OK);expected_owned_end=0;CHECK(!test->commit(mod,current,&guard));
         CHECK(test->info(mod,current,&group) && !group.active && group.state==EP_GROUP_READY);Routes(0,1);
-    }else if(!strcmp(mode,"close") || !strcmp(mode,"departureclose")){
-        unsigned close_kind=!strcmp(mode,"departureclose")?EP_ROSTER_DEPARTURE:2;block_leaf=close_kind;leaf_enter=Event();leaf_resume=Event();HANDLE leaf=CreateThread(NULL,0,Leaf,(void*)(uintptr_t)close_kind,0,NULL);CHECK(leaf!=NULL);
+    }else if(!strcmp(mode,"close") || !strcmp(mode,"departureclose") || !strcmp(mode,"scopeclose")){
+        unsigned close_kind=!strcmp(mode,"scopeclose")?EP_ROSTER_ENTITY_REMOVE:!strcmp(mode,"departureclose")?EP_ROSTER_DEPARTURE:2;scope_flow=close_kind==EP_ROSTER_ENTITY_REMOVE;scope_active=0;block_leaf=close_kind;leaf_enter=Event();leaf_resume=Event();HANDLE leaf=CreateThread(NULL,0,Leaf,(void*)(uintptr_t)close_kind,0,NULL);CHECK(leaf!=NULL);
         CHECK(WaitForSingleObject(leaf_enter,5000)==WAIT_OBJECT_0);HANDLE queued=CreateThread(NULL,0,Queued,NULL,0,NULL);CHECK(queued!=NULL);Pending(2,0);
         HANDLE close=CreateThread(NULL,0,Close,NULL,0,NULL);CHECK(close!=NULL);Pending(2,1);CHECK(WaitForSingleObject(close,20)==WAIT_TIMEOUT);
-        SetEvent(leaf_resume);Join(leaf);Join(queued);Join(close);block_leaf=0;CloseHandle(leaf_enter);CloseHandle(leaf_resume);Routes(0,1);
+        SetEvent(leaf_resume);Join(leaf);Join(queued);Join(close);block_leaf=scope_flow=0;CloseHandle(leaf_enter);CloseHandle(leaf_resume);Routes(0,1);
         uint64_t next;CHECK(test->create(mod,&view,&memory,&next)==EP_OWNER_OK && next!=storage);Routes(0,1);CHECK(test->close(mod,next)==EP_OWNER_OK);
     }else{
         validate_ok=0;CHECK(!test->commit(mod,current,&guard));CHECK(test->info(mod,current,&group) && !group.active && group.state==EP_GROUP_READY);Routes(0,0);validate_ok=1;
@@ -248,7 +297,8 @@ int main(int argc,char** argv)
             CHECK(test->info(mod,current,&group) && group.active==(unsigned)end_fault && group.state==(uint32_t)(end_fault?EP_GROUP_ACTIVE:EP_GROUP_READY));
             if(end_fault)CHECK(!test->cancel(mod,current));
         }else{
-            if(!strcmp(mode,"normal") || !strcmp(mode,"departurerace"))Race(!strcmp(mode,"departurerace")?EP_ROSTER_DEPARTURE:2);else CHECK(test->commit(mod,current,&guard));Routes(1,0);HardwareAbi(1);NestedDeparture(1);
+            if(!strcmp(mode,"scopecommit")){scope_flow=1;scope_active=0;Race(EP_ROSTER_ENTITY_REMOVE);scope_flow=0;}
+            else if(!strcmp(mode,"normal") || !strcmp(mode,"departurerace"))Race(!strcmp(mode,"departurerace")?EP_ROSTER_DEPARTURE:2);else CHECK(test->commit(mod,current,&guard));Routes(1,0);HardwareAbi(1);NestedDeparture(1);NestedDispatcher(1);
             CHECK(test->info(mod,current,&group) && group.active && group.state==EP_GROUP_ACTIVE);
             CHECK(!test->cancel(mod,current));CHECK(test->owner_info(mod,storage,&before)==EP_OWNER_OK);
             if(!strcmp(mode,"exhausted")){
@@ -260,9 +310,13 @@ int main(int argc,char** argv)
             }else{
                 if(!strcmp(mode,"nestedfault")){nested_kind=11;fault_kind=1;}
                 else if(!strcmp(mode,"departurefault")){nested_kind=EP_ROSTER_DEPARTURE;fault_kind=EP_ROSTER_REMOVE_LEGACY;}
+                else if(!strcmp(mode,"scopefault")){scope_flow=1;scope_active=1;fault_kind=EP_ROSTER_DEPARTURE;}
                 else if(!strcmp(mode,"depth")){nested_kind=11;recursive=1;}
                 else fault_kind=6;
-                unsigned kind=nested_kind?nested_kind:6;CHECK(targets[kind-1](11,23,37,53,71,97)==Failed(kind));nested_kind=fault_kind=0;recursive=0;
+                LONG postwork=scope_postwork,old_failures=failures,old_bodies=bodies;
+                unsigned kind=scope_flow?EP_ROSTER_ENTITY_REMOVE:nested_kind?nested_kind:6;CHECK(targets[kind-1](11,23,37,53,71,97)==Failed(kind));
+                if(scope_flow)CHECK(scope_postwork==postwork+1 && failures==old_failures+3 && bodies==old_bodies+2);
+                nested_kind=fault_kind=0;recursive=scope_flow=0;
                 CHECK(test->owner_info(mod,storage,&info)==EP_OWNER_OK && info.fault==(uint32_t)(!strcmp(mode,"depth")?EP_OWNER_REENTRANT:EP_OWNER_CALLBACK_FAULT) && info.revision==before.revision);
             }
         }
