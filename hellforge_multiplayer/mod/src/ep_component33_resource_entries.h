@@ -1,5 +1,6 @@
 #ifndef EP_COMPONENT33_RESOURCE_ENTRIES_H
 #define EP_COMPONENT33_RESOURCE_ENTRIES_H
+#include "ep_commit_read_budget.h"
 #include "ep_component33_resource_provider.h"
 #ifdef __cplusplus
 extern "C" {
@@ -271,6 +272,10 @@ typedef struct EpC33MigrationCommitResult { uint32_t status,read_bytes,restored,
  * commit_outcome too. restored bits: 1=B, 2=arena, 0=no data restoration.
  * No automatic invocation: this API requires explicit runtime authorization. */
 int ep_component33_resource_entries_commit_migrated(HfMod*,uint64_t,const EpC33EntryCommitGuard*,EpC33MigrationCommitResult*);
+/* Same implementation with an additional shared budget for a coordinator's
+ * own source reads. The result still counts this component's requests only. */
+int ep_component33_resource_entries_commit_budgeted(HfMod*,uint64_t,const EpC33EntryCommitGuard*,EpCommitReadBudget*,EpC33MigrationCommitResult*);
+int ep_component33_resource_entries_transaction_view(HfMod*,uint64_t,EpC33ResourceScopeView*);
 /* Owned metadata only, for a coordinator choosing a matching published group.
  * Does not reserve it; commit still checks READY atomically when invoked. */
 int ep_component33_resource_entries_transaction_binding(HfMod*,uint64_t,uint64_t* owner,uint64_t* game);

@@ -48,10 +48,10 @@ EpNativeRosterStatus ep_native_roster_snapshot(const EpNativeRosterSource* src, 
     buckets = (uintptr_t)NativeU64(header + 0xD0); empty = NativeU32(header + 0xDC); multiplier = NativeU32(header + 0xE0);
     status = EP_NATIVE_LAYOUT;
     if ((buckets & 7) || !NativeRange(buckets, sizeof map) ||
-        NativeOverlap(buckets, sizeof map, view.roster, sizeof header) || NativeOverlap(buckets, sizeof map, view.storage, sizeof storage)) goto done;
+        (NativeOverlap(buckets, sizeof map, view.roster, sizeof header) && buckets != view.roster+0x90) || NativeOverlap(buckets, sizeof map, view.storage, sizeof storage)) goto done;
     status = EP_NATIVE_READ_FAILED;
     if (!NativeRead(src, &view, view.storage, storage, sizeof storage, &used) ||
-        !NativeRead(src, &view, buckets, map, sizeof map, &used) ||
+        !(buckets==view.roster+0x90 ? (memcpy(map,header+0x90,sizeof map),1) : NativeRead(src, &view, buckets, map, sizeof map, &used)) ||
         !NativeRead(src, &view, game + 0x347CEF0, &user, 8, &used)) goto done;
     if (user && (!NativeRange(user, 0xB3A0) || !NativeRead(src, &view, user + 0xB398, &local, 8, &used))) goto done;
     next.size = sizeof next; next.version = EP_HF_ROSTER_VERSION; next.capacity = 8; next.epoch = view.epoch;

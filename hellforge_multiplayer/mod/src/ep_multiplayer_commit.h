@@ -1,12 +1,15 @@
 #ifndef EP_MULTIPLAYER_COMMIT_H
 #define EP_MULTIPLAYER_COMMIT_H
 #include "ep_component33_resource_entries.h"
+#include "ep_roster_migration.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
 typedef struct EpMultiplayerCommitResult {
     uint32_t outcome,roster_claimed;
     EpC33MigrationCommitResult component_migration;
+    EpRosterMigrationResult roster_migration;
+    uint32_t total_read_bytes;
 } EpMultiplayerCommitResult;
 /* Joint activation of the 17 roster and 25 component33 entries. Both groups
  * must already be fully published on OLD and bound to the exact same owner
@@ -33,6 +36,23 @@ typedef struct EpMultiplayerCommitResult {
  * explicit runtime authorization and engine preflight remain required. Real
  * fifth-player gameplay, native UI and eight-account operation are unverified. */
 int ep_multiplayer_commit(HfMod*,uint64_t roster_group,uint64_t component_entries,
+    const EpC33EntryCommitGuard*,EpMultiplayerCommitResult*);
+/* Fresh stable four-slot roster -> eight-slot B, in the same transaction.
+ * Uses api.read for global roster/invalid ID, S[0..428), an external 8x8 map
+ * (or its exact inline S+90 backing), and up to four entity +8/+14 DWORDs.
+ * Captures twice before staging and once after validate; verifies map bijection,
+ * partitions and the current owner's authoritative tickets before writing B.
+ * SDK reads across BOTH migrations/windows share one hard 64 KiB budget.
+ * Repeated reads detect changes, not exclusion. Guard's independent reads and
+ * direct accesses to retained owned backups are outside this SDK accounting.
+ * On OLD/UNSAFE before activation, restores roster B before external end;
+ * failed restoration keeps the lease and quarantines. End faults after NEW
+ * retain NEW data/latches. Guard must NOT mutate any of the three owned buffers.
+ * Guard still supplies engine freeze, current authenticated tickets/epoch,
+ * other subsystem/capacity readiness and original source identity/lifetime.
+ * No native roster/module discovery, ticket invention, installation or auto
+ * binding; this is still the legacy eight-slot adapter, not a larger capacity. */
+int ep_multiplayer_commit_migrated(const HfApi*,HfMod*,uint64_t roster_group,uint64_t component_entries,
     const EpC33EntryCommitGuard*,EpMultiplayerCommitResult*);
 #ifdef __cplusplus
 }

@@ -20,7 +20,7 @@ def main():
              '-I',a.upstream.resolve()/'native/mod-sdk','-I',project/'mod/src','-shared',
              *(project/s for s in pub.callers.core.leave.refresh.reset.update.entries.native.admission.SOURCES),
              *(project/'mod/src'/f'{s}.cpp' for s in EMITTERS),project/'mod/src/ep_component33_resource_provider.cpp',
-             project/'mod/src/ep_multiplayer_commit.cpp',project/'tests/multiplayer_commit_dll.cpp','-o',library]
+             project/'mod/src/ep_multiplayer_commit.cpp',project/'mod/src/ep_roster_migration.cpp',project/'tests/multiplayer_commit_dll.cpp','-o',library]
         p=subprocess.run([str(x) for x in cmd],capture_output=True,text=True);pub.n.need(p.returncode==0,p.stdout+p.stderr)
     checks=0
     for mode in a.only or MODES:

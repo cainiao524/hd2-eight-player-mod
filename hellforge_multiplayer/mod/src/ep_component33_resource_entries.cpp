@@ -639,6 +639,7 @@ struct MigrationSource {EpC33Snapshot component;EpC33ResourceSnapshot resources;
 struct CommitMigration {
     EpC33MigrationCommitResult result;MigrationSource source;
     uint8_t* work;uint32_t arena_bytes;bool dirty;
+    EpCommitReadBudget* budget;
 };
 struct EntryCommit {
     EntryGroup* group;EpC33EntryCommitGuard guard;void* lease;
@@ -660,7 +661,7 @@ static bool CommitRead(EntryCommit* c,uint64_t address,void* out,uint32_t bytes,
     };
     if (!healthy()) return false;
     if (m) {
-        if (bytes>EP_C33_PROVIDER_READ_LIMIT-m->result.read_bytes) {m->result.status=EP_C33_MIGRATION_READ;return false;}
+        if (bytes>EP_C33_PROVIDER_READ_LIMIT-m->result.read_bytes || (m->budget && !ep_commit_read_reserve(m->budget,bytes))) {m->result.status=EP_C33_MIGRATION_READ;return false;}
         m->result.read_bytes+=bytes;
     }
     if ((code ? c->group->api.read_code : c->group->api.read)((uintptr_t)address,out,bytes)!=0) {
@@ -838,5 +839,20 @@ int ep_component33_resource_entries_transaction_binding(HfMod* mod,uint64_t id,u
     AcquireSRWLockShared(&entriesLock);auto* g=Find(mod,id);
     int ok=g && g->routed && g->info.publication_state==EP_C33_PUBLISH_READY && !g->active;
     if (ok) {*owner=g->bindings.roster_owner;*game=g->view.game;}
+    ReleaseSRWLockShared(&entriesLock);return ok;
+}
+int ep_component33_resource_entries_commit_budgeted(HfMod* mod,uint64_t id,const EpC33EntryCommitGuard* guard,EpCommitReadBudget* budget,EpC33MigrationCommitResult* out)
+{
+    if (!out) return 0;*out={};
+    if (!budget || budget->used>EP_COMMIT_READ_LIMIT) {out->status=EP_C33_MIGRATION_ARGUMENT;return 0;}
+    CommitMigration migration={};migration.budget=budget;
+    int result=CommitEntries(mod,id,guard,&migration);*out=migration.result;return result;
+}
+int ep_component33_resource_entries_transaction_view(HfMod* mod,uint64_t id,EpC33ResourceScopeView* out)
+{
+    if (!out) return 0;*out={};if (ep_roster_owner_in_scope()) return 0;
+    AcquireSRWLockShared(&entriesLock);auto* g=Find(mod,id);
+    int ok=g && g->routed && g->info.publication_state==EP_C33_PUBLISH_READY && !g->active;
+    if (ok) *out=g->view;
     ReleaseSRWLockShared(&entriesLock);return ok;
 }

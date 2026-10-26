@@ -85,9 +85,9 @@ static DWORD WINAPI JointCommitThread(void* p)
     return ep_multiplayer_commit(s->mod,t->roster.handle,t->migration.pub.entry.entries.handle,&t->guard,&t->result) ? 0 : 1;
 }
 static DWORD WINAPI JointCallThread(void* p) {auto* t=(JointTest*)p;JointRosterRun(0,t->mode==25);return 0;}
-EXPORT unsigned multiplayer_commit_test(unsigned mode)
+static void JointFixtureSetup(JointTest* test,unsigned mode)
 {
-    Check(mode<=29,"joint scenario");JointTest t={};t.mode=mode;joint=&t;migrating=&t.migration;
+    JointTest& t=*test;t.mode=mode;joint=&t;migrating=&t.migration;
     auto* m=&t.migration;auto* p=&m->pub;auto* e=&p->entry;auto* n=&e->native;auto* s=&n->p.test;
     publishing=p;entryTest=e;NativeSetup(n,0);n->api.read=MigrationRead;n->api.read_code=MigrationCode;n->api.write=PubWrite;n->api.hook_ex=PubHook;
     t.guard={&t,JointUserBegin,JointUserValidate,JointUserEnd};
@@ -115,6 +115,12 @@ EXPORT unsigned multiplayer_commit_test(unsigned mode)
     Check(bool(ep_roster_group_publish(s->mod,t.roster.handle,17))==(mode!=16),"joint roster publish");
     MigrationSourceSetup(m);memcpy(m->before_b,(void*)(uintptr_t)s->storage.storage_address,sizeof(m->before_b));
     memcpy(m->before_arena,(void*)(uintptr_t)s->resources.binding.address,sizeof(m->before_arena));
+}
+EXPORT unsigned multiplayer_commit_test(unsigned mode)
+{
+    Check(mode<=29,"joint scenario");JointTest t={};JointFixtureSetup(&t,mode);
+    uint64_t other=mode==18 ? t.group->storage_owner : 0;
+    auto* m=&t.migration;auto* p=&m->pub;auto* e=&p->entry;auto* n=&e->native;auto* s=&n->p.test;
     auto old_source=m->source;auto old_resources=m->resources;
     if (mode==1 || mode==27) m->mode=19;if (mode==2) m->mode=15;if (mode==3) p->mode=68;if (mode==4) p->mode=72;
     if (mode>=5 && mode<=7) p->mode=mode+55;if (mode==8) p->mode=75;if (mode==9) m->mode=20;if (mode==12) p->mode=76;
