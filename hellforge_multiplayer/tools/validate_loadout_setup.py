@@ -28,7 +28,7 @@ class RecordSource(c.Structure):
 def record_source():return RecordSource(ENGINE,ENGINE+0x60000,ENGINE+0x61000,ENGINE+0x62000)
 
 class GroupAddresses(c.Structure):
-    _fields_=[('setup',SetupAddresses),('lifecycle_code',c.c_uint64),('consumers_code',c.c_uint64),('interactions_code',c.c_uint64),('refresh_code',c.c_uint64),('record_source',RecordSource),('records_code',c.c_uint64),('frame_code',c.c_uint64),('mode_code',c.c_uint64)]
+    _fields_=[('setup',SetupAddresses),('lifecycle_code',c.c_uint64),('consumers_code',c.c_uint64),('interactions_code',c.c_uint64),('refresh_code',c.c_uint64),('record_source',RecordSource),('records_code',c.c_uint64),('frame_code',c.c_uint64),('mode_code',c.c_uint64),('control_code',c.c_uint64)]
 
 
 class SetupFlow(Flow):
@@ -90,7 +90,7 @@ def main():
         g.need(args.upstream is not None,'--upstream required');args.library.parent.mkdir(exist_ok=True,parents=True)
         command=[args.zig.resolve(),'c++','-std=c++17','-target','x86_64-windows-gnu','-O2','-Wall','-Wextra','-Werror',
                  '-I',args.upstream.resolve()/'native/mod-sdk','-I',g.PROJECT/'mod/src','-shared']
-        command += [g.PROJECT/'mod/src'/n for n in ('ep_session_code.cpp','ep_loadout_lifecycle.cpp','ep_loadout_consumers.cpp','ep_loadout_setup.cpp','ep_loadout_group.cpp','ep_loadout_interactions.cpp','ep_loadout_refresh.cpp','ep_loadout_records.cpp','ep_loadout_frame.cpp','ep_loadout_mode.cpp')]
+        command += [g.PROJECT/'mod/src'/n for n in ('ep_session_code.cpp','ep_loadout_lifecycle.cpp','ep_loadout_consumers.cpp','ep_loadout_setup.cpp','ep_loadout_group.cpp','ep_loadout_interactions.cpp','ep_loadout_refresh.cpp','ep_loadout_records.cpp','ep_loadout_frame.cpp','ep_loadout_mode.cpp','ep_loadout_control.cpp')]
         command += [g.PROJECT/'tests/loadout_consumers_dll.cpp',g.PROJECT/'tests/loadout_setup_dll.cpp','-o',args.library.resolve()]
         result=subprocess.run(list(map(str,command)),capture_output=True,text=True);g.need(result.returncode==0,result.stdout+result.stderr)
     dll=c.CDLL(str(args.library.resolve()))
@@ -115,7 +115,7 @@ def main():
     for begin,end in ((0x10,0x27d0),(0x27d8,0x27f8),(0x53a78,0xcf2d8)):
         g.need(f.read(SCREEN+begin,end-begin)==f.inline[begin:end],'Setup or consumer touched old arrays/maps')
     g.need(f.setup_unwound,'Setup unwind point was missed')
-    group=GroupAddresses(setup,CODE+0x40000,CODE,CODE+0x50000,CODE+0x60000,record_source(),CODE+0x70000,CODE+0x80000,CODE+0x90000)
+    group=GroupAddresses(setup,CODE+0x40000,CODE,CODE+0x50000,CODE+0x60000,record_source(),CODE+0x70000,CODE+0x80000,CODE+0x90000,CODE+0xa0000)
     g.need(dll.setup_group(c.byref(group))==0,'Shared READY/discard failed')
     print(json.dumps(dict(passed=True,scope='one setup/update/action flow and shared READY group',game_access=False,layout_verified=False,runtime_verified=False)))
 

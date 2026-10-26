@@ -10,7 +10,7 @@ EpPropertyResult ep_loadout_frame_build(const EpLoadoutFrameAddresses* input,EpL
     EpPropertyResult result=ep_loadout_records_validate_span(input ? &a.records : nullptr,EP_LOADOUT_FRAME_BYTES);
     if (result!=EP_PROPERTY_OK) return result;
     const auto& b=a.records.common;const auto& l=b.lifecycle;const auto& s=a.records.source;
-    const uint64_t entries[]={a.sync_records,a.update,a.lookup,a.open_mode};
+    const uint64_t entries[]={a.sync_records,a.update,a.lookup,a.open_mode,a.leave};
     for (uint64_t entry:entries) {
         if (entry>=l.code && entry<l.code+EP_LOADOUT_FRAME_BYTES) return EP_PROPERTY_OVERLAP;
         EpLoadoutRecordsAddresses target=a.records;target.common.lifecycle.code=entry;
@@ -18,7 +18,7 @@ EpPropertyResult ep_loadout_frame_build(const EpLoadoutFrameAddresses* input,EpL
     }
     const uint64_t values[]={l.game,l.code,l.screen,l.records,l.widgets,l.capacity,l.reject,
         b.forward_map,b.inverse_map,b.roster,b.roster_storage,s.manager,s.actors,s.equipment,s.status,
-        a.sync_records,a.update,a.lookup,a.open_mode};
+        a.sync_records,a.update,a.lookup,a.open_mode,a.leave};
     EpLoadoutFrameImage image={};memcpy(image.data,ep_loadout_frame_template,sizeof(ep_loadout_frame_template));
     for (const auto& f:ep_loadout_frame_fixups) {
         int64_t value=(int64_t)values[f.key]+f.add;

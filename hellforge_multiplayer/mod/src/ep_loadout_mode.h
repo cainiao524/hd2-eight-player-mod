@@ -14,8 +14,8 @@ typedef struct EpLoadoutModeImage {
  * Per-player notification, visibility and animation loops use capacity;
  * event argument type 4 is unchanged. Local indices require a matching
  * inverse mapping. Native GS frame, chain parents and services are retained.
- * The frame binds this open wrapper; other callers at 146B2E2,146D543 and
- * 146D866 still need routing. Native notification/resource service capacities
+ * The frame binds this open wrapper; the control image binds calls at
+ * 146B2E2,146D543 and 146D866. Native notification/resource service capacities
  * and lifetimes (including 139C970), layout, source exclusion and publication
  * remain prerequisites. This only builds/prepares owned code, never calls it
  * or discovers, reads, installs, hooks or starts a game. */
