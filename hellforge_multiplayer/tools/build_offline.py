@@ -80,6 +80,7 @@ def main() -> None:
     component33_readers_template=json.loads(run([sys.executable,'-B',PROJECT/'tools/native_component33_readers.py']))
     component33_consumers_template=json.loads(run([sys.executable,'-B',PROJECT/'tools/native_component33_consumers.py']))
     component33_outer_template=json.loads(run([sys.executable,'-B',PROJECT/'tools/native_component33_outer.py']))
+    component33_resources_template=json.loads(run([sys.executable,'-B',PROJECT/'tools/native_component33_resources.py']))
     dll = build / "ep_hellforge.dll"
     test = build / "adapter_test.exe"
     common = [zig, "c++", "-std=c++17", "-target", "x86_64-windows-gnu", "-O2", "-Wall", "-Werror",
@@ -122,10 +123,11 @@ def main() -> None:
         "native_component33_readers_template_sha256":component33_readers_template['header_sha256'],
         "native_component33_consumers_template_sha256":component33_consumers_template['header_sha256'],
         "native_component33_outer_template_sha256":component33_outer_template['header_sha256'],
+        "native_component33_resources_template_sha256":component33_resources_template['header_sha256'],
         "source_sha256": {p.relative_to(PROJECT).as_posix(): digest(p) for p in files},
         "test_source_sha256": {p.relative_to(PROJECT).as_posix(): digest(p) for p in [
             PROJECT / "tests/adapter_test.cpp", PROJECT / "tests/backend/Program.cs", PROJECT / "tests/backend/Backend.csproj",
-            Path(__file__).resolve(), PROJECT / "upstream.lock.json", PROJECT / 'tools/generate_property_templates.py',PROJECT/'tools/generate_getter_template.py',PROJECT/'tools/generate_mover_template.py',PROJECT/'tools/generate_insert_templates.py',PROJECT/'tools/generate_remove_templates.py',PROJECT/'tools/generate_classify_templates.py',PROJECT/'tools/generate_registry_templates.py',PROJECT/'tools/generate_departure_template.py',PROJECT/'tools/generate_arrival_template.py',PROJECT/'tools/generate_component33_templates.py',PROJECT/'tools/native_component33_image.py',PROJECT/'native-component33.lock.json',PROJECT/'native-component33-owner.lock.json',PROJECT/'tools/native_component33_owner.py',PROJECT/'native-component33-readers.lock.json',PROJECT/'tools/native_component33_readers.py',PROJECT/'native-component33-consumers.lock.json',PROJECT/'tools/native_component33_consumers.py',PROJECT/'native-component33-outer.lock.json',PROJECT/'tools/native_component33_outer.py']},
+            Path(__file__).resolve(), PROJECT / "upstream.lock.json", PROJECT / 'tools/generate_property_templates.py',PROJECT/'tools/generate_getter_template.py',PROJECT/'tools/generate_mover_template.py',PROJECT/'tools/generate_insert_templates.py',PROJECT/'tools/generate_remove_templates.py',PROJECT/'tools/generate_classify_templates.py',PROJECT/'tools/generate_registry_templates.py',PROJECT/'tools/generate_departure_template.py',PROJECT/'tools/generate_arrival_template.py',PROJECT/'tools/generate_component33_templates.py',PROJECT/'tools/native_component33_image.py',PROJECT/'native-component33.lock.json',PROJECT/'native-component33-owner.lock.json',PROJECT/'tools/native_component33_owner.py',PROJECT/'native-component33-readers.lock.json',PROJECT/'tools/native_component33_readers.py',PROJECT/'native-component33-consumers.lock.json',PROJECT/'tools/native_component33_consumers.py',PROJECT/'native-component33-outer.lock.json',PROJECT/'tools/native_component33_outer.py',PROJECT/'native-component33-resources.lock.json',PROJECT/'tools/native_component33_resources.py']},
         "artifacts": {p.name: {"bytes": p.stat().st_size, "sha256": digest(p)} for p in [dll, test, package]},
         "game_started": False, "game_checked": False, "game_read": False, "installed": False,
         "runtime_verified": False, "multiplayer_verified": False, "public_release_allowed": False,

@@ -223,9 +223,12 @@ def validate(lib,images,zig):
         else:raise ValueError('old release mutation escaped')
         n.need(f.game+0x6659e0 in f.trace,'old release was not called');mutations.append(kind+'.old_release')
     # Preserve a concrete original limitation instead of claiming that array
-    # relocation implements resource queue admission. One more deferred item
+    # relocation implements resource queue admission. This deliberately
+    # incoherent count=128 / zero-filled-queue state is not normal reachability
+    # evidence. One more deferred item
     # at count 128 overwrites the first qword after the saved 1024-byte queue.
     f=Fixture(lib,images,'release',8,8,4,ordinal=7,flag=1)
+    n.need(f.read(G+0x3797550,1024)==bytes(1024),'counterexample assumes empty queue storage')
     f.put(G+0x348ba88,u64(128));f.put(G+0x3797950,b'\xcc'*8)
     try:f.execute_consumer()
     except ValueError as error:n.need('write escaped' in str(error),'wrong queue capacity counterexample')
@@ -269,6 +272,7 @@ def validate(lib,images,zig):
         original_equivalence_pairs=comparisons,windows=windows,windows_unwind_contexts=windows['windows_unwind_contexts'],
         accepted_placements=accepted,rejected_placements=rejected,consumer_images=4,
         old_array_and_helper_mutation_controls=mutations,deferred_queue_overflow_counterexample_reproduced=True,
+        deferred_queue_overflow_counterexample_is_incoherent=True,
         source_sha256={p:n.sha((n.PROJECT/p).read_bytes()) for p in sources},
         artifacts={p.name:dict(bytes=p.stat().st_size,sha256=n.sha(p.read_bytes())) for p in (images.path,exe,fixture)},
         original_resource_queue_capacity=128,queue_capacity_enlarged=False,resource_transaction_implemented=False,
