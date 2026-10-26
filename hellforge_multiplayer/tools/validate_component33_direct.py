@@ -56,13 +56,13 @@ def validate(lib,zig):
         cap=4 if original else 8
         for t in range(cap):
             for d in range(t+1):execute(Fixture(lib,'direct_append',t,d,min(d,1),original=original))
-            for p in range(t+1):
-                for flag in (0,1):execute(Fixture(lib,'direct_dense',t,t,p,flag=flag,original=original))
+            for d in ((t,) if original else range(t+1)):
+                for p in range(d+1):
+                    for flag in (0,1):execute(Fixture(lib,'direct_dense',t,d,p,flag=flag,original=original))
         for t in range(1,cap+1):
-            for p in range(t+1):
-                for ordinal in range(t):execute(Fixture(lib,'direct_remove',t,t,p,ordinal=ordinal,original=original))
-            for d in range(t):
-                for ordinal in range(d,t):execute(Fixture(lib,'direct_remove',t,d,min(d,1),ordinal=ordinal,original=original))
+            for d in range(t+1):
+                for p in ((min(d,1),) if original and d<t else range(d+1)):
+                    for ordinal in range(d if original and d<t else 0,t):execute(Fixture(lib,'direct_remove',t,d,p,ordinal=ordinal,original=original))
         for kind in n.BATCH_KINDS:
             for t in range(cap+1):
                 for d in range(t+1):
@@ -75,9 +75,9 @@ def validate(lib,zig):
             f=Fixture(lib,kind,4,4,2,ordinal=1);f.put(address,blob);execute(f,'reject','invalid_header')
         execute(Fixture(lib,kind,4,4,2,ordinal=1,game=G+0x80000000),case='shifted_game')
     for kind in ('direct_dense','direct_append'):execute(Fixture(lib,kind,8,8,4),'reject','full')
-    execute(Fixture(lib,'direct_dense',5,3,1),'reject','pending_dense')
-    execute(Fixture(lib,'direct_remove',5,3,1,ordinal=1),'reject','pending_remove')
-    for kind in n.BATCH_KINDS:
+    execute(Fixture(lib,'direct_dense',5,3,1),case='pending_dense_preserved')
+    execute(Fixture(lib,'direct_remove',5,3,1,ordinal=1),case='pending_remove_preserved')
+    for kind in (*n.BATCH_KINDS,'direct_dense','direct_remove'):
         for label,address,blob in [
             ('null_active',B+8,u64(0)),('invalid_id',E+0x48,u32(0xFFFFFFFF)),
             ('missing_id',E+0x48,u32(999)),('wrong_ordinal',S+0x18+16,u32(7)),
@@ -88,9 +88,10 @@ def validate(lib,zig):
         f=Fixture(lib,kind,4,4,2,flag=0);f.put(S+0x14,f.read(S+0x1C,8));f.put(S+0x1C,bytes(8))
         execute(f,'reject','broken_probe_chain')
         # A different coherent multiplier must retain the original hash semantics.
-        f=Fixture(lib,kind,8,8,2,flag=0);f.put(S+0x68,u32(7))
+        count=7 if kind=='direct_dense' else 8
+        f=Fixture(lib,kind,count,count,2,flag=0);f.put(S+0x68,u32(7))
         f.table=[(0,0)]*8
-        for i in range(8):
+        for i in range(count):
             bucket=next((f.keys[i]*7+j)&7 for j in range(8) if not f.table[(f.keys[i]*7+j)&7][0])
             f.table[bucket]=(f.keys[i],i)
         f.put(S+0x14,b''.join(u32(k)+u32(v) for k,v in f.table));execute(f,case='alternate_hash')
@@ -108,8 +109,41 @@ def validate(lib,zig):
             f.prior_flags=f.read(S,2)
             f.records={(name,i):f.read(f.slot(name,i),stride) for name,(_,_,stride) in LAYOUT.items() for i in range(8)}
             f.table=[(f.int32(S+0x14+8*i),f.int32(S+0x18+8*i)) for i in range(8)]
-            if kind=='direct_dense':f.put(E+0x208,u32(1+8*ordinal))
+            if kind=='direct_dense':
+                f.put(E+0x208,u32(1+8*ordinal));f.put(E+0x214,u32(f.flag))
             execute(f,case='lifecycle_'+kind);previous=f
+    # Carry the actual mixed partition through removal and same-ID dense join.
+    # T=8, every 0<=P<=D<8 with D>0, and every removal ordinal.
+    mixed_sequences=0
+    for d in range(1,8):
+        for p in range(d+1):
+            for ordinal in range(8):
+                previous=Fixture(lib,'direct_remove',8,d,p,ordinal=ordinal)
+                execute(previous,case='mixed_remove')
+                counts=[previous.int32(S+x) for x in (8,12,16)]
+                f=Fixture(lib,'direct_dense',*counts,flag=int(ordinal<p))
+                for address,length in ((S,0x2B8),(B,0x490),(E,0x240)):
+                    f.put(address,previous.read(address,length))
+                f.put(E+0x208,u32(1+8*ordinal));f.put(E+0x214,u32(f.flag))
+                f.records={(name,i):f.read(f.slot(name,i),stride) for name,(_,_,stride) in LAYOUT.items() for i in range(8)}
+                f.table=[(f.int32(S+0x14+8*i),f.int32(S+0x18+8*i)) for i in range(8)]
+                execute(f,case='mixed_same_id_rejoin');mixed_sequences+=1
+    for kind in ('direct_dense','direct_remove'):
+        for ordinal,flag in ((0,0),(2,1)):
+            f=Fixture(lib,kind,5,3,2);f.put(E+ordinal*0x40+0x14,u32(flag))
+            execute(f,'reject','inconsistent_dense_flag')
+    # Original negative controls: a dense insert overwrites the first pending
+    # identity. These execute the pinned original body, not candidate code.
+    insert_loss=[]
+    for t in range(1,4):
+        for d in range(t):
+            for p in range(d+1):
+                for flag in (0,1):
+                    f=Fixture(lib,'direct_dense',t,d,p,flag=flag,original=True)
+                    execute(f,case='original_mixed_insert_loss')
+                    pointers=[struct.unpack('<Q',f.read(f.slot('pointer',i),8))[0] for i in range(t+1)]
+                    n.need(set(pointers)!={E+0x40*i for i in range(t)}|{E+0x200},'original insert loss no longer reproduced')
+                    insert_loss.append(dict(t=t,d=d,p=p,flag=flag,active_identities_preserved=False))
     # Replay the unported pending-repartition body, including its real mover,
     # to distinguish source behavior from a defect introduced by relocation.
     pending=[];source=n.profile()['functions']['pending_repartition_evidence']
@@ -161,6 +195,7 @@ def validate(lib,zig):
            'mod/src/ep_component33_image.h','mod/src/ep_component33_image.cpp','mod/src/ep_component33_templates.h',
            'tests/component33_image_dll.cpp','tests/native_component33_initialize_unwind_test.c','tools/build_unwind_offline.py']
     return dict(schema='hellforge_component33_direct_validation_v1',passed=True,functional_runs=len(runs),same_identity_lifecycle_sequences=8,
+                mixed_partition_same_identity_sequences=mixed_sequences,original_mixed_insert_loss_cases=insert_loss,
                 run_types=dict(Counter(('original_' if r['original'] else 'candidate_')+r['kind']+'_'+r['outcome'] for r in runs)),
                 variants={k:facts[k] for k in KINDS},windows=windows,windows_unwind_contexts=sum(x['windows_unwind_contexts'] for x in windows.values()),
                 accepted_placements=accepted,rejected_placements=rejected,runs=runs,
@@ -171,7 +206,7 @@ def validate(lib,zig):
                 game_access=False,native_execution_of_game_bodies=False,runtime_verified=False,multiplayer_verified=False,
                 production_owner_bound=False,full_component33_lifecycle=False,
                 limits=['Direct helpers and batch-reset images only; no owner/preparation/publication.',
-                        'Dense insert/removal with pending tail remains refused; original pending repartition loses active identities when P<D<T in the tested four-slot domain.',
+                        'Dense insert/remove now preserve pending survivors. Original pending repartition still loses active identities when P<D<T in the tested four-slot domain.',
                         'Readability, synchronization and all other consumers remain caller obligations.'])
 
 if __name__=='__main__':

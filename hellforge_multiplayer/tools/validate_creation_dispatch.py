@@ -152,8 +152,9 @@ def validate(library, component_library=None):
                                (0x263C010, COOKIE), (0x33267B8, S33)):
                 self.zero(game + rva, 8)
                 self.write(game + rva, u64(value))
-            self.zero(game + 0x348456C, 4)
-            self.write(game + 0x348456C, u32(0xFFFFFFFF))
+            for invalid_id_global in (0x348456C,0x3483C34):
+                self.zero(game + invalid_id_global, 4)
+                self.write(game + invalid_id_global, u32(0xFFFFFFFF))
             for f in lock['functions'].values():
                 self.map(game + f['start'], f['end'] - f['start'])
                 self.write(game + f['start'], bytes.fromhex(f['body_hex']))

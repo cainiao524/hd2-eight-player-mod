@@ -15,7 +15,7 @@ import capstone
 from capstone.x86_const import X86_OP_MEM, X86_OP_IMM, X86_REG_RIP
 from inspect_capture import Image
 LOCK = PROJECT / 'native-component33.lock.json'
-LOCK_SHA = '5c1eecefbe237d069451c5018a18b3ade9b0e99da3c4dc21c2f43164070f8906'
+LOCK_SHA = '13f3af128fa9229d1f31992cb99113091f50050d0346c1862765369f92811dc7'
 KINDS = ('mover', 'append', 'dense', 'remove')
 CLASSIFY_KINDS = ('enter','leave')
 INITIALIZE_KINDS = ('property','reset')
@@ -86,7 +86,12 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
     def branch(target,condition=None):
         emit(b'\xe9' if condition is None else bytes([0x0F,condition])); fixes.append((len(out),target)); emit(bytes(4))
     def label(name): labels[name] = len(out)
-    if kind in BATCH_KINDS:
+    partitioned=kind in ('dense','remove','direct_dense','direct_remove')
+    if partitioned:
+        if kind=='dense':emit('4989d1')  # R9=flags; RDX=entity survives full-map scan.
+        if kind=='direct_dense':emit('4d89c1')
+        if kind in ('dense','remove'):emit('4889ca')
+    if kind in BATCH_KINDS or partitioned:
         # Validate every active row through the original bounded hash probe.
         # RDX retains the control flag; no stack/nonvolatile register is touched.
         mov(10,component_address);mov(0,game_base+0x33267B8)
@@ -101,8 +106,13 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
         emit('41837cca1400');branch('empty',0x84)
         emit('41ffc0');label('empty');emit('ffc1 83f908');branch('occupied',0x82)
         emit('453b4208');branch('reject9',0x85)
-        mov(9,storage_address);emit('4531db 41837a0800');branch('batch_ready',0x84)
-        label('active');emit('4b8b04d9 4885c0');branch('reject6',0x84)
+        emit('4531db 41837a0800');branch('batch_ready',0x84)
+        label('active');mov(0,storage_address);emit('4a8b04d8 4885c0');branch('reject6',0x84)
+        if partitioned:
+            emit('453b5a0c');branch('flag_ready',0x83)
+            emit('8b4814 83e101 453b5a10');branch('prefix_flag',0x82)
+            emit('85c9');branch('reject4',0x85);branch('flag_ready')
+            label('prefix_flag');emit('83f901');branch('reject4',0x85);label('flag_ready')
         emit('8b4008 85c0');branch('reject6',0x84)
         emit('3b05');fixes.append((len(out),0x3483C34));emit(bytes(4));branch('reject6',0x84)
         emit('4189c0 450faf4268 4183e007 b908000000');label('probe')
@@ -111,7 +121,11 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
         emit('41ffc0 4183e007 ffc9');branch('probe',0x85);branch('reject7')
         label('found');emit('47395cc218');branch('reject8',0x85)
         emit('41ffc3 453b5a08');branch('active',0x82);label('batch_ready')
-    elif kind in INITIALIZE_KINDS:
+    if partitioned:
+        emit('4889d1')
+        if kind=='dense':emit('4c89ca')
+        if kind=='direct_dense':emit('4d89c8')
+    if kind in INITIALIZE_KINDS:
         # RDX is the entity; property additionally owns R9 and two stack args.
         # R8 is unused by both original helpers and preserves the descriptor base.
         emit('4d89c8');mov(10,component_address);mov(0,game_base+0x33267B8)
@@ -144,7 +158,7 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
             mov(0,game_base+0x347CDD8);emit('48833800');branch('reject6',0x84)
         else:mov(1,component_address)
         emit('4d89c1')
-    else:
+    elif kind not in BATCH_KINDS:
         preflight_kind=DIRECT_KINDS.get(kind,kind)
         # All refusal paths precede any stack/data write. Original arguments survive.
         if classification or kind in DIRECT_KINDS: emit('4889d1')
@@ -154,7 +168,6 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
         emit('458b5a08 4183fb08'); branch('reject2',0x83 if preflight_kind in ('append','dense') else 0x87)
         emit('418b420c 4439d8'); branch('reject3',0x87)
         emit('41394210'); branch('reject3',0x87)
-        if preflight_kind == 'dense': emit('4439d8'); branch('reject4',0x85)
         mov(0,component_address+0x14); emit('49394258'); branch('reject5',0x85)
         emit('41837a6008'); branch('reject5',0x85)
         emit('41837a6400'); branch('reject5',0x85)
@@ -185,9 +198,6 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
             mov(0,component_address); emit('8b4008 4101c2 4183fa08'); branch('reject9',0x85)
             if preflight_kind == 'remove' or classification:
                 emit('39c2'); branch('reject8',0x83)
-                if not classification:
-                    mov(11,component_address); emit('413b530c'); branch('remove_ready',0x83)
-                    emit('413b430c'); branch('reject4',0x85); label('remove_ready')
                 mov(0,storage_address); emit('48390cd0'); branch('reject6',0x85)
                 if classification:
                     mov(11,game_base+0x3483C34);emit('453b03');branch('reject6',0x84)
@@ -214,6 +224,15 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
                    **{'r'+str(i):i for i in range(8,16)}}
     for i in decode(source,f['start']):
         mapping[i.address] = len(out); raw = bytearray(i.bytes)
+        if i.address in (0x51AC99,0x666739):
+            # Preserve the first pending row before original dense insertion
+            # overwrites D. Its new position is the previously unused old T.
+            emit('8b430c 3b4308');branch('insert_ready',0x83)
+            emit('4889542438' if kind=='dense' else '4c89442438')
+            emit('8b5308 4189c0 4889d9');emit('e8');fixes.append((len(out),0x665FE0));emit(bytes(4))
+            emit('488b542438' if kind=='dense' else '4c8b442438');label('insert_ready')
+        if i.address in (0x51AD97,0x666A71):
+            branch('dense_completion');continue
         array = None
         if kind=='property' and i.address in (0x666354,0x6664EC,0x6664F1,0x6664F6):
             array=('r15',storage_address+0xF8,'secondary_derived' if i.address==0x666354 else 'secondary')
@@ -250,6 +269,21 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
                     target=game_base+i.address+i.size+operand.mem.disp
                     struct.pack_into('<i',raw,i.disp_offset,target-(code_address+len(out)+i.size))
             emit(raw)
+    repair_offset=None
+    if kind in ('remove','direct_remove'):
+        label('dense_completion');repair_offset=len(out)
+        emit('4585c0');branch('pending_repair',0x84)
+        emit('4889d9' if kind=='remove' else '4889f9')
+        emit('e8');fixes.append((len(out),0x665FE0));emit(bytes(4))
+        label('pending_repair')
+        emit('8b530c 448b4308' if kind=='remove' else '8b570c 448b4708')
+        finish=0x51ADA9 if kind=='remove' else 0x666A7E
+        emit('4439c2');branch(finish,0x83)
+        # Entry RSP-0x28 remains fixed. +0x38 is a caller home slot, outside
+        # callee shadow space and the direct entry's saved RBX at +0x30.
+        emit('4889442438');emit('4889d9' if kind=='remove' else '4889f9')
+        emit('e8');fixes.append((len(out),0x665FE0));emit(bytes(4))
+        emit('488b442438');branch(finish)
     mapping[f['end']] = len(out)
     need(len(patches)=={'mover':21,'append':6,'dense':6,'remove':1,'enter':35,'leave':37,'property':4,'reset':6,
                        'direct_dense':6,'direct_append':6,'direct_remove':1,'reset_control':8,'reset_dense':7}[kind], 'array coverage changed')
@@ -296,4 +330,5 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
     for row in rows: emit(struct.pack('<III',*row))
     need(len(out)<=4096, 'component image overflow')
     return {'image':bytes(out),'code_bytes':code_bytes,'body_offset':body_offset,'table_offset':table_offset,
-            'unwind_offset':leaf,'function_count':len(rows),'array_patches':patches,'instruction_map':mapping,'handler_offset':handler_offset}
+            'unwind_offset':leaf,'function_count':len(rows),'array_patches':patches,'instruction_map':mapping,'handler_offset':handler_offset,
+            'pending_repair_offset':repair_offset}

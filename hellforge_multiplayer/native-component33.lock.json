@@ -1,5 +1,5 @@
 {
-  "schema": "hellforge_component33_core_classification_initialization_direct_v4",
+  "schema": "hellforge_component33_partition_preservation_v5",
   "game_build": 25480438,
   "evidence_path": "five_player_feasibility_20260927/component33_250_lifecycle_evidence_v2.json",
   "evidence_sha256": "dfb125ab3edd6b9672eb725981beecb91e1768da9d44b92522e28fd971155280",
@@ -486,11 +486,39 @@
     ]
   },
   "direct_contract": {
-    "direct_dense": "RDX=entity, R8=flags pointer; same dense-tail restriction as dense",
+    "direct_dense": "RDX=entity, R8=flags pointer; preserve first pending row at old T before dense insertion",
     "direct_append": "RDX=entity",
-    "direct_remove": "RDX=entity; EAX returns original entity+0x10; same dense-tail restriction as remove",
+    "direct_remove": "RDX=entity; EAX returns original entity+0x10; preserve last pending row at new D after dense removal",
     "reset_control": "DL flag; nonzero writes S+1 only; zero also resets dense primary rows",
     "reset_dense": "resets dense primary rows and sets S[0]=1",
     "batch_admission": "all active pointers, bounded original hash probe, unique map ordinals, occupied bucket count; preserves DL"
+  },
+  "partition_preservation": {
+    "kinds": [
+      "dense",
+      "remove",
+      "direct_dense",
+      "direct_remove"
+    ],
+    "new_candidate_semantics": true,
+    "insert": "If old D<old T, move old D to old T before original insertion writes",
+    "remove": "After original dense erase, if new D<new T, move new T to new D",
+    "admission": "All active identities and bounded map probes; dense flags agree with prefix membership",
+    "insert_cutpoints": [
+      "0x51ac99",
+      "0x666739"
+    ],
+    "remove_cutpoints": [
+      "0x51ad97",
+      "0x666a71"
+    ],
+    "remove_return_points": [
+      "0x51ada9",
+      "0x666a7e"
+    ],
+    "scratch_stack": "entry RSP+0x10 (body RSP+0x38), outside nested shadow and saved nonvolatiles",
+    "byte_rows_moved": false,
+    "allocator_or_cleanup_added": false,
+    "caller_and_resource_ownership_verified": false
   }
 }

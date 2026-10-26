@@ -33,6 +33,7 @@ class Fixture:
             f=n.profile()['functions'][k];self.put(game+f['start'],bytes.fromhex(f['body_hex']))
         for a in (self.stop,self.reject):self.put(a,b'\xcc')
         self.put(game+0x33267B8,u64(S))
+        self.put(game+0x3483C34,u32(0xFFFFFFFF))
         self.put(S-0x80,b'\xa5'*0x400);self.put(B-0x80,b'\xb6'*(0x490+0x100))
         self.put(S+4,u32(2)+u32(t)+u32(d)+u32(p));self.put(S+0x14,bytes(64));self.put(S+0x58,u64(S+0x14)+u32(8)+u32(0)+u32(1))
         self.put(META,bytes([flag]));self.records={};self.keys=[1+8*i for i in range(8)]
@@ -99,6 +100,7 @@ class Fixture:
         elif self.kind in ('append','dense'):
             chosen=t if self.kind=='append' else p if self.flag else d
             if self.kind=='dense':
+                if not self.original and d<t:move(t,d)
                 if self.flag and p<d:move(d,p)
                 p+=int(bool(self.flag));d+=1;high_water=max(2,d)
             t+=1;values[self.int32(E+0x208)]=chosen;records['pointer',chosen]=u64(E+0x200);records['primary',chosen]=bytes(0x50)
@@ -111,6 +113,7 @@ class Fixture:
                     hole=p
                 t-=1;d-=1
                 if d:move(hole,d)
+                if not self.original and d<t:move(d,t)
             else:
                 t-=1
                 if hole!=t:move(hole,t)
@@ -119,6 +122,19 @@ class Fixture:
         for (name,index),blob in records.items():n.need(self.read(self.slot(name,index),len(blob))==blob,'array differs '+str((self.kind,self.t,self.d,self.p,name,index)))
         actual={self.int32(S+0x14+8*i):self.int32(S+0x18+8*i) for i in range(8) if self.int32(S+0x14+8*i)}
         n.need(actual==values,'ID map differs')
+        if not self.original and self.kind in ('dense','remove'):
+            # Independent survivor/bijection oracle, separate from copy order.
+            initial={struct.unpack('<Q',self.records['pointer',i])[0]:i for i in range(self.t)}
+            active=[struct.unpack('<Q',self.read(self.slot('pointer',i),8))[0] for i in range(t)]
+            removed=struct.unpack('<Q',self.records['pointer',self.ordinal])[0] if self.kind=='remove' else None
+            expected=(set(initial)-{removed}) if removed is not None else set(initial)|{E+0x200}
+            n.need(len(active)==len(set(active)) and set(active)==expected,'lost or duplicated active identity')
+            for i,entity in enumerate(active):
+                n.need(actual.get(self.int32(entity+8))==i,'map is not an active-row bijection')
+                if entity in initial:
+                    for name in ('primary','secondary'):
+                        n.need(self.read(self.slot(name,i),LAYOUT[name][2])==self.records[name,initial[entity]],'survivor payload changed')
+                if i<d:n.need((self.int32(entity+0x14)&1)==int(i<p),'prefix flags diverged')
         if not self.original:n.need(self.read(S+0x70,0x2B8-0x70)==b'\xa5'*(0x2B8-0x70),'old arrays modified')
         n.need(self.read(B-0x80,0x80)==b'\xb6'*0x80 and self.read(B+0x490,0x80)==b'\xb6'*0x80,'sidecar canary modified')
 
@@ -138,15 +154,15 @@ def validate(lib,zig):
         for t in range(cap):
             for d in range(t+1):
                 execute(Fixture(lib,'append',t,d,min(d,1),original=original))
-            for p in range(t+1):
-                for flag in (0,1):execute(Fixture(lib,'dense',t,t,p,flag=flag,original=original))
+            for d in ((t,) if original else range(t+1)):
+                for p in range(d+1):
+                    for flag in (0,1):execute(Fixture(lib,'dense',t,d,p,flag=flag,original=original))
         for src in range(cap):
             for dst in range(cap):execute(Fixture(lib,'mover',cap,cap,2,source=src,destination=dst,original=original))
         for t in range(1,cap+1):
-            for p in range(t+1):
-                for ordinal in range(t):execute(Fixture(lib,'remove',t,t,p,ordinal=ordinal,original=original))
-            for d in range(t):
-                for ordinal in range(d,t):execute(Fixture(lib,'remove',t,d,min(d,1),ordinal=ordinal,original=original))
+            for d in range(t+1):
+                for p in ((min(d,1),) if original and d<t else range(d+1)):
+                    for ordinal in range(d if original and d<t else 0,t):execute(Fixture(lib,'remove',t,d,p,ordinal=ordinal,original=original))
     # Carry actual emulator data across removal and reinsert the same identity,
     # including eight colliding IDs in the full eight-bucket map.
     for ordinal in range(8):
@@ -162,8 +178,13 @@ def validate(lib,zig):
     # Refusals and pointer/count/identity failures before the original prologue.
     for kind in ('append','dense'):
         execute(Fixture(lib,kind,8,8,4),'reject')
-        execute(Fixture(lib,kind,3,2,1), 'reject' if kind=='dense' else 'return')
-    execute(Fixture(lib,'remove',5,3,1,ordinal=1),'reject')
+        execute(Fixture(lib,kind,3,2,1))
+    execute(Fixture(lib,'remove',5,3,1,ordinal=1))
+    for kind in ('dense','remove'):
+        count=7 if kind=='dense' else 8
+        for address,blob in ((B+(count-1)*8,u64(0)),(E+8,u32(0xFFFFFFFF)),(E+0x14,u32(0)),
+                             (E+2*0x40+0x14,u32(1)),(S+0x18+7*8,u32(0))):
+            f=Fixture(lib,kind,count,3,2,ordinal=1);f.put(address,blob);execute(f,'reject')
     for kind in n.KINDS:
         changes=[(G+0x33267B8,u64(S+8)),(S+8,u32(9)),(S+12,u32(5)),(S+16,u32(5)),
                  (S+0x58,u64(S+0x18)),(S+0x60,u32(16)),(S+0x64,u32(0xFFFFFFFF))]
@@ -225,7 +246,7 @@ def validate(lib,zig):
                 limits=['Four core images only: mover, append, dense insert, remove. No publish/prepare API or automatic binding.',
                         'Original header, inline eight-bucket map and aliases retained; all four arrays require a lifetime-owned B binding.',
                         'Byte rows are intentionally not moved; copied pointer/primary/secondary preserve original differences.',
-                        'Dense insertion and dense removal with a pending tail refuse before writes. Classification has separate validation; property/owner readers remain pending.',
+                        'Dense insert/remove preserve pending survivors; all active map entries and dense prefix flags are checked before writes. Remaining consumers and lifecycle have separate gates.',
                         'Readable entities, coherent prefix flags and synchronized ownership remain caller obligations.'])
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--library',type=Path,required=True);p.add_argument('--zig',type=Path,required=True);p.add_argument('--out',type=Path,required=True);a=p.parse_args()
