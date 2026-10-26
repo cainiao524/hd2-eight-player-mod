@@ -27,6 +27,7 @@ typedef struct EpComponent33ReaderPlan {
  * Refusal must not return into an interior frame. No target is dereferenced
  * by this builder; it does not install either window or register any table. */
 EpPropertyResult ep_component33_readers_build(const EpComponent33ReaderAddresses*,EpComponent33ReaderPlan*);
+uint32_t ep_component33_readers_image_bytes(void);
 #ifdef __cplusplus
 }
 #endif

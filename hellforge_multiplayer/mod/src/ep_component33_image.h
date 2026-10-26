@@ -46,6 +46,8 @@ typedef struct EpComponent33Image {
  * inline equivalent is not redirected by this numeric emission API.
  * These images must not be activated on their own. */
 EpPropertyResult ep_component33_image_build(uint32_t kind,const EpComponent33Addresses*,EpComponent33Image*);
+/* Reservation size of the fixed template, or zero for an unknown kind. */
+uint32_t ep_component33_image_bytes(uint32_t kind);
 /* Replacement for owner 576CF0's 75-byte inline component33 window. Original
  * D>=T bypass remains; pending work calls PROMOTE_PENDING and restores the
  * original RSI/RDI/EAX/EDX continuation contract. No new stack frame or unwind

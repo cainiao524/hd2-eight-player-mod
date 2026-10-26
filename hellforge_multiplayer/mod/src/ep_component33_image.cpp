@@ -8,6 +8,8 @@ typedef struct EpComponent33Template {
 } EpComponent33Template;
 #include "ep_component33_templates.h"
 #include "ep_component33_owner_template.h"
+uint32_t ep_component33_image_bytes(uint32_t kind)
+{ return kind>=1 && kind<=sizeof(ep_component33_templates)/sizeof(ep_component33_templates[0]) ? ep_component33_templates[kind-1].bytes : 0; }
 static int C33Pointer(uint64_t p,uint64_t n,uint64_t alignment)
 { return p && p<(UINT64_C(1)<<47) && !(p%alignment) && n<=(UINT64_C(1)<<47)-p; }
 EpPropertyResult ep_component33_image_build(uint32_t kind,const EpComponent33Addresses* input,EpComponent33Image* out)

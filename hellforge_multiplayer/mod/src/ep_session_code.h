@@ -10,7 +10,7 @@ extern "C" {
 #define EP_SESSION_CODE_MAX_BYTES 65536u
 typedef enum EpSessionCodeState {
     EP_CODE_EMPTY, EP_CODE_RESERVED, EP_CODE_READY, EP_CODE_FAILED,
-    EP_CODE_PUBLISHING, EP_CODE_PUBLISHED, EP_CODE_PUBLISH_FAILED
+    EP_CODE_PUBLISHING, EP_CODE_PUBLISHED, EP_CODE_PUBLISH_FAILED, EP_CODE_RETAINED
 } EpSessionCodeState;
 typedef struct EpSessionCodeInfo {
     uint64_t handle;
@@ -48,12 +48,24 @@ typedef struct EpSessionGsCheck {
 } EpSessionGsCheck;
 int ep_session_code_seal_gs_table(HfMod*, uint64_t handle, const void* image,
     uint32_t bytes, uint32_t table_offset, uint32_t count, const EpSessionGsCheck*);
+/* Separate opt-in for component33 PROPERTY (6661A0): exact pinned prologue,
+ * cookie +64, three rows, and shared leaf metadata for preflight/handler thunk.
+ * Does not relax the existing handler-free or 6054F0 contracts. */
+int ep_session_code_seal_component33_property(HfMod*, uint64_t handle, const void* image,
+    uint32_t bytes, uint32_t table_offset, const EpSessionGsCheck*);
 int ep_session_code_info(HfMod*, uint64_t handle, EpSessionCodeInfo*);
 /* Before calling hook_ex, permanently pin this module and the image. Even a
  * reported hook failure can have exposed code: keep it for process lifetime.
  * No retry, detach or active-image release is offered. Never unload this Mod
  * or free data referenced by published code while it can be reached. */
 int ep_session_code_publish(HfMod*, uint64_t handle, uintptr_t target, int32_t priority);
+/* Atomically retain an entire READY dependency set before any non-SDK exposure
+ * (internal windows or callback-table publication). No hooks or writes to
+ * targets occur. Failure leaves every image unpinned; success is irreversible,
+ * including when the later publication fails. A retained image may subsequently
+ * enter the ordinary SDK publish path, but can never be discarded. Code/data lifetime and full-call
+ * exclusion still belong to the publishing owner. Never use on an exposed set. */
+int ep_session_code_retain_set(HfMod*, const uint64_t* handles, uint32_t count);
 /* Only never-published images. Caller must not have exposed the base by any
  * other path. Failed unregistration retains backing memory for a retry. */
 int ep_session_code_discard(HfMod*, uint64_t handle);

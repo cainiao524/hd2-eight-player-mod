@@ -48,3 +48,5 @@ SDK 报错并不足以证明代码从未暴露。任何一次 `hook_ex` 调用�
 离队独立映像新增 14 条函数表、缩放 16-bit ALLOC_LARGE 和非易失 SAVE_XMM128 支持，原同表较早 chain parent、独立 metadata 及截断/非法格式拒绝规则保留。新增 52 项生命周期检查与 4,248 个 Windows 回溯现场单列于 [离队移植](NATIVE_DEPARTURE.zh-CN.md)，不并入既有 387 项。
 
 [已有玩家状态更新](NATIVE_STATE_UPDATE.zh-CN.md) 另用 `seal_gs_table` 明确声明固定 GS 契约：只有指定函数表项可保留 EHANDLER/UHANDLER，必须匹配原 28-byte 回溯头与操作、96-byte cookie 偏移、独立 5-byte 跳板及声明的外部目标。普通 `seal_table` 继续拒绝 handler。新增 59 项准备/拒绝检查和 3,899 个 Windows 回溯现场单列，不计入基础所有者检查；代码槽增至 68 以容纳四组十七入口，65,536-byte 单映像上限与原 64 KiB 采样约束各自保持。
+
+元件33属性入口另使用 `seal_component33_property`：固定三行函数表、原 28-byte 元数据、cookie=64，以及 preflight/handler 共用 leaf；只有这个明确入口接受共享 leaf，普通封存和 cookie=96 路径的限制没有放宽。新增 `retain_set` 对 READY 依赖集合一次性固定模块/代码，拒绝未知、重复或非 READY 句柄；不可撤回，随后可以进入普通 SDK publish。它不安装任何目标，也不拥有外部数据。相关 [十五映像 family](NATIVE_COMPONENT33.zh-CN.md) 的 1,668 项检查另记，不混入原基础所有者的 387 项。

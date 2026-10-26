@@ -143,6 +143,8 @@ def main():
          PROJECT/'mod/src/ep_component33_readers.cpp',PROJECT/'tests/component33_readers_dll.cpp','-o',component33_readers_dll])
     component33_readers_receipt=PROJECT/'evidence/native-component33-readers-validation.json'
     component33_readers_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_component33_readers.py','--library',component33_dll,'--readers',component33_readers_dll,'--zig',zig,'--out',component33_readers_receipt]))
+    component33_family_receipt=PROJECT/'evidence/native-component33-family-validation.json'
+    component33_family_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_component33_family.py','--zig',zig,'--upstream',upstream,'--out',component33_family_receipt]))
     creation_receipt=PROJECT/'evidence/creation-dispatch-validation.json'
     creation_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_creation_dispatch.py','--library',property_dll,'--out',creation_receipt,'--component33-library',component33_dll]))
     classify_fixture=build/'native-classify-fixture.bin'
@@ -290,6 +292,7 @@ def main():
         'native_component33_transition':{**component33_transition_output,'validation_sha256':digest(component33_transition_receipt)},
         'native_component33_owner':{**component33_owner_output,'validation_sha256':digest(component33_owner_receipt)},
         'native_component33_readers':{**component33_readers_output,'validation_sha256':digest(component33_readers_receipt)},
+        'native_component33_family':{**component33_family_output,'validation_sha256':digest(component33_family_receipt)},
         'native_classify_storage':{'checks':int(classify_match[1]),**classify_fixture_receipt},
         'native_property_gates':{**gate_output,'validation_sha256':digest(gate_receipt)},
         'property_group':{'checks':int(group_match[1]),'entries':['producer','receiver','entity_network_getter'],'shared_storage_binding':True,'actual_hellforge_chains':True,
@@ -347,6 +350,7 @@ def main():
             'native-component33-readers.lock.json','tools/native_component33_readers.py','tools/validate_component33_readers.py',
             'mod/src/ep_component33_readers.h','mod/src/ep_component33_readers.cpp','mod/src/ep_component33_readers_template.h',
             'tests/component33_readers_dll.cpp','tests/native_component33_readers_unwind_test.c',
+            'mod/src/ep_component33_family.h','mod/src/ep_component33_family.cpp','tests/component33_family_dll.cpp','tools/validate_component33_family.py',
             'native-component33-owner.lock.json','tools/native_component33_owner.py','tools/validate_component33_owner.py',
             'mod/src/ep_component33_owner_template.h','tests/native_component33_owner_unwind_test.c',
             'tests/roster_call_dll.h','tests/roster_call_dll.cpp','tests/roster_call_test.c',

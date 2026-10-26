@@ -75,12 +75,15 @@ int ep_session_code_reserve(const HfApi* api, HfMod* owner, uintptr_t desired,
 }
 static int EpCodeNonvolatile(unsigned reg)
 { return reg==3 || reg==5 || reg==6 || reg==7 || (reg>=12 && reg<=15); }
-static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_t count, const EpSessionGsCheck* gs)
+static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_t count, const EpSessionGsCheck* gs, int component33)
 {
     RUNTIME_FUNCTION functions[15];
     if (!count || count>15 || (at&3) || at>bytes || bytes-at!=count*sizeof(RUNTIME_FUNCTION)) return 0;
     memcpy(functions,p+at,count*sizeof(RUNTIME_FUNCTION));
     if (functions[0].BeginAddress) return 0;
+    if (component33 && (!gs || count!=3 || gs->function_index!=1 ||
+        functions[0].UnwindData!=functions[2].UnwindData ||
+        functions[2].BeginAddress!=gs->handler_offset || functions[2].EndAddress!=gs->handler_offset+5)) return 0;
     if (gs && (gs->function_index>=count || gs->handler_target<0x10000 ||
         gs->handler_target>=((uint64_t)1<<47) || gs->handler_offset>at || at-gs->handler_offset<5 ||
         (gs->handler_target>=(uintptr_t)p && gs->handler_target<(uintptr_t)p+bytes))) return 0;
@@ -93,7 +96,8 @@ static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_
     if (rf.UnwindData<functions[count-1].EndAddress || (rf.UnwindData&3) || rf.UnwindData>at || at-rf.UnwindData<4) return 0;
     for (uint32_t other=0;other<count;other++) if (other!=f) {
         uint32_t offset=functions[other].UnwindData;
-        if (offset==rf.UnwindData) return 0;
+        if (offset==rf.UnwindData && !(component33 && f!=1 && other!=1 &&
+            !memcmp(p+offset,"\1\0\0\0",4))) return 0;
         if (offset>rf.UnwindData && offset<end) end=offset;
     }
     const uint8_t* u=p+rf.UnwindData;
@@ -106,10 +110,12 @@ static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_
          * chained handler, invented cookie offset or scope-table interpretation. */
         const uint8_t expected[28]={0x19,0x31,0x0c,0,0x22,0x68,7,0,0x1d,0x74,0x15,0,
             0x1d,0x64,0x14,0,0x1d,0x54,0x13,0,0x1d,0x34,0x12,0,0x1d,0xf2,0x16,0xe0};
+        const uint8_t property[28]={0x19,0x2b,0x0c,0,0x1c,0x64,0x12,0,0x1c,0x54,0x11,0,
+            0x1c,0x34,0x10,0,0x1c,0x92,0x18,0xf0,0x16,0xe0,0x14,0xd0,0x12,0xc0,0x10,0x70};
         uint32_t handler,cookie;int32_t delta;int thunk=0;
-        if (body!=28 || memcmp(u,expected,28)) return 0;
+        if (body!=28 || memcmp(u,component33 ? property : expected,28)) return 0;
         memcpy(&handler,u+body,4);memcpy(&cookie,u+body+4,4);
-        if (handler!=gs->handler_offset || cookie!=96 || p[handler]!=0xe9) return 0;
+        if (handler!=gs->handler_offset || cookie!=(component33 ? 64u : 96u) || p[handler]!=0xe9) return 0;
         memcpy(&delta,p+handler+1,4);
         if ((int64_t)(uintptr_t)p+handler+5+delta!=(int64_t)gs->handler_target) return 0;
         for (uint32_t j=0;j<count;j++) if (j!=f && functions[j].BeginAddress==handler &&
@@ -148,7 +154,7 @@ int ep_session_code_seal(HfMod* owner, uint64_t handle, const void* image, uint3
 { return ep_session_code_seal_table(owner,handle,image,bytes,tableAt,1); }
 int ep_session_code_seal_table(HfMod* owner, uint64_t handle, const void* image, uint32_t bytes, uint32_t tableAt, uint32_t count)
 { return ep_session_code_seal_gs_table(owner,handle,image,bytes,tableAt,count,NULL); }
-int ep_session_code_seal_gs_table(HfMod* owner, uint64_t handle, const void* image, uint32_t bytes, uint32_t tableAt, uint32_t count, const EpSessionGsCheck* input)
+static int EpCodeSeal(HfMod* owner, uint64_t handle, const void* image, uint32_t bytes, uint32_t tableAt, uint32_t count, const EpSessionGsCheck* input,int component33)
 {
     int ok=0; DWORD old;
     EpSessionGsCheck profile;const EpSessionGsCheck* gs=NULL;
@@ -159,7 +165,7 @@ int ep_session_code_seal_gs_table(HfMod* owner, uint64_t handle, const void* ima
     if (!s || s->state!=EP_CODE_RESERVED || bytes!=s->bytes) goto done;
     /* Owned copy removes any later dependency on the caller's input buffer. */
     memmove(s->base,image,bytes);
-    if (!EpCodeMetadata(s->base,bytes,tableAt,count,gs)) goto done;
+    if (!EpCodeMetadata(s->base,bytes,tableAt,count,gs,component33)) goto done;
     s->table=(PRUNTIME_FUNCTION)(s->base+tableAt);
     s->state=EP_CODE_FAILED;
     if (!VirtualProtect(s->base,bytes,PAGE_EXECUTE_READ,&old) ||
@@ -170,13 +176,34 @@ done:
     ReleaseSRWLockExclusive(&epCodeLock);
     return ok;
 }
+int ep_session_code_seal_gs_table(HfMod* owner,uint64_t handle,const void* image,uint32_t bytes,uint32_t at,uint32_t count,const EpSessionGsCheck* gs)
+{ return EpCodeSeal(owner,handle,image,bytes,at,count,gs,0); }
+int ep_session_code_seal_component33_property(HfMod* owner,uint64_t handle,const void* image,uint32_t bytes,uint32_t at,const EpSessionGsCheck* gs)
+{ return EpCodeSeal(owner,handle,image,bytes,at,3,gs,1); }
+int ep_session_code_retain_set(HfMod* owner,const uint64_t* input,uint32_t count)
+{
+    uint64_t ids[EP_SESSION_CODE_SLOTS];EpCodeSlot* slots[EP_SESSION_CODE_SLOTS];HMODULE module=NULL;int ok=0;
+    if (!owner || !input || !count || count>EP_SESSION_CODE_SLOTS) return 0;
+    memcpy(ids,input,count*sizeof(*input));
+    AcquireSRWLockExclusive(&epCodeLock);
+    for (uint32_t i=0;i<count;i++) {
+        slots[i]=EpCodeFind(owner,ids[i]);
+        if (!slots[i] || slots[i]->state!=EP_CODE_READY || !slots[i]->registered || slots[i]->pinned) goto done;
+        for (uint32_t j=0;j<i;j++) if (ids[i]==ids[j]) goto done;
+    }
+    if (!GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS|GET_MODULE_HANDLE_EX_FLAG_PIN,
+        (LPCSTR)(uintptr_t)&ep_session_code_retain_set,&module)) goto done;
+    for (uint32_t i=0;i<count;i++) { slots[i]->pinned=1;slots[i]->state=EP_CODE_RETAINED; }
+    ok=1;
+done:ReleaseSRWLockExclusive(&epCodeLock);return ok;
+}
 int ep_session_code_publish(HfMod* owner, uint64_t handle, uintptr_t target, int32_t priority)
 {
     EpCodeSlot* s; HMODULE module=NULL; int result;
     if (target<0x10000 || target>=((uint64_t)1<<47)) return 0;
     AcquireSRWLockExclusive(&epCodeLock);
     s=EpCodeFind(owner,handle);
-    if (!s || s->state!=EP_CODE_READY)
+    if (!s || (s->state!=EP_CODE_READY && s->state!=EP_CODE_RETAINED))
     { ReleaseSRWLockExclusive(&epCodeLock); return 0; }
     /* Do not let HellForge rewrite any immutable image managed by this owner,
      * including page padding or a different still-cancellable reservation. */

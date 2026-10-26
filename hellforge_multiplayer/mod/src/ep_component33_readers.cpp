@@ -2,6 +2,7 @@
 #include <string.h>
 #include <limits.h>
 #include "ep_component33_readers_template.h"
+uint32_t ep_component33_readers_image_bytes(void) { return sizeof(ep_c33_reader_image); }
 static bool Pointer(uint64_t p,uint64_t n,uint64_t alignment)
 { return p && p<(UINT64_C(1)<<47) && !(p%alignment) && n<=(UINT64_C(1)<<47)-p; }
 EpPropertyResult ep_component33_readers_build(const EpComponent33ReaderAddresses* input,EpComponent33ReaderPlan* out)
