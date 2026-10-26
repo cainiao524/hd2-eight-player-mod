@@ -24,6 +24,10 @@ enum { EP_C33_CALL_OK=0,EP_C33_CALL_ARGUMENT,EP_C33_CALL_OWNER,EP_C33_CALL_STORA
 typedef struct EpC33ResourceCallResult {
     uint32_t status,owner_result,demand_count,executed;
 } EpC33ResourceCallResult;
+/* Internal provider continuation guard. Requires the exact live resource
+ * scope as well as a healthy roster owner; rejects a swallowed reentry before
+ * a multi-step native callback can invoke its next engine function. */
+int ep_component33_resource_scope_ready(HfMod*,uint64_t roster_owner);
 /* Called under the SAME exclusive native scope as managed roster calls.
  * collect is read-only: 1 supplies a coherent complete snapshot, 2 means no
  * selected entity (no operation), 0 is a retryable unavailable snapshot.

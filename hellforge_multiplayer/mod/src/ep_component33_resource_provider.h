@@ -50,6 +50,30 @@ int ep_component33_resource_release_provider_call(const HfApi*,HfMod*,uint64_t s
  * resolve may be null. No scheduling, entry replacement or RESET supplied. */
 int ep_component33_resource_drain_provider_call(const HfApi*,HfMod*,uint64_t storage,
     uint64_t owner,const EpC33ResourceProviderOps*,EpC33ResourceProviderResult*);
+/* Explicit native Win64 adapters for the same providers. Unlike the callback
+ * APIs above these INVOKE engine functions. The engine root at game+3326308,
+ * resource table +10 (LOAD +2F0, DISPOSE +300), context table +38/+8 and
+ * resolver table +40/+160 are read with the SDK under the exact owner scope.
+ * Saved call-site bytes are checked and all needed targets frozen BEFORE
+ * resource mutation. These reads share the provider's 64 KiB budget; target
+ * function internals are not counted. Deferred release makes no engine calls.
+ *
+ * The Win64 argument mapping is derived from saved call sites, not verified
+ * callee implementations: service(key,table), context(engine), then
+ * resolve(context,handle). Service return values are ignored as in the source;
+ * a normal return is NOT proof an asynchronous asset is ready. Engine API,
+ * table and code lifetimes must remain stable through the entire call; the
+ * caller must exclude all external writers and establish the resolver's
+ * read-only semantics. SEH, reentry and nested faults quarantine the owner.
+ * No hook, init registration, UPDATE scheduling or RESET is installed here.
+ * This API is not a read-only sampler and is not permission to access a game.
+ */
+int ep_component33_resource_acquire_native_call(const HfApi*,HfMod*,uint64_t storage,
+    uint64_t owner,uint64_t target_object,EpC33ResourceProviderResult*);
+int ep_component33_resource_release_native_call(const HfApi*,HfMod*,uint64_t storage,
+    uint64_t owner,uint32_t ordinal,uint32_t deferred,EpC33ResourceProviderResult*);
+int ep_component33_resource_drain_native_call(const HfApi*,HfMod*,uint64_t storage,
+    uint64_t owner,EpC33ResourceProviderResult*);
 #ifdef __cplusplus
 }
 #endif

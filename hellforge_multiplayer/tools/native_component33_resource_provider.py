@@ -4,6 +4,18 @@ import native_component33_image as n
 import native_component33_resources as resources
 LOCK=n.PROJECT/'native-component33-resource-provider.lock.json'
 HEADER=n.PROJECT/'mod/src/ep_component33_resource_provider_template.h'
+NATIVE_CALLS=(('resolve',0x6656c0,0x665704,0x665724),('load',0x6656c0,0x665847,0x66585b),('dispose',0x6659e0,0x665ada,0x665aee))
+
+def native_call_sources():
+    p=json.loads(resources.LOCK.read_bytes())
+    return [(name,start,bytes.fromhex(p['functions'][hex(root)]['body_hex'])[start-root:end-root]) for name,root,start,end in NATIVE_CALLS]
+
+def render_native_calls():
+    lines=['/* Saved Win64 engine call sites; no target implementation inferred. */']
+    for name,start,raw in native_call_sources():
+        lines.append('static const uint8_t ep_c33_native_'+name+'_source[]={')
+        lines+=['    '+','.join('0x'+format(x,'02x') for x in raw[i:i+16])+',' for i in range(0,len(raw),16)];lines.append('};')
+    return '\n'.join(lines)+'\n'
 def profile():
     p=json.loads(LOCK.read_bytes());im=n.Image(n.ROOT/p['capture_directory'])
     n.need(p['game_build']=='25480438','source build')
@@ -24,6 +36,6 @@ def render():
     lines.append('/* Saved UPDATE drain tail, before its unchanged epilogue. */')
     lines.append('static const uint8_t ep_c33_drain_source[]={')
     lines+=['    '+','.join('0x'+format(x,'02x') for x in raw[i:i+16])+',' for i in range(0,len(raw),16)];lines.append('};')
-    return ('\n'.join(lines)+'\n').encode()
+    return ('\n'.join(lines)+'\n'+render_native_calls()).encode()
 if __name__=='__main__':
     HEADER.write_bytes(render());print(json.dumps(dict(header_sha256=n.sha(HEADER.read_bytes()),game_access=False)))

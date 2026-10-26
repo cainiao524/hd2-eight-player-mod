@@ -25,6 +25,11 @@ struct ResourceCall {
     void* memory;uint32_t bytes;bool reentered,release_only;
 };
 static thread_local ResourceCall* resourceCall;
+int ep_component33_resource_scope_ready(HfMod* mod,uint64_t owner)
+{
+    return resourceCall && resourceCall->mod==mod && resourceCall->owner==owner && !resourceCall->reentered &&
+        ep_roster_owner_native_status(mod,owner)==EP_OWNER_OK;
+}
 static int Execute(void* opaque,const EpNativeRosterView*)
 {
     auto* call=(ResourceCall*)opaque;
