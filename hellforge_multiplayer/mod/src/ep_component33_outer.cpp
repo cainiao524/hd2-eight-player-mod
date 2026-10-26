@@ -4,6 +4,7 @@
 struct EpC33OuterFixup { uint32_t offset,next,key,width;int64_t add; };
 struct EpC33OuterWindowTemplate { uint32_t rva,entry;uint8_t expected[5]; };
 #include "ep_component33_outer_template.h"
+#include "ep_component33_refresh_template.h"
 uint32_t ep_component33_outer_image_bytes(void) { return sizeof(ep_c33_outer_image); }
 static bool Pointer(uint64_t p,uint64_t n,uint64_t alignment)
 { return p && p<(UINT64_C(1)<<47) && !(p%alignment) && n<=(UINT64_C(1)<<47)-p; }
@@ -36,4 +37,24 @@ EpPropertyResult ep_component33_outer_build(const EpC33ConsumerAddresses* input,
         for (unsigned j=0;j<4;j++) w.replacement[j+1]=(uint8_t)((uint64_t)rel>>(8*j));
     }
     *out=p;return EP_PROPERTY_OK;
+}
+uint32_t ep_component33_refresh_image_bytes(void) { return sizeof(ep_c33_refresh_image); }
+EpPropertyResult ep_component33_refresh_build(const EpC33RefreshAddresses* input,EpComponent33Image* out)
+{
+    if (!out) return EP_PROPERTY_ARGUMENT;
+    EpC33RefreshAddresses a={};if (input) a=*input;memset(out,0,sizeof(*out));if (!input) return EP_PROPERTY_ARGUMENT;
+    if (!Pointer(a.game_base,0x4000000,4096) || !Pointer(a.code_address,4096,16) || !Pointer(a.acquire_address,48,16)) return EP_PROPERTY_POINTER;
+    const uint64_t spans[][2]={{a.game_base,0x4000000},{a.code_address,4096},{a.acquire_address,48}};
+    for (unsigned i=0;i<3;i++) for (unsigned j=0;j<i;j++)
+        if (spans[i][0]<spans[j][0]+spans[j][1] && spans[j][0]<spans[i][0]+spans[i][1]) return EP_PROPERTY_OVERLAP;
+    EpComponent33Image image={};memcpy(image.data,ep_c33_refresh_image,sizeof(ep_c33_refresh_image));
+    const uint64_t values[]={a.game_base,a.acquire_address};
+    for (const auto& f:ep_c33_refresh_fixups) {
+        int64_t value=(int64_t)values[f.key]+f.add-(int64_t)a.code_address-f.next;
+        if (value<INT32_MIN || value>INT32_MAX) return EP_PROPERTY_REL32;
+        int32_t relative=(int32_t)value;memcpy(image.data+f.offset,&relative,4);
+    }
+    image.bytes=sizeof(ep_c33_refresh_image);image.code_bytes=ep_c33_refresh_code_bytes;image.unwind_offset=ep_c33_refresh_unwind_offset;
+    image.table_offset=ep_c33_refresh_table_offset;image.function_count=ep_c33_refresh_function_count;
+    *out=image;return EP_PROPERTY_OK;
 }

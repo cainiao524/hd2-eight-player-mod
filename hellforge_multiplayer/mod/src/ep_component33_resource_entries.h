@@ -4,7 +4,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-enum { EP_C33_RESOURCE_ENTRY_COUNT=4, EP_C33_RESOURCE_ENTRY_GROUPS=4, EP_C33_RESOURCE_DRAIN=5,
+enum { EP_C33_RESOURCE_ENTRY_COUNT=4, EP_C33_RESOURCE_ENTRY_GROUPS=4, EP_C33_RESOURCE_DRAIN=5, EP_C33_RESOURCE_REFRESH=6,
     EP_C33_ENTRIES_PREPARING=1,EP_C33_ENTRIES_PREPARED,EP_C33_ENTRIES_CLEANUP_REQUIRED,EP_C33_ENTRIES_RETAINED };
 #define EP_C33_RESOURCE_ENTRY_ABORT 0xe0433301u
 /* Must not return into the original caller after refusal/partial effects.
@@ -28,12 +28,18 @@ typedef struct EpC33ResourceEntriesInfo {
     EpSessionCodeInfo update_entry,update_body;
     uint64_t reset_targets[2];
     EpSessionCodeInfo reset_entries[2],reset_body;
+    uint64_t refresh_target;
+    EpSessionCodeInfo refresh_entry,refresh_body;
 } EpC33ResourceEntriesInfo;
 typedef struct EpC33UpdateEntryConfig { uintptr_t desired_entry,desired_body; } EpC33UpdateEntryConfig;
 typedef struct EpC33LifecycleEntryConfig {
     EpC33UpdateEntryConfig update;
     uintptr_t reset_entries[2],reset_body;
 } EpC33LifecycleEntryConfig;
+typedef struct EpC33RefreshEntryConfig {
+    EpC33LifecycleEntryConfig lifecycle;
+    uintptr_t desired_entry,desired_body;
+} EpC33RefreshEntryConfig;
 /* Owns four leaf Win64 argument bridges and their immutable dispatch data.
  * ACQUIRE/DEFER: RCX=S, RDX=object. RELEASE: RCX=S, EDX=ordinal, R8B=flag;
  * only the low byte controls deferred release. The bridges tail-call a
@@ -87,6 +93,22 @@ int ep_component33_resource_entries_prepare_update(const HfApi*,HfMod*,const EpC
  * not access game memory; invoking retained entries is an explicit runtime
  * operation, not sampling. Original raw-pointer ABI preconditions still apply. */
 int ep_component33_resource_entries_prepare_lifecycle(const HfApi*,HfMod*,const EpC33ResourceEntryBindings*,const EpC33LifecycleEntryConfig*,EpC33ResourceEntriesInfo*);
+/* Includes B5E710 (RCX=object) and its registry traversal in the SAME lifetime
+ * transaction as all nine lifecycle/resource images. The entire traversal
+ * holds this owner; nonempty tag-7C rows call the exact owned ACQUIRE entry.
+ * A foreign S is refused before SDK/service effects. No active matching row
+ * causes no resource write/revision; successful acquisitions commit one outer
+ * revision. Reentry, source/callback faults and capacity refusal abort the
+ * traversal and quarantine; already completed prior rows are not rolled back.
+ * Registry/raw-pointer lifetimes and exclusion of external registry writers
+ * remain integration requirements. SDK reads within EACH acquisition retain
+ * the provider's 64 KiB ceiling; original native registry loads are not SDK
+ * reads. Engine function internals remain outside that counter.
+ * A publisher must supersede every B5E710 interior getter/release/resource
+ * window when replacing this whole entry. Other registry callers, including
+ * B51DE0, are unchanged. No hook, source read, or install occurs in prepare.
+ * Existing prepare APIs leave all refresh fields zero. */
+int ep_component33_resource_entries_prepare_refresh(const HfApi*,HfMod*,const EpC33ResourceEntryBindings*,const EpC33RefreshEntryConfig*,EpC33ResourceEntriesInfo*);
 int ep_component33_resource_entries_info(HfMod*,uint64_t,EpC33ResourceEntriesInfo*);
 int ep_component33_resource_entries_retain(HfMod*,uint64_t);
 int ep_component33_resource_entries_cancel(HfMod*,uint64_t);
