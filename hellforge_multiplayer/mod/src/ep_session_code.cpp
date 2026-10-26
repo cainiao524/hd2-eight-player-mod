@@ -75,15 +75,17 @@ int ep_session_code_reserve(const HfApi* api, HfMod* owner, uintptr_t desired,
 }
 static int EpCodeNonvolatile(unsigned reg)
 { return reg==3 || reg==5 || reg==6 || reg==7 || (reg>=12 && reg<=15); }
-static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_t count, const EpSessionGsCheck* gs, int component33)
+static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_t count, const EpSessionGsCheck* gs, int handler_kind)
 {
     RUNTIME_FUNCTION functions[15];
     if (!count || count>15 || (at&3) || at>bytes || bytes-at!=count*sizeof(RUNTIME_FUNCTION)) return 0;
     memcpy(functions,p+at,count*sizeof(RUNTIME_FUNCTION));
     if (functions[0].BeginAddress) return 0;
-    if (component33 && (!gs || count!=3 || gs->function_index!=1 ||
+    if (handler_kind==1 && (!gs || count!=3 || gs->function_index!=1 ||
         functions[0].UnwindData!=functions[2].UnwindData ||
         functions[2].BeginAddress!=gs->handler_offset || functions[2].EndAddress!=gs->handler_offset+5)) return 0;
+    if (handler_kind==2 && (!gs || count!=9 || gs->function_index!=7 ||
+        functions[8].BeginAddress!=gs->handler_offset || functions[8].EndAddress!=gs->handler_offset+5)) return 0;
     if (gs && (gs->function_index>=count || gs->handler_target<0x10000 ||
         gs->handler_target>=((uint64_t)1<<47) || gs->handler_offset>at || at-gs->handler_offset<5 ||
         (gs->handler_target>=(uintptr_t)p && gs->handler_target<(uintptr_t)p+bytes))) return 0;
@@ -96,7 +98,7 @@ static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_
     if (rf.UnwindData<functions[count-1].EndAddress || (rf.UnwindData&3) || rf.UnwindData>at || at-rf.UnwindData<4) return 0;
     for (uint32_t other=0;other<count;other++) if (other!=f) {
         uint32_t offset=functions[other].UnwindData;
-        if (offset==rf.UnwindData && !(component33 && f!=1 && other!=1 &&
+        if (offset==rf.UnwindData && !(handler_kind==1 && f!=1 && other!=1 &&
             !memcmp(p+offset,"\1\0\0\0",4))) return 0;
         if (offset>rf.UnwindData && offset<end) end=offset;
     }
@@ -112,10 +114,14 @@ static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_
             0x1d,0x64,0x14,0,0x1d,0x54,0x13,0,0x1d,0x34,0x12,0,0x1d,0xf2,0x16,0xe0};
         const uint8_t property[28]={0x19,0x2b,0x0c,0,0x1c,0x64,0x12,0,0x1c,0x54,0x11,0,
             0x1c,0x34,0x10,0,0x1c,0x92,0x18,0xf0,0x16,0xe0,0x14,0xd0,0x12,0xc0,0x10,0x70};
+        const uint8_t loadout[32]={0x19,0x2f,0x0d,0,0x20,0x88,6,0,0x1b,0x78,7,0,
+            0x17,0x68,8,0,0x13,0x64,0x15,0,0x13,0x34,0x14,0,0x13,1,0x12,0,0x0c,0x70,0,0};
         uint32_t handler,cookie;int32_t delta;int thunk=0;
-        if (body!=28 || memcmp(u,component33 ? property : expected,28)) return 0;
+        const uint8_t* expected_unwind=handler_kind==2 ? loadout : handler_kind==1 ? property : expected;
+        const uint32_t expected_bytes=handler_kind==2 ? 32u : 28u;
+        if (body!=expected_bytes || memcmp(u,expected_unwind,expected_bytes)) return 0;
         memcpy(&handler,u+body,4);memcpy(&cookie,u+body+4,4);
-        if (handler!=gs->handler_offset || cookie!=(component33 ? 64u : 96u) || p[handler]!=0xe9) return 0;
+        if (handler!=gs->handler_offset || cookie!=(handler_kind==2 ? 80u : handler_kind==1 ? 64u : 96u) || p[handler]!=0xe9) return 0;
         memcpy(&delta,p+handler+1,4);
         if ((int64_t)(uintptr_t)p+handler+5+delta!=(int64_t)gs->handler_target) return 0;
         for (uint32_t j=0;j<count;j++) if (j!=f && functions[j].BeginAddress==handler &&
@@ -154,7 +160,7 @@ int ep_session_code_seal(HfMod* owner, uint64_t handle, const void* image, uint3
 { return ep_session_code_seal_table(owner,handle,image,bytes,tableAt,1); }
 int ep_session_code_seal_table(HfMod* owner, uint64_t handle, const void* image, uint32_t bytes, uint32_t tableAt, uint32_t count)
 { return ep_session_code_seal_gs_table(owner,handle,image,bytes,tableAt,count,NULL); }
-static int EpCodeSeal(HfMod* owner, uint64_t handle, const void* image, uint32_t bytes, uint32_t tableAt, uint32_t count, const EpSessionGsCheck* input,int component33)
+static int EpCodeSeal(HfMod* owner, uint64_t handle, const void* image, uint32_t bytes, uint32_t tableAt, uint32_t count, const EpSessionGsCheck* input,int handler_kind)
 {
     int ok=0; DWORD old;
     EpSessionGsCheck profile;const EpSessionGsCheck* gs=NULL;
@@ -165,7 +171,7 @@ static int EpCodeSeal(HfMod* owner, uint64_t handle, const void* image, uint32_t
     if (!s || s->state!=EP_CODE_RESERVED || bytes!=s->bytes) goto done;
     /* Owned copy removes any later dependency on the caller's input buffer. */
     memmove(s->base,image,bytes);
-    if (!EpCodeMetadata(s->base,bytes,tableAt,count,gs,component33)) goto done;
+    if (!EpCodeMetadata(s->base,bytes,tableAt,count,gs,handler_kind)) goto done;
     s->table=(PRUNTIME_FUNCTION)(s->base+tableAt);
     s->state=EP_CODE_FAILED;
     if (!VirtualProtect(s->base,bytes,PAGE_EXECUTE_READ,&old) ||
@@ -180,6 +186,8 @@ int ep_session_code_seal_gs_table(HfMod* owner,uint64_t handle,const void* image
 { return EpCodeSeal(owner,handle,image,bytes,at,count,gs,0); }
 int ep_session_code_seal_component33_property(HfMod* owner,uint64_t handle,const void* image,uint32_t bytes,uint32_t at,const EpSessionGsCheck* gs)
 { return EpCodeSeal(owner,handle,image,bytes,at,3,gs,1); }
+int ep_session_code_seal_loadout_transition(HfMod* owner,uint64_t handle,const void* image,uint32_t bytes,uint32_t at,const EpSessionGsCheck* gs)
+{ return EpCodeSeal(owner,handle,image,bytes,at,9,gs,2); }
 int ep_session_code_retain_set(HfMod* owner,const uint64_t* input,uint32_t count)
 {
     uint64_t ids[EP_SESSION_CODE_SLOTS];EpCodeSlot* slots[EP_SESSION_CODE_SLOTS];HMODULE module=NULL;int ok=0;

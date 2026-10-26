@@ -1,4 +1,4 @@
-"""Relocate three saved native loadout lifecycle bodies; never accesses a game.
+"""Relocate four saved native loadout lifecycle bodies; never accesses a game.
 
 The constructor's player records/widgets move together. Nested widget fields,
 including the four choices at 189D050, retain their original layout. No hashes,
@@ -14,7 +14,9 @@ from capstone.x86_const import X86_OP_IMM, X86_OP_MEM, X86_REG_RIP
 PROJECT = Path(__file__).resolve().parents[1]
 CAPTURE = PROJECT.parent / 'evidence/existing-code-evidence-25480438'
 HEADER = PROJECT / 'mod/src/ep_loadout_lifecycle_template.h'
-STARTS = (0x14A17E0, 0x1467330, 0x1467720)
+STARTS = (0x14A17E0, 0x1467330, 0x1467720, 0x1470A40)
+TRANSITION_UNWIND = bytes.fromhex('192f0d00208806001b780700176808001364150013341400130112000c700000')
+GS_HANDLER = 0x21044A0
 # RVA: (expected instruction, replacement bytes, parameter, addend, operand offset)
 PATCHES = {
     0x14A17F4: ('mov edi, 4', b'\xbf'+bytes(4), 5, 0, 1),
@@ -24,6 +26,8 @@ PATCHES = {
     0x14674BB: ('mov edi, 4', b'\xbf'+bytes(4), 5, 0, 1),
     0x1467743: ('add rbx, 0x55a20', b'\x48\xbb'+bytes(8), 4, 0x1FA8, 2),
     0x146774A: ('mov edi, 4', b'\xbf'+bytes(4), 5, 0, 1),
+    0x1470B48: ('lea rbx, [rsi + 0x53a78]', b'\x48\xbb'+bytes(8), 4, 0, 2),
+    0x1470B4F: ('mov edi, 4', b'\xbf'+bytes(4), 5, 0, 1),
 }
 
 
@@ -66,8 +70,13 @@ def build():
         begin, end, unwind = next(f for f in capture.functions if f[0] == start)
         source = capture.read(begin, end-begin)
         head = capture.read(unwind, 4)
-        need(head[0] == 1 and head[3] == 0, 'Lifecycle requires handler-free saved unwind')
+        need(head[0] == (25 if start == 0x1470A40 else 1) and head[3] == 0,
+             'Unsupported lifecycle exception contract')
         uw = capture.read(unwind, 4+((head[2]+1)&~1)*2)
+        if start == 0x1470A40:
+            need(uw == TRANSITION_UNWIND and capture.read(unwind+len(uw),8) == struct.pack('<II',GS_HANDLER,80),
+                 'Unsupported transition GS contract')
+            uw += bytes(4)+struct.pack('<I',80)
         blob += b'\xcc' * (-len(blob) % 16)
         entry = len(blob)
         entries.append(entry)
@@ -122,10 +131,18 @@ def build():
     for offset, nxt, target in branches:
         need(target in mapping, 'Branch is not an instruction boundary')
         fixes.append((offset, nxt, 1, 0, mapping[target]))
+    # Preserve EH/UH flags, the RSP+80 cookie, and an owned GS-handler thunk.
+    blob += b'\xcc' * (-len(blob) % 16)
+    handler_offset = len(blob)
+    blob += b'\xe9'+bytes(4)
+    fixes.append((handler_offset+1,handler_offset+5,0,0,GS_HANDLER))
+    functions.append((handler_offset,len(blob),b'\x01\x00\x00\x00'))
     code_bytes = len(blob)
     blob += bytes(-len(blob) % 4)
     unwind_offset = len(blob)
     for begin, end, uw in functions:
+        if uw[0] == 25:
+            uw = uw[:-8]+struct.pack('<II',handler_offset,80)
         metadata.append((begin, end, len(blob)))
         blob += uw
     table_offset = len(blob)
@@ -133,7 +150,8 @@ def build():
         blob += struct.pack('<III', *row)
     need(len(blob) <= 4096, 'Lifecycle image exceeds bounded storage')
     return dict(blob=bytes(blob), fixes=fixes, code_bytes=code_bytes, unwind_offset=unwind_offset,
-                table_offset=table_offset, entries=entries, functions=metadata, sources=sources, mapping=mapping)
+                table_offset=table_offset, entries=entries, functions=metadata, sources=sources, mapping=mapping,
+                handler_offset=handler_offset)
 
 
 def render(artifact):
@@ -146,7 +164,7 @@ def render(artifact):
     lines += ['};', 'static const EpLoadoutFixup ep_loadout_lifecycle_fixups[] = {']
     lines += ['    {'+','.join(str(x) for x in f)+'},' for f in artifact['fixes']]
     lines += ['};']
-    for name in ('code_bytes', 'unwind_offset', 'table_offset'):
+    for name in ('code_bytes', 'unwind_offset', 'table_offset','handler_offset'):
         lines.append(f'static const uint32_t ep_loadout_{name} = {artifact[name]};')
     lines += ['static const uint32_t ep_loadout_entries[] = {'+','.join(map(str, artifact['entries']))+'};', '']
     return '\n'.join(lines)
@@ -159,4 +177,4 @@ if __name__ == '__main__':
     artifact = build()
     if args.write:
         HEADER.write_text(render(artifact), encoding='utf-8', newline='\n')
-    print(json.dumps(dict(image_bytes=len(artifact['blob']), lifecycle_entries=3, game_access=False)))
+    print(json.dumps(dict(image_bytes=len(artifact['blob']), lifecycle_entries=4, game_access=False)))

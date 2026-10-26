@@ -1,8 +1,8 @@
 """Execute three relocated native UI paths in owned emulator RAM.
 
-Compare callbacks/data to saved four-player instructions, execute the actual
-saved per-widget constructor, and unwind every candidate instruction with the
-Windows runtime. Resource services are stubs, not real widgets or gameplay.
+Default: one eight-slot transition smoke check against the saved four-slot
+body, READY preparation and two Windows unwind points. --full explicitly adds
+the previous lifecycle regression. Resource services remain test stubs.
 No receipts, hashes, archives, installation or game access.
 """
 import argparse
@@ -32,7 +32,7 @@ class Addresses(c.Structure):
 
 
 class Image(c.Structure):
-    _fields_=[(name,c.c_uint32) for name in ('bytes','code_bytes','unwind_offset','table_offset','constructor','release','alternate_release','function_count')]+[('data',c.c_ubyte*4096)]
+    _fields_=[(name,c.c_uint32) for name in ('bytes','code_bytes','unwind_offset','table_offset','constructor','release','alternate_release','function_count','transition','handler_offset')]+[('data',c.c_ubyte*4096)]
 
 
 def addresses(capacity=8):
@@ -40,8 +40,9 @@ def addresses(capacity=8):
 
 
 class Fixture:
-    def __init__(self, artifact, library, image, capacity, kind, variant, original=False, foreign=False):
+    def __init__(self, artifact, library, image, capacity, kind, variant, original=False, foreign=False,unwind_points=None):
         self.uc=u.Uc(u.UC_ARCH_X86,u.UC_MODE_64);self.pages=set();self.calls=[];self.unwinds=0
+        self.unwind_points=unwind_points;self.transition_args=[]
         self.capacity=capacity;self.kind=kind;self.image=image;self.library=library;self.foreign=foreign;self.original=original
         self.records=SCREEN+0x10 if original else RECORDS
         self.widgets=SCREEN+0x53a78 if original else WIDGETS
@@ -71,12 +72,16 @@ class Fixture:
                 for operand in ins.operands:
                     if operand.type==X86_OP_MEM and operand.mem.base==X86_REG_RIP:
                         target=ins.address+ins.size+ins.disp;self.map(GAME+target,16)
-                        if target<0x3000000:
+                        if target==0x263c010:
+                            # The process's mutable cookie is not in the saved
+                            # code capture; use an explicit fixture value.
+                            self.write(GAME+target,U64(0x6745ab23901f))
+                        elif target<0x3000000:
                             self.write(GAME+target,capture.read(target,operand.size))
                         else:
                             self.write(GAME+target,U64(ENGINE) if operand.size==8 else U32(0xffffffff))
         self.map(CODE,image.bytes);self.write(CODE,bytes(image.data[:image.bytes]))
-        if kind:
+        if kind in (1,2):
             self.write(SCREEN+0xd2940,U64(variant))
             self.write(SCREEN+0xf948,U32(variant+1))
             self.write(SCREEN+0xf935,bytes([variant]))
@@ -86,11 +91,33 @@ class Fixture:
                 self.write(w+0x2098,U64((i+variant)%2))
                 self.write(w+0x1ee0c,bytes([(i+variant)%2]))
                 self.write(w+0x1c18,U32(0x1200+i if (i+variant)%2 else 0xffffffff))
+        if kind==3:
+            # Native virtual interfaces/global state are explicit test-owned
+            # stand-ins. Exercise enabled service, animation and cleanup paths.
+            vtable=ENGINE+0x20000;self.map(vtable,0x1000)
+            for i in range(4):
+                target=GAME+0x3001000+i*16
+                self.external.add(target);self.map(target,1);self.write(target,b'\xc3')
+            for at,value in ((ENGINE+0x10,vtable),(ENGINE+0xf0,vtable),
+                             (vtable+0xc8,GAME+0x3001000),(vtable+0x628,GAME+0x3001010),
+                             (ENGINE+0x288,GAME+0x3001020),(ENGINE+0x338,GAME+0x3001030),
+                             (ENGINE+0x10f8,0x4455),(ENGINE+0xb398,0x7788)):
+                self.map(at,8);self.write(at,U64(value))
+            self.map(ENGINE+0xac560,1);self.write(ENGINE+0xac560,b'\1')
+            self.map(ENGINE+0xb3a8,8);self.write(ENGINE+0xb3a8,U64(0))
+            self.map(ENGINE+0x3520,0x20);self.write(ENGINE+0x3520,U32(1))
+            self.cleanup=ENGINE+0x40000
+            self.map(self.cleanup+0x1f8000,0x1000)
+            self.write(ENGINE+0x3528,U64(self.cleanup));self.write(ENGINE+0x3530,U32(0x104))
+            self.write(self.cleanup+0x1f8078,U64(0x7788));self.write(self.cleanup+0x1f8070,U32(3))
+            self.write(self.cleanup+0x1f8012,b'\1');self.write(SCREEN+0x273990,b'\1')
+            self.cookie=0x6745ab23901f
         self.before_screen=self.read(SCREEN,0x2739d0)
         self.before_records=self.read(RECORDS,capacity*0x9f0)
         self.before_widgets=self.read(WIDGETS,capacity*0x1ee18)
         self.uc.reg_write(R('rsp'),SP);self.write(SP,U64(STOP))
         for i,name in enumerate(NAMES):self.uc.reg_write(R(name),0x11110000+i*0x101)
+        for i in range(6,9):self.uc.reg_write(R(f'xmm{i}'),(0x66660000+i)|((0xaaaa0000+i)<<64))
         self.uc.reg_write(R('rcx'),SCREEN+8 if foreign else SCREEN)
         self.uc.hook_add(u.UC_HOOK_CODE,self.step)
 
@@ -104,13 +131,21 @@ class Fixture:
 
     def step(self,uc,address,size,user):
         if address in (STOP,REJECT):self.stop=address;uc.emu_stop();return
-        if CODE<=address<CODE+self.image.code_bytes:
-            values=(c.c_uint64*8)(*(self.value(n) for n in NAMES))
+        if CODE<=address<CODE+self.image.code_bytes and (self.unwind_points is None or address-CODE in self.unwind_points):
+            xmm=[v for i in range(6,9) for v in (self.value(f'xmm{i}')&((1<<64)-1),self.value(f'xmm{i}')>>64)]
+            values=(c.c_uint64*14)(*(self.value(n) for n in NAMES),*xmm)
             stack=(c.c_ubyte*512).from_buffer_copy(self.read(SP-256,512))
             rc=self.library.loadout_unwind(c.byref(self.image),address-CODE,self.value('rsp')-SP,values,stack,STOP)
             g.need(rc==0,f'Unwind {address-CODE:x} failed: {rc}')
             self.unwinds+=1
+            if self.unwind_points is not None:self.unwind_points.remove(address-CODE)
         if address==self.widget_body[0] or address in self.external:
+            if self.kind==3 and address==GAME+0x2088770:
+                g.need(self.value('rcx')==self.cookie,'Transition cookie check argument changed')
+            if self.kind==3 and address==GAME+0x1451100:
+                rsp=self.value('rsp');scratch=struct.unpack('<Q',self.read(rsp+0x38,8))[0]
+                self.transition_args.append((self.value('rcx'),self.value('xmm1'),self.value('xmm2'),self.value('r9')&255,
+                                             self.read(rsp+0x28,4),self.read(rsp+0x30,4),self.read(scratch,16)))
             self.calls.append((address-GAME,self.value('rcx'),self.value('rdx')))
             if address in self.external:
                 # Clobber caller-saved integer registers, preserving the ABI's
@@ -122,6 +157,7 @@ class Fixture:
         g.need(self.stop==(REJECT if self.foreign else STOP),'Lifecycle failed to terminate at expected exit')
         g.need(self.value('rsp')==SP+(0 if self.foreign else 8),'Wrong stack balance')
         for i,name in enumerate(NAMES):g.need(self.value(name)==0x11110000+i*0x101,'Nonvolatile register damaged')
+        for i in range(6,9):g.need(self.value(f'xmm{i}')==(0x66660000+i)|((0xaaaa0000+i)<<64),'Nonvolatile XMM register damaged')
         if self.foreign:
             g.need(not self.calls and self.read(SCREEN,0x2739d0)==self.before_screen and
                    self.read(RECORDS,self.capacity*0x9f0)==self.before_records and
@@ -164,8 +200,32 @@ def widget_choices(artifact,dll,image):
     return 7
 
 
+def transition_smoke(artifact,dll):
+    image=Image();g.need(dll.loadout_build(c.byref(addresses(8)),c.byref(image))==0,'Transition image rejected')
+    old=Fixture(artifact,dll,image,4,3,0,original=True,unwind_points=set()).run()
+    points={artifact['mapping'][0x1470b60],artifact['mapping'][0x1470d0d]}
+    new=Fixture(artifact,dll,image,8,3,0,unwind_points=points).run()
+    old_widgets,old_other=old.groups();new_widgets,new_other=new.groups()
+    g.need(old_other==new_other,'Transition service ordering changed')
+    expected=[(0x189e080,0,0),(0x1451100,0,0)]
+    g.need(all(x==expected for x in old_widgets+new_widgets),'Transition missed a native widget')
+    prior=[x[1:] for x in old.transition_args if old.widgets<=x[0]<old.widgets+4*0x1ee18]
+    current=[x[1:] for x in new.transition_args if new.widgets<=x[0]<new.widgets+8*0x1ee18]
+    g.need(len(prior)==4 and len(current)==8 and all(x==prior[0] for x in prior+current),'Animation ABI changed')
+    for begin,end in ((0,0x10),(0x27d0,0x53a78),(0xcf2d8,0x2739d0)):
+        g.need(new.read(SCREEN+begin,end-begin)==old.read(SCREEN+begin,end-begin),'Transition changed unrelated screen state')
+    for f in (old,new):
+        for begin,end in ((0x10,0x27d0),(0x53a78,0xcf2d8)):
+            g.need(f.read(SCREEN+begin,end-begin)==f.before_screen[begin:end],'Transition directly altered inline arrays')
+    g.need(new.read(new.cleanup+0x1f8070,4)==U32(0) and new.read(new.cleanup+0x1f8012,1)==b'\0','User-state cleanup skipped')
+    g.need(not points and new.unwinds==2,'Required unwind/handler checks not reached')
+    g.need(dll.loadout_prepare_test(c.byref(addresses(8)))==0,'Transition READY preparation/cleanup failed')
+    return dict(passed=True,scope='eight-slot transition smoke',game_access=False,runtime_verified=False)
+
+
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--zig',type=Path);parser.add_argument('--upstream',type=Path)
+    parser.add_argument('--full',action='store_true',help='Explicitly run the existing lifecycle regression as well')
     parser.add_argument('--library',type=Path,default=g.PROJECT/'build/loadout_lifecycle_test.dll');args=parser.parse_args()
     if args.zig:
         g.need(args.upstream is not None,'--upstream required')
@@ -178,7 +238,9 @@ def main():
     dll.loadout_build.argtypes=[c.POINTER(Addresses),c.POINTER(Image)];dll.loadout_build.restype=c.c_int
     dll.loadout_prepare_test.argtypes=[c.POINTER(Addresses)];dll.loadout_prepare_test.restype=c.c_int
     dll.loadout_unwind.argtypes=[c.POINTER(Image),c.c_uint32,c.c_int32,c.POINTER(c.c_uint64),c.POINTER(c.c_ubyte),c.c_uint64];dll.loadout_unwind.restype=c.c_int
-    artifact=g.build();scenarios=unwinds=0
+    artifact=g.build();smoke=transition_smoke(artifact,dll)
+    if not args.full:print(json.dumps(smoke));return
+    scenarios=unwinds=0
     for kind in range(3):
         for variant in range(2 if kind else 1):
             image=Image();g.need(dll.loadout_build(c.byref(addresses(4)),c.byref(image))==0,'Four-slot image rejected')

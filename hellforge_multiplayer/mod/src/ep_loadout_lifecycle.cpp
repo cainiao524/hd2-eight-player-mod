@@ -26,8 +26,9 @@ EpPropertyResult ep_loadout_lifecycle_build(const EpLoadoutAddresses* input,EpLo
         for (unsigned i=0;i<width;i++) image.data[f.offset+i]=(uint8_t)((uint64_t)value>>(8*i));
     }
     image.bytes=sizeof(ep_loadout_lifecycle_template);image.code_bytes=ep_loadout_code_bytes;
-    image.unwind_offset=ep_loadout_unwind_offset;image.table_offset=ep_loadout_table_offset;image.function_count=6;
+    image.unwind_offset=ep_loadout_unwind_offset;image.table_offset=ep_loadout_table_offset;image.function_count=9;
     image.constructor=ep_loadout_entries[0];image.release=ep_loadout_entries[1];image.alternate_release=ep_loadout_entries[2];
+    image.transition=ep_loadout_entries[3];image.handler_offset=ep_loadout_handler_offset;
     *out=image;return EP_PROPERTY_OK;
 }
 EpPropertyResult ep_loadout_lifecycle_prepare(const HfApi* api,HfMod* mod,const EpLoadoutAddresses* input,EpSessionCodeInfo* out)
@@ -37,7 +38,8 @@ EpPropertyResult ep_loadout_lifecycle_prepare(const HfApi* api,HfMod* mod,const 
     EpSessionCodeInfo code={};EpLoadoutImage image={};
     if (!ep_session_code_reserve(api,mod,(uintptr_t)a.code,sizeof(ep_loadout_lifecycle_template),&code)) return EP_PROPERTY_RESERVE;
     a.code=code.base;EpPropertyResult result=ep_loadout_lifecycle_build(&a,&image);
-    if (result==EP_PROPERTY_OK && !ep_session_code_seal_table(mod,code.handle,image.data,image.bytes,image.table_offset,image.function_count)) result=EP_PROPERTY_SEAL;
+    const EpSessionGsCheck gs={7,image.handler_offset,a.game+0x21044a0};
+    if (result==EP_PROPERTY_OK && !ep_session_code_seal_loadout_transition(mod,code.handle,image.data,image.bytes,image.table_offset,&gs)) result=EP_PROPERTY_SEAL;
     if (result==EP_PROPERTY_OK) {
         if (ep_session_code_info(mod,code.handle,out)) return EP_PROPERTY_OK;
         result=EP_PROPERTY_SEAL;

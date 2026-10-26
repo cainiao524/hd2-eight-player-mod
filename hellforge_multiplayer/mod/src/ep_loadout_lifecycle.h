@@ -16,9 +16,13 @@ typedef struct EpLoadoutAddresses {
 typedef struct EpLoadoutImage {
     uint32_t bytes,code_bytes,unwind_offset,table_offset;
     uint32_t constructor,release,alternate_release,function_count;
+    uint32_t transition,handler_offset;
     uint8_t data[4096];
 } EpLoadoutImage;
-/* Saved build 25480438: 14A17E0 constructor and 1467330/1467720 releases.
+/* Saved build 25480438: 14A17E0 constructor, 1467330/1467720 releases,
+ * and 1470A40 transition. The transition keeps the original virtual services,
+ * 189E080/1451100 per-widget callbacks (including stack/float parameters),
+ * screen state changes, user-state cleanup and security-cookie checks.
  * Explicit per-screen records/widgets, configurable 1..8 native player slots.
  * Constructor initializes the original record fields and calls real 14AA5C0
  * once per widget. Releases preserve distinct +4548/+1FA8 nested members and
@@ -29,13 +33,15 @@ typedef struct EpLoadoutImage {
  * distinct allocations, current source/build validation, exclusion, and a
  * nonreturning rejection target. A fault midway through native construction
  * or release is not rollback and must not be retried/freed blindly.
- * NOT complete UI relocation: maps, runtime consumers, transition (including
- * its GS handler), callbacks and package lifetime still need integration.
+ * NOT complete UI relocation: maps, runtime consumers, callback target
+ * validation, lifetime/exclusion and package ownership still need integration.
  * No game discovery, allocation of screen/data, activation or Mod-init binding.
  * The limit is this adapter's implemented capacity, not verified player count.
  */
 EpPropertyResult ep_loadout_lifecycle_build(const EpLoadoutAddresses*,EpLoadoutImage*);
-/* One cancellable READY image holds all three entries and six unwind rows.
+/* One cancellable READY image holds four entries and nine unwind rows. The
+ * transition keeps EH/UH __GSHandlerCheck at game+21044A0, with cookie +80
+ * and an owned handler thunk. Caller must validate both native GS targets.
  * CLEANUP returns a retained handle; caller must retry discard. Does not
  * publish hooks or own/construct/release any supplied screen/data allocation. */
 EpPropertyResult ep_loadout_lifecycle_prepare(const HfApi*,HfMod*,const EpLoadoutAddresses*,EpSessionCodeInfo*);
