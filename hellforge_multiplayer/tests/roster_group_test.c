@@ -42,16 +42,17 @@ static void End(void* unused,void* lease,int committed)
 }
 static EpRosterGroupBindings Targets(void)
 {
-    uint8_t* memory=VirtualAlloc(NULL,0x100000,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE);CHECK(memory!=NULL);
-    memset(memory,0x90,0x100000);EpRosterGroupBindings b={0};b.game_base=(uintptr_t)memory-0x540000;
+    uint8_t* memory=VirtualAlloc(NULL,74727424,MEM_RESERVE,PAGE_NOACCESS);CHECK(memory!=NULL);
+    EpRosterGroupBindings b={0};b.game_base=(uintptr_t)memory;
     b.roster_address=(uintptr_t)memory+0x8000000;b.storage_address=(uintptr_t)memory+0x10000000;
     for (unsigned i=0;i<EP_ROSTER_ENTRIES;i++) {
         EpRosterGateLayout layout;CHECK(group->layout(i+1,&layout));
-        uint8_t* at=memory+layout.original_rva-0x540000;uint32_t value=i+1;
+        uint8_t* at=memory+layout.original_rva;uint32_t value=i+1;
+        CHECK(VirtualAlloc((void*)((uintptr_t)at&~4095ULL),4096,MEM_COMMIT,PAGE_READWRITE)!=NULL);memset(at,0x90,64);
         at[0]=0xB8;memcpy(at+1,&value,4);at[5]=0xC3;targets[i]=(Call)at;
         b.reject[i]=(uintptr_t)memory+0x20000000+i*0x10000;
     }
-    DWORD old;CHECK(VirtualProtect(memory,0x100000,PAGE_EXECUTE_READ,&old));CHECK(FlushInstructionCache(GetCurrentProcess(),memory,0x100000));
+    for(unsigned i=0;i<EP_ROSTER_ENTRIES;i++) { DWORD old;CHECK(VirtualProtect((void*)((uintptr_t)targets[i]&~4095ULL),4096,PAGE_EXECUTE_READ,&old));CHECK(FlushInstructionCache(GetCurrentProcess(),(void*)targets[i],64)); }
     hooks=0;Routes(0);return b;
 }
 static void Tables(const EpRosterGroupInfo* info)
@@ -60,7 +61,8 @@ static void Tables(const EpRosterGroupInfo* info)
         DWORD64 base;PRUNTIME_FUNCTION rf=RtlLookupFunctionEntry(info->code[i].base,&base,NULL);
         CHECK(rf && base==info->code[i].base && rf[0].BeginAddress==0 && rf[0].EndAddress==32);
         CHECK(RtlLookupFunctionEntry(base+32,&base,NULL)==rf+1);
-        if (i>=3) CHECK(RtlLookupFunctionEntry(base+rf[2].BeginAddress,&base,NULL)==rf+2);
+        EpRosterGateLayout layout;CHECK(group->layout(i+1,&layout));
+        for(unsigned row=2;row<layout.function_count;row++) CHECK(RtlLookupFunctionEntry(base+rf[row].BeginAddress,&base,NULL)==rf+row);
         const unsigned pcs[]={0,10,13,15,20,30,32};
         for (unsigned j=0;j<sizeof(pcs)/sizeof(*pcs);j++) {
             uint64_t stack[8]={0x12345678};CONTEXT c={0};c.ContextFlags=CONTEXT_FULL;c.Rsp=(uintptr_t)stack;c.Rip=base+pcs[j];
@@ -70,6 +72,11 @@ static void Tables(const EpRosterGroupInfo* info)
             CHECK(c.Rsp==(uintptr_t)stack+8 && c.Rip==stack[0] && c.Rbx==1 && c.Rbp==2 && c.Rsi==3 && c.Rdi==4 && c.R12==5 && c.R13==6 && c.R14==7 && c.R15==8);
         }
     }
+    /* Saved B54F23 call, relocated to candidate +0x18e, must bypass only the
+     * companion's gate and stay inside this group's shared owner scope. */
+    uintptr_t call=info->code[EP_ROSTER_REGISTRY_UPDATE-1].base+32+0x18e;
+    int32_t displacement;CHECK(*(uint8_t*)call==0xe8);memcpy(&displacement,(void*)(call+1),4);
+    CHECK(call+5+displacement==info->code[EP_ROSTER_ASSOCIATION-1].base+32);
 }
 static void BadTables(const EpRosterGroupInfo* info)
 {
@@ -105,7 +112,7 @@ int main(int argc,char** argv)
     guard=(EpPropertyCommitGuard){NULL,Begin,Validate,End};
     EpRosterGroupBindings b=Targets(),invalid;EpRosterGroupInfo info,out;
     if(argc==4) {
-        fail_hook=atoi(argv[2]);fail_after=atoi(argv[3]);CHECK(fail_hook>=1 && fail_hook<=12 && (fail_after==0 || fail_after==1));
+        fail_hook=atoi(argv[2]);fail_after=atoi(argv[3]);CHECK(fail_hook>=1 && fail_hook<=EP_ROSTER_ENTRIES && (fail_after==0 || fail_after==1));
         CHECK(group->prepare(&api,owner,&b,&info));current=info.handle;
         CHECK(!group->publish(owner,current,10));CHECK(group->info(owner,current,&out) && out.state==EP_GROUP_FAILED && !out.active && out.published_attempts==(unsigned)fail_hook);
         CHECK(!group->commit(owner,current,&guard));CHECK(group->cancel(owner,current));
@@ -116,7 +123,7 @@ int main(int argc,char** argv)
     CHECK(group->prepare(&api,owner,&b,&info));current=info.handle;Tables(&info);BadTables(&info);
     CHECK(!group->commit(owner,current,&guard));CHECK(!group->cancel(&g_mods[1],current));CHECK(group->cancel(owner,current));
     CHECK(!group->info(owner,current,&out));
-    /* Every preparation step may fail after all twelve reservations exist. */
+    /* Every preparation step may fail after all entry reservations exist. */
     for(unsigned i=1;i<=EP_ROSTER_ENTRIES;i++) {
         group->failure(i,0);CHECK(!group->prepare(&api,owner,&b,&out) && !out.handle);
         group->failure(i,1);CHECK(!group->prepare(&api,owner,&b,&out) && out.handle && out.state==EP_GROUP_FAILED);
@@ -139,7 +146,7 @@ int main(int argc,char** argv)
     invalid=b;invalid.desired_code[3]=(uintptr_t)hint;invalid.desired_code[4]=(uintptr_t)hint;
     CHECK(!group->prepare(&api,owner,&invalid,&out) && !out.handle);
     CHECK(group->prepare(&api,owner,&b,&info));current=info.handle;CHECK(group->publish(owner,current,10));
-    CHECK(group->info(owner,current,&out) && out.state==EP_GROUP_READY && !out.active && out.published_attempts==12);
+    CHECK(group->info(owner,current,&out) && out.state==EP_GROUP_READY && !out.active && out.published_attempts==EP_ROSTER_ENTRIES);
     CHECK(!group->commit(owner,current,NULL));begin_ok=0;CHECK(!group->commit(owner,current,&guard) && !end_calls);
     begin_ok=1;validate_ok=0;CHECK(!group->commit(owner,current,&guard) && end_calls==1);Routes(0);validate_ok=1;
     entered=CreateEventA(NULL,TRUE,FALSE,NULL);resume=CreateEventA(NULL,TRUE,FALSE,NULL);commit_started=CreateEventA(NULL,TRUE,FALSE,NULL);

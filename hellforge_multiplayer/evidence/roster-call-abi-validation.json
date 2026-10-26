@@ -1,7 +1,7 @@
 {
   "schema": "hellforge_roster_call_abi_v1",
   "passed": true,
-  "verified_at_utc": "2026-10-25T15:44:39.432138+00:00",
+  "verified_at_utc": "2026-10-26T00:04:08.837098+00:00",
   "game_build": 25480438,
   "entries": [
     {
@@ -151,10 +151,30 @@
       "returns": 1,
       "external_tail_abi_pending": [],
       "stack_arguments": []
+    },
+    {
+      "kind": 13,
+      "name": "update",
+      "entry": "0xb54e00",
+      "stack_copy_bytes": 0,
+      "cfg_states": 203,
+      "returns": 1,
+      "external_tail_abi_pending": [],
+      "stack_arguments": []
+    },
+    {
+      "kind": 14,
+      "name": "association",
+      "entry": "0x606520",
+      "stack_copy_bytes": 0,
+      "cfg_states": 72,
+      "returns": 1,
+      "external_tail_abi_pending": [],
+      "stack_arguments": []
     }
   ],
   "test_source_sha256": {
-    "tools/verify_roster_call_abi.py": "a889858573ceb7f0b52287d785f8a8170279b65535b5d914080ffbd41ddfa089"
+    "tools/verify_roster_call_abi.py": "57706fcd81571e36628c677b224165baf021f0fec2f62440fbf6edec608cd962"
   },
   "legacy_source_sha256": {
     "hellforge_multiplayer/native-unwind-source.lock.json": "bfefac86c12f8a761b563d4da814ed1195eb7967f024fe218b9e6d6c5a896680",
@@ -169,7 +189,9 @@
     "hellforge_multiplayer/native-remove.lock.json": "0d5142914bfdafe1a9e55ef4c4d5afd86287851b2d2dca2869ae1ca757045d02",
     "five_player_feasibility_20260927/roster_remove_native_evidence.json": "67563b2d12860c814096b1d45338dd271ad13975c3ba4f96169a92473ab061af",
     "hellforge_multiplayer/native-classify.lock.json": "41843b622018655e4d286036256ba8463ce6f638a15fd33f6cd1bf5ff87c8b03",
-    "five_player_feasibility_20260927/roster_classify_native_evidence.json": "f20165dad6823edc40fbcdf0434123139f1c80d9222a2b20d3f4c067768e9e33"
+    "five_player_feasibility_20260927/roster_classify_native_evidence.json": "f20165dad6823edc40fbcdf0434123139f1c80d9222a2b20d3f4c067768e9e33",
+    "hellforge_multiplayer/native-registry.lock.json": "0130519db9642a033b2a1a6fe8aaec10a3e480b40dfed73ecbfe0b58b201b3c9",
+    "five_player_feasibility_20260927/roster_registry_update_native_evidence.json": "7a8f289ea8ddf85d1b2010a39d9cedc4599e9846db8936b9e215cbd4a96740e1"
   },
   "live_callers_verified": false,
   "transitive_helper_abi_verified": false,

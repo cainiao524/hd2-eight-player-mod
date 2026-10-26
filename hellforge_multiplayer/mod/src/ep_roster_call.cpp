@@ -49,14 +49,14 @@ static int RunRosterCall(void* opaque,const EpNativeRosterView* view)
 extern "C" void EpRosterCallDispatch(EpRosterCallContext* c,EpRosterCallFrame* frame)
 {
     EpRosterInvocation call={c,frame};
-    EpRosterOwnerResult result=ep_roster_owner_call(c->mod,c->owner,c->kind!=EP_ROSTER_GETTER,RunRosterCall,&call);
+    EpRosterOwnerResult result=ep_roster_owner_call(c->mod,c->owner,c->kind!=EP_ROSTER_GETTER && c->kind!=EP_ROSTER_ASSOCIATION,RunRosterCall,&call);
     frame->status=(uint32_t)result;
     if (result!=EP_OWNER_OK) c->policy.failure(c->policy.context,c->kind,result,frame);
 }
 int ep_roster_call_prefix(EpRosterCallContext* context,uint8_t prefix[32])
 {
     if (!context || !prefix || !context->mod || !context->owner || !context->active || !context->next_pointer ||
-        !context->body || !context->kind || context->kind>12 || !context->policy.failure) return 0;
+        !context->body || !context->kind || context->kind>EP_ROSTER_ENTRIES || !context->policy.failure) return 0;
     memset(prefix,0x90,32);uintptr_t c=(uintptr_t)context,entry=(uintptr_t)EpRosterCallEntry;
     prefix[0]=0x49;prefix[1]=0xBA;memcpy(prefix+2,&c,8);
     prefix[10]=0x49;prefix[11]=0xBB;memcpy(prefix+12,&entry,8);

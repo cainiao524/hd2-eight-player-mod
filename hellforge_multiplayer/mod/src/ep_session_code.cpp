@@ -77,8 +77,8 @@ static int EpCodeNonvolatile(unsigned reg)
 { return reg==3 || reg==5 || reg==6 || reg==7 || (reg>=12 && reg<=15); }
 static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_t count)
 {
-    RUNTIME_FUNCTION functions[3];
-    if (!count || count>3 || (at&3) || at>bytes || bytes-at!=count*sizeof(RUNTIME_FUNCTION)) return 0;
+    RUNTIME_FUNCTION functions[5];
+    if (!count || count>5 || (at&3) || at>bytes || bytes-at!=count*sizeof(RUNTIME_FUNCTION)) return 0;
     memcpy(functions,p+at,count*sizeof(RUNTIME_FUNCTION));
     if (functions[0].BeginAddress) return 0;
     for (uint32_t f=0;f<count;f++) {
@@ -94,7 +94,16 @@ static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_
         if (offset>rf.UnwindData && offset<end) end=offset;
     }
     const uint8_t* u=p+rf.UnwindData;
-    if (u[0]!=1 || u[3] || u[1]>rf.EndAddress-rf.BeginAddress || 4u+((u[2]+1u)&~1u)*2u!=end-rf.UnwindData) return 0;
+    const uint32_t body=4u+((u[2]+1u)&~1u)*2u;
+    if ((u[0]!=1 && u[0]!=33) || u[3] || u[1]>rf.EndAddress-rf.BeginAddress ||
+        body+(u[0]==33?12u:0u)!=end-rf.UnwindData) return 0;
+    if (u[0]==33) {
+        /* Only exact earlier rows of this owned table may be chain parents.
+         * This rejects external/cyclic/forward chains and language handlers. */
+        int parent=0;
+        for(uint32_t previous=0;previous<f;previous++) if (!memcmp(u+body,&functions[previous],sizeof(RUNTIME_FUNCTION))) parent=1;
+        if (!parent) return 0;
+    }
     unsigned prior=u[1];
     for (unsigned i=0;i<u[2];i++)
     {

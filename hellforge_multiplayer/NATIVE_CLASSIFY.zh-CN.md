@@ -61,6 +61,6 @@ py -3.12 -B hellforge_multiplayer/tools/validate_classify_images.py `
 
 模板默认只核对，审查后显式 `tools/generate_classify_templates.py --write` 才会更新。旧 Python bundle 中的代码长度与历史 limits 不代表新完整映像的生产分配或准备状态。
 
-插入、分类、移除、搬移和属性三入口现已通过 [十二入口组](ROSTER_GROUP.zh-CN.md) 统一发布；下一步落实生产写入排除及旧路由排空；补齐临时资源成功/失败契约、调用者 flag/通知、权威身份、拒绝处理和完整容量事务，再继续角色创建、控制、复制与八人任务验收。
+插入、分类、移除、搬移和属性三入口现已通过 [十四入口组](ROSTER_GROUP.zh-CN.md) 统一发布；下一步落实生产写入排除及旧路由排空；补齐临时资源成功/失败契约、调用者 flag/通知、权威身份、拒绝处理和完整容量事务，再继续角色创建、控制、复制与八人任务验收。
 
 保持 `installable=false`、`runtime_verified=false`、`multiplayer_verified=false`。本轮仅使用工作区源码、保存证据和自有测试进程，没有启动、检查、读取或修改游戏；旧一次 v2 采样额度仍为零。

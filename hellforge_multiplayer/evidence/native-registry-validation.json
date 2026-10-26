@@ -1,0 +1,142 @@
+{
+  "schema": "hellforge_native_registry_validation_v1",
+  "passed": true,
+  "verified_at_utc": "2026-10-26T00:02:07.384002+00:00",
+  "source_replay": {
+    "passed": true,
+    "functions": {
+      "update": {
+        "fragments": 3,
+        "flags": [
+          0,
+          4,
+          4
+        ],
+        "chained_fragments": 2,
+        "language_handlers": false
+      },
+      "association": {
+        "fragments": 1,
+        "flags": [
+          0
+        ],
+        "chained_fragments": 0,
+        "language_handlers": false
+      }
+    },
+    "metadata_bytes_replayed": 140,
+    "header_exception_directory_captured": false,
+    "runtime_table_verified": false,
+    "game_access": false
+  },
+  "variants": {
+    "update": {
+      "bytes": 1836,
+      "code_bytes": 1683,
+      "unwind_offset": 1684,
+      "table_offset": 1788,
+      "function_count": 4,
+      "fixups": 32,
+      "passed": true,
+      "windows_unwind_contexts": 3118,
+      "legacy_valid_contexts": 0,
+      "legacy_rejection_failures_reproduced": 1,
+      "game_access": false,
+      "executed_instruction_contexts": 5771,
+      "owner_checks": 23
+    },
+    "association": {
+      "bytes": 488,
+      "code_bytes": 416,
+      "unwind_offset": 416,
+      "table_offset": 452,
+      "function_count": 3,
+      "fixups": 9,
+      "passed": true,
+      "windows_unwind_contexts": 845,
+      "legacy_valid_contexts": 0,
+      "legacy_rejection_failures_reproduced": 1,
+      "game_access": false,
+      "executed_instruction_contexts": 4874,
+      "owner_checks": 22
+    }
+  },
+  "api_contract_checks": 63,
+  "functional_tests": 8,
+  "functional_runs": 87,
+  "original_functional_runs": 12,
+  "functional_run_types": {
+    "root": 52,
+    "original_root": 8,
+    "helper": 23,
+    "original_helper": 4
+  },
+  "windows_unwind_contexts": 3963,
+  "source_sha256": {
+    "native-registry.lock.json": "0130519db9642a033b2a1a6fe8aaec10a3e480b40dfed73ecbfe0b58b201b3c9",
+    "tools/native_registry_image.py": "6e644cffb4584b459792d916870dc4adad2945992ca9058481cce747d580ddfe",
+    "tools/generate_registry_templates.py": "9390e1d330caea581476e3ca3c5846b48375dc1541cc6507714bfc87a8714118",
+    "tools/validate_registry_images.py": "2362aa8ff048f96dbe421fa1b0ea50e71bc63cc9b4381dfa577d70252804a308",
+    "tools/native_property_library.py": "e133b580f90c0fce413b2def81154fab668c3647a35a76a7e35ed32d25ec00d0",
+    "tools/native_unwind_source.py": "8f2b51781ae06b3f6a72959218f7c60cdf4e7f6a13e59c56f7eff99140721e4f",
+    "tools/verify_native_unwind_source.py": "af2afff2fdfa8178a80af08fc21358df4e6090a6342922e03fa6c9a407661a8d",
+    "mod/src/ep_registry_image.h": "e624215badcbc08e701df0fd552b0d14589e2ca4bbb4ba942b9c4009197645ca",
+    "mod/src/ep_registry_image.cpp": "6c5d91ebd669b9254c8172a29290834d53eb215b8a2aedccdaa982e68df68257",
+    "mod/src/ep_registry_templates.h": "f296d1db7eae5cf66b4bc99cc28807544d3191c6b29bd94845a504f735ca1125",
+    "mod/src/ep_session_code.h": "847e02eca7cff00cbd9b3158ea589c6cc1dffde15c3925340e05f6263ab0a296",
+    "mod/src/ep_session_code.cpp": "767cc9320e131defb71b1c2bbb7527311fd3391dc4c14dd7bc7b3b3acaf0041d",
+    "tests/property_image_dll.cpp": "3f6bf191cd6d7b01422a87230487e702d9c28d9ca49f38fe1a5d9020890d4d50",
+    "tests/native_producer_unwind_test.c": "580bd2f050ccd5e2ee34f3a78cc416bbe1a8ab1cb1966e5bd7c299cf34a739be"
+  },
+  "legacy_source_sha256": {
+    "eight_player_candidate_20260927/Native/roster_arrival.py": "2744e367accb26d022807984b8a573d95cc6e9ec15c011c5b403ee187e030771",
+    "eight_player_candidate_20260927/Native/roster_bundle.py": "7041074e818277f45476b91611bf8a37a0a94a9244c48c321148341dac824fbf",
+    "eight_player_candidate_20260927/Native/roster_classify.py": "bc4508fadf17726b773ed9c4237f7693405856ccc0b57ddcac4d06e073f46153",
+    "eight_player_candidate_20260927/Native/roster_departure.py": "a0d9a350254955a840a6039795eb42b89ea8f48e86c3ce00b921e3b1c6f165ba",
+    "eight_player_candidate_20260927/Native/roster_getter.py": "3de7432a9c1218ab98f2e92679583cb299c93d4ba8bcb739fea8aa980520ef5d",
+    "eight_player_candidate_20260927/Native/roster_insert.py": "b7bfcd2184382925b4abade40c5e81f21fcdd689f1aea47a2546c055f0bbf551",
+    "eight_player_candidate_20260927/Native/roster_mask_reader.py": "0c8ad665c6e450e83fb2db69096a2b923fe0ac326cc2ccf4046e14f25e93b618",
+    "eight_player_candidate_20260927/Native/roster_move.py": "cc6df86a567fda45fcac9a258372df52aad085fff67a620b5f4a2d46c100c23f",
+    "eight_player_candidate_20260927/Native/roster_producer.py": "015b2240847019bfb62fa62a72ce8af93894f2d61b0369d5079aa40d40697a4b",
+    "eight_player_candidate_20260927/Native/roster_property_pair.py": "5828d6a03bfce89ea63e3c8e8c49bca60825aa8b11533dd7e545570f183dba63",
+    "eight_player_candidate_20260927/Native/roster_receiver.py": "38b163fe9a0fda32db609ee94f96ab257105221e60e28ad14c4bd14676e61a27",
+    "eight_player_candidate_20260927/Native/roster_registry_update.py": "1e97c7e52c6d723fe43824c599cfc27871650dea3fe4357f9fcf14dfaa2edd01",
+    "eight_player_candidate_20260927/Native/roster_remove.py": "097e34c1087f3b311ecf6c9ed85de9165fa739b416e9c99ff7a834aa021c9716",
+    "eight_player_candidate_20260927/tests/test_native_roster_insert.py": "7763f5d6664d653816f2b9ec411ec8a8ff942bf45ca1795448f1a130549e7a64",
+    "five_player_feasibility_20260927/roster_getter_native_evidence.json": "1360863bfe1f1f6ce640ef049776d3b31703a1cbfe2bea3f90bf20555f69e0fd",
+    "five_player_feasibility_20260927/roster_insert_native_evidence.json": "794c357a56b2aa28cfd1061374afe27c1a3a2c06d31ce4ca736e4b783e41b497",
+    "five_player_feasibility_20260927/roster_move_native_evidence.json": "115802c09eb15f840932667717731150aa347e7ae8a72245dd92e05a5e86a242",
+    "five_player_feasibility_20260927/roster_property_producer_native_evidence.json": "f73ec903d06f2304f4f944c25e011a7ef86d78737cb1b197101a1c96daaabacb",
+    "five_player_feasibility_20260927/roster_property_receive_evidence.json": "bad5661771df280dd5e982b765d2f4ab1c73de9ae7e86e974751af6c3c383c10",
+    "five_player_feasibility_20260927/roster_remove_native_evidence.json": "67563b2d12860c814096b1d45338dd271ad13975c3ba4f96169a92473ab061af",
+    "eight_player_candidate_20260927/tests/test_native_roster_producer.py": "68b6d7573c219a977903e345e67fa24792e852ef234392da12c4f4ad312e7fe7",
+    "five_player_feasibility_20260927/roster_component_binding_evidence_v3.json": "274833c418bfa7dec4e4097dda5031f3a11e8c69689ae4ed758e75a40481c2e2",
+    "eight_player_candidate_20260927/tests/test_native_roster_receiver.py": "6c9a4165696e0c3af43894a46cb9b328ee7a67c457771b1341047399ef11e4be",
+    "eight_player_candidate_20260927/Native/player_count.py": "d89b5cb7d8c6a574dbb4d1ef24346524c3a9d2cfeae36357a9bf8fd94967d8ab",
+    "eight_player_candidate_20260927/tests/test_native_roster_registry_update.py": "5d9bc2c41def4b85191a062b61c47f6d3dae9a378796839ec16c324986df3e4d"
+  },
+  "artifacts": {
+    "property_image_test.dll": {
+      "bytes": 271872,
+      "sha256": "c894b36ee5dfc0509159a99ccae02f8395d9bd8f76f0f6bb7eae574ff72be356"
+    },
+    "native_registry_unwind_test.exe": {
+      "bytes": 225280,
+      "sha256": "32dbcc3f50acc53d8eb290a0408b286c77d51ef68ff2d8c9da2bab25e58c831b"
+    },
+    "registry-update-unwind-contexts.bin": {
+      "bytes": 1039368,
+      "sha256": "ad1bfa663fbf9c85d37a63c1247cb87fefbf53a5df1415e0b6870ac1b6e0a7bb"
+    },
+    "registry-association-unwind-contexts.bin": {
+      "bytes": 282036,
+      "sha256": "84586766fa948cc7d9bac3e44e983a6577a5cd1571226f7ab56d014978570a33"
+    }
+  },
+  "game_access": false,
+  "native_execution_of_game_bodies": false,
+  "runtime_verified": false,
+  "multiplayer_verified": false,
+  "other_tag_callbacks_are_contract_stubs": true,
+  "late_rejection_rolls_back_prior_effects": false
+}

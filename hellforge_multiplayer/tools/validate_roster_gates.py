@@ -1,10 +1,11 @@
-"""Verify twelve production switches and rebase all validated body unwind PCs."""
+"""Verify fourteen switches and rebase all validated body unwind PCs."""
 import argparse,ctypes as c,json,struct
 from pathlib import Path
 from datetime import datetime,timezone
 from native_property_library import Library,InsertAddresses
 import native_producer_unwind as reference
 import native_getter_image,native_mover_image,native_insert_image,native_remove_image,native_classify_image
+import native_registry_image
 from build_unwind_offline import load as producer_fixture,run
 from build_receiver_unwind_offline import load as receiver_fixture
 from validate_property_gates import gate_paths,CONTROL
@@ -21,10 +22,17 @@ def validate(path,zig):
     for module,prefix,kinds in ((native_insert_image,'insert-',native_insert_image.KINDS),(native_remove_image,'remove-',native_remove_image.KINDS),(native_classify_image,'classify-',('enter','leave'))):
         p=module.load_fixture()
         for kind in kinds:cases.append((prefix+kind,p.params(kind)))
-    results={};artifacts=[exe,library.path];inputs={};branches=refusals=0
+    registry=native_registry_image.load_fixture();ra=registry.params()
+    cases += [('registry-update',{k:v for k,v in ra.items() if k!='helper_reject_address'}),
+              ('registry-association',dict(game_base=ra['game_base'],code_address=ra['helper_code_address'],
+                  roster_address=ra['roster_address'],storage_address=ra['storage_address'],reject_address=ra['helper_reject_address']))]
+    registry_exe=build/'native_registry_gates_unwind_test.exe'
+    run([zig,'cc','-target','x86_64-windows-gnu','-std=c11','-DEP_REGISTRY=1','-DEP_CONTEXT_LIMIT=200000u','-O1','-Wall','-Werror',PROJECT/'tests/native_producer_unwind_test.c','-o',registry_exe])
+    results={};artifacts=[exe,registry_exe,library.path];inputs={};branches=refusals=0
     for kind,(name,raw) in enumerate(cases,1):
         a={k:v for k,v in raw.items() if k!='kind'}
         if 'property_address' in a:a['storage_address']=a.pop('property_address')-0x580
+        if 'helper_code_address' in a:a['move_code_address']=a.pop('helper_code_address')
         a.setdefault('move_code_address',0);a['code_address']-=32
         out=Gate();reference.require(emit(kind,InsertAddresses(**a),CONTROL,CONTROL+8,out)==0,'Roster gate generation failed: '+name)
         blob=bytes(out.data[:out.bytes]);branches+=gate_paths(blob,a['code_address'],a['code_address']+32)
@@ -35,14 +43,17 @@ def validate(path,zig):
             size,code,table,count=struct.unpack_from('<4I',data,offset);end=offset+16+size+72+count*332
             if not v:variants.append(data[offset:end])
             else:
-                reference.require(blob[32:32+table]==data[offset+16:offset+16+table],'Candidate changed when gated: '+name)
+                # Chained parent RVAs are rebased inside the metadata as well
+                # as in the table; the Windows validator checks those links.
+                unchanged=code if kind>=13 else table
+                reference.require(blob[32:32+unchanged]==data[offset+16:offset+16+unchanged],'Candidate changed when gated: '+name)
                 contexts=bytearray(data[offset+16+size+72:end])
                 for i in range(count):struct.pack_into('<I',contexts,i*332,struct.unpack_from('<I',contexts,i*332)[0]+32)
                 variants.append(struct.pack('<4I',len(blob),code+32,out.table_offset,count)+blob+data[offset+16+size:offset+16+size+72]+contexts)
             offset=end
         reference.require(offset==len(data),'Trailing context data')
         target=build/(name+'-roster-gated-contexts.bin');target.write_bytes(data[:12]+b''.join(variants));artifacts.append(target)
-        windows=json.loads(run([exe,target]))
+        windows=json.loads(run([registry_exe if kind>=13 else exe,target]))
         results[name]=dict(bytes=out.bytes,function_count=out.function_count,windows_unwind_contexts=windows['windows_unwind_contexts'],reference_negative_controls_rejected=windows['legacy_rejection_failures_reproduced'])
         bad=[(CONTROL+1,CONTROL+8,a),(CONTROL,CONTROL+4,a),(CONTROL,CONTROL,a),
              (a['roster_address'],CONTROL+8,a),(a['storage_address'],CONTROL+8,a),
@@ -50,15 +61,17 @@ def validate(path,zig):
              (CONTROL,CONTROL+8,{**a,'storage_address':a['game_base']+0x60D300}),
              (CONTROL,CONTROL+8,{**a,'roster_address':a['game_base']+0x173B9F0})]
         if 5<=kind<=10:bad.append((CONTROL,a['move_code_address']+608,a))
+        if kind==13:bad.append((CONTROL,a['move_code_address']+480,a))
         for control,next_pointer,bindings in bad:
             failed=Gate();c.memset(c.byref(failed),0xA5,c.sizeof(failed))
             reference.require(emit(kind,InsertAddresses(**bindings),control,next_pointer,failed)!=0 and bytes(failed)==bytes(c.sizeof(failed)),'Invalid roster gate accepted: '+name);refusals+=1
-    for kind in (0,13,0xFFFFFFFF):
+    for kind in (0,15,0xFFFFFFFF):
         failed=Gate();c.memset(c.byref(failed),0xA5,c.sizeof(failed));reference.require(emit(kind,InsertAddresses(**a),CONTROL,CONTROL+8,failed)==1 and bytes(failed)==bytes(c.sizeof(failed)),'Invalid kind accepted');refusals+=1
     paths=['mod/src/ep_roster_gate.h','mod/src/ep_roster_gate.cpp','tests/native_producer_unwind_test.c','tests/property_image_dll.cpp',
            'tools/validate_roster_gates.py','tools/validate_property_gates.py','tools/native_property_library.py']
-    paths += [f'mod/src/ep_{name}.{suffix}' for name in ('property_gate','property_image','getter_image','mover_image','insert_image','remove_image','classify_image') for suffix in ('h','cpp')]
-    refs=['property-image','native-getter','native-mover','native-insert','native-remove','native-classify','property-gate']
+    paths += [f'mod/src/ep_{name}.{suffix}' for name in ('property_gate','property_image','getter_image','mover_image','insert_image','remove_image','classify_image','registry_image') for suffix in ('h','cpp')]
+    paths += ['tools/native_registry_image.py','native-registry.lock.json']
+    refs=['property-image','native-getter','native-mover','native-insert','native-remove','native-classify','native-registry','property-gate']
     receipt=dict(schema='hellforge_roster_gate_validation_v1',verified_at_utc=datetime.now(timezone.utc).isoformat(),passed=True,
                  branch_cases=branches,placement_refusals=refusals,variants=results,
                  windows_unwind_contexts=sum(x['windows_unwind_contexts'] for x in results.values()),

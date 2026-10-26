@@ -102,7 +102,7 @@ def main():
     property_dll=build/'property_image_test.dll'
     run([zig,'c++','-std=c++17','-target','x86_64-windows-gnu','-shared','-O1','-Wall','-Werror','-Wno-unused-parameter',
          '-I',source/'native/mod-sdk',PROJECT/'mod/src/ep_property_image.cpp',PROJECT/'mod/src/ep_property_code.cpp',PROJECT/'mod/src/ep_property_gate.cpp',PROJECT/'mod/src/ep_getter_image.cpp',PROJECT/'mod/src/ep_mover_image.cpp',PROJECT/'mod/src/ep_insert_image.cpp',
-         PROJECT/'mod/src/ep_remove_image.cpp',PROJECT/'mod/src/ep_classify_image.cpp',PROJECT/'mod/src/ep_roster_gate.cpp',PROJECT/'tests/property_image_dll.cpp','-o',property_dll])
+         PROJECT/'mod/src/ep_remove_image.cpp',PROJECT/'mod/src/ep_classify_image.cpp',PROJECT/'mod/src/ep_registry_image.cpp',PROJECT/'mod/src/ep_roster_gate.cpp',PROJECT/'tests/property_image_dll.cpp','-o',property_dll])
     property_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_property_images.py','--library',property_dll]))
     property_receipt=PROJECT/'evidence/property-image-validation.json'
     getter_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_getter_image.py','--library',property_dll,'--zig',zig]))
@@ -115,6 +115,8 @@ def main():
     remove_receipt=PROJECT/'evidence/native-remove-validation.json'
     classify_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_classify_images.py','--library',property_dll,'--zig',zig]))
     classify_receipt=PROJECT/'evidence/native-classify-validation.json'
+    registry_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_registry_images.py','--library',property_dll,'--zig',zig]))
+    registry_receipt=PROJECT/'evidence/native-registry-validation.json'
     classify_fixture=build/'native-classify-fixture.bin'
     classify_fixture_receipt=json.loads(run([sys.executable,'-B',PROJECT/'tools/native_classify_fixture.py','--output',classify_fixture,'--property-library',property_dll]))
     classify_test=build/'native_classify_roster_test.exe'
@@ -157,19 +159,19 @@ def main():
     roster_gate_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_roster_gates.py','--library',property_dll,'--zig',zig]))
     roster_gate_receipt=PROJECT/'evidence/roster-gate-validation.json'
     roster_group_dll,roster_group_test=build/'roster_group_test.dll',build/'roster_group_test.exe'
-    roster_emitters=[PROJECT/'mod/src'/('ep_'+n+'.cpp') for n in ('property_image','property_gate','getter_image','mover_image','insert_image','remove_image','classify_image','roster_gate')]
+    roster_emitters=[PROJECT/'mod/src'/('ep_'+n+'.cpp') for n in ('property_image','property_gate','getter_image','mover_image','insert_image','remove_image','classify_image','registry_image','roster_gate')]
     run([zig,'c++','-std=c++17','-target','x86_64-windows-gnu','-shared','-O1','-Wall','-Werror','-Wno-unused-parameter',
          '-I',source/'native/mod-sdk',*roster_emitters,PROJECT/'mod/src/ep_roster_call.cpp',PROJECT/'mod/src/ep_roster_owner.cpp',PROJECT/'mod/src/ep_native_roster.cpp',PROJECT/'tests/roster_group_dll.cpp','-o',roster_group_dll])
     run([*common,'-O1',PROJECT/'tests/roster_group_test.c',*deps,'-o',roster_group_test])
     roster_scenarios=[]
-    for index,after in [(0,0)]+[(i,j) for i in range(1,13) for j in (0,1)]:
+    for index,after in [(0,0)]+[(i,j) for i in range(1,15) for j in (0,1)]:
         arguments=[] if not index else [index,after]
         result=run([roster_group_test,roster_group_dll,*arguments]).decode('utf-8').strip()
         found=re.fullmatch(r'roster group: (\d+) checks passed; scenario (\d+) (\d+)',result)
         if not found or (int(found[2]),int(found[3]))!=(index,after):raise RuntimeError('Missing roster group result: '+result)
         roster_scenarios.append(dict(failure_position=index,after_sdk=bool(after),checks=int(found[1])))
-    roster_group_result=dict(checks=sum(x['checks'] for x in roster_scenarios),scenarios=roster_scenarios,entries=12,
-        shared_storage_and_latch=True,internal_mover_bound_to_group=True,actual_hellforge_chains=True,
+    roster_group_result=dict(checks=sum(x['checks'] for x in roster_scenarios),scenarios=roster_scenarios,entries=14,
+        shared_storage_and_latch=True,internal_mover_bound_to_group=True,internal_association_bound_to_group=True,actual_hellforge_chains=True,
         cooperative_quiescence_tested=True,production_quiescence_provider_bound=False,active_data_rollback_implemented=False,
         native_execution_of_game_bodies=False,game_access=False)
     call_abi=json.loads(run([sys.executable,'-B',PROJECT/'tools/verify_roster_call_abi.py']))
@@ -181,12 +183,12 @@ def main():
     roster_bridge_fixture=build/'roster_call_test.unwind.bin'
     roster_bridge_unwind=json.loads(run([sys.executable,'-B',PROJECT/'tools/roster_bridge_unwind.py','--library',roster_call_dll,'--output',roster_bridge_fixture]))
     call_scenarios=[]
-    for arguments in [['normal'],['nestedfault'],['depth'],['close'],['validatefault'],['endfault'],['exhausted'],['unavailable']]+[[i,j] for i in range(1,13) for j in (0,1)]:
+    for arguments in [['normal'],['nestedfault'],['depth'],['close'],['validatefault'],['endfault'],['exhausted'],['unavailable']]+[[i,j] for i in range(1,15) for j in (0,1)]:
         result=run([roster_call_test,roster_call_dll,*arguments]).decode('utf-8').strip()
         found=re.fullmatch(r'roster calls: (\d+) checks passed; (?:mode \w+|scenario \d+ \d+)',result)
         if not found:raise RuntimeError('Missing owned roster call result: '+result)
         call_scenarios.append(dict(arguments=arguments,checks=int(found[1])))
-    roster_call_result=dict(checks=sum(x['checks'] for x in call_scenarios),scenarios=call_scenarios,entries=12,
+    roster_call_result=dict(checks=sum(x['checks'] for x in call_scenarios),scenarios=call_scenarios,entries=14,
         actual_owner_dll=True,actual_hellforge_chains=True,old_and_new_calls_owned=True,route_selected_under_owner=True,
         producer_six_arguments_preserved=True,float_register_arguments_and_result_preserved=True,
         nonvolatile_gpr_and_xmm_preserved=True,volatile_return_registers_preserved=True,windows_bridge_unwind=roster_bridge_unwind,
@@ -244,6 +246,7 @@ def main():
         'roster_calls':roster_call_result,
         'roster_gates':{**roster_gate_output,'validation_sha256':digest(roster_gate_receipt)},
         'native_classify':{**classify_output,'validation_sha256':digest(classify_receipt)},
+        'native_registry':{**registry_output,'validation_sha256':digest(registry_receipt)},
         'native_classify_storage':{'checks':int(classify_match[1]),**classify_fixture_receipt},
         'native_property_gates':{**gate_output,'validation_sha256':digest(gate_receipt)},
         'property_group':{'checks':int(group_match[1]),'entries':['producer','receiver','entity_network_getter'],'shared_storage_binding':True,'actual_hellforge_chains':True,
@@ -278,6 +281,8 @@ def main():
             'mod/src/ep_insert_image.h','mod/src/ep_insert_image.cpp','mod/src/ep_insert_templates.h',
             'native-remove.lock.json','tools/native_remove_image.py','tools/generate_remove_templates.py','tools/validate_remove_images.py',
             'mod/src/ep_remove_image.h','mod/src/ep_remove_image.cpp','mod/src/ep_remove_templates.h',
+            'native-registry.lock.json','tools/native_registry_image.py','tools/generate_registry_templates.py','tools/validate_registry_images.py',
+            'mod/src/ep_registry_image.h','mod/src/ep_registry_image.cpp','mod/src/ep_registry_templates.h',
             'native-classify.lock.json','tools/native_classify_image.py','tools/generate_classify_templates.py','tools/validate_classify_images.py',
             'mod/src/ep_classify_image.h','mod/src/ep_classify_image.cpp','mod/src/ep_classify_templates.h',
             'tools/native_classify_fixture.py','tests/native_classify_roster_test.c',
@@ -299,7 +304,7 @@ def main():
         'runtime_verified': False, 'multiplayer_verified': False, 'public_release_allowed': False,
     }
     (PROJECT / 'evidence/engine-roster-validation.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
-    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'native_storage_checks': receipt['native_storage_checks'], 'session_code_checks': int(code_match[1]), 'property_images':property_output,'property_gates':gate_output,'property_group_checks':int(group_match[1]),'getter':getter_output,'mover':mover_output,'insert':insert_output,'remove':remove_output,'classify':classify_output,'classify_storage_checks':int(classify_match[1]),'roster_gates':roster_gate_output,'roster_group_checks':roster_group_result['checks'],'roster_owner_checks':owner_result['checks'],'native_getter_queries':sync_receipt['native_getter_queries'], 'sync_consumer_checks': sync_receipt['consumer_checks'], 'native_receivers': sync_receipt['native_receivers'], 'patch_replayed': True, 'game_access': False}))
+    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'native_storage_checks': receipt['native_storage_checks'], 'session_code_checks': int(code_match[1]), 'property_images':property_output,'property_gates':gate_output,'property_group_checks':int(group_match[1]),'getter':getter_output,'mover':mover_output,'insert':insert_output,'remove':remove_output,'classify':classify_output,'registry':registry_output,'classify_storage_checks':int(classify_match[1]),'roster_gates':roster_gate_output,'roster_group_checks':roster_group_result['checks'],'roster_owner_checks':owner_result['checks'],'native_getter_queries':sync_receipt['native_getter_queries'], 'sync_consumer_checks': sync_receipt['consumer_checks'], 'native_receivers': sync_receipt['native_receivers'], 'patch_replayed': True, 'game_access': False}))
 
 
 if __name__ == '__main__':

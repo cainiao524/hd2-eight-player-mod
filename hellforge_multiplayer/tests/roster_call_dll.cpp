@@ -3,7 +3,7 @@
 #include "../mod/src/ep_roster_owner.cpp"
 #include "../mod/src/ep_roster_call.cpp"
 #include "../mod/src/ep_session_code.cpp"
-static uintptr_t fixture_targets[12];
+static uintptr_t fixture_targets[EP_ROSTER_ENTRIES];
 static EpPropertyResult FixtureGate(uint32_t kind,const EpInsertAddresses* a,uint64_t control,uint64_t next,EpRosterGateImage* out)
 {
     EpPropertyResult rc=ep_roster_gate_build(kind,a,control,next,out);if(rc!=EP_PROPERTY_OK) return rc;
@@ -19,7 +19,7 @@ static uint32_t Pending(HfMod* mod,uint64_t id,int* closing)
     uint32_t refs=0;*closing=0;AcquireSRWLockExclusive(&epOwnersLock);EpRosterOwner* o=OwnerFind(mod,id);
     if(o){refs=o->refs;*closing=o->closing;}ReleaseSRWLockExclusive(&epOwnersLock);return refs;
 }
-static void Targets(const uintptr_t t[12]) {memcpy(fixture_targets,t,sizeof(fixture_targets));}
+static void Targets(const uintptr_t t[EP_ROSTER_ENTRIES]) {memcpy(fixture_targets,t,sizeof(fixture_targets));}
 static uintptr_t Entry(void) {return (uintptr_t)EpRosterCallEntry;}
 static void Revision(HfMod* mod,uint64_t id,uint64_t revision)
 {EpRosterOwner* o=OwnerAcquire(mod,id);if(o){o->revision=revision;OwnerRelease(o);}}

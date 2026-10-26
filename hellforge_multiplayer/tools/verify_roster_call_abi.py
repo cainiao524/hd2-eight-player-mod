@@ -1,4 +1,4 @@
-"""Check the saved twelve bodies' direct stack-argument accesses; no game access.
+"""Check the saved fourteen bodies' direct stack-argument accesses; no game access.
 
 This finite CFG check does not certify live callers, indirect helpers or a new
 game build. It pins original evidence and supplies the bridge's stack-copy gate.
@@ -80,7 +80,8 @@ def main():
     need(cs.__version__=='5.0.7','wrong Capstone')
     profiles=[('native-unwind-source',('producer','receiver')),('native-getter',('getter',)),('native-mover',('mover',)),
         ('native-insert',('dense_legacy','append_legacy','append_registered','dense_registered')),
-        ('native-remove',('legacy','registered')),('native-classify',('enter','leave'))]
+        ('native-remove',('legacy','registered')),('native-classify',('enter','leave')),
+        ('native-registry',('update','association'))]
     rows=[];inputs={}
     for name,keys in profiles:
         path=PROJECT/(name+'.lock.json');inputs[path.relative_to(ROOT).as_posix()]=sha(path)

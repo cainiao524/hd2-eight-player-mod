@@ -23,10 +23,20 @@ class RemoveImage(c.Structure):
 class ClassifyImage(c.Structure):
     _fields_=[(name,c.c_uint32) for name in ('bytes','code_bytes','unwind_offset','table_offset')]+[('data',c.c_ubyte*2768)]
 
+class RegistryAddresses(c.Structure):
+    _fields_=[(name,c.c_uint64) for name in ('game_base','code_address','roster_address','storage_address','helper_code_address','reject_address')]
+
+class RegistryImage(c.Structure):
+    _fields_=[(name,c.c_uint32) for name in ('bytes','code_bytes','unwind_offset','table_offset','function_count')]+[('data',c.c_ubyte*1836)]
+
 class Library:
     def __init__(self,path):
         self.path=Path(path).resolve(strict=True)
         self.dll=c.CDLL(str(self.path))
+        self.registry=self.dll.registry_image_test_build
+        self.registry.argtypes=[c.c_uint32,c.POINTER(RegistryAddresses),c.POINTER(RegistryImage)];self.registry.restype=c.c_int
+        self.registry_prepare=self.dll.registry_image_test_prepare
+        self.registry_prepare.argtypes=[c.c_uint32,c.POINTER(c.c_uint32)];self.registry_prepare.restype=c.c_int
         self.build=self.dll.property_image_test_build
         self.build.argtypes=[c.c_uint32,c.POINTER(Addresses),c.POINTER(Image)]; self.build.restype=c.c_int
         self.prepare=self.dll.property_image_test_prepare
@@ -51,6 +61,17 @@ class Library:
         self.classify_prepare.argtypes=[c.c_uint32,c.POINTER(GetterAddresses),c.POINTER(ClassifyImage),c.POINTER(c.c_uint32)];self.classify_prepare.restype=c.c_int
         self.getter_gate=self.dll.getter_image_test_gate
         self.getter_gate.argtypes=[c.POINTER(GetterAddresses),c.c_uint64,c.c_uint64,c.POINTER(GateImage)];self.getter_gate.restype=c.c_int
+
+    def registry_candidate(self,addresses,reference):
+        result={**reference['candidate'],'functions':{}}
+        for number,(kind,key) in enumerate(zip(('update','association'),('0xb54e00','0x606520')),1):
+            a={k:v for k,v in addresses.items() if k!='helper_reject_address'}
+            if number==2:a.update(code_address=addresses['helper_code_address'],helper_code_address=0,reject_address=addresses['helper_reject_address'])
+            out=RegistryImage();rc=self.registry(number,RegistryAddresses(**a),out);ref=reference['artifacts'][kind]
+            if rc or bytes(out.data[:out.bytes])!=ref['image'] or (out.code_bytes,out.unwind_offset,out.table_offset,out.function_count)!=(ref['candidate']['size_bytes'],ref['unwind_offset'],ref['table_offset'],ref['function_count']):
+                raise RuntimeError('C++ registry image differs from saved reference: '+kind+' rc='+str(rc))
+            result['functions'][key]={**ref['candidate'],'code_hex':bytes(out.data[:out.code_bytes]).hex()}
+        return result
 
     def classify_candidate(self,addresses,reference):
         kinds=('enter','leave');out=ClassifyImage()

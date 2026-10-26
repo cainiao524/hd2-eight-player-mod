@@ -7,6 +7,9 @@
 #include "../mod/src/ep_mover_image.h"
 #include "../mod/src/ep_insert_image.h"
 #include "../mod/src/ep_remove_image.h"
+#include "../mod/src/ep_registry_image.h"
+extern "C" __declspec(dllexport) int registry_image_test_build(uint32_t kind,const EpRegistryAddresses* a,EpRegistryImage* out)
+{ return ep_registry_image_build(kind,a,out); }
 extern "C" __declspec(dllexport) int remove_image_test_build(uint32_t kind,const EpRemoveAddresses* a,EpRemoveImage* out)
 { return ep_remove_image_build(kind,a,out); }
 extern "C" __declspec(dllexport) int insert_image_test_build(uint32_t kind,const EpInsertAddresses* a,EpPropertyImage* out)
@@ -249,3 +252,44 @@ extern "C" __declspec(dllexport) int classify_image_test_prepare(uint32_t kind,E
 #include "../mod/src/ep_roster_gate.h"
 extern "C" __declspec(dllexport) EpPropertyResult roster_gate_test_build(uint32_t kind,const EpInsertAddresses* a,uint64_t control,uint64_t next,EpRosterGateImage* out)
 { return ep_roster_gate_build(kind,a,control,next,out); }
+
+extern "C" __declspec(dllexport) int registry_image_test_prepare(uint32_t kind,uint32_t* checks)
+{
+    HfApi api={};int marker=0;HfMod* owner=(HfMod*)&marker;EpSessionCodeInfo info={},empty={};EpRegistryImage image;
+    void* hint=VirtualAlloc(NULL,65536,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE);*checks=0;
+    if (!hint || !VirtualFree(hint,0,MEM_RELEASE)) return -1;
+    EpRegistryAddresses a={(uintptr_t)hint-0x10000000,(uintptr_t)hint,(uintptr_t)hint+0x10000000,
+        (uintptr_t)hint+0x20000000,(uintptr_t)hint+0x30000,(uintptr_t)hint+0x10000};
+    api.version=13;api.size=sizeof(api);api.build_id=Build;api.hook_ex=Hook;
+#define CHECK(x) do {++*checks;if(!(x)){fail_free=fail_protect=false;if(info.handle)ep_session_code_discard(owner,info.handle);return __LINE__;}} while(0)
+    CHECK(ep_registry_code_prepare(&api,owner,kind,&a,&info)==EP_PROPERTY_OK);
+    CHECK(info.base==a.code_address && info.state==EP_CODE_READY && info.registered && !info.pinned);
+    CHECK(ep_registry_image_build(kind,&a,&image)==EP_PROPERTY_OK && info.bytes==image.bytes && !memcmp((void*)info.base,image.data,image.bytes));
+    RUNTIME_FUNCTION* rows=(RUNTIME_FUNCTION*)(image.data+image.table_offset);DWORD64 base=0;
+    for(unsigned i=0;i<image.function_count;i++) {
+        CHECK(RtlLookupFunctionEntry(info.base+rows[i].BeginAddress,&base,NULL)==(RUNTIME_FUNCTION*)(info.base+image.table_offset)+i && base==info.base);
+    }
+    CHECK(ep_session_code_discard(owner,info.handle));info={};
+    CHECK(RtlLookupFunctionEntry(a.code_address,&base,NULL)==NULL);
+    for(unsigned variant=0;variant<3;variant++) {
+        EpRegistryImage broken=image;RUNTIME_FUNCTION* r=(RUNTIME_FUNCTION*)(broken.data+broken.table_offset);
+        if(variant==0) broken.data[r[0].UnwindData]=9;
+        else if(kind==1) {
+            uint8_t* uw=broken.data+r[1].UnwindData;unsigned chain=4+((uw[2]+1u)&~1u)*2;
+            if(variant==1) memcpy(uw+chain,&r[1],12); /* cycle */
+            else memcpy(uw+chain,&r[image.function_count-1],12); /* forward parent */
+        } else broken.data[r[0].UnwindData]=variant==1?33:17; /* truncated chain or unsupported flags */
+        CHECK(ep_session_code_reserve(&api,owner,(uintptr_t)a.code_address,broken.bytes,&info));
+        CHECK(!ep_session_code_seal_table(owner,info.handle,broken.data,broken.bytes,broken.table_offset,broken.function_count));
+        CHECK(ep_session_code_discard(owner,info.handle));info={};
+    }
+    a.storage_address++;
+    CHECK(ep_registry_code_prepare(&api,owner,kind,&a,&info)==EP_PROPERTY_POINTER && !memcmp(&info,&empty,sizeof(info)));
+    fail_free=true;
+    CHECK(ep_registry_code_prepare(&api,owner,kind,&a,&info)==EP_PROPERTY_CLEANUP && info.handle && !info.registered);
+    fail_free=false;CHECK(ep_session_code_discard(owner,info.handle));info={};a.storage_address--;
+    fail_protect=true;
+    CHECK(ep_registry_code_prepare(&api,owner,kind,&a,&info)==EP_PROPERTY_SEAL && !memcmp(&info,&empty,sizeof(info)));
+    fail_protect=false;CHECK(!hook_calls);return 0;
+#undef CHECK
+}

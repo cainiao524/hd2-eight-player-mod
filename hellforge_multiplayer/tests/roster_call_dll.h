@@ -12,7 +12,7 @@ typedef struct RosterCallTestApi {
     EpNativeRosterStatus (*snapshot)(HfMod*,uint64_t,uintptr_t,EpHfRosterSnapshot*);
     EpRosterOwnerResult (*close)(HfMod*,uint64_t);
     uint32_t (*pending)(HfMod*,uint64_t,int* closing);
-    void (*targets)(const uintptr_t[12]);
+    void (*targets)(const uintptr_t[EP_ROSTER_ENTRIES]);
     void (*invoke)(EpRosterCallFrame*,uintptr_t,unsigned);
     uintptr_t (*entry)(void);
     void (*revision)(HfMod*,uint64_t,uint64_t);

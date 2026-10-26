@@ -26,9 +26,10 @@
 | 实体到网络索引查询 | `mod/src/ep_getter_image.*` / `NATIVE_GETTER.zh-CN.md` | 使用八槽 B 存储，完整 DWORD 查询；4,548 个回溯上下文、25 项准备生命周期及八端 64 次查询通过；已加入三入口共同开关，未在游戏发布 |
 | 两个原生移除入口 | `mod/src/ep_remove_image.*` / `NATIVE_REMOVE.zh-CN.md` | C++ 生成及 READY 准备；2,293 次功能执行、4,670 组不同回溯状态、54 项准备检查通过；存储夹具执行移除后再加入，生产生命周期待接入 |
 | 两个原生分类入口 | `mod/src/ep_classify_image.*` / `NATIVE_CLASSIFY.zh-CN.md` | C++ 生成及 READY 准备；853 次功能执行、20,905 组不同回溯状态、54 项准备检查和 359 次分类存储读取断言通过；临时辅助函数是契约替身 |
-| 十二入口共同切换 | `mod/src/ep_roster_gate.*`、`ep_roster_group.*` / `ROSTER_GROUP.zh-CN.md` | 同一 S/B 和控制字、十二次发布后才允许提交；插入/移除绑定同组搬移主体；真实 guard 及数据事务未接入 |
+| 十四入口共同切换 | `mod/src/ep_roster_gate.*`、`ep_roster_group.*` / `ROSTER_GROUP.zh-CN.md` | 同一 S/B 和控制字、十四次发布后才允许提交；插入/移除绑定同组搬移主体；真实 guard 及数据事务未接入 |
 | 名册存储所有者 | `mod/src/ep_roster_owner.*` / `ROSTER_OWNER.zh-CN.md` | 受管读写互斥、revision/身份票据原子提交、关闭排空与异常隔离；641 次实际 DLL/loader 检查，生产写入覆盖和真实身份尚未绑定 |
-| 十二入口受管调用 | `mod/src/ep_roster_call.*` / `ROSTER_CALLS.zh-CN.md` | 旧/新路径整次调用进入 owner，保存六参数与返回状态；同 owner 嵌套、受管提交及异常隔离，显式选择且未接入初始化 |
+| 原生注册表与关联查询 | `mod/src/ep_registry_image.*` / `NATIVE_REGISTRY.zh-CN.md` | 两个入口、链式回溯、同组内部绑定；8 个测试、87 次执行、3,963 个 Windows 回溯上下文通过，尚未发布到游戏 |
+| 十四入口受管调用 | `mod/src/ep_roster_call.*` / `ROSTER_CALLS.zh-CN.md` | 旧/新路径整次调用进入 owner，保存六参数与返回状态；同 owner 嵌套、受管提交及异常隔离，显式选择且未接入初始化 |
 | 继续开发说明 | `HANDOFF.zh-CN.md` | 旧代码迁移关系、已知限制、下一步及授权范围 |
 | 四个原生插入入口 | `mod/src/ep_insert_image.*` / `NATIVE_INSERT.zh-CN.md` | C++ 生成及 READY 准备；515 次功能执行、660 组不同回溯状态和 108 项准备检查通过；已接入存储/同步夹具，生产共同切换待实现 |
 
@@ -56,6 +57,10 @@ git -C work/hellforge_upstream_20261025 checkout --detach a4dd089eb56cdd5cd96c3c
 如果该 checkout 已存在，先核对其版本与改动，不覆盖它。下载 `upstream.lock.json` 的 `zig.url` 到新的工具目录，核对 `archive_sha256` 后解压；脚本也会核对 `zig.exe` 的 SHA-256。当前工作区可直接使用：
 
 ```powershell
+$env:ZIG_GLOBAL_CACHE_DIR=Join-Path (Get-Location) 'work/hellforge-zig-cache'
+$env:ZIG_LOCAL_CACHE_DIR=Join-Path (Get-Location) 'work/hellforge-zig-local-cache'
+$env:DOTNET_CLI_HOME=Join-Path (Get-Location) 'work/hellforge-dotnet-home'
+$env:DOTNET_SKIP_FIRST_TIME_EXPERIENCE='1'
 py -3.12 -B hellforge_multiplayer/tools/build_offline.py `
   --upstream work/hellforge_upstream_20261025 `
   --zig work/hellforge_toolchain_20261025/zig-x86_64-windows-0.17.0/zig.exe
@@ -70,9 +75,9 @@ py -3.12 -B hellforge_multiplayer/tools/build_offline.py `
 属性发送和接收候选已加入各自的 [Windows x64 栈回溯资料](NATIVE_UNWIND.zh-CN.md)，修正拒绝跳转被当作尾调用的问题，并将接收端的条件寄存器保存移至入口。发送端 12 个场景的 1,308 个指令上下文、接收端 17 个场景的 1,313 个指令上下文通过真实 Windows 回溯接口验证；八端转发测试同时使用两份新候选。保存证据中的五段原异常资料已核对，并作为两个生成器的强制前置检查；10 项来源测试和原捕获重放通过。其他候选的回溯、运行期有效异常表核对、生产 hook 安装和游戏内验证仍未完成。
 
 
-新增 [四数组共用搬移器](NATIVE_MOVER.zh-CN.md)：C++ 生成 612-byte 完整映像并接入 READY 准备，100 次功能执行和 8,231 个 Windows 回溯上下文通过；保存的三段原回溯资料另核对 92 bytes。插入/删除/重新加入及八端插入夹具已改用其 C++ 输出。搬移现已加入 [十二入口共同开关](ROSTER_GROUP.zh-CN.md)，生产写入排除和剩余入口审计仍待接入。
+新增 [四数组共用搬移器](NATIVE_MOVER.zh-CN.md)：C++ 生成 612-byte 完整映像并接入 READY 准备，100 次功能执行和 8,231 个 Windows 回溯上下文通过；保存的三段原回溯资料另核对 92 bytes。插入/删除/重新加入及八端插入夹具已改用其 C++ 输出。搬移现已加入 [十四入口共同开关](ROSTER_GROUP.zh-CN.md)，生产写入排除和剩余入口审计仍待接入。
 
-[四个玩家记录插入入口](NATIVE_INSERT.zh-CN.md) 已沿用原 prologue 构造两段回溯映像，并将完整搬移器范围纳入地址检查。C++ 插入与搬移现在共同参与八笔存储和八端同步；移除和分类也已具备独立映像与读取连接，已定位的十二个入口现有共同发布实现，生产写入排除与完整容量事务仍待实现。
+[四个玩家记录插入入口](NATIVE_INSERT.zh-CN.md) 已沿用原 prologue 构造两段回溯映像，并将完整搬移器范围纳入地址检查。C++ 插入与搬移现在共同参与八笔存储和八端同步；移除和分类也已具备独立映像与读取连接，已定位的十四个入口现有共同发布实现，生产写入排除与完整容量事务仍待实现。
 
 [两个分类入口](NATIVE_CLASSIFY.zh-CN.md) 保留原 prefix/dense 语义，规范化暂存栈和条件寄存器保存，并按完整帧基址生成回溯资料。八笔记录在 enter/leave 重排后交给实际 HellForge 读取器，身份与网络索引保持一致。分类本身不等于加入/离队，辅助分配失败回滚、caller flag/通知、真实身份和生产激活尚未证明。
 

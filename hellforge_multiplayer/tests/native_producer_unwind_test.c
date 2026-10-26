@@ -34,14 +34,33 @@ int main(int argc, char** argv) {
         uint32_t size=u32(f), code_size=u32(f), table_offset=u32(f), count=u32(f);
         check(size<4096 && code_size<size && table_offset<size && (size-table_offset)%sizeof(RUNTIME_FUNCTION)==0 && count<EP_CONTEXT_LIMIT, "invalid image bounds");
         uint32_t functions=(size-table_offset)/sizeof(RUNTIME_FUNCTION);
+#if defined(EP_REGISTRY)
+        check(functions>=3 && functions<=5,"invalid registry function count");
+#else
         check(functions>=1 && functions<=3,"invalid function count");
+#endif
         uint8_t* image=VirtualAlloc(NULL,size,MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE);
         check(image!=NULL,"allocation failed"); take(f,image,size);
         PRUNTIME_FUNCTION table=(PRUNTIME_FUNCTION)(image+table_offset);
         check(table->BeginAddress==0 && table[functions-1].EndAddress==code_size && table[functions-1].UnwindData<=table_offset && table_offset-table[functions-1].UnwindData>=4,"invalid function entry");
+#if defined(EP_REGISTRY)
+        for (uint32_t index=0;index<functions;index++) {
+            uint32_t at=table[index].UnwindData;
+            check(at>=code_size && at<=table_offset-4,"invalid registry unwind position");
+            uint8_t* uw=image+at;uint32_t body=4u+((uw[2]+1u)&~1u)*2u;
+            check((uw[0]==1 || uw[0]==33) && uw[3]==0 && body<=table_offset-at,"invalid registry unwind header");
+            if (uw[0]==33) {
+                check(body+12<=table_offset-at,"truncated registry chain");int found=0;
+                for (uint32_t parent=0;parent<index;parent++) if (!memcmp(uw+body,table+parent,12)) found=1;
+                check(found,"registry chain is not a prior owned row");
+            }
+        }
+#else
         uint8_t* unwind=image+table[functions-1].UnwindData;
         check(unwind[0]==1 && unwind[3]==0 && 4u+((unwind[2]+1u)&~1u)*2u<=table_offset-table[functions-1].UnwindData,"invalid unwind extent");
+#endif
         for (uint32_t index=1;index<functions;index++) check(table[index-1].EndAddress==table[index].BeginAddress,"invalid contiguous functions");
+#if !defined(EP_REGISTRY)
         if (functions>=2) {
             check(table[0].EndAddress>0,"invalid leaf extent");
             check(table[0].UnwindData>=code_size && table[0].UnwindData<=size-4,"invalid preflight unwind location");
@@ -56,6 +75,7 @@ int main(int argc, char** argv) {
             check(!memcmp(image+table[0].UnwindData,"\1\0\0\0",4),"invalid leaf unwind");
 #endif
         }
+#endif
         check(RtlAddFunctionTable(table,functions,(DWORD64)image),"function table registration failed");
         uint64_t expected[8], return_pc; take(f,expected,sizeof expected); take(f,&return_pc,8);
         for (uint32_t k=0; k<count; ++k) {

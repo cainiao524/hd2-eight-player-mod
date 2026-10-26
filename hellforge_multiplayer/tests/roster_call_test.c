@@ -8,7 +8,7 @@ typedef uint64_t (*Call)(uint64_t,uint64_t,uint64_t,uint64_t,uint64_t,uint64_t);
 typedef double (*FloatCall)(double,double,double,double);
 static const RosterCallTestApi* test;
 static HfApi api;static HfMod* mod;static uint64_t storage,current,other_storage;
-static Call targets[12];static int installed[12],hooks,fail_hook,fail_after;
+static Call targets[EP_ROSTER_ENTRIES];static int installed[EP_ROSTER_ENTRIES],hooks,fail_hook,fail_after;
 static unsigned fault_kind,nested_kind;static int block_leaf,block_commit,validate_ok=1,end_fault,validate_fault,recursive;
 static int expected_owned_end=1;
 static HANDLE leaf_enter,leaf_resume,commit_enter,validate_enter,validate_resume,end_enter,end_resume;
@@ -37,7 +37,7 @@ static uint64_t Body(unsigned kind,int active,uint64_t a,uint64_t b,uint64_t c,u
 }
 #define FUNCTIONS(n) static uint64_t Old##n(uint64_t a,uint64_t b,uint64_t c,uint64_t d,uint64_t e,uint64_t f){return Body(n,0,a,b,c,d,n==1?e:0,n==1?f:0);} \
 static uint64_t New##n(uint64_t a,uint64_t b,uint64_t c,uint64_t d,uint64_t e,uint64_t f){return Body(n,1,a,b,c,d,n==1?e:0,n==1?f:0);}
-FUNCTIONS(1) FUNCTIONS(2) FUNCTIONS(5) FUNCTIONS(6) FUNCTIONS(7) FUNCTIONS(8) FUNCTIONS(9) FUNCTIONS(10) FUNCTIONS(11) FUNCTIONS(12)
+FUNCTIONS(1) FUNCTIONS(2) FUNCTIONS(5) FUNCTIONS(6) FUNCTIONS(7) FUNCTIONS(8) FUNCTIONS(9) FUNCTIONS(10) FUNCTIONS(11) FUNCTIONS(12) FUNCTIONS(13) FUNCTIONS(14)
 #undef FUNCTIONS
 static double FloatBody(int active,double a,double b,double c,double d)
 {
@@ -51,7 +51,7 @@ static int Memory(void* unused,uintptr_t address,void* out,size_t n)
 {(void)unused;(void)address;(void)out;(void)n;InterlockedIncrement(&memory_reads);return 0;}
 static void Routes(int active,int stale)
 {
-    for(unsigned i=0;i<12;i++) {
+    for(unsigned i=0;i<EP_ROSTER_ENTRIES;i++) {
         int denied=stale && installed[i];
         if(i==2)CHECK(((FloatCall)targets[i])(1.25,2.5,4.75,8.0)==(denied?-99.5:88.5+(active?1000:0)));
         else CHECK(targets[i](11,23,37,53,71,97)==(denied?Failed(i+1):i==3?StateValue(active,0):Number(i+1,active)));
@@ -83,18 +83,19 @@ static void End(void* unused,void* lease,int committed)
 }
 static EpRosterGroupBindings Targets(void)
 {
-    uint8_t* memory=VirtualAlloc(NULL,0x100000,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE);CHECK(memory!=NULL);
-    memset(memory,0x90,0x100000);EpRosterGroupBindings b={0};b.game_base=(uintptr_t)memory-0x540000;
+    uint8_t* memory=VirtualAlloc(NULL,74727424,MEM_RESERVE,PAGE_NOACCESS);CHECK(memory!=NULL);
+    EpRosterGroupBindings b={0};b.game_base=(uintptr_t)memory;
     b.roster_address=(uintptr_t)memory+0x8000000;b.storage_address=(uintptr_t)memory+0x10000000;
-    const uintptr_t old[12]={(uintptr_t)Old1,(uintptr_t)Old2,(uintptr_t)Old3,(uintptr_t)StateOld,(uintptr_t)Old5,(uintptr_t)Old6,(uintptr_t)Old7,(uintptr_t)Old8,(uintptr_t)Old9,(uintptr_t)Old10,(uintptr_t)Old11,(uintptr_t)Old12};
-    const uintptr_t next[12]={(uintptr_t)New1,(uintptr_t)New2,(uintptr_t)New3,(uintptr_t)StateNew,(uintptr_t)New5,(uintptr_t)New6,(uintptr_t)New7,(uintptr_t)New8,(uintptr_t)New9,(uintptr_t)New10,(uintptr_t)New11,(uintptr_t)New12};
+    const uintptr_t old[EP_ROSTER_ENTRIES]={(uintptr_t)Old1,(uintptr_t)Old2,(uintptr_t)Old3,(uintptr_t)StateOld,(uintptr_t)Old5,(uintptr_t)Old6,(uintptr_t)Old7,(uintptr_t)Old8,(uintptr_t)Old9,(uintptr_t)Old10,(uintptr_t)Old11,(uintptr_t)Old12,(uintptr_t)Old13,(uintptr_t)Old14};
+    const uintptr_t next[EP_ROSTER_ENTRIES]={(uintptr_t)New1,(uintptr_t)New2,(uintptr_t)New3,(uintptr_t)StateNew,(uintptr_t)New5,(uintptr_t)New6,(uintptr_t)New7,(uintptr_t)New8,(uintptr_t)New9,(uintptr_t)New10,(uintptr_t)New11,(uintptr_t)New12,(uintptr_t)New13,(uintptr_t)New14};
     test->targets(next);
-    for(unsigned i=0;i<12;i++){
-        EpRosterGateLayout layout;CHECK(test->layout(i+1,&layout));uint8_t* at=memory+layout.original_rva-0x540000;
+    for(unsigned i=0;i<EP_ROSTER_ENTRIES;i++){
+        EpRosterGateLayout layout;CHECK(test->layout(i+1,&layout));uint8_t* at=memory+layout.original_rva;
+        CHECK(VirtualAlloc((void*)((uintptr_t)at&~4095ULL),4096,MEM_COMMIT,PAGE_READWRITE)!=NULL);memset(at,0x90,64);
         const uint8_t jump[]={0xFF,0x25,0,0,0,0};memcpy(at,jump,6);memcpy(at+6,&old[i],8);targets[i]=(Call)at;
         b.reject[i]=(uintptr_t)memory+0x20000000+i*0x10000;
     }
-    DWORD protection;CHECK(VirtualProtect(memory,0x100000,PAGE_EXECUTE_READ,&protection));CHECK(FlushInstructionCache(GetCurrentProcess(),memory,0x100000));return b;
+    for(unsigned i=0;i<EP_ROSTER_ENTRIES;i++) { DWORD old;CHECK(VirtualProtect((void*)((uintptr_t)targets[i]&~4095ULL),4096,PAGE_EXECUTE_READ,&old));CHECK(FlushInstructionCache(GetCurrentProcess(),(void*)targets[i],64)); }return b;
 }
 static void Pending(unsigned expected,int closing)
 {
@@ -233,6 +234,7 @@ int main(int argc,char** argv)
                 test->revision(mod,storage,UINT64_MAX);LONG count=bodies;
                 CHECK(targets[0](11,23,37,53,71,97)==Failed(1) && last_failure==EP_OWNER_EXHAUSTED && bodies==count);
                 CHECK(((FloatCall)targets[2])(1.25,2.5,4.75,8.0)==1088.5);
+                CHECK(targets[EP_ROSTER_ASSOCIATION-1](11,23,37,53,71,97)==Number(EP_ROSTER_ASSOCIATION,1));
                 CHECK(test->owner_info(mod,storage,&info)==EP_OWNER_OK && info.revision==UINT64_MAX && !info.fault);
             }else{
                 if(!strcmp(mode,"nestedfault")){nested_kind=11;fault_kind=1;}

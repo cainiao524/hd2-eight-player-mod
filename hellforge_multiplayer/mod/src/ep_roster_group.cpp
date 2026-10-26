@@ -101,6 +101,7 @@ static int EpGroupPrepare(const HfApi* api,HfMod* owner,const EpRosterGroupBindi
         EpRosterGateImage image;
         EpInsertAddresses a={bindings.game_base,allocations[i].base,bindings.roster_address,bindings.storage_address,
             allocations[EP_ROSTER_MOVER-1].base+32,bindings.reject[i]};
+        if (i+1==EP_ROSTER_REGISTRY_UPDATE) a.move_code_address=allocations[EP_ROSTER_ASSOCIATION-1].base+32;
         if (ep_roster_gate_build(i+1,&a,(uintptr_t)&g->active,allocations[i].next_pointer,&image)!=EP_PROPERTY_OK) {ok=0;break;}
         if (storage_owner) {
             EpRosterCallContext* c=&g->calls[i];

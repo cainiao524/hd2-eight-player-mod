@@ -4,12 +4,13 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-#define EP_ROSTER_ENTRIES 12u
+#define EP_ROSTER_ENTRIES 14u
 #define EP_ROSTER_GATED_MAX 2816u
 typedef enum EpRosterEntry {
     EP_ROSTER_SEND=1,EP_ROSTER_RECEIVE,EP_ROSTER_GETTER,EP_ROSTER_MOVER,
     EP_ROSTER_DENSE_LEGACY,EP_ROSTER_APPEND_LEGACY,EP_ROSTER_APPEND_REGISTERED,EP_ROSTER_DENSE_REGISTERED,
-    EP_ROSTER_REMOVE_LEGACY,EP_ROSTER_REMOVE_REGISTERED,EP_ROSTER_ENTER,EP_ROSTER_LEAVE
+    EP_ROSTER_REMOVE_LEGACY,EP_ROSTER_REMOVE_REGISTERED,EP_ROSTER_ENTER,EP_ROSTER_LEAVE,
+    EP_ROSTER_REGISTRY_UPDATE,EP_ROSTER_ASSOCIATION
 } EpRosterEntry;
 typedef struct EpRosterGateLayout { uint32_t original_rva,original_bytes,image_bytes,function_count; } EpRosterGateLayout;
 typedef struct EpRosterGateImage {
@@ -18,6 +19,8 @@ typedef struct EpRosterGateImage {
 } EpRosterGateImage;
 /* Same 32-byte switch ABI as property gates. move_code_address identifies the
  * prepared mover BODY (+32), never the independently switchable mover gate.
+ * For REGISTRY_UPDATE this field instead identifies the group's ASSOCIATION
+ * BODY (+32). The association ID is not the network-index getter result.
  * All addresses numeric; no game discovery, access or installation. */
 int ep_roster_gate_layout(uint32_t,EpRosterGateLayout*);
 EpPropertyResult ep_roster_gate_build(uint32_t,const EpInsertAddresses*,uint64_t control,uint64_t next,EpRosterGateImage*);
