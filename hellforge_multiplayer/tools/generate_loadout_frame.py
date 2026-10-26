@@ -95,6 +95,8 @@ def build():
             elif a in (0x1469a9f,0x1469aab,0x146c0fb,0x146857f,0x14690cd):
                 key,target={0x1469a9f:(15,0x146fc40),0x1469aab:(16,0x146c2f0),0x146c0fb:(17,0x1470650),0x146857f:(18,0x146f510),0x14690cd:(19,0x146b190)}[a]
                 need(text==f'call {target:#x}','Changed frame sibling call');fix(b'\xe8'+bytes(4),1,key,0)
+            elif a==0x14684ea:
+                need(text=='call 0x146b400','Changed frame prompt link');fix(b'\xe8'+bytes(4),1,22,0)
             elif ins.mnemonic=='call' and ins.operands[0].type==X86_OP_IMM and ins.operands[0].imm in (0x146ac60,0x1470740):
                 fix(b'\xe8'+bytes(4),1,20 if ins.operands[0].imm==0x146ac60 else 21,0)
             elif (ins.mnemonic=='call' or ins.mnemonic.startswith('j')) and ins.operands[0].type==X86_OP_IMM:

@@ -7,14 +7,15 @@ extern "C" {
 #define EP_LOADOUT_FRAME_BYTES 16384u
 typedef struct EpLoadoutFrameAddresses {
     EpLoadoutRecordsAddresses records;
-    uint64_t sync_records,update,lookup,open_mode,leave,state_change,return_screen;
+    uint64_t sync_records,update,lookup,open_mode,leave,state_change,return_screen,prompt;
 } EpLoadoutFrameAddresses;
 typedef struct EpLoadoutFrameImage {
     uint32_t bytes,code_bytes,unwind_offset,table_offset,handler_offset,frame,local_update;
     uint8_t data[EP_LOADOUT_FRAME_BYTES];
 } EpLoadoutFrameImage;
 /* Complete saved 1468320 main frame and 146C040 local-player refresh.
- * Calls use the same group's record sync, UI update, record lookup, mode open, leave and state/return.
+ * Calls use the same group's record sync, UI update, record lookup, mode open,
+ * leave, state/return and action prompts.
  * Player/widget scans use capacity; record-item and equipment limits retain
  * their native meaning. R11 remains the live record iterator on the tail scan.
  * Deferred local-map initialization clears owned forward/inverse maps before
