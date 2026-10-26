@@ -22,6 +22,15 @@ typedef struct EpC33ConsumerAddresses {
  * Refusal must not return into a containing frame. Never activate alone. */
 EpPropertyResult ep_component33_consumer_build(uint32_t,const EpC33ConsumerAddresses*,EpComponent33Image*);
 uint32_t ep_component33_consumer_bytes(uint32_t);
+/* UPDATE variant: route the entire queue tail through drain(S). Keep the
+ * saved R13 restoration at its original instruction boundary and preserve
+ * every unwind fragment/epilogue. The other saved callbacks are unchanged.
+ * Numeric emission only. drain must be a retained non-returning-on-failure
+ * resource entry. The caller MUST hold the same roster owner across the
+ * entire UPDATE (writes=1); the drain entry alone cannot protect that frame.
+ * Whole-call UPDATE dispatch, other original writers and safe RESET still
+ * require coordinated routing before publication. */
+EpPropertyResult ep_component33_update_drain_build(const EpC33ConsumerAddresses*,uint64_t drain_address,EpComponent33Image*);
 #ifdef __cplusplus
 }
 #endif

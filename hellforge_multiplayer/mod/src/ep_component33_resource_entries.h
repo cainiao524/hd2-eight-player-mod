@@ -4,7 +4,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-enum { EP_C33_RESOURCE_ENTRY_COUNT=3, EP_C33_RESOURCE_ENTRY_GROUPS=4,
+enum { EP_C33_RESOURCE_ENTRY_COUNT=4, EP_C33_RESOURCE_ENTRY_GROUPS=4, EP_C33_RESOURCE_DRAIN=5,
     EP_C33_ENTRIES_PREPARING=1,EP_C33_ENTRIES_PREPARED,EP_C33_ENTRIES_CLEANUP_REQUIRED,EP_C33_ENTRIES_RETAINED };
 #define EP_C33_RESOURCE_ENTRY_ABORT 0xe0433301u
 /* Must not return into the original caller after refusal/partial effects.
@@ -20,11 +20,12 @@ typedef struct EpC33ResourceEntryBindings {
 } EpC33ResourceEntryBindings;
 typedef struct EpC33ResourceEntriesInfo {
     uint64_t handle;uint32_t state,reserved;
-    /* ACQUIRE 6656C0, DEFER 665940, RELEASE 6659E0, in this order. */
+    /* ACQUIRE 6656C0, DEFER 665940, RELEASE 6659E0; DRAIN has target=0.
+     * DRAIN is an internal helper, never an original hook address. */
     uint64_t targets[EP_C33_RESOURCE_ENTRY_COUNT];
     EpSessionCodeInfo code[EP_C33_RESOURCE_ENTRY_COUNT];
 } EpC33ResourceEntriesInfo;
-/* Owns three leaf Win64 argument bridges and their immutable dispatch data.
+/* Owns four leaf Win64 argument bridges and their immutable dispatch data.
  * ACQUIRE/DEFER: RCX=S, RDX=object. RELEASE: RCX=S, EDX=ordinal, R8B=flag;
  * only the low byte controls deferred release. The bridges tail-call a
  * compiler-unwindable dispatcher, which keeps selection/effects inside the
@@ -35,7 +36,10 @@ typedef struct EpC33ResourceEntriesInfo {
  * nonreusable roster owner, allocates/seals code and copies SDK callbacks.
  * No SDK reads, engine functions, hooks or installation are performed during
  * preparation. That permanent storage binding survives cancellation/failure.
- * Cancel only before exposure; retain ALL three entries before a coordinated
+ * DRAIN accepts RCX=S only from an existing healthy native owner scope.
+ * Use it with update_drain_build while holding writes=1 across the complete
+ * UPDATE frame. It rejects out-of-scope use before SDK access or effects.
+ * Cancel only before exposure; retain ALL four entries before a coordinated
  * publisher exposes any entry/window. No auto-registration or partial
  * publisher is supplied. PREPARED code must never be invoked or exposed.
  * UPDATE, its internal calls, original reset wrappers and all other writers

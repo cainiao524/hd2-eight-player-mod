@@ -50,7 +50,7 @@ EXPORT unsigned c33_resource_entries_test(unsigned mode)
     Check(mode<29,"entry mode");EntryTest t={};t.mode=mode;entryTest=&t;
     unsigned native_mode=mode==7 || mode==11 || mode==17 ? 7 : mode==8 ? 14 : mode==9 ? 13 : mode==15 ? 21 : mode==18 ? 24 : mode==19 ? 28 : mode==27 ? 20 : mode==28 ? 16 : 0;
     NativeSetup(&t.native,native_mode);auto* n=&t.native;auto* s=&n->p.test;n->api.read=EntryRead;n->api.read_code=EntryCode;n->api.hook_ex=Hook;
-    EpC33ResourceEntryBindings b={s->storage.handle,s->owner,{0x191000000,0x191010000,0x191020000},Rejected,&t};
+    EpC33ResourceEntryBindings b={s->storage.handle,s->owner,{0x191000000,0x191010000,0x191020000,0x191030000},Rejected,&t};
     if (mode==23) b.storage=UINT64_MAX;
     if (mode==24) b.reject=nullptr;
     if (mode==25) n->api.size=offsetof(HfApi,read_code);
@@ -68,9 +68,9 @@ EXPORT unsigned c33_resource_entries_test(unsigned mode)
         Check(ep_roster_owner_close(s->mod,s->owner)==0,"close preparation owner");CloseHandle(s->entered);CloseHandle(s->proceed);return checks;
     }
     Check(t.entries.state==EP_C33_ENTRIES_PREPARED,"prepared state");
-    const uint32_t rvas[]={0x6656c0,0x665940,0x6659e0};
-    for (unsigned i=0;i<3;i++) {
-        Check(t.entries.targets[i]==s->roster.game+rvas[i] && t.entries.code[i].registered && t.entries.code[i].state==EP_CODE_READY,"entry target/state");
+    const uint32_t rvas[]={0x6656c0,0x665940,0x6659e0,0};
+    for (unsigned i=0;i<EP_C33_RESOURCE_ENTRY_COUNT;i++) {
+        Check(t.entries.targets[i]==(rvas[i] ? s->roster.game+rvas[i] : 0) && t.entries.code[i].registered && t.entries.code[i].state==EP_CODE_READY,"entry target/state");
         MEMORY_BASIC_INFORMATION memory={};Check(VirtualQuery((void*)t.entries.code[i].base,&memory,sizeof(memory)) && memory.Protect==PAGE_EXECUTE_READ,"entry not RX");
     }
     UnwindEntries(t.entries);
