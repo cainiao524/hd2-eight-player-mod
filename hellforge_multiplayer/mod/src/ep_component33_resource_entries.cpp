@@ -10,6 +10,7 @@ struct EntryGroup {
     EpC33ResourceScopeView view;EpC33ResourceEntriesInfo info;
     EntryContext contexts[EP_C33_RESOURCE_ENTRY_COUNT],update,resets[2],refresh,leave;volatile LONG ready;
     CoreContext core[EP_C33_CORE_ENTRY_COUNT];
+    CoreContext callers[EP_C33_CALLER_ENTRY_COUNT];
 };
 static EntryGroup entryGroups[EP_C33_RESOURCE_ENTRY_GROUPS];
 static SRWLOCK entriesLock=SRWLOCK_INIT;static uint64_t entrySequence;
@@ -22,6 +23,8 @@ struct Invocation { EntryContext* entry;uint64_t component,value,flag;EpC33Resou
 static thread_local EntryGroup* updating;
 static thread_local EntryGroup* coreGroup;
 static thread_local uint32_t coreKinds;
+static thread_local EntryGroup* callerGroup;
+static thread_local uint32_t callerKinds;
 extern "C" void EpRosterCallTarget(EpRosterCallFrame*,uintptr_t,unsigned);
 extern "C" void EpC33CoreEntry(void);
 extern "C" void EpC33CoreDispatch(CoreContext*,EpRosterCallFrame*);
@@ -214,8 +217,44 @@ static int CoreInvoke(void* context,const EpNativeRosterView* owner)
     c->result.call.owner_result=ep_roster_owner_call(g->mod,g->bindings.roster_owner,1,CoreBody,c);
     return c->result.call.owner_result==EP_OWNER_OK;
 }
+struct CallerInvocation { CoreContext* entry;EpRosterCallFrame* frame;uintptr_t next;bool reentry;EpC33ResourceProviderResult result; };
+static int CallerBody(void* context,const EpNativeRosterView*)
+{
+    auto* c=(CallerInvocation*)context;c->result.call.executed=1;
+    EpRosterCallTarget(c->frame,c->next,0);return 1;
+}
+static int CallerInvoke(void* context,const EpNativeRosterView* owner)
+{
+    auto* c=(CallerInvocation*)context;auto* g=c->entry->group;
+    unsigned index=c->entry->kind-EP_C33_CORE_ENTRY_COUNT-1;
+    if (c->reentry) { c->result.call.status=EP_C33_CALL_REENTRANT;return 0; }
+    if (owner->game!=g->view.game || (index==0 && c->frame->rcx!=g->view.component-0x3ca0) ||
+        *(const uint64_t*)(uintptr_t)(g->view.game+0x33267b8)!=g->view.component) {
+        c->result.call.status=EP_C33_CALL_STORAGE;return 0;
+    }
+    const auto& code=g->info.caller_entries[index];
+    c->next=(uintptr_t)InterlockedCompareExchangePointer((void* volatile*)code.next_pointer,nullptr,nullptr);
+    if (!c->next || c->next==code.base) { c->result.call.status=EP_C33_CALL_OWNER;return 0; }
+    c->result.call.owner_result=ep_roster_owner_call(g->mod,g->bindings.roster_owner,1,CallerBody,c);
+    return c->result.call.owner_result==EP_OWNER_OK;
+}
+static void CallerDispatch(CoreContext* entry,EpRosterCallFrame* frame)
+{
+    auto* g=entry->group;auto* prior=callerGroup;uint32_t saved=callerKinds;
+    unsigned index=entry->kind-EP_C33_CORE_ENTRY_COUNT-1;uint32_t bit=1u<<index;
+    bool reentry=updating || coreGroup || (prior && prior!=g) || (saved&bit) ||
+        ep_component33_resource_scope_ready(g->mod,g->bindings.roster_owner);
+    CallerInvocation c={entry,frame,0,reentry,{}};callerGroup=g;callerKinds|=bit;
+    // Deliberately leave updating/coreGroup alone: original callers can invoke
+    // this group's inner core/lifecycle entries within the existing owner.
+    auto result=InterlockedCompareExchange(&g->ready,0,0)==1 ?
+        ep_roster_owner_call(g->mod,g->bindings.roster_owner,0,CallerInvoke,&c) : EP_OWNER_UNAVAILABLE;
+    callerGroup=prior;callerKinds=saved;frame->status=result;
+    if (result!=EP_OWNER_OK) Reject(g,EP_C33_CALLER_REJECT_BASE+index+1,&c.result,result);
+}
 extern "C" void EpC33CoreDispatch(CoreContext* entry,EpRosterCallFrame* frame)
 {
+    if (entry->kind>EP_C33_CORE_ENTRY_COUNT) { CallerDispatch(entry,frame);return; }
     auto* g=entry->group;auto* prior=updating;auto* prior_group=coreGroup;uint32_t prior_kinds=coreKinds,bit=1u<<(entry->kind-1);
     bool reentry=(prior && prior!=g) || (prior_group && prior_group!=g) || (prior_kinds&bit) ||
         ep_component33_resource_scope_ready(g->mod,g->bindings.roster_owner);
@@ -256,6 +295,9 @@ static void Image(EntryContext* c,uint8_t out[48]) { ArgumentImage(c,Dispatch,ou
 static int Cancel(EntryGroup* g)
 {
     int ok=1;
+    for (unsigned i=EP_C33_CALLER_ENTRY_COUNT;i--;) if (g->info.caller_entries[i].handle) {
+        auto& c=g->info.caller_entries[i];if (ep_session_code_discard(g->mod,c.handle)) memset(&c,0,sizeof(c));else ok=0;
+    }
     for (unsigned i=EP_C33_CORE_ENTRY_COUNT;i--;) if (g->info.core_entries[i].handle) {
         auto& c=g->info.core_entries[i];if (ep_session_code_discard(g->mod,c.handle)) memset(&c,0,sizeof(c));else ok=0;
     }
@@ -277,14 +319,15 @@ static int Capture(void* context,const EpNativeRosterView* view)
 }
 static int Prepare(const HfApi* api,HfMod* mod,const EpC33ResourceEntryBindings* input,const EpC33UpdateEntryConfig* config,
     const EpC33LifecycleEntryConfig* lifecycle,const EpC33RefreshEntryConfig* refresh_config,const EpC33LeaveEntryConfig* leave_config,
-    const EpC33CoreEntryConfig* core_config,EpC33ResourceEntriesInfo* out)
+    const EpC33CoreEntryConfig* core_config,const EpC33CallerEntryConfig* caller_config,EpC33ResourceEntriesInfo* out)
 {
     if (!out) return 0;EpC33ResourceEntryBindings b={};if (input) b=*input;
     EpC33UpdateEntryConfig update={};if (config) update=*config;
     EpC33LifecycleEntryConfig reset={};if (lifecycle) reset=*lifecycle;
     EpC33RefreshEntryConfig refresh={};if (refresh_config) refresh=*refresh_config;
     EpC33LeaveEntryConfig leave={};if (leave_config) leave=*leave_config;
-    EpC33CoreEntryConfig core={};if (core_config) core=*core_config;memset(out,0,sizeof(*out));
+    EpC33CoreEntryConfig core={};if (core_config) core=*core_config;
+    EpC33CallerEntryConfig callers={};if (caller_config) callers=*caller_config;memset(out,0,sizeof(*out));
     if (!mod || !input || !b.storage || !b.roster_owner || !b.reject || ep_roster_owner_in_scope() || !api || api->version<13 ||
         api->size<offsetof(HfApi,read_code)+sizeof(api->read_code) || !api->read || !api->read_code || !api->hook_ex || !api->build_id) return 0;
     const char* build=api->build_id();if (!build || strcmp(build,"25480438")) return 0;
@@ -312,6 +355,14 @@ static int Prepare(const HfApi* api,HfMod* mod,const EpC33ResourceEntryBindings*
             for (unsigned i=0;i<EP_C33_CORE_ENTRY_COUNT;i++) {
                 g.core[i]={&g,i+1,storage.family.code[i].base};g.info.core_targets[i]=g.view.game+rvas[i];
             }
+        }
+        if (caller_config) {
+            const uint32_t rvas[]={0x576cf0,0xaddc10,0xb62210};
+            for (unsigned i=0;i<EP_C33_CALLER_ENTRY_COUNT;i++) {
+                g.callers[i]={&g,EP_C33_CORE_ENTRY_COUNT+i+1,0};g.info.caller_targets[i]=g.view.game+rvas[i];
+            }
+            g.info.owner_window=storage.family.owner_window;
+            memcpy(g.info.reader_windows,storage.family.reader_windows,sizeof(g.info.reader_windows));
         }
         break;
     }
@@ -403,36 +454,50 @@ static int Prepare(const HfApi* api,HfMod* mod,const EpC33ResourceEntryBindings*
         if (entry.handle) ep_session_code_info(mod,entry.handle,&entry);
         AcquireSRWLockExclusive(&entriesLock);group->info.core_entries[i]=entry;ReleaseSRWLockExclusive(&entriesLock);
     }
+    for (unsigned i=0;ok && caller_config && i<EP_C33_CALLER_ENTRY_COUNT;i++) {
+        EpSessionCodeInfo entry={};ok=ep_session_code_reserve(&group->api,mod,callers.desired_entries[i],48,&entry);
+        AcquireSRWLockExclusive(&entriesLock);group->info.caller_entries[i]=entry;ReleaseSRWLockExclusive(&entriesLock);
+        uint8_t bridge[48];CoreImage(&group->callers[i],bridge);
+        if (ok) ok=ep_session_code_seal(mod,entry.handle,bridge,sizeof(bridge),36);
+        if (entry.handle) ep_session_code_info(mod,entry.handle,&entry);
+        AcquireSRWLockExclusive(&entriesLock);group->info.caller_entries[i]=entry;ReleaseSRWLockExclusive(&entriesLock);
+    }
     AcquireSRWLockExclusive(&entriesLock);
     if (ok) group->info.state=EP_C33_ENTRIES_PREPARED;else Cancel(group);
     if (group->info.handle) *out=group->info;ReleaseSRWLockExclusive(&entriesLock);return ok;
 }
 int ep_component33_resource_entries_prepare(const HfApi* api,HfMod* mod,const EpC33ResourceEntryBindings* b,EpC33ResourceEntriesInfo* out)
-{ return Prepare(api,mod,b,nullptr,nullptr,nullptr,nullptr,nullptr,out); }
+{ return Prepare(api,mod,b,nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,out); }
 int ep_component33_resource_entries_prepare_update(const HfApi* api,HfMod* mod,const EpC33ResourceEntryBindings* b,const EpC33UpdateEntryConfig* config,EpC33ResourceEntriesInfo* out)
 {
     if (!config) { if (out) memset(out,0,sizeof(*out));return 0; }
-    return Prepare(api,mod,b,config,nullptr,nullptr,nullptr,nullptr,out);
+    return Prepare(api,mod,b,config,nullptr,nullptr,nullptr,nullptr,nullptr,out);
 }
 int ep_component33_resource_entries_prepare_lifecycle(const HfApi* api,HfMod* mod,const EpC33ResourceEntryBindings* b,const EpC33LifecycleEntryConfig* config,EpC33ResourceEntriesInfo* out)
 {
     if (!config) { if (out) memset(out,0,sizeof(*out));return 0; }
-    return Prepare(api,mod,b,&config->update,config,nullptr,nullptr,nullptr,out);
+    return Prepare(api,mod,b,&config->update,config,nullptr,nullptr,nullptr,nullptr,out);
 }
 int ep_component33_resource_entries_prepare_refresh(const HfApi* api,HfMod* mod,const EpC33ResourceEntryBindings* b,const EpC33RefreshEntryConfig* config,EpC33ResourceEntriesInfo* out)
 {
     if (!config) { if (out) memset(out,0,sizeof(*out));return 0; }
-    return Prepare(api,mod,b,&config->lifecycle.update,&config->lifecycle,config,nullptr,nullptr,out);
+    return Prepare(api,mod,b,&config->lifecycle.update,&config->lifecycle,config,nullptr,nullptr,nullptr,out);
 }
 int ep_component33_resource_entries_prepare_leave(const HfApi* api,HfMod* mod,const EpC33ResourceEntryBindings* b,const EpC33LeaveEntryConfig* config,EpC33ResourceEntriesInfo* out)
 {
     if (!config) { if (out) memset(out,0,sizeof(*out));return 0; }
-    return Prepare(api,mod,b,&config->refresh.lifecycle.update,&config->refresh.lifecycle,&config->refresh,config,nullptr,out);
+    return Prepare(api,mod,b,&config->refresh.lifecycle.update,&config->refresh.lifecycle,&config->refresh,config,nullptr,nullptr,out);
 }
 int ep_component33_resource_entries_prepare_core(const HfApi* api,HfMod* mod,const EpC33ResourceEntryBindings* b,const EpC33CoreEntryConfig* config,EpC33ResourceEntriesInfo* out)
 {
     if (!config) { if (out) memset(out,0,sizeof(*out));return 0; }
-    return Prepare(api,mod,b,&config->leave.refresh.lifecycle.update,&config->leave.refresh.lifecycle,&config->leave.refresh,&config->leave,config,out);
+    return Prepare(api,mod,b,&config->leave.refresh.lifecycle.update,&config->leave.refresh.lifecycle,&config->leave.refresh,&config->leave,config,nullptr,out);
+}
+int ep_component33_resource_entries_prepare_callers(const HfApi* api,HfMod* mod,const EpC33ResourceEntryBindings* b,const EpC33CallerEntryConfig* config,EpC33ResourceEntriesInfo* out)
+{
+    if (!config) { if (out) memset(out,0,sizeof(*out));return 0; }
+    const auto* core=&config->core;
+    return Prepare(api,mod,b,&core->leave.refresh.lifecycle.update,&core->leave.refresh.lifecycle,&core->leave.refresh,&core->leave,core,config,out);
 }
 int ep_component33_resource_entries_info(HfMod* mod,uint64_t id,EpC33ResourceEntriesInfo* out)
 {
@@ -443,7 +508,7 @@ int ep_component33_resource_entries_retain(HfMod* mod,uint64_t id)
 {
     if (ep_roster_owner_in_scope()) return 0;int ok=0;AcquireSRWLockExclusive(&entriesLock);auto* g=Find(mod,id);
     if (g && g->info.state==EP_C33_ENTRIES_PREPARED) {
-        uint64_t handles[EP_C33_RESOURCE_ENTRY_COUNT+9+EP_C33_CORE_ENTRY_COUNT];unsigned count=EP_C33_RESOURCE_ENTRY_COUNT;
+        uint64_t handles[EP_C33_RESOURCE_ENTRY_COUNT+9+EP_C33_CORE_ENTRY_COUNT+EP_C33_CALLER_ENTRY_COUNT];unsigned count=EP_C33_RESOURCE_ENTRY_COUNT;
         for (unsigned i=0;i<EP_C33_RESOURCE_ENTRY_COUNT;i++) handles[i]=g->info.code[i].handle;
         if (g->info.update_target) { handles[count++]=g->info.update_entry.handle;handles[count++]=g->info.update_body.handle; }
         if (g->info.reset_targets[0]) {
@@ -452,6 +517,7 @@ int ep_component33_resource_entries_retain(HfMod* mod,uint64_t id)
         if (g->info.refresh_target) { handles[count++]=g->info.refresh_entry.handle;handles[count++]=g->info.refresh_body.handle; }
         if (g->info.leave_target) { handles[count++]=g->info.leave_entry.handle;handles[count++]=g->info.leave_body.handle; }
         if (g->info.core_targets[0]) for (const auto& c:g->info.core_entries) handles[count++]=c.handle;
+        if (g->info.caller_targets[0]) for (const auto& c:g->info.caller_entries) handles[count++]=c.handle;
         if (ep_session_code_retain_set(mod,handles,count)) {
             g->info.state=EP_C33_ENTRIES_RETAINED;
             for (auto& c:g->info.code) ep_session_code_info(mod,c.handle,&c);
@@ -472,6 +538,7 @@ int ep_component33_resource_entries_retain(HfMod* mod,uint64_t id)
                 ep_session_code_info(mod,g->info.leave_body.handle,&g->info.leave_body);
             }
             if (g->info.core_targets[0]) for (auto& c:g->info.core_entries) ep_session_code_info(mod,c.handle,&c);
+            if (g->info.caller_targets[0]) for (auto& c:g->info.caller_entries) ep_session_code_info(mod,c.handle,&c);
             InterlockedExchange(&g->ready,1);ok=1;
         }
     }

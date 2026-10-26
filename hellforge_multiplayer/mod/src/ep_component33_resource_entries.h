@@ -8,6 +8,7 @@ enum { EP_C33_RESOURCE_ENTRY_COUNT=4, EP_C33_RESOURCE_ENTRY_GROUPS=4, EP_C33_RES
     EP_C33_ENTRIES_PREPARING=1,EP_C33_ENTRIES_PREPARED,EP_C33_ENTRIES_CLEANUP_REQUIRED,EP_C33_ENTRIES_RETAINED };
 #define EP_C33_RESOURCE_ENTRY_ABORT 0xe0433301u
 enum { EP_C33_CORE_ENTRY_COUNT=14, EP_C33_CORE_REJECT_BASE=0x100 };
+enum { EP_C33_CALLER_ENTRY_COUNT=3, EP_C33_CALLER_REJECT_BASE=0x200 };
 /* Must not return into the original caller after refusal/partial effects.
  * May terminate or raise a noncontinuable SEH to a proved outer boundary;
  * no C++ exceptions, longjmp or owner reentry. If it returns, dispatch raises
@@ -35,6 +36,10 @@ typedef struct EpC33ResourceEntriesInfo {
     EpSessionCodeInfo leave_entry,leave_body;
     uint64_t core_targets[EP_C33_CORE_ENTRY_COUNT];
     EpSessionCodeInfo core_entries[EP_C33_CORE_ENTRY_COUNT];
+    uint64_t caller_targets[EP_C33_CALLER_ENTRY_COUNT];
+    EpSessionCodeInfo caller_entries[EP_C33_CALLER_ENTRY_COUNT];
+    EpComponent33OwnerPatch owner_window;
+    EpComponent33ReaderWindow reader_windows[2];
 } EpC33ResourceEntriesInfo;
 typedef struct EpC33UpdateEntryConfig { uintptr_t desired_entry,desired_body; } EpC33UpdateEntryConfig;
 typedef struct EpC33LifecycleEntryConfig {
@@ -53,6 +58,10 @@ typedef struct EpC33CoreEntryConfig {
     EpC33LeaveEntryConfig leave;
     uintptr_t desired_entries[EP_C33_CORE_ENTRY_COUNT];
 } EpC33CoreEntryConfig;
+typedef struct EpC33CallerEntryConfig {
+    EpC33CoreEntryConfig core;
+    uintptr_t desired_entries[EP_C33_CALLER_ENTRY_COUNT];
+} EpC33CallerEntryConfig;
 /* Owns four leaf Win64 argument bridges and their immutable dispatch data.
  * ACQUIRE/DEFER: RCX=S, RDX=object. RELEASE: RCX=S, EDX=ordinal, R8B=flag;
  * only the low byte controls deferred release. The bridges tail-call a
@@ -157,6 +166,30 @@ int ep_component33_resource_entries_prepare_leave(const HfApi*,HfMod*,const EpC3
  * installation remain integration requirements. No SDK reads or hooks occur
  * during preparation. Core native loads have no SDK sampling/read budget. */
 int ep_component33_resource_entries_prepare_core(const HfApi*,HfMod*,const EpC33ResourceEntryBindings*,const EpC33CoreEntryConfig*,EpC33ResourceEntriesInfo*);
+/* Adds complete original caller scopes: 576CF0 (RCX=owning object with S at
+ * +3CA0), ADDC10 (RCX=creation object), B62210 (batch creation). The saved
+ * callers take no stack arguments. Forward registers/returns through the same
+ * Win64 frame, invoking the current SDK next pointer of this exact entry.
+ * No supplied alternate body, no copied 42 KiB owner, no guessed GS metadata.
+ * The SDK retains the original caller's frame/unwind and other chain nodes.
+ * Missing next, foreign S, wrong owner object, cycles or SEH abort/quarantine.
+ * Check S's global binding under the owner BEFORE any original caller effect.
+ * The entire call marks one outer write revision. Same-group distinct callers
+ * may nest; core/lifecycle calls made by them share this owner. Entry FROM a
+ * core/lifecycle/resource callback is refused. Original partial effects are
+ * not rolled back and engine lock ordering/callback semantics remain unproved.
+ *
+ * The three bridges retain/cancel with the other 27 images. The three window
+ * plans come only from the same retained family: inline promotion and the two
+ * creation pointer/reset windows. Their direct bodies run inside these caller
+ * scopes, not independently. Publishing integration MUST exclude/drain every
+ * old/new caller while installing all replacements, windows and migrated data;
+ * installing only these scopes is not an activation protocol. The SDK next
+ * slots must be populated before any entry is exposed to execution. No hooks,
+ * writes/reads of game memory, or fingerprint checks occur in preparation.
+ * Native loads (including the global check) have no SDK sampling budget.
+ * Earlier APIs leave caller/window fields zero. Runtime remains unverified. */
+int ep_component33_resource_entries_prepare_callers(const HfApi*,HfMod*,const EpC33ResourceEntryBindings*,const EpC33CallerEntryConfig*,EpC33ResourceEntriesInfo*);
 int ep_component33_resource_entries_info(HfMod*,uint64_t,EpC33ResourceEntriesInfo*);
 int ep_component33_resource_entries_retain(HfMod*,uint64_t);
 int ep_component33_resource_entries_cancel(HfMod*,uint64_t);
