@@ -635,9 +635,15 @@ int ep_component33_resource_entries_publish(HfMod* mod,uint64_t id,int32_t prior
 // Reuse the owner's registered SEH boundary for cleanup even after a nested
 // native call quarantines the owner. This does not reacquire or bypass its lock.
 extern "C" int EpOwnerInvoke(int (*)(void*),void*,int*);
+struct MigrationSource {EpC33Snapshot component;EpC33ResourceSnapshot resources;uint64_t table;};
+struct CommitMigration {
+    EpC33MigrationCommitResult result;MigrationSource source;
+    uint8_t* work;uint32_t arena_bytes;bool dirty;
+};
 struct EntryCommit {
     EntryGroup* group;EpC33EntryCommitGuard guard;void* lease;
     unsigned touched;uint32_t outcome;bool unsafe,ended,installed;
+    CommitMigration* migration;
 };
 struct CommitWindow {uint64_t target;unsigned bytes;const uint8_t* expected;const uint8_t* replacement;};
 static CommitWindow GetWindow(EntryGroup* g,unsigned index)
@@ -645,20 +651,105 @@ static CommitWindow GetWindow(EntryGroup* g,unsigned index)
     if (!index) {const auto& w=g->info.owner_window;return {w.target,w.bytes,w.expected,w.replacement};}
     const auto& w=g->info.reader_windows[index-1];return {w.target,w.bytes,w.expected,w.replacement};
 }
-static bool WindowMatches(EntryGroup* g,const CommitWindow& w,const uint8_t* expected)
+static bool CommitRead(EntryCommit* c,uint64_t address,void* out,uint32_t bytes,bool code=false,bool restoring=false)
 {
-    uint8_t bytes[75];return g->api.read_code((uintptr_t)w.target,bytes,w.bytes)==0 && !memcmp(bytes,expected,w.bytes);
+    auto* m=c->migration;
+    auto healthy=[&]() {
+        if (restoring || ep_roster_owner_native_status(c->group->mod,c->group->bindings.roster_owner)==EP_OWNER_OK) return true;
+        c->unsafe=true;return false;
+    };
+    if (!healthy()) return false;
+    if (m) {
+        if (bytes>EP_C33_PROVIDER_READ_LIMIT-m->result.read_bytes) {m->result.status=EP_C33_MIGRATION_READ;return false;}
+        m->result.read_bytes+=bytes;
+    }
+    if ((code ? c->group->api.read_code : c->group->api.read)((uintptr_t)address,out,bytes)!=0) {
+        if (m) m->result.status=EP_C33_MIGRATION_READ;return false;
+    }
+    return healthy();
 }
+static uint64_t MigrationQ(const void* p) {uint64_t v;memcpy(&v,p,8);return v;}
+static uint32_t MigrationD(const void* p) {uint32_t v;memcpy(&v,p,4);return v;}
+static bool MigrationPointer(uint64_t p,uint32_t bytes)
+{return p>=0x10000 && p<=(UINT64_C(1)<<47)-bytes;}
+static bool CollectMigration(EntryCommit* c,MigrationSource* out)
+{
+    auto* g=c->group;auto* m=c->migration;*out={};auto* s=&out->component;auto* r=&out->resources;
+    s->component_address=g->view.component;uint8_t header[28];
+    if (!CommitRead(c,g->view.game+0x33267b8,&s->global_component,8) ||
+        !CommitRead(c,g->view.game+0x3483c34,&s->invalid_entity_id,4)) return false;
+    if (s->global_component!=s->component_address) goto layout;
+    if (!CommitRead(c,s->component_address,s->component,sizeof(s->component))) return false;
+    s->entity_count=MigrationD(s->component+8);if (s->entity_count>4) goto layout;
+    for (unsigned i=0;i<s->entity_count;i++) {
+        auto* e=&s->entities[i];e->address=MigrationQ(s->component+0x70+i*8);
+        if (!MigrationPointer(e->address,24)) goto layout;
+        if (!CommitRead(c,e->address+8,&e->id,4) || !CommitRead(c,e->address+20,&e->flags,4)) return false;
+    }
+    if (!CommitRead(c,g->view.game+0x3798180,header,sizeof(header)) ||
+        !CommitRead(c,g->view.game+0x348ba88,&r->queued,8)) return false;
+    out->table=MigrationQ(header);r->seed=MigrationD(header+24);
+    if (MigrationD(header+8)!=128 || MigrationQ(header+16) || r->queued>128 || !MigrationPointer(out->table,sizeof(r->entries))) goto layout;
+    if (!CommitRead(c,out->table,r->entries,sizeof(r->entries)) ||
+        (r->queued && !CommitRead(c,g->view.game+0x3797550,r->queue,(uint32_t)r->queued*8))) return false;
+    return true;
+layout:m->result.status=EP_C33_MIGRATION_LAYOUT;return false;
+}
+static uint8_t* MigrationArena(CommitMigration* m,bool fresh)
+{return m->work+2*EP_COMPONENT33_STORAGE_BYTES+(fresh ? m->arena_bytes : 0);}
+static bool StageMigration(EntryCommit* c)
+{
+    auto* m=c->migration;auto* g=c->group;MigrationSource again={};EpC33Migration migrated={};
+    if (!CollectMigration(c,&m->source) || !CollectMigration(c,&again)) return false;
+    if (memcmp(&m->source,&again,sizeof(again))) {m->result.status=EP_C33_MIGRATION_CHANGED;return false;}
+    if (ep_component33_migrate_snapshot(&m->source.component,&migrated)!=EP_C33_STORAGE_OK) {m->result.status=EP_C33_MIGRATION_SNAPSHOT;return false;}
+    if (ep_c33_resource_migrate(&g->view.resources,&m->source.resources,MigrationArena(m,true),m->arena_bytes)!=EP_RESOURCE_OK) {
+        m->result.status=EP_C33_MIGRATION_RESOURCES;return false;
+    }
+    memcpy(m->work,(void*)(uintptr_t)g->view.storage,EP_COMPONENT33_STORAGE_BYTES);
+    memcpy(MigrationArena(m,false),(void*)(uintptr_t)g->view.resources.address,m->arena_bytes);
+    memcpy(m->work+EP_COMPONENT33_STORAGE_BYTES,migrated.data,EP_COMPONENT33_STORAGE_BYTES);
+    m->dirty=true;memcpy((void*)(uintptr_t)g->view.storage,migrated.data,EP_COMPONENT33_STORAGE_BYTES);
+    memcpy((void*)(uintptr_t)g->view.resources.address,MigrationArena(m,true),m->arena_bytes);
+    m->result.status=EP_C33_MIGRATION_OK;return true;
+}
+static bool MigrationUnchanged(EntryCommit* c)
+{
+    auto* m=c->migration;auto* g=c->group;
+    if (memcmp((void*)(uintptr_t)g->view.storage,m->work+EP_COMPONENT33_STORAGE_BYTES,EP_COMPONENT33_STORAGE_BYTES) ||
+        memcmp((void*)(uintptr_t)g->view.resources.address,MigrationArena(m,true),m->arena_bytes)) {
+        m->result.status=EP_C33_MIGRATION_CHANGED;c->unsafe=true;return false;
+    }
+    return true;
+}
+struct RestoreMigration {EntryCommit* commit;unsigned which;};
+static int RestoreMigrationPart(void* p)
+{
+    auto* r=(RestoreMigration*)p;auto* m=r->commit->migration;auto* g=r->commit->group;
+    void* target=(void*)(uintptr_t)(r->which ? g->view.resources.address : g->view.storage);
+    const void* source=r->which ? MigrationArena(m,false) : m->work;
+    unsigned bytes=r->which ? m->arena_bytes : EP_COMPONENT33_STORAGE_BYTES;
+    memcpy(target,source,bytes);if (memcmp(target,source,bytes)) return 0;m->result.restored|=1u<<r->which;return 1;
+}
+static bool WindowMatches(EntryCommit* c,const CommitWindow& w,const uint8_t* expected,bool restoring=false)
+{uint8_t bytes[75];return CommitRead(c,w.target,bytes,w.bytes,true,restoring) && !memcmp(bytes,expected,w.bytes);}
 static int CommitBegin(void* p) {auto* c=(EntryCommit*)p;return c->guard.begin(c->guard.context,&c->lease)!=0;}
 static int CommitInstall(void* p)
 {
     auto* c=(EntryCommit*)p;auto* g=c->group;
-    for (unsigned i=0;i<3;i++) {auto w=GetWindow(g,i);if (!WindowMatches(g,w,w.expected)) return 0;}
-    if (!c->guard.validate(c->guard.context,c->lease)) return 0;
+    for (unsigned i=0;i<3;i++) {auto w=GetWindow(g,i);if (!WindowMatches(c,w,w.expected)) return 0;}
+    if (c->migration && !StageMigration(c)) return 0;
+    int valid=c->guard.validate(c->guard.context,c->lease);
+    if (c->migration && !MigrationUnchanged(c)) return 0;
+    if (!valid) return 0;
     if (ep_roster_owner_native_status(g->mod,g->bindings.roster_owner)!=EP_OWNER_OK) return 0;
+    if (c->migration) {
+        MigrationSource again={};if (!CollectMigration(c,&again)) return 0;
+        if (memcmp(&c->migration->source,&again,sizeof(again))) {c->migration->result.status=EP_C33_MIGRATION_CHANGED;return 0;}
+    }
     for (unsigned i=0;i<3;i++) {
         auto w=GetWindow(g,i);c->touched=i+1;
-        if (g->api.write((uintptr_t)w.target,w.replacement,w.bytes)!=0 || !WindowMatches(g,w,w.replacement)) return 0;
+        if (g->api.write((uintptr_t)w.target,w.replacement,w.bytes)!=0 || !WindowMatches(c,w,w.replacement)) return 0;
     }
     return 1;
 }
@@ -666,7 +757,7 @@ struct RestoreWindow {EntryCommit* commit;unsigned index;};
 static int CommitRestore(void* p)
 {
     auto* r=(RestoreWindow*)p;auto* g=r->commit->group;auto w=GetWindow(g,r->index);
-    int written=g->api.write((uintptr_t)w.target,w.expected,w.bytes);bool matches=WindowMatches(g,w,w.expected);
+    int written=g->api.write((uintptr_t)w.target,w.expected,w.bytes);bool matches=WindowMatches(r->commit,w,w.expected,true);
     return written==0 && matches;
 }
 static int CommitEnd(void* p)
@@ -689,6 +780,10 @@ static int CommitUnderOwner(void* p,const EpNativeRosterView* view)
             RestoreWindow restore={c,i};int failed=0;
             if (!EpOwnerInvoke(CommitRestore,&restore,&failed) || failed) c->unsafe=true;
         }
+        if (c->migration && c->migration->dirty) for (unsigned i=2;i--;) {
+            RestoreMigration restore={c,i};int fault=0;
+            if (!EpOwnerInvoke(RestoreMigrationPart,&restore,&fault) || fault) {c->unsafe=true;c->migration->result.status=EP_C33_MIGRATION_RESTORE;}
+        }
         c->outcome=c->unsafe ? EP_C33_COMMIT_UNSAFE : EP_C33_COMMIT_OLD;
     }
     int end_fault=0;if (!EpOwnerInvoke(CommitEnd,c,&end_fault) || end_fault) c->unsafe=true;
@@ -699,13 +794,23 @@ static int CommitUnderOwner(void* p,const EpNativeRosterView* view)
     // not poison the owner or prevent a subsequently valid commit attempt.
     return !c->unsafe;
 }
-int ep_component33_resource_entries_commit(HfMod* mod,uint64_t id,const EpC33EntryCommitGuard* input)
+static int CommitEntries(HfMod* mod,uint64_t id,const EpC33EntryCommitGuard* input,CommitMigration* migration)
 {
-    if (!input || !input->begin || !input->validate || !input->end || ep_roster_owner_in_scope()) return 0;
+    if (!input || !input->begin || !input->validate || !input->end || ep_roster_owner_in_scope()) {
+        if (migration) migration->result.status=EP_C33_MIGRATION_ARGUMENT;return 0;
+    }
     const auto guard=*input;AcquireSRWLockExclusive(&entriesLock);auto* g=Find(mod,id);
     if (!g || !g->routed || g->info.publication_state!=EP_C33_PUBLISH_READY) {ReleaseSRWLockExclusive(&entriesLock);return 0;}
     g->info.publication_state=EP_C33_COMMITTING;ReleaseSRWLockExclusive(&entriesLock);
-    EntryCommit c={g,guard,nullptr,0,EP_C33_COMMIT_OLD,false,false,false};int fault=0,entered=EpOwnerInvoke(CommitBegin,&c,&fault);
+    if (migration) {
+        migration->arena_bytes=ep_c33_resource_bytes(g->view.resources.capacity);
+        migration->work=(uint8_t*)VirtualAlloc(nullptr,2*(EP_COMPONENT33_STORAGE_BYTES+migration->arena_bytes),MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE);
+        if (!migration->work) {
+            migration->result.status=EP_C33_MIGRATION_ALLOCATION;
+            AcquireSRWLockExclusive(&entriesLock);g->info.publication_state=EP_C33_PUBLISH_READY;ReleaseSRWLockExclusive(&entriesLock);return 0;
+        }
+    }
+    EntryCommit c={g,guard,nullptr,0,EP_C33_COMMIT_OLD,false,false,false,migration};int fault=0,entered=EpOwnerInvoke(CommitBegin,&c,&fault);
     c.unsafe=fault!=0 || (entered && !c.lease) || (!entered && c.lease);
     EpRosterOwnerResult result=EP_OWNER_OK;
     if (entered || c.lease || c.unsafe) {
@@ -716,5 +821,14 @@ int ep_component33_resource_entries_commit(HfMod* mod,uint64_t id,const EpC33Ent
     AcquireSRWLockExclusive(&entriesLock);bool active=InterlockedCompareExchange(&g->active,0,0)!=0;
     bool unsafe=c.unsafe || result!=EP_OWNER_OK;g->info.commit_outcome=unsafe ? EP_C33_COMMIT_UNSAFE : c.outcome;
     g->info.publication_state=active ? EP_C33_PUBLISH_ACTIVE : unsafe ? EP_C33_PUBLISH_FAILED : EP_C33_PUBLISH_READY;
-    ReleaseSRWLockExclusive(&entriesLock);return active && !unsafe;
+    ReleaseSRWLockExclusive(&entriesLock);
+    if (migration) {VirtualFree(migration->work,0,MEM_RELEASE);migration->work=nullptr;}
+    return active && !unsafe;
+}
+int ep_component33_resource_entries_commit(HfMod* mod,uint64_t id,const EpC33EntryCommitGuard* input)
+{return CommitEntries(mod,id,input,nullptr);}
+int ep_component33_resource_entries_commit_migrated(HfMod* mod,uint64_t id,const EpC33EntryCommitGuard* input,EpC33MigrationCommitResult* out)
+{
+    if (!out) return 0;*out={};CommitMigration migration={};
+    int result=CommitEntries(mod,id,input,&migration);*out=migration.result;return result;
 }

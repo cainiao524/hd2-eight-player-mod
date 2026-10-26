@@ -242,6 +242,35 @@ typedef struct EpC33EntryCommitGuard {
  * This is not a production freeze/data provider, cross-subsystem coordinator,
  * automatic initialization, or proof of real multiplayer/UI operation. */
 int ep_component33_resource_entries_commit(HfMod*,uint64_t,const EpC33EntryCommitGuard*);
+enum { EP_C33_MIGRATION_NONE,EP_C33_MIGRATION_OK,EP_C33_MIGRATION_READ,
+    EP_C33_MIGRATION_LAYOUT,EP_C33_MIGRATION_SNAPSHOT,EP_C33_MIGRATION_RESOURCES,
+    EP_C33_MIGRATION_CHANGED,EP_C33_MIGRATION_ALLOCATION,EP_C33_MIGRATION_RESTORE,
+    EP_C33_MIGRATION_ARGUMENT };
+typedef struct EpC33MigrationCommitResult { uint32_t status,read_bytes,restored,reserved; } EpC33MigrationCommitResult;
+/* Opt-in SDK-backed activation with fresh OLD-layout migration. begin must
+ * exclude/drain all original/global writers and retain that lease through end.
+ * Under the shared owner: collect S, entity identity/flags, original resource
+ * descriptor/table and active queue twice; validate/migrate into owned B/arena;
+ * then call validate for the OTHER subsystem/data/identity requirements. That
+ * callback must not mutate B/arena or invoke resource services/managed entries.
+ * Recollect sources after validate, then install the three windows and switch.
+ * All SDK requests made here, including code/failures/restoration, share a
+ * 64 KiB limit. Guard callbacks' own accesses are outside this budget.
+ * Source reads: global S/invalid ID, S[0..2b8), up to four entity +8/+14 u32s;
+ * game+3798180 descriptor (28), its 128x16 table, game+348ba88 queue count,
+ * and up to 128 u64s at game+3797550. No game/module/process discovery.
+ * Only owned B/arena are written during migration; S/old globals are preserved.
+ * OLD restores both owned buffers BEFORE end(OLD); unsafe restoration reports
+ * UNSAFE and quarantines. NEW transfers access through the common latch, not
+ * resource constructors/destructors. No LOAD/DISPOSE calls or shallow-clone
+ * ownership claim. Direct managed entry/service use before activation is not
+ * allowed. Source identity/lifetimes, full exclusion, other capacity switches
+ * and engine ABI preflight remain guard responsibilities. Repeated reads detect
+ * drift; they do not establish exclusion. Runtime/game/UI remain unverified.
+ * status describes migration, not overall commit success; inspect return and
+ * commit_outcome too. restored bits: 1=B, 2=arena, 0=no data restoration.
+ * No automatic invocation: this API requires explicit runtime authorization. */
+int ep_component33_resource_entries_commit_migrated(HfMod*,uint64_t,const EpC33EntryCommitGuard*,EpC33MigrationCommitResult*);
 int ep_component33_resource_entries_info(HfMod*,uint64_t,EpC33ResourceEntriesInfo*);
 int ep_component33_resource_entries_retain(HfMod*,uint64_t);
 int ep_component33_resource_entries_cancel(HfMod*,uint64_t);
