@@ -37,10 +37,13 @@ int ep_loadout_maps_initialize(EpLoadoutMaps*,uint32_t capacity,uint32_t local_n
  * Caller must retain/exclude all sources and writers for each complete call,
  * validate build/targets and synchronize with the roster owner. The rejection
  * target must not return from either an entry guard or a live native frame.
- * Still required: 1466170 setup/map writers, other UI consumers, layouts,
+ * 1466170 setup is supplied by ep_loadout_setup using these same maps.
+ * Still required: other UI consumers/map writers, verified layouts,
  * authoritative identity/lifetime binding and common activation. This is
  * not an installable or runtime-verified UI package. */
 EpPropertyResult ep_loadout_consumers_build(const EpLoadoutConsumerAddresses*,EpLoadoutConsumerImage*);
+/* Shared numerical binding validation; does not dereference any address. */
+EpPropertyResult ep_loadout_consumers_validate(const EpLoadoutConsumerAddresses*);
 /* Cancellable READY allocation only; does not execute any candidate entry.
  * CLEANUP retains the returned handle for discard retry. */
 EpPropertyResult ep_loadout_consumers_prepare(const HfApi*,HfMod*,const EpLoadoutConsumerAddresses*,EpSessionCodeInfo*);

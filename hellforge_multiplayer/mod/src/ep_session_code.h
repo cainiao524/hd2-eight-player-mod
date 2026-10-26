@@ -58,6 +58,10 @@ int ep_session_code_seal_component33_property(HfMod*, uint64_t handle, const voi
  * Does not admit these handlers through the ordinary or other GS sealers. */
 int ep_session_code_seal_loadout_transition(HfMod*, uint64_t handle, const void* image,
     uint32_t bytes, uint32_t table_offset, const EpSessionGsCheck*);
+/* Separate 1466170 setup profile: three rows, exact original fixed-frame
+ * unwind, EH/UH cookie +0x130 and owned handler thunk. */
+int ep_session_code_seal_loadout_setup(HfMod*, uint64_t handle, const void* image,
+    uint32_t bytes, uint32_t table_offset, const EpSessionGsCheck*);
 int ep_session_code_info(HfMod*, uint64_t handle, EpSessionCodeInfo*);
 /* Before calling hook_ex, permanently pin this module and the image. Even a
  * reported hook failure can have exposed code: keep it for process lifetime.
