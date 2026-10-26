@@ -12,6 +12,7 @@
 #include "ep_loadout_countdown.h"
 #include "ep_loadout_resources.h"
 #include "ep_loadout_resource_owner.h"
+#include "ep_loadout_resource_tick.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -23,24 +24,26 @@ typedef struct EpLoadoutGroupAddresses {
     EpLoadoutCountdownSource countdown_source;
     uint64_t resources_code,resource_owner_code;
     EpLoadoutResourceOwnerSource resource_owner_source;
+    uint64_t resource_tick_code;
 } EpLoadoutGroupAddresses;
 enum {EP_LOADOUT_GROUP_EMPTY,EP_LOADOUT_GROUP_READY,EP_LOADOUT_GROUP_CLEANUP};
 typedef struct EpLoadoutGroup {
-    EpSessionCodeInfo code[14]; /* lifecycle, consumers, setup, interactions, refresh, records, frame, mode, control, state, prompt, countdown, resources, resource owner */
+    EpSessionCodeInfo code[15]; /* lifecycle, consumers, setup, interactions, refresh, records, frame, mode, control, state, prompt, countdown, resources, resource owner, resource tick */
     uint64_t constructor,release,alternate_release,transition,setup,update,lookup,action;
     uint64_t input,edit,close,refresh,sync_records,frame,local_update,mode,open_mode,leave,screen_input,reset_selection,state_change,return_screen,context_action,state_tick,prompt,selection_prompt,active_prompt,ready_flag,blocked_flag,countdown,resource_lookup,reset_timers;
     uint64_t resource_write,resource_ordinal,resource_transform,player_value,assign_resources;
     uint64_t insert_resource_object,enqueue_resource_object,move_resource_object,remove_resource_object;
+    uint64_t resource_tick,any_resource_ready,resource_slot_ready;
     uint32_t capacity,state;
 } EpLoadoutGroup;
-/* Prepare all forty-one native entries from ONE screen/storage/map/capacity
- * binding. The fourteen desired code bases must be explicit and nonoverlapping.
+/* Prepare all forty-four native entries from ONE screen/storage/map/capacity
+ * binding. The fifteen desired code bases must be explicit and nonoverlapping.
  * The independent record-source banks must be disjoint from every image.
  * Input -> refresh -> close, control -> mode/navigation/edit/return, lifecycle -> state and
  * frame -> local/sync/update/lookup/mode/leave/state/return/prompt/countdown links are
  * derived from these same images. Frame, update and input flag queries also
  * bind the shared prompt image. Countdown, resource writer/ordinal/transform and assignment share the new bank.
- * Resource registration/move/removal use one owner and four disjoint banks.
+ * Resource registration/move/removal and update/ready queries use one owner and four disjoint banks.
  * Assignment uses countdown lookup; transform uses the owned ordinal/player-value entries. The frame allocation has a 16 KiB span.
  * The state timer calls control.leave and context action calls mode.open;
  * these cyclic links are prepared together and must share lifetime.
