@@ -8,11 +8,11 @@
 
 ## 当前接手位置
 
-最新检查点新增消费同一预检快照的内建资源执行器：先释放所有启用组的非零键，再按已接纳的门槛筛选结果取得资源；保留重复引用、延后队列取消和原服务顺序。13 个自有进程情境、451 项检查及六组保存指令对照通过，完整资源区字节与服务序列一致。既有完整需求/共享 owner 的 20 情境、4,302 项检查继续通过。生产快照/资源服务 ABI、原入口路由、重置生命周期、嵌入资源交接和共同发布仍未接入；详见[元件33资源说明](NATIVE_COMPONENT33.zh-CN.md)。
+最新检查点新增使用 HellForge SDK `read/read_code` 的资源资料提供层：在同一名册 owner 内检查保存的完整 getter 字节、选择扩展 B 中的目标实体、读取资源包及六组门槛，再交给冻结快照执行器。21 个自有内存情境、16,416 项检查与四组保存完整 getter 的指令对照通过；SDK 请求合计严格限制 64 KiB，超额在资源副作用前拒绝。实体解析及 DISPOSE/LOAD 仍需显式外部回调，生产 ABI、一致性、原入口和完整生命周期均未绑定。它未自动启用，也不是新的采样授权；详见[元件33资源说明](NATIVE_COMPONENT33.zh-CN.md#sdk-资源资料提供层)。
 
 底层 `ep_component33_storage_prepare_resources` 仍负责 RW 资源区、只读准备基准、B 与二十映像的寿命。清理按代码→资源区→B 顺序；保留前同时核对元件与资源新快照、B 及资源区字节。实际配置测试为 128/256/1,024/65,536 个资源键，见[所有权收据](evidence/native-component33-resource-owner-validation.json)。
 
-**接手后继续实际连接：** 内建 `ep_component33_resource_acquire_services_call` 已执行预检过的同一包与需求；下一步为它绑定一致快照/门槛提供者、实际 DISPOSE/LOAD 服务 ABI，并完成原入口路由、重置语义、嵌入资源交接、失败补偿与共同发布。验证见[资源执行收据](evidence/native-component33-resource-services-validation.json)。原 acquire 会先 RELEASE 再重新查询 package/门槛；新接口改用单一冻结快照，生产提供者必须证明稳定性及原辅助调用的副作用契约。服务失败后只隔离并停止后续操作，不回滚已发生的释放/载入。第五人角色与原生 UI 仍未完成。
+**接手后继续实际连接：** 通过 `ep_component33_resource_acquire_provider_call` 接入的 SDK 资料读取与 `ep_component33_resource_acquire_services_call` 已串起来；下一步落实身份解析/资源服务的真实 ABI、整个来源状态的写入排除，以及原 acquire/release/reset 入口路由。再完成重置时机、嵌入资源交接、失败补偿和共同发布。新提供层只读取一次包，提前取得门槛；四组稳定自有资料与保存 getter 对照相同，但尚未证明游戏中解析函数的副作用和跨结构一致性。服务失败会停止并隔离 owner，不回滚此前副作用。第五人角色与原生 UI 仍未完成。
 
 此前资源容量候选的 87 项检查、28 次模拟执行继续通过：一致满 128 项引用表时，旧实现会先 LOAD 再向空指针写入；接纳接口要求调用方提供完整需求，容量不足时在副作用之前拒绝。旧队列越界测试的状态不一致，其解释已修正。该独立[容量收据](evidence/native-component33-resources-validation.json)不承担新所有者的结论，也没有证明全调用独占或真实资源服务。
 

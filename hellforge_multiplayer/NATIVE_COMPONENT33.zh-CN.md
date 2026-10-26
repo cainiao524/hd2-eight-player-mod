@@ -246,6 +246,28 @@ Windows 对 1,095 个上下文完成回溯，包括从新 leaf 返回原 owner�
 
 整次调用继续拥有两份资源区大小的暂存；每次服务另进行一次完整区复制与比较，复用其中一份暂存。性能尚未在游戏测量。此检查点不改变 `installable=false`、`runtime_verified=false`、`multiplayer_verified=false`，也不表示第五名真人已能加入。
 
+## SDK 资源资料提供层
+
+新增 `ep_component33_resource_acquire_provider_call`，显式接收 SDK、已保留的元件33存储、现有 roster owner、目标引擎对象，以及身份解析和资源服务回调。它将 SDK 资料提供者接到上述内建执行器；没有新增原生入口，十七入口计数不变，也没有接进 `hellforge_mod_init` 自动启用。SDK 版本至少 13、结构覆盖 `read_code`、build 必须为 `25480438`。采用该固定 SDK 的零表示读取成功约定。
+
+每次调用先用 `read_code` 比对保存的完整 package getter（RVA `4F6430..4F649B`，107 bytes）与 threshold getter（`7AF0A0..7AF16F`，207 bytes）。它读取的是 SDK 提供的原始代码视图，不运行这些游戏函数。源码与保存证据锁定在 [provider lock](native-component33-resource-provider.lock.json)；提供层不发现游戏、进程或安装路径。
+
+| 读取阶段 | 固定来源与选择规则 |
+|---|---|
+| 元件/实体 | `game+33267B8` 的 S、`game+3483C34` 的无效 ID、S 的 `0x70` bytes 头与八槽 B。核对 `P≤D≤T≤8`、内联 map、所有有效 ID/ordinal/prefix flag，再在前 D 项中按 handle 解析后比较目标对象。`7FFF` 不调用解析器。 |
+| 资源包 | `game+346BF98` → root `+F12580` 的固定两桶表；从 `key&1` 起线性探测。桶里的 index 选择 `table+20+index*3030`，冻结完整 `0x3030` bytes；index 不强行限制在两桶之内，但所有地址和请求长度必须有效。 |
+| 门槛 | 每个启用组读取 `game+3326998` 的 manager；遍历 `count@+8`、指针数组 `+68`，按 handle 找到首个目标对象。该 ordinal 的 `+26688+i*58` 行按 tag 找首个值；找不到实体或 tag 时返回零。读取次数由预算限制，没有凭空添加源指令未证明的 tag 数量上限。 |
+
+上述 `read/read_code` **所有请求字节**（包括失败请求）合计不超过 65,536；预算将不足时不再发出下一次请求。每个地址计算检查用户地址范围及溢出，所有查询都在资源预留/服务副作用前结束。这个计数仅覆盖提供层直接发出的 SDK 请求，**不含外部身份解析或资源服务回调内部的访问**；它不是 v2 采样工具，也不能据此宣称整次游戏操作仅访问 64 KiB。既有一次采样已用完，后续仍须独立明确授权，并遵守原采样上限。
+
+身份解析回调必须只读并返回明确成功/不可用，资源回调遵守既有执行契约。两者均未绑定真正游戏服务。解析返回失败、SDK 读取失败、地址/布局/来源字节不符或预算不足时，不执行资源服务。原生所有者继续处理 SEH、嵌套故障和服务失败；调用返回值与 `result.call` 是整体结果，`source_status` 只记录提供层诊断，不能单独作为整次成功的判断。
+
+[提供层验证器](tools/validate_component33_resource_provider.py)与[收据](evidence/native-component33-resource-provider-validation.json)覆盖 21 个实际自有存储/owner 情境、16,416 项检查。成功选到第八笔实体、两桶碰撞后 index=1 的包及不同 ordinal 的门槛行，六组共 384 次 LOAD；该情境直接 SDK 请求合计 13,786 bytes。关闭组、缺少门槛实体/tag、代码不符、读取失败、无包、布局错误、坏版本、地址溢出、解析不可用/异常/忽略嵌套失败、LOAD 失败/异常均有覆盖。恶意巨大 count 在 65,530 bytes 停止，零资源服务调用；这不是游戏实际读取量。
+
+四组独立对照在 Unicorn 执行保存的原 acquire→release，以及**完整 package/threshold getter 指令**。成功、关闭组、缺少门槛实体、缺少 tag 四种稳定资料下，LOAD 键顺序及最终正引用计数与提供层一致；不再用测试回调替代这两个 getter。间接身份解析和 DISPOSE/LOAD 仍为替身。原 acquire/release 共查询两次 package，新实现冻结一次；相同结果只覆盖这些稳定资料，尚未证明真实解析函数无副作用或全部来源写入受同一 owner 排除。
+
+生产前仍须完成：真实身份解析与服务 ABI、所有相关写入的排除、原入口路由、RESET 生命周期、嵌入资源交接、失败补偿及共同发布。SDK 每次复制资源包和遍历门槛，加上既有每次服务的完整资源区检查，其游戏性能**未验证**。本实现可编译、离线串联通过，`installable/runtime_verified/multiplayer_verified/public_release_allowed` 继续为 false。
+
 ## 接口边界与拒绝
 
 `ep_component33_image_build` 只产生代码、回溯元数据和函数表，不读取地址指向的数据，不分配或封存可执行内存，也不发布 hook。地址无效、区域重叠或相对跳转超出范围时，输出清零并返回错误。
@@ -348,6 +370,12 @@ py -3.12 -B hellforge_multiplayer/tools/validate_component33_resource_services.p
   --resources hellforge_multiplayer/build/component33_resources_test.dll `
   --core hellforge_multiplayer/build/component33_image_test.dll `
   --out work/component33-resource-services-validation.json
+py -3.12 -B hellforge_multiplayer/tools/validate_component33_resource_provider.py `
+  --zig work/hellforge_toolchain_20261025/zig-x86_64-windows-0.17.0/zig.exe `
+  --upstream work/hellforge_upstream_20261025 `
+  --resources hellforge_multiplayer/build/component33_resources_test.dll `
+  --core hellforge_multiplayer/build/component33_image_test.dll `
+  --out work/component33-resource-provider-validation.json
 ```
 
 该命令编译和运行自有回溯测试程序，读取仓库保存的代码。`installable`、`runtime_verified`、`multiplayer_verified`、`public_release_allowed` 继续为 false。

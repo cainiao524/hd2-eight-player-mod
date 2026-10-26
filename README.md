@@ -8,7 +8,7 @@ Configurable, extensible Helldivers 2 multiplayer targeting HellForge, including
 
 **2026-10-26 方向更新：** 人數可配置、容量可繼續擴展，原生玩家 UI 與聯網／角色生命週期共同驗收。先第五人完整流程及 UI，再八名真人完整任務；八人不是長期架構上限。各子系統容量與實測人數分開記錄，見 [容量與 UI 計畫](hellforge_multiplayer/CAPACITY_UI_PLAN.zh-CN.md)。
 
-元件 33 現已新增消費同一預檢快照的內建資源執行器：先釋放啟用群組的非零鍵，再取得已預留的篩選結果，保留重複引用、延後佇列取消及原服務順序。13 個自有進程情境、451 項檢查及六組保存指令對照通過，資源區完整位元組和服務序列一致；既有完整需求與共享 owner 的 20 情境、4,302 項檢查也持續通過。遊戲快照／服務 ABI、原入口、重置、嵌入資源交接、共同發布和原生 UI 仍待完成，詳見 [目前交接](hellforge_multiplayer/HANDOFF.zh-CN.md)。
+元件 33 現已新增透過 HellForge SDK 讀取元件／資源包／門檻的提供層，接上同一 owner 內的凍結快照執行器。21 個自有記憶體情境、16,416 項檢查與四組保存完整 getter 的指令對照通過；SDK 讀取請求總和限制 64 KiB，超額在資源副作用前拒絕。外部身分解析、資源服務 ABI、全部寫入排除與原入口仍未綁定；不會在 Mod 啟動時自動啟用。第五人角色及原生 UI 尚未完成，詳見 [目前交接](hellforge_multiplayer/HANDOFF.zh-CN.md)。
 
 ## 接手入口
 
