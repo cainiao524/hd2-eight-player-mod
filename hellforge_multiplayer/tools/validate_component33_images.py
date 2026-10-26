@@ -135,7 +135,7 @@ class Fixture:
                     for name in ('primary','secondary'):
                         n.need(self.read(self.slot(name,i),LAYOUT[name][2])==self.records[name,initial[entity]],'survivor payload changed')
                 if i<d:n.need((self.int32(entity+0x14)&1)==int(i<p),'prefix flags diverged')
-        if not self.original:n.need(self.read(S+0x70,0x2B8-0x70)==b'\xa5'*(0x2B8-0x70),'old arrays modified')
+        if not self.original:n.need(self.read(S+0x70,0x2B8-0x70)==getattr(self,'old_arrays_snapshot',b'\xa5'*(0x2B8-0x70)),'old arrays modified')
         n.need(self.read(B-0x80,0x80)==b'\xb6'*0x80 and self.read(B+0x490,0x80)==b'\xb6'*0x80,'sidecar canary modified')
 
 def run(command):

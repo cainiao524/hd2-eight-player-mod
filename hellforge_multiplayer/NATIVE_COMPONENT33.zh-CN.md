@@ -109,7 +109,7 @@
 
 Windows 对 1,095 个上下文完成回溯，包括从新 leaf 返回原 owner、再恢复外层调用者的两层回溯，检查全部非易失整数寄存器及 XMM6。破坏 XMM6 保存偏移的元数据对照被识别；还分别识别旧数组路径在 `6660D5` 的无效访问，以及遗漏 EDI 恢复造成的 continuation 错误。2 组有效定位、31 组拒绝定位和空输出 API 检查通过。收据见 [native-component33-owner-validation.json](evidence/native-component33-owner-validation.json)。
 
-生产接入仍须：核对整个 owner/原回溯和目标窗口；将地址绑定到正确且已准备的转换映像及 owner 实例；在统一暂停/排空范围内协调代码与数据发布；处理未覆盖读写者、旧数据迁移和资源失败。现有 SDK 函数入口 hook 不会自动安装这个内部窗口。当前无写入安装 API，也未修改游戏。
+生产接入仍须：核对整个 owner/原回溯和目标窗口；将地址绑定到正确且已准备的转换映像及 owner 实例；在统一暂停/排空范围内协调代码与数据发布；处理未覆盖读写者、旧数据迁移的生产切换和资源失败。现有 SDK 函数入口 hook 不会自动安装这个内部窗口。当前无写入安装 API，也未修改游戏。
 
 创建后 `ADDD85` / `B62400` 两处旧数组读者已完成下述离线替换。原调用目标 `664430` 是逐实体 `RESET`；它不是批次 `reset_dense` (`665EC0`)。前一检查点 next_source_work 中的 reset_dense 命名在本轮更正，历史提交保留。
 
@@ -135,7 +135,19 @@ Windows 对 1,095 个上下文完成回溯，包括从新 leaf 返回原 owner�
 
 [准备验证](tools/validate_component33_family.py) 在自有 DLL 中通过 56 个场景、1,668 项检查：两个模拟基址的全部实际配置字节独立比对；十五处逐一配置失败和十五处逐一函数表登记失败；页保护/缓存刷新失败；注销/释放失败后的重试；重叠页与超远相对跳转拒绝；GS 元数据及旧接口拒绝对照；错误/重复句柄集合、模块固定失败；整组保留后请求 FreeLibrary；以及保留后发布替身报告失败仍保持全部依赖。实际调用 Windows 的配置、RX 保护、函数表登记和查找，只检查自有测试配置，不原生执行生成的游戏代码。只有一次明确失败的 hook 替身调用，真实 SDK hook 和游戏目标写入均为零。收据见 [native-component33-family-validation.json](evidence/native-component33-family-validation.json)。
 
-下一步是从旧四槽数据建立并验证 B、闭合其余读写者和 registry 别名，并让发布方在整次调用排空/独占范围中协调代码、回调与数据。当前 family 没有分配或拥有 S/B 数据，不改变十七入口名册组的计数，也没有完成整个 owner、创建事务或生产自动绑定。
+旧四槽本地快照迁移与 B 配置现由下述储存所有者负责；family 本身仍只拥有代码。下一步闭合其余读写者和 registry 别名，在整次调用排空/独占范围中协调代码、回调、数据和资源所有权的实际发布。不改变十七入口名册组的计数，也没有完成整个 owner、创建事务或生产自动绑定。
+
+## 旧四槽快照迁移与 B 所有者
+
+[ep_component33_storage](mod/src/ep_component33_storage.h) 接收调用方提供的本地快照，校验原 `S` 的 696 bytes、全局组件地址、invalid-ID 及最多四个实体的地址/ID/flag；不会跟随这些地址，也没有读取游戏的提供者。要求 `0≤P≤D≤T≤4`，原八桶 map 的 bounded probe、有效指针与 ID、ordinal 一一对应，dense 区 flag 与 prefix 一致。实体快照可以乱序，任意一致性失败会清零迁移输出。快照一致性不等于权威身份验证，真实提供者还必须保证读取期间没有并发写入。
+
+迁移逐字节保留全部四个旧槽，包含 inactive 槽的 opaque 字段：`S+70` 指针、`S+90` 字节、`S+98` primary、`S+1D8` secondary 分别复制到 `B+0`、`B+40`、`B+50`、`B+2D0`。B 为 1,168 bytes；新增四槽及对齐空隙清零，S 的头部、计数、map、旧数组和全局指针保持原位。secondary 中的资源引用是浅复制，没有创建、销毁或克隆资源所有权；清零的新槽也不等于已创建角色资源。
+
+新的储存所有者实际配置 RW 的 B，然后让十五个代码映像绑定这个 B。`PREPARED` 同时持有快照、数据和代码；禁止另行取消、保留或发布内部 family/code 句柄。准备/取消先清理代码，再释放 B；代码清理失败时保留 B，B 释放失败时也保留可重试记录。重叠 S 的所有权申请被拒绝。
+
+保留前，提供者必须重新取得一致快照，并在整个核对到共同发布期间排除/排空全部旧新调用。`storage_retain` 比较准备快照、当前快照和真实 B 的完整字节；原头部、opaque 数据、身份/flag 或 B 已变化时拒绝。仅实体快照排列改变可接受。成功后固定整个代码模块、十五映像和 B，后续取消被拒绝。当前只有永久保留策略：四个记录槽不会自动回收，同一 S 不能再次准备；会话重建、热卸载和资源所有权交接尚未实现。这不是生产安装或容量提交 API，也未接入 Mod 初始化。
+
+[迁移验证](tools/validate_component33_storage.py) 通过 126 个场景、1,333 项明确检查，包含 70 种旧分区/碰撞/身份排列，错误 map 与快照拒绝，两个地址布局的实际 RW/RX 配置，16 处配置失败，保护/刷新/登记失败，代码与 B 清理失败重试，快照/B 变化、固定模块失败，以及 FreeLibrary 后数据和代码仍有效。另有八次 Unicorn 连续执行，使用 C++ 迁移输出完成四组“迁移→追加→移除”，包含由四槽跨到第五槽，并核对旧数组、有效身份及全部记录。生成的游戏代码只在模拟器执行；Windows 测试只操作自有配置。收据为 [native-component33-storage-validation.json](evidence/native-component33-storage-validation.json)。
 
 ## 接口边界与拒绝
 
@@ -180,8 +192,8 @@ Windows 验证只把候选字节放入 `PAGE_READWRITE`，注册临时函数表�
 ## 下一位接手者的顺序
 
 1. 读取上述核心收据、创建分派收据及 [status.json](status.json)，确认源码和构建指纹相符。
-2. 内联批次窗口及创建后的 `ADDD85`/`B62400` 已有离线接入。十四个核心映像、读取桥和三个窗口计划已接入同组准备/封存及发布前寿命保留；继续补旧数据迁移与实际发布，发布前闭合其余必需 byte/secondary 读写和 registry 别名，并核实真实调用方 flag、并发与生命周期契约。分类和第二/第三回调已完成本文所列离线验证，但分类/属性分配失败补偿、调用方 flag/通知以及从旧四槽数据建立 `B` 的生命周期和所有权仍待实现。
-3. 在已实现的同组准备基础上完成数据所有权、全调用独占与共同发布；整组寿命保留不等于激活，当前十四个映像不得单独激活，不计入已存在的十七个共同入口。
+2. 内联批次窗口及创建后的 `ADDD85`/`B62400` 已有离线接入。十四个核心映像、读取桥和三个窗口计划已接入同组准备/封存及发布前寿命保留；本地快照迁移与实际 B 所有者已实现，继续补一致快照提供者与实际发布，发布前闭合其余必需 byte/secondary 读写和 registry 别名，并核实真实调用方 flag、并发与生命周期契约。分类和第二/第三回调已完成本文所列离线验证，但分类/属性分配失败补偿、调用方 flag/通知以及从旧四槽切到 `B` 的生产生命周期及嵌入资源所有权仍待实现。
+3. 在已实现的同组准备与 B 所有者基础上完成全调用独占、嵌入资源交接与共同发布；整组寿命保留不等于激活，当前十四个映像不得单独激活，不计入已存在的十七个共同入口。
 4. 对剩余固定四槽元件建立相同的读写闭合验证，并在 `FDC140` 写入前完成共同接纳或实现全部副作用补偿。保留资源类型无效时的 `7FFF` 残留反例。
 5. 按[容量与原生 UI 计划](CAPACITY_UI_PLAN.zh-CN.md)继续生产身份、内存所有权和角色控制/复制；第五人全流程与原生 UI 先验收，再完成八人主要里程碑，并按证据扩展人数。任何游戏访问都需要新的明确授权；本轮授权余额为零。
 
@@ -212,6 +224,11 @@ py -3.12 -B hellforge_multiplayer/tools/validate_component33_transition.py `
   --library hellforge_multiplayer/build/component33_image_test.dll `
   --zig work/hellforge_toolchain_20261025/zig-x86_64-windows-0.17.0/zig.exe `
   --out work/component33-transition-validation.json
+py -3.12 -B hellforge_multiplayer/tools/validate_component33_storage.py `
+  --zig work/hellforge_toolchain_20261025/zig-x86_64-windows-0.17.0/zig.exe `
+  --upstream work/hellforge_upstream_20261025 `
+  --core hellforge_multiplayer/build/component33_image_test.dll `
+  --out work/component33-storage-validation.json
 ```
 
 该命令编译和运行自有回溯测试程序，读取仓库保存的代码。`installable`、`runtime_verified`、`multiplayer_verified`、`public_release_allowed` 继续为 false。
