@@ -1,6 +1,6 @@
 {
   "schema": "hd2_hellforge_migration_validation_v1",
-  "verified_at_utc": "2026-10-26T06:06:01.018412+00:00",
+  "verified_at_utc": "2026-10-26T07:05:17.110479+00:00",
   "upstream_commit": "a4dd089eb56cdd5cd96c3cefe6e80eba5848d6fa",
   "sdk": 13,
   "game_build": "25480438",
@@ -33,6 +33,7 @@
   "native_component33_owner_template_sha256": "10670339a52ef4c846da016b14c4ed0995be0d67300b6e7b8a1665143438175b",
   "native_component33_readers_template_sha256": "5865f9d16c05b75398ba4fbf8139591623e13febffda218fd9a3523a6911d2c5",
   "native_component33_consumers_template_sha256": "46d91cd97d1e51b3afab8201c7d45edbaad7ce0a6743bb62bc3be0e013e89993",
+  "native_component33_outer_template_sha256": "2458ca675a33548a7b03a34bcdc4c51a3783afad3a69c282f8a74bf0ad2866b3",
   "source_sha256": {
     "mod/hellforge-mod.json": "b48339cd86b3ca4ca00011aca96b50b5609ecf4c7f30df32d95c600a001453a5",
     "mod/src/core/ep_capacity_contract.cpp": "e1f21698de8515819b5e91137e42a188c4bdec298111bc64c34f4b99922f92ef",
@@ -46,10 +47,13 @@
     "mod/src/ep_component33_consumers.cpp": "f9364b323edb9d3ed1bb025fedc5a14785b3eb8e34721cc7527d9ac8c35d71a4",
     "mod/src/ep_component33_consumers.h": "61d02eb54160562c7b28750af863f28d69aa45e655a793607a6e4c66c4fef8be",
     "mod/src/ep_component33_consumers_template.h": "46d91cd97d1e51b3afab8201c7d45edbaad7ce0a6743bb62bc3be0e013e89993",
-    "mod/src/ep_component33_family.cpp": "fed281a0f33288c1b49af3edeff11e70fec0c134d67e9d7a0e0d984a2ea27e8f",
-    "mod/src/ep_component33_family.h": "2cfd5ab2498d659183f138f6ebb26b56ec0d6bf2f9e50e6ad4f7305df45b016b",
+    "mod/src/ep_component33_family.cpp": "89657b1dc1f23a43b97bd11e47d28e2624511436b20b8deb4a7f2aa10774da90",
+    "mod/src/ep_component33_family.h": "be6fa7a008e9f046f38ddde0aa58e5e2cf5ed5bfb94377893e0337142a11a0d2",
     "mod/src/ep_component33_image.cpp": "626d8de95cdb2e3d2ee28db38345df6f01d83bbb5ca3d4ce5aa8553be9d32b4a",
     "mod/src/ep_component33_image.h": "7d15423610444441ac945d498559e326220bd55ad46986e4ab01d11a769be480",
+    "mod/src/ep_component33_outer.cpp": "385279cd689b0ca374fc1b73f6866013afb931e943ec5dfde28024624d8a38a7",
+    "mod/src/ep_component33_outer.h": "1cd3433350fc0f591dc13d3c2b31bcec64f974cd5806d6424d1b910b22cc9d23",
+    "mod/src/ep_component33_outer_template.h": "2458ca675a33548a7b03a34bcdc4c51a3783afad3a69c282f8a74bf0ad2866b3",
     "mod/src/ep_component33_owner_template.h": "10670339a52ef4c846da016b14c4ed0995be0d67300b6e7b8a1665143438175b",
     "mod/src/ep_component33_readers.cpp": "12794d3c888be842f656a4a481a2dd2245cf3a9170ab01f44a928440c73c6858",
     "mod/src/ep_component33_readers.h": "a9c6b798cb56bce08e718f57efe556bd15977a3177f448d7318d3d23710ca7b7",
@@ -104,7 +108,7 @@
     "tests/adapter_test.cpp": "d663c6c0c988c4adc47b597dfcb213d24869cc9838e628ae9ecac9f5f4028b2f",
     "tests/backend/Program.cs": "79ef51fd5827f59cd3007d271e3bf17000b6898914eb6bbee5fdace63b8b61c8",
     "tests/backend/Backend.csproj": "04026b5adc828a3e86cd100d0cafa443397669660a83044882256e8aee38be0b",
-    "tools/build_offline.py": "b8cf3238cd058d89b5afcf522ee849f78c1d55e39f65c684dbc43efa20de55fe",
+    "tools/build_offline.py": "b9478cd5681a2923f53b9be1a4b39ad9b35030f72a4f414899e74610b32e41bb",
     "upstream.lock.json": "1d9274d0040561997c6a3d3ba34279f5e8c83bd788e38cd2f97a99fb946ed0f3",
     "tools/generate_property_templates.py": "4d855e6eb2f0862f618db1b77df769c0b05a4232b66ebd59009abda399d18d26",
     "tools/generate_getter_template.py": "63441e7e961c2f07d04027bf7cceef677b88c15215845a1b23f3504727a22b95",
@@ -123,20 +127,22 @@
     "native-component33-readers.lock.json": "32813972fd78649230245c5a0bc600a621ea8800f3243cc2c87b3b84dcaa5d08",
     "tools/native_component33_readers.py": "672143f9ddbdc75ce88fc402917b0661a3fb75d92f943269469eb1e66c8c4678",
     "native-component33-consumers.lock.json": "1b2fba2a5dc2267fa9a1585ab9bd27888c7a5a9c2441faa278e35ea85beb4a12",
-    "tools/native_component33_consumers.py": "d2ed688651920b1b5c53f1fc9ff3648164d49579ec33383ae80e700cd8b3a1b3"
+    "tools/native_component33_consumers.py": "d2ed688651920b1b5c53f1fc9ff3648164d49579ec33383ae80e700cd8b3a1b3",
+    "native-component33-outer.lock.json": "fd88538a474d72c419aadd1045ac0721d61692bcb4ba9ad50fe1ab285456583c",
+    "tools/native_component33_outer.py": "69d218d715c32dd0925f5444350c865ecb76a2478a8b26dcb2c97374b8d1e063"
   },
   "artifacts": {
     "ep_hellforge.dll": {
-      "bytes": 199168,
-      "sha256": "5befdbe36146c2552c69f9ecc8830dddea396aa67cd03375cafa01971ec1c6b1"
+      "bytes": 204288,
+      "sha256": "4e192c24e6eb3225640cae3fad12e0b8decfb3c016e155cc8637e744e7d36dfe"
     },
     "adapter_test.exe": {
-      "bytes": 534528,
-      "sha256": "24948f0bd5c3dc1baca0326ed4f76654039a102fa6426eeca975cc55dad6271b"
+      "bytes": 539648,
+      "sha256": "88c8c2dc40f0e4186fd8252c118777b039aeaaf5afbb6170cb2ca20f0a73d54a"
     },
     "eight-player-research-hellforge-0.1.0-source.zip": {
-      "bytes": 116144,
-      "sha256": "180946878bdcfd1f936afba185f9745478d0a89f6d956caa38dff55ad0113d48"
+      "bytes": 119624,
+      "sha256": "090a654cb0726cf02a8d7d6caf9462becb9bc1155cad97928c5efa5c7b5bd124"
     }
   },
   "game_started": false,

@@ -41,6 +41,7 @@ static int C33Cancel(C33Family* g)
         g->info.state=EP_C33_CLEANUP_REQUIRED;
         memset(&g->info.owner_window,0,sizeof(g->info.owner_window));
         memset(g->info.reader_windows,0,sizeof(g->info.reader_windows));
+        memset(g->info.outer_windows,0,sizeof(g->info.outer_windows));
     }
     return ok;
 }
@@ -79,7 +80,7 @@ EpPropertyResult ep_component33_family_prepare(const HfApi* api,HfMod* owner,con
     ReleaseSRWLockExclusive(&c33Lock);if (!g) return EP_PROPERTY_RESERVE;
     EpPropertyResult result=EP_PROPERTY_OK;EpSessionCodeInfo code[EP_C33_FAMILY_IMAGES]={};
     for (unsigned i=0;i<EP_C33_FAMILY_IMAGES;i++) {
-        uint32_t bytes=i<14 ? ep_component33_image_bytes(i+1) : i==14 ? ep_component33_readers_image_bytes() : ep_component33_consumer_bytes(i-14);
+        uint32_t bytes=i<14 ? ep_component33_image_bytes(i+1) : i==14 ? ep_component33_readers_image_bytes() : i<19 ? ep_component33_consumer_bytes(i-14) : ep_component33_outer_image_bytes();
         if (!ep_session_code_reserve(api,owner,a.desired_code[i],bytes,&code[i])) { result=EP_PROPERTY_RESERVE;break; }
         AcquireSRWLockExclusive(&c33Lock);g->info.code[i]=code[i];ReleaseSRWLockExclusive(&c33Lock);
     }
@@ -91,11 +92,15 @@ EpPropertyResult ep_component33_family_prepare(const HfApi* api,HfMod* owner,con
         for (unsigned j=1;j<4;j++) if (C33Overlap(code[i].base,n,external[j][0],external[j][1]) ||
             C33Overlap(code[i].next_pointer,8,external[j][0],external[j][1])) result=EP_PROPERTY_OVERLAP;
     }
-    EpComponent33OwnerPatch owner_window={};EpComponent33ReaderPlan readers={};
+    EpComponent33OwnerPatch owner_window={};EpComponent33ReaderPlan readers={};EpComponent33OuterPlan outer={};
     if (result==EP_PROPERTY_OK) result=ep_component33_owner_patch_build(a.game_base,code[13].base,&owner_window);
     if (result==EP_PROPERTY_OK) {
         EpComponent33ReaderAddresses r={a.game_base,code[14].base,a.component_address,a.storage_address,code[7].base,a.reject_address};
         result=ep_component33_readers_build(&r,&readers);
+    }
+    if (result==EP_PROPERTY_OK) {
+        EpC33ConsumerAddresses r={a.game_base,code[19].base,a.component_address,a.storage_address,code[18].base,a.reject_address};
+        result=ep_component33_outer_build(&r,&outer);
     }
     for (unsigned i=0;result==EP_PROPERTY_OK && i<EP_C33_FAMILY_IMAGES;i++) {
         EpComponent33Image image={};
@@ -103,10 +108,10 @@ EpPropertyResult ep_component33_family_prepare(const HfApi* api,HfMod* owner,con
             EpComponent33Addresses b={a.game_base,code[i].base,a.component_address,a.storage_address,code[0].base,a.reject_address};
             result=ep_component33_image_build(i+1,&b,&image);
         } else if (i==14) image=readers.bridge;
-        else {
+        else if (i<19) {
             EpC33ConsumerAddresses b={a.game_base,code[i].base,a.component_address,a.storage_address,code[18].base,a.reject_address};
             result=ep_component33_consumer_build(i-14,&b,&image);
-        }
+        } else image=outer.bridge;
         if (result!=EP_PROPERTY_OK) break;
         int sealed;
         if (i+1==EP_COMPONENT33_PROPERTY) {
@@ -118,6 +123,7 @@ EpPropertyResult ep_component33_family_prepare(const HfApi* api,HfMod* owner,con
     AcquireSRWLockExclusive(&c33Lock);
     if (result==EP_PROPERTY_OK) {
         g->info.owner_window=owner_window;memcpy(g->info.reader_windows,readers.windows,sizeof(readers.windows));
+        memcpy(g->info.outer_windows,outer.windows,sizeof(outer.windows));
         g->info.state=EP_C33_PREPARED;
     } else if (!C33Cancel(g)) result=EP_PROPERTY_CLEANUP;
     if (g->info.handle) C33Info(g,out);

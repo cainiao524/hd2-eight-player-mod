@@ -2,11 +2,12 @@
 #define EP_COMPONENT33_FAMILY_H
 #include "ep_component33_readers.h"
 #include "ep_component33_consumers.h"
+#include "ep_component33_outer.h"
 #include "ep_session_code.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
-enum { EP_C33_FAMILY_IMAGES=19, EP_C33_FAMILY_SLOTS=4,
+enum { EP_C33_FAMILY_IMAGES=20, EP_C33_FAMILY_SLOTS=4,
     EP_C33_PREPARING=1, EP_C33_PREPARED, EP_C33_CLEANUP_REQUIRED, EP_C33_RETAINED };
 typedef struct EpComponent33FamilyBindings {
     uint64_t game_base,component_address,storage_address,reject_address;
@@ -18,11 +19,12 @@ typedef struct EpComponent33FamilyInfo {
     EpSessionCodeInfo code[EP_C33_FAMILY_IMAGES];
     EpComponent33OwnerPatch owner_window;
     EpComponent33ReaderWindow reader_windows[2];
+    EpComponent33ReaderWindow outer_windows[5];
 } EpComponent33FamilyInfo;
-/* Reserves fourteen core images, the shared reader bridge and four resource/
- * update consumers before any
+/* Reserves fourteen core images, the shared reader bridge, four resource/
+ * update consumers and the outer getter bridge before any
  * emission. Uses this set's mover, reset and promotion addresses. PREPARED
- * means all pages are RX and every unwind table is registered, with all three
+ * means all pages are RX and every unwind table is registered, with all eight
  * internal window plans bound to those exact pages. No game addresses are
  * dereferenced. No hook, window, registry, data or active switch is installed.
  * Desired allocations must permit all pinned rel32s; zero requests Windows'
