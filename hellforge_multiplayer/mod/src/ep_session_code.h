@@ -70,6 +70,10 @@ int ep_session_code_seal_loadout_refresh(HfMod*, uint64_t handle, const void* im
  * GS cookie +1460h; four chains must retain their captured parent topology. */
 int ep_session_code_seal_loadout_records(HfMod*, uint64_t handle, const void* image,
     uint32_t bytes, uint32_t table_offset, const EpSessionGsCheck*);
+/* Main/local frame pair: twelve rows, exact prologue, GS cookie +3F0h and
+ * captured parent topology for the main and seven local fragments. */
+int ep_session_code_seal_loadout_frame(HfMod*, uint64_t handle, const void* image,
+    uint32_t bytes, uint32_t table_offset, const EpSessionGsCheck*);
 int ep_session_code_info(HfMod*, uint64_t handle, EpSessionCodeInfo*);
 /* Before calling hook_ex, permanently pin this module and the image. Even a
  * reported hook failure can have exposed code: keep it for process lifetime.

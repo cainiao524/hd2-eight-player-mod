@@ -44,6 +44,7 @@ int ep_loadout_maps_initialize(EpLoadoutMaps*,uint32_t capacity,uint32_t local_n
 EpPropertyResult ep_loadout_consumers_build(const EpLoadoutConsumerAddresses*,EpLoadoutConsumerImage*);
 /* Shared numerical binding validation; does not dereference any address. */
 EpPropertyResult ep_loadout_consumers_validate(const EpLoadoutConsumerAddresses*);
+EpPropertyResult ep_loadout_consumers_validate_span(const EpLoadoutConsumerAddresses*,uint32_t code_bytes);
 /* Numerical, 16-byte-aligned sibling entry, outside this code/data binding.
  * Proves no ownership/identity or target contents. Group preparation supplies
  * links from the actual sibling image offsets and holds their common lifetime. */

@@ -26,6 +26,8 @@ static EpPropertyResult EpLoadoutValidate(const EpLoadoutConsumerAddresses* inpu
 }
 EpPropertyResult ep_loadout_consumers_validate(const EpLoadoutConsumerAddresses* input)
 {return EpLoadoutValidate(input,EP_LOADOUT_CONSUMER_BYTES);}
+EpPropertyResult ep_loadout_consumers_validate_span(const EpLoadoutConsumerAddresses* input,uint32_t code_bytes)
+{return !code_bytes || code_bytes>65536 ? EP_PROPERTY_ARGUMENT : EpLoadoutValidate(input,code_bytes);}
 EpPropertyResult ep_loadout_consumers_validate_link(const EpLoadoutConsumerAddresses* input,uint64_t entry)
 {
     EpPropertyResult status=ep_loadout_consumers_validate(input);if (status!=EP_PROPERTY_OK) return status;

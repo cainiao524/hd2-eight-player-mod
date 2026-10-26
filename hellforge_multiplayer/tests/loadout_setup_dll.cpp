@@ -12,12 +12,12 @@ extern "C" __declspec(dllexport) int setup_group(const EpLoadoutGroupAddresses* 
     HfMod* owner=(HfMod*)(uintptr_t)0x9183;EpLoadoutGroup group={};
     if (ep_loadout_group_prepare(&api,owner,a,&group)!=EP_PROPERTY_OK) return 1;
     int failure=group.state!=EP_LOADOUT_GROUP_READY || group.capacity!=a->setup.common.lifecycle.capacity || hooks;
-    const EpSessionCodeInfo codes[]={group.code[0],group.code[1],group.code[2],group.code[3],group.code[4],group.code[5]};
+    const EpSessionCodeInfo codes[]={group.code[0],group.code[1],group.code[2],group.code[3],group.code[4],group.code[5],group.code[6]};
     for (const auto& code:codes) if (code.state!=EP_CODE_READY || !code.registered || code.pinned) failure=2;
     const uint64_t entries[]={group.constructor,group.release,group.alternate_release,group.transition,
-                              group.update,group.lookup,group.action,group.setup,group.input,group.edit,group.close,group.refresh,group.sync_records};
-    for (unsigned i=0;i<13;i++) {
-        const auto& code=codes[i<4 ? 0 : i<7 ? 1 : i==7 ? 2 : i<11 ? 3 : i==11 ? 4 : 5];
+                              group.update,group.lookup,group.action,group.setup,group.input,group.edit,group.close,group.refresh,group.sync_records,group.frame,group.local_update};
+    for (unsigned i=0;i<15;i++) {
+        const auto& code=codes[i<4 ? 0 : i<7 ? 1 : i==7 ? 2 : i<11 ? 3 : i==11 ? 4 : i==12 ? 5 : 6];
         if (entries[i]<code.base || entries[i]>=code.base+code.bytes) failure=3;
     }
     if (ep_loadout_group_discard(owner,&group)!=EP_PROPERTY_OK || group.state!=EP_LOADOUT_GROUP_EMPTY) return 4;

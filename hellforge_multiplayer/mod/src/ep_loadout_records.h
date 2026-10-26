@@ -29,11 +29,12 @@ typedef struct EpLoadoutRecordsImage {
  * bytes use existing stack slack, leaving the original 1490h GS/probe frame.
  * Four inner equipment choices remain four. Unseen record peers are cleared.
  * No game discovery, reads, initialization, hooks or automatic invocation.
- * The main caller 1469A9F, other source writers, owner exclusion and common
+ * The frame group routes caller 1469A9F. Other source writers, exclusion and common
  * activation remain required. READY does not enable a working game UI. */
 EpPropertyResult ep_loadout_records_build(const EpLoadoutRecordsAddresses*,EpLoadoutRecordsImage*);
 /* Numerical range validation only; never dereferences supplied addresses. */
 EpPropertyResult ep_loadout_records_validate(const EpLoadoutRecordsAddresses*);
+EpPropertyResult ep_loadout_records_validate_span(const EpLoadoutRecordsAddresses*,uint32_t code_bytes);
 EpPropertyResult ep_loadout_records_prepare(const HfApi*,HfMod*,const EpLoadoutRecordsAddresses*,EpSessionCodeInfo*);
 #ifdef __cplusplus
 }

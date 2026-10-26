@@ -5,10 +5,12 @@ struct EpLoadoutRecordsFixup {uint32_t offset,next,key,kind;int64_t add;};
 #include "ep_loadout_records_template.h"
 static_assert(EP_LOADOUT_RECORDS_BYTES==EP_LOADOUT_CONSUMER_BYTES,"Shared binding span");
 EpPropertyResult ep_loadout_records_validate(const EpLoadoutRecordsAddresses* a)
+{return ep_loadout_records_validate_span(a,EP_LOADOUT_RECORDS_BYTES);}
+EpPropertyResult ep_loadout_records_validate_span(const EpLoadoutRecordsAddresses* a,uint32_t code_bytes)
 {
-    EpPropertyResult result=ep_loadout_consumers_validate(a ? &a->common : nullptr);if (result!=EP_PROPERTY_OK) return result;
+    EpPropertyResult result=ep_loadout_consumers_validate_span(a ? &a->common : nullptr,code_bytes);if (result!=EP_PROPERTY_OK) return result;
     const auto& b=a->common;const auto& l=b.lifecycle;const auto& s=a->source;const uint64_t n=l.capacity;
-    const uint64_t ranges[][3]={{l.game,0x4000000,4096},{l.code,EP_LOADOUT_RECORDS_BYTES,16},
+    const uint64_t ranges[][3]={{l.game,0x4000000,4096},{l.code,code_bytes,16},
         {l.screen,EP_LOADOUT_SCREEN_BYTES,8},{l.records,n*EP_LOADOUT_RECORD_BYTES,16},
         {l.widgets,n*EP_LOADOUT_WIDGET_BYTES,8},{l.reject,1,1},{b.forward_map,32,4},{b.inverse_map,32,4},
         {b.roster,0xe8,8},{b.roster_storage,0x680,16},
