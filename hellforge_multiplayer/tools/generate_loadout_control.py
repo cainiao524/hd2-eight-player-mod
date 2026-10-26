@@ -69,8 +69,8 @@ def build():
             elif a==0x147070a:
                 need(text=='mov dword ptr [rcx + 0x7288c], 0xbf800000','Changed local selection timer')
                 absolute(11,4,0x1ee14);blob.extend(b'\x41\xc7\x03\x00\x00\x80\xbf')
-            elif ins.mnemonic=='call' and ins.operands[0].type==X86_OP_IMM and ins.operands[0].imm in (0x1470d90,0x146d9b0,0x146e0a0):
-                fix(b'\xe8'+bytes(4),1,{0x1470d90:11,0x146d9b0:12,0x146e0a0:13}[ins.operands[0].imm],0)
+            elif ins.mnemonic=='call' and ins.operands[0].type==X86_OP_IMM and ins.operands[0].imm in (0x1470d90,0x146d9b0,0x146e0a0,0x1470740):
+                fix(b'\xe8'+bytes(4),1,{0x1470d90:11,0x146d9b0:12,0x146e0a0:13,0x1470740:14}[ins.operands[0].imm],0)
             elif (ins.mnemonic=='call' or ins.mnemonic.startswith('j')) and ins.operands[0].type==X86_OP_IMM:
                 raw=bytes(ins.bytes);target=ins.operands[0].imm
                 op=raw[:1] if raw[0] in (0xe8,0xe9) else b'\xe9' if raw[0]==0xeb else bytes((0x0f,raw[0]+0x10)) if 0x70<=raw[0]<=0x7f else raw[:2]

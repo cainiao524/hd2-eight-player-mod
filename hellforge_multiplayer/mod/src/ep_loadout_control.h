@@ -7,7 +7,7 @@ extern "C" {
 #define EP_LOADOUT_CONTROL_BYTES 8192u
 typedef struct EpLoadoutControlAddresses {
     EpLoadoutConsumerAddresses common;
-    uint64_t mode,input,edit;
+    uint64_t mode,input,edit,return_screen;
 } EpLoadoutControlAddresses;
 typedef struct EpLoadoutControlImage {
     uint32_t bytes,code_bytes,unwind_offset,table_offset,function_count;
@@ -20,7 +20,7 @@ typedef struct EpLoadoutControlImage {
  * scan use B storage. Leave cleanup covers capacity widgets, with native
  * branch-specific unwind saves preserved. State/event/input-queue limits
  * retain their native meanings. The first widget remains the local widget.
- * Native callees including 1470740/146AC60, engine services, source/owner
+ * The return action binds the shared state image. Engine services, source/owner
  * exclusion and external screen-input callers still require routing/review
  * before publication. Preparation never executes, installs or hooks code,
  * reads a game, or proves gameplay/service capacities. */

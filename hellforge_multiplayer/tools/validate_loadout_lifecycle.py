@@ -20,6 +20,7 @@ import generate_loadout_lifecycle as g
 
 GAME,CODE,SCREEN,RECORDS,WIDGETS,REJECT = 0x180000000,0x190000000,0x220000000,0x230000000,0x240000000,0x190100000
 STACK,STOP,ENGINE = 0x280000000,0x190200000,0x290000000
+STATE_STUB=CODE+0xb0000
 SP=STACK+0x1008
 NAMES=('rbx','rbp','rsi','rdi','r12','r13','r14','r15')
 R=lambda name: getattr(reg, 'UC_X86_REG_'+name.upper())
@@ -80,6 +81,7 @@ class Fixture:
                             self.write(GAME+target,capture.read(target,operand.size))
                         else:
                             self.write(GAME+target,U64(ENGINE) if operand.size==8 else U32(0xffffffff))
+        self.external.add(STATE_STUB);self.map(STATE_STUB,1);self.write(STATE_STUB,b'\xc3')
         self.map(CODE,image.bytes);self.write(CODE,bytes(image.data[:image.bytes]))
         if kind in (1,2):
             self.write(SCREEN+0xd2940,U64(variant))
@@ -146,7 +148,7 @@ class Fixture:
                 rsp=self.value('rsp');scratch=struct.unpack('<Q',self.read(rsp+0x38,8))[0]
                 self.transition_args.append((self.value('rcx'),self.value('xmm1'),self.value('xmm2'),self.value('r9')&255,
                                              self.read(rsp+0x28,4),self.read(rsp+0x30,4),self.read(scratch,16)))
-            self.calls.append((address-GAME,self.value('rcx'),self.value('rdx')))
+            self.calls.append((0x146ac60 if address==STATE_STUB else address-GAME,self.value('rcx'),self.value('rdx')))
             if address in self.external:
                 # Clobber caller-saved integer registers, preserving the ABI's
                 # nonvolatiles; then RET executes normally, including tailcalls.
@@ -201,7 +203,7 @@ def widget_choices(artifact,dll,image):
 
 
 def transition_smoke(artifact,dll):
-    image=Image();g.need(dll.loadout_build(c.byref(addresses(8)),c.byref(image))==0,'Transition image rejected')
+    image=Image();g.need(dll.loadout_build(c.byref(addresses(8)),STATE_STUB,c.byref(image))==0,'Transition image rejected')
     old=Fixture(artifact,dll,image,4,3,0,original=True,unwind_points=set()).run()
     points={artifact['mapping'][0x1470b60],artifact['mapping'][0x1470d0d]}
     new=Fixture(artifact,dll,image,8,3,0,unwind_points=points).run()
@@ -219,7 +221,7 @@ def transition_smoke(artifact,dll):
             g.need(f.read(SCREEN+begin,end-begin)==f.before_screen[begin:end],'Transition directly altered inline arrays')
     g.need(new.read(new.cleanup+0x1f8070,4)==U32(0) and new.read(new.cleanup+0x1f8012,1)==b'\0','User-state cleanup skipped')
     g.need(not points and new.unwinds==2,'Required unwind/handler checks not reached')
-    g.need(dll.loadout_prepare_test(c.byref(addresses(8)))==0,'Transition READY preparation/cleanup failed')
+    g.need(dll.loadout_prepare_test(c.byref(addresses(8)),STATE_STUB)==0,'Transition READY preparation/cleanup failed')
     return dict(passed=True,scope='eight-slot transition smoke',game_access=False,runtime_verified=False)
 
 
@@ -235,18 +237,18 @@ def main():
              g.PROJECT/'mod/src/ep_session_code.cpp',g.PROJECT/'mod/src/ep_loadout_lifecycle.cpp',g.PROJECT/'tests/loadout_lifecycle_dll.cpp','-o',args.library.resolve()]
         proc=subprocess.run(list(map(str,cmd)),capture_output=True,text=True);g.need(proc.returncode==0,proc.stdout+proc.stderr)
     dll=c.CDLL(str(args.library.resolve()))
-    dll.loadout_build.argtypes=[c.POINTER(Addresses),c.POINTER(Image)];dll.loadout_build.restype=c.c_int
-    dll.loadout_prepare_test.argtypes=[c.POINTER(Addresses)];dll.loadout_prepare_test.restype=c.c_int
+    dll.loadout_build.argtypes=[c.POINTER(Addresses),c.c_uint64,c.POINTER(Image)];dll.loadout_build.restype=c.c_int
+    dll.loadout_prepare_test.argtypes=[c.POINTER(Addresses),c.c_uint64];dll.loadout_prepare_test.restype=c.c_int
     dll.loadout_unwind.argtypes=[c.POINTER(Image),c.c_uint32,c.c_int32,c.POINTER(c.c_uint64),c.POINTER(c.c_ubyte),c.c_uint64];dll.loadout_unwind.restype=c.c_int
     artifact=g.build();smoke=transition_smoke(artifact,dll)
     if not args.full:print(json.dumps(smoke));return
     scenarios=unwinds=0
     for kind in range(3):
         for variant in range(2 if kind else 1):
-            image=Image();g.need(dll.loadout_build(c.byref(addresses(4)),c.byref(image))==0,'Four-slot image rejected')
+            image=Image();g.need(dll.loadout_build(c.byref(addresses(4)),STATE_STUB,c.byref(image))==0,'Four-slot image rejected')
             original=Fixture(artifact,dll,image,4,kind,variant,original=True).run();old_groups,old_other=original.groups()
             for capacity in (1,4,5,8):
-                a=addresses(capacity);image=Image();g.need(dll.loadout_build(c.byref(a),c.byref(image))==0,'Configured image rejected')
+                a=addresses(capacity);image=Image();g.need(dll.loadout_build(c.byref(a),STATE_STUB,c.byref(image))==0,'Configured image rejected')
                 f=Fixture(artifact,dll,image,capacity,kind,variant).run();groups,other=f.groups()
                 g.need(other==old_other,'Nonplayer callback sequence changed')
                 for i,group in enumerate(groups):
@@ -283,11 +285,11 @@ def main():
     a=addresses();a.code=0x700000000000;cases.append(a)
     for a in cases:
         image=Image();c.memset(c.byref(image),0xa5,c.sizeof(image))
-        g.need(dll.loadout_build(c.byref(a),c.byref(image))!=0 and bytes(image)==bytes(c.sizeof(image)),'Invalid layout partly emitted')
+        g.need(dll.loadout_build(c.byref(a),STATE_STUB,c.byref(image))!=0 and bytes(image)==bytes(c.sizeof(image)),'Invalid layout partly emitted')
         rejections+=1
-    image=Image();g.need(dll.loadout_build(None,c.byref(image))!=0 and dll.loadout_build(c.byref(addresses()),None)!=0,'Null API accepted')
-    for capacity in (1,4,5,8):g.need(dll.loadout_prepare_test(c.byref(addresses(capacity)))==0,'READY allocation/unwind/discard failed')
-    image=Image();g.need(dll.loadout_build(c.byref(addresses()),c.byref(image))==0,'Choice fixture image rejected')
+    image=Image();g.need(dll.loadout_build(None,STATE_STUB,c.byref(image))!=0 and dll.loadout_build(c.byref(addresses()),STATE_STUB,None)!=0,'Null API accepted')
+    for capacity in (1,4,5,8):g.need(dll.loadout_prepare_test(c.byref(addresses(capacity)),STATE_STUB)==0,'READY allocation/unwind/discard failed')
+    image=Image();g.need(dll.loadout_build(c.byref(addresses()),STATE_STUB,c.byref(image))==0,'Choice fixture image rejected')
     choices=widget_choices(artifact,dll,image)
     print(json.dumps(dict(passed=True,lifecycle_scenarios=scenarios,invalid_layouts=rejections+2,windows_unwind_contexts=unwinds,ready_lifecycles=4,widget_choice_scenarios=choices,game_access=False)))
 

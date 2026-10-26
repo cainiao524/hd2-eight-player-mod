@@ -1,18 +1,18 @@
 #include "ep_loadout_lifecycle.h"
 #include <windows.h>
 #include <string.h>
-extern "C" __declspec(dllexport) int loadout_build(const EpLoadoutAddresses* a,EpLoadoutImage* b)
-{return ep_loadout_lifecycle_build(a,b);}
+extern "C" __declspec(dllexport) int loadout_build(const EpLoadoutAddresses* a,uint64_t state_change,EpLoadoutImage* b)
+{return ep_loadout_lifecycle_build(a,state_change,b);}
 static const char* TestBuild() {return "25480438";}
 static int NoHooks(HfMod*,uintptr_t,void*,void**,int32_t) {return 1;}
-extern "C" __declspec(dllexport) int loadout_prepare_test(const EpLoadoutAddresses* input)
+extern "C" __declspec(dllexport) int loadout_prepare_test(const EpLoadoutAddresses* input,uint64_t state_change)
 {
     HfApi api={};api.size=sizeof(api);api.version=13;api.build_id=TestBuild;api.hook_ex=NoHooks;
     auto* mod=(HfMod*)(uintptr_t)0x9181;EpSessionCodeInfo code={};EpLoadoutImage image={};
-    int status=ep_loadout_lifecycle_prepare(&api,mod,input,&code);
+    int status=ep_loadout_lifecycle_prepare(&api,mod,input,state_change,&code);
     if (status!=EP_PROPERTY_OK) return 1;
     int failure=0;EpLoadoutAddresses a=*input;a.code=code.base;
-    if (ep_loadout_lifecycle_build(&a,&image)!=EP_PROPERTY_OK || code.state!=EP_CODE_READY || !code.registered || code.pinned ||
+    if (ep_loadout_lifecycle_build(&a,state_change,&image)!=EP_PROPERTY_OK || code.state!=EP_CODE_READY || !code.registered || code.pinned ||
         memcmp((void*)code.base,image.data,image.bytes)) failure=2;
     for (unsigned i=0;i<image.function_count && !failure;i++) {
         const auto* row=(const RUNTIME_FUNCTION*)(image.data+image.table_offset)+i;DWORD64 base=0;

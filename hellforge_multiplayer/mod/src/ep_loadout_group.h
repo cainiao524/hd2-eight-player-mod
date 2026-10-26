@@ -7,6 +7,7 @@
 #include "ep_loadout_frame.h"
 #include "ep_loadout_mode.h"
 #include "ep_loadout_control.h"
+#include "ep_loadout_state.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -14,21 +15,23 @@ typedef struct EpLoadoutGroupAddresses {
     EpLoadoutSetupAddresses setup;
     uint64_t lifecycle_code,consumers_code,interactions_code,refresh_code;
     EpLoadoutRecordSource record_source;
-    uint64_t records_code,frame_code,mode_code,control_code;
+    uint64_t records_code,frame_code,mode_code,control_code,state_code;
 } EpLoadoutGroupAddresses;
 enum {EP_LOADOUT_GROUP_EMPTY,EP_LOADOUT_GROUP_READY,EP_LOADOUT_GROUP_CLEANUP};
 typedef struct EpLoadoutGroup {
-    EpSessionCodeInfo code[9]; /* lifecycle, consumers, setup, interactions, refresh, records, frame, mode, control */
+    EpSessionCodeInfo code[10]; /* lifecycle, consumers, setup, interactions, refresh, records, frame, mode, control, state */
     uint64_t constructor,release,alternate_release,transition,setup,update,lookup,action;
-    uint64_t input,edit,close,refresh,sync_records,frame,local_update,mode,open_mode,leave,screen_input,reset_selection;
+    uint64_t input,edit,close,refresh,sync_records,frame,local_update,mode,open_mode,leave,screen_input,reset_selection,state_change,return_screen,context_action,state_tick;
     uint32_t capacity,state;
 } EpLoadoutGroup;
-/* Prepare all twenty native entries from ONE screen/storage/map/capacity
- * binding. The nine desired code bases must be explicit and nonoverlapping.
+/* Prepare all twenty-four native entries from ONE screen/storage/map/capacity
+ * binding. The ten desired code bases must be explicit and nonoverlapping.
  * The independent record-source banks must be disjoint from every image.
- * Input -> refresh -> close, control -> mode/navigation/edit and
- * frame -> local/sync/update/lookup/mode/leave links are
+ * Input -> refresh -> close, control -> mode/navigation/edit/return, lifecycle -> state and
+ * frame -> local/sync/update/lookup/mode/leave/state/return links are
  * derived from these same images. The frame allocation has a 16 KiB span.
+ * The state timer calls control.leave and context action calls mode.open;
+ * these cyclic links are prepared together and must share lifetime.
  * Only owned code allocations are made; data still belongs to the caller.
  * All images must reach READY before callable addresses are returned. Partial
  * preparation discards in reverse order; failed cleanup retains only handles

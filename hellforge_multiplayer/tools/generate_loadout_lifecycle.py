@@ -97,6 +97,9 @@ def build():
                 seen.add(ins.address)
                 blob += code
                 fixes.append((at+operand, 0, key, 2 if key == 5 else 1, add))
+            elif ins.address==0x1470ab7:
+                need(ins.mnemonic+' '+ins.op_str=='call 0x146ac60','Changed lifecycle state link')
+                blob+=b'\xe8'+bytes(4);fixes.append((at+1,len(blob),7,0,0))
             elif (ins.mnemonic == 'call' or ins.mnemonic.startswith('j')) and ins.operands[0].type == X86_OP_IMM:
                 target = ins.operands[0].imm
                 raw = bytes(ins.bytes)

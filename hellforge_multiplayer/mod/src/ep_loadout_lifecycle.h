@@ -38,13 +38,15 @@ typedef struct EpLoadoutImage {
  * No game discovery, allocation of screen/data, activation or Mod-init binding.
  * The limit is this adapter's implemented capacity, not verified player count.
  */
-EpPropertyResult ep_loadout_lifecycle_build(const EpLoadoutAddresses*,EpLoadoutImage*);
+/* The transition must use the same group's guarded state-change entry.
+ * This extra link is numeric only and must remain alive with this image. */
+EpPropertyResult ep_loadout_lifecycle_build(const EpLoadoutAddresses*,uint64_t state_change,EpLoadoutImage*);
 /* One cancellable READY image holds four entries and nine unwind rows. The
  * transition keeps EH/UH __GSHandlerCheck at game+21044A0, with cookie +80
  * and an owned handler thunk. Caller must validate both native GS targets.
  * CLEANUP returns a retained handle; caller must retry discard. Does not
  * publish hooks or own/construct/release any supplied screen/data allocation. */
-EpPropertyResult ep_loadout_lifecycle_prepare(const HfApi*,HfMod*,const EpLoadoutAddresses*,EpSessionCodeInfo*);
+EpPropertyResult ep_loadout_lifecycle_prepare(const HfApi*,HfMod*,const EpLoadoutAddresses*,uint64_t state_change,EpSessionCodeInfo*);
 #ifdef __cplusplus
 }
 #endif

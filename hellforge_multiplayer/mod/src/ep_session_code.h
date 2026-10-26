@@ -78,6 +78,10 @@ int ep_session_code_seal_loadout_frame(HfMod*, uint64_t handle, const void* imag
  * root -> saved-register child -> XMM6 child chains. */
 int ep_session_code_seal_loadout_mode(HfMod*, uint64_t handle, const void* image,
     uint32_t bytes, uint32_t table_offset, const EpSessionGsCheck*);
+/* Return/state/context/timer: fifteen rows, state GS root at row 5, exact
+ * cookie +60h and original saved-R14/XMM child topology. */
+int ep_session_code_seal_loadout_state(HfMod*, uint64_t handle, const void* image,
+    uint32_t bytes, uint32_t table_offset, const EpSessionGsCheck*);
 int ep_session_code_info(HfMod*, uint64_t handle, EpSessionCodeInfo*);
 /* Before calling hook_ex, permanently pin this module and the image. Even a
  * reported hook failure can have exposed code: keep it for process lifetime.
