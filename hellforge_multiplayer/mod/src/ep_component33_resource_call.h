@@ -62,6 +62,12 @@ typedef struct EpC33ResourceServiceOps {
     int (*service)(void*,const EpC33ResourceScopeView*,uint32_t operation,uint64_t key);
 } EpC33ResourceServiceOps;
 int ep_component33_resource_acquire_services_call(HfMod*,uint64_t storage,uint64_t roster_owner,const EpC33ResourceServiceOps*,EpC33ResourceCallResult*);
+/* Standalone release under the SAME owner/reentry guard and lifetime. collect
+ * supplies only the package; thresholds are ignored. No acquire reservation
+ * or rehash occurs. deferred=1 queues zero transitions without calling service
+ * (which may be null); deferred=0 requires the usual DISPOSE callback. */
+int ep_component33_resource_release_services_call(HfMod*,uint64_t storage,uint64_t roster_owner,
+    uint32_t deferred,const EpC33ResourceServiceOps*,EpC33ResourceCallResult*);
 #ifdef __cplusplus
 }
 #endif

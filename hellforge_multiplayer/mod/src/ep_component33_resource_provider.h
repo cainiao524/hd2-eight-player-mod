@@ -39,6 +39,12 @@ typedef struct EpC33ResourceProviderResult {
  */
 int ep_component33_resource_acquire_provider_call(const HfApi*,HfMod*,uint64_t storage,
     uint64_t owner,uint64_t target_object,const EpC33ResourceProviderOps*,EpC33ResourceProviderResult*);
+/* Standalone release selects a dense ordinal, not an object. Checks the whole
+ * S/B identity map, then reads only the package (no resolver or thresholds).
+ * deferred must be 0 or 1. resolve may be null; for deferred=1 service may also
+ * be null. No existing entry/hook is installed by this explicit API. */
+int ep_component33_resource_release_provider_call(const HfApi*,HfMod*,uint64_t storage,
+    uint64_t owner,uint32_t ordinal,uint32_t deferred,const EpC33ResourceProviderOps*,EpC33ResourceProviderResult*);
 #ifdef __cplusplus
 }
 #endif

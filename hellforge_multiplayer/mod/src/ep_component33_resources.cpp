@@ -132,6 +132,30 @@ int ep_c33_resource_execute(const EpC33ResourceBinding* binding,void* p,uint32_t
     }
     return EP_RESOURCE_OK;
 }
+int ep_c33_resource_release(const EpC33ResourceBinding* binding,void* p,uint32_t bytes,
+    const uint64_t* keys,uint32_t count,uint32_t deferred,void* scratch,uint32_t scratch_bytes,
+    EpC33ResourceService service,void* context)
+{
+    if (deferred>1) return EP_RESOURCE_ARGUMENT;
+    if (!deferred) return ep_c33_resource_execute(binding,p,bytes,keys,count,nullptr,0,scratch,scratch_bytes,service,context);
+    EpC33ResourceBinding b={};if (binding) b=*binding;
+    int result=ep_c33_resource_validate(&b,p,bytes);if (result) return result;
+    if (!scratch || (uintptr_t)scratch%8 || scratch_bytes!=bytes || count>EP_RESOURCE_BATCH_MAX || (count && !keys)) return EP_RESOURCE_ARGUMENT;
+    if (Overlap((uintptr_t)p,bytes,(uintptr_t)scratch,bytes) || (count &&
+        (Overlap((uintptr_t)keys,(uint64_t)count*8,(uintptr_t)p,bytes) || Overlap((uintptr_t)keys,(uint64_t)count*8,(uintptr_t)scratch,bytes)))) return EP_RESOURCE_OVERLAP;
+    uint64_t local[EP_RESOURCE_BATCH_MAX];if (count) memcpy(local,keys,(size_t)count*8);
+    for (uint32_t i=0;i<count;i++) if (!local[i]) return EP_RESOURCE_ARGUMENT;
+    memcpy(scratch,p,bytes);auto* h=(Header*)scratch;auto* t=Table(scratch,b.capacity);auto* q=Queue(scratch);
+    for (uint32_t i=0;i<count;i++) {
+        uint32_t at=Find(t,b.capacity,h->seed,local[i]);
+        if (at==b.capacity || t[at].key!=local[i] || !t[at].references) continue;
+        if (!--t[at].references) {
+            if (h->queued==b.capacity) return EP_RESOURCE_CAPACITY;
+            q[h->queued++]=local[i];
+        }
+    }
+    memcpy(p,scratch,bytes);return EP_RESOURCE_OK;
+}
 static uint64_t Target(const EpC33ResourceBinding& b,uint32_t rva)
 {
     if (rva>=0x3798180 && rva<0x379819c) return b.address+rva-0x3798180;

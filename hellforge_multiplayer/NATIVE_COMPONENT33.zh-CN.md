@@ -268,6 +268,20 @@ Windows 对 1,095 个上下文完成回溯，包括从新 leaf 返回原 owner�
 
 生产前仍须完成：真实身份解析与服务 ABI、所有相关写入的排除、原入口路由、RESET 生命周期、嵌入资源交接、失败补偿及共同发布。SDK 每次复制资源包和遍历门槛，加上既有每次服务的完整资源区检查，其游戏性能**未验证**。本实现可编译、离线串联通过，`installable/runtime_verified/multiplayer_verified/public_release_allowed` 继续为 false。
 
+## 独立立即释放与延后释放
+
+`ep_component33_resource_release_provider_call` 新增显式 SDK 路径：在同一保留存储与 roster owner 范围内核对 S/B/map/identity，按 dense ordinal 选择包，然后调用 `ep_component33_resource_release_services_call`。ordinal 必须小于八；若不在当前 D 范围内，返回无匹配且不写入。只核对完整 package getter 的源字节并读取包，不调用身份解析器、不读取门槛 manager，也不运行 acquire 的需求预留或重新散列。关闭组和零键被忽略；所有启用组的非零键按原顺序释放。
+
+底层 `ep_c33_resource_release` 接收完整显式键序列与本地资源区。`deferred=0` 复用既有立即释放算法，引用降到零时调用 DISPOSE；重复键逐次减少，已为零和不存在的键不处理。`deferred=1` 不调用资源服务，先在暂存区执行全部引用递减与队列追加，再一次复制回资源区。每个从正引用降到零的键按遇到顺序追加一次，保留原队列顺序、未使用字节和零引用桶；不是重新接纳资源。参数、重叠、无效资源状态或容量拒绝发生在提交前。有效引用表和队列共同受同一容量约束，不能用不一致满队列构造假溢出结论。
+
+两个上层路径复用原 resource-call 重入保护、保留存储绑定和 native owner。立即服务失败、SEH、忽略的嵌套故障或资源重入，会停止后续操作并隔离 owner；已发生的引用变化及外部副作用不回滚。延后释放允许 `resolve/service` 均为空，立即释放仍要求显式 service。release 的阈值和 acquire demand 均不使用；成功处理只提交一次外层 revision。延后原子提交仅指自身引用/队列缓冲区，不代表整个角色移除或游戏资源事务已实现。
+
+[验证器](tools/validate_component33_resource_release.py)与[收据](evidence/native-component33-resource-release-validation.json)覆盖 15 个自有内存情境、694 项检查。测试实际调用 SDK provider→共享 owner→release，包含第八笔、关闭组、重复引用、已有零引用队列、无需回调的延后路径、随后 acquire 的队列取消、服务失败/SEH、嵌套故障/重入，以及来源、ordinal、map、模式和回调拒绝。成功释放的直接 SDK 请求为 12,871 bytes，仍受 64 KiB 总请求上限约束；这是测试资料数值，没有读取游戏。
+
+十二组 Unicorn 对照使用保存的完整 `6659E0`，覆盖 128/512 桶、三个 seed 和立即/延后两种标志。比较完整资源区字节（包括未使用队列位置）、准确服务顺序及引用结果；另验证六种预检拒绝保持原缓冲区。自有进程测试与保存指令模拟是两类独立证据，原始游戏函数未在宿主原生执行。
+
+该路径尚未安装到原 RELEASE 入口，也不实现队列清空、RESET 的时机和语义、嵌入资源交接或真实服务调用。当前保存的 DLL 代码可证明 `global3326308` 的表格访问：解析经过 `+38→+8` 与 `+40→+160`，资源服务经过 `+10→+2F0/+300`；该 global 本身在固定 DLL 捕捉的未保存区间。已有 [建立对象介面审查](../five_player_feasibility_20260927/spawn_interface_independent_review.zh-TW.md)仅覆盖另一条 `+C0` 链，不能据此声称这些目标已解析。资源调用时 RDX 等暂存器仍有值，尚未取得目标实现来证明其未被使用，因此继续保留外部服务契约，未编造可原生调用的 C 签名。后续游戏操作仍须新的明确授权。
+
 ## 接口边界与拒绝
 
 `ep_component33_image_build` 只产生代码、回溯元数据和函数表，不读取地址指向的数据，不分配或封存可执行内存，也不发布 hook。地址无效、区域重叠或相对跳转超出范围时，输出清零并返回错误。
@@ -376,6 +390,12 @@ py -3.12 -B hellforge_multiplayer/tools/validate_component33_resource_provider.p
   --resources hellforge_multiplayer/build/component33_resources_test.dll `
   --core hellforge_multiplayer/build/component33_image_test.dll `
   --out work/component33-resource-provider-validation.json
+py -3.12 -B hellforge_multiplayer/tools/validate_component33_resource_release.py `
+  --zig work/hellforge_toolchain_20261025/zig-x86_64-windows-0.17.0/zig.exe `
+  --upstream work/hellforge_upstream_20261025 `
+  --resources hellforge_multiplayer/build/component33_resources_test.dll `
+  --core hellforge_multiplayer/build/component33_image_test.dll `
+  --out work/component33-resource-release-validation.json
 ```
 
 该命令编译和运行自有回溯测试程序，读取仓库保存的代码。`installable`、`runtime_verified`、`multiplayer_verified`、`public_release_allowed` 继续为 false。

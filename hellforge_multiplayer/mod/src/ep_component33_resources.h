@@ -45,6 +45,14 @@ typedef int (*EpC33ResourceService)(void*,uint32_t operation,uint64_t key);
 int ep_c33_resource_execute(const EpC33ResourceBinding*,void* p,uint32_t bytes,
     const uint64_t* release_keys,uint32_t release_count,const uint64_t* acquire_keys,uint32_t acquire_count,
     void* scratch,uint32_t scratch_bytes,EpC33ResourceService,void* context);
+/* Standalone RELEASE: immediate (deferred=0) uses DISPOSE at each transition
+ * to zero. Deferred (1) appends that key exactly once, without any service.
+ * Deferred changes are staged in scratch and committed together. Existing
+ * zero keys, queue order and unused bytes are preserved, not rehashed. This
+ * does not drain/reset the queue or transfer embedded resource ownership. */
+int ep_c33_resource_release(const EpC33ResourceBinding*,void* p,uint32_t bytes,
+    const uint64_t* keys,uint32_t count,uint32_t deferred,void* scratch,uint32_t scratch_bytes,
+    EpC33ResourceService,void* context);
 /* Explicit opt-in emission. Every consumer, its RELEASE dependency, and all
  * returned original-code windows must share the same arena. Never publish
  * just a subset. The opt-in storage/family resource APIs own/bind this arena;
