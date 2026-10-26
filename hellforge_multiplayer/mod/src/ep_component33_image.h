@@ -46,6 +46,20 @@ typedef struct EpComponent33Image {
  * inline equivalent is not redirected by this numeric emission API.
  * These images must not be activated on their own. */
 EpPropertyResult ep_component33_image_build(uint32_t kind,const EpComponent33Addresses*,EpComponent33Image*);
+/* Replacement for owner 576CF0's 75-byte inline component33 window. Original
+ * D>=T bypass remains; pending work calls PROMOTE_PENDING and restores the
+ * original RSI/RDI/EAX/EDX continuation contract. No new stack frame or unwind
+ * table. This describes bytes only, never reads or writes either address.
+ * Caller must verify the full pinned owner, original unwind and window, bind
+ * the exact ready promotion image and owner instance, exclude all execution
+ * during publication and coordinate every affected reader/writer lifetime.
+ * Not an SDK hook registration or a production installation API. */
+typedef struct EpComponent33OwnerPatch {
+    uint64_t target;
+    uint32_t bytes,call_offset;
+    uint8_t expected[75],replacement[75];
+} EpComponent33OwnerPatch;
+EpPropertyResult ep_component33_owner_patch_build(uint64_t game_base,uint64_t promote_address,EpComponent33OwnerPatch*);
 #ifdef __cplusplus
 }
 #endif

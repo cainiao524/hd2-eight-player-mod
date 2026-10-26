@@ -8,6 +8,9 @@
 #ifndef EP_CONTEXT_LIMIT
 #define EP_CONTEXT_LIMIT 10000u
 #endif
+#ifndef EP_IMAGE_LIMIT
+#define EP_IMAGE_LIMIT 4096u
+#endif
 
 static void take(FILE* f, void* out, size_t n) {
     if (fread(out, 1, n, f) != n) { fputs("truncated fixture\n", stderr); exit(2); }
@@ -32,7 +35,7 @@ int main(int argc, char** argv) {
     check(variants == 2, "expected legacy and corrected variants");
     for (uint32_t v=0; v<variants; ++v) {
         uint32_t size=u32(f), code_size=u32(f), table_offset=u32(f), count=u32(f);
-        check(size<4096 && code_size<size && table_offset<size && (size-table_offset)%sizeof(RUNTIME_FUNCTION)==0 && count<EP_CONTEXT_LIMIT, "invalid image bounds");
+        check(size<EP_IMAGE_LIMIT && code_size<size && table_offset<size && (size-table_offset)%sizeof(RUNTIME_FUNCTION)==0 && count<EP_CONTEXT_LIMIT, "invalid image bounds");
         uint32_t functions=(size-table_offset)/sizeof(RUNTIME_FUNCTION);
 #if defined(EP_REGISTRY)
 #if defined(EP_COMPONENT33)
@@ -63,8 +66,14 @@ int main(int argc, char** argv) {
         uint8_t* unwind=image+table[functions-1].UnwindData;
         check(unwind[0]==1 && unwind[3]==0 && 4u+((unwind[2]+1u)&~1u)*2u<=table_offset-table[functions-1].UnwindData,"invalid unwind extent");
 #endif
-        for (uint32_t index=1;index<functions;index++) check(table[index-1].EndAddress==table[index].BeginAddress,"invalid contiguous functions");
-#if !defined(EP_REGISTRY)
+        for (uint32_t index=1;index<functions;index++) {
+#if defined(EP_COMPONENT33_OWNER)
+            check(table[index-1].EndAddress<=table[index].BeginAddress,"overlapping owner functions");
+#else
+            check(table[index-1].EndAddress==table[index].BeginAddress,"invalid contiguous functions");
+#endif
+        }
+#if !defined(EP_REGISTRY) && !defined(EP_COMPONENT33_OWNER)
         if (functions>=2) {
             check(table[0].EndAddress>0,"invalid leaf extent");
             check(table[0].UnwindData>=code_size && table[0].UnwindData<=size-4,"invalid preflight unwind location");
@@ -86,16 +95,41 @@ int main(int argc, char** argv) {
             uint32_t pc=u32(f); int32_t delta=(int32_t)u32(f); uint32_t should_fail=u32(f);
             check(pc<code_size && delta>=-128 && delta<=0 && should_fail<=1 && (v==0 || !should_fail),"invalid context bounds");
             uint64_t values[8]; take(f,values,sizeof values);
+#if defined(EP_COMPONENT33_OWNER)
+            uint64_t xmm6[2];take(f,xmm6,sizeof xmm6);
+#endif
             _Alignas(16) uint8_t stack[512]={0}; uint8_t* entry=stack+264;
             take(f,entry-128,256);
+#if defined(EP_COMPONENT33_OWNER)
+            /* Only the synthetic nested return address is rebased. No host
+             * game address is read; image remains PAGE_READWRITE. */
+            uint64_t nested=0;memcpy(&nested,entry-64,8);
+            if (nested>=UINT64_C(0x7ff600576cf0) && nested<UINT64_C(0x7ff60058131e)) {
+                nested=(DWORD64)image+nested-UINT64_C(0x7ff600576cf0);memcpy(entry-64,&nested,8);
+            }
+#endif
             CONTEXT c={0}; c.ContextFlags=CONTEXT_FULL; registers(&c,values);
+#if defined(EP_COMPONENT33_OWNER)
+            c.Xmm6.Low=xmm6[0];c.Xmm6.High=(LONGLONG)xmm6[1];
+#endif
             c.Rip=(DWORD64)image+pc; c.Rsp=(DWORD64)entry+delta;
             DWORD64 base=0, frame=0; PVOID data=NULL;
             PRUNTIME_FUNCTION found=RtlLookupFunctionEntry(c.Rip,&base,NULL);
             uint32_t row=0;while (row+1<functions && pc>=table[row+1].BeginAddress) row++;
             check(found==table+row && base==(DWORD64)image,"lookup did not find owned table");
             PEXCEPTION_ROUTINE handler=RtlVirtualUnwind(UNW_FLAG_NHANDLER,base,c.Rip,found,&c,&data,&frame,NULL);
+#if defined(EP_COMPONENT33_OWNER)
+            if (row==1) {
+                check(handler==NULL && c.Rsp==(DWORD64)entry-56,"leaf did not return to owner frame");
+                found=RtlLookupFunctionEntry(c.Rip,&base,NULL);
+                check(found==table && base==(DWORD64)image,"nested unwind missed original owner");
+                handler=RtlVirtualUnwind(UNW_FLAG_NHANDLER,base,c.Rip,found,&c,&data,&frame,NULL);
+            }
+#endif
             int ok=handler==NULL && c.Rip==return_pc && c.Rsp==(DWORD64)entry+8 && same(&c,expected);
+#if defined(EP_COMPONENT33_OWNER)
+            ok=ok && c.Xmm6.Low==UINT64_C(0x112233445566778e) && (uint64_t)c.Xmm6.High==UINT64_C(0x112233445566778e);
+#endif
             if (ok == (int)should_fail) {
                 fprintf(stderr,"variant=%u case=%u pc=0x%x expected_failure=%u rsp_delta=%lld rip=%llx expected=%llx regs=%d\n",
                         v,k,pc,should_fail,(long long)(c.Rsp-(DWORD64)entry),(unsigned long long)c.Rip,

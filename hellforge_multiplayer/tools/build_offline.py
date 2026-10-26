@@ -76,6 +76,7 @@ def main() -> None:
     departure_template=json.loads(run([sys.executable,'-B',PROJECT/'tools/generate_departure_template.py']))
     arrival_template=json.loads(run([sys.executable,'-B',PROJECT/'tools/generate_arrival_template.py']))
     component33_template=json.loads(run([sys.executable,'-B',PROJECT/'tools/generate_component33_templates.py']))
+    component33_owner_template=json.loads(run([sys.executable,'-B',PROJECT/'tools/native_component33_owner.py']))
     dll = build / "ep_hellforge.dll"
     test = build / "adapter_test.exe"
     common = [zig, "c++", "-std=c++17", "-target", "x86_64-windows-gnu", "-O2", "-Wall", "-Werror",
@@ -114,10 +115,11 @@ def main() -> None:
         "native_departure_template_sha256":departure_template['header_sha256'],
         "native_arrival_template_sha256":arrival_template['header_sha256'],
         "native_component33_template_sha256":component33_template['header_sha256'],
+        "native_component33_owner_template_sha256":component33_owner_template['header_sha256'],
         "source_sha256": {p.relative_to(PROJECT).as_posix(): digest(p) for p in files},
         "test_source_sha256": {p.relative_to(PROJECT).as_posix(): digest(p) for p in [
             PROJECT / "tests/adapter_test.cpp", PROJECT / "tests/backend/Program.cs", PROJECT / "tests/backend/Backend.csproj",
-            Path(__file__).resolve(), PROJECT / "upstream.lock.json", PROJECT / 'tools/generate_property_templates.py',PROJECT/'tools/generate_getter_template.py',PROJECT/'tools/generate_mover_template.py',PROJECT/'tools/generate_insert_templates.py',PROJECT/'tools/generate_remove_templates.py',PROJECT/'tools/generate_classify_templates.py',PROJECT/'tools/generate_registry_templates.py',PROJECT/'tools/generate_departure_template.py',PROJECT/'tools/generate_arrival_template.py',PROJECT/'tools/generate_component33_templates.py',PROJECT/'tools/native_component33_image.py',PROJECT/'native-component33.lock.json']},
+            Path(__file__).resolve(), PROJECT / "upstream.lock.json", PROJECT / 'tools/generate_property_templates.py',PROJECT/'tools/generate_getter_template.py',PROJECT/'tools/generate_mover_template.py',PROJECT/'tools/generate_insert_templates.py',PROJECT/'tools/generate_remove_templates.py',PROJECT/'tools/generate_classify_templates.py',PROJECT/'tools/generate_registry_templates.py',PROJECT/'tools/generate_departure_template.py',PROJECT/'tools/generate_arrival_template.py',PROJECT/'tools/generate_component33_templates.py',PROJECT/'tools/native_component33_image.py',PROJECT/'native-component33.lock.json',PROJECT/'native-component33-owner.lock.json',PROJECT/'tools/native_component33_owner.py']},
         "artifacts": {p.name: {"bytes": p.stat().st_size, "sha256": digest(p)} for p in [dll, test, package]},
         "game_started": False, "game_checked": False, "game_read": False, "installed": False,
         "runtime_verified": False, "multiplayer_verified": False, "public_release_allowed": False,
