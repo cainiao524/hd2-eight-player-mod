@@ -26,8 +26,14 @@ typedef struct EpC33ResourceEntriesInfo {
     EpSessionCodeInfo code[EP_C33_RESOURCE_ENTRY_COUNT];
     uint64_t update_target;
     EpSessionCodeInfo update_entry,update_body;
+    uint64_t reset_targets[2];
+    EpSessionCodeInfo reset_entries[2],reset_body;
 } EpC33ResourceEntriesInfo;
 typedef struct EpC33UpdateEntryConfig { uintptr_t desired_entry,desired_body; } EpC33UpdateEntryConfig;
+typedef struct EpC33LifecycleEntryConfig {
+    EpC33UpdateEntryConfig update;
+    uintptr_t reset_entries[2],reset_body;
+} EpC33LifecycleEntryConfig;
 /* Owns four leaf Win64 argument bridges and their immutable dispatch data.
  * ACQUIRE/DEFER: RCX=S, RDX=object. RELEASE: RCX=S, EDX=ordinal, R8B=flag;
  * only the low byte controls deferred release. The bridges tail-call a
@@ -64,6 +70,23 @@ int ep_component33_resource_entries_prepare(const HfApi*,HfMod*,const EpC33Resou
  * is installed and no SDK reads occur during preparation. Legacy prepare
  * leaves update_target/update_entry/update_body zero. */
 int ep_component33_resource_entries_prepare_update(const HfApi*,HfMod*,const EpC33ResourceEntryBindings*,const EpC33UpdateEntryConfig*,EpC33ResourceEntriesInfo*);
+/* Adds both global RESET wrappers to the UPDATE/resource lifetime set:
+ * 51ADE0 takes entity in RCX; 664210 takes entity in RDX (RCX ignored).
+ * Both run the bound eight-slot per-entity 664430 body under the same owner,
+ * then reset ONLY an idle resource arena. Live references or queued keys
+ * preserve all arena bytes, allowing another player's reset without dropping
+ * existing claims. Idle reset keeps capacity and restores seed=2. No unload
+ * or forced teardown is inferred from the original unconditional clear.
+ * Validation precedes per-entity writes; body guard/SEH faults abort and
+ * quarantine. Reentry from UPDATE/RESET or a resource callback is refused.
+ * The three additional images are retained/cancelled with the other six.
+ * Publication MUST replace both whole wrappers and omit their old interior
+ * resource/reset windows; those windows would reintroduce unconditional
+ * clearing. Other writers/callbacks and coordinated publication still remain.
+ * Legacy prepare/prepare_update leave all reset fields zero. Preparation does
+ * not access game memory; invoking retained entries is an explicit runtime
+ * operation, not sampling. Original raw-pointer ABI preconditions still apply. */
+int ep_component33_resource_entries_prepare_lifecycle(const HfApi*,HfMod*,const EpC33ResourceEntryBindings*,const EpC33LifecycleEntryConfig*,EpC33ResourceEntriesInfo*);
 int ep_component33_resource_entries_info(HfMod*,uint64_t,EpC33ResourceEntriesInfo*);
 int ep_component33_resource_entries_retain(HfMod*,uint64_t);
 int ep_component33_resource_entries_cancel(HfMod*,uint64_t);

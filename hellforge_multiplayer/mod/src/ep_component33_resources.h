@@ -60,6 +60,12 @@ int ep_c33_resource_release(const EpC33ResourceBinding*,void* p,uint32_t bytes,
  * already serviced keys: quarantine and never automatically retry. */
 int ep_c33_resource_drain(const EpC33ResourceBinding*,void* p,uint32_t bytes,
     void* scratch,uint32_t scratch_bytes,EpC33ResourceService,void* context);
+/* Per-entity RESET wrappers must not erase another player's resource claims.
+ * Validate first; preserve the entire arena if ANY references or queued keys
+ * remain. Otherwise restore the saved empty-table seed (2), clearing inactive
+ * keys and queue storage at the binding's actual capacity. Caller owns the
+ * whole reset scope. No DISPOSE, implicit drain or forced teardown occurs. */
+int ep_c33_resource_reset_idle(const EpC33ResourceBinding*,void* p,uint32_t bytes);
 /* Explicit opt-in emission. Every consumer, its RELEASE dependency, and all
  * returned original-code windows must share the same arena. Never publish
  * just a subset. The opt-in storage/family resource APIs own/bind this arena;

@@ -172,6 +172,15 @@ int ep_c33_resource_drain(const EpC33ResourceBinding* binding,void* p,uint32_t b
     }
     memset(Queue(p),0,(size_t)b.capacity*8);h->queued=0;return EP_RESOURCE_OK;
 }
+int ep_c33_resource_reset_idle(const EpC33ResourceBinding* binding,void* p,uint32_t bytes)
+{
+    EpC33ResourceBinding b={};if (binding) b=*binding;
+    int result=ep_c33_resource_validate(&b,p,bytes);if (result) return result;
+    if (((const Header*)p)->queued) return EP_RESOURCE_OK;
+    const auto* entries=Table(p,b.capacity);
+    for (uint32_t i=0;i<b.capacity;i++) if (entries[i].references) return EP_RESOURCE_OK;
+    Init(b,p,2);return EP_RESOURCE_OK;
+}
 static uint64_t Target(const EpC33ResourceBinding& b,uint32_t rva)
 {
     if (rva>=0x3798180 && rva<0x379819c) return b.address+rva-0x3798180;
