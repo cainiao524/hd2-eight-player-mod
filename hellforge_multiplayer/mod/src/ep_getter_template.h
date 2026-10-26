@@ -1,7 +1,7 @@
 /* Generated from the pinned getter; numeric bindings only.
  * native-getter.lock.json SHA256 2ec11c0046408233a263c86d91e84309b153458d6f3863b38a5894adb75b19d9
  * tools/native_getter_image.py SHA256 3b329d319d9edd550fa237a4c8c8c04bf17d8dfcd7e688b6291d1e31c1306afb
- * tools/native_unwind_source.py SHA256 8f2b51781ae06b3f6a72959218f7c60cdf4e7f6a13e59c56f7eff99140721e4f
+ * tools/native_unwind_source.py SHA256 a96352efbb2566ed6fc8a417b0a3d9a56d377a548fc0cdd400a3e6ace5083b73
  */
 #define EP_GETTER_IMAGE_BYTES 388u
 #define EP_GETTER_CODE_BYTES 354u

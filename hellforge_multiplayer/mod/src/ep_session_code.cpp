@@ -75,12 +75,15 @@ int ep_session_code_reserve(const HfApi* api, HfMod* owner, uintptr_t desired,
 }
 static int EpCodeNonvolatile(unsigned reg)
 { return reg==3 || reg==5 || reg==6 || reg==7 || (reg>=12 && reg<=15); }
-static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_t count)
+static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_t count, const EpSessionGsCheck* gs)
 {
     RUNTIME_FUNCTION functions[15];
     if (!count || count>15 || (at&3) || at>bytes || bytes-at!=count*sizeof(RUNTIME_FUNCTION)) return 0;
     memcpy(functions,p+at,count*sizeof(RUNTIME_FUNCTION));
     if (functions[0].BeginAddress) return 0;
+    if (gs && (gs->function_index>=count || gs->handler_target<0x10000 ||
+        gs->handler_target>=((uint64_t)1<<47) || gs->handler_offset>at || at-gs->handler_offset<5 ||
+        (gs->handler_target>=(uintptr_t)p && gs->handler_target<(uintptr_t)p+bytes))) return 0;
     for (uint32_t f=0;f<count;f++) {
         RUNTIME_FUNCTION rf=functions[f];
         if (rf.EndAddress<=rf.BeginAddress || (f && rf.BeginAddress<functions[f-1].EndAddress)) return 0;
@@ -95,8 +98,25 @@ static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_
     }
     const uint8_t* u=p+rf.UnwindData;
     const uint32_t body=4u+((u[2]+1u)&~1u)*2u;
-    if ((u[0]!=1 && u[0]!=33) || u[3] || u[1]>rf.EndAddress-rf.BeginAddress ||
-        body+(u[0]==33?12u:0u)!=end-rf.UnwindData) return 0;
+    const int has_gs=gs && f==gs->function_index;
+    if ((has_gs ? u[0]!=25 : (u[0]!=1 && u[0]!=33)) || u[3] || u[1]>rf.EndAddress-rf.BeginAddress ||
+        body+(u[0]==33?12u:has_gs?8u:0u)!=end-rf.UnwindData) return 0;
+    if (has_gs) {
+        /* Exact original fixed-frame contract. No alignment extensions,
+         * chained handler, invented cookie offset or scope-table interpretation. */
+        const uint8_t expected[28]={0x19,0x31,0x0c,0,0x22,0x68,7,0,0x1d,0x74,0x15,0,
+            0x1d,0x64,0x14,0,0x1d,0x54,0x13,0,0x1d,0x34,0x12,0,0x1d,0xf2,0x16,0xe0};
+        uint32_t handler,cookie;int32_t delta;int thunk=0;
+        if (body!=28 || memcmp(u,expected,28)) return 0;
+        memcpy(&handler,u+body,4);memcpy(&cookie,u+body+4,4);
+        if (handler!=gs->handler_offset || cookie!=96 || p[handler]!=0xe9) return 0;
+        memcpy(&delta,p+handler+1,4);
+        if ((int64_t)(uintptr_t)p+handler+5+delta!=(int64_t)gs->handler_target) return 0;
+        for (uint32_t j=0;j<count;j++) if (j!=f && functions[j].BeginAddress==handler &&
+            functions[j].EndAddress==handler+5 && functions[j].UnwindData<=at-4 &&
+            !memcmp(p+functions[j].UnwindData,"\1\0\0\0",4)) thunk=1;
+        if (!thunk) return 0;
+    }
     if (u[0]==33) {
         /* Only exact earlier rows of this owned table may be chain parents.
          * This rejects external/cyclic/forward chains and language handlers. */
@@ -127,15 +147,19 @@ static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_
 int ep_session_code_seal(HfMod* owner, uint64_t handle, const void* image, uint32_t bytes, uint32_t tableAt)
 { return ep_session_code_seal_table(owner,handle,image,bytes,tableAt,1); }
 int ep_session_code_seal_table(HfMod* owner, uint64_t handle, const void* image, uint32_t bytes, uint32_t tableAt, uint32_t count)
+{ return ep_session_code_seal_gs_table(owner,handle,image,bytes,tableAt,count,NULL); }
+int ep_session_code_seal_gs_table(HfMod* owner, uint64_t handle, const void* image, uint32_t bytes, uint32_t tableAt, uint32_t count, const EpSessionGsCheck* input)
 {
     int ok=0; DWORD old;
+    EpSessionGsCheck profile;const EpSessionGsCheck* gs=NULL;
     if (!image) return 0;
+    if (input) {profile=*input;gs=&profile;}
     AcquireSRWLockExclusive(&epCodeLock);
     EpCodeSlot* s=EpCodeFind(owner,handle);
     if (!s || s->state!=EP_CODE_RESERVED || bytes!=s->bytes) goto done;
     /* Owned copy removes any later dependency on the caller's input buffer. */
     memmove(s->base,image,bytes);
-    if (!EpCodeMetadata(s->base,bytes,tableAt,count)) goto done;
+    if (!EpCodeMetadata(s->base,bytes,tableAt,count,gs)) goto done;
     s->table=(PRUNTIME_FUNCTION)(s->base+tableAt);
     s->state=EP_CODE_FAILED;
     if (!VirtualProtect(s->base,bytes,PAGE_EXECUTE_READ,&old) ||

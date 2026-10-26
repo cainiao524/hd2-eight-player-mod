@@ -1,11 +1,11 @@
-"""Verify sixteen switches and rebase all validated body unwind PCs."""
+"""Verify seventeen switches and rebase all validated body unwind PCs."""
 import argparse,ctypes as c,json,struct
 from pathlib import Path
 from datetime import datetime,timezone
 from native_property_library import Library,InsertAddresses
 import native_producer_unwind as reference
 import native_getter_image,native_mover_image,native_insert_image,native_remove_image,native_classify_image
-import native_registry_image,native_departure_image
+import native_registry_image,native_departure_image,native_arrival_image
 from build_unwind_offline import load as producer_fixture,run
 from build_receiver_unwind_offline import load as receiver_fixture
 from validate_property_gates import gate_paths,CONTROL
@@ -31,8 +31,10 @@ def validate(path,zig):
     run([zig,'cc','-target','x86_64-windows-gnu','-std=c11','-O1','-Wall','-Werror',PROJECT/'tests/native_departure_unwind_test.c','-o',departure_exe])
     registry_exe=build/'native_registry_gates_unwind_test.exe'
     run([zig,'cc','-target','x86_64-windows-gnu','-std=c11','-DEP_REGISTRY=1','-DEP_CONTEXT_LIMIT=200000u','-O1','-Wall','-Werror',PROJECT/'tests/native_producer_unwind_test.c','-o',registry_exe])
-    results={};artifacts=[exe,registry_exe,departure_exe,library.path];inputs={};branches=refusals=0
-    for kind,(name,raw) in enumerate(cases,1):
+    arrival_exe=build/'native_arrival_gate_unwind_test.exe'
+    run([zig,'cc','-target','x86_64-windows-gnu','-std=c11','-DEP_ARRIVAL_GATE=1','-O1','-Wall','-Werror',PROJECT/'tests/native_arrival_unwind_test.c','-o',arrival_exe])
+    results={};artifacts=[exe,registry_exe,departure_exe,arrival_exe,library.path];inputs={};branches=refusals=0
+    for kind,(name,raw) in list(enumerate(cases,1))+[(17,('arrival',native_arrival_image.load_fixture().params()))]:
         a={k:v for k,v in raw.items() if k!='kind'}
         if 'property_address' in a:a['storage_address']=a.pop('property_address')-0x580
         if 'helper_code_address' in a:a['move_code_address']=a.pop('helper_code_address')
@@ -41,7 +43,7 @@ def validate(path,zig):
         out=Gate();reference.require(emit(kind,InsertAddresses(**a),CONTROL,CONTROL+8,out)==0,'Roster gate generation failed: '+name)
         blob=bytes(out.data[:out.bytes]);branches+=gate_paths(blob,a['code_address'],a['code_address']+32)
         original=build/(name+'-unwind-contexts.bin');data=original.read_bytes();inputs[original.name]=reference.sha(data)
-        wide=kind==15;variant_count=4 if wide else 2;expected_bytes=88 if wide else 72;row_bytes=476 if wide else 332
+        wide=kind in (15,17);variant_count=4 if wide else 2;expected_bytes=88 if wide else 72;row_bytes=476 if wide else 332
         reference.require(data[:12]==(b'EPUWDX1\0' if wide else b'EPUWDV1\0')+struct.pack('<I',variant_count),'Unknown context schema')
         offset=12;variants=[]
         for v in range(variant_count):
@@ -58,7 +60,7 @@ def validate(path,zig):
             offset=end
         reference.require(offset==len(data),'Trailing context data')
         target=build/(name+'-roster-gated-contexts.bin');target.write_bytes(data[:12]+b''.join(variants));artifacts.append(target)
-        windows=json.loads(run([departure_exe if wide else registry_exe if kind>=13 else exe,target]))
+        windows=json.loads(run([arrival_exe if kind==17 else departure_exe if wide else registry_exe if kind>=13 else exe,target]))
         results[name]=dict(bytes=out.bytes,function_count=out.function_count,windows_unwind_contexts=windows['windows_unwind_contexts'],reference_negative_controls_rejected=windows['negative_controls_rejected' if wide else 'legacy_rejection_failures_reproduced'])
         bad=[(CONTROL+1,CONTROL+8,a),(CONTROL,CONTROL+4,a),(CONTROL,CONTROL,a),
              (a['roster_address'],CONTROL+8,a),(a['storage_address'],CONTROL+8,a),
@@ -84,13 +86,13 @@ def validate(path,zig):
         (CONTROL,CONTROL+8,{**a,'code_address':a['game_base']+0xFDC820})):
         failed=Gate();c.memset(c.byref(failed),0xA5,c.sizeof(failed))
         reference.require(emit(16,InsertAddresses(**bindings),control,next_pointer,failed)!=0 and bytes(failed)==bytes(c.sizeof(failed)),'Invalid entity scope placement accepted');refusals+=1
-    for kind in (0,17,0xFFFFFFFF):
+    for kind in (0,18,0xFFFFFFFF):
         failed=Gate();c.memset(c.byref(failed),0xA5,c.sizeof(failed));reference.require(emit(kind,InsertAddresses(**a),CONTROL,CONTROL+8,failed)==1 and bytes(failed)==bytes(c.sizeof(failed)),'Invalid kind accepted');refusals+=1
     paths=['mod/src/ep_roster_gate.h','mod/src/ep_roster_gate.cpp','tests/native_producer_unwind_test.c','tests/property_image_dll.cpp',
            'tools/validate_roster_gates.py','tools/validate_property_gates.py','tools/native_property_library.py']
-    paths += [f'mod/src/ep_{name}.{suffix}' for name in ('property_gate','property_image','getter_image','mover_image','insert_image','remove_image','classify_image','registry_image','departure_image') for suffix in ('h','cpp')]
-    paths += ['tools/native_registry_image.py','native-registry.lock.json','tools/native_departure_image.py','native-departure.lock.json','tests/native_departure_unwind_test.c']
-    refs=['property-image','native-getter','native-mover','native-insert','native-remove','native-classify','native-registry','native-departure','property-gate']
+    paths += [f'mod/src/ep_{name}.{suffix}' for name in ('property_gate','property_image','getter_image','mover_image','insert_image','remove_image','classify_image','registry_image','departure_image','arrival_image') for suffix in ('h','cpp')]
+    paths += ['tools/native_registry_image.py','native-registry.lock.json','tools/native_departure_image.py','native-departure.lock.json','tests/native_departure_unwind_test.c','tools/native_arrival_image.py','native-arrival.lock.json','tests/native_arrival_unwind_test.c']
+    refs=['property-image','native-getter','native-mover','native-insert','native-remove','native-classify','native-registry','native-departure','native-arrival','property-gate']
     receipt=dict(schema='hellforge_roster_gate_validation_v1',verified_at_utc=datetime.now(timezone.utc).isoformat(),passed=True,
                  branch_cases=branches,placement_refusals=refusals,variants=results,
                  windows_unwind_contexts=sum(x['windows_unwind_contexts'] for x in results.values()),

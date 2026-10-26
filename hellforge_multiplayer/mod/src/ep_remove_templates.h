@@ -1,7 +1,7 @@
 /* Generated from pinned removal sources; explicit numeric bindings only.
  * native-remove.lock.json SHA256 0d5142914bfdafe1a9e55ef4c4d5afd86287851b2d2dca2869ae1ca757045d02
  * tools/native_remove_image.py SHA256 fa46e06bb1d63d2000967252606023dfdda9bae8ef4d856776f75ac82e436d38
- * tools/native_unwind_source.py SHA256 8f2b51781ae06b3f6a72959218f7c60cdf4e7f6a13e59c56f7eff99140721e4f
+ * tools/native_unwind_source.py SHA256 a96352efbb2566ed6fc8a417b0a3d9a56d377a548fc0cdd400a3e6ace5083b73
  * tools/native_mover_image.py SHA256 7ea40986a77b5e36e132b5e5048e50858ceaed8c3e639321adfbd91a1e9ba105
  */
 #define EP_REMOVE_MOVER_BYTES 612u

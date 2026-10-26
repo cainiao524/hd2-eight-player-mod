@@ -1,7 +1,7 @@
 /* Generated from pinned classification sources; explicit numeric bindings only.
  * native-classify.lock.json SHA256 41843b622018655e4d286036256ba8463ce6f638a15fd33f6cd1bf5ff87c8b03
  * tools/native_classify_image.py SHA256 1bb3a1a3a65c97350e276520352725f21690202c5758c574d843364eb186aff5
- * tools/native_unwind_source.py SHA256 8f2b51781ae06b3f6a72959218f7c60cdf4e7f6a13e59c56f7eff99140721e4f
+ * tools/native_unwind_source.py SHA256 a96352efbb2566ed6fc8a417b0a3d9a56d377a548fc0cdd400a3e6ace5083b73
  */
 static const uint8_t ep_classify_enter[] = {
     0x51,0x52,0x41,0x50,0x41,0x51,0x53,0x56,0x57,0x48,0x8b,0xf2,0x48,0xb8,0x00,0x00,

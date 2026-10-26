@@ -4,7 +4,9 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-#define EP_SESSION_CODE_SLOTS 64u
+/* Four complete 17-entry roster groups; unrelated prepared images share this
+ * bounded pool and can still cause clean reservation refusal. */
+#define EP_SESSION_CODE_SLOTS 68u
 #define EP_SESSION_CODE_MAX_BYTES 65536u
 typedef enum EpSessionCodeState {
     EP_CODE_EMPTY, EP_CODE_RESERVED, EP_CODE_READY, EP_CODE_FAILED,
@@ -35,6 +37,17 @@ int ep_session_code_seal(HfMod*, uint64_t handle, const void* image,
  * exact earlier owned row. Used by gate + candidate images. */
 int ep_session_code_seal_table(HfMod*, uint64_t handle, const void* image,
                               uint32_t bytes, uint32_t table_offset, uint32_t count);
+/* Opt-in for the pinned 6054F0 GS-only handler, not arbitrary EH metadata.
+ * Keeps flags EHANDLER|UHANDLER, frame-relative cookie +96 and an owned rel32
+ * tail thunk to the explicitly supplied original handler. Caller must verify
+ * that target's identity/lifetime. Existing seal_table still rejects handlers.
+ * Metadata validation does not prove instruction equivalence or game ABI. */
+typedef struct EpSessionGsCheck {
+    uint32_t function_index, handler_offset;
+    uintptr_t handler_target;
+} EpSessionGsCheck;
+int ep_session_code_seal_gs_table(HfMod*, uint64_t handle, const void* image,
+    uint32_t bytes, uint32_t table_offset, uint32_t count, const EpSessionGsCheck*);
 int ep_session_code_info(HfMod*, uint64_t handle, EpSessionCodeInfo*);
 /* Before calling hook_ex, permanently pin this module and the image. Even a
  * reported hook failure can have exposed code: keep it for process lifetime.

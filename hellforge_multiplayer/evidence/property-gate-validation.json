@@ -1,6 +1,6 @@
 {
   "schema": "hellforge_property_gate_validation_v1",
-  "verified_at_utc": "2026-10-26T01:41:15.421166+00:00",
+  "verified_at_utc": "2026-10-26T02:08:33.656057+00:00",
   "passed": true,
   "branch_cases": 18,
   "placement_refusals": 24,
@@ -32,7 +32,7 @@
     "mod/src/ep_property_gate.cpp": "5b8aa7af60d0801be4247a9fa6e9ebb11b749981e6e795a1ae7a72ae95668778",
     "mod/src/ep_property_image.h": "9c1a17f0d0e7106adeae947246edc49be4012341e21811a3ffb68b63aec1a1d4",
     "mod/src/ep_property_image.cpp": "22bb0edac87be485da57effaf477d562d35816fba392c3403027270652ec941f",
-    "mod/src/ep_property_templates.h": "940fef65c777ad60deb8f2e92c79b6e8dc717dead972237363ec4344fe92d3f9",
+    "mod/src/ep_property_templates.h": "f1cd9b9d05011877475c6ffa4c7e17a4ce7ec2b96cd0fd52d5f05cb04741fbfe",
     "tools/validate_property_gates.py": "3fa37818764ac6e797708f7ad8df68cc23eb3f584701a8f05d0c7cf1f62bcc34",
     "tools/native_property_library.py": "e133b580f90c0fce413b2def81154fab668c3647a35a76a7e35ed32d25ec00d0",
     "tests/native_producer_unwind_test.c": "580bd2f050ccd5e2ee34f3a78cc416bbe1a8ab1cb1966e5bd7c299cf34a739be",
@@ -41,12 +41,12 @@
     "tools/build_receiver_unwind_offline.py": "6d49282026472837ac692335b71fd34bf29b94e10e795829c7e9f02fa203d772",
     "tools/native_producer_unwind.py": "4cb2da68acb304be8434f786573d6b440e7057ace4a45deb355a956c5ec48832",
     "tools/native_receiver_unwind.py": "e501bf070a4f0266a5802a130a2ed24c052746c7a12db9b4eb9ab7f1efabf501",
-    "tools/native_unwind_source.py": "8f2b51781ae06b3f6a72959218f7c60cdf4e7f6a13e59c56f7eff99140721e4f",
+    "tools/native_unwind_source.py": "a96352efbb2566ed6fc8a417b0a3d9a56d377a548fc0cdd400a3e6ace5083b73",
     "native-unwind-source.lock.json": "bfefac86c12f8a761b563d4da814ed1195eb7967f024fe218b9e6d6c5a896680",
     "native-storage.lock.json": "ec2a0cafe60941a36c09b87bd40f8098fc904120ce68b027f9de3edf5093161f",
     "mod/src/ep_getter_image.h": "b11c74c1bf00d6f4500e5ce5180ab7a316a7d77b2c4cca887fea62f7fcfbbdca",
     "mod/src/ep_getter_image.cpp": "0c8f8cf1fcd55d82becb396c24637c524e38d3f1a67e2c880e5a18086869d163",
-    "mod/src/ep_getter_template.h": "d29a18df684825f7eb9a9379dd1269143131ae29db6d55f1ae11b5b41caa4db7",
+    "mod/src/ep_getter_template.h": "afd82900912d12d3c4506ea87e51513cf9387eacdcc2c1036cde2e96169174ff",
     "tools/native_getter_image.py": "3b329d319d9edd550fa237a4c8c8c04bf17d8dfcd7e688b6291d1e31c1306afb",
     "native-getter.lock.json": "2ec11c0046408233a263c86d91e84309b153458d6f3863b38a5894adb75b19d9"
   },
@@ -64,8 +64,8 @@
       "sha256": "ea2d3c2e64a3663dd2ffcc8cf12a4808cad319845667a956deb5beda3c2091a1"
     },
     "property_image_test.dll": {
-      "bytes": 279040,
-      "sha256": "9a6378c5b5f3c53e69a4ec64b3328419f3006b95a7a29143638fca5ff63749cf"
+      "bytes": 286720,
+      "sha256": "28161701d2a58c9ac7f01b7d38f1ad48932da457520bad59af0b6210be6345e6"
     }
   },
   "inputs_sha256": {
@@ -77,10 +77,10 @@
     "native_getter_unwind_test.exe": "721ff4e6ad291efacc176479c9eff350cf49732dcb78eac518d5b3801ab8aeb7"
   },
   "reference_validation_sha256": {
-    "native-producer-unwind-validation.json": "276743ab93993928fbfefe758621e84e88f2193d2a01f9ad6aaff3300c381840",
-    "native-receiver-unwind-validation.json": "bcabba91f10db0f65a8438c79fab5f554bb67e1bcfeeab07168bdb29e04c2a0d",
-    "native-unwind-source-validation.json": "8952eba1a0dbf91e81d9c1cfc05e6dd44179649b9cf2dd953c4103a19f464cb0",
-    "native-getter-validation.json": "2035dc750da7298026da830b64f53e460a4c78b313e0bdcae40abc475baf7fb3"
+    "native-producer-unwind-validation.json": "34424aedebda0b2d31f58e9f25f27ee83a920a756461a12d8e55f8fbe462fa84",
+    "native-receiver-unwind-validation.json": "c93980fef9b7385ea4ce0abf6212e366d58c13fecb495a9924a2d3276c783214",
+    "native-unwind-source-validation.json": "e0f0948a0faea5615c3f7ff6b6fcc904ac88a6b04823f94db9895f79e33a7e88",
+    "native-getter-validation.json": "bbe1b95fce39a7d5300687fdacd2c5b662e0eb31abccf928b77bbca497714ecc"
   },
   "game_access": false,
   "native_execution_of_game_bodies": false,

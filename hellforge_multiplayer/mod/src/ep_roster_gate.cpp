@@ -5,12 +5,14 @@
 #include "ep_classify_image.h"
 #include "ep_registry_image.h"
 #include "ep_departure_image.h"
+#include "ep_arrival_image.h"
 #include <string.h>
 static const EpRosterGateLayout layouts[EP_ROSTER_ENTRIES]={
     {0x60C640,578,756,2},{0x60C890,303,484,2},{0x606AD0,165,436,2},{0x60C410,430,660,3},
     {0x60CA80,287,688,3},{0x60CBA0,203,588,3},{0x540850,206,592,3},{0x540920,286,684,3},
     {0x60CEA0,172,824,3},{0x540A40,160,808,3},{0x60CF50,934,2344,3},{0x60D300,1120,2816,3},
-    {0xB54E00,873,1884,5},{0x606520,271,536,4},{0x605950,1503,2760,15},{0xFDC820,1503,80,2}
+    {0xB54E00,873,1884,5},{0x606520,271,536,4},{0x605950,1503,2760,15},{0xFDC820,1503,80,2},
+    {0x6054F0,1111,2072,4}
 };
 int ep_roster_gate_layout(uint32_t kind,EpRosterGateLayout* out)
 {
@@ -68,7 +70,7 @@ EpPropertyResult ep_roster_gate_build(uint32_t kind,const EpInsertAddresses* inp
         memcpy(result.data,image.data,image.bytes);
     } else {
         a.code_address+=32;basic.code_address+=32;
-        EpPropertyImage small;EpRemoveImage removed;EpClassifyImage classified;EpRegistryImage registry;EpDepartureImage departure;
+        EpPropertyImage small;EpRemoveImage removed;EpClassifyImage classified;EpRegistryImage registry;EpDepartureImage departure;EpArrivalImage arrival;
         const uint8_t* data;uint32_t bytes,table,functions=2;
         if (kind==4) {EpMoverAddresses mover={a.game_base,a.code_address,a.roster_address,a.storage_address,a.reject_address};
             rc=ep_mover_image_build(&mover,&small);data=small.data;bytes=small.bytes;table=small.table_offset;}
@@ -77,6 +79,8 @@ EpPropertyResult ep_roster_gate_build(uint32_t kind,const EpInsertAddresses* inp
         else if (kind<=12) {rc=ep_classify_image_build(kind-10,&basic,&classified);data=classified.data;bytes=classified.bytes;table=classified.table_offset;}
         else if (kind<=14) {EpRegistryAddresses r={a.game_base,a.code_address,a.roster_address,a.storage_address,a.move_code_address,a.reject_address};
             rc=ep_registry_image_build(kind-12,&r,&registry);data=registry.data;bytes=registry.bytes;table=registry.table_offset;functions=registry.function_count;}
+        else if (kind==EP_ROSTER_STATE_UPDATE) {EpArrivalAddresses state={a.game_base,a.code_address,a.roster_address,a.storage_address,a.reject_address};
+            rc=ep_arrival_image_build(&state,&arrival);data=arrival.data;bytes=arrival.bytes;table=arrival.table_offset;functions=arrival.function_count;}
         else {EpDepartureAddresses d={a.game_base,a.code_address,a.roster_address,a.storage_address,a.move_code_address,a.reject_address};
             rc=ep_departure_image_build(&d,&departure);data=departure.data;bytes=departure.bytes;table=departure.table_offset;functions=departure.function_count;}
         if (rc!=EP_PROPERTY_OK) return rc;
@@ -94,6 +98,11 @@ EpPropertyResult ep_roster_gate_build(uint32_t kind,const EpInsertAddresses* inp
                 if (chain+12>table) return EP_PROPERTY_ARGUMENT;
                 memcpy(parent,data+chain,12);for(unsigned j=0;j<3;j++) parent[j]+=32;
                 memcpy(result.data+32+chain,parent,12);
+            } else if ((data[uw]>>3)==3) {
+                if (kind!=EP_ROSTER_STATE_UPDATE) return EP_PROPERTY_ARGUMENT;
+                uint32_t at=uw+4+((data[uw+2]+1u)&~1u)*2u,handler;
+                if (at+8>table) return EP_PROPERTY_ARGUMENT;
+                memcpy(&handler,data+at,4);handler+=32;memcpy(result.data+32+at,&handler,4);
             }
         }
         for (unsigned i=3;i<3+3*functions;i++) rows[i]+=32;

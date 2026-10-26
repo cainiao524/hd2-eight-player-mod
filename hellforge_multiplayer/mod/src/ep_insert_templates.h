@@ -1,7 +1,7 @@
 /* Generated from pinned insertion sources; explicit numeric bindings only.
  * native-insert.lock.json SHA256 f33a753bfad144b45e6e4c6cc64bae9a53347f17034c1e932cae7ec29a27ec40
  * tools/native_insert_image.py SHA256 9db16bc5501b9d6ad6a94147a77a0b90cd49a118fa3156692a8c827c41fdcfd9
- * tools/native_unwind_source.py SHA256 8f2b51781ae06b3f6a72959218f7c60cdf4e7f6a13e59c56f7eff99140721e4f
+ * tools/native_unwind_source.py SHA256 a96352efbb2566ed6fc8a417b0a3d9a56d377a548fc0cdd400a3e6ace5083b73
  * tools/native_mover_image.py SHA256 7ea40986a77b5e36e132b5e5048e50858ceaed8c3e639321adfbd91a1e9ba105
  */
 #define EP_INSERT_MOVER_BYTES 612u

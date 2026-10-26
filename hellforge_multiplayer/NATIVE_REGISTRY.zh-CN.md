@@ -15,7 +15,7 @@
 
 ## 共同切換與存取範圍
 
-`ep_roster_group.*` 現在準備十六入口。原十二入口編號保持不變，新增 `EP_ROSTER_REGISTRY_UPDATE=13` 和 `EP_ROSTER_ASSOCIATION=14`。registry 的內部查詢連到同組 association 的 `base+32` 主體，使用同一 S/B；十六次發布全部成功後才允許提交共同開關。
+`ep_roster_group.*` 現在準備十七入口。原十二入口編號保持不變，新增 `EP_ROSTER_REGISTRY_UPDATE=13` 和 `EP_ROSTER_ASSOCIATION=14`。registry 的內部查詢連到同組 association 的 `base+32` 主體，使用同一 S/B；十六次發布全部成功後才允許提交共同開關。
 
 選擇 `prepare_owned` 時，兩個新入口的完整舊路徑與新路徑都進入既有 owner。registry 按 writer 處理，association 查詢按 reader 處理；後者不自行增加名冊 revision。registry 內部的 association 呼叫沿用外層保護。權威身分來源、真實排空、失敗策略與生產初始化仍須由整合者實作，沒有自動綁定或遊戲發布。
 
@@ -31,7 +31,7 @@ registry 的原始條件式保存使用 chained unwind。移植保留完整三�
 
 功能測試的 tag 69 `FD9BA0` 使用保存的真指令；其他 tag 的 opaque calls 仍是明示參數、順序與副作用的替身。完整映像只在 Unicorn 執行。Windows 原生測試只執行自己的普通測試函式，以及對不可執行映像呼叫 `RtlVirtualUnwind`，沒有原生執行遊戲函式。
 
-[十六入口收據](evidence/roster-gate-validation.json)與[引擎總收據](evidence/engine-roster-validation.json)另外記錄共同開關、內部 helper、發布/封存失敗、owner 與關閉場景。精確檢查數量以本輪收據為準。
+[十七入口收據](evidence/roster-gate-validation.json)與[引擎總收據](evidence/engine-roster-validation.json)另外記錄共同開關、內部 helper、發布/封存失敗、owner 與關閉場景。精確檢查數量以本輪收據為準。
 
 仍有以下實際限制：
 

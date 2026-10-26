@@ -1,7 +1,7 @@
 /* Generated from the pinned mover; numeric bindings only.
  * native-mover.lock.json SHA256 d871e37dfa31605cec611c4e4d2757ef7d1421862a004a9019ff40f6ac8f4a30
  * tools/native_mover_image.py SHA256 7ea40986a77b5e36e132b5e5048e50858ceaed8c3e639321adfbd91a1e9ba105
- * tools/native_unwind_source.py SHA256 8f2b51781ae06b3f6a72959218f7c60cdf4e7f6a13e59c56f7eff99140721e4f
+ * tools/native_unwind_source.py SHA256 a96352efbb2566ed6fc8a417b0a3d9a56d377a548fc0cdd400a3e6ace5083b73
  */
 #define EP_MOVER_IMAGE_BYTES 612u
 #define EP_MOVER_CODE_BYTES 558u

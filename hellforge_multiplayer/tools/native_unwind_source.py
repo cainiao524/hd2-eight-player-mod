@@ -29,7 +29,7 @@ def load_bytes(raw):
     return data
 
 
-def audit(data, *, schema='hellforge_captured_property_unwind_v1', names=('producer','receiver')):
+def audit(data, *, schema='hellforge_captured_property_unwind_v1', names=('producer','receiver'), gs_functions=()):
     """Decode the no-handler/chaining property; not an exception dispatcher."""
     require(data['schema'] == schema and data['build'] == 25480438,
             'Unsupported original unwind profile')
@@ -51,10 +51,13 @@ def audit(data, *, schema='hellforge_captured_property_unwind_v1', names=('produ
             raw = bytes.fromhex(fragment['unwind_hex'])
             require(len(raw) >= 4 and raw[0] & 7 == 1, 'Unsupported unwind version/header')
             flags = raw[0] >> 3
-            require(not flags & 3, 'Original language handler requires explicit preservation')
-            require(flags in (0, 4) and raw[3] == 0, 'Unsupported flags/frame register')
+            gs = name in gs_functions and flags == 3
+            require(not flags & 3 or gs, 'Original language handler requires explicit preservation')
+            require((flags in (0, 4) or gs) and raw[3] == 0, 'Unsupported flags/frame register')
             body = 4 + ((raw[2] + 1) & ~1) * 2
-            require(len(raw) == body + (12 if flags == 4 else 0), 'Truncated or surplus unwind data')
+            require(len(raw) == body + (12 if flags == 4 else 8 if gs else 0), 'Truncated or surplus unwind data')
+            if gs:
+                require(struct.unpack('<II', raw[body:]) == (0x21044a0, 96), 'Unknown GS handler contract')
             require(raw[1] <= b - a, 'Prologue exceeds fragment')
             parent = struct.unpack('<III', raw[body:]) if flags == 4 else None
             records[entry] = parent
@@ -72,7 +75,7 @@ def audit(data, *, schema='hellforge_captured_property_unwind_v1', names=('produ
                     break
                 node = parent
         summaries[name] = {'fragments': len(records), 'flags': flags_seen,
-                           'chained_fragments': flags_seen.count(4), 'language_handlers': False}
+                           'chained_fragments': flags_seen.count(4), 'language_handlers': any(f & 3 for f in flags_seen)}
     return summaries
 
 

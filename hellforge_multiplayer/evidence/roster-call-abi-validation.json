@@ -1,7 +1,7 @@
 {
   "schema": "hellforge_roster_call_abi_v1",
   "passed": true,
-  "verified_at_utc": "2026-10-26T01:42:17.418078+00:00",
+  "verified_at_utc": "2026-10-26T02:09:38.347374+00:00",
   "game_build": 25480438,
   "indirect_tail_rejection_controls": 3,
   "dynamic_iterator_rejection_controls": 2,
@@ -251,10 +251,22 @@
       "indirect_tail_abi_pending": [],
       "external_tail_abi_pending": [],
       "stack_arguments": []
+    },
+    {
+      "kind": 17,
+      "name": "arrival",
+      "entry": "0x6054f0",
+      "stack_copy_bytes": 0,
+      "cfg_states": 241,
+      "returns": 1,
+      "dynamic_stack_accesses_pending": [],
+      "indirect_tail_abi_pending": [],
+      "external_tail_abi_pending": [],
+      "stack_arguments": []
     }
   ],
   "test_source_sha256": {
-    "tools/verify_roster_call_abi.py": "34eaf494d447df116313daeeccc8a2391bf99d6b0ad70e4f8a0c4b07741a9a75"
+    "tools/verify_roster_call_abi.py": "5a5f443a162b3cacb32863d0703e22da985e05ebd43ae15b404265c3989befed"
   },
   "legacy_source_sha256": {
     "hellforge_multiplayer/native-unwind-source.lock.json": "bfefac86c12f8a761b563d4da814ed1195eb7967f024fe218b9e6d6c5a896680",
@@ -276,7 +288,9 @@
     "five_player_feasibility_20260927/roster_departure_native_evidence.json": "0280267b6f32d4a24f15c69da317d1c2c7a93adb136d4252ff93e09a8d67e609",
     "hellforge_multiplayer/native-entity-remove.lock.json": "11c35626181612edbe512f829869647b2d054640b6e72716380a0509c79b586c",
     "five_player_feasibility_20260927/roster_property_apply_evidence_v3.json": "d0dd9c02db933c20801a366d9668131734a29106e46f8a8a0d0de43981a27d22",
-    "five_player_feasibility_20260927/spawn_callback_registration_evidence_v2.json": "142df92c5411697e03914be224d30e05f85a02011c2c96e00be2e2aa9b9a5109"
+    "five_player_feasibility_20260927/spawn_callback_registration_evidence_v2.json": "142df92c5411697e03914be224d30e05f85a02011c2c96e00be2e2aa9b9a5109",
+    "hellforge_multiplayer/native-arrival.lock.json": "1d31cbf5676a860f47203246cb0266bfeb8fee213476cd138d173fcb7d89f275",
+    "five_player_feasibility_20260927/roster_arrival_native_evidence.json": "c3073ba7658599bc662d980397f21bf7a003f56a2b821cdcf4c2341fe05a2e64"
   },
   "live_callers_verified": false,
   "transitive_helper_abi_verified": false,

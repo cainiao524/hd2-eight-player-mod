@@ -102,7 +102,7 @@ def main():
     property_dll=build/'property_image_test.dll'
     run([zig,'c++','-std=c++17','-target','x86_64-windows-gnu','-shared','-O1','-Wall','-Werror','-Wno-unused-parameter',
          '-I',source/'native/mod-sdk',PROJECT/'mod/src/ep_property_image.cpp',PROJECT/'mod/src/ep_property_code.cpp',PROJECT/'mod/src/ep_property_gate.cpp',PROJECT/'mod/src/ep_getter_image.cpp',PROJECT/'mod/src/ep_mover_image.cpp',PROJECT/'mod/src/ep_insert_image.cpp',
-         PROJECT/'mod/src/ep_remove_image.cpp',PROJECT/'mod/src/ep_classify_image.cpp',PROJECT/'mod/src/ep_registry_image.cpp',PROJECT/'mod/src/ep_departure_image.cpp',PROJECT/'mod/src/ep_roster_gate.cpp',PROJECT/'tests/departure_image_dll.cpp','-o',property_dll])
+         PROJECT/'mod/src/ep_remove_image.cpp',PROJECT/'mod/src/ep_classify_image.cpp',PROJECT/'mod/src/ep_registry_image.cpp',PROJECT/'mod/src/ep_departure_image.cpp',PROJECT/'mod/src/ep_arrival_image.cpp',PROJECT/'mod/src/ep_roster_gate.cpp',PROJECT/'tests/arrival_image_dll.cpp','-o',property_dll])
     property_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_property_images.py','--library',property_dll]))
     property_receipt=PROJECT/'evidence/property-image-validation.json'
     getter_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_getter_image.py','--library',property_dll,'--zig',zig]))
@@ -119,6 +119,8 @@ def main():
     registry_receipt=PROJECT/'evidence/native-registry-validation.json'
     departure_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_departure_images.py','--library',property_dll,'--zig',zig]))
     departure_receipt=PROJECT/'evidence/native-departure-validation.json'
+    arrival_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_arrival_images.py','--library',property_dll,'--zig',zig]))
+    arrival_receipt=PROJECT/'evidence/native-arrival-validation.json'
     entity_remove_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_entity_remove.py','--library',property_dll]))
     entity_remove_receipt=PROJECT/'evidence/entity-remove-dispatch-validation.json'
     classify_fixture=build/'native-classify-fixture.bin'
@@ -163,18 +165,18 @@ def main():
     roster_gate_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_roster_gates.py','--library',property_dll,'--zig',zig]))
     roster_gate_receipt=PROJECT/'evidence/roster-gate-validation.json'
     roster_group_dll,roster_group_test=build/'roster_group_test.dll',build/'roster_group_test.exe'
-    roster_emitters=[PROJECT/'mod/src'/('ep_'+n+'.cpp') for n in ('property_image','property_gate','getter_image','mover_image','insert_image','remove_image','classify_image','registry_image','departure_image','roster_gate')]
+    roster_emitters=[PROJECT/'mod/src'/('ep_'+n+'.cpp') for n in ('property_image','property_gate','getter_image','mover_image','insert_image','remove_image','classify_image','registry_image','departure_image','arrival_image','roster_gate')]
     run([zig,'c++','-std=c++17','-target','x86_64-windows-gnu','-shared','-O1','-Wall','-Werror','-Wno-unused-parameter',
          '-I',source/'native/mod-sdk',*roster_emitters,PROJECT/'mod/src/ep_roster_call.cpp',PROJECT/'mod/src/ep_roster_owner.cpp',PROJECT/'mod/src/ep_native_roster.cpp',PROJECT/'tests/roster_group_dll.cpp','-o',roster_group_dll])
     run([*common,'-O1',PROJECT/'tests/roster_group_test.c',*deps,'-o',roster_group_test])
     roster_scenarios=[]
-    for index,after in [(0,0)]+[(i,j) for i in range(1,17) for j in (0,1)]:
+    for index,after in [(0,0)]+[(i,j) for i in range(1,18) for j in (0,1)]:
         arguments=[] if not index else [index,after]
         result=run([roster_group_test,roster_group_dll,*arguments]).decode('utf-8').strip()
         found=re.fullmatch(r'roster group: (\d+) checks passed; scenario (\d+) (\d+)',result)
         if not found or (int(found[2]),int(found[3]))!=(index,after):raise RuntimeError('Missing roster group result: '+result)
         roster_scenarios.append(dict(failure_position=index,after_sdk=bool(after),checks=int(found[1])))
-    roster_group_result=dict(checks=sum(x['checks'] for x in roster_scenarios),scenarios=roster_scenarios,entries=16,
+    roster_group_result=dict(checks=sum(x['checks'] for x in roster_scenarios),scenarios=roster_scenarios,entries=17,
         shared_storage_and_latch=True,internal_mover_bound_to_group=True,internal_association_bound_to_group=True,internal_departure_getter_bound_to_group=True,actual_hellforge_chains=True,
         cooperative_quiescence_tested=True,production_quiescence_provider_bound=False,active_data_rollback_implemented=False,
         native_execution_of_game_bodies=False,game_access=False)
@@ -187,12 +189,12 @@ def main():
     roster_bridge_fixture=build/'roster_call_test.unwind.bin'
     roster_bridge_unwind=json.loads(run([sys.executable,'-B',PROJECT/'tools/roster_bridge_unwind.py','--library',roster_call_dll,'--output',roster_bridge_fixture]))
     call_scenarios=[]
-    for arguments in [['normal'],['nestedfault'],['depth'],['close'],['validatefault'],['endfault'],['exhausted'],['unavailable'],['departurefault'],['departureclose'],['departurerace'],['scopecommit'],['scopeclose'],['scopesnapshot'],['scopefault'],['scopechain']]+[[i,j] for i in range(1,17) for j in (0,1)]:
+    for arguments in [['normal'],['nestedfault'],['depth'],['close'],['validatefault'],['endfault'],['exhausted'],['unavailable'],['departurefault'],['departureclose'],['departurerace'],['scopecommit'],['scopeclose'],['scopesnapshot'],['scopefault'],['scopechain']]+[[i,j] for i in range(1,18) for j in (0,1)]:
         result=run([roster_call_test,roster_call_dll,*arguments]).decode('utf-8').strip()
         found=re.fullmatch(r'roster calls: (\d+) checks passed; (?:mode \w+|scenario \d+ \d+)',result)
         if not found:raise RuntimeError('Missing owned roster call result: '+result)
         call_scenarios.append(dict(arguments=arguments,checks=int(found[1])))
-    roster_call_result=dict(checks=sum(x['checks'] for x in call_scenarios),scenarios=call_scenarios,entries=16,
+    roster_call_result=dict(checks=sum(x['checks'] for x in call_scenarios),scenarios=call_scenarios,entries=17,
         actual_owner_dll=True,actual_hellforge_chains=True,old_and_new_calls_owned=True,route_selected_under_owner=True,
         departure_synthetic_indirect_tail_owned=True,departure_nested_delete_fault_quarantines=True,departure_tail_close_and_commit_drain=True,
         departure_indirect_tail_target_abi_verified=False,departure_full_cleanup_transaction_owned=False,
@@ -255,6 +257,7 @@ def main():
         'roster_gates':{**roster_gate_output,'validation_sha256':digest(roster_gate_receipt)},
         'native_classify':{**classify_output,'validation_sha256':digest(classify_receipt)},
         'native_registry':{**registry_output,'validation_sha256':digest(registry_receipt)},
+        'native_arrival':{**arrival_output,'validation_sha256':digest(arrival_receipt)},
         'native_departure':{**departure_output,'validation_sha256':digest(departure_receipt)},
         'native_entity_remove_dispatch':{**entity_remove_output,'validation_sha256':digest(entity_remove_receipt)},
         'native_classify_storage':{'checks':int(classify_match[1]),**classify_fixture_receipt},
@@ -291,6 +294,8 @@ def main():
             'mod/src/ep_insert_image.h','mod/src/ep_insert_image.cpp','mod/src/ep_insert_templates.h',
             'native-remove.lock.json','tools/native_remove_image.py','tools/generate_remove_templates.py','tools/validate_remove_images.py',
             'mod/src/ep_remove_image.h','mod/src/ep_remove_image.cpp','mod/src/ep_remove_templates.h',
+            'native-arrival.lock.json','tools/native_arrival_image.py','tools/generate_arrival_template.py','tools/validate_arrival_images.py','tools/native_arrival_library.py',
+            'mod/src/ep_arrival_image.h','mod/src/ep_arrival_image.cpp','mod/src/ep_arrival_templates.h','tests/arrival_image_dll.cpp','tests/native_arrival_unwind_test.c',
             'native-departure.lock.json','tools/native_departure_image.py','tools/generate_departure_template.py','tools/validate_departure_images.py','tools/native_departure_library.py',
             'mod/src/ep_departure_image.h','mod/src/ep_departure_image.cpp','mod/src/ep_departure_templates.h','tests/departure_image_dll.cpp','tests/native_departure_unwind_test.c',
             'native-registry.lock.json','tools/native_registry_image.py','tools/generate_registry_templates.py','tools/validate_registry_images.py',
@@ -317,7 +322,7 @@ def main():
         'runtime_verified': False, 'multiplayer_verified': False, 'public_release_allowed': False,
     }
     (PROJECT / 'evidence/engine-roster-validation.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
-    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'native_storage_checks': receipt['native_storage_checks'], 'session_code_checks': int(code_match[1]), 'property_images':property_output,'property_gates':gate_output,'property_group_checks':int(group_match[1]),'getter':getter_output,'mover':mover_output,'insert':insert_output,'remove':remove_output,'classify':classify_output,'registry':registry_output,'departure':departure_output,'classify_storage_checks':int(classify_match[1]),'roster_gates':roster_gate_output,'roster_group_checks':roster_group_result['checks'],'roster_owner_checks':owner_result['checks'],'native_getter_queries':sync_receipt['native_getter_queries'], 'sync_consumer_checks': sync_receipt['consumer_checks'], 'native_receivers': sync_receipt['native_receivers'], 'patch_replayed': True, 'game_access': False}))
+    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'native_storage_checks': receipt['native_storage_checks'], 'session_code_checks': int(code_match[1]), 'property_images':property_output,'property_gates':gate_output,'property_group_checks':int(group_match[1]),'getter':getter_output,'mover':mover_output,'insert':insert_output,'remove':remove_output,'classify':classify_output,'registry':registry_output,'departure':departure_output,'arrival':arrival_output,'classify_storage_checks':int(classify_match[1]),'roster_gates':roster_gate_output,'roster_group_checks':roster_group_result['checks'],'roster_owner_checks':owner_result['checks'],'native_getter_queries':sync_receipt['native_getter_queries'], 'sync_consumer_checks': sync_receipt['consumer_checks'], 'native_receivers': sync_receipt['native_receivers'], 'patch_replayed': True, 'game_access': False}))
 
 
 if __name__ == '__main__':

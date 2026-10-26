@@ -59,7 +59,7 @@ static uint64_t Body(unsigned kind,int active,uint64_t a,uint64_t b,uint64_t c,u
 }
 #define FUNCTIONS(n) static uint64_t Old##n(uint64_t a,uint64_t b,uint64_t c,uint64_t d,uint64_t e,uint64_t f){return Body(n,0,a,b,c,d,n==1?e:0,n==1?f:0);} \
 static uint64_t New##n(uint64_t a,uint64_t b,uint64_t c,uint64_t d,uint64_t e,uint64_t f){return Body(n,1,a,b,c,d,n==1?e:0,n==1?f:0);}
-FUNCTIONS(1) FUNCTIONS(2) FUNCTIONS(5) FUNCTIONS(6) FUNCTIONS(7) FUNCTIONS(8) FUNCTIONS(9) FUNCTIONS(10) FUNCTIONS(11) FUNCTIONS(12) FUNCTIONS(13) FUNCTIONS(14) FUNCTIONS(16)
+FUNCTIONS(1) FUNCTIONS(2) FUNCTIONS(5) FUNCTIONS(6) FUNCTIONS(7) FUNCTIONS(8) FUNCTIONS(9) FUNCTIONS(10) FUNCTIONS(11) FUNCTIONS(12) FUNCTIONS(13) FUNCTIONS(14) FUNCTIONS(16) FUNCTIONS(17)
 #undef FUNCTIONS
 /* Own four-register tail targets. This exercises bridge lifetime across a real
  * indirect tail; it makes no claim about the unresolved game's tail target. */
@@ -118,8 +118,8 @@ static EpRosterGroupBindings Targets(void)
     uint8_t* memory=VirtualAlloc(NULL,0x30000000,MEM_RESERVE,PAGE_NOACCESS);CHECK(memory!=NULL);
     EpRosterGroupBindings b={0};b.game_base=(uintptr_t)memory;
     b.roster_address=(uintptr_t)memory+0x8000000;b.storage_address=(uintptr_t)memory+0x10000000;
-    const uintptr_t old[EP_ROSTER_ENTRIES]={(uintptr_t)Old1,(uintptr_t)Old2,(uintptr_t)Old3,(uintptr_t)StateOld,(uintptr_t)Old5,(uintptr_t)Old6,(uintptr_t)Old7,(uintptr_t)Old8,(uintptr_t)Old9,(uintptr_t)Old10,(uintptr_t)Old11,(uintptr_t)Old12,(uintptr_t)Old13,(uintptr_t)Old14,(uintptr_t)Old15,(uintptr_t)Old16};
-    const uintptr_t next[EP_ROSTER_ENTRIES]={(uintptr_t)New1,(uintptr_t)New2,(uintptr_t)New3,(uintptr_t)StateNew,(uintptr_t)New5,(uintptr_t)New6,(uintptr_t)New7,(uintptr_t)New8,(uintptr_t)New9,(uintptr_t)New10,(uintptr_t)New11,(uintptr_t)New12,(uintptr_t)New13,(uintptr_t)New14,(uintptr_t)New15,(uintptr_t)New16};
+    const uintptr_t old[EP_ROSTER_ENTRIES]={(uintptr_t)Old1,(uintptr_t)Old2,(uintptr_t)Old3,(uintptr_t)StateOld,(uintptr_t)Old5,(uintptr_t)Old6,(uintptr_t)Old7,(uintptr_t)Old8,(uintptr_t)Old9,(uintptr_t)Old10,(uintptr_t)Old11,(uintptr_t)Old12,(uintptr_t)Old13,(uintptr_t)Old14,(uintptr_t)Old15,(uintptr_t)Old16,(uintptr_t)Old17};
+    const uintptr_t next[EP_ROSTER_ENTRIES]={(uintptr_t)New1,(uintptr_t)New2,(uintptr_t)New3,(uintptr_t)StateNew,(uintptr_t)New5,(uintptr_t)New6,(uintptr_t)New7,(uintptr_t)New8,(uintptr_t)New9,(uintptr_t)New10,(uintptr_t)New11,(uintptr_t)New12,(uintptr_t)New13,(uintptr_t)New14,(uintptr_t)New15,(uintptr_t)New16,(uintptr_t)New17};
     test->targets(next);
     for(unsigned i=0;i<EP_ROSTER_ENTRIES;i++){
         EpRosterGateLayout layout;CHECK(test->layout(i+1,&layout));uint8_t* at=memory+layout.original_rva;

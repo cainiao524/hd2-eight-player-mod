@@ -1,4 +1,4 @@
-"""Check the saved sixteen bodies' direct stack-argument accesses; no game access.
+"""Check the saved seventeen bodies' direct stack-argument accesses; no game access.
 
 This finite CFG check does not certify live callers, indirect helpers or a new
 game build. It pins original evidence and supplies the bridge's stack-copy gate.
@@ -98,7 +98,7 @@ def main():
     profiles=[('native-unwind-source',('producer','receiver')),('native-getter',('getter',)),('native-mover',('mover',)),
         ('native-insert',('dense_legacy','append_legacy','append_registered','dense_registered')),
         ('native-remove',('legacy','registered')),('native-classify',('enter','leave')),
-        ('native-registry',('update','association')),('native-departure',('departure',)),('native-entity-remove',('entity_remove',))]
+        ('native-registry',('update','association')),('native-departure',('departure',)),('native-entity-remove',('entity_remove',)),('native-arrival',('arrival',))]
     rows=[];inputs={};indirect_rejections=0;dynamic_rejections=0
     for name,keys in profiles:
         path=PROJECT/(name+'.lock.json');inputs[path.relative_to(ROOT).as_posix()]=sha(path)
@@ -123,6 +123,8 @@ def main():
                     for pc in (int(table['load_rva'],16),int(table['call_rva'],16)):
                         blob=bytes.fromhex(pins[pc]['bytes']);need(code[pc-entry:pc-entry+len(blob)]==blob,'dispatcher call changed')
                 need([x['call_rva'] for x in lock['callback_tables']]==['0xfdc953','0xfdcc63'],'callback order changed')
+            elif key=='arrival':
+                code=bytes.fromhex(evidence['bodies'][f['entry']]['bytes_hex'])
             else:
                 node=find(evidence,f['entry']);need(node is not None,'missing body')
                 code=b''.join(bytes.fromhex(i['bytes']) for i in node['instructions'])

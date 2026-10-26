@@ -50,7 +50,7 @@ def replay(data, capture):
             entries.append(entry); checked_bytes += 12 + len(unwind)
         source.require(entries == [f for f in image.functions if f[0] < end and start < f[1]],
                        'Incomplete captured function coverage')
-    return {'passed': True, 'functions': source.audit(data,schema=data['schema'],names=tuple(data['functions'])), 'metadata_bytes_replayed': checked_bytes,
+    return {'passed': True, 'functions': source.audit(data,schema=data['schema'],names=tuple(data['functions']),gs_functions=data.get('gs_cookie_functions',())), 'metadata_bytes_replayed': checked_bytes,
               'header_exception_directory_captured': directory_captured, 'runtime_table_verified': False,
               'game_access': False}
 
