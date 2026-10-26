@@ -45,6 +45,11 @@ int ep_component33_resource_acquire_provider_call(const HfApi*,HfMod*,uint64_t s
  * be null. No existing entry/hook is installed by this explicit API. */
 int ep_component33_resource_release_provider_call(const HfApi*,HfMod*,uint64_t storage,
     uint64_t owner,uint32_t ordinal,uint32_t deferred,const EpC33ResourceProviderOps*,EpC33ResourceProviderResult*);
+/* Explicit UPDATE drain gate: nonempty queue, saved tail matches, and the
+ * u32 at *(game+346D530)+190C is zero. No entity/package/threshold lookup.
+ * resolve may be null. No scheduling, entry replacement or RESET supplied. */
+int ep_component33_resource_drain_provider_call(const HfApi*,HfMod*,uint64_t storage,
+    uint64_t owner,const EpC33ResourceProviderOps*,EpC33ResourceProviderResult*);
 #ifdef __cplusplus
 }
 #endif

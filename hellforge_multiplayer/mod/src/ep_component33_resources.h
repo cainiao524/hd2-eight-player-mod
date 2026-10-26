@@ -53,6 +53,13 @@ int ep_c33_resource_execute(const EpC33ResourceBinding*,void* p,uint32_t bytes,
 int ep_c33_resource_release(const EpC33ResourceBinding*,void* p,uint32_t bytes,
     const uint64_t* keys,uint32_t count,uint32_t deferred,void* scratch,uint32_t scratch_bytes,
     EpC33ResourceService,void* context);
+/* Eligible UPDATE queue tail. Caller must first establish the original gate
+ * and hold exclusive ownership. Calls DISPOSE in queue order, then clears
+ * the ENTIRE queue storage and count, preserving all reference buckets.
+ * Empty queues are untouched. Failure leaves the queue intact, including
+ * already serviced keys: quarantine and never automatically retry. */
+int ep_c33_resource_drain(const EpC33ResourceBinding*,void* p,uint32_t bytes,
+    void* scratch,uint32_t scratch_bytes,EpC33ResourceService,void* context);
 /* Explicit opt-in emission. Every consumer, its RELEASE dependency, and all
  * returned original-code windows must share the same arena. Never publish
  * just a subset. The opt-in storage/family resource APIs own/bind this arena;

@@ -134,3 +134,28 @@ int ep_component33_resource_release_services_call(HfMod* mod,uint64_t storage,ui
     EpC33ResourceAcquireOps ops={&context,ServiceCollect,ServiceExecute};
     return ResourceScopeCall(mod,storage,owner,&ops,out,true);
 }
+struct DrainCall { EpC33ResourceDrainOps ops;ServiceCall service; };
+static int DrainCollect(void* context,const EpC33ResourceScopeView* v,EpC33AcquireSnapshot*)
+{
+    auto* drain=(DrainCall*)context;
+    if (!U64((const uint8_t*)resourceCall->memory+32)) return 2;
+    return drain->ops.eligible(drain->ops.context,v);
+}
+static int DrainExecute(void* context,const EpC33ResourceScopeView* v,const EpC33AcquireSnapshot*,const EpC33AcquireDemand*)
+{
+    auto* drain=(DrainCall*)context;auto* call=resourceCall;drain->service.call=call;
+    int result=ep_c33_resource_drain(&v->resources,(void*)(uintptr_t)v->resources.address,call->bytes,
+        call->memory,call->bytes,ServiceInvoke,&drain->service);
+    if (result!=EP_RESOURCE_OK) call->result.status=result==EP_RESOURCE_SERVICE ? EP_C33_CALL_SERVICE : EP_C33_CALL_RESOURCE_STATE;
+    return result==EP_RESOURCE_OK;
+}
+int ep_component33_resource_drain_services_call(HfMod* mod,uint64_t storage,uint64_t owner,const EpC33ResourceDrainOps* input,EpC33ResourceCallResult* out)
+{
+    DrainCall drain={};if (input) drain.ops=*input;
+    if (!input || !drain.ops.eligible || !drain.ops.service) {
+        if (out) { memset(out,0,sizeof(*out));out->status=EP_C33_CALL_ARGUMENT; }return EP_C33_CALL_ARGUMENT;
+    }
+    drain.service.ops.context=drain.ops.context;drain.service.ops.service=drain.ops.service;
+    EpC33ResourceAcquireOps ops={&drain,DrainCollect,DrainExecute};
+    return ResourceScopeCall(mod,storage,owner,&ops,out,true);
+}

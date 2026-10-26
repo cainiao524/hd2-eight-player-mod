@@ -1,6 +1,7 @@
 """Pinned package/threshold getter bodies from the existing offline capture."""
 import json
 import native_component33_image as n
+import native_component33_resources as resources
 LOCK=n.PROJECT/'native-component33-resource-provider.lock.json'
 HEADER=n.PROJECT/'mod/src/ep_component33_resource_provider_template.h'
 def profile():
@@ -17,6 +18,12 @@ def render():
     for name,f in profile()['functions'].items():
         raw=bytes.fromhex(f['body_hex']);lines.append('static const uint8_t ep_c33_'+name+'_source[]={')
         lines+=['    '+','.join('0x'+format(x,'02x') for x in raw[i:i+16])+',' for i in range(0,len(raw),16)];lines.append('};')
+    f=resources.profile()['functions']['0x664520']
+    raw=bytes.fromhex(f['body_hex'])[0x664b2f-f['start']:0x664ba9-f['start']]
+    n.need(sum(i.size for i in n.decode(raw,0x664b2f))==122,'complete drain tail')
+    lines.append('/* Saved UPDATE drain tail, before its unchanged epilogue. */')
+    lines.append('static const uint8_t ep_c33_drain_source[]={')
+    lines+=['    '+','.join('0x'+format(x,'02x') for x in raw[i:i+16])+',' for i in range(0,len(raw),16)];lines.append('};')
     return ('\n'.join(lines)+'\n').encode()
 if __name__=='__main__':
     HEADER.write_bytes(render());print(json.dumps(dict(header_sha256=n.sha(HEADER.read_bytes()),game_access=False)))

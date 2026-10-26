@@ -156,6 +156,22 @@ int ep_c33_resource_release(const EpC33ResourceBinding* binding,void* p,uint32_t
     }
     memcpy(p,scratch,bytes);return EP_RESOURCE_OK;
 }
+int ep_c33_resource_drain(const EpC33ResourceBinding* binding,void* p,uint32_t bytes,
+    void* scratch,uint32_t scratch_bytes,EpC33ResourceService service,void* context)
+{
+    EpC33ResourceBinding b={};if (binding) b=*binding;
+    int result=ep_c33_resource_validate(&b,p,bytes);if (result) return result;
+    if (!service || !scratch || (uintptr_t)scratch%8 || scratch_bytes!=bytes) return EP_RESOURCE_ARGUMENT;
+    if (Overlap((uintptr_t)p,bytes,(uintptr_t)scratch,bytes)) return EP_RESOURCE_OVERLAP;
+    auto* h=(Header*)p;if (!h->queued) return EP_RESOURCE_OK;
+    memcpy(scratch,p,bytes);const auto* q=Queue(scratch);const uint64_t count=h->queued;
+    for (uint64_t i=0;i<count;i++) {
+        int completed=service(context,EP_RESOURCE_DISPOSE,q[i]);
+        if (memcmp(scratch,p,bytes)) return EP_RESOURCE_CALLBACK_STATE;
+        if (completed!=1) return EP_RESOURCE_SERVICE;
+    }
+    memset(Queue(p),0,(size_t)b.capacity*8);h->queued=0;return EP_RESOURCE_OK;
+}
 static uint64_t Target(const EpC33ResourceBinding& b,uint32_t rva)
 {
     if (rva>=0x3798180 && rva<0x379819c) return b.address+rva-0x3798180;

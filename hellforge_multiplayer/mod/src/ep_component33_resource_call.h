@@ -68,6 +68,17 @@ int ep_component33_resource_acquire_services_call(HfMod*,uint64_t storage,uint64
  * (which may be null); deferred=0 requires the usual DISPOSE callback. */
 int ep_component33_resource_release_services_call(HfMod*,uint64_t storage,uint64_t roster_owner,
     uint32_t deferred,const EpC33ResourceServiceOps*,EpC33ResourceCallResult*);
+/* Empty queues skip eligible entirely. Otherwise eligible is read-only:
+ * 1 permits draining, 2 defers without a revision, 0 reports unavailable.
+ * Service/SEH/reentry failures quarantine the owner. The queue remains
+ * intact on failure, so a second drain must NEVER be used as recovery. */
+typedef struct EpC33ResourceDrainOps {
+    void* context;
+    int (*eligible)(void*,const EpC33ResourceScopeView*);
+    int (*service)(void*,const EpC33ResourceScopeView*,uint32_t operation,uint64_t key);
+} EpC33ResourceDrainOps;
+int ep_component33_resource_drain_services_call(HfMod*,uint64_t storage,uint64_t roster_owner,
+    const EpC33ResourceDrainOps*,EpC33ResourceCallResult*);
 #ifdef __cplusplus
 }
 #endif

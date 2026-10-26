@@ -155,3 +155,31 @@ int ep_component33_resource_acquire_provider_call(const HfApi* api,HfMod* mod,ui
 int ep_component33_resource_release_provider_call(const HfApi* api,HfMod* mod,uint64_t storage,
     uint64_t owner,uint32_t ordinal,uint32_t deferred,const EpC33ResourceProviderOps* input,EpC33ResourceProviderResult* out)
 { return ProviderCall(api,mod,storage,owner,0,input,out,true,ordinal,deferred); }
+static int DrainEligible(void* context,const EpC33ResourceScopeView* v)
+{
+    auto* p=(Provider*)context;uint8_t code[sizeof(ep_c33_drain_source)];uint64_t manager;uint32_t blocked;
+    if (!Pointer(v->game,0x346d538)) { p->result.source_status=EP_C33_PROVIDER_LAYOUT;return 0; }
+    if (!Read(p,v->game+0x664b2f,code,sizeof(code),true)) return 0;
+    if (memcmp(code,ep_c33_drain_source,sizeof(code))) { p->result.source_status=EP_C33_PROVIDER_CODE;return 0; }
+    if (!Read(p,v->game+0x346d530,&manager,8)) return 0;
+    if (!Pointer(manager,0x1910)) { p->result.source_status=EP_C33_PROVIDER_LAYOUT;return 0; }
+    if (!Read(p,manager+0x190c,&blocked,4)) return 0;
+    return blocked ? 2 : 1;
+}
+int ep_component33_resource_drain_provider_call(const HfApi* api,HfMod* mod,uint64_t storage,
+    uint64_t owner,const EpC33ResourceProviderOps* input,EpC33ResourceProviderResult* out)
+{
+    EpC33ResourceProviderOps ops={};if (input) ops=*input;
+    if (!out) return EP_C33_CALL_ARGUMENT;memset(out,0,sizeof(*out));
+    if (!api || api->version<13 || api->size<offsetof(HfApi,read_code)+sizeof(api->read_code) ||
+        !api->build_id || !api->read || !api->read_code || !input || !ops.service) {
+        out->source_status=EP_C33_PROVIDER_ARGUMENT;out->call.status=EP_C33_CALL_ARGUMENT;return out->call.status;
+    }
+    const char* build=api->build_id();if (!build || strcmp(build,"25480438")) {
+        out->source_status=EP_C33_PROVIDER_CODE;out->call.status=EP_C33_CALL_ARGUMENT;return out->call.status;
+    }
+    Provider p={};p.read=api->read;p.read_code=api->read_code;p.mod=mod;p.owner=owner;p.ops=ops;
+    EpC33ResourceDrainOps callbacks={&p,DrainEligible,Service};
+    int rc=ep_component33_resource_drain_services_call(mod,storage,owner,&callbacks,&p.result.call);
+    *out=p.result;return rc;
+}
