@@ -11,7 +11,7 @@ class Snapshot(c.Structure):
     _fields_=[('component_address',U),('global_component',U),('invalid_entity_id',D),('entity_count',D),('component',c.c_ubyte*0x2b8),('entities',Entity*4)]
 class Migration(c.Structure):_fields_=[('data',c.c_ubyte*0x490)]
 class Bindings(c.Structure):
-    _fields_=[('game_base',U),('reject_address',U),('desired_storage',U),('desired_code',U*15)]
+    _fields_=[('game_base',U),('reject_address',U),('desired_storage',U),('desired_code',U*19)]
 class Info(c.Structure):
     _fields_=[('handle',U),('storage_address',U),('state',D),('storage_bytes',D),('family_result',D),('family',Family)]
 def put(s,off,fmt,*v):struct.pack_into('<'+fmt,s.component,off,*v)
@@ -54,7 +54,7 @@ def validate(path,core):
         faults(a)
     def stats():
         a=(D*7)();check(counts(a)==0,'SDK hook called');return list(a)
-    def bindings(shift=0):return Bindings(0x180000000+shift,0x1a0000000+shift,0x210000000+shift,(U*15)(*(0x190000000+shift+i*0x10000 for i in range(15))))
+    def bindings(shift=0):return Bindings(0x180000000+shift,0x1a0000000+shift,0x210000000+shift,(U*19)(*(0x190000000+shift+i*0x10000 for i in range(19))))
     def view(h):
         v=Info();check(info(m,h,v),'owner missing');return v
     def is_free(p):
@@ -62,7 +62,7 @@ def validate(path,core):
     def all_free(b):
         for p in [b.desired_storage,*b.desired_code]:is_free(p)
     def prepared(v,b,s,retained=False):
-        check(v.state==(4 if retained else 2) and v.storage_bytes==0x490 and v.family.reserved_images==15,'owner state')
+        check(v.state==(4 if retained else 2) and v.storage_bytes==0x490 and v.family.reserved_images==19,'owner state')
         q=Memory();check(query(v.storage_address,q,c.sizeof(q)) and q.protect==4,'B is not RW')
         check(c.string_at(v.storage_address,0x490)==expected(s),'B bytes')
         for i,code in enumerate(v.family.code):
@@ -141,7 +141,7 @@ def validate(path,core):
         other=Info();check(prepare(m+1,b,s,other)==12 and not other.handle,'overlapping S accepted')
         check(not cancel(m+1,v.handle) and not info(m+1,v.handle,other),'owner identity')
         saved=Info.from_buffer_copy(v);check(cancel(m,v.handle),'cancel');check(not info(m,saved.handle,other),'stale owner');all_free(b);scenarios.append('owner_cancel_'+hex(shift))
-    for kind,steps in ((0,range(1,17)),(1,(1,8,15)),(2,(1,8,15)),(3,(1,8,15))):
+    for kind,steps in ((0,range(1,21)),(1,(1,8,19)),(2,(1,8,19)),(3,(1,8,19))):
         for step in steps:
             reset(**{str(kind):step});b=bindings();v=Info();check(prepare(m,b,snapshot(4,3,1),v) in (8,9),'failure not propagated')
             check(not v.handle,'failed owner leaked');all_free(b);scenarios.append(f'owner_fault_{kind}_{step}')
@@ -153,7 +153,7 @@ def validate(path,core):
     reset(**{'0':2,'5':0xffffffff});v=Info();check(prepare(m,b,s,v)==10 and v.state==3 and not v.family.handle,'B cleanup state')
     reset();check(cancel(m,v.handle),'B cleanup retry');all_free(b);scenarios.append('B_cleanup_retry')
     reset();v=Info();check(prepare(m,b,s,v)==0,'cancel-fault prepare')
-    reset(**{'5':16});check(not cancel(m,v.handle),'B cancel failure hidden');pending=view(v.handle)
+    reset(**{'5':20});check(not cancel(m,v.handle),'B cancel failure hidden');pending=view(v.handle)
     check(pending.state==3 and not pending.family.handle and pending.storage_address==v.storage_address,'B cancel ownership lost')
     check(c.string_at(pending.storage_address,0x490)==expected(s),'B prematurely freed')
     reset();check(cancel(m,v.handle),'B cancel retry');all_free(b);scenarios.append('prepared_B_cancel_retry')
@@ -170,7 +170,7 @@ def validate(path,core):
     free=kernel.FreeLibrary;free.argtypes=[P];free.restype=c.c_int;check(free(dll._handle),'FreeLibrary');prepared(view(v.handle),b,s,True)
     scenarios.extend(['stale_B','pin_failure','retain_reordered_snapshot','retained_B_and_code_survive_FreeLibrary']);stats()
     return dict(passed=True,checks=checks,scenarios=scenarios,integration_runs=integrations,migration_shapes=70,
-        migrated_arrays=4,source_bytes=0x2b8,storage_bytes=0x490,owned_code_images=15,
+        migrated_arrays=4,source_bytes=0x2b8,storage_bytes=0x490,owned_code_images=19,
         source_addresses_dereferenced=False,native_game_code_executed=False,targets_modified=False,
         sdk_hook_calls=0,resource_references_shallow=True,resource_ownership_transferred=False,
         production_snapshot_provider_bound=False,whole_call_exclusion_implemented=False,production_owner_bound=False,
@@ -178,7 +178,7 @@ def validate(path,core):
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--zig',type=Path,required=True);p.add_argument('--upstream',type=Path,required=True);p.add_argument('--core',type=Path,required=True);p.add_argument('--out',type=Path,required=True);a=p.parse_args()
-    sources=['mod/src/ep_component33_storage.h','mod/src/ep_component33_storage.cpp','tests/component33_storage_dll.cpp','tools/validate_component33_storage.py',
+    sources=['mod/src/ep_component33_consumers.h','mod/src/ep_component33_consumers.cpp','mod/src/ep_component33_consumers_template.h','tools/native_component33_consumers.py','native-component33-consumers.lock.json','mod/src/ep_component33_storage.h','mod/src/ep_component33_storage.cpp','tests/component33_storage_dll.cpp','tools/validate_component33_storage.py',
         'mod/src/ep_component33_family.h','mod/src/ep_component33_family.cpp','mod/src/ep_session_code.h','mod/src/ep_session_code.cpp',
         'mod/src/ep_component33_image.h','mod/src/ep_component33_image.cpp','mod/src/ep_component33_templates.h','mod/src/ep_component33_owner_template.h',
         'mod/src/ep_component33_readers.h','mod/src/ep_component33_readers.cpp','mod/src/ep_component33_readers_template.h',
@@ -187,7 +187,7 @@ def main():
         'native-component33-readers.lock.json','native-component33-owner.lock.json']
     dll=n.PROJECT/'build/component33_storage_test.dll'
     command=[a.zig,'c++','-std=c++17','-target','x86_64-windows-gnu','-shared','-O2','-Wall','-Wextra','-Werror','-I',a.upstream/'native/mod-sdk',
-        *(n.PROJECT/s for s in ('mod/src/ep_component33_family.cpp','mod/src/ep_component33_image.cpp','mod/src/ep_component33_readers.cpp','tests/component33_storage_dll.cpp')),'-o',dll]
+        *(n.PROJECT/s for s in ('mod/src/ep_component33_consumers.cpp','mod/src/ep_component33_family.cpp','mod/src/ep_component33_image.cpp','mod/src/ep_component33_readers.cpp','tests/component33_storage_dll.cpp')),'-o',dll]
     r=subprocess.run(list(map(str,command)),capture_output=True);n.need(r.returncode==0,r.stderr.decode(errors='replace'))
     result=validate(dll,a.core);result.update(schema='hellforge_component33_storage_validation_v1',source_sha256={s:n.sha((n.PROJECT/s).read_bytes()) for s in sources},
         artifacts={x.name:dict(bytes=x.stat().st_size,sha256=n.sha(x.read_bytes())) for x in (dll,a.core)})

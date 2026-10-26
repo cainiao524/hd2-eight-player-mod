@@ -79,7 +79,7 @@ EpPropertyResult ep_component33_family_prepare(const HfApi* api,HfMod* owner,con
     ReleaseSRWLockExclusive(&c33Lock);if (!g) return EP_PROPERTY_RESERVE;
     EpPropertyResult result=EP_PROPERTY_OK;EpSessionCodeInfo code[EP_C33_FAMILY_IMAGES]={};
     for (unsigned i=0;i<EP_C33_FAMILY_IMAGES;i++) {
-        uint32_t bytes=i<14 ? ep_component33_image_bytes(i+1) : ep_component33_readers_image_bytes();
+        uint32_t bytes=i<14 ? ep_component33_image_bytes(i+1) : i==14 ? ep_component33_readers_image_bytes() : ep_component33_consumer_bytes(i-14);
         if (!ep_session_code_reserve(api,owner,a.desired_code[i],bytes,&code[i])) { result=EP_PROPERTY_RESERVE;break; }
         AcquireSRWLockExclusive(&c33Lock);g->info.code[i]=code[i];ReleaseSRWLockExclusive(&c33Lock);
     }
@@ -102,7 +102,11 @@ EpPropertyResult ep_component33_family_prepare(const HfApi* api,HfMod* owner,con
         if (i<14) {
             EpComponent33Addresses b={a.game_base,code[i].base,a.component_address,a.storage_address,code[0].base,a.reject_address};
             result=ep_component33_image_build(i+1,&b,&image);
-        } else image=readers.bridge;
+        } else if (i==14) image=readers.bridge;
+        else {
+            EpC33ConsumerAddresses b={a.game_base,code[i].base,a.component_address,a.storage_address,code[18].base,a.reject_address};
+            result=ep_component33_consumer_build(i-14,&b,&image);
+        }
         if (result!=EP_PROPERTY_OK) break;
         int sealed;
         if (i+1==EP_COMPONENT33_PROPERTY) {

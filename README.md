@@ -8,6 +8,8 @@ Configurable, extensible Helldivers 2 multiplayer targeting HellForge, including
 
 **2026-10-26 方向更新：** 人數可配置、容量可繼續擴展，原生玩家 UI 與聯網／角色生命週期共同驗收。先第五人完整流程及 UI，再八名真人完整任務；八人不是長期架構上限。各子系統容量與實測人數分開記錄，見 [容量與 UI 計畫](hellforge_multiplayer/CAPACITY_UI_PLAN.zh-CN.md)。
 
+元件 33 的每幀更新與三個資源引用函式現已遷移至八槽候選，並接入 19 個映像的共同生命週期；驗證與剩餘阻礙詳見 [目前交接](hellforge_multiplayer/HANDOFF.zh-CN.md)。這仍是離線源碼進展，延後回收佇列容量與外層讀取等生產連接尚未完成。
+
 ## 接手入口
 
 1. **[HellForge 適配與離線重建](hellforge_multiplayer/README.zh-CN.md)**：新 SDK Mod、固定上游、編譯命令和驗證結果。

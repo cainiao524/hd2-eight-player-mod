@@ -143,6 +143,11 @@ def main():
          PROJECT/'mod/src/ep_component33_readers.cpp',PROJECT/'tests/component33_readers_dll.cpp','-o',component33_readers_dll])
     component33_readers_receipt=PROJECT/'evidence/native-component33-readers-validation.json'
     component33_readers_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_component33_readers.py','--library',component33_dll,'--readers',component33_readers_dll,'--zig',zig,'--out',component33_readers_receipt]))
+    component33_consumers_dll=build/'component33_consumers_test.dll'
+    run([zig,'c++','-target','x86_64-windows-gnu','-std=c++17','-shared','-O2','-Wall','-Wextra','-Werror',
+         PROJECT/'mod/src/ep_component33_consumers.cpp',PROJECT/'tests/component33_consumers_dll.cpp','-o',component33_consumers_dll])
+    component33_consumers_receipt=PROJECT/'evidence/native-component33-consumers-validation.json'
+    component33_consumers_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_component33_consumers.py','--library',component33_dll,'--consumers',component33_consumers_dll,'--zig',zig,'--out',component33_consumers_receipt]))
     component33_family_receipt=PROJECT/'evidence/native-component33-family-validation.json'
     component33_family_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_component33_family.py','--zig',zig,'--upstream',upstream,'--out',component33_family_receipt]))
     component33_storage_receipt=PROJECT/'evidence/native-component33-storage-validation.json'
@@ -294,6 +299,7 @@ def main():
         'native_component33_transition':{**component33_transition_output,'validation_sha256':digest(component33_transition_receipt)},
         'native_component33_owner':{**component33_owner_output,'validation_sha256':digest(component33_owner_receipt)},
         'native_component33_readers':{**component33_readers_output,'validation_sha256':digest(component33_readers_receipt)},
+        'native_component33_consumers':{**component33_consumers_output,'validation_sha256':digest(component33_consumers_receipt)},
         'native_component33_family':{**component33_family_output,'validation_sha256':digest(component33_family_receipt)},
         'native_component33_storage':{**component33_storage_output,'validation_sha256':digest(component33_storage_receipt)},
         'native_classify_storage':{'checks':int(classify_match[1]),**classify_fixture_receipt},
@@ -353,6 +359,8 @@ def main():
             'native-component33-readers.lock.json','tools/native_component33_readers.py','tools/validate_component33_readers.py',
             'mod/src/ep_component33_readers.h','mod/src/ep_component33_readers.cpp','mod/src/ep_component33_readers_template.h',
             'tests/component33_readers_dll.cpp','tests/native_component33_readers_unwind_test.c',
+            'mod/src/ep_component33_consumers.h','mod/src/ep_component33_consumers.cpp','mod/src/ep_component33_consumers_template.h','tools/native_component33_consumers.py','native-component33-consumers.lock.json',
+            'tools/validate_component33_consumers.py','tests/component33_consumers_dll.cpp','tests/native_component33_consumers_unwind_test.c',
             'mod/src/ep_component33_family.h','mod/src/ep_component33_family.cpp','tests/component33_family_dll.cpp','tools/validate_component33_family.py',
             'mod/src/ep_component33_storage.h','mod/src/ep_component33_storage.cpp','tests/component33_storage_dll.cpp','tools/validate_component33_storage.py',
             'native-component33-owner.lock.json','tools/native_component33_owner.py','tools/validate_component33_owner.py',

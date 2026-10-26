@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "checks": 1668,
+  "checks": 2216,
   "scenarios": [
     "prepare_cancel_0x0",
     "prepare_cancel_0x40000000",
@@ -19,6 +19,10 @@
     "fault_0_13",
     "fault_0_14",
     "fault_0_15",
+    "fault_0_16",
+    "fault_0_17",
+    "fault_0_18",
+    "fault_0_19",
     "fault_3_1",
     "fault_3_2",
     "fault_3_3",
@@ -34,12 +38,16 @@
     "fault_3_13",
     "fault_3_14",
     "fault_3_15",
+    "fault_3_16",
+    "fault_3_17",
+    "fault_3_18",
+    "fault_3_19",
     "fault_1_1",
     "fault_1_8",
-    "fault_1_15",
+    "fault_1_19",
     "fault_2_1",
     "fault_2_8",
-    "fault_2_15",
+    "fault_2_19",
     "cleanup_retry_4",
     "cleanup_retry_5",
     "padding_overlap",
@@ -59,7 +67,7 @@
     "module_and_graph_survive_FreeLibrary",
     "retained_sdk_publication_failure_keeps_all_dependencies"
   ],
-  "images_per_family": 15,
+  "images_per_family": 19,
   "window_plans": 3,
   "source_game_access": false,
   "native_game_code_executed": false,
@@ -70,8 +78,13 @@
   "retention_is_not_publication": true,
   "schema": "hellforge_component33_family_validation_v1",
   "source_sha256": {
-    "mod/src/ep_component33_family.h": "113db7d5f9ad6bc708e92f18aa944ad328100b4086e4b32262abbdf9e4d64dd3",
-    "mod/src/ep_component33_family.cpp": "a9ada61bf3fb6f3d14360a2c5ed32cb7ca3762c358b7ef309e34f01a35d32691",
+    "mod/src/ep_component33_consumers.h": "61d02eb54160562c7b28750af863f28d69aa45e655a793607a6e4c66c4fef8be",
+    "mod/src/ep_component33_consumers.cpp": "f9364b323edb9d3ed1bb025fedc5a14785b3eb8e34721cc7527d9ac8c35d71a4",
+    "mod/src/ep_component33_consumers_template.h": "46d91cd97d1e51b3afab8201c7d45edbaad7ce0a6743bb62bc3be0e013e89993",
+    "tools/native_component33_consumers.py": "d2ed688651920b1b5c53f1fc9ff3648164d49579ec33383ae80e700cd8b3a1b3",
+    "native-component33-consumers.lock.json": "1b2fba2a5dc2267fa9a1585ab9bd27888c7a5a9c2441faa278e35ea85beb4a12",
+    "mod/src/ep_component33_family.h": "2cfd5ab2498d659183f138f6ebb26b56ec0d6bf2f9e50e6ad4f7305df45b016b",
+    "mod/src/ep_component33_family.cpp": "fed281a0f33288c1b49af3edeff11e70fec0c134d67e9d7a0e0d984a2ea27e8f",
     "mod/src/ep_session_code.h": "fdfa1849b37d18f12c82a17888b347d3ee0d0fae20e2b9475aa128f7a3f0dd97",
     "mod/src/ep_session_code.cpp": "efcc54cbc243a0014306e84d9ca83fe847cffcad1aa9e780e1e2b6c55bfde34e",
     "mod/src/ep_component33_image.h": "7d15423610444441ac945d498559e326220bd55ad46986e4ab01d11a769be480",
@@ -82,7 +95,7 @@
     "mod/src/ep_component33_readers.cpp": "12794d3c888be842f656a4a481a2dd2245cf3a9170ab01f44a928440c73c6858",
     "mod/src/ep_component33_readers_template.h": "5865f9d16c05b75398ba4fbf8139591623e13febffda218fd9a3523a6911d2c5",
     "tests/component33_family_dll.cpp": "540a510179b1bf9a759622d1c5e11d8411a560b0c437bb34c6b7f475b1c59aa5",
-    "tools/validate_component33_family.py": "7ec75e01dae2f79f9483ca7853337f438dcda6bc072cde4d45153ff2f217a616",
+    "tools/validate_component33_family.py": "645acc6a5bb38a3c961110be0d3889a93b104fee759b79910a3fb6906f6eb300",
     "tools/native_component33_image.py": "70ce18c6f7ac228188828c8f9cd98e9ec6db0f3319dd4b50b1f9b50184f89544",
     "tools/native_component33_owner.py": "09a3eef654c6e1f580c88d750cc43daeb111a9512aae5612cb915192998cfd3c",
     "tools/native_component33_readers.py": "672143f9ddbdc75ce88fc402917b0661a3fb75d92f943269469eb1e66c8c4678",
@@ -92,8 +105,8 @@
   },
   "artifacts": {
     "component33_family_test.dll": {
-      "bytes": 260096,
-      "sha256": "f21ae6b3a4b86f659b09d11fbf782a505e9d0ccf6b50ec9db08c797dc3205cd2"
+      "bytes": 269824,
+      "sha256": "5e83277870fb220072c65b337d4b3bc981551d2314f6d42cef4a4306d8a185dc"
     }
   },
   "production_owner_bound": false,
