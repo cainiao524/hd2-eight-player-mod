@@ -4,7 +4,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-enum { EP_C33_RESOURCE_ENTRY_COUNT=4, EP_C33_RESOURCE_ENTRY_GROUPS=4, EP_C33_RESOURCE_DRAIN=5, EP_C33_RESOURCE_REFRESH=6,
+enum { EP_C33_RESOURCE_ENTRY_COUNT=4, EP_C33_RESOURCE_ENTRY_GROUPS=4, EP_C33_RESOURCE_DRAIN=5, EP_C33_RESOURCE_REFRESH=6, EP_C33_RESOURCE_LEAVE=7,
     EP_C33_ENTRIES_PREPARING=1,EP_C33_ENTRIES_PREPARED,EP_C33_ENTRIES_CLEANUP_REQUIRED,EP_C33_ENTRIES_RETAINED };
 #define EP_C33_RESOURCE_ENTRY_ABORT 0xe0433301u
 /* Must not return into the original caller after refusal/partial effects.
@@ -30,6 +30,8 @@ typedef struct EpC33ResourceEntriesInfo {
     EpSessionCodeInfo reset_entries[2],reset_body;
     uint64_t refresh_target;
     EpSessionCodeInfo refresh_entry,refresh_body;
+    uint64_t leave_target;
+    EpSessionCodeInfo leave_entry,leave_body;
 } EpC33ResourceEntriesInfo;
 typedef struct EpC33UpdateEntryConfig { uintptr_t desired_entry,desired_body; } EpC33UpdateEntryConfig;
 typedef struct EpC33LifecycleEntryConfig {
@@ -40,6 +42,10 @@ typedef struct EpC33RefreshEntryConfig {
     EpC33LifecycleEntryConfig lifecycle;
     uintptr_t desired_entry,desired_body;
 } EpC33RefreshEntryConfig;
+typedef struct EpC33LeaveEntryConfig {
+    EpC33RefreshEntryConfig refresh;
+    uintptr_t desired_entry,desired_body;
+} EpC33LeaveEntryConfig;
 /* Owns four leaf Win64 argument bridges and their immutable dispatch data.
  * ACQUIRE/DEFER: RCX=S, RDX=object. RELEASE: RCX=S, EDX=ordinal, R8B=flag;
  * only the low byte controls deferred release. The bridges tail-call a
@@ -109,6 +115,20 @@ int ep_component33_resource_entries_prepare_lifecycle(const HfApi*,HfMod*,const 
  * B51DE0, are unchanged. No hook, source read, or install occurs in prepare.
  * Existing prepare APIs leave all refresh fields zero. */
 int ep_component33_resource_entries_prepare_refresh(const HfApi*,HfMod*,const EpC33ResourceEntryBindings*,const EpC33RefreshEntryConfig*,EpC33ResourceEntriesInfo*);
+/* Includes B51DE0 (object in RCX, flags in EDX) and its entire registry walk
+ * with the eleven refresh/lifecycle/resource images. The tag-7C path calls
+ * this group's exact managed DEFER. Other component dispatch, flags, engine
+ * calls and switch tables remain intact. The shared owner covers all arms;
+ * mark one outer write revision because other tags can write directly.
+ * No rollback or retry after partial effects. Reentry from any whole entry
+ * or resource callback, source failure or SEH aborts and quarantines.
+ * Raw registry reads and other native arms/callee internals are outside SDK
+ * accounting; EACH DEFER keeps its provider 64 KiB budget. Registry lifetime,
+ * other callbacks' semantics/lock ordering, coordinated publication and all
+ * remaining writers still require integration. Replace the whole B51DE0
+ * entry and omit its old interior getter/release windows. Preparation does
+ * not read game state or install hooks. Earlier APIs leave leave fields zero. */
+int ep_component33_resource_entries_prepare_leave(const HfApi*,HfMod*,const EpC33ResourceEntryBindings*,const EpC33LeaveEntryConfig*,EpC33ResourceEntriesInfo*);
 int ep_component33_resource_entries_info(HfMod*,uint64_t,EpC33ResourceEntriesInfo*);
 int ep_component33_resource_entries_retain(HfMod*,uint64_t);
 int ep_component33_resource_entries_cancel(HfMod*,uint64_t);

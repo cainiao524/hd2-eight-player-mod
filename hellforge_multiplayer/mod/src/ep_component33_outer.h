@@ -34,6 +34,17 @@ typedef struct EpC33RefreshAddresses { uint64_t game_base,code_address,acquire_a
  * old B5E710 interior resource/getter/release windows. */
 uint32_t ep_component33_refresh_image_bytes(void);
 EpPropertyResult ep_component33_refresh_build(const EpC33RefreshAddresses*,EpComponent33Image*);
+typedef struct EpC33LeaveAddresses { uint64_t game_base,code_address,defer_address; } EpC33LeaveAddresses;
+/* Saved B51DE0 registry dispatch: RCX=object, EDX=original flags. Copies its
+ * switch tables and preserves all other component arms/callees. Only tag 7C
+ * uses managed DEFER(S,object), replacing the fixed inline pointer scan and
+ * RELEASE(...,1). Empty S follows the original bypass. Two local switch-base
+ * LEAs retain their displacement; all other external RIP/CALL targets rebase
+ * to game. Keep the whole frame under the SAME owner as DEFER, with ordinary
+ * raw-pointer lifetime preconditions. No rollback of earlier component arms.
+ * Supersedes both old B51DE0 interior windows; never publish both variants. */
+uint32_t ep_component33_leave_image_bytes(void);
+EpPropertyResult ep_component33_leave_build(const EpC33LeaveAddresses*,EpComponent33Image*);
 #ifdef __cplusplus
 }
 #endif
