@@ -163,14 +163,14 @@ def validate(path):
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--zig',type=Path,required=True);p.add_argument('--upstream',type=Path,required=True);p.add_argument('--out',type=Path,required=True);a=p.parse_args()
-    sources=['mod/src/ep_component33_outer.h','mod/src/ep_component33_outer.cpp','mod/src/ep_component33_outer_template.h','tools/native_component33_outer.py','native-component33-outer.lock.json','mod/src/ep_component33_consumers.h','mod/src/ep_component33_consumers.cpp','mod/src/ep_component33_consumers_template.h','tools/native_component33_consumers.py','native-component33-consumers.lock.json','mod/src/ep_component33_family.h','mod/src/ep_component33_family.cpp','mod/src/ep_session_code.h','mod/src/ep_session_code.cpp',
+    sources=['mod/src/ep_component33_resources.h','mod/src/ep_component33_resources.cpp','mod/src/ep_component33_resources_template.h','mod/src/ep_component33_outer.h','mod/src/ep_component33_outer.cpp','mod/src/ep_component33_outer_template.h','tools/native_component33_outer.py','native-component33-outer.lock.json','mod/src/ep_component33_consumers.h','mod/src/ep_component33_consumers.cpp','mod/src/ep_component33_consumers_template.h','tools/native_component33_consumers.py','native-component33-consumers.lock.json','mod/src/ep_component33_family.h','mod/src/ep_component33_family.cpp','mod/src/ep_session_code.h','mod/src/ep_session_code.cpp',
         'mod/src/ep_component33_image.h','mod/src/ep_component33_image.cpp','mod/src/ep_component33_templates.h','mod/src/ep_component33_owner_template.h',
         'mod/src/ep_component33_readers.h','mod/src/ep_component33_readers.cpp','mod/src/ep_component33_readers_template.h','tests/component33_family_dll.cpp',
         'tools/validate_component33_family.py','tools/native_component33_image.py','tools/native_component33_owner.py','tools/native_component33_readers.py',
         'native-component33.lock.json','native-component33-owner.lock.json','native-component33-readers.lock.json']
     dll=n.PROJECT/'build/component33_family_test.dll'
     command=[a.zig,'c++','-std=c++17','-target','x86_64-windows-gnu','-shared','-O2','-Wall','-Wextra','-Werror','-I',a.upstream/'native/mod-sdk',
-        *(n.PROJECT/s for s in ('mod/src/ep_component33_outer.cpp','mod/src/ep_component33_consumers.cpp','mod/src/ep_component33_family.cpp','mod/src/ep_component33_image.cpp','mod/src/ep_component33_readers.cpp','tests/component33_family_dll.cpp')),'-o',dll]
+        *(n.PROJECT/s for s in ('mod/src/ep_component33_resources.cpp','mod/src/ep_component33_outer.cpp','mod/src/ep_component33_consumers.cpp','mod/src/ep_component33_family.cpp','mod/src/ep_component33_image.cpp','mod/src/ep_component33_readers.cpp','tests/component33_family_dll.cpp')),'-o',dll]
     r=subprocess.run(list(map(str,command)),capture_output=True);n.need(r.returncode==0,r.stderr.decode(errors='replace'))
     result=validate(dll);result.update(schema='hellforge_component33_family_validation_v1',source_sha256={s:n.sha((n.PROJECT/s).read_bytes()) for s in sources},
         artifacts={dll.name:dict(bytes=dll.stat().st_size,sha256=n.sha(dll.read_bytes()))},production_owner_bound=False,installed=False,runtime_verified=False,multiplayer_verified=False,game_access=False)

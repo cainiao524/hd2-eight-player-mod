@@ -48,6 +48,10 @@ struct C33Storage {
     HfMod* owner;
     EpC33StorageInfo info;
     EpC33Snapshot snapshot;
+    uint64_t game_base;
+    bool resource_mode;
+    EpC33ResourceSnapshot resource_snapshot;
+    EpC33ResourceStorageInfo resources;
 };
 static C33Storage c33Storage[EP_C33_FAMILY_SLOTS];
 static SRWLOCK c33StorageLock=SRWLOCK_INIT;
@@ -69,11 +73,26 @@ int ep_component33_storage_info(HfMod* owner,uint64_t id,EpC33StorageInfo* out)
     if (s) C33StorageInfo(s,out);
     ReleaseSRWLockShared(&c33StorageLock);return s!=nullptr;
 }
+int ep_component33_storage_resources(HfMod* owner,uint64_t id,EpC33ResourceStorageInfo* out)
+{
+    if (!out) return 0;memset(out,0,sizeof(*out));
+    AcquireSRWLockShared(&c33StorageLock);auto* s=C33StorageFind(owner,id);int ok=s && s->resource_mode;
+    if (ok) {
+        *out=s->resources;EpC33FamilyResources r={};
+        if ((s->info.state==EP_C33_STORAGE_PREPARED || s->info.state==EP_C33_STORAGE_RETAINED) &&
+            s->info.family.handle && ep_component33_family_resources(owner,s->info.family.handle,&r)) out->windows=r.windows;
+    }
+    ReleaseSRWLockShared(&c33StorageLock);return ok;
+}
 static int C33StorageCancel(C33Storage* s)
 {
     if (s->info.family.handle) {
         if (!ep_component33_family_cancel(s->owner,s->info.family.handle)) { s->info.state=EP_C33_STORAGE_CLEANUP_REQUIRED;return 0; }
         memset(&s->info.family,0,sizeof(s->info.family));
+    }
+    if (s->resources.binding.address) {
+        if (!VirtualFree((void*)(uintptr_t)s->resources.binding.address,0,MEM_RELEASE)) { s->info.state=EP_C33_STORAGE_CLEANUP_REQUIRED;return 0; }
+        memset(&s->resources,0,sizeof(s->resources));
     }
     if (s->info.storage_address && !VirtualFree((void*)(uintptr_t)s->info.storage_address,0,MEM_RELEASE)) {
         s->info.state=EP_C33_STORAGE_CLEANUP_REQUIRED;return 0;
@@ -86,21 +105,38 @@ int ep_component33_storage_cancel(HfMod* owner,uint64_t id)
     if (s && (s->info.state==EP_C33_STORAGE_PREPARED || s->info.state==EP_C33_STORAGE_CLEANUP_REQUIRED)) ok=C33StorageCancel(s);
     ReleaseSRWLockExclusive(&c33StorageLock);return ok;
 }
-EpC33StorageResult ep_component33_storage_prepare(const HfApi* api,HfMod* owner,const EpC33StorageBindings* bindings,const EpC33Snapshot* input,EpC33StorageInfo* out)
+static bool C33StorageOverlap(uint64_t a,uint64_t n,uint64_t b,uint64_t m) { return a<b+m && b<a+n; }
+static int C33ResourceSnapshotValid(const EpC33ResourceSnapshot* s)
+{
+    alignas(8) uint8_t check[48+24*128];EpC33ResourceBinding b={0x10000,128,0};
+    return ep_c33_resource_migrate(&b,s,check,sizeof(check))==EP_RESOURCE_OK;
+}
+static EpC33StorageResult C33StoragePrepare(const HfApi* api,HfMod* owner,const EpC33StorageBindings* bindings,const EpC33Snapshot* input,
+    const EpC33ResourceStorageConfig* config,const EpC33ResourceSnapshot* resource,EpC33StorageInfo* out)
 {
     if (!out) return EP_C33_STORAGE_ARGUMENT;
     EpC33StorageBindings b={};EpC33Snapshot snap={};if (bindings) b=*bindings;if (input) snap=*input;
     memset(out,0,sizeof(*out));if (!owner || !bindings || !input) return EP_C33_STORAGE_ARGUMENT;
     EpC33Migration migrated;auto result=ep_component33_migrate_snapshot(&snap,&migrated);if (result!=EP_C33_STORAGE_OK) return result;
     SYSTEM_INFO system;GetSystemInfo(&system);
+    uint32_t arena_bytes=0,resource_page=0;
+    if (config) {
+        arena_bytes=ep_c33_resource_bytes(config->capacity);
+        if (!arena_bytes || config->reserved || !resource || !C33ResourceSnapshotValid(resource)) return EP_C33_STORAGE_RESOURCES;
+        resource_page=(arena_bytes+system.dwPageSize-1)/system.dwPageSize*system.dwPageSize;
+        if (config->desired_address && !C33Address(config->desired_address,2*resource_page,system.dwAllocationGranularity)) return EP_C33_STORAGE_POINTER;
+        if (!C33Address(b.game_base,0x4000000,4096)) return EP_C33_STORAGE_POINTER;
+    }
     if (b.desired_storage && !C33Address(b.desired_storage,EP_COMPONENT33_STORAGE_BYTES,system.dwAllocationGranularity)) return EP_C33_STORAGE_POINTER;
     C33Storage* s=nullptr;AcquireSRWLockExclusive(&c33StorageLock);
-    for (const auto& other:c33Storage) if (other.info.handle &&
-        snap.component_address<other.snapshot.component_address+EP_C33_SOURCE_BYTES && other.snapshot.component_address<snap.component_address+EP_C33_SOURCE_BYTES) {
+    for (const auto& other:c33Storage) if (other.info.handle && (((config || other.resource_mode) && other.game_base==b.game_base) ||
+        (snap.component_address<other.snapshot.component_address+EP_C33_SOURCE_BYTES && other.snapshot.component_address<snap.component_address+EP_C33_SOURCE_BYTES))) {
         ReleaseSRWLockExclusive(&c33StorageLock);return EP_C33_STORAGE_CONFLICT;
     }
     if (c33StorageSequence!=UINT64_MAX) for (auto& other:c33Storage) if (!other.info.handle) {
-        s=&other;s->owner=owner;s->snapshot=snap;s->info.handle=++c33StorageSequence;s->info.state=EP_C33_STORAGE_PREPARING;break;
+        s=&other;s->owner=owner;s->snapshot=snap;s->game_base=b.game_base;s->resource_mode=config!=nullptr;
+        if (resource) s->resource_snapshot=*resource;
+        s->info.handle=++c33StorageSequence;s->info.state=EP_C33_STORAGE_PREPARING;break;
     }
     ReleaseSRWLockExclusive(&c33StorageLock);if (!s) return EP_C33_STORAGE_RESERVE;
     void* storage=VirtualAlloc((void*)b.desired_storage,EP_COMPONENT33_STORAGE_BYTES,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE);
@@ -110,11 +146,32 @@ EpC33StorageResult ep_component33_storage_prepare(const HfApi* api,HfMod* owner,
         if (!C33Address((uintptr_t)storage,EP_COMPONENT33_STORAGE_BYTES,16) || (b.desired_storage && (uintptr_t)storage!=b.desired_storage)) result=EP_C33_STORAGE_POINTER;
         else {
             memcpy(storage,migrated.data,sizeof(migrated.data));
+            if (config) {
+                void* arena=VirtualAlloc((void*)config->desired_address,2*resource_page,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE);
+                if (!arena) result=EP_C33_STORAGE_RESERVE;
+                else {
+                    EpC33ResourceStorageInfo r={};r.binding={(uintptr_t)arena,config->capacity,0};r.arena_bytes=arena_bytes;r.allocation_bytes=2*resource_page;
+                    AcquireSRWLockExclusive(&c33StorageLock);s->resources=r;ReleaseSRWLockExclusive(&c33StorageLock);
+                    uint64_t at=(uintptr_t)arena;
+                    if (!C33Address(at,r.allocation_bytes,16) || (config->desired_address && at!=config->desired_address)) result=EP_C33_STORAGE_POINTER;
+                    else if (C33StorageOverlap(at,r.allocation_bytes,b.game_base,0x4000000) ||
+                        C33StorageOverlap(at,r.allocation_bytes,snap.component_address,EP_C33_SOURCE_BYTES) ||
+                        C33StorageOverlap(at,r.allocation_bytes,b.reject_address,1) ||
+                        C33StorageOverlap(at,r.allocation_bytes,(uintptr_t)c33Storage,sizeof(c33Storage))) result=EP_C33_STORAGE_POINTER;
+                    else if (ep_c33_resource_migrate(&r.binding,resource,arena,arena_bytes)!=EP_RESOURCE_OK) result=EP_C33_STORAGE_RESOURCES;
+                    else {
+                        void* baseline=(uint8_t*)arena+resource_page;memcpy(baseline,arena,arena_bytes);DWORD previous;
+                        if (!VirtualProtect(baseline,resource_page,PAGE_READONLY,&previous)) result=EP_C33_STORAGE_RESOURCES;
+                    }
+                }
+            }
             EpComponent33FamilyBindings f={};f.game_base=b.game_base;f.component_address=snap.component_address;f.storage_address=(uintptr_t)storage;f.reject_address=b.reject_address;
             memcpy(f.desired_code,b.desired_code,sizeof(f.desired_code));EpComponent33FamilyInfo family={};
-            auto fr=ep_component33_family_prepare(api,owner,&f,&family);
-            AcquireSRWLockExclusive(&c33StorageLock);s->info.family=family;s->info.family_result=fr;ReleaseSRWLockExclusive(&c33StorageLock);
-            if (fr!=EP_PROPERTY_OK) result=EP_C33_STORAGE_FAMILY;
+            if (result==EP_C33_STORAGE_OK) {
+                auto fr=config ? ep_component33_family_prepare_resources(api,owner,&f,&s->resources.binding,&family) : ep_component33_family_prepare(api,owner,&f,&family);
+                AcquireSRWLockExclusive(&c33StorageLock);s->info.family=family;s->info.family_result=fr;ReleaseSRWLockExclusive(&c33StorageLock);
+                if (fr!=EP_PROPERTY_OK) result=EP_C33_STORAGE_FAMILY;
+            }
         }
     }
     AcquireSRWLockExclusive(&c33StorageLock);
@@ -122,6 +179,15 @@ EpC33StorageResult ep_component33_storage_prepare(const HfApi* api,HfMod* owner,
     else if (!C33StorageCancel(s)) result=EP_C33_STORAGE_CLEANUP;
     if (s->info.handle) C33StorageInfo(s,out);
     ReleaseSRWLockExclusive(&c33StorageLock);return result;
+}
+EpC33StorageResult ep_component33_storage_prepare(const HfApi* api,HfMod* owner,const EpC33StorageBindings* b,const EpC33Snapshot* s,EpC33StorageInfo* out)
+{ return C33StoragePrepare(api,owner,b,s,nullptr,nullptr,out); }
+EpC33StorageResult ep_component33_storage_prepare_resources(const HfApi* api,HfMod* owner,const EpC33StorageBindings* b,const EpC33Snapshot* s,
+    const EpC33ResourceStorageConfig* config,const EpC33ResourceSnapshot* resource,EpC33StorageInfo* out)
+{
+    if (!config || !resource) { if (out) memset(out,0,sizeof(*out));return EP_C33_STORAGE_ARGUMENT; }
+    EpC33ResourceStorageConfig copy=*config;EpC33ResourceSnapshot snapshot=*resource;
+    return C33StoragePrepare(api,owner,b,s,&copy,&snapshot,out);
 }
 static bool C33SameSnapshot(const EpC33Snapshot& a,const EpC33Snapshot& b)
 {
@@ -134,15 +200,28 @@ static bool C33SameSnapshot(const EpC33Snapshot& a,const EpC33Snapshot& b)
     }
     return true;
 }
-EpC33StorageResult ep_component33_storage_retain(HfMod* owner,uint64_t id,const EpC33Snapshot* current)
+static EpC33StorageResult C33StorageRetain(HfMod* owner,uint64_t id,const EpC33Snapshot* current,const EpC33ResourceSnapshot* resource)
 {
     if (!current) return EP_C33_STORAGE_ARGUMENT;
     EpC33Snapshot copy=*current;EpC33Migration migrated;auto result=ep_component33_migrate_snapshot(&copy,&migrated);
     if (result!=EP_C33_STORAGE_OK) return result;
+    if (resource && !C33ResourceSnapshotValid(resource)) return EP_C33_STORAGE_RESOURCES;
     AcquireSRWLockExclusive(&c33StorageLock);auto* s=C33StorageFind(owner,id);
     if (!s || s->info.state!=EP_C33_STORAGE_PREPARED) result=EP_C33_STORAGE_STATE;
+    else if (s->resource_mode!=(resource!=nullptr)) result=EP_C33_STORAGE_ARGUMENT;
     else if (!C33SameSnapshot(s->snapshot,copy) || memcmp((void*)(uintptr_t)s->info.storage_address,migrated.data,sizeof(migrated.data))) result=EP_C33_STORAGE_STALE;
+    else if (resource && (s->resource_snapshot.seed!=resource->seed || s->resource_snapshot.queued!=resource->queued ||
+        memcmp(s->resource_snapshot.entries,resource->entries,sizeof(resource->entries)) ||
+        memcmp(s->resource_snapshot.queue,resource->queue,(size_t)resource->queued*8) ||
+        memcmp((void*)(uintptr_t)s->resources.binding.address,(void*)(uintptr_t)(s->resources.binding.address+s->resources.allocation_bytes/2),s->resources.arena_bytes))) result=EP_C33_STORAGE_STALE;
     else if (!ep_component33_family_retain(owner,s->info.family.handle)) result=EP_C33_STORAGE_FAMILY;
     else s->info.state=EP_C33_STORAGE_RETAINED;
     ReleaseSRWLockExclusive(&c33StorageLock);return result;
+}
+EpC33StorageResult ep_component33_storage_retain(HfMod* owner,uint64_t id,const EpC33Snapshot* current)
+{ return C33StorageRetain(owner,id,current,nullptr); }
+EpC33StorageResult ep_component33_storage_retain_resources(HfMod* owner,uint64_t id,const EpC33Snapshot* current,const EpC33ResourceSnapshot* resource)
+{
+    if (!resource) return EP_C33_STORAGE_ARGUMENT;
+    EpC33ResourceSnapshot copy=*resource;return C33StorageRetain(owner,id,current,&copy);
 }

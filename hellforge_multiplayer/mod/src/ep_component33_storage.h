@@ -10,7 +10,7 @@ typedef enum EpC33StorageResult {
     EP_C33_STORAGE_COUNTS, EP_C33_STORAGE_MAP, EP_C33_STORAGE_IDENTITY,
     EP_C33_STORAGE_FLAGS, EP_C33_STORAGE_STALE, EP_C33_STORAGE_RESERVE,
     EP_C33_STORAGE_FAMILY, EP_C33_STORAGE_CLEANUP, EP_C33_STORAGE_STATE,
-    EP_C33_STORAGE_CONFLICT
+    EP_C33_STORAGE_CONFLICT, EP_C33_STORAGE_RESOURCES
 } EpC33StorageResult;
 typedef struct EpC33EntitySnapshot { uint64_t address;uint32_t id,flags; } EpC33EntitySnapshot;
 typedef struct EpC33Snapshot {
@@ -47,6 +47,18 @@ typedef struct EpC33StorageInfo {
  * ownership is refused. Internal family/code handles are exclusive to this
  * owner; callers must not cancel, retain or publish them separately. */
 EpC33StorageResult ep_component33_storage_prepare(const HfApi*,HfMod*,const EpC33StorageBindings*,const EpC33Snapshot*,EpC33StorageInfo*);
+typedef struct EpC33ResourceStorageConfig { uintptr_t desired_address;uint32_t capacity,reserved; } EpC33ResourceStorageConfig;
+typedef struct EpC33ResourceStorageInfo {
+    EpC33ResourceBinding binding;uint32_t arena_bytes,allocation_bytes;
+    EpC33ResourcePlan windows;
+} EpC33ResourceStorageInfo;
+/* Owns B, a RW resource arena and a read-only preparation baseline, together
+ * with the entire resource-bound family. Resource globals are per game base:
+ * a second conflicting storage owner is refused, including mixed legacy/new
+ * owners. Numeric source addresses are not followed. PREPARED does not bind
+ * the original globals, claim their referenced assets or install windows. */
+EpC33StorageResult ep_component33_storage_prepare_resources(const HfApi*,HfMod*,const EpC33StorageBindings*,const EpC33Snapshot*,const EpC33ResourceStorageConfig*,const EpC33ResourceSnapshot*,EpC33StorageInfo*);
+int ep_component33_storage_resources(HfMod*,uint64_t,EpC33ResourceStorageInfo*);
 int ep_component33_storage_info(HfMod*,uint64_t,EpC33StorageInfo*);
 int ep_component33_storage_cancel(HfMod*,uint64_t);
 /* Compare the provider's fresh coherent snapshot and the owned B bytes to the
@@ -57,6 +69,11 @@ int ep_component33_storage_cancel(HfMod*,uint64_t);
  * Freshness mismatch is retryable; retention is permanent even if later
  * publication fails. Cleanup failure keeps B until code cleanup succeeds. */
 EpC33StorageResult ep_component33_storage_retain(HfMod*,uint64_t,const EpC33Snapshot* current);
+/* Resource-backed owners refuse the legacy retain API. This verifies BOTH
+ * fresh snapshots plus prepared B/arena bytes before permanent retention.
+ * Caller still owes whole-call exclusion, complete demand admission, safe
+ * reset timing and coordinated publication. No live callbacks are invoked. */
+EpC33StorageResult ep_component33_storage_retain_resources(HfMod*,uint64_t,const EpC33Snapshot*,const EpC33ResourceSnapshot*);
 #ifdef __cplusplus
 }
 #endif

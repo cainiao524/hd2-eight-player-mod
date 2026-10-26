@@ -37,3 +37,7 @@ EXPORT EpC33StorageResult c33_storage_prepare(HfMod* m,const EpC33StorageBinding
 EXPORT int c33_storage_info(HfMod* m,uint64_t id,EpC33StorageInfo* out) { return ep_component33_storage_info(m,id,out); }
 EXPORT int c33_storage_cancel(HfMod* m,uint64_t id) { return ep_component33_storage_cancel(m,id); }
 EXPORT EpC33StorageResult c33_storage_retain(HfMod* m,uint64_t id,const EpC33Snapshot* s) { return ep_component33_storage_retain(m,id,s); }
+EXPORT EpC33StorageResult c33_storage_prepare_resources(HfMod* m,const EpC33StorageBindings* b,const EpC33Snapshot* s,const EpC33ResourceStorageConfig* r,const EpC33ResourceSnapshot* snap,EpC33StorageInfo* out)
+{ HfApi a={};a.version=13;a.size=sizeof(a);a.build_id=Build;a.hook_ex=Hook;return ep_component33_storage_prepare_resources(&a,m,b,s,r,snap,out); }
+EXPORT int c33_storage_resources(HfMod* m,uint64_t id,EpC33ResourceStorageInfo* out) { return ep_component33_storage_resources(m,id,out); }
+EXPORT EpC33StorageResult c33_storage_retain_resources(HfMod* m,uint64_t id,const EpC33Snapshot* s,const EpC33ResourceSnapshot* r) { return ep_component33_storage_retain_resources(m,id,s,r); }

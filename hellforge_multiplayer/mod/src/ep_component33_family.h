@@ -3,6 +3,7 @@
 #include "ep_component33_readers.h"
 #include "ep_component33_consumers.h"
 #include "ep_component33_outer.h"
+#include "ep_component33_resources.h"
 #include "ep_session_code.h"
 #ifdef __cplusplus
 extern "C" {
@@ -33,6 +34,13 @@ typedef struct EpComponent33FamilyInfo {
  * publish, discard, retain or execute them. Failed cleanup returns a live
  * CLEANUP_REQUIRED handle for retry; it cannot be retained or published. */
 EpPropertyResult ep_component33_family_prepare(const HfApi*,HfMod*,const EpComponent33FamilyBindings*,EpComponent33FamilyInfo*);
+typedef struct EpC33FamilyResources { EpC33ResourceBinding binding;EpC33ResourcePlan windows; } EpC33FamilyResources;
+/* Borrows an arena owned by the integrating storage owner. All four consumers
+ * and 38 resource windows use this binding; reset targets this family's RESET.
+ * No partial resource-window publication is permitted. Does not acquire or
+ * validate live resource contents. Legacy prepare remains for legacy callers. */
+EpPropertyResult ep_component33_family_prepare_resources(const HfApi*,HfMod*,const EpComponent33FamilyBindings*,const EpC33ResourceBinding*,EpComponent33FamilyInfo*);
+int ep_component33_family_resources(HfMod*,uint64_t,EpC33FamilyResources*);
 int ep_component33_family_info(HfMod*,uint64_t,EpComponent33FamilyInfo*);
 int ep_component33_family_cancel(HfMod*,uint64_t);
 /* Irreversibly retain the entire dependency set BEFORE a publisher can expose
