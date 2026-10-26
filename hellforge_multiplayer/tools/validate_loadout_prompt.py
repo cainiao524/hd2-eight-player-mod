@@ -4,6 +4,7 @@ Uses owned emulator memory, native-service ABI stubs, one prompt unwind
 snapshot and one common READY/discard. No game access or full regression.
 """
 from validate_loadout_consumers import READY,BLOCKED
+from validate_loadout_setup import countdown_source
 import argparse
 import ctypes as c
 import json
@@ -80,7 +81,7 @@ def main():
                  '-I',args.upstream.resolve()/'native/mod-sdk','-I',g.PROJECT/'mod/src','-shared']
         modules=('ep_session_code','ep_loadout_lifecycle','ep_loadout_consumers','ep_loadout_setup','ep_loadout_group',
                  'ep_loadout_interactions','ep_loadout_refresh','ep_loadout_records','ep_loadout_frame',
-                 'ep_loadout_mode','ep_loadout_control','ep_loadout_state','ep_loadout_prompt')
+                 'ep_loadout_mode','ep_loadout_control','ep_loadout_state','ep_loadout_prompt','ep_loadout_countdown')
         command += [g.PROJECT/'mod/src'/(n+'.cpp') for n in modules]
         command += [g.PROJECT/'tests'/n for n in ('loadout_consumers_dll.cpp','loadout_setup_dll.cpp','loadout_records_dll.cpp','loadout_frame_dll.cpp','loadout_prompt_dll.cpp')]
         command += ['-o',args.library.resolve()]
@@ -97,7 +98,7 @@ def main():
     g.need(dll.records_build(c.byref(rb),c.byref(record_image))==0,'Record binding failed')
     binding.lifecycle.code=PROMPT;image=Image();g.need(dll.prompt_build(c.byref(binding),c.byref(image))==0,'Prompt binding failed')
     fb=FrameAddresses(rb,SYNC,CODE+consumer.update,CODE+consumer.lookup,CODE+0x90000+mode.build()['entries'][1],
-                     CODE+0xa0000,CODE+0xb0000+state.build()['entries'][1],CODE+0xb0000,PROMPT+image.update,READY,BLOCKED)
+                     CODE+0xa0000,CODE+0xb0000+state.build()['entries'][1],CODE+0xb0000,PROMPT+image.update,READY,BLOCKED,CODE+0xd0000)
     fb.records.common.lifecycle.code=FRAME;frame_image=FrameImage()
     g.need(dll.frame_build(c.byref(fb),c.byref(frame_image))==0,'Frame binding failed')
     f=PromptFlow(dll,consumer,record_image,frame_image,image,g.build());f.operation(FRAME,frame_image.frame)
@@ -115,7 +116,7 @@ def main():
     g.need(f.read(WIDGETS+8*0x1ee18,16)==b'\x7c'*16 and f.read(RECORDS+8*0x9f0,16)==b'\x6b'*16,'Prompt crossed player capacity')
     setup=SetupAddresses();setup.common=binding;setup.common.lifecycle.code=SETUP
     for i in range(8):setup.placements[i]=Placement(i*3,111,0.5,0,0.5,0)
-    group=GroupAddresses(setup,CODE+0x40000,CODE,CODE+0x50000,CODE+0x60000,record_source(),SYNC,FRAME,CODE+0x90000,CODE+0xa0000,CODE+0xb0000,PROMPT)
+    group=GroupAddresses(setup,CODE+0x40000,CODE,CODE+0x50000,CODE+0x60000,record_source(),SYNC,FRAME,CODE+0x90000,CODE+0xa0000,CODE+0xb0000,PROMPT,CODE+0xd0000,countdown_source())
     status=dll.setup_group(c.byref(group));g.need(status==0,f'Common READY/discard failed: {status}')
     print(json.dumps(dict(passed=True,scope='one frame/selected-player/alternate prompt flow and common preparation',game_access=False,runtime_verified=False)))
 

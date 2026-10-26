@@ -7,7 +7,7 @@ extern "C" {
 #define EP_LOADOUT_FRAME_BYTES 16384u
 typedef struct EpLoadoutFrameAddresses {
     EpLoadoutRecordsAddresses records;
-    uint64_t sync_records,update,lookup,open_mode,leave,state_change,return_screen,prompt,ready_flag,blocked_flag;
+    uint64_t sync_records,update,lookup,open_mode,leave,state_change,return_screen,prompt,ready_flag,blocked_flag,countdown;
 } EpLoadoutFrameAddresses;
 typedef struct EpLoadoutFrameImage {
     uint32_t bytes,code_bytes,unwind_offset,table_offset,handler_offset,frame,local_update;
@@ -15,15 +15,15 @@ typedef struct EpLoadoutFrameImage {
 } EpLoadoutFrameImage;
 /* Complete saved 1468320 main frame and 146C040 local-player refresh.
  * Calls use the same group's record sync, UI update, record lookup, mode open,
- * leave, state/return, action prompts and shared ready/blocked queries.
+ * leave, state/return, action prompts, shared flag queries and countdown.
  * Player/widget scans use capacity; record-item and equipment limits retain
  * their native meaning. R11 remains the live record iterator on the tail scan.
  * Deferred local-map initialization clears owned forward/inverse maps before
  * assigning UI slot zero. Invalid focus/network/count indices reject before
  * indexing. Both entry points require the bound screen/roster identity.
  * Original GS frame and local/helper chain topology are preserved.
- * Other native callees (including 146BBB0,146A5B0,
- * 146BE90), all source writers and lifetimes, owner exclusion and
+ * Other native callees (including 146BBB0/146BE90), all source writers and
+ * lifetimes, owner exclusion and
  * common publication still require routing/review. READY does not enable UI.
  * No discovery, game access, hooks, data initialization or automatic calls. */
 EpPropertyResult ep_loadout_frame_build(const EpLoadoutFrameAddresses*,EpLoadoutFrameImage*);

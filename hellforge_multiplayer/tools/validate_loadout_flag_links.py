@@ -3,6 +3,7 @@
 Owned emulator memory only. Unrelated engine services remain ABI stubs.
 No game access, regression matrix, receipt or fingerprint generation.
 """
+from validate_loadout_setup import countdown_source
 import argparse
 import ctypes as c
 import json
@@ -78,7 +79,7 @@ def main():
                  '-I',args.upstream.resolve()/'native/mod-sdk','-I',g.PROJECT/'mod/src','-shared']
         modules=('session_code','loadout_lifecycle','loadout_consumers','loadout_setup','loadout_group',
                  'loadout_interactions','loadout_refresh','loadout_records','loadout_frame',
-                 'loadout_mode','loadout_control','loadout_state','loadout_prompt')
+                 'loadout_mode','loadout_control','loadout_state','loadout_prompt','loadout_countdown')
         command += [g.PROJECT/'mod/src'/('ep_'+n+'.cpp') for n in modules]
         command += [g.PROJECT/'tests'/('loadout_'+n+'_dll.cpp') for n in ('consumers','setup','records','frame','prompt','control')]
         command += ['-o',args.library.resolve()]
@@ -97,7 +98,7 @@ def main():
     binding.lifecycle.code=SYNC;rb=RecordsAddresses(binding,record_source());record_image=RecordsImage()
     g.need(dll.records_build(c.byref(rb),c.byref(record_image))==0,'Record binding failed')
     fb=FrameAddresses(rb,SYNC,CODE+consumer.update,CODE+consumer.lookup,CODE+0x90000+mode.build()['entries'][1],
-                     CONTROL,CODE+0xb0000+state.build()['entries'][1],CODE+0xb0000,PROMPT+image.update,READY,BLOCKED)
+                     CONTROL,CODE+0xb0000+state.build()['entries'][1],CODE+0xb0000,PROMPT+image.update,READY,BLOCKED,CODE+0xd0000)
     fb.records.common.lifecycle.code=FRAME;frame_image=FrameImage()
     g.need(dll.frame_build(c.byref(fb),c.byref(frame_image))==0,'Frame binding failed')
     binding.lifecycle.code=CONTROL;cb=ControlAddresses(binding,CODE+0x90000,CODE+0x50000,CODE+0x50010,CODE+0xb0000,READY,BLOCKED)
@@ -122,7 +123,7 @@ def main():
     g.need(f.read(WIDGETS+8*0x1ee18,16)==b'\x7c'*16 and f.read(RECORDS+8*0x9f0,16)==b'\x6b'*16,'Flow crossed player capacity')
     setup=SetupAddresses();setup.common=binding;setup.common.lifecycle.code=SETUP
     for i in range(8):setup.placements[i]=Placement(i*3,111,0.5,0,0.5,0)
-    group=GroupAddresses(setup,CODE+0x40000,CODE,CODE+0x50000,CODE+0x60000,record_source(),SYNC,FRAME,CODE+0x90000,CONTROL,CODE+0xb0000,PROMPT)
+    group=GroupAddresses(setup,CODE+0x40000,CODE,CODE+0x50000,CODE+0x60000,record_source(),SYNC,FRAME,CODE+0x90000,CONTROL,CODE+0xb0000,PROMPT,CODE+0xd0000,countdown_source())
     status=dll.setup_group(c.byref(group));g.need(status==0,f'Common READY/discard failed: {status}')
     print(json.dumps(dict(passed=True,scope='one frame/list/selected-input shared-flag flow and common preparation',game_access=False,runtime_verified=False)))
 
