@@ -32,7 +32,8 @@ int ep_c33_resource_validate(const EpC33ResourceBinding*,const void*,uint32_t);
 int ep_c33_resource_reserve(const EpC33ResourceBinding*,void*,uint32_t,const uint64_t*,uint32_t,void*,uint32_t);
 /* Explicit opt-in emission. Every consumer, its RELEASE dependency, and all
  * returned original-code windows must share the same arena. Never publish
- * just a subset. The existing family API does not bind/own this arena yet. */
+ * just a subset. The opt-in storage/family resource APIs own/bind this arena;
+ * the legacy family prepare API retains its original resource bindings. */
 int ep_c33_resource_consumer(uint32_t,const EpC33ConsumerAddresses*,const EpC33ResourceBinding*,EpComponent33Image*);
 int ep_c33_resource_windows(uint64_t game_base,const EpC33ResourceBinding*,uint64_t reset_address,EpC33ResourcePlan*);
 #ifdef __cplusplus

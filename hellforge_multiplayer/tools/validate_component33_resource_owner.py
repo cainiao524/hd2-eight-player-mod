@@ -162,7 +162,7 @@ def validate(path,resource_path,core_path):
     q=prepared(v,b,source,config,snap,True);check(stats()[-1]==1,'retained module not pinned');scenarios.append('retained_B_arena_baseline_code_survive_FreeLibrary')
     return dict(passed=True,checks=checks,scenarios=scenarios,scenarios_count=len(scenarios),instruction_runs=runs,capacities=[128,256,1024,65536],code_images=20,component_windows=8,resource_windows=38,
         real_allocations=True,real_page_protection=True,real_unwind_registration=True,real_module_pin=True,game_access=False,hooks_installed=0,
-        limits=['Supplied snapshots and own allocations only; no embedded game-resource ownership transferred.','Whole-call exclusion, complete demand collection, reset timing and production publication remain unimplemented.','No native game-code invocation, native UI validation, fifth client, eight-client mission or installable multiplayer completion.'])
+        limits=['Supplied snapshots and own allocations only; no embedded game-resource ownership transferred.','This ownership fixture does not exercise whole-call demand admission; the separate resource-call receipt covers that scoped integration. Reset timing and production publication remain unimplemented.','No native game-code invocation, native UI validation, fifth client, eight-client mission or installable multiplayer completion.'])
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--library',type=Path,required=True);p.add_argument('--resources',type=Path,required=True);p.add_argument('--core',type=Path,required=True);p.add_argument('--out',type=Path,required=True);a=p.parse_args()

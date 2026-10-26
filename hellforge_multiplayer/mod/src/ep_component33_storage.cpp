@@ -52,6 +52,7 @@ struct C33Storage {
     bool resource_mode;
     EpC33ResourceSnapshot resource_snapshot;
     EpC33ResourceStorageInfo resources;
+    uint64_t resource_scope_owner;
 };
 static C33Storage c33Storage[EP_C33_FAMILY_SLOTS];
 static SRWLOCK c33StorageLock=SRWLOCK_INIT;
@@ -83,6 +84,18 @@ int ep_component33_storage_resources(HfMod* owner,uint64_t id,EpC33ResourceStora
             s->info.family.handle && ep_component33_family_resources(owner,s->info.family.handle,&r)) out->windows=r.windows;
     }
     ReleaseSRWLockShared(&c33StorageLock);return ok;
+}
+int ep_component33_storage_resource_scope(HfMod* owner,uint64_t id,uint64_t roster_owner,uint64_t game,EpC33ResourceScopeView* out)
+{
+    if (!out) return 0;memset(out,0,sizeof(*out));if (!roster_owner) return 0;
+    AcquireSRWLockExclusive(&c33StorageLock);auto* s=C33StorageFind(owner,id);
+    int ok=s && s->resource_mode && s->info.state==EP_C33_STORAGE_RETAINED && s->game_base==game &&
+        (!s->resource_scope_owner || s->resource_scope_owner==roster_owner);
+    if (ok) {
+        s->resource_scope_owner=roster_owner;out->game=game;out->component=s->snapshot.component_address;
+        out->storage=s->info.storage_address;out->resources=s->resources.binding;
+    }
+    ReleaseSRWLockExclusive(&c33StorageLock);return ok;
 }
 static int C33StorageCancel(C33Storage* s)
 {

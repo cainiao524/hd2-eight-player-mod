@@ -59,6 +59,14 @@ typedef struct EpC33ResourceStorageInfo {
  * the original globals, claim their referenced assets or install windows. */
 EpC33StorageResult ep_component33_storage_prepare_resources(const HfApi*,HfMod*,const EpC33StorageBindings*,const EpC33Snapshot*,const EpC33ResourceStorageConfig*,const EpC33ResourceSnapshot*,EpC33StorageInfo*);
 int ep_component33_storage_resources(HfMod*,uint64_t,EpC33ResourceStorageInfo*);
+typedef struct EpC33ResourceScopeView {
+    uint64_t game,component,storage;
+    EpC33ResourceBinding resources;
+} EpC33ResourceScopeView;
+/* Internal integration: caller already holds the named roster owner's native
+ * scope and has checked its game binding. Permanently binds this retained
+ * allocation to that nonreusable owner handle. Never call for discovery. */
+int ep_component33_storage_resource_scope(HfMod*,uint64_t,uint64_t roster_owner,uint64_t game,EpC33ResourceScopeView*);
 int ep_component33_storage_info(HfMod*,uint64_t,EpC33StorageInfo*);
 int ep_component33_storage_cancel(HfMod*,uint64_t);
 /* Compare the provider's fresh coherent snapshot and the owned B bytes to the
