@@ -138,6 +138,11 @@ def main():
     component33_transition_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_component33_transition.py','--library',component33_dll,'--zig',zig,'--out',component33_transition_receipt]))
     component33_owner_receipt=PROJECT/'evidence/native-component33-owner-validation.json'
     component33_owner_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_component33_owner.py','--library',component33_dll,'--zig',zig,'--out',component33_owner_receipt]))
+    component33_readers_dll=build/'component33_readers_test.dll'
+    run([zig,'c++','-std=c++17','-target','x86_64-windows-gnu','-shared','-O2','-Wall','-Wextra','-Werror',
+         PROJECT/'mod/src/ep_component33_readers.cpp',PROJECT/'tests/component33_readers_dll.cpp','-o',component33_readers_dll])
+    component33_readers_receipt=PROJECT/'evidence/native-component33-readers-validation.json'
+    component33_readers_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_component33_readers.py','--library',component33_dll,'--readers',component33_readers_dll,'--zig',zig,'--out',component33_readers_receipt]))
     creation_receipt=PROJECT/'evidence/creation-dispatch-validation.json'
     creation_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_creation_dispatch.py','--library',property_dll,'--out',creation_receipt,'--component33-library',component33_dll]))
     classify_fixture=build/'native-classify-fixture.bin'
@@ -284,6 +289,7 @@ def main():
         'native_component33_direct':{**component33_direct_output,'validation_sha256':digest(component33_direct_receipt)},
         'native_component33_transition':{**component33_transition_output,'validation_sha256':digest(component33_transition_receipt)},
         'native_component33_owner':{**component33_owner_output,'validation_sha256':digest(component33_owner_receipt)},
+        'native_component33_readers':{**component33_readers_output,'validation_sha256':digest(component33_readers_receipt)},
         'native_classify_storage':{'checks':int(classify_match[1]),**classify_fixture_receipt},
         'native_property_gates':{**gate_output,'validation_sha256':digest(gate_receipt)},
         'property_group':{'checks':int(group_match[1]),'entries':['producer','receiver','entity_network_getter'],'shared_storage_binding':True,'actual_hellforge_chains':True,
@@ -338,6 +344,9 @@ def main():
             'tests/component33_image_dll.cpp','tests/native_component33_unwind_test.c',
             'tools/component33_initialization_fixture.py','tools/validate_component33_initialize.py','tests/native_component33_initialize_unwind_test.c',
             'tools/validate_component33_direct.py','tools/validate_component33_transition.py',
+            'native-component33-readers.lock.json','tools/native_component33_readers.py','tools/validate_component33_readers.py',
+            'mod/src/ep_component33_readers.h','mod/src/ep_component33_readers.cpp','mod/src/ep_component33_readers_template.h',
+            'tests/component33_readers_dll.cpp','tests/native_component33_readers_unwind_test.c',
             'native-component33-owner.lock.json','tools/native_component33_owner.py','tools/validate_component33_owner.py',
             'mod/src/ep_component33_owner_template.h','tests/native_component33_owner_unwind_test.c',
             'tests/roster_call_dll.h','tests/roster_call_dll.cpp','tests/roster_call_test.c',
@@ -347,7 +356,7 @@ def main():
             'tests/backend/Program.cs', 'tests/backend/Backend.csproj',
             'mod/src/ep_native_roster.cpp', 'mod/src/ep_native_roster.h', 'mod/src/ep_roster_api.h',
             'native-storage.lock.json', 'tools/build_engine_offline.py', 'engine/patch.lock.json', 'upstream.lock.json')},
-        'artifacts': {p.name: {'bytes': p.stat().st_size, 'sha256': digest(p)} for p in (component33_dll,roster_bridge_fixture,roster_call_dll,roster_call_test,owner_dll,owner_test,roster_group_dll,roster_group_test,dll, test, native_test, code_test, code_dll, property_dll, group_dll, group_test, classify_test, classify_fixture, classify_fixture.with_suffix('.enter.bin'), classify_fixture.with_suffix('.leave.bin'), fixture, fixture.with_suffix('.removed.bin'), fixture.with_suffix('.rejoined.bin'), sync_test, sync_input, sync_routed, sync_received, *sync_images)},
+        'artifacts': {p.name: {'bytes': p.stat().st_size, 'sha256': digest(p)} for p in (component33_readers_dll,component33_dll,roster_bridge_fixture,roster_call_dll,roster_call_test,owner_dll,owner_test,roster_group_dll,roster_group_test,dll, test, native_test, code_test, code_dll, property_dll, group_dll, group_test, classify_test, classify_fixture, classify_fixture.with_suffix('.enter.bin'), classify_fixture.with_suffix('.leave.bin'), fixture, fixture.with_suffix('.removed.bin'), fixture.with_suffix('.rejoined.bin'), sync_test, sync_input, sync_routed, sync_received, *sync_images)},
         'game_started': False, 'game_checked': False, 'game_read': False, 'installed': False,
         'native_game_storage_expanded': False, 'production_provider_bound': False,
         'runtime_verified': False, 'multiplayer_verified': False, 'public_release_allowed': False,
