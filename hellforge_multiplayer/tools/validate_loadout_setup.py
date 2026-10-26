@@ -3,6 +3,7 @@
 ABI stubs do not render UI or verify layout. One setup unwind snapshot and
 one all-image READY/discard cycle; no full regression or game access.
 """
+from validate_loadout_consumers import READY,BLOCKED
 import argparse
 import ctypes as c
 import json
@@ -94,14 +95,14 @@ def main():
         command += [g.PROJECT/'tests/loadout_consumers_dll.cpp',g.PROJECT/'tests/loadout_setup_dll.cpp','-o',args.library.resolve()]
         result=subprocess.run(list(map(str,command)),capture_output=True,text=True);g.need(result.returncode==0,result.stdout+result.stderr)
     dll=c.CDLL(str(args.library.resolve()))
-    dll.ui_build.argtypes=[c.POINTER(Binding),c.POINTER(ConsumerImage)];dll.ui_maps.argtypes=[c.POINTER(c.c_uint32)]
+    dll.ui_build.argtypes=[c.POINTER(Binding),c.POINTER(ConsumerImage),c.c_uint64];dll.ui_maps.argtypes=[c.POINTER(c.c_uint32)]
     dll.setup_build.argtypes=[c.POINTER(SetupAddresses),c.POINTER(SetupImage)];dll.setup_group.argtypes=[c.POINTER(GroupAddresses)]
     dll.setup_unwind.argtypes=[c.POINTER(SetupImage),c.c_uint32,c.c_int32,c.POINTER(c.c_uint64),c.POINTER(c.c_ubyte),c.c_uint64]
     binding=Binding(Addresses(GAME,CODE,SCREEN,RECORDS,WIDGETS,REJECT,8,0),MAPS,MAPS+32,ROSTER,STORAGE)
     setup=SetupAddresses();setup.common=Binding.from_buffer_copy(binding);setup.common.lifecycle.code=SETUP
     # Synthetic distinct coordinates exercise the ABI, not screen fit.
     for i in range(8):setup.placements[i]=Placement(i*3,111+i*5,0.138+(i%4)*0.241,0.5*(i//4),0.5,0)
-    image=ConsumerImage();g.need(dll.ui_build(c.byref(binding),c.byref(image))==0,'Consumer image rejected')
+    image=ConsumerImage();g.need(dll.ui_build(c.byref(binding),c.byref(image),READY)==0,'Consumer image rejected')
     si=SetupImage();g.need(dll.setup_build(c.byref(setup),c.byref(si))==0,'Setup image rejected')
     f=SetupFlow(consumers.build(),dll,image,g.build(),si);f.setup()
     expected=[]

@@ -1,17 +1,17 @@
 #include "ep_loadout_consumers.h"
 #include <windows.h>
 #include <string.h>
-extern "C" __declspec(dllexport) int ui_build(const EpLoadoutConsumerAddresses* a,EpLoadoutConsumerImage* b)
-{return ep_loadout_consumers_build(a,b);}
+extern "C" __declspec(dllexport) int ui_build(const EpLoadoutConsumerAddresses* a,EpLoadoutConsumerImage* b,uint64_t ready_flag)
+{return ep_loadout_consumers_build(a,ready_flag,b);}
 extern "C" __declspec(dllexport) int ui_maps(EpLoadoutMaps* m)
 {return ep_loadout_maps_initialize(m,8,3);}
 static const char* Build() {return "25480438";}
 static int Hook(HfMod*,uintptr_t,void*,void**,int32_t) {return 1;}
-extern "C" __declspec(dllexport) int ui_prepare(const EpLoadoutConsumerAddresses* a)
+extern "C" __declspec(dllexport) int ui_prepare(const EpLoadoutConsumerAddresses* a,uint64_t ready_flag)
 {
     HfApi api={};api.size=sizeof(api);api.version=13;api.build_id=Build;api.hook_ex=Hook;
     HfMod* mod=(HfMod*)(uintptr_t)0x9182;EpSessionCodeInfo code={};
-    if (ep_loadout_consumers_prepare(&api,mod,a,&code)!=EP_PROPERTY_OK) return 1;
+    if (ep_loadout_consumers_prepare(&api,mod,a,ready_flag,&code)!=EP_PROPERTY_OK) return 1;
     int failure=code.state!=EP_CODE_READY || !code.registered || code.pinned;
     if (!ep_session_code_discard(mod,code.handle)) return 2;
     return failure;

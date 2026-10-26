@@ -10,13 +10,13 @@ EpPropertyResult ep_loadout_control_build(const EpLoadoutControlAddresses* input
     EpLoadoutControlAddresses a={};if (input) a=*input;*out={};
     EpPropertyResult status=ep_loadout_consumers_validate(input ? &a.common : nullptr);
     if (status!=EP_PROPERTY_OK) return status;
-    const uint64_t entries[]={a.mode,a.input,a.edit,a.return_screen};
+    const uint64_t entries[]={a.mode,a.input,a.edit,a.return_screen,a.ready_flag,a.blocked_flag};
     for (uint64_t entry:entries) {
         status=ep_loadout_consumers_validate_link(&a.common,entry);if (status!=EP_PROPERTY_OK) return status;
     }
     const auto& b=a.common;const auto& l=b.lifecycle;
     const uint64_t values[]={l.game,l.code,l.screen,l.records,l.widgets,l.capacity,l.reject,
-                             b.forward_map,b.inverse_map,b.roster,b.roster_storage,a.mode,a.input,a.edit,a.return_screen};
+                             b.forward_map,b.inverse_map,b.roster,b.roster_storage,a.mode,a.input,a.edit,a.return_screen,a.ready_flag,a.blocked_flag};
     EpLoadoutControlImage image={};memcpy(image.data,ep_loadout_control_template,sizeof(ep_loadout_control_template));
     for (const auto& f:ep_loadout_control_fixups) {
         int64_t value=(int64_t)values[f.key]+f.add;

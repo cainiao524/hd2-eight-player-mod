@@ -4,6 +4,7 @@ Uses actual prepared control/mode/navigation bodies in owned emulator memory,
 with ABI stubs for native services. One Windows unwind snapshot and common
 READY/discard cycle. No game, regression suite, receipt or fingerprint access.
 """
+from validate_loadout_consumers import READY,BLOCKED
 import argparse
 import ctypes as c
 import json
@@ -23,7 +24,7 @@ from capstone.x86_const import X86_OP_IMM,X86_OP_MEM,X86_REG_RIP
 CONTROL=CODE+0xa0000
 INPUT=ENGINE+0x800000
 class ControlAddresses(c.Structure):
-    _fields_=[('common',Binding)]+[(n,c.c_uint64) for n in ('mode','input','edit','return_screen')]
+    _fields_=[('common',Binding)]+[(n,c.c_uint64) for n in ('mode','input','edit','return_screen','ready_flag','blocked_flag')]
 class Image(c.Structure):
     _fields_=[(n,c.c_uint32) for n in ('bytes','code_bytes','unwind_offset','table_offset','function_count','leave','screen_input','reset_selection')]+[('data',c.c_ubyte*g.MAX_IMAGE)]
 
@@ -75,7 +76,7 @@ class ControlFlow(ModeFlow):
             result=self.dll.control_unwind(c.byref(self.control_image),address-CONTROL,self.value('rsp')-SP,registers,stack,STOP)
             g.need(result==0,f'Control unwind failed: {result}');self.control_unwound=True
         rcx,rdx,r8=self.value('rcx'),self.value('rdx'),self.value('r8')
-        if address in (GAME+0x18a0fd0,GAME+0x60b3b0):self.controls.append((address-GAME,rcx,rdx))
+        if address in (GAME+0x18a0fd0,READY):self.controls.append((0x60b3b0 if address==READY else address-GAME,rcx,rdx))
         if address==GAME+0x189bdc0:self.input_calls.append(rcx)
         # The cancel handler emits a separate native event before mode-return.
         if address==GAME+0xbde430 and rcx==0x1d24bc8a:
@@ -105,18 +106,18 @@ def main():
         command += [g.PROJECT/'tests'/n for n in ('loadout_consumers_dll.cpp','loadout_setup_dll.cpp','loadout_mode_dll.cpp','loadout_control_dll.cpp','loadout_interactions_dll.cpp')]
         command += ['-o',args.library.resolve()]
         result=subprocess.run(list(map(str,command)),capture_output=True,text=True);g.need(result.returncode==0,result.stdout+result.stderr)
-    dll=c.CDLL(str(args.library.resolve()));dll.ui_build.argtypes=[c.POINTER(Binding),c.POINTER(ConsumerImage)]
+    dll=c.CDLL(str(args.library.resolve()));dll.ui_build.argtypes=[c.POINTER(Binding),c.POINTER(ConsumerImage),c.c_uint64]
     dll.ui_maps.argtypes=[c.POINTER(c.c_uint32)];dll.mode_build.argtypes=[c.POINTER(Binding),c.POINTER(ModeImage)]
     dll.control_build.argtypes=[c.POINTER(ControlAddresses),c.POINTER(Image)]
     dll.interaction_build.argtypes=[c.POINTER(InteractionAddresses),c.POINTER(InteractionImage)]
     dll.setup_group.argtypes=[c.POINTER(GroupAddresses)]
     dll.control_unwind.argtypes=[c.POINTER(Image),c.c_uint32,c.c_int32,c.POINTER(c.c_uint64),c.POINTER(c.c_ubyte),c.c_uint64]
     binding=Binding(Addresses(GAME,CODE,SCREEN,RECORDS,WIDGETS,REJECT,8,0),MAPS,MAPS+32,ROSTER,STORAGE)
-    consumer=ConsumerImage();g.need(dll.ui_build(c.byref(binding),c.byref(consumer))==0,'Consumer binding failed')
+    consumer=ConsumerImage();g.need(dll.ui_build(c.byref(binding),c.byref(consumer),READY)==0,'Consumer binding failed')
     binding.lifecycle.code=MODE;mode_image=ModeImage();g.need(dll.mode_build(c.byref(binding),c.byref(mode_image))==0,'Mode binding failed')
     binding.lifecycle.code=INTERACTIONS;interaction_binding=InteractionAddresses(binding,REFRESH);interaction_image=InteractionImage()
     g.need(dll.interaction_build(c.byref(interaction_binding),c.byref(interaction_image))==0,'Interaction binding failed')
-    binding.lifecycle.code=CONTROL;a=ControlAddresses(binding,MODE+mode_image.mode,INTERACTIONS+interaction_image.input,INTERACTIONS+interaction_image.edit,CODE+0xb0000)
+    binding.lifecycle.code=CONTROL;a=ControlAddresses(binding,MODE+mode_image.mode,INTERACTIONS+interaction_image.input,INTERACTIONS+interaction_image.edit,CODE+0xb0000,READY,BLOCKED)
     image=Image();g.need(dll.control_build(c.byref(a),c.byref(image))==0,'Control binding failed')
     f=ControlFlow(dll,consumer,mode_image,mode.build(),image,g.build(),interaction_image,interaction.build())
     f.operation(image.screen_input)

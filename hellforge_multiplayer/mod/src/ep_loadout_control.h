@@ -7,7 +7,7 @@ extern "C" {
 #define EP_LOADOUT_CONTROL_BYTES 8192u
 typedef struct EpLoadoutControlAddresses {
     EpLoadoutConsumerAddresses common;
-    uint64_t mode,input,edit,return_screen;
+    uint64_t mode,input,edit,return_screen,ready_flag,blocked_flag;
 } EpLoadoutControlAddresses;
 typedef struct EpLoadoutControlImage {
     uint32_t bytes,code_bytes,unwind_offset,table_offset,function_count;
@@ -17,7 +17,7 @@ typedef struct EpLoadoutControlImage {
 /* Full saved 146B190 leave, 146D370 screen input, 1470700 selection reset.
  * Three mode calls bind the same group's mode, and navigation/edit calls bind
  * its interaction image. Local roster flags/components and the dense peer
- * scan use B storage. Leave cleanup covers capacity widgets, with native
+ * scan and both flag queries use the same B storage as frame/update/prompt. Leave cleanup covers capacity widgets, with native
  * branch-specific unwind saves preserved. State/event/input-queue limits
  * retain their native meanings. The first widget remains the local widget.
  * The return action binds the shared state image. Engine services, source/owner

@@ -114,6 +114,8 @@ def build():
                 relocate_memory(ins,4,0x53a78)
             elif mem and mem.disp in (0x27d8,0x27e8,0x27ec) and ins.reg_name(mem.base) in ('rsi','rdi'):
                 relocate_memory(ins,7 if mem.disp==0x27d8 else 8,0x27d8 if mem.disp==0x27d8 else 0x27e8)
+            elif ins.mnemonic=='call' and ins.operands[0].type==X86_OP_IMM and ins.operands[0].imm in (0x60b3b0,):
+                fix(b'\xe8'+bytes(4),1,{0x60b3b0: 11}[ins.operands[0].imm],0)
             elif (ins.mnemonic=='call' or ins.mnemonic.startswith('j')) and ins.operands[0].type==X86_OP_IMM:
                 raw=bytes(ins.bytes);target=ins.operands[0].imm
                 op=raw[:1] if raw[0] in (0xe8,0xe9) else b'\xe9' if raw[0]==0xeb else bytes((0x0f,raw[0]+0x10)) if 0x70<=raw[0]<=0x7f else raw[:2]

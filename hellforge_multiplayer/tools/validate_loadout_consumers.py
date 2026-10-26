@@ -10,11 +10,14 @@ import struct
 import subprocess
 from pathlib import Path
 import generate_loadout_consumers as g
+import generate_loadout_prompt as prompt
 from validate_loadout_lifecycle import (Fixture,Addresses,GAME,CODE,SCREEN,RECORDS,WIDGETS,REJECT,
                                        STACK,STOP,ENGINE,SP,NAMES,R,U64,U32,u)
 from capstone.x86_const import X86_OP_IMM,X86_OP_MEM,X86_REG_RIP
 
 MAPS,ROSTER,STORAGE,DESCS,PEER=0x250000000,0x260000000,0x260010000,0x270000000,0x710000
+PROMPT=CODE+0xc0000
+READY,BLOCKED=(PROMPT+x for x in prompt.build()['entries'][3:])
 class Binding(c.Structure):
     _fields_=[('lifecycle',Addresses)]+[(x,c.c_uint64) for x in ('forward_map','inverse_map','roster','roster_storage')]
 class Image(c.Structure):
@@ -41,6 +44,8 @@ class Flow(Fixture):
                     if o.type==X86_OP_MEM and o.mem.base==X86_REG_RIP:
                         target=i.address+i.size+i.disp;self.map(GAME+target,16)
                         self.write(GAME+target,capture.read(target,o.size) if target<0x3000000 else U64(ENGINE) if o.size==8 else U32(0xffffffff))
+        for target in (READY,BLOCKED):
+            self.external.add(target);self.map(target,1);self.write(target,b'\xc3')
         self.write(GAME+0x3326468,U64(ROSTER))
         # The character lookup's eight original entries are separate from the
         # session's eight identity records. Neither is a UI display ordinal.
@@ -83,10 +88,11 @@ class Flow(Fixture):
             elif address==self.resolver:rax=PEER+rdx-100
             elif address==GAME+0xfd9af0:rax=100+rcx-0x1000
             elif address==GAME+0xfd9ba0:self.write(rcx,U32(rdx))
-            elif address==GAME+0x60b3b0:rax=0 if rdx==0x1007 else 1
+            elif address in (GAME+0x60b3b0,READY):rax=0 if rdx==0x1007 else 1
             if address in (GAME+0x189ca20,GAME+0x1893d40):self.calls.append((address-GAME,rcx,rdx))
             for name in ('rax','rcx','rdx','r8','r9','r10','r11'):uc.reg_write(R(name),0)
             uc.reg_write(R('rax'),rax)
+            if address in (READY,BLOCKED):uc.reg_write(R('rdx'),rdx) # captured private ABI
 
     def invoke(self,entry,rdx=0,r9=0):
         self.standalone_lookup=entry==self.image.lookup;self.stop=None
@@ -110,11 +116,11 @@ def main():
                  g.PROJECT/'tests/loadout_consumers_dll.cpp','-o',args.library.resolve()]
         result=subprocess.run(list(map(str,command)),capture_output=True,text=True);g.need(result.returncode==0,result.stdout+result.stderr)
     dll=c.CDLL(str(args.library.resolve()))
-    dll.ui_build.argtypes=[c.POINTER(Binding),c.POINTER(Image)];dll.ui_prepare.argtypes=[c.POINTER(Binding)]
+    dll.ui_build.argtypes=[c.POINTER(Binding),c.POINTER(Image),c.c_uint64];dll.ui_prepare.argtypes=[c.POINTER(Binding),c.c_uint64]
     dll.ui_maps.argtypes=[c.POINTER(c.c_uint32)]
     dll.ui_unwind.argtypes=[c.POINTER(Image),c.c_uint32,c.c_int32,c.POINTER(c.c_uint64),c.POINTER(c.c_ubyte),c.c_uint64]
     binding=Binding(Addresses(GAME,CODE,SCREEN,RECORDS,WIDGETS,REJECT,8,0),MAPS,MAPS+32,ROSTER,STORAGE)
-    artifact=g.build();image=Image();g.need(dll.ui_build(c.byref(binding),c.byref(image))==0,'Consumer image rejected')
+    artifact=g.build();image=Image();g.need(dll.ui_build(c.byref(binding),c.byref(image),READY)==0,'Consumer image rejected')
     f=Flow(artifact,dll,image);f.invoke(image.update)
     inverse=list(struct.unpack('<8I',f.read(MAPS+32,32)));forward=list(struct.unpack('<8I',f.read(MAPS,32)))
     g.need(inverse==f.order and all(forward[n]==i for i,n in enumerate(inverse)),'Native update lost identity/slot mapping')
@@ -127,7 +133,7 @@ def main():
         g.need(f.read(SCREEN+begin,end-begin)==f.inline[begin:end],'Consumer touched old inline arrays/maps')
     g.need(f.read(RECORDS+8*0x9f0,16)==bytes([0x6b])*16 and f.read(WIDGETS+8*0x1ee18,16)==bytes([0x7c])*16,'Storage boundary crossed')
     g.need(not f.points and f.lookup_checked,'Selected unwind point was not reached')
-    g.need(dll.ui_prepare(c.byref(binding))==0,'Consumer READY prepare/discard failed')
+    g.need(dll.ui_prepare(c.byref(binding),READY)==0,'Consumer READY prepare/discard failed')
     print(json.dumps(dict(passed=True,scope='one eight-slot update/lookup/action flow',game_access=False,runtime_verified=False)))
 
 

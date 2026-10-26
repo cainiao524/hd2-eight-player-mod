@@ -4,6 +4,7 @@ Native services outside this group are ABI stubs. This does not prove game
 behavior, remaining native routing, installation or publication. No receipts,
 fingerprints, old-suite execution or game access.
 """
+from validate_loadout_consumers import READY,BLOCKED
 import argparse
 import ctypes as c
 import json
@@ -21,7 +22,7 @@ from capstone.x86_const import X86_OP_IMM,X86_OP_MEM,X86_REG_RIP
 
 FRAME=CODE+0x80000
 class FrameAddresses(c.Structure):
-    _fields_=[('records',RecordsAddresses),('sync_records',c.c_uint64),('update',c.c_uint64),('lookup',c.c_uint64),('open_mode',c.c_uint64),('leave',c.c_uint64),('state_change',c.c_uint64),('return_screen',c.c_uint64),('prompt',c.c_uint64)]
+    _fields_=[('records',RecordsAddresses),('sync_records',c.c_uint64),('update',c.c_uint64),('lookup',c.c_uint64),('open_mode',c.c_uint64),('leave',c.c_uint64),('state_change',c.c_uint64),('return_screen',c.c_uint64),('prompt',c.c_uint64),('ready_flag',c.c_uint64),('blocked_flag',c.c_uint64)]
 class Image(c.Structure):
     _fields_=[(n,c.c_uint32) for n in ('bytes','code_bytes','unwind_offset','table_offset','handler_offset','frame','local_update')]+[('data',c.c_ubyte*g.MAX_IMAGE)]
 
@@ -94,15 +95,15 @@ def main():
         command += ['-o',args.library.resolve()]
         result=subprocess.run(list(map(str,command)),capture_output=True,text=True);g.need(result.returncode==0,result.stdout+result.stderr)
     dll=c.CDLL(str(args.library.resolve()))
-    dll.ui_build.argtypes=[c.POINTER(Binding),c.POINTER(ConsumerImage)];dll.ui_maps.argtypes=[c.POINTER(c.c_uint32)]
+    dll.ui_build.argtypes=[c.POINTER(Binding),c.POINTER(ConsumerImage),c.c_uint64];dll.ui_maps.argtypes=[c.POINTER(c.c_uint32)]
     dll.records_build.argtypes=[c.POINTER(RecordsAddresses),c.POINTER(RecordsImage)];dll.setup_group.argtypes=[c.POINTER(GroupAddresses)]
     dll.frame_build.argtypes=[c.POINTER(FrameAddresses),c.POINTER(Image)]
     dll.frame_unwind.argtypes=[c.POINTER(Image),c.c_uint32,c.c_int32,c.POINTER(c.c_uint64),c.POINTER(c.c_ubyte),c.c_uint64]
     binding=Binding(Addresses(GAME,CODE,SCREEN,RECORDS,WIDGETS,REJECT,8,0),MAPS,MAPS+32,ROSTER,STORAGE)
-    consumer=ConsumerImage();g.need(dll.ui_build(c.byref(binding),c.byref(consumer))==0,'Consumer binding failed')
+    consumer=ConsumerImage();g.need(dll.ui_build(c.byref(binding),c.byref(consumer),READY)==0,'Consumer binding failed')
     binding.lifecycle.code=SYNC;record_binding=RecordsAddresses(binding,record_source());record_image=RecordsImage()
     g.need(dll.records_build(c.byref(record_binding),c.byref(record_image))==0,'Record binding failed')
-    a=FrameAddresses(record_binding,SYNC,CODE+consumer.update,CODE+consumer.lookup,CODE+0x90000+mode.build()['entries'][1],CODE+0xa0000,CODE+0xb0000+state.build()['entries'][1],CODE+0xb0000,CODE+0xc0000);a.records.common.lifecycle.code=FRAME
+    a=FrameAddresses(record_binding,SYNC,CODE+consumer.update,CODE+consumer.lookup,CODE+0x90000+mode.build()['entries'][1],CODE+0xa0000,CODE+0xb0000+state.build()['entries'][1],CODE+0xb0000,CODE+0xc0000,READY,BLOCKED);a.records.common.lifecycle.code=FRAME
     image=Image();g.need(dll.frame_build(c.byref(a),c.byref(image))==0,'Frame binding failed')
     artifact=g.build();record_artifact=records.build();f=FrameFlow(dll,consumer,record_image,record_artifact,image,artifact)
     try:f.invoke(FRAME-CODE+image.frame)

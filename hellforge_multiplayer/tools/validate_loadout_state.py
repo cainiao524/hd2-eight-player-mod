@@ -4,6 +4,7 @@ Actual prepared bodies run only in owned emulator memory. Native resource
 services remain ABI stubs. One Windows unwind point and one common READY/
 discard cycle; no game access, old suites, fingerprints or receipts.
 """
+from validate_loadout_consumers import READY,BLOCKED
 import argparse
 import ctypes as c
 import json
@@ -96,7 +97,7 @@ def main():
         command += [g.PROJECT/'tests'/n for n in ('loadout_consumers_dll.cpp','loadout_setup_dll.cpp','loadout_mode_dll.cpp','loadout_control_dll.cpp','loadout_interactions_dll.cpp','loadout_lifecycle_dll.cpp','loadout_state_dll.cpp')]
         command += ['-o',args.library.resolve()]
         result=subprocess.run(list(map(str,command)),capture_output=True,text=True);g.need(result.returncode==0,result.stdout+result.stderr)
-    dll=c.CDLL(str(args.library.resolve()));dll.ui_build.argtypes=[c.POINTER(Binding),c.POINTER(ConsumerImage)]
+    dll=c.CDLL(str(args.library.resolve()));dll.ui_build.argtypes=[c.POINTER(Binding),c.POINTER(ConsumerImage),c.c_uint64]
     dll.ui_maps.argtypes=[c.POINTER(c.c_uint32)];dll.mode_build.argtypes=[c.POINTER(Binding),c.POINTER(ModeImage)]
     dll.control_build.argtypes=[c.POINTER(ControlAddresses),c.POINTER(ControlImage)]
     dll.interaction_build.argtypes=[c.POINTER(InteractionAddresses),c.POINTER(InteractionImage)]
@@ -105,13 +106,13 @@ def main():
     dll.setup_group.argtypes=[c.POINTER(GroupAddresses)]
     dll.state_unwind.argtypes=[c.POINTER(Image),c.c_uint32,c.c_int32,c.POINTER(c.c_uint64),c.POINTER(c.c_ubyte),c.c_uint64]
     binding=Binding(Addresses(GAME,CODE,SCREEN,RECORDS,WIDGETS,REJECT,8,0),MAPS,MAPS+32,ROSTER,STORAGE)
-    consumer=ConsumerImage();g.need(dll.ui_build(c.byref(binding),c.byref(consumer))==0,'Consumer binding failed')
+    consumer=ConsumerImage();g.need(dll.ui_build(c.byref(binding),c.byref(consumer),READY)==0,'Consumer binding failed')
     binding.lifecycle.code=MODE;mode_image=ModeImage();g.need(dll.mode_build(c.byref(binding),c.byref(mode_image))==0,'Mode binding failed')
     binding.lifecycle.code=INTERACTIONS;ib=InteractionAddresses(binding,REFRESH);interaction_image=InteractionImage()
     g.need(dll.interaction_build(c.byref(ib),c.byref(interaction_image))==0,'Interaction binding failed')
     binding.lifecycle.code=STATE;a=StateAddresses(binding,MODE+mode_image.open,CONTROL);image=Image()
     g.need(dll.state_build(c.byref(a),c.byref(image))==0,'State binding failed')
-    binding.lifecycle.code=CONTROL;cb=ControlAddresses(binding,MODE+mode_image.mode,INTERACTIONS+interaction_image.input,INTERACTIONS+interaction_image.edit,STATE+image.return_screen)
+    binding.lifecycle.code=CONTROL;cb=ControlAddresses(binding,MODE+mode_image.mode,INTERACTIONS+interaction_image.input,INTERACTIONS+interaction_image.edit,STATE+image.return_screen,READY,BLOCKED)
     control_image=ControlImage();g.need(dll.control_build(c.byref(cb),c.byref(control_image))==0,'Control binding failed')
     binding.lifecycle.code=LIFECYCLE;life_image=LifecycleImage()
     g.need(dll.loadout_build(c.byref(binding.lifecycle),STATE+image.change,c.byref(life_image))==0,'Lifecycle binding failed')

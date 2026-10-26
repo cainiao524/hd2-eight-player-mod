@@ -27,6 +27,7 @@ int ep_loadout_maps_initialize(EpLoadoutMaps*,uint32_t capacity,uint32_t local_n
  * action. Use EXACTLY the lifecycle's screen/records/widgets/capacity, plus
  * the shared roster owner's header and B storage (E8=>B, 2C8=>B+3C0,
  * 3A8=>B+580). Calls to 1470650 stay inside this prepared image.
+ * Ready checks bind the same prepared prompt image as frame/input callers.
  * All native widget callbacks, float/stack arguments, nested four equipment
  * choices and the separate original 9F8 peer bank remain native. That peer
  * bank's four-entry scan is NOT widened without its own storage migration.
@@ -41,7 +42,7 @@ int ep_loadout_maps_initialize(EpLoadoutMaps*,uint32_t capacity,uint32_t local_n
  * Still required: other UI consumers/map writers, verified layouts,
  * authoritative identity/lifetime binding and common activation. This is
  * not an installable or runtime-verified UI package. */
-EpPropertyResult ep_loadout_consumers_build(const EpLoadoutConsumerAddresses*,EpLoadoutConsumerImage*);
+EpPropertyResult ep_loadout_consumers_build(const EpLoadoutConsumerAddresses*,uint64_t ready_flag,EpLoadoutConsumerImage*);
 /* Shared numerical binding validation; does not dereference any address. */
 EpPropertyResult ep_loadout_consumers_validate(const EpLoadoutConsumerAddresses*);
 EpPropertyResult ep_loadout_consumers_validate_span(const EpLoadoutConsumerAddresses*,uint32_t code_bytes);
@@ -51,7 +52,7 @@ EpPropertyResult ep_loadout_consumers_validate_span(const EpLoadoutConsumerAddre
 EpPropertyResult ep_loadout_consumers_validate_link(const EpLoadoutConsumerAddresses*,uint64_t entry);
 /* Cancellable READY allocation only; does not execute any candidate entry.
  * CLEANUP retains the returned handle for discard retry. */
-EpPropertyResult ep_loadout_consumers_prepare(const HfApi*,HfMod*,const EpLoadoutConsumerAddresses*,EpSessionCodeInfo*);
+EpPropertyResult ep_loadout_consumers_prepare(const HfApi*,HfMod*,const EpLoadoutConsumerAddresses*,uint64_t ready_flag,EpSessionCodeInfo*);
 #ifdef __cplusplus
 }
 #endif

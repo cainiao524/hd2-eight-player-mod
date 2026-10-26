@@ -40,7 +40,7 @@ EpPropertyResult ep_loadout_group_prepare(const HfApi* api,HfMod* mod,const EpLo
     EpLoadoutStateImage state={};EpLoadoutPromptImage prompt={};
     EpLoadoutConsumerAddresses prompt_binding=a.setup.common;prompt_binding.lifecycle.code=a.prompt_code;
     result=ep_loadout_prompt_build(&prompt_binding,&prompt);if (result!=EP_PROPERTY_OK) return result;
-    result=ep_loadout_consumers_build(&c,&consumers);if (result!=EP_PROPERTY_OK) return result;
+    result=ep_loadout_consumers_build(&c,a.prompt_code+prompt.ready_flag,&consumers);if (result!=EP_PROPERTY_OK) return result;
     result=ep_loadout_setup_build(&a.setup,&setup);if (result!=EP_PROPERTY_OK) return result;
     result=ep_loadout_interactions_build(&interaction_binding,&interactions);if (result!=EP_PROPERTY_OK) return result;
     refresh_binding.close_entry=a.interactions_code+interactions.close;
@@ -51,18 +51,18 @@ EpPropertyResult ep_loadout_group_prepare(const HfApi* api,HfMod* mod,const EpLo
     state_binding.common.lifecycle.code=a.state_code;
     result=ep_loadout_state_build(&state_binding,&state);if (result!=EP_PROPERTY_OK) return result;
     EpLoadoutControlAddresses control_binding={a.setup.common,a.mode_code+mode.mode,
-        a.interactions_code+interactions.input,a.interactions_code+interactions.edit,a.state_code+state.return_screen};
+        a.interactions_code+interactions.input,a.interactions_code+interactions.edit,a.state_code+state.return_screen,a.prompt_code+prompt.ready_flag,a.prompt_code+prompt.blocked_flag};
     control_binding.common.lifecycle.code=a.control_code;
     result=ep_loadout_control_build(&control_binding,&control);if (result!=EP_PROPERTY_OK) return result;
     // Both cycle anchors are first guarded entries, verified before prepare.
     if (control.leave || state.return_screen) return EP_PROPERTY_ARGUMENT;
     result=ep_loadout_lifecycle_build(&l,a.state_code+state.change,&life);if (result!=EP_PROPERTY_OK) return result;
-    EpLoadoutFrameAddresses frame_binding={records_binding,a.records_code,c.lifecycle.code+consumers.update,c.lifecycle.code+consumers.lookup,a.mode_code+mode.open,a.control_code+control.leave,a.state_code+state.change,a.state_code+state.return_screen,a.prompt_code+prompt.update};
+    EpLoadoutFrameAddresses frame_binding={records_binding,a.records_code,c.lifecycle.code+consumers.update,c.lifecycle.code+consumers.lookup,a.mode_code+mode.open,a.control_code+control.leave,a.state_code+state.change,a.state_code+state.return_screen,a.prompt_code+prompt.update,a.prompt_code+prompt.ready_flag,a.prompt_code+prompt.blocked_flag};
     frame_binding.records.common.lifecycle.code=a.frame_code;
     result=ep_loadout_frame_build(&frame_binding,&frame);if (result!=EP_PROPERTY_OK) return result;
     EpLoadoutGroup group={};
     result=ep_loadout_lifecycle_prepare(api,mod,&l,a.state_code+state.change,&group.code[0]);
-    if (result==EP_PROPERTY_OK) result=ep_loadout_consumers_prepare(api,mod,&c,&group.code[1]);
+    if (result==EP_PROPERTY_OK) result=ep_loadout_consumers_prepare(api,mod,&c,a.prompt_code+prompt.ready_flag,&group.code[1]);
     if (result==EP_PROPERTY_OK) result=ep_loadout_setup_prepare(api,mod,&a.setup,&group.code[2]);
     if (result==EP_PROPERTY_OK) result=ep_loadout_interactions_prepare(api,mod,&interaction_binding,&group.code[3]);
     if (result==EP_PROPERTY_OK) result=ep_loadout_refresh_prepare(api,mod,&refresh_binding,&group.code[4]);

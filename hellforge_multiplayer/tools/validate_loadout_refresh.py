@@ -3,6 +3,7 @@
 Owned emulator memory and ABI stubs only. One nested chained-unwind snapshot,
 one common READY/discard cycle. No game access or full regression.
 """
+from validate_loadout_consumers import READY,BLOCKED
 import argparse
 import ctypes as c
 import json
@@ -83,12 +84,12 @@ def main():
         command += ['-o',args.library.resolve()]
         result=subprocess.run(list(map(str,command)),capture_output=True,text=True);g.need(result.returncode==0,result.stdout+result.stderr)
     dll=c.CDLL(str(args.library.resolve()))
-    dll.ui_build.argtypes=[c.POINTER(Binding),c.POINTER(ConsumerImage)];dll.ui_maps.argtypes=[c.POINTER(c.c_uint32)]
+    dll.ui_build.argtypes=[c.POINTER(Binding),c.POINTER(ConsumerImage),c.c_uint64];dll.ui_maps.argtypes=[c.POINTER(c.c_uint32)]
     dll.interaction_build.argtypes=[c.POINTER(InteractionAddresses),c.POINTER(InteractionImage)]
     dll.refresh_build.argtypes=[c.POINTER(RefreshAddresses),c.POINTER(Image)];dll.setup_group.argtypes=[c.POINTER(GroupAddresses)]
     dll.refresh_unwind.argtypes=[c.POINTER(Image),c.c_uint32,c.c_int32,c.POINTER(c.c_uint64),c.POINTER(c.c_ubyte),c.POINTER(c.c_uint64),c.c_uint64]
     binding=Binding(Addresses(GAME,CODE,SCREEN,RECORDS,WIDGETS,REJECT,8,0),MAPS,MAPS+32,ROSTER,STORAGE)
-    consumer=ConsumerImage();g.need(dll.ui_build(c.byref(binding),c.byref(consumer))==0,'Consumer binding failed')
+    consumer=ConsumerImage();g.need(dll.ui_build(c.byref(binding),c.byref(consumer),READY)==0,'Consumer binding failed')
     binding.lifecycle.code=INTERACTIONS;ia=InteractionAddresses(binding,REFRESH);interactions=InteractionImage()
     g.need(dll.interaction_build(c.byref(ia),c.byref(interactions))==0,'Interaction link failed')
     binding.lifecycle.code=REFRESH;ra=RefreshAddresses(binding,INTERACTIONS+interactions.close);image=Image()

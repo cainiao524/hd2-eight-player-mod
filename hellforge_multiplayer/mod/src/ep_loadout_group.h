@@ -30,7 +30,8 @@ typedef struct EpLoadoutGroup {
  * The independent record-source banks must be disjoint from every image.
  * Input -> refresh -> close, control -> mode/navigation/edit/return, lifecycle -> state and
  * frame -> local/sync/update/lookup/mode/leave/state/return/prompt links are
- * derived from these same images. The frame allocation has a 16 KiB span.
+ * derived from these same images. Frame, update and input flag queries also
+ * bind the shared prompt image. The frame allocation has a 16 KiB span.
  * The state timer calls control.leave and context action calls mode.open;
  * these cyclic links are prepared together and must share lifetime.
  * Only owned code allocations are made; data still belongs to the caller.

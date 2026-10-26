@@ -36,14 +36,15 @@ EpPropertyResult ep_loadout_consumers_validate_link(const EpLoadoutConsumerAddre
     EpLoadoutConsumerAddresses target=*input;target.lifecycle.code=entry;
     return EpLoadoutValidate(&target,1);
 }
-EpPropertyResult ep_loadout_consumers_build(const EpLoadoutConsumerAddresses* input,EpLoadoutConsumerImage* out)
+EpPropertyResult ep_loadout_consumers_build(const EpLoadoutConsumerAddresses* input,uint64_t ready_flag,EpLoadoutConsumerImage* out)
 {
     if (!out) return EP_PROPERTY_ARGUMENT;
     EpLoadoutConsumerAddresses a={};if (input) a=*input;*out={};
     EpPropertyResult status=ep_loadout_consumers_validate(input ? &a : nullptr);if (status!=EP_PROPERTY_OK) return status;
+    status=ep_loadout_consumers_validate_link(&a,ready_flag);if (status!=EP_PROPERTY_OK) return status;
     const auto& l=a.lifecycle;
     const uint64_t values[]={l.game,l.code,l.screen,l.records,l.widgets,l.capacity,l.reject,
-                             a.forward_map,a.inverse_map,a.roster,a.roster_storage};
+                             a.forward_map,a.inverse_map,a.roster,a.roster_storage,ready_flag};
     EpLoadoutConsumerImage image={};memcpy(image.data,ep_loadout_consumers_template,sizeof(ep_loadout_consumers_template));
     for (const auto& f:ep_loadout_consumer_fixups) {
         int64_t value=(int64_t)values[f.key]+f.add;
@@ -58,13 +59,13 @@ EpPropertyResult ep_loadout_consumers_build(const EpLoadoutConsumerAddresses* in
     image.lookup=ep_loadout_consumer_entries[1];image.action=ep_loadout_consumer_entries[2];*out=image;
     return EP_PROPERTY_OK;
 }
-EpPropertyResult ep_loadout_consumers_prepare(const HfApi* api,HfMod* mod,const EpLoadoutConsumerAddresses* input,EpSessionCodeInfo* out)
+EpPropertyResult ep_loadout_consumers_prepare(const HfApi* api,HfMod* mod,const EpLoadoutConsumerAddresses* input,uint64_t ready_flag,EpSessionCodeInfo* out)
 {
     if (!out) return EP_PROPERTY_ARGUMENT;
     EpLoadoutConsumerAddresses a={};if (input) a=*input;*out={};if (!input) return EP_PROPERTY_ARGUMENT;
     EpSessionCodeInfo code={};EpLoadoutConsumerImage image={};
     if (!ep_session_code_reserve(api,mod,(uintptr_t)a.lifecycle.code,sizeof(ep_loadout_consumers_template),&code)) return EP_PROPERTY_RESERVE;
-    a.lifecycle.code=code.base;EpPropertyResult status=ep_loadout_consumers_build(&a,&image);
+    a.lifecycle.code=code.base;EpPropertyResult status=ep_loadout_consumers_build(&a,ready_flag,&image);
     if (status==EP_PROPERTY_OK && !ep_session_code_seal_table(mod,code.handle,image.data,image.bytes,image.table_offset,image.function_count)) status=EP_PROPERTY_SEAL;
     if (status==EP_PROPERTY_OK) {
         if (ep_session_code_info(mod,code.handle,out)) return EP_PROPERTY_OK;

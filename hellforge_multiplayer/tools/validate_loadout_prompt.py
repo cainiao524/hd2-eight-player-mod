@@ -3,6 +3,7 @@
 Uses owned emulator memory, native-service ABI stubs, one prompt unwind
 snapshot and one common READY/discard. No game access or full regression.
 """
+from validate_loadout_consumers import READY,BLOCKED
 import argparse
 import ctypes as c
 import json
@@ -29,7 +30,7 @@ class PromptFlow(FrameFlow):
         super().__init__(dll,consumer,record_image,records.build(),frame_image,frame.build())
         self.frame_unwound=True;self.prompt_unwound=False;self.prompt_image=image;self.prompt_art=artifact
         self.prompt_entries=[];self.peer_checks=[];self.buttons=[];self.labels=[];self.bindings=[]
-        self.external.discard(PROMPT);self.map(PROMPT,image.bytes);self.write(PROMPT,bytes(image.data[:image.bytes]))
+        self.external.difference_update((PROMPT,READY,BLOCKED));self.map(PROMPT,image.bytes);self.write(PROMPT,bytes(image.data[:image.bytes]))
         capture=g.Capture()
         for source in artifact['sources']:
             for ins in capture.md.disasm(source['data'],source['start']):
@@ -49,7 +50,7 @@ class PromptFlow(FrameFlow):
 
     def step(self,uc,address,size,user):
         g.need(address not in (GAME+0x146b400,GAME+0x146b5a0,GAME+0x146b710),'Prompt used an original relocated callee')
-        if address in [PROMPT+x for x in self.prompt_art['entries']]:self.prompt_entries.append(address)
+        if address in [PROMPT+x for x in self.prompt_art['entries'][:3]]:self.prompt_entries.append(address)
         if address==PROMPT+self.prompt_art['mapping'][0x146b552] and not self.prompt_unwound:
             registers=(c.c_uint64*8)(*(self.value(n) for n in NAMES))
             stack=(c.c_ubyte*0x400).from_buffer_copy(self.read(SP-0x300,0x400))
@@ -84,19 +85,19 @@ def main():
         command += [g.PROJECT/'tests'/n for n in ('loadout_consumers_dll.cpp','loadout_setup_dll.cpp','loadout_records_dll.cpp','loadout_frame_dll.cpp','loadout_prompt_dll.cpp')]
         command += ['-o',args.library.resolve()]
         result=subprocess.run(list(map(str,command)),capture_output=True,text=True);g.need(result.returncode==0,result.stdout+result.stderr)
-    dll=c.CDLL(str(args.library.resolve()));dll.ui_build.argtypes=[c.POINTER(Binding),c.POINTER(ConsumerImage)]
+    dll=c.CDLL(str(args.library.resolve()));dll.ui_build.argtypes=[c.POINTER(Binding),c.POINTER(ConsumerImage),c.c_uint64]
     dll.ui_maps.argtypes=[c.POINTER(c.c_uint32)];dll.prompt_build.argtypes=[c.POINTER(Binding),c.POINTER(Image)]
     dll.records_build.argtypes=[c.POINTER(RecordsAddresses),c.POINTER(RecordsImage)]
     dll.frame_build.argtypes=[c.POINTER(FrameAddresses),c.POINTER(FrameImage)]
     dll.setup_group.argtypes=[c.POINTER(GroupAddresses)]
     dll.prompt_unwind.argtypes=[c.POINTER(Image),c.c_uint32,c.c_int32,c.POINTER(c.c_uint64),c.POINTER(c.c_ubyte),c.c_uint64]
     binding=Binding(Addresses(GAME,CODE,SCREEN,RECORDS,WIDGETS,REJECT,8,0),MAPS,MAPS+32,ROSTER,STORAGE)
-    consumer=ConsumerImage();g.need(dll.ui_build(c.byref(binding),c.byref(consumer))==0,'Consumer binding failed')
+    consumer=ConsumerImage();g.need(dll.ui_build(c.byref(binding),c.byref(consumer),READY)==0,'Consumer binding failed')
     binding.lifecycle.code=SYNC;rb=RecordsAddresses(binding,record_source());record_image=RecordsImage()
     g.need(dll.records_build(c.byref(rb),c.byref(record_image))==0,'Record binding failed')
     binding.lifecycle.code=PROMPT;image=Image();g.need(dll.prompt_build(c.byref(binding),c.byref(image))==0,'Prompt binding failed')
     fb=FrameAddresses(rb,SYNC,CODE+consumer.update,CODE+consumer.lookup,CODE+0x90000+mode.build()['entries'][1],
-                     CODE+0xa0000,CODE+0xb0000+state.build()['entries'][1],CODE+0xb0000,PROMPT+image.update)
+                     CODE+0xa0000,CODE+0xb0000+state.build()['entries'][1],CODE+0xb0000,PROMPT+image.update,READY,BLOCKED)
     fb.records.common.lifecycle.code=FRAME;frame_image=FrameImage()
     g.need(dll.frame_build(c.byref(fb),c.byref(frame_image))==0,'Frame binding failed')
     f=PromptFlow(dll,consumer,record_image,frame_image,image,g.build());f.operation(FRAME,frame_image.frame)
