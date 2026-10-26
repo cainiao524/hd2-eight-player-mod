@@ -9,6 +9,10 @@ enum { EP_C33_RESOURCE_ENTRY_COUNT=4, EP_C33_RESOURCE_ENTRY_GROUPS=4, EP_C33_RES
 #define EP_C33_RESOURCE_ENTRY_ABORT 0xe0433301u
 enum { EP_C33_CORE_ENTRY_COUNT=14, EP_C33_CORE_REJECT_BASE=0x100 };
 enum { EP_C33_CALLER_ENTRY_COUNT=3, EP_C33_CALLER_REJECT_BASE=0x200 };
+enum { EP_C33_PUBLISH_ENTRIES=25, EP_C33_ROUTE_REJECT_BASE=0x300,
+    EP_C33_PUBLISH_DISABLED=0, EP_C33_PUBLISH_PREPARED, EP_C33_PUBLISHING,
+    EP_C33_PUBLISH_READY, EP_C33_COMMITTING, EP_C33_PUBLISH_ACTIVE, EP_C33_PUBLISH_FAILED };
+enum { EP_C33_COMMIT_OLD, EP_C33_COMMIT_NEW, EP_C33_COMMIT_UNSAFE };
 /* Must not return into the original caller after refusal/partial effects.
  * May terminate or raise a noncontinuable SEH to a proved outer boundary;
  * no C++ exceptions, longjmp or owner reentry. If it returns, dispatch raises
@@ -40,6 +44,7 @@ typedef struct EpC33ResourceEntriesInfo {
     EpSessionCodeInfo caller_entries[EP_C33_CALLER_ENTRY_COUNT];
     EpComponent33OwnerPatch owner_window;
     EpComponent33ReaderWindow reader_windows[2];
+    uint32_t publication_state,published_attempts,active,commit_outcome;
 } EpC33ResourceEntriesInfo;
 typedef struct EpC33UpdateEntryConfig { uintptr_t desired_entry,desired_body; } EpC33UpdateEntryConfig;
 typedef struct EpC33LifecycleEntryConfig {
@@ -190,6 +195,53 @@ int ep_component33_resource_entries_prepare_core(const HfApi*,HfMod*,const EpC33
  * Native loads (including the global check) have no SDK sampling budget.
  * Earlier APIs leave caller/window fields zero. Runtime remains unverified. */
 int ep_component33_resource_entries_prepare_callers(const HfApi*,HfMod*,const EpC33ResourceEntryBindings*,const EpC33CallerEntryConfig*,EpC33ResourceEntriesInfo*);
+/* Opt-in transactional routing for all 25 external entries. Each leaf has a
+ * common OLD/NEW selector and its existing managed leaf at base+32. No extra
+ * code allocations: the same thirty images retain together. UPDATE's private
+ * guard moves from +32 to +64, with all body references adjusted. DRAIN stays
+ * internal/unpublished. Every OLD call forwards all ABI registers/returns and
+ * PROPERTY's two stack arguments through its own CURRENT SDK next pointer,
+ * under the shared owner. NEW selection happens only inside the owner lock.
+ * Requires api.write; prepare/retain do not call it or any SDK read/hook.
+ * Legacy preparation APIs retain their original unmanaged-publication contract. */
+int ep_component33_resource_entries_prepare_transaction(const HfApi*,HfMod*,const EpC33ResourceEntryBindings*,const EpC33CallerEntryConfig*,EpC33ResourceEntriesInfo*);
+/* Requires retained transactional entries. Publish all 25 via SDK 13 hook_ex;
+ * this is a runtime operation, never sampling. All remain OLD, including on
+ * partial publication failure. No retries/detach/free after an attempted hook.
+ * SDK must populate next before exposing a node (as in the pinned loader).
+ * Preflight target build/ABI and external code lifetimes before this call. */
+int ep_component33_resource_entries_publish(HfMod*,uint64_t,int32_t priority);
+typedef struct EpC33EntryCommitGuard {
+    void* context;
+    /* Exclude/drain ALL affected old/new execution, including unhooked code
+     * and calls that selected OLD earlier. No failure/SEH after acquiring a
+     * lease without returning it. No C++ exceptions/longjmp in callbacks. */
+    int (*begin)(void*,void** lease);
+    /* Runs under the roster owner. Establish fresh coherent S/B/resource data,
+     * ownership transfer, every related subsystem/capacity and external writer
+     * exclusion. Retention alone does not prove freshness: maintain exclusion
+     * since migration, or restage/validate the owned data before returning 1.
+     * Do not install these three windows or execute any entry while staging.
+     * The provider/guard is responsible for source identity and data rollback. */
+    int (*validate)(void*,void* lease);
+    /* OLD: rollback staged data before releasing exclusion. NEW: commit data
+     * and release only when all other subsystem switches are coherent. UNSAFE:
+     * NEVER resume affected execution; keep exclusion or terminate at a proved
+     * outer boundary. Outcome is an enum, NOT a boolean. Must not throw. */
+    void (*end)(void*,void* lease,uint32_t outcome);
+} EpC33EntryCommitGuard;
+/* Checks all three original windows before staging, then installs/verifies all
+ * replacement bytes under the owner and external lease, finally flips one
+ * latch. On write failure restore/verify every attempted window in reverse
+ * order, including the failing write. SDK/guard SEH or failed restoration
+ * quarantines the owner and reports UNSAFE; never resumes a mixed layout.
+ * Ordinary validated rollback leaves OLD and allows commit retry. Callback
+ * failure after activation leaves the latch NEW and owner quarantined.
+ * SDK read_code requests cover only these 98 window bytes per pass; guard
+ * reads/engine loads are outside that accounting. No fingerprint receipts.
+ * This is not a production freeze/data provider, cross-subsystem coordinator,
+ * automatic initialization, or proof of real multiplayer/UI operation. */
+int ep_component33_resource_entries_commit(HfMod*,uint64_t,const EpC33EntryCommitGuard*);
 int ep_component33_resource_entries_info(HfMod*,uint64_t,EpC33ResourceEntriesInfo*);
 int ep_component33_resource_entries_retain(HfMod*,uint64_t);
 int ep_component33_resource_entries_cancel(HfMod*,uint64_t);
