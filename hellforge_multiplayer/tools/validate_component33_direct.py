@@ -146,7 +146,7 @@ def validate(lib,zig):
                     insert_loss.append(dict(t=t,d=d,p=p,flag=flag,active_identities_preserved=False))
     # Replay the unported pending-repartition body, including its real mover,
     # to distinguish source behavior from a defect introduced by relocation.
-    pending=[];source=n.profile()['functions']['pending_repartition_evidence']
+    pending=[];source=n.profile()['functions']['promote_pending']
     for t in range(5):
         for d in range(t+1):
             for p in range(d+1):

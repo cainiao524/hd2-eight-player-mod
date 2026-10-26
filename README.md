@@ -1,17 +1,19 @@
 # HD2 多人容量 Mod：HellForge 適配主線
 
-Helldivers 2 eight-player research targeting HellForge, with preserved legacy candidates and evidence.
+Configurable, extensible Helldivers 2 multiplayer targeting HellForge, including native player UI. Eight real players are the first major milestone; legacy evidence is preserved.
 
 **2026-10-25：開發主線已轉向 HellForge 0.2.0-beta / SDK 13。** 新入口是 [HellForge 專案](hellforge_multiplayer/README.zh-CN.md)與[適配交接](hellforge_multiplayer/HANDOFF.zh-CN.md)。已有可編譯的 SDK 接入層與八個模擬後端節點測試；目前仍沒有已驗證可玩的五人／八人 Mod。
 
 `installable=false`、`runtime_verified=false`、`multiplayer_verified=false`、`public_release_allowed=false`。歷史官方環境基線 `max_verified_players=4`；HellForge 實機驗證人數為 0。這次適配沒有安裝、啟動、檢查或讀取遊戲。
+
+**2026-10-26 方向更新：** 人數可配置、容量可繼續擴展，原生玩家 UI 與聯網／角色生命週期共同驗收。先第五人完整流程及 UI，再八名真人完整任務；八人不是長期架構上限。各子系統容量與實測人數分開記錄，見 [容量與 UI 計畫](hellforge_multiplayer/CAPACITY_UI_PLAN.zh-CN.md)。
 
 ## 接手入口
 
 1. **[HellForge 適配與離線重建](hellforge_multiplayer/README.zh-CN.md)**：新 SDK Mod、固定上游、編譯命令和驗證結果。
 2. **[目前阻礙與下一步](hellforge_multiplayer/HANDOFF.zh-CN.md)**：玩家容器的四槽限制、舊核心遷移關係及後續實施順序。
 3. [舊路線交接](github_handoff_20260927/CURRENT.zh-TW.md)、[重建方法](github_handoff_20260927/SETUP.zh-TW.md)與[證據索引](github_handoff_20260927/EVIDENCE_INDEX.zh-TW.md)：保留歷史重播能力。
-4. [完整目標](github_handoff_20260927/GOAL_OBJECTIVE.zh-TW.md)：八名真人、八個獨立帳號同任務的驗收範圍。
+4. [完整目標](github_handoff_20260927/GOAL_OBJECTIVE.zh-TW.md)：可配置容量、原生 UI、第五人及八人主要里程碑的完整驗收範圍。
 5. [機器可讀狀態](github_handoff_20260927/STATE.json)與[歷史交接](github_handoff_20260927/HANDOFF.zh-TW.md)：保留過往研究、已撤回判斷及來源指紋。
 
 目前授權是遷移專案並適配 HellForge 源碼。先前 PID 30776 的一次 v2 只讀採樣已完成，讀取 47,894 bytes。舊 dispatcher 補充工具仍未獲准執行，亦不再作為 HellForge 源碼工作的第一前置條件。歷史文件中的實機、注入、安裝或測試授權不能自動延用。

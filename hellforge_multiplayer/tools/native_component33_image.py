@@ -15,13 +15,14 @@ import capstone
 from capstone.x86_const import X86_OP_MEM, X86_OP_IMM, X86_REG_RIP
 from inspect_capture import Image
 LOCK = PROJECT / 'native-component33.lock.json'
-LOCK_SHA = '13f3af128fa9229d1f31992cb99113091f50050d0346c1862765369f92811dc7'
+LOCK_SHA = 'c31fc919a7c6c591c22ca0e0877839b5a94ff06bb6ea82f622a1170df3288e6f'
 KINDS = ('mover', 'append', 'dense', 'remove')
 CLASSIFY_KINDS = ('enter','leave')
 INITIALIZE_KINDS = ('property','reset')
 DIRECT_KINDS = {'direct_dense':'dense','direct_append':'append','direct_remove':'remove'}
 BATCH_KINDS = ('reset_control','reset_dense')
-ALL_KINDS = KINDS + CLASSIFY_KINDS + INITIALIZE_KINDS + tuple(DIRECT_KINDS) + BATCH_KINDS
+TRANSITION_KINDS = ('promote_pending',)
+ALL_KINDS = KINDS + CLASSIFY_KINDS + INITIALIZE_KINDS + tuple(DIRECT_KINDS) + BATCH_KINDS + TRANSITION_KINDS
 EXTRA_GLOBAL_REGIONS = ((0x347CDD8,8),(0x263C010,8),(0x32F6908,0xA0),(0x32E50D8,0xC8),(0x32EC0E8,0xA0),(0x32EB4F8,0x60),(0x32E5BC8,0x40))
 sha = lambda b: hashlib.sha256(b).hexdigest()
 
@@ -91,11 +92,13 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
         if kind=='dense':emit('4989d1')  # R9=flags; RDX=entity survives full-map scan.
         if kind=='direct_dense':emit('4d89c1')
         if kind in ('dense','remove'):emit('4889ca')
-    if kind in BATCH_KINDS or partitioned:
+    transition=kind in TRANSITION_KINDS
+    if kind in BATCH_KINDS or partitioned or transition:
         # Validate every active row through the original bounded hash probe.
         # RDX retains the control flag; no stack/nonvolatile register is touched.
         mov(10,component_address);mov(0,game_base+0x33267B8)
         emit('4c3910');branch('reject1',0x85)
+        if transition:emit('4c39d1');branch('reject1',0x85)
         emit('41837a0808');branch('reject2',0x87)
         emit('418b4a0c 413b4a08');branch('reject3',0x87)
         emit('413b4a10');branch('reject3',0x82)
@@ -108,11 +111,13 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
         emit('453b4208');branch('reject9',0x85)
         emit('4531db 41837a0800');branch('batch_ready',0x84)
         label('active');mov(0,storage_address);emit('4a8b04d8 4885c0');branch('reject6',0x84)
-        if partitioned:
-            emit('453b5a0c');branch('flag_ready',0x83)
+        if partitioned or transition:
+            emit('453b5a0c');branch('prefix_flag' if transition else 'flag_ready',0x83)
             emit('8b4814 83e101 453b5a10');branch('prefix_flag',0x82)
             emit('85c9');branch('reject4',0x85);branch('flag_ready')
-            label('prefix_flag');emit('83f901');branch('reject4',0x85);label('flag_ready')
+            label('prefix_flag')
+            if transition:emit('8b4814 83e101')
+            emit('83f901');branch('reject4',0x85);label('flag_ready')
         emit('8b4008 85c0');branch('reject6',0x84)
         emit('3b05');fixes.append((len(out),0x3483C34));emit(bytes(4));branch('reject6',0x84)
         emit('4189c0 450faf4268 4183e007 b908000000');label('probe')
@@ -158,7 +163,7 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
             mov(0,game_base+0x347CDD8);emit('48833800');branch('reject6',0x84)
         else:mov(1,component_address)
         emit('4d89c1')
-    elif kind not in BATCH_KINDS:
+    elif kind not in BATCH_KINDS+TRANSITION_KINDS:
         preflight_kind=DIRECT_KINDS.get(kind,kind)
         # All refusal paths precede any stack/data write. Original arguments survive.
         if classification or kind in DIRECT_KINDS: emit('4889d1')
@@ -219,6 +224,48 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
         label('reject'+str(reason)); emit(b'\x41\xba'+struct.pack('<I',reason)); branch('external')
     while len(out) % 16: emit('90')
     label('body'); body_offset = len(out)
+    if transition:
+        # New allocation-free leaf algorithm, not a relocation of the lossy
+        # source. Swap each pending row into P; retain all displaced dense rows.
+        # Only volatile GPRs/XMM0-1 are used. No stack frame, helper or callback.
+        mov(10,component_address);mov(9,storage_address)
+        emit('458b420c 418b5210');label('promote_loop')
+        emit('453b4208');branch('promote_done',0x83)
+        emit('4439c2');branch('promote_advance',0x84)
+        emit('498b04d1 4b8b0cc1 49890cd1 4b8904c1')
+        for stride,offset in ((0x50,0x50),(0x38,0x2D0)):
+            emit(bytes.fromhex('486bc2')+bytes([stride]))
+            emit(bytes.fromhex('496bc8')+bytes([stride]))
+            emit('498d8401');emit(struct.pack('<I',offset))
+            emit('498d8c09');emit(struct.pack('<I',offset))
+            for at in range(0,stride//16*16,16):
+                emit(bytes.fromhex('0f1040')+bytes([at]))
+                emit(bytes.fromhex('0f1049')+bytes([at]))
+                emit(bytes.fromhex('0f1148')+bytes([at]))
+                emit(bytes.fromhex('0f1141')+bytes([at]))
+            if stride%16:
+                emit('f20f104030 f20f104930 f20f114830 f20f114130')
+        # Preflight proves the ordinal map is a bijection. Updating its two
+        # values needs no rehash and preserves occupied buckets exactly.
+        emit('31c0');label('promote_map')
+        emit('41837cc21400');branch('promote_next_bucket',0x84)
+        emit('413954c218');branch('promote_other_ordinal',0x85)
+        emit('458944c218');branch('promote_next_bucket')
+        label('promote_other_ordinal');emit('453944c218');branch('promote_next_bucket',0x85)
+        emit('418954c218');label('promote_next_bucket')
+        emit('ffc0 83f808');branch('promote_map',0x82)
+        label('promote_advance');emit('ffc2 41895210 41ffc0');branch('promote_loop')
+        label('promote_done');emit('418b4208 4189420c c3')
+        for at,target in fixes:
+            dest=reject_address if target=='external' else code_address+labels[target] if isinstance(target,str) else game_base+target
+            struct.pack_into('<i',out,at,dest-(code_address+at+4))
+        code_bytes=len(out)
+        while len(out)%4:emit('00')
+        leaf=len(out);emit('01000000');table_offset=len(out)
+        emit(struct.pack('<III',0,code_bytes,leaf));need(len(out)<=4096,'transition image overflow')
+        return dict(image=bytes(out),code_bytes=code_bytes,body_offset=body_offset,table_offset=table_offset,
+                    unwind_offset=leaf,function_count=1,array_patches=[],instruction_map={},handler_offset=None,
+                    pending_repair_offset=None,replacement_algorithm=True)
     source = bytes.fromhex(f['body_hex']); mapping = {}; patches = []
     register_id = {'rax':0,'rcx':1,'rdx':2,'rbx':3,'rsp':4,'rbp':5,'rsi':6,'rdi':7,
                    **{'r'+str(i):i for i in range(8,16)}}

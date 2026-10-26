@@ -134,6 +134,8 @@ def main():
     component33_initialize_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_component33_initialize.py','--library',component33_dll,'--zig',zig,'--out',component33_initialize_receipt]))
     component33_direct_receipt=PROJECT/'evidence/native-component33-direct-validation.json'
     component33_direct_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_component33_direct.py','--library',component33_dll,'--zig',zig,'--out',component33_direct_receipt]))
+    component33_transition_receipt=PROJECT/'evidence/native-component33-transition-validation.json'
+    component33_transition_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_component33_transition.py','--library',component33_dll,'--zig',zig,'--out',component33_transition_receipt]))
     creation_receipt=PROJECT/'evidence/creation-dispatch-validation.json'
     creation_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_creation_dispatch.py','--library',property_dll,'--out',creation_receipt,'--component33-library',component33_dll]))
     classify_fixture=build/'native-classify-fixture.bin'
@@ -278,6 +280,7 @@ def main():
         'native_component33_classify':{**component33_classify_output,'validation_sha256':digest(component33_classify_receipt)},
         'native_component33_initialize':{**component33_initialize_output,'validation_sha256':digest(component33_initialize_receipt)},
         'native_component33_direct':{**component33_direct_output,'validation_sha256':digest(component33_direct_receipt)},
+        'native_component33_transition':{**component33_transition_output,'validation_sha256':digest(component33_transition_receipt)},
         'native_classify_storage':{'checks':int(classify_match[1]),**classify_fixture_receipt},
         'native_property_gates':{**gate_output,'validation_sha256':digest(gate_receipt)},
         'property_group':{'checks':int(group_match[1]),'entries':['producer','receiver','entity_network_getter'],'shared_storage_binding':True,'actual_hellforge_chains':True,
@@ -331,7 +334,7 @@ def main():
             'native-component33.lock.json','mod/src/ep_component33_image.h','mod/src/ep_component33_image.cpp','mod/src/ep_component33_templates.h',
             'tests/component33_image_dll.cpp','tests/native_component33_unwind_test.c',
             'tools/component33_initialization_fixture.py','tools/validate_component33_initialize.py','tests/native_component33_initialize_unwind_test.c',
-            'tools/validate_component33_direct.py',
+            'tools/validate_component33_direct.py','tools/validate_component33_transition.py',
             'tests/roster_call_dll.h','tests/roster_call_dll.cpp','tests/roster_call_test.c',
             'tests/roster_call_abi.h','tools/roster_bridge_unwind.py',
             'native-getter.lock.json','tools/native_getter_image.py','tools/generate_getter_template.py','tools/validate_getter_image.py',

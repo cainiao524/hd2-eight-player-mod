@@ -9,7 +9,7 @@ enum { EP_COMPONENT33_MOVER=1, EP_COMPONENT33_APPEND=2, EP_COMPONENT33_DENSE=3,
        EP_COMPONENT33_PROPERTY=7, EP_COMPONENT33_RESET=8,
        EP_COMPONENT33_DIRECT_DENSE=9, EP_COMPONENT33_DIRECT_APPEND=10,
        EP_COMPONENT33_DIRECT_REMOVE=11, EP_COMPONENT33_RESET_CONTROL=12,
-       EP_COMPONENT33_RESET_DENSE=13,
+       EP_COMPONENT33_RESET_DENSE=13, EP_COMPONENT33_PROMOTE_PENDING=14,
        EP_COMPONENT33_MAX_IMAGE=4096, EP_COMPONENT33_STORAGE_BYTES=0x490 };
 typedef struct EpComponent33Addresses {
     uint64_t game_base,code_address,component_address,storage_address,move_code_address,reject_address;
@@ -37,6 +37,13 @@ typedef struct EpComponent33Image {
  * S[1]; DL==0 also clears dense primary offsets 0..43 and 48..79. RESET_DENSE
  * writes offsets 0..43 and sets S[0]=1. Batch admission checks every active
  * identity through bounded original hash probing before any writes.
+ * PROMOTE_PENDING: RCX=S; swaps each pending row into the prefix without
+ * allocation, preserving pointer/primary/secondary and map identity. Byte
+ * rows and entity flags remain caller-owned. Pending entities must already
+ * have prefix flag bit 0 set; existing dense flags must match membership.
+ * Counts become D=T, P=old P+T-old D; T/high-water remain unchanged. EAX=T.
+ * The new leaf algorithm replaces the lossy 666850 body; owner 576CF0's
+ * inline equivalent is not redirected by this numeric emission API.
  * These images must not be activated on their own. */
 EpPropertyResult ep_component33_image_build(uint32_t kind,const EpComponent33Addresses*,EpComponent33Image*);
 #ifdef __cplusplus

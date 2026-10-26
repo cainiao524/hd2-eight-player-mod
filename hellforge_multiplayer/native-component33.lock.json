@@ -1,5 +1,5 @@
 {
-  "schema": "hellforge_component33_partition_preservation_v5",
+  "schema": "hellforge_component33_pending_transition_v6",
   "game_build": 25480438,
   "evidence_path": "five_player_feasibility_20260927/component33_250_lifecycle_evidence_v2.json",
   "evidence_sha256": "dfb125ab3edd6b9672eb725981beecb91e1768da9d44b92522e28fd971155280",
@@ -301,7 +301,7 @@
         }
       ]
     },
-    "pending_repartition_evidence": {
+    "promote_pending": {
       "start": 6711376,
       "end": 6711766,
       "sha256": "b11cdcea4bf30fa1ca4c28a7b96b4177714e10545ec8191ebfe4a422a8480a4b",
@@ -520,5 +520,16 @@
     "byte_rows_moved": false,
     "allocator_or_cleanup_added": false,
     "caller_and_resource_ownership_verified": false
+  },
+  "pending_transition": {
+    "source_key": "promote_pending",
+    "new_candidate_semantics": true,
+    "algorithm": "Swap each old pending ordinal i from D to T-1 with current P, increment P, then D=T",
+    "preserved": "All active identities, primary and secondary per identity, map bucket keys, total, high-water, byte rows, entity flags",
+    "preflight": "RCX and global binding equal S; all active IDs and bounded hash probes; dense prefix flags coherent; pending bit0 is one",
+    "allocation_free": true,
+    "leaf_volatile_registers_only": true,
+    "caller_invariants_verified_in_game": false,
+    "owner_576cf0_inline_migrated": false
   }
 }

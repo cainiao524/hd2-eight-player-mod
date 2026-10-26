@@ -1,6 +1,6 @@
 # 元件 33：核心、分类、初始化与直接入口的八槽离线实现
 
-更新：2026-10-26。C++ 已能生成十三个映像：原有核心、分类、属性与单项重置八项，另有三个直接插入/移除入口和两个批次重置入口。它们的数组访问使用独立八槽区域。密集插入和移除现已增加保留 pending 记录的修复，允许通过一致性检查的混合分区。**这只是元件 33 的部分生命周期，剩余读写者、生产发布与角色创建仍未完成。** 没有启动、检查、读取、修改或安装游戏。
+更新：2026-10-26。C++ 已能生成十四个映像：原有核心、分类、属性与单项重置八项，另有三个直接插入/移除入口、两个批次重置入口及一个保留身份的待加入分区转换。它们的数组访问使用独立八槽区域。密集插入和移除现已增加保留 pending 记录的修复，允许通过一致性检查的混合分区。**这只是元件 33 的部分生命周期，剩余读写者、生产发布与角色创建仍未完成。** 没有启动、检查、读取、修改或安装游戏。
 
 ## 文件与固定来源
 
@@ -13,6 +13,7 @@
 - [tools/validate_component33_classify.py](tools/validate_component33_classify.py) 与[分类收据](evidence/native-component33-classify-validation.json)：执行保存的回调包装器和分类映像，检查数据交换、条件序言回溯以及分配失败反例。
 - [tools/validate_component33_initialize.py](tools/validate_component33_initialize.py)、[初始化夹具](tools/component33_initialization_fixture.py)与[初始化收据](evidence/native-component33-initialize-validation.json)：执行第二/第三回调，检查属性描述符、部分记录重置、GS 栈保护和分类后的连续操作。
 - [tools/validate_component33_direct.py](tools/validate_component33_direct.py) 与[直接入口收据](evidence/native-component33-direct-validation.json)：直接入口、批次重置、同 ID 生命周期和未迁移分区函数的原版反例。
+- [tools/validate_component33_transition.py](tools/validate_component33_transition.py) 与[批次转换收据](evidence/native-component33-transition-validation.json)：原版无损状态等价、全分区身份保留、重复调用、连续操作和错误元数据对照。
 - [CREATION_DISPATCH.zh-CN.md](CREATION_DISPATCH.zh-CN.md)：与保存的创建分派及八槽名册相连的验证。
 
 来源仍是已保存的 build 25480438 capture 与 `component33_250_lifecycle_evidence_v2.json`。搬移 `665FE0`、普通插入 `51ABF0`、密集插入 `51AC70`、移除 `51AD30`，以及真实 map 插入 `172F790`、删除 `172F8A0` 的完整字节均与保存证据核对。此步骤没有重新读取游戏。
@@ -28,7 +29,7 @@
 | primary | `B+050` | `50` | `[050,2D0)` |
 | secondary | `B+2D0` | `38` | `[2D0,490)` |
 
-表中数字均为十六进制。`[048,050)` 是对齐空隙。旧 `S+70..S+2B8` 数组区域作为哨兵检查，候选十三函数不再写入它。
+表中数字均为十六进制。`[048,050)` 是对齐空隙。旧 `S+70..S+2B8` 数组区域作为哨兵检查，候选十四函数不再写入它。
 
 每条原数组指令前后用不改变标志位的地址装载切换基址，原指令本身保留。指针、primary、secondary 的地址偏置分别是 `B-70`、`B-48`、`B+F8`。非数组字段仍访问 `S`，调用的真实 map 函数也使用原 map 头。
 
@@ -78,11 +79,25 @@
 
 ## 待加入分区的原版反例
 
-来源锁还固定了 **`666850`** 的完整代码和三段 unwind，供原版重播；它没有对应的新候选映像。在全部 35 种 `0≤P≤D≤T≤4` 的合成状态中，10 种 `P<D<T` 状态会丢失有效身份：原函数先将 P 行复制覆盖到 pending 行，再调用搬移器，最终出现重复指针，T/D/P 的更新本身却正常。其余 25 种状态保留身份。
+来源锁还固定了 **`666850`** 的完整代码和三段 unwind，供原版重播；它现在对应新的 `promote_pending` 候选，算法与原版的有损路径不同。在全部 35 种 `0≤P≤D≤T≤4` 的合成状态中，10 种 `P<D<T` 状态会丢失有效身份：原函数先将 P 行复制覆盖到 pending 行，再调用搬移器，最终出现重复指针，T/D/P 的更新本身却正常。其余 25 种状态保留身份。
 
 另已定位创建后的两个直接读者：`ADDD85`（root `ADDC10`）和 `B62400`（root `B62210`）仍从旧 `S+70` 指针数组取实体，再调用 `664430`。只改重置 helper 不能覆盖这两条调用者读取；必须一起迁移并验证整段调用作用域。`117D830` 的四处全局引用在已检查窗口内只读取 `S+1` 控制字节，这不构成该函数全路径的数组访问排除证明。
 
-该结果只证明保存函数在这些明确构造状态下的行为；尚未证明真实调用者允许全部状态。因此不能把“计数已经变成八”当成记录正确。下一步应追溯 `666850` 的调用条件及 owner `576CF0` 的同族搬移，确定合法的分区转换或实现保留所有身份的事务，再补 registry/其余直接读写覆盖。密集插入/移除的独立修复见下节；它不替代这个批次转换的调用前提与实现，仍不能据此发布。
+该结果只证明保存函数在这些明确构造状态下的行为；尚未证明真实调用者允许全部状态。因此不能把“计数已经变成八”当成记录正确。新的无损转换见下节。下一步要将 owner `576CF0` 的内联循环与它连接，核对真实调用前提及整个调用范围的写入排除，再补 registry/其余直接读写覆盖。只生成 helper 并不能覆盖 owner 的内联路径。
+
+## 保留身份的待加入批次转换
+
+第十四个映像 `EP_COMPONENT33_PROMOTE_PENDING` 以原 `666850..6669D6` 为固定来源，但使用新算法替换有损主体；不是原指令的逐条重定位。接口为 `RCX=S`，返回 `EAX=T`。
+
+对旧 `i=D..T-1`，将 i 行与当前 P 行的 pointer、primary、secondary 交换，再交换 map 中对应两项的序号，最后 `P++`。P==i 时跳过交换。循环结束设置 D=T；最终 P=旧 P+旧 T-旧 D，T 和高水位不变。原 prefix 顺序保持，原 pending 顺序进入新 prefix，原 dense 非 prefix 身份完整留在后段。
+
+新映像为 824 bytes，仅使用易失整数寄存器和 XMM0–1，不建立栈帧、不调用 helper、不申请临时资源。全部代码由一条 leaf 回溯记录覆盖。byte 行、实体 flag、未使用槽位与外部资源生命周期保持不变。
+
+进入前检查 RCX/global 均指向绑定 S、0≤P≤D≤T≤8、全部 active 身份及原始八桶探测语义；原 dense flag 必须与 prefix 一致，所有 pending 实体的 bit0 必须已由调用方设为 1。这个检查来自转换后 prefix 的一致性要求，**真实调用者是否满足它仍未证实**。指针可读写和完整调用期间的独占访问仍由 owner 保证；循环中 P 可能暂时超过旧 D，直到最后 D=T，不允许并发观察中间状态。
+
+本轮收据确认 858 次功能执行与 168 个 Windows 回溯上下文通过。验证在两个模拟基址覆盖全部 165 种八槽计数组合及重复调用，另有 27 组保留真实模拟字节的“追加→批次转换→移除新身份→同 ID 密集重加入”。原版 35 种四槽状态的 25 种无损状态逐字节一致，10 种有损状态保留为负对照。三个故意破坏数据交换、map 更新和计数更新的变异体均须被独立身份/数据断言识别。Windows 用正确 leaf 记录与虚构 16-byte 栈帧记录对照；游戏代码只在 Unicorn 执行。
+
+下一连接点已从保存 capture 核对：owner `576CF0..58131E`，完整 SHA-256 为 `d698b632ac6f51e7441873b27dd5baa6364ff3c41751dee8fe718755df26d931`。`577B16..577B61` 为元件33的内联循环，`577B3C`、`577B4D` 仍分别调用 mover；`577B61` 准备下一元件地址，`577B68` 写 D，`577B6B` 调用 `6689A0`。完整 owner 内的直接跳转扫描未发现由窗口外跳入该循环的边；这个有限结果不排除其他函数或间接入口。迁移时必须核对 RSI/RDI/返回状态、原 owner 的回溯范围和后续调用，不能仅 hook `666850` 后宣称 owner 已覆盖。
 
 ## 接口边界与拒绝
 
@@ -94,7 +109,7 @@
 
 ## 混合分区的插入与移除修复
 
-`T = total`、`D = dense`、`P = prefix`，满足 `0≤P≤D≤T≤8`。本轮修改的是 registered/direct 四个插入与移除映像，未迁移 `666850` 批次转换。
+`T = total`、`D = dense`、`P = prefix`，满足 `0≤P≤D≤T≤8`。registered/direct 四个插入与移除映像使用以下修复；批次转换另有独立算法。
 
 - 密集插入：如果 `D<T`，先把旧 D 的 pointer、primary、secondary 和 map 序号搬到旧 T，再执行原有的 prefix 搬移、新项插入及计数更新。原本即将被覆盖的第一个 pending 项因此保留。
 - 移除密集项：先执行原有 prefix/dense 压实与计数递减；如果新 `D<T`，再把新 T（旧最后 pending 项）搬到新 D。包括 D 从 1 降至 0 的边界。移除 pending 项继续使用原尾部压实。
@@ -127,10 +142,10 @@ Windows 验证只把候选字节放入 `PAGE_READWRITE`，注册临时函数表�
 ## 下一位接手者的顺序
 
 1. 读取上述核心收据、创建分派收据及 [status.json](status.json)，确认源码和构建指纹相符。
-2. 优先核实 `666850` 的合法调用状态及 `576CF0` 的同族转换，再覆盖其他 byte/secondary 写入、owner 直接访问与 registry 访问。分类和第二/第三回调已完成本文所列离线验证，但分类/属性分配失败补偿、调用方 flag/通知以及从旧四槽数据建立 `B` 的生命周期和所有权仍待实现。
-3. 完成这一族函数后，再提供 READY 准备、封存和统一发布接口；当前十三个映像不得单独激活，不计入已存在的十七个共同入口。
+2. 优先连接 `576CF0` 的内联批次路径，并核实 `666850` 的调用方 flag、并发与生命周期契约，再覆盖其他 byte/secondary 写入、owner 直接访问与 registry 访问。分类和第二/第三回调已完成本文所列离线验证，但分类/属性分配失败补偿、调用方 flag/通知以及从旧四槽数据建立 `B` 的生命周期和所有权仍待实现。
+3. 完成这一族函数后，再提供 READY 准备、封存和统一发布接口；当前十四个映像不得单独激活，不计入已存在的十七个共同入口。
 4. 对剩余固定四槽元件建立相同的读写闭合验证，并在 `FDC140` 写入前完成共同接纳或实现全部副作用补偿。保留资源类型无效时的 `7FFF` 残留反例。
-5. 继续完整生产身份、内存所有权、角色控制/复制和真实八账户任务验收。任何游戏访问都需要新的明确授权；本轮授权余额为零。
+5. 按[容量与原生 UI 计划](CAPACITY_UI_PLAN.zh-CN.md)继续生产身份、内存所有权和角色控制/复制；第五人全流程与原生 UI 先验收，再完成八人主要里程碑，并按证据扩展人数。任何游戏访问都需要新的明确授权；本轮授权余额为零。
 
 ## 离线复验
 
@@ -155,6 +170,10 @@ py -3.12 -B hellforge_multiplayer/tools/validate_component33_direct.py `
   --library hellforge_multiplayer/build/component33_image_test.dll `
   --zig work/hellforge_toolchain_20261025/zig-x86_64-windows-0.17.0/zig.exe `
   --out work/component33-direct-validation.json
+py -3.12 -B hellforge_multiplayer/tools/validate_component33_transition.py `
+  --library hellforge_multiplayer/build/component33_image_test.dll `
+  --zig work/hellforge_toolchain_20261025/zig-x86_64-windows-0.17.0/zig.exe `
+  --out work/component33-transition-validation.json
 ```
 
 该命令编译和运行自有回溯测试程序，读取仓库保存的代码。`installable`、`runtime_verified`、`multiplayer_verified`、`public_release_allowed` 继续为 false。
