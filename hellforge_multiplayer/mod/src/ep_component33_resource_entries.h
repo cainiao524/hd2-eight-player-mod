@@ -7,6 +7,7 @@ extern "C" {
 enum { EP_C33_RESOURCE_ENTRY_COUNT=4, EP_C33_RESOURCE_ENTRY_GROUPS=4, EP_C33_RESOURCE_DRAIN=5, EP_C33_RESOURCE_REFRESH=6, EP_C33_RESOURCE_LEAVE=7,
     EP_C33_ENTRIES_PREPARING=1,EP_C33_ENTRIES_PREPARED,EP_C33_ENTRIES_CLEANUP_REQUIRED,EP_C33_ENTRIES_RETAINED };
 #define EP_C33_RESOURCE_ENTRY_ABORT 0xe0433301u
+enum { EP_C33_CORE_ENTRY_COUNT=14, EP_C33_CORE_REJECT_BASE=0x100 };
 /* Must not return into the original caller after refusal/partial effects.
  * May terminate or raise a noncontinuable SEH to a proved outer boundary;
  * no C++ exceptions, longjmp or owner reentry. If it returns, dispatch raises
@@ -32,6 +33,8 @@ typedef struct EpC33ResourceEntriesInfo {
     EpSessionCodeInfo refresh_entry,refresh_body;
     uint64_t leave_target;
     EpSessionCodeInfo leave_entry,leave_body;
+    uint64_t core_targets[EP_C33_CORE_ENTRY_COUNT];
+    EpSessionCodeInfo core_entries[EP_C33_CORE_ENTRY_COUNT];
 } EpC33ResourceEntriesInfo;
 typedef struct EpC33UpdateEntryConfig { uintptr_t desired_entry,desired_body; } EpC33UpdateEntryConfig;
 typedef struct EpC33LifecycleEntryConfig {
@@ -46,6 +49,10 @@ typedef struct EpC33LeaveEntryConfig {
     EpC33RefreshEntryConfig refresh;
     uintptr_t desired_entry,desired_body;
 } EpC33LeaveEntryConfig;
+typedef struct EpC33CoreEntryConfig {
+    EpC33LeaveEntryConfig leave;
+    uintptr_t desired_entries[EP_C33_CORE_ENTRY_COUNT];
+} EpC33CoreEntryConfig;
 /* Owns four leaf Win64 argument bridges and their immutable dispatch data.
  * ACQUIRE/DEFER: RCX=S, RDX=object. RELEASE: RCX=S, EDX=ordinal, R8B=flag;
  * only the low byte controls deferred release. The bridges tail-call a
@@ -129,6 +136,27 @@ int ep_component33_resource_entries_prepare_refresh(const HfApi*,HfMod*,const Ep
  * entry and omit its old interior getter/release windows. Preparation does
  * not read game state or install hooks. Earlier APIs leave leave fields zero. */
 int ep_component33_resource_entries_prepare_leave(const HfApi*,HfMod*,const EpC33ResourceEntryBindings*,const EpC33LeaveEntryConfig*,EpC33ResourceEntriesInfo*);
+/* Includes owned whole-call bridges for the retained family's fourteen core
+ * images, indexed by EP_COMPONENT33_* - 1. The original register/return ABI
+ * is forwarded, including PROPERTY's two stack arguments. Body addresses
+ * come exclusively from the SAME storage family; no arbitrary body binding.
+ * Shared ownership precedes native reads/writes; one outer revision covers
+ * nested writes. Different core kinds may nest under the same owner (up to
+ * the existing owner depth bound). Same-kind cycles, other group entry and
+ * resource-service callback entry are refused before body execution.
+ * Uses rejection kind EP_C33_CORE_REJECT_BASE + EP_COMPONENT33_*; rejection
+ * cannot return. Native guard/SEH faults quarantine the owner and restore TLS.
+ * The extra fourteen bridges retain/cancel with all thirteen lifecycle images;
+ * the already retained storage family supplies their permanent bodies.
+ * Targets are original helper entries, not callback-table slots: classification
+ * and PROPERTY wrappers keep their existing argument transforms. RESET's two
+ * whole wrappers still use the controlled reset route. Do not publish legacy
+ * family bodies/interior resource windows alongside these replacements.
+ * The owner inline promotion and two creation/reset reader windows, outside
+ * writers/callback lifetimes, complete exclusion during publication and actual
+ * installation remain integration requirements. No SDK reads or hooks occur
+ * during preparation. Core native loads have no SDK sampling/read budget. */
+int ep_component33_resource_entries_prepare_core(const HfApi*,HfMod*,const EpC33ResourceEntryBindings*,const EpC33CoreEntryConfig*,EpC33ResourceEntriesInfo*);
 int ep_component33_resource_entries_info(HfMod*,uint64_t,EpC33ResourceEntriesInfo*);
 int ep_component33_resource_entries_retain(HfMod*,uint64_t);
 int ep_component33_resource_entries_cancel(HfMod*,uint64_t);

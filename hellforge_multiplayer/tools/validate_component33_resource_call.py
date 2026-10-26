@@ -23,7 +23,7 @@ SCENARIOS=('complete_384','capacity_refusal','collect_scope_blocks_roster','exec
     'scratch_allocation_failure','nested_roster_scope','duplicate_384','revision_exhausted','execute_corrupts_arena')
 SOURCES=['mod/src/'+s for s in ('ep_session_code.cpp','ep_component33_storage.cpp','ep_component33_family.cpp',
     'ep_component33_image.cpp','ep_component33_readers.cpp','ep_component33_consumers.cpp',
-    'ep_component33_outer.cpp','ep_component33_resources.cpp')]
+    'ep_component33_outer.cpp','ep_component33_resources.cpp','ep_roster_call.cpp')]
 
 def load(path):
     dll=c.CDLL(str(path.resolve()));f=dll.c33_acquire_demand
