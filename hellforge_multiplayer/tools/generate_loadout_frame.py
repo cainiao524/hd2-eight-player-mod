@@ -92,8 +92,8 @@ def build():
             elif ins.mnemonic=='imul' and ins.operands[-1].type==X86_OP_IMM and ins.operands[-1].imm==0x1ee18:
                 index=ins.reg_name(ins.operands[1].reg);need(index in ('rax','rcx'),'Unexpected frame widget index')
                 capacity(b'\x3d' if index=='rax' else b'\x81\xf9');reject();blob.extend(ins.bytes)
-            elif a in (0x1469a9f,0x1469aab,0x146c0fb):
-                key,target={0x1469a9f:(15,0x146fc40),0x1469aab:(16,0x146c2f0),0x146c0fb:(17,0x1470650)}[a]
+            elif a in (0x1469a9f,0x1469aab,0x146c0fb,0x146857f):
+                key,target={0x1469a9f:(15,0x146fc40),0x1469aab:(16,0x146c2f0),0x146c0fb:(17,0x1470650),0x146857f:(18,0x146f510)}[a]
                 need(text==f'call {target:#x}','Changed frame sibling call');fix(b'\xe8'+bytes(4),1,key,0)
             elif (ins.mnemonic=='call' or ins.mnemonic.startswith('j')) and ins.operands[0].type==X86_OP_IMM:
                 raw=bytes(ins.bytes);target=ins.operands[0].imm

@@ -11,6 +11,7 @@ import struct
 import subprocess
 from pathlib import Path
 import generate_loadout_frame as g
+import generate_loadout_mode as mode
 import generate_loadout_records as records
 from validate_loadout_records import (RecordsFlow,RecordsAddresses,Image as RecordsImage,
     ConsumerImage,Binding,Addresses,RecordSource,record_source,SetupAddresses,Placement,GroupAddresses,
@@ -19,7 +20,7 @@ from capstone.x86_const import X86_OP_IMM,X86_OP_MEM,X86_REG_RIP
 
 FRAME=CODE+0x80000
 class FrameAddresses(c.Structure):
-    _fields_=[('records',RecordsAddresses),('sync_records',c.c_uint64),('update',c.c_uint64),('lookup',c.c_uint64)]
+    _fields_=[('records',RecordsAddresses),('sync_records',c.c_uint64),('update',c.c_uint64),('lookup',c.c_uint64),('open_mode',c.c_uint64)]
 class Image(c.Structure):
     _fields_=[(n,c.c_uint32) for n in ('bytes','code_bytes','unwind_offset','table_offset','handler_offset','frame','local_update')]+[('data',c.c_ubyte*g.MAX_IMAGE)]
 
@@ -86,7 +87,7 @@ def main():
         g.need(args.upstream is not None,'--upstream required');args.library.parent.mkdir(exist_ok=True,parents=True)
         command=[args.zig.resolve(),'c++','-std=c++17','-target','x86_64-windows-gnu','-O2','-Wall','-Wextra','-Werror',
                  '-I',args.upstream.resolve()/'native/mod-sdk','-I',g.PROJECT/'mod/src','-shared']
-        command += [g.PROJECT/'mod/src'/n for n in ('ep_session_code.cpp','ep_loadout_lifecycle.cpp','ep_loadout_consumers.cpp','ep_loadout_setup.cpp','ep_loadout_group.cpp','ep_loadout_interactions.cpp','ep_loadout_refresh.cpp','ep_loadout_records.cpp','ep_loadout_frame.cpp')]
+        command += [g.PROJECT/'mod/src'/n for n in ('ep_session_code.cpp','ep_loadout_lifecycle.cpp','ep_loadout_consumers.cpp','ep_loadout_setup.cpp','ep_loadout_group.cpp','ep_loadout_interactions.cpp','ep_loadout_refresh.cpp','ep_loadout_records.cpp','ep_loadout_frame.cpp','ep_loadout_mode.cpp')]
         command += [g.PROJECT/'tests'/n for n in ('loadout_consumers_dll.cpp','loadout_setup_dll.cpp','loadout_records_dll.cpp','loadout_frame_dll.cpp')]
         command += ['-o',args.library.resolve()]
         result=subprocess.run(list(map(str,command)),capture_output=True,text=True);g.need(result.returncode==0,result.stdout+result.stderr)
@@ -99,7 +100,7 @@ def main():
     consumer=ConsumerImage();g.need(dll.ui_build(c.byref(binding),c.byref(consumer))==0,'Consumer binding failed')
     binding.lifecycle.code=SYNC;record_binding=RecordsAddresses(binding,record_source());record_image=RecordsImage()
     g.need(dll.records_build(c.byref(record_binding),c.byref(record_image))==0,'Record binding failed')
-    a=FrameAddresses(record_binding,SYNC,CODE+consumer.update,CODE+consumer.lookup);a.records.common.lifecycle.code=FRAME
+    a=FrameAddresses(record_binding,SYNC,CODE+consumer.update,CODE+consumer.lookup,CODE+0x90000+mode.build()['entries'][1]);a.records.common.lifecycle.code=FRAME
     image=Image();g.need(dll.frame_build(c.byref(a),c.byref(image))==0,'Frame binding failed')
     artifact=g.build();record_artifact=records.build();f=FrameFlow(dll,consumer,record_image,record_artifact,image,artifact)
     try:f.invoke(FRAME-CODE+image.frame)
@@ -121,7 +122,7 @@ def main():
     g.need(f.read(RECORDS+8*0x9f0,16)==b'\x6b'*16 and f.read(WIDGETS+8*0x1ee18,16)==b'\x7c'*16,'Capacity boundary crossed')
     setup=SetupAddresses();setup.common=binding;setup.common.lifecycle.code=SETUP
     for i in range(8):setup.placements[i]=Placement(i*3,111,0.5,0,0.5,0)
-    group=GroupAddresses(setup,CODE+0x40000,CODE,CODE+0x50000,CODE+0x60000,record_source(),SYNC,FRAME)
+    group=GroupAddresses(setup,CODE+0x40000,CODE,CODE+0x50000,CODE+0x60000,record_source(),SYNC,FRAME,CODE+0x90000)
     status=dll.setup_group(c.byref(group));g.need(status==0,f'Common READY/discard failed: {status}')
     print(json.dumps(dict(passed=True,scope='one main-frame record/UI flow and common preparation',game_access=False,runtime_verified=False)))
 

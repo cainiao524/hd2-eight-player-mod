@@ -74,6 +74,10 @@ int ep_session_code_seal_loadout_records(HfMod*, uint64_t handle, const void* im
  * captured parent topology for the main and seven local fragments. */
 int ep_session_code_seal_loadout_frame(HfMod*, uint64_t handle, const void* image,
     uint32_t bytes, uint32_t table_offset, const EpSessionGsCheck*);
+/* Mode/open pair: eight rows, exact 1470D90 GS root/cookie +D0h and
+ * root -> saved-register child -> XMM6 child chains. */
+int ep_session_code_seal_loadout_mode(HfMod*, uint64_t handle, const void* image,
+    uint32_t bytes, uint32_t table_offset, const EpSessionGsCheck*);
 int ep_session_code_info(HfMod*, uint64_t handle, EpSessionCodeInfo*);
 /* Before calling hook_ex, permanently pin this module and the image. Even a
  * reported hook failure can have exposed code: keep it for process lifetime.

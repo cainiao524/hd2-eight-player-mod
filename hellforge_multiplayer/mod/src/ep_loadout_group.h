@@ -5,6 +5,7 @@
 #include "ep_loadout_refresh.h"
 #include "ep_loadout_records.h"
 #include "ep_loadout_frame.h"
+#include "ep_loadout_mode.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -12,19 +13,19 @@ typedef struct EpLoadoutGroupAddresses {
     EpLoadoutSetupAddresses setup;
     uint64_t lifecycle_code,consumers_code,interactions_code,refresh_code;
     EpLoadoutRecordSource record_source;
-    uint64_t records_code,frame_code;
+    uint64_t records_code,frame_code,mode_code;
 } EpLoadoutGroupAddresses;
 enum {EP_LOADOUT_GROUP_EMPTY,EP_LOADOUT_GROUP_READY,EP_LOADOUT_GROUP_CLEANUP};
 typedef struct EpLoadoutGroup {
-    EpSessionCodeInfo code[7]; /* lifecycle, consumers, setup, interactions, refresh, records, frame */
+    EpSessionCodeInfo code[8]; /* lifecycle, consumers, setup, interactions, refresh, records, frame, mode */
     uint64_t constructor,release,alternate_release,transition,setup,update,lookup,action;
-    uint64_t input,edit,close,refresh,sync_records,frame,local_update;
+    uint64_t input,edit,close,refresh,sync_records,frame,local_update,mode,open_mode;
     uint32_t capacity,state;
 } EpLoadoutGroup;
-/* Prepare all fifteen native entries from ONE screen/storage/map/capacity
- * binding. The seven desired code bases must be explicit and nonoverlapping.
+/* Prepare all seventeen native entries from ONE screen/storage/map/capacity
+ * binding. The eight desired code bases must be explicit and nonoverlapping.
  * The independent record-source banks must be disjoint from every image.
- * Input -> refresh -> close and frame -> local/sync/update/lookup links are
+ * Input -> refresh -> close and frame -> local/sync/update/lookup/mode links are
  * derived from these same images. The frame allocation has a 16 KiB span.
  * Only owned code allocations are made; data still belongs to the caller.
  * All images must reach READY before callable addresses are returned. Partial

@@ -81,7 +81,7 @@ def main():
         g.need(args.upstream is not None,'--upstream required');args.library.parent.mkdir(exist_ok=True,parents=True)
         command=[args.zig.resolve(),'c++','-std=c++17','-target','x86_64-windows-gnu','-O2','-Wall','-Wextra','-Werror',
                  '-I',args.upstream.resolve()/'native/mod-sdk','-I',g.PROJECT/'mod/src','-shared']
-        command += [g.PROJECT/'mod/src'/n for n in ('ep_session_code.cpp','ep_loadout_lifecycle.cpp','ep_loadout_consumers.cpp','ep_loadout_setup.cpp','ep_loadout_group.cpp','ep_loadout_interactions.cpp','ep_loadout_refresh.cpp','ep_loadout_records.cpp','ep_loadout_frame.cpp')]
+        command += [g.PROJECT/'mod/src'/n for n in ('ep_session_code.cpp','ep_loadout_lifecycle.cpp','ep_loadout_consumers.cpp','ep_loadout_setup.cpp','ep_loadout_group.cpp','ep_loadout_interactions.cpp','ep_loadout_refresh.cpp','ep_loadout_records.cpp','ep_loadout_frame.cpp','ep_loadout_mode.cpp')]
         command += [g.PROJECT/'tests'/n for n in ('loadout_consumers_dll.cpp','loadout_setup_dll.cpp','loadout_interactions_dll.cpp')]
         command += ['-o',args.library.resolve()]
         result=subprocess.run(list(map(str,command)),capture_output=True,text=True);g.need(result.returncode==0,result.stdout+result.stderr)
@@ -113,7 +113,7 @@ def main():
     g.need(f.unwound,'Input unwind point missed')
     setup=SetupAddresses();setup.common=binding;setup.common.lifecycle.code=SETUP
     for i in range(5):setup.placements[i]=Placement(i*3,111,0.5,0,0.5,0)
-    group=GroupAddresses(setup,CODE+0x40000,CODE,INTERACTIONS,REFRESH,record_source(),CODE+0x70000,CODE+0x80000)
+    group=GroupAddresses(setup,CODE+0x40000,CODE,INTERACTIONS,REFRESH,record_source(),CODE+0x70000,CODE+0x80000,CODE+0x90000)
     status=dll.setup_group(c.byref(group));g.need(status==0,f'Common READY/discard failed: {status}')
     print(json.dumps(dict(passed=True,scope='one five-slot navigation/edit/close flow and common preparation',game_access=False,runtime_verified=False)))
 
