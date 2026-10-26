@@ -128,6 +128,8 @@ def main():
          PROJECT/'mod/src/ep_component33_image.cpp',PROJECT/'tests/component33_image_dll.cpp','-o',component33_dll])
     component33_receipt=PROJECT/'evidence/native-component33-validation.json'
     component33_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_component33_images.py','--library',component33_dll,'--zig',zig,'--out',component33_receipt]))
+    component33_classify_receipt=PROJECT/'evidence/native-component33-classify-validation.json'
+    component33_classify_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_component33_classify.py','--library',component33_dll,'--zig',zig,'--out',component33_classify_receipt]))
     creation_receipt=PROJECT/'evidence/creation-dispatch-validation.json'
     creation_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_creation_dispatch.py','--library',property_dll,'--out',creation_receipt,'--component33-library',component33_dll]))
     classify_fixture=build/'native-classify-fixture.bin'
@@ -269,6 +271,7 @@ def main():
         'native_entity_remove_dispatch':{**entity_remove_output,'validation_sha256':digest(entity_remove_receipt)},
         'native_creation_dispatch':{**creation_output,'validation_sha256':digest(creation_receipt)},
         'native_component33':{**component33_output,'validation_sha256':digest(component33_receipt)},
+        'native_component33_classify':{**component33_classify_output,'validation_sha256':digest(component33_classify_receipt)},
         'native_classify_storage':{'checks':int(classify_match[1]),**classify_fixture_receipt},
         'native_property_gates':{**gate_output,'validation_sha256':digest(gate_receipt)},
         'property_group':{'checks':int(group_match[1]),'entries':['producer','receiver','entity_network_getter'],'shared_storage_binding':True,'actual_hellforge_chains':True,
@@ -318,7 +321,7 @@ def main():
             'tests/roster_owner_dll.h','tests/roster_owner_dll.cpp','tests/roster_owner_test.c',
             'mod/src/ep_roster_call.h','mod/src/ep_roster_call.cpp','tools/verify_roster_call_abi.py','native-entity-remove.lock.json',
             'tools/validate_entity_remove.py','tools/validate_creation_dispatch.py','native-creation-dispatch.lock.json',
-            'tools/native_component33_image.py','tools/native_component33_library.py','tools/generate_component33_templates.py','tools/validate_component33_images.py',
+            'tools/native_component33_image.py','tools/native_component33_library.py','tools/generate_component33_templates.py','tools/validate_component33_images.py','tools/validate_component33_classify.py',
             'native-component33.lock.json','mod/src/ep_component33_image.h','mod/src/ep_component33_image.cpp','mod/src/ep_component33_templates.h',
             'tests/component33_image_dll.cpp','tests/native_component33_unwind_test.c',
             'tests/roster_call_dll.h','tests/roster_call_dll.cpp','tests/roster_call_test.c',

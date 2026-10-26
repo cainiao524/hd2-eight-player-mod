@@ -1,6 +1,6 @@
-# 元件 33：四个核心函数的八槽离线实现
+# 元件 33：核心存储与分类的八槽离线实现
 
-更新：2026-10-26。C++ 已能生成搬移、普通插入、密集插入和移除四个映像，并把它们的数组访问迁到独立八槽区域。**这只是元件 33 的核心存储实现，完整生命周期、生产发布与角色创建仍未完成。** 没有启动、检查、读取、修改或安装游戏。
+更新：2026-10-26。C++ 已能生成搬移、普通插入、密集插入、移除、分类进入和分类退出六个映像，并把它们的数组访问迁到独立八槽区域。**这只是元件 33 的部分生命周期，剩余回调/读写者、生产发布与角色创建仍未完成。** 没有启动、检查、读取、修改或安装游戏。
 
 ## 文件与固定来源
 
@@ -10,6 +10,7 @@
 - [tools/generate_component33_templates.py](tools/generate_component33_templates.py)：生成并检查 C++ 模板。
 - [tools/validate_component33_images.py](tools/validate_component33_images.py)：执行 C++ 实际输出，比较原版行为、独立数据模型、拒绝路径和 Windows 回溯。
 - [evidence/native-component33-validation.json](evidence/native-component33-validation.json)：功能用例、定位拒绝、源码和产物指纹。
+- [tools/validate_component33_classify.py](tools/validate_component33_classify.py) 与[分类收据](evidence/native-component33-classify-validation.json)：执行保存的回调包装器和分类映像，检查数据交换、条件序言回溯以及分配失败反例。
 - [CREATION_DISPATCH.zh-CN.md](CREATION_DISPATCH.zh-CN.md)：与保存的创建分派及八槽名册相连的验证。
 
 来源仍是已保存的 build 25480438 capture 与 `component33_250_lifecycle_evidence_v2.json`。搬移 `665FE0`、普通插入 `51ABF0`、密集插入 `51AC70`、移除 `51AD30`，以及真实 map 插入 `172F790`、删除 `172F8A0` 的完整字节均与保存证据核对。此步骤没有重新读取游戏。
@@ -25,11 +26,23 @@
 | primary | `B+050` | `50` | `[050,2D0)` |
 | secondary | `B+2D0` | `38` | `[2D0,490)` |
 
-表中数字均为十六进制。`[048,050)` 是对齐空隙。旧 `S+70..S+2B8` 数组区域作为哨兵检查，候选四函数不再写入它。
+表中数字均为十六进制。`[048,050)` 是对齐空隙。旧 `S+70..S+2B8` 数组区域作为哨兵检查，候选六函数不再写入它。
 
 每条原数组指令前后用不改变标志位的地址装载切换基址，原指令本身保留。指针、primary、secondary 的地址偏置分别是 `B-70`、`B-48`、`B+F8`。非数组字段仍访问 `S`，调用的真实 map 函数也使用原 map 头。
 
 原搬移器只复制指针、primary、secondary，**不复制字节状态、不清空来源槽位**。当前实现保留这些差异。插入只清零原代码清零的 primary；secondary 和字节状态由后续生命周期负责，不能从插入返回推断它们已初始化。
+
+## 分类进入与退出
+
+保存的 `51AEA0` / `51AEB0` 回调各为八字节：先把实体指针从 RCX 送入 RDX，再尾跳到 `666A90` / `666DD0`。新增映像保留 helper 的 RDX 实体参数；验证既执行重定向后的真实包装器，也直接调用 helper。回调登记、完整主体和原六段回溯数据均已固定在来源锁中。
+
+进入把目标项与 `P` 边界项交换，最后 `P++`；退出把目标项与 `P-1` 交换，最后 `P--`。两者均交换指针、primary、secondary 并更新两条 map 序号。进入不搬动 byte；退出只做 `byte[target] = byte[P-1]`，边界 byte 保留。目标已处于边界时只改变 P，不分配临时缓冲。T、D、高水位和实体 flag 保持不变；flag 与通知仍由调用方管理。
+
+进入/退出分别重定位 35/37 处数组访问，生成 2,264/2,384-byte 映像，各有四条函数表记录。byte 使用 `B-50` 地址偏置。进入仅接受 `[P,D)` 内目标，退出仅接受 `[0,P)` 内目标；预检同时核对目标和边界项的身份、map 序号、空槽计数以及保存的 invalid-ID 全局。错误分区、空指针、重复身份或不一致序号在写入前拒绝。
+
+这两个原函数仅在需要交换时保存 R12、R15。条件序言中插入数组基址切换后，R15 保存结束偏移由 23 变为 43，因此同时重定位 PrologSize、每个 unwind CodeOffset 和片段链；原保存位置与操作保持不变。负对照重新装回旧的 23-byte 序言偏移，确认 Windows 会在尚未执行保存指令的中间位置恢复错误的 R15，修正记录通过同一上下文。
+
+临时对象的初始化、分配、两次清理使用明确的契约替身，测试会改写所有易失整数寄存器、XMM0–5 和 shadow space；实际游戏分配器尚未执行。四个空分配对照（原版/候选、进入/退出）均复现：指针已交换，第一次临时分配返回零后发生无效内存访问，尚未更新分类计数，也未清理。因此 **分配失败回滚仍未实现**，这六个函数不能独立发布到游戏。
 
 ## 接口边界与拒绝
 
@@ -49,13 +62,15 @@
 
 Windows 验证只把候选字节放入 `PAGE_READWRITE`，注册临时函数表后对模拟上下文调用 `RtlVirtualUnwind`，不原生执行保存的游戏指令。四个映像各保留一个破坏回溯记录的负对照；正确记录须恢复调用者栈和非易失寄存器。实际执行指令的地方仅为 Unicorn 模拟内存。
 
+分类收据另有 **776 次功能执行**：70 次四槽原版、674 次八槽候选成功、32 次写入前拒绝。包含全部 `0 ≤ P ≤ D ≤ T ≤ 8` 的有目标分类组合、五组进入后退出连续操作、直接 helper ABI 与第二个模拟基址。另检查 10 组有效定位、80 组拒绝定位、**12,845 个不同 Windows 回溯上下文**，以及两个根序言损坏和两个条件序言偏移回归负对照。四次分配失败反例单列，未计入 776 次正常/拒绝执行；条件序言的两个修正对照复用已有上下文，未重复计入 12,845。
+
 创建分派另有 18 次联合执行：两个模拟基址、已有 0–8 项、参考九元件顺序。第一张表使用当前 C++ 元件 33 和 C++ 名册 239；第 1–8 项经过两个插入器，第九项先被元件 33 拒绝。其他元件及后续属性/资源接口仍是明确标注的替身。原外层在拒绝之前已经写入资源记录等数据，联合测试继续核对并保留这一未解决问题。
 
 ## 下一位接手者的顺序
 
 1. 读取上述核心收据、创建分派收据及 [status.json](status.json)，确认源码和构建指纹相符。
-2. 迁移元件 33 的第二/第三回调、分类进入/离开、byte/secondary 写入、owner 直接访问与 registry 访问。明确从旧四槽数据建立 `B` 的生命周期和所有权。
-3. 完成这一族函数后，再提供 READY 准备、封存和统一发布接口；当前四个映像不得单独激活，不计入已存在的十七个共同入口。
+2. 迁移元件 33 的第二/第三回调、byte/secondary 写入、owner 直接访问与 registry 访问。分类进入/退出已完成本文件所列离线验证，但临时分配失败补偿、调用方 flag/通知以及从旧四槽数据建立 `B` 的生命周期和所有权仍待实现。
+3. 完成这一族函数后，再提供 READY 准备、封存和统一发布接口；当前六个映像不得单独激活，不计入已存在的十七个共同入口。
 4. 对剩余固定四槽元件建立相同的读写闭合验证，并在 `FDC140` 写入前完成共同接纳或实现全部副作用补偿。保留资源类型无效时的 `7FFF` 残留反例。
 5. 继续完整生产身份、内存所有权、角色控制/复制和真实八账户任务验收。任何游戏访问都需要新的明确授权；本轮授权余额为零。
 
@@ -70,6 +85,10 @@ py -3.12 -B hellforge_multiplayer/tools/validate_component33_images.py `
   --library hellforge_multiplayer/build/component33_image_test.dll `
   --zig work/hellforge_toolchain_20261025/zig-x86_64-windows-0.17.0/zig.exe `
   --out work/component33-validation.json
+py -3.12 -B hellforge_multiplayer/tools/validate_component33_classify.py `
+  --library hellforge_multiplayer/build/component33_image_test.dll `
+  --zig work/hellforge_toolchain_20261025/zig-x86_64-windows-0.17.0/zig.exe `
+  --out work/component33-classify-validation.json
 ```
 
 该命令编译和运行自有回溯测试程序，读取仓库保存的代码。`installable`、`runtime_verified`、`multiplayer_verified`、`public_release_allowed` 继续为 false。

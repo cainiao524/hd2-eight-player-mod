@@ -14,7 +14,7 @@ class Library:
         self.build.argtypes=[c.c_uint32,c.POINTER(Addresses),c.POINTER(Image)];self.build.restype=c.c_int
     @functools.lru_cache(maxsize=128)
     def candidate(self,kind,**addresses):
-        ref=n.build(kind,**addresses);out=Image();rc=self.build(n.KINDS.index(kind)+1,Addresses(**addresses),out)
+        ref=n.build(kind,**addresses);out=Image();rc=self.build(n.ALL_KINDS.index(kind)+1,Addresses(**addresses),out)
         n.need(rc==0 and bytes(out.data[:out.bytes])==ref['image'],'C++ component33 differs')
         n.need((out.code_bytes,out.unwind_offset,out.table_offset,out.function_count)==tuple(ref[k] for k in ('code_bytes','unwind_offset','table_offset','function_count')),'C++ metadata differs')
         return {**ref,'image':bytes(out.data[:out.bytes])}

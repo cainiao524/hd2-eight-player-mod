@@ -1,4 +1,4 @@
-"""Pinned component33 core, preserving its header and relocating four arrays.
+"""Pinned component33 core and classification with four relocated arrays.
 
 Only numeric image generation. No live memory access, installation or hooks.
 """
@@ -15,8 +15,10 @@ import capstone
 from capstone.x86_const import X86_OP_MEM, X86_OP_IMM, X86_REG_RIP
 from inspect_capture import Image
 LOCK = PROJECT / 'native-component33.lock.json'
-LOCK_SHA = 'f8e5292581a47111d514122b9396df0c139fd3428bd2e23ac1fcea27a37e852c'
+LOCK_SHA = '68523ebac989e9a0d6d83b296478d157b9043a64a65cd93c188270adf3589fdf'
 KINDS = ('mover', 'append', 'dense', 'remove')
+CLASSIFY_KINDS = ('enter','leave')
+ALL_KINDS = KINDS + CLASSIFY_KINDS
 sha = lambda b: hashlib.sha256(b).hexdigest()
 
 def need(ok, message):
@@ -35,6 +37,10 @@ def profile():
             need(im.containing(fragment['start']) == (fragment['start'], fragment['end'], fragment['unwind_rva']), 'fragment changed')
             raw = bytes.fromhex(fragment['unwind_hex'])
             need(raw[0] in (1, 33) and raw[3] == 0 and im.read(fragment['unwind_rva'], len(raw)) == raw, 'unwind changed')
+    for callback in data['classification_callbacks'].values():
+        need(im.read(callback['entry'],8)==bytes.fromhex(callback['body_hex']),'classification wrapper changed')
+        for i in callback['assignment']['instructions']:
+            raw=bytes.fromhex(i['bytes']);need(im.read(int(i['rva'],16),len(raw))==raw and sha(raw)==i['sha256'],'classification registration changed')
     return data
 
 def decode(blob, address):
@@ -47,13 +53,13 @@ def pointer(p, n, alignment):
     need(type(p) is int and 0 < p < (1 << 47) and not p % alignment and n <= (1 << 47) - p, 'invalid pointer')
 
 def build(kind, *, game_base, code_address, component_address, storage_address, move_code_address, reject_address):
-    need(kind in KINDS, 'invalid kind')
-    data = profile(); f = data['functions'][kind]
-    for p,n,a in ((game_base,0x33267C0,4096),(code_address,4096,16),(component_address,0x2B8,8),
+    need(kind in ALL_KINDS, 'invalid kind')
+    data = profile(); f = data['functions'][kind]; classification=kind in CLASSIFY_KINDS
+    for p,n,a in ((game_base,0x3483C38,4096),(code_address,4096,16),(component_address,0x2B8,8),
                   (storage_address,0x490,16),(move_code_address,4096,16),(reject_address,1,1)):
         pointer(p,n,a)
     need(storage_address >= 0x70, 'storage bias underflow')
-    regions = [(code_address,4096),(component_address,0x2B8),(storage_address,0x490),(reject_address,1),(game_base+0x33267B8,8)]
+    regions = [(code_address,4096),(component_address,0x2B8),(storage_address,0x490),(reject_address,1),(game_base+0x33267B8,8),(game_base+0x3483C34,4)]
     if kind != 'mover': regions.append((move_code_address,4096))
     regions += [(game_base+x['start'],x['end']-x['start']) for x in data['functions'].values()]
     need(all(a+n <= b or b+m <= a for k,(a,n) in enumerate(regions) for b,m in regions[k+1:]), 'overlapping image/data/source')
@@ -64,6 +70,7 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
         emit(b'\xe9' if condition is None else bytes([0x0F,condition])); fixes.append((len(out),target)); emit(bytes(4))
     def label(name): labels[name] = len(out)
     # All refusal paths precede any stack/data write. Original arguments survive.
+    if classification: emit('4889d1')  # helper ABI: entity RDX, RCX unused by original body
     mov(0,game_base+0x33267B8); emit('488b00'); mov(10,component_address); emit('4c39d0'); branch('reject1',0x85)
     if kind == 'mover': emit('4c39d1'); branch('reject1',0x85)
     emit('458b5a08 4183fb08'); branch('reject2',0x83 if kind in ('append','dense') else 0x87)
@@ -88,9 +95,9 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
         if kind == 'dense': emit('4885d2'); branch('reject6',0x84)
         emit('448b4108 4585c0'); branch('reject6',0x84)
         mov(9,component_address+0x14); emit('4531d2 4531db')
-        if kind == 'remove': emit('baffffffff')
+        if kind == 'remove' or classification: emit('baffffffff')
         label('scan'); emit('438b04d9 4439c0')
-        if kind == 'remove':
+        if kind == 'remove' or classification:
             branch('nonmatch',0x85); emit('83faff'); branch('reject7',0x85)
             emit('43837cd90408'); branch('reject8',0x83)
             emit('438b54d904'); label('nonmatch')
@@ -98,11 +105,25 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
         emit('85c0'); branch('next',0x85); emit('41ffc2')
         label('next'); emit('41ffc3 4183fb08'); branch('scan',0x82)
         mov(0,component_address); emit('8b4008 4101c2 4183fa08'); branch('reject9',0x85)
-        if kind == 'remove':
+        if kind == 'remove' or classification:
             emit('39c2'); branch('reject8',0x83)
-            mov(11,component_address); emit('413b530c'); branch('remove_ready',0x83)
-            emit('413b430c'); branch('reject4',0x85); label('remove_ready')
+            if not classification:
+                mov(11,component_address); emit('413b530c'); branch('remove_ready',0x83)
+                emit('413b430c'); branch('reject4',0x85); label('remove_ready')
             mov(0,storage_address); emit('48390cd0'); branch('reject6',0x85)
+            if classification:
+                mov(11,game_base+0x3483C34);emit('453b03');branch('reject6',0x84)
+                mov(11,component_address);emit('413b530c');branch('reject8',0x83)
+                emit('458b4310 4439c2');branch('reject4',0x82 if kind=='enter' else 0x83)
+                if kind=='leave':emit('41ffc8')
+                mov(0,storage_address);emit('4a8b04c0 4885c0');branch('reject6',0x84)
+                emit('448b5008 4585d2');branch('reject6',0x84)
+                mov(11,game_base+0x3483C34);emit('453b13');branch('reject6',0x84)
+                mov(9,component_address+0x14);emit('4531db 31d2');label('boundary_scan')
+                emit('438b04d9 4439d0');branch('boundary_next',0x85)
+                emit('473944d904');branch('reject8',0x85);emit('ffc2')
+                label('boundary_next');emit('41ffc3 4183fb08');branch('boundary_scan',0x82)
+                emit('83fa01');branch('reject7',0x85);emit('4889ca')
     branch('body')
     for reason in range(1,10):
         label('reject'+str(reason)); emit(b'\x41\xba'+struct.pack('<I',reason)); branch('external')
@@ -117,9 +138,10 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
         for operand in i.operands:
             if operand.type != X86_OP_MEM: continue
             m = operand.mem; base,index = i.reg_name(m.base),i.reg_name(m.index)
-            bound = ('rcx' if i.address < 0x666076 else 'r11') if kind == 'mover' else 'rbx'
-            if bound not in (base,index) or not (m.index or (kind=='mover' and bound==index)): continue
+            bound = 'rbp' if classification else ('rcx' if i.address < 0x666076 else 'r11') if kind == 'mover' else 'rbx'
+            if bound not in (base,index) or not (m.index or (classification and i.mnemonic=='lea' and m.disp==0x1D8)): continue
             if m.disp == 0x70: array=(bound,storage_address-0x70,'pointer')
+            elif classification and m.disp == 0x90: array=(bound,storage_address+0x40-0x90,'byte')
             elif 0x98 <= m.disp <= 0xD8: array=(bound,storage_address+0x50-0x98,'primary')
             elif 0x1D8 <= m.disp <= 0x208: array=(bound,storage_address+0x2D0-0x1D8,'secondary')
         if array:
@@ -141,7 +163,7 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
                     struct.pack_into('<i',raw,i.disp_offset,target-(code_address+len(out)+i.size))
             emit(raw)
     mapping[f['end']] = len(out)
-    need(len(patches)=={'mover':21,'append':6,'dense':6,'remove':1}[kind], 'array coverage changed')
+    need(len(patches)=={'mover':21,'append':6,'dense':6,'remove':1,'enter':35,'leave':37}[kind], 'array coverage changed')
     for at,target in fixes:
         dest = reject_address if target=='external' else code_address+labels[target] if isinstance(target,str) else (
             code_address+mapping[target] if target in mapping else move_code_address if target==0x665FE0 else game_base+target)
@@ -153,8 +175,18 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
         unwind_map[fragment['unwind_rva']] = len(out); unwind_offsets.append(len(out)); emit(bytes.fromhex(fragment['unwind_hex']))
     for fragment,offset in zip(f['fragments'],unwind_offsets):
         original=bytes.fromhex(fragment['unwind_hex']); start=fragment['start']; prolog=original[1]
-        # Prefix/array edits must not alter any original prologue byte/offset.
-        need(out[mapping[start]:mapping[start]+prolog] == source[start-f['start']:start-f['start']+prolog], 'prologue changed')
+        # Classification inserts array rebinding inside a conditional prologue;
+        # relocate its instruction-end offsets as well as its fragment ranges.
+        if classification:
+            def offset_for(old):
+                need(start+old in mapping,'unwind offset is not an instruction boundary')
+                value=mapping[start+old]-mapping[start];need(0<=value<=255,'unwind offset overflow');return value
+            out[offset+1]=offset_for(prolog);at=4
+            while at<4+original[2]*2:
+                operation=original[at+1]&15;need(operation in (0,2,4),'unexpected classification unwind operation')
+                out[offset+at]=offset_for(original[at]);at+=4 if operation==4 else 2
+        else:
+            need(out[mapping[start]:mapping[start]+prolog] == source[start-f['start']:start-f['start']+prolog], 'prologue changed')
         if original[0] >> 3 & 4:
             chain=4+((original[2]+1)&~1)*2; begin,end,uw=struct.unpack_from('<III',original,chain)
             struct.pack_into('<III',out,offset+chain,mapping[begin],mapping[end],unwind_map[uw])

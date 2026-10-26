@@ -73,14 +73,14 @@ class Fixture:
             self.contexts.add(struct.pack('<IiI8Q',pc-self.start,uc.reg_read(reg('rsp'))-RSP,0,*(uc.reg_read(reg(k)) for k in NAMES))+stack)
     def execute(self,expected='return'):
         self.before=self.state()
-        try:self.uc.emu_start(self.start,0,count=100000)
+        try:self.uc.emu_start(getattr(self,'entry',self.start),0,count=100000)
         except unicorn.UcError as ex:raise ValueError(f'{self.kind} {self.t,self.d,self.p,self.ordinal,self.destination,self.source} pc={self.uc.reg_read(reg("rip")):x}') from ex
         n.need(self.outcome==expected,'wrong outcome '+str((self.kind,self.t,self.d,self.p,self.ordinal,self.outcome)))
         if expected=='reject':
             n.need(self.before==self.state() and not self.writes and not self.helper_entries,'refusal changed state/stack')
             n.need(self.uc.reg_read(reg('rsp'))==RSP,'refusal stack')
         else:
-            allowed=[(STACK,0x10000),(S+4,0x50)]
+            allowed=[(STACK,0x10000),(S+4,0x50)]+getattr(self,'extra_writable',[])
             allowed += [(self.slot(name,0),stride*(4 if self.original else 8)) for name,(_,_,stride) in LAYOUT.items()]
             for address,size in self.writes:n.need(any(a<=address and address+size<=a+length for a,length in allowed),'unexpected write '+hex(address))
             n.need(self.uc.reg_read(reg('rsp'))==RSP+8,'return stack')
@@ -127,7 +127,7 @@ def run(command):
     n.need(p.returncode==0,p.stdout.decode(errors='replace')+p.stderr.decode(errors='replace'));return p.stdout
 
 def validate(lib,zig):
-    header,facts=render();n.need(HEADER.read_bytes()==header,'template mismatch')
+    header,facts=render();facts={k:facts[k] for k in n.KINDS};n.need(HEADER.read_bytes()==header,'template mismatch')
     contexts={k:set() for k in n.KINDS};runs=[]
     def execute(f,expected='return'):
         f.execute(expected);contexts[f.kind].update(f.contexts)
@@ -192,7 +192,7 @@ def validate(lib,zig):
             out=Image();c.memset(c.byref(out),0xA5,c.sizeof(out));rc=lib.build(n.KINDS.index(kind)+1,Addresses(**a),out)
             if expected is None:n.need(rc!=0 and bytes(out)==bytes(c.sizeof(out)),'invalid C++ input accepted');rejected+=1
             else:n.need(rc==0 and bytes(out.data[:out.bytes])==expected,'C++ relocation mismatch');accepted+=1
-    for kind in (0,5):
+    for kind in (0,len(n.ALL_KINDS)+1):
         out=Image();n.need(lib.build(kind,Addresses(**REFERENCE),out)==1 and not any(bytes(out)),'invalid kind')
     n.need(lib.build(1,None,Image())==1 and lib.build(1,Addresses(**REFERENCE),None)==1,'null API')
     exe=n.PROJECT/'build/native_component33_unwind_test.exe'
@@ -225,7 +225,7 @@ def validate(lib,zig):
                 limits=['Four core images only: mover, append, dense insert, remove. No publish/prepare API or automatic binding.',
                         'Original header, inline eight-bucket map and aliases retained; all four arrays require a lifetime-owned B binding.',
                         'Byte rows are intentionally not moved; copied pointer/primary/secondary preserve original differences.',
-                        'Dense insertion and dense removal with a pending tail refuse before writes. Remaining classify/property/owner readers must be ported.',
+                        'Dense insertion and dense removal with a pending tail refuse before writes. Classification has separate validation; property/owner readers remain pending.',
                         'Readable entities, coherent prefix flags and synchronized ownership remain caller obligations.'])
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--library',type=Path,required=True);p.add_argument('--zig',type=Path,required=True);p.add_argument('--out',type=Path,required=True);a=p.parse_args()

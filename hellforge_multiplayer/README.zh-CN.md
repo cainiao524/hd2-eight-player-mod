@@ -8,7 +8,7 @@
 
 | 内容 | 位置 | 当前作用 |
 |---|---|---|
-| 元件 33 核心存储 | [NATIVE_COMPONENT33.zh-CN.md](NATIVE_COMPONENT33.zh-CN.md) / `mod/src/ep_component33_image.*` | C++ 四函数的八槽映像、原版对照及 Windows 回溯验证；尚未接入完整生命周期和生产发布 |
+| 元件 33 核心存储与分类 | [NATIVE_COMPONENT33.zh-CN.md](NATIVE_COMPONENT33.zh-CN.md) / `mod/src/ep_component33_image.*` | C++ 六函数八槽映像；核心 699 次、分类 776 次离线执行通过；分类额外通过 12,845 个回溯上下文，剩余回调/读写者、完整生命周期和生产发布待实现 |
 | 玩家资源创建分派 | [CREATION_DISPATCH.zh-CN.md](CREATION_DISPATCH.zh-CN.md) / `tools/validate_creation_dispatch.py` | 60 次保存指令模拟，接入 C++ 名册与原版/新元件 33；复现拒绝前写入、相邻覆盖与无效资源残留，尚未实现创建事务 |
 | 已有玩家状态更新 | `mod/src/ep_arrival_image.*` / `NATIVE_STATE_UPDATE.zh-CN.md` | 八槽数组访问与原 GS 异常处理器迁移；第 17 个共同入口；该函数不创建新角色 |
 | HellForge 源码 Mod | `mod/` | SDK 入口、版本检查、会话身份和任务/生成/死亡事件观察 |

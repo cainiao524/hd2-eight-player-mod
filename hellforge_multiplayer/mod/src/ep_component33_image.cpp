@@ -15,13 +15,13 @@ EpPropertyResult ep_component33_image_build(uint32_t kind,const EpComponent33Add
     if (!out) return EP_PROPERTY_ARGUMENT;
     if (input) a=*input;
     memset(out,0,sizeof(*out));
-    if (!input || kind<1 || kind>4) return EP_PROPERTY_ARGUMENT;
-    if (!C33Pointer(a.game_base,0x33267c0,4096) || !C33Pointer(a.code_address,4096,16) ||
+    if (!input || kind<1 || kind>6) return EP_PROPERTY_ARGUMENT;
+    if (!C33Pointer(a.game_base,0x3483c38,4096) || !C33Pointer(a.code_address,4096,16) ||
         !C33Pointer(a.component_address,0x2b8,8) || !C33Pointer(a.storage_address,0x490,16) ||
         a.storage_address<0x70 || !C33Pointer(a.move_code_address,4096,16) || !C33Pointer(a.reject_address,1,1)) return EP_PROPERTY_POINTER;
-    uint64_t regions[12][2]={{a.code_address,4096},{a.component_address,0x2b8},{a.storage_address,0x490},
-                            {a.reject_address,1},{a.game_base+0x33267b8,8}};
-    unsigned count=5;
+    uint64_t regions[32][2]={{a.code_address,4096},{a.component_address,0x2b8},{a.storage_address,0x490},
+                            {a.reject_address,1},{a.game_base+0x33267b8,8},{a.game_base+0x3483c34,4}};
+    unsigned count=6;
     if (kind!=EP_COMPONENT33_MOVER) { regions[count][0]=a.move_code_address;regions[count++][1]=4096; }
     for (const auto& source:ep_component33_sources) { regions[count][0]=a.game_base+source[0];regions[count++][1]=source[1]; }
     for (unsigned i=0;i<count;i++) for (unsigned j=i+1;j<count;j++)

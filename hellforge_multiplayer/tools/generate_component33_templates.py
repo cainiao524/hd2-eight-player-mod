@@ -10,14 +10,14 @@ def render():
     for name in ('native-component33.lock.json','tools/native_component33_image.py'):
         lines.append(' * '+name+' SHA256 '+n.sha((n.PROJECT/name).read_bytes()))
     lines+=[' */'];infos=[];facts={}
-    for kind in n.KINDS:
+    for kind in n.ALL_KINDS:
         a=n.build(kind,**REFERENCE);blob=bytearray(a['image']);fixes=[];base=REFERENCE['code_address']
         def relative(i,off,target):
             if base<=target<base+a['code_bytes']:return
             if target==REFERENCE['reject_address']:parameter,add=5,0
             elif target==REFERENCE['move_code_address']:parameter,add=4,0
             else:
-                parameter,add=0,target-REFERENCE['game_base'];n.need(add in (0x33267B8,0x172F790,0x172F8A0),'unknown relative target')
+                parameter,add=0,target-REFERENCE['game_base'];n.need(add in (0x33267B8,0x3483C34,0x172F790,0x172F8A0,0x173B6F0,0x173B8D0,0x173BC20),'unknown relative target')
             fixes.append((i.address-base+off,i.address-base+i.size,parameter,4,add))
         for i in n.decode(blob[:a['code_bytes']],base):
             if i.group(n.capstone.CS_GRP_JUMP) or i.group(n.capstone.CS_GRP_CALL):relative(i,i.imm_offset,i.operands[0].imm)
@@ -25,7 +25,7 @@ def render():
                 if op.type==X86_OP_MEM and op.mem.base==X86_REG_RIP:relative(i,i.disp_offset,i.address+i.size+op.mem.disp)
             if i.imm_size==8:
                 value=struct.unpack_from('<Q',i.bytes,i.imm_offset)[0]
-                options=[(0,0x33267B8),(2,0),(2,0x14),(3,0),(3,-0x70),(3,-0x48),(3,0xF8)]
+                options=[(0,0x33267B8),(0,0x3483C34),(2,0),(2,0x14),(3,0),(3,-0x70),(3,-0x48),(3,-0x50),(3,0xF8)]
                 matches=[(p,add) for p,add in options if value==list(REFERENCE.values())[p]+add]
                 n.need(len(matches)==1,'unknown absolute target');parameter,add=matches[0]
                 fixes.append((i.address-base+i.imm_offset,0,parameter,8,add))

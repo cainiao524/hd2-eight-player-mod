@@ -9179,14 +9179,14 @@
     }
   ],
   "source_sha256": {
-    "native-component33.lock.json": "f8e5292581a47111d514122b9396df0c139fd3428bd2e23ac1fcea27a37e852c",
-    "tools/native_component33_image.py": "7b83ed75ecddc3d9789a3e4f30ee697ff2ac6b1b4a521ac41ec8962a66d9082f",
-    "tools/native_component33_library.py": "0fa59cd7c977c60aa8988d456a5eb4e0b65e8c88c5aab2578befaa06a783227b",
-    "tools/generate_component33_templates.py": "1d0865e3517559809d94b9b4f5127aacdd2053928f7e541060d8f72968f1576e",
-    "tools/validate_component33_images.py": "47f31c21c5e34eb1b7492270cc151746f507fa2d9c1bbf6dac997a3ad332f12b",
-    "mod/src/ep_component33_image.h": "592cb8750459fc2b69bbed124eb0ef8b9b04486d619283e13a12f9f753f6a482",
-    "mod/src/ep_component33_image.cpp": "52ee845c409482623cc47549a662c626700505b26b73203f1bba073eb790eff6",
-    "mod/src/ep_component33_templates.h": "1642f52127c6497cfabc970d797e1100cb4bb127b4fc916aae35b96787ae81ab",
+    "native-component33.lock.json": "68523ebac989e9a0d6d83b296478d157b9043a64a65cd93c188270adf3589fdf",
+    "tools/native_component33_image.py": "edbbcdc8003f08b64be230c51c48fe8e2e490376d0ddf5738a5bfa4256c7213a",
+    "tools/native_component33_library.py": "1f01c5d229e5b163de4e4f9c3d6464bc11f220a169ed859cbc9a88e6da885c13",
+    "tools/generate_component33_templates.py": "dcbba607e85e2fd1741f57142d6ad6ccb1e9254c402f715e2b9b687b73418e9c",
+    "tools/validate_component33_images.py": "1abf125af7b74c41faaa70b4c88f945a25306d6764154004be73483e459f5a13",
+    "mod/src/ep_component33_image.h": "0f01f15d539bbcfc8917340fda0f4285b935a27f7a9507c217b2d63af8d741b5",
+    "mod/src/ep_component33_image.cpp": "7a1c0b20e6d0295ce940f899d2fb6a4f7b02df02defe771b1e2fdb86ec3dfeb8",
+    "mod/src/ep_component33_templates.h": "2d0cff351b5bc895a9302cf49209b17433a221df45da7666296e0376810ce76a",
     "tests/component33_image_dll.cpp": "460ea0826aad361880d61994dc192f0ae173e016b51454c6635fe1691b541a28",
     "tests/native_component33_unwind_test.c": "7c5f38555343fd7c451998f27777d1cebd0f1325eb0325f62b6d50f3b7b5f133",
     "tests/native_producer_unwind_test.c": "84b1bbac115a9e0f3b1f71505695b1c8ccd0637d9c0d6423d7afa7c35a90bec4",
@@ -9194,12 +9194,12 @@
   },
   "artifacts": {
     "component33_image_test.dll": {
-      "bytes": 224256,
-      "sha256": "f902ccb3a6b3aed9f3a6c3d25453711ce1ea0ff04883d9d94bef88e6b3e6c31e"
+      "bytes": 231424,
+      "sha256": "845f364945d067e638987ce26db628c8075c5b83d27a086ac8bec1104c29d93e"
     },
     "native_component33_unwind_test.exe": {
       "bytes": 225280,
-      "sha256": "bdf85f49cc1d7b7a6b93058559e9c051f33d3d5375d28fb60f5bc9e36a71ba10"
+      "sha256": "d9eb01db23b57bd5a2408ec74c3b29a25d5391538e10db4e2da5db3f8a6f1312"
     },
     "component33-mover-unwind.bin": {
       "bytes": 665664,
@@ -9229,7 +9229,7 @@
     "Four core images only: mover, append, dense insert, remove. No publish/prepare API or automatic binding.",
     "Original header, inline eight-bucket map and aliases retained; all four arrays require a lifetime-owned B binding.",
     "Byte rows are intentionally not moved; copied pointer/primary/secondary preserve original differences.",
-    "Dense insertion and dense removal with a pending tail refuse before writes. Remaining classify/property/owner readers must be ported.",
+    "Dense insertion and dense removal with a pending tail refuse before writes. Classification has separate validation; property/owner readers remain pending.",
     "Readable entities, coherent prefix flags and synchronized ownership remain caller obligations."
   ]
 }
