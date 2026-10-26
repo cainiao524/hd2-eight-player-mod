@@ -24,7 +24,10 @@ typedef struct EpC33ResourceEntriesInfo {
      * DRAIN is an internal helper, never an original hook address. */
     uint64_t targets[EP_C33_RESOURCE_ENTRY_COUNT];
     EpSessionCodeInfo code[EP_C33_RESOURCE_ENTRY_COUNT];
+    uint64_t update_target;
+    EpSessionCodeInfo update_entry,update_body;
 } EpC33ResourceEntriesInfo;
+typedef struct EpC33UpdateEntryConfig { uintptr_t desired_entry,desired_body; } EpC33UpdateEntryConfig;
 /* Owns four leaf Win64 argument bridges and their immutable dispatch data.
  * ACQUIRE/DEFER: RCX=S, RDX=object. RELEASE: RCX=S, EDX=ordinal, R8B=flag;
  * only the low byte controls deferred release. The bridges tail-call a
@@ -42,10 +45,25 @@ typedef struct EpC33ResourceEntriesInfo {
  * Cancel only before exposure; retain ALL four entries before a coordinated
  * publisher exposes any entry/window. No auto-registration or partial
  * publisher is supplied. PREPARED code must never be invoked or exposed.
- * UPDATE, its internal calls, original reset wrappers and all other writers
- * still need coordinated routing. Native service/callee semantics and real
+ * Original callbacks, reset wrappers and all other writers still need
+ * coordinated routing. Native service/callee semantics and real
  * multiplayer remain unverified. These entries are not a read-only sampler. */
 int ep_component33_resource_entries_prepare(const HfApi*,HfMod*,const EpC33ResourceEntryBindings*,EpC33ResourceEntriesInfo*);
+/* Includes UPDATE 664520: RCX=S, XMM1=float delta. Owns its whole-call entry
+ * and routed body in the SAME lifetime transaction as all four resource
+ * bridges. Requires placements allowing the saved rel32 targets. Its private
+ * guard refusal bridge lies at update_entry.base+32 and cannot return.
+ *
+ * UPDATE holds this owner across its complete frame, marks one outer write
+ * revision and rejects recursion or entry from a resource callback before
+ * body execution. All SEH exits clear dispatch TLS and quarantine the owner;
+ * the rejection policy runs after the owner call unwinds. Other saved engine
+ * callbacks are retained, not audited or made rollback-safe by this API.
+ * Uncoordinated original writers, callbacks that swallow faults, safe RESET
+ * and complete publication remain obligations of the integration. No hook
+ * is installed and no SDK reads occur during preparation. Legacy prepare
+ * leaves update_target/update_entry/update_body zero. */
+int ep_component33_resource_entries_prepare_update(const HfApi*,HfMod*,const EpC33ResourceEntryBindings*,const EpC33UpdateEntryConfig*,EpC33ResourceEntriesInfo*);
 int ep_component33_resource_entries_info(HfMod*,uint64_t,EpC33ResourceEntriesInfo*);
 int ep_component33_resource_entries_retain(HfMod*,uint64_t);
 int ep_component33_resource_entries_cancel(HfMod*,uint64_t);
