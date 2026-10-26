@@ -2,7 +2,7 @@
 #include <string.h>
 #include "roster_group_dll.h"
 static unsigned failing_step,preparing_step;
-static uint64_t prepared_mover,expected_association;
+static uint64_t prepared_mover,expected_association,prepared_getter;
 static int failing_free;
 static BOOL TestFree(LPVOID p,SIZE_T bytes,DWORD flags) {return failing_free ? FALSE : VirtualFree(p,bytes,flags);}
 static BOOL TestProtect(LPVOID p,SIZE_T bytes,DWORD flags,PDWORD old)
@@ -18,17 +18,19 @@ static BOOL TestProtect(LPVOID p,SIZE_T bytes,DWORD flags,PDWORD old)
  * single indirect tail jump at body offset zero leaves the original prologue
  * unexecuted; compiler-generated leaf targets keep their own unwind contract. */
 #define LEAF(n) static uint64_t Leaf##n(void) {return 1000+n;}
-LEAF(1) LEAF(2) LEAF(3) LEAF(4) LEAF(5) LEAF(6) LEAF(7) LEAF(8) LEAF(9) LEAF(10) LEAF(11) LEAF(12) LEAF(13) LEAF(14)
+LEAF(1) LEAF(2) LEAF(3) LEAF(4) LEAF(5) LEAF(6) LEAF(7) LEAF(8) LEAF(9) LEAF(10) LEAF(11) LEAF(12) LEAF(13) LEAF(14) LEAF(15)
 #undef LEAF
 static EpPropertyResult FixtureGate(uint32_t kind,const EpInsertAddresses* a,uint64_t control,uint64_t next,EpRosterGateImage* out)
 {
     EpPropertyResult rc=ep_roster_gate_build(kind,a,control,next,out);preparing_step=kind;
     if (rc!=EP_PROPERTY_OK) return rc;
+    if (kind==EP_ROSTER_GETTER) prepared_getter=a->code_address+32;
+    if (kind==EP_ROSTER_DEPARTURE && a->move_code_address!=prepared_getter) return EP_PROPERTY_ARGUMENT;
     if (kind==EP_ROSTER_MOVER) prepared_mover=a->code_address+32;
     if (kind>=5 && kind<=10 && a->move_code_address!=prepared_mover) return EP_PROPERTY_ARGUMENT;
     if (kind==EP_ROSTER_REGISTRY_UPDATE) expected_association=a->move_code_address;
     if (kind==EP_ROSTER_ASSOCIATION && a->code_address+32!=expected_association) return EP_PROPERTY_ARGUMENT;
-    static uint64_t (*const leaf[])(void)={Leaf1,Leaf2,Leaf3,Leaf4,Leaf5,Leaf6,Leaf7,Leaf8,Leaf9,Leaf10,Leaf11,Leaf12,Leaf13,Leaf14};
+    static uint64_t (*const leaf[])(void)={Leaf1,Leaf2,Leaf3,Leaf4,Leaf5,Leaf6,Leaf7,Leaf8,Leaf9,Leaf10,Leaf11,Leaf12,Leaf13,Leaf14,Leaf15};
     const uint8_t jump[]={0xFF,0x25,0,0,0,0};uintptr_t target=(uintptr_t)leaf[kind-1];
     memcpy(out->data+32,jump,6);memcpy(out->data+38,&target,8);
     return rc;

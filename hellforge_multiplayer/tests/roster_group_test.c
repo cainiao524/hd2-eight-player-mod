@@ -77,6 +77,10 @@ static void Tables(const EpRosterGroupInfo* info)
     uintptr_t call=info->code[EP_ROSTER_REGISTRY_UPDATE-1].base+32+0x18e;
     int32_t displacement;CHECK(*(uint8_t*)call==0xe8);memcpy(&displacement,(void*)(call+1),4);
     CHECK(call+5+displacement==info->code[EP_ROSTER_ASSOCIATION-1].base+32);
+    /* Saved 6059EE uses the same group's getter body while departure is owned. */
+    call=info->code[EP_ROSTER_DEPARTURE-1].base+32+0x2d8;
+    CHECK(*(uint8_t*)call==0xe8);memcpy(&displacement,(void*)(call+1),4);
+    CHECK(call+5+displacement==info->code[EP_ROSTER_GETTER-1].base+32);
 }
 static void BadTables(const EpRosterGroupInfo* info)
 {

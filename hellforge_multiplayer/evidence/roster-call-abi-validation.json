@@ -1,8 +1,10 @@
 {
   "schema": "hellforge_roster_call_abi_v1",
   "passed": true,
-  "verified_at_utc": "2026-10-26T00:27:04.192617+00:00",
+  "verified_at_utc": "2026-10-26T01:07:19.461380+00:00",
   "game_build": 25480438,
+  "indirect_tail_rejection_controls": 3,
+  "indirect_tail_target_abi_verified": false,
   "entries": [
     {
       "kind": 1,
@@ -11,6 +13,7 @@
       "stack_copy_bytes": 16,
       "cfg_states": 130,
       "returns": 1,
+      "indirect_tail_abi_pending": [],
       "external_tail_abi_pending": [],
       "stack_arguments": [
         {
@@ -34,6 +37,7 @@
       "stack_copy_bytes": 0,
       "cfg_states": 72,
       "returns": 1,
+      "indirect_tail_abi_pending": [],
       "external_tail_abi_pending": [],
       "stack_arguments": []
     },
@@ -44,6 +48,7 @@
       "stack_copy_bytes": 0,
       "cfg_states": 43,
       "returns": 1,
+      "indirect_tail_abi_pending": [],
       "external_tail_abi_pending": [],
       "stack_arguments": []
     },
@@ -54,6 +59,7 @@
       "stack_copy_bytes": 0,
       "cfg_states": 78,
       "returns": 1,
+      "indirect_tail_abi_pending": [],
       "external_tail_abi_pending": [],
       "stack_arguments": []
     },
@@ -64,6 +70,7 @@
       "stack_copy_bytes": 0,
       "cfg_states": 57,
       "returns": 0,
+      "indirect_tail_abi_pending": [],
       "external_tail_abi_pending": [
         {
           "rva": "0x60cb9a",
@@ -79,6 +86,7 @@
       "stack_copy_bytes": 0,
       "cfg_states": 36,
       "returns": 1,
+      "indirect_tail_abi_pending": [],
       "external_tail_abi_pending": [],
       "stack_arguments": []
     },
@@ -89,6 +97,7 @@
       "stack_copy_bytes": 0,
       "cfg_states": 37,
       "returns": 1,
+      "indirect_tail_abi_pending": [],
       "external_tail_abi_pending": [],
       "stack_arguments": []
     },
@@ -99,6 +108,7 @@
       "stack_copy_bytes": 0,
       "cfg_states": 57,
       "returns": 0,
+      "indirect_tail_abi_pending": [],
       "external_tail_abi_pending": [
         {
           "rva": "0x540a39",
@@ -114,6 +124,7 @@
       "stack_copy_bytes": 0,
       "cfg_states": 43,
       "returns": 1,
+      "indirect_tail_abi_pending": [],
       "external_tail_abi_pending": [],
       "stack_arguments": []
     },
@@ -124,6 +135,7 @@
       "stack_copy_bytes": 0,
       "cfg_states": 40,
       "returns": 1,
+      "indirect_tail_abi_pending": [],
       "external_tail_abi_pending": [
         {
           "rva": "0x540ad5",
@@ -139,6 +151,7 @@
       "stack_copy_bytes": 0,
       "cfg_states": 197,
       "returns": 1,
+      "indirect_tail_abi_pending": [],
       "external_tail_abi_pending": [],
       "stack_arguments": []
     },
@@ -149,6 +162,7 @@
       "stack_copy_bytes": 0,
       "cfg_states": 232,
       "returns": 1,
+      "indirect_tail_abi_pending": [],
       "external_tail_abi_pending": [],
       "stack_arguments": []
     },
@@ -159,6 +173,7 @@
       "stack_copy_bytes": 0,
       "cfg_states": 203,
       "returns": 1,
+      "indirect_tail_abi_pending": [],
       "external_tail_abi_pending": [],
       "stack_arguments": []
     },
@@ -169,12 +184,31 @@
       "stack_copy_bytes": 0,
       "cfg_states": 72,
       "returns": 1,
+      "indirect_tail_abi_pending": [],
+      "external_tail_abi_pending": [],
+      "stack_arguments": []
+    },
+    {
+      "kind": 15,
+      "name": "departure",
+      "entry": "0x605950",
+      "stack_copy_bytes": 0,
+      "cfg_states": 346,
+      "returns": 0,
+      "indirect_tail_abi_pending": [
+        {
+          "rva": "0x605f28",
+          "operand": "qword ptr [r8 + 0x480]",
+          "encoding": "49ffa080040000",
+          "target_contract_verified": false
+        }
+      ],
       "external_tail_abi_pending": [],
       "stack_arguments": []
     }
   ],
   "test_source_sha256": {
-    "tools/verify_roster_call_abi.py": "57706fcd81571e36628c677b224165baf021f0fec2f62440fbf6edec608cd962"
+    "tools/verify_roster_call_abi.py": "9c8252282f9de7e42e21f6cf94322f24f3f7a661a582db8312c80a6db484d57f"
   },
   "legacy_source_sha256": {
     "hellforge_multiplayer/native-unwind-source.lock.json": "bfefac86c12f8a761b563d4da814ed1195eb7967f024fe218b9e6d6c5a896680",
@@ -191,7 +225,9 @@
     "hellforge_multiplayer/native-classify.lock.json": "41843b622018655e4d286036256ba8463ce6f638a15fd33f6cd1bf5ff87c8b03",
     "five_player_feasibility_20260927/roster_classify_native_evidence.json": "f20165dad6823edc40fbcdf0434123139f1c80d9222a2b20d3f4c067768e9e33",
     "hellforge_multiplayer/native-registry.lock.json": "0130519db9642a033b2a1a6fe8aaec10a3e480b40dfed73ecbfe0b58b201b3c9",
-    "five_player_feasibility_20260927/roster_registry_update_native_evidence.json": "7a8f289ea8ddf85d1b2010a39d9cedc4599e9846db8936b9e215cbd4a96740e1"
+    "five_player_feasibility_20260927/roster_registry_update_native_evidence.json": "7a8f289ea8ddf85d1b2010a39d9cedc4599e9846db8936b9e215cbd4a96740e1",
+    "hellforge_multiplayer/native-departure.lock.json": "68e0993431ff7f205746769d662a9409aa526421c20eb9b1cceaad209692c75b",
+    "five_player_feasibility_20260927/roster_departure_native_evidence.json": "0280267b6f32d4a24f15c69da317d1c2c7a93adb136d4252ff93e09a8d67e609"
   },
   "live_callers_verified": false,
   "transitive_helper_abi_verified": false,

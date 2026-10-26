@@ -14,7 +14,7 @@ typedef struct EpDepartureImage {
 } EpDepartureImage;
 /* Saved 605950 pre-removal callbacks, with thirteen chained body fragments.
  * getter_code_address identifies the shared 606AD0 getter BODY. This image is
- * prepared independently; it is not yet joined to the fourteen-entry owner.
+ * prepared independently or as entry 15 with the same-group getter body.
  * Explicit numeric bindings only. No game discovery or automatic publication.
  * Original callback effects and player-count resources remain external contracts. */
 EpPropertyResult ep_departure_image_build(const EpDepartureAddresses*,EpDepartureImage*);

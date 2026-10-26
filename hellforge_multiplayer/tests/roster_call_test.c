@@ -27,10 +27,15 @@ static uint64_t Body(unsigned kind,int active,uint64_t a,uint64_t b,uint64_t c,u
 {
     InterlockedIncrement(&bodies);EpRosterOwnerInfo info;
     if(installed[kind-1]) CHECK(test->owner_info(mod,storage,&info)==EP_OWNER_REENTRANT);
-    if(block_leaf && kind==2){SetEvent(leaf_enter);CHECK(WaitForSingleObject(leaf_resume,5000)==WAIT_OBJECT_0);}
+    if(block_leaf==(int)kind){SetEvent(leaf_enter);CHECK(WaitForSingleObject(leaf_resume,5000)==WAIT_OBJECT_0);}
     if(fault_kind==kind) RaiseException(0xE0422001,0,0,NULL);
     if(nested_kind==kind){
         if(recursive) targets[kind-1](a,b,c,d,e,f);
+        else if(kind==EP_ROSTER_DEPARTURE){
+            CHECK(((FloatCall)targets[EP_ROSTER_GETTER-1])(1.25,2.5,4.75,8.0)==88.5+(active?1000:0));
+            CHECK(targets[EP_ROSTER_REMOVE_LEGACY-1](a,b,c,d,71,97)==(fault_kind==EP_ROSTER_REMOVE_LEGACY?Failed(EP_ROSTER_REMOVE_LEGACY):Number(EP_ROSTER_REMOVE_LEGACY,active)));
+            if(!fault_kind)CHECK(targets[EP_ROSTER_REMOVE_REGISTERED-1](a,b,c,d,71,97)==Number(EP_ROSTER_REMOVE_REGISTERED,active));
+        }
         else {targets[0](a,b,c,d,71,97);((FloatCall)targets[2])(1.25,2.5,4.75,8.0);}
     }
     return kind+(active?1000:0)+a+3*b+5*c+7*d+(kind==1?11*e+13*f:0);
@@ -39,6 +44,14 @@ static uint64_t Body(unsigned kind,int active,uint64_t a,uint64_t b,uint64_t c,u
 static uint64_t New##n(uint64_t a,uint64_t b,uint64_t c,uint64_t d,uint64_t e,uint64_t f){return Body(n,1,a,b,c,d,n==1?e:0,n==1?f:0);}
 FUNCTIONS(1) FUNCTIONS(2) FUNCTIONS(5) FUNCTIONS(6) FUNCTIONS(7) FUNCTIONS(8) FUNCTIONS(9) FUNCTIONS(10) FUNCTIONS(11) FUNCTIONS(12) FUNCTIONS(13) FUNCTIONS(14)
 #undef FUNCTIONS
+/* Own four-register tail targets. This exercises bridge lifetime across a real
+ * indirect tail; it makes no claim about the unresolved game's tail target. */
+typedef uint64_t (*TailCall)(uint64_t,uint64_t,uint64_t,uint64_t);
+static uint64_t TailOld15(uint64_t a,uint64_t b,uint64_t c,uint64_t d){return Body(EP_ROSTER_DEPARTURE,0,a,b,c,d,0,0);}
+static uint64_t TailNew15(uint64_t a,uint64_t b,uint64_t c,uint64_t d){return Body(EP_ROSTER_DEPARTURE,1,a,b,c,d,0,0);}
+__attribute__((used)) static TailCall DepartureOldTail=TailOld15,DepartureNewTail=TailNew15;
+__attribute__((naked,noinline)) static uint64_t Old15(uint64_t a,uint64_t b,uint64_t c,uint64_t d){__asm__("jmp *DepartureOldTail(%rip)");}
+__attribute__((naked,noinline)) static uint64_t New15(uint64_t a,uint64_t b,uint64_t c,uint64_t d){__asm__("jmp *DepartureNewTail(%rip)");}
 static double FloatBody(int active,double a,double b,double c,double d)
 {
     InterlockedIncrement(&bodies);EpRosterOwnerInfo info;
@@ -86,8 +99,8 @@ static EpRosterGroupBindings Targets(void)
     uint8_t* memory=VirtualAlloc(NULL,74727424,MEM_RESERVE,PAGE_NOACCESS);CHECK(memory!=NULL);
     EpRosterGroupBindings b={0};b.game_base=(uintptr_t)memory;
     b.roster_address=(uintptr_t)memory+0x8000000;b.storage_address=(uintptr_t)memory+0x10000000;
-    const uintptr_t old[EP_ROSTER_ENTRIES]={(uintptr_t)Old1,(uintptr_t)Old2,(uintptr_t)Old3,(uintptr_t)StateOld,(uintptr_t)Old5,(uintptr_t)Old6,(uintptr_t)Old7,(uintptr_t)Old8,(uintptr_t)Old9,(uintptr_t)Old10,(uintptr_t)Old11,(uintptr_t)Old12,(uintptr_t)Old13,(uintptr_t)Old14};
-    const uintptr_t next[EP_ROSTER_ENTRIES]={(uintptr_t)New1,(uintptr_t)New2,(uintptr_t)New3,(uintptr_t)StateNew,(uintptr_t)New5,(uintptr_t)New6,(uintptr_t)New7,(uintptr_t)New8,(uintptr_t)New9,(uintptr_t)New10,(uintptr_t)New11,(uintptr_t)New12,(uintptr_t)New13,(uintptr_t)New14};
+    const uintptr_t old[EP_ROSTER_ENTRIES]={(uintptr_t)Old1,(uintptr_t)Old2,(uintptr_t)Old3,(uintptr_t)StateOld,(uintptr_t)Old5,(uintptr_t)Old6,(uintptr_t)Old7,(uintptr_t)Old8,(uintptr_t)Old9,(uintptr_t)Old10,(uintptr_t)Old11,(uintptr_t)Old12,(uintptr_t)Old13,(uintptr_t)Old14,(uintptr_t)Old15};
+    const uintptr_t next[EP_ROSTER_ENTRIES]={(uintptr_t)New1,(uintptr_t)New2,(uintptr_t)New3,(uintptr_t)StateNew,(uintptr_t)New5,(uintptr_t)New6,(uintptr_t)New7,(uintptr_t)New8,(uintptr_t)New9,(uintptr_t)New10,(uintptr_t)New11,(uintptr_t)New12,(uintptr_t)New13,(uintptr_t)New14,(uintptr_t)New15};
     test->targets(next);
     for(unsigned i=0;i<EP_ROSTER_ENTRIES;i++){
         EpRosterGateLayout layout;CHECK(test->layout(i+1,&layout));uint8_t* at=memory+layout.original_rva;
@@ -163,11 +176,18 @@ static int Scope(void* unused,const EpNativeRosterView* v)
     CHECK(test->call(&g_mods[1],storage,0,Unexpected,NULL)==EP_OWNER_REENTRANT);
     CHECK(targets[0](11,23,37,53,71,97)==Number(1,0));return 1;
 }
-static void Race(void)
+static void NestedDeparture(int active)
 {
-    block_leaf=block_commit=1;leaf_enter=Event();leaf_resume=Event();commit_enter=Event();
+    EpRosterOwnerInfo before,after;CHECK(test->owner_info(mod,storage,&before)==EP_OWNER_OK);
+    nested_kind=EP_ROSTER_DEPARTURE;
+    CHECK(targets[EP_ROSTER_DEPARTURE-1](11,23,37,53,71,97)==Number(EP_ROSTER_DEPARTURE,active));nested_kind=0;
+    CHECK(test->owner_info(mod,storage,&after)==EP_OWNER_OK && after.revision==before.revision+1 && !after.fault);
+}
+static void Race(unsigned kind)
+{
+    block_leaf=kind;block_commit=1;leaf_enter=Event();leaf_resume=Event();commit_enter=Event();
     validate_enter=Event();validate_resume=Event();end_enter=Event();end_resume=Event();
-    HANDLE leaf=CreateThread(NULL,0,Leaf,(void*)2,0,NULL);CHECK(leaf!=NULL);CHECK(WaitForSingleObject(leaf_enter,5000)==WAIT_OBJECT_0);
+    HANDLE leaf=CreateThread(NULL,0,Leaf,(void*)(uintptr_t)kind,0,NULL);CHECK(leaf!=NULL);CHECK(WaitForSingleObject(leaf_enter,5000)==WAIT_OBJECT_0);
     HANDLE commit=CreateThread(NULL,0,Commit,NULL,0,NULL);CHECK(commit!=NULL);CHECK(WaitForSingleObject(commit_enter,5000)==WAIT_OBJECT_0);Pending(2,0);
     CHECK(WaitForSingleObject(validate_enter,0)==WAIT_TIMEOUT);SetEvent(leaf_resume);Join(leaf);
     CHECK(WaitForSingleObject(validate_enter,5000)==WAIT_OBJECT_0);LONG before=memory_reads;
@@ -208,14 +228,15 @@ int main(int argc,char** argv)
     CHECK(test->call(mod,storage,0,Scope,NULL)==EP_OWNER_OK);
     CHECK(test->owner_info(mod,storage,&info)==EP_OWNER_OK && info.revision==before.revision+1);
     CHECK(test->close(mod,other_storage)==EP_OWNER_OK);
+    NestedDeparture(0);
     nested_kind=11;CHECK(test->owner_info(mod,storage,&before)==EP_OWNER_OK);
     CHECK(targets[10](11,23,37,53,71,97)==Number(11,0));nested_kind=0;
     CHECK(test->owner_info(mod,storage,&info)==EP_OWNER_OK && info.revision==before.revision+1);
     if(!strcmp(mode,"unavailable")){
         CHECK(test->close(mod,storage)==EP_OWNER_OK);expected_owned_end=0;CHECK(!test->commit(mod,current,&guard));
         CHECK(test->info(mod,current,&group) && !group.active && group.state==EP_GROUP_READY);Routes(0,1);
-    }else if(!strcmp(mode,"close")){
-        block_leaf=1;leaf_enter=Event();leaf_resume=Event();HANDLE leaf=CreateThread(NULL,0,Leaf,(void*)2,0,NULL);CHECK(leaf!=NULL);
+    }else if(!strcmp(mode,"close") || !strcmp(mode,"departureclose")){
+        unsigned close_kind=!strcmp(mode,"departureclose")?EP_ROSTER_DEPARTURE:2;block_leaf=close_kind;leaf_enter=Event();leaf_resume=Event();HANDLE leaf=CreateThread(NULL,0,Leaf,(void*)(uintptr_t)close_kind,0,NULL);CHECK(leaf!=NULL);
         CHECK(WaitForSingleObject(leaf_enter,5000)==WAIT_OBJECT_0);HANDLE queued=CreateThread(NULL,0,Queued,NULL,0,NULL);CHECK(queued!=NULL);Pending(2,0);
         HANDLE close=CreateThread(NULL,0,Close,NULL,0,NULL);CHECK(close!=NULL);Pending(2,1);CHECK(WaitForSingleObject(close,20)==WAIT_TIMEOUT);
         SetEvent(leaf_resume);Join(leaf);Join(queued);Join(close);block_leaf=0;CloseHandle(leaf_enter);CloseHandle(leaf_resume);Routes(0,1);
@@ -227,7 +248,7 @@ int main(int argc,char** argv)
             CHECK(test->info(mod,current,&group) && group.active==(unsigned)end_fault && group.state==(uint32_t)(end_fault?EP_GROUP_ACTIVE:EP_GROUP_READY));
             if(end_fault)CHECK(!test->cancel(mod,current));
         }else{
-            if(!strcmp(mode,"normal"))Race();else CHECK(test->commit(mod,current,&guard));Routes(1,0);HardwareAbi(1);
+            if(!strcmp(mode,"normal") || !strcmp(mode,"departurerace"))Race(!strcmp(mode,"departurerace")?EP_ROSTER_DEPARTURE:2);else CHECK(test->commit(mod,current,&guard));Routes(1,0);HardwareAbi(1);NestedDeparture(1);
             CHECK(test->info(mod,current,&group) && group.active && group.state==EP_GROUP_ACTIVE);
             CHECK(!test->cancel(mod,current));CHECK(test->owner_info(mod,storage,&before)==EP_OWNER_OK);
             if(!strcmp(mode,"exhausted")){
@@ -238,9 +259,10 @@ int main(int argc,char** argv)
                 CHECK(test->owner_info(mod,storage,&info)==EP_OWNER_OK && info.revision==UINT64_MAX && !info.fault);
             }else{
                 if(!strcmp(mode,"nestedfault")){nested_kind=11;fault_kind=1;}
+                else if(!strcmp(mode,"departurefault")){nested_kind=EP_ROSTER_DEPARTURE;fault_kind=EP_ROSTER_REMOVE_LEGACY;}
                 else if(!strcmp(mode,"depth")){nested_kind=11;recursive=1;}
                 else fault_kind=6;
-                unsigned kind=nested_kind?11:6;CHECK(targets[kind-1](11,23,37,53,71,97)==Failed(kind));nested_kind=fault_kind=0;recursive=0;
+                unsigned kind=nested_kind?nested_kind:6;CHECK(targets[kind-1](11,23,37,53,71,97)==Failed(kind));nested_kind=fault_kind=0;recursive=0;
                 CHECK(test->owner_info(mod,storage,&info)==EP_OWNER_OK && info.fault==(uint32_t)(!strcmp(mode,"depth")?EP_OWNER_REENTRANT:EP_OWNER_CALLBACK_FAULT) && info.revision==before.revision);
             }
         }
