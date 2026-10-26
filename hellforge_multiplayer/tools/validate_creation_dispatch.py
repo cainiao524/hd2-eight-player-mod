@@ -89,9 +89,11 @@ def validate(library, component_library=None):
 
     class Fixture(p.Fixture):
         def __init__(self, count, *, original=False, components=False, literal8=False,
-                     resource_type=17, game=p.GAME, native33=False):
+                     resource_type=17, game=p.GAME, native33=False, initialize33=False):
             super().__init__('dense_registered', count, count, count, 1, original=original, game=game)
             self.native33 = native33
+            self.initialize33=initialize33
+            self.descriptor_base=None;self.descriptor_count_pointer=None
             self.side33 = 0x1840A000000
             self.entry33 = game+0x10300000
             self.move33 = game+0x10310000
@@ -175,6 +177,7 @@ def validate(library, component_library=None):
                 for component in self.components:
                     callback = (self.start if phase == 1 and component == 239 else
                                 (self.entry33 if native33 else game + 0x51AC70) if phase == 1 and component == 33 else
+                                game+(0x51ADB0 if phase==2 else 0x51ADE0) if initialize33 and component==33 and phase in (2,3) else
                                 self.stub(f'component_{phase}_{component}'))
                     self.write(OWNER + table + component * 8, u64(callback))
             if components:
@@ -203,6 +206,21 @@ def validate(library, component_library=None):
                             storage_address=self.side33,move_code_address=self.move33,reject_address=self.reject33)['image']
                         self.map(entry,len(image));self.write(entry,image)
                     self.map(self.reject33,1);self.write(self.reject33,b'\xcc')
+                    if initialize33:
+                        import component33_initialization_fixture as initialization
+                        import native_component33_image as component_image
+                        self.initialization=initialization
+                        def put(address,body):self.map(address,len(body));self.write(address,body)
+                        self.expected_secondary=initialization.seed_inputs(put,game)
+                        put(initialization.ALLOC-0x40,b'\xab'*0xC0)
+                        self.stub('component33_allocate',game+0x173B8D0);self.stub('component33_clear',game+0x208AAA0)
+                        for kind,entry in (('property',game+0x10330000),('reset',game+0x10340000)):
+                            image=component_library.candidate(kind,game_base=game,code_address=entry,component_address=S33,
+                                storage_address=self.side33,move_code_address=self.move33,reject_address=self.reject33)['image']
+                            put(entry,image);w=component_image.profile()['initialization_callbacks'][kind];blob=bytearray.fromhex(w['body_hex'])
+                            offset=0x19 if kind=='property' else 0xE;need(blob[offset]==0xE8,'callback call changed')
+                            struct.pack_into('<i',blob,offset+1,entry-(game+w['entry']+offset+5));put(game+w['entry'],bytes(blob))
+                        for rva,size in ((0x3797960,0x800),(0x3798180,0x20),(0x3797550,0x400),(0x348BA88,8)):put(game+rva,b'\x96'*size)
             self.uc.reg_write(p.reg('rcx'), CONTEXT)
             self.uc.reg_write(p.reg('rdx'), self.handle)
             self.uc.reg_write(p.reg('r8'), RESOURCE_HASH)
@@ -269,7 +287,8 @@ def validate(library, component_library=None):
                 _, phase, component = name.split('_')
                 need(args['rcx'] == self.record and args['rdx'] == META, 'component ABI')
                 if phase == '2':
-                    need(args['r8'] % 16 == 0 and self.int32(args['r9']) == 0, 'descriptor ABI')
+                    count=4 if self.initialize33 and self.components.index(int(component))>self.components.index(33) else 0
+                    need(args['r8'] % 16 == 0 and self.int32(args['r9']) == count, 'descriptor ABI')
                     need(self.int64(self.int64(rsp + 40)) == LIST, 'fifth callback argument')
             elif name in ('scope_enter', 'scope_exit'):
                 need(args['rcx'] == 0x12345678, 'resource outer scope argument')
@@ -286,8 +305,14 @@ def validate(library, component_library=None):
             elif name == 'world':
                 result = 0x12340000
             elif name == 'create_resource':
-                need(args['rcx'] == 0x12340000 and args['rdx'] == self.resource_type and args['r9'] == 0, 'resource create ABI')
+                need(args['rcx'] == 0x12340000 and args['rdx'] == self.resource_type and args['r9'] == (4 if self.initialize33 else 0), 'resource create ABI')
+                if self.initialize33:need(args['r8']==self.descriptor_base,'descriptor pointer not forwarded to resource API')
                 result = 0x7000 + self.t
+            elif name=='component33_allocate':
+                need(args['rcx']==LIST and args['rdx']==56 and args['r8']==4,'creation property allocation ABI');result=self.initialization.ALLOC
+            elif name=='component33_clear':
+                need(args['rcx']==self.game+0x3797550 and args['rdx']==0 and args['r8']==0x400,'creation reset clear ABI')
+                self.write(args['rcx'],bytes(0x400));result=args['rcx']
             elif name == 'cookie':
                 need(args['rcx'] == COOKIE, 'stack cookie changed')
             elif name == 'final_tag':
@@ -304,6 +329,13 @@ def validate(library, component_library=None):
                 self.outcome="component33_reject";uc.emu_stop();return
             if self.native33 and address==self.entry33:
                 self.events.append({"role":"native_component33_insert","roster_counts":self.counts()})
+            if self.initialize33 and address in (self.game+0x51ADB0,self.game+0x51ADE0):
+                phase=2 if address==self.game+0x51ADB0 else 3
+                need(uc.reg_read(p.reg('rcx'))==self.record,'actual initialization callback entity')
+                if phase==2:
+                    self.descriptor_base=uc.reg_read(p.reg('r8'));self.descriptor_count_pointer=uc.reg_read(p.reg('r9'))
+                    need(self.int32(self.descriptor_count_pointer)==0,'initial descriptor count')
+                self.events.append({'role':f'component_{phase}_33','native_component33':True,'roster_counts':self.counts()})
             if address in (self.stop, self.reject, self.move_reject):
                 self.outcome = 'return' if address == self.stop else 'roster_reject'
                 uc.emu_stop()
@@ -337,6 +369,7 @@ def validate(library, component_library=None):
             if self.with_components:
                 allowed.append((S33, 0x400))
                 if self.native33:allowed.append((self.side33,0x490))
+                if self.initialize33:allowed.extend([(self.initialization.ALLOC,56)]+[(self.game+rva,size) for rva,size in ((0x3797960,0x800),(0x3798180,0x20),(0x3797550,0x400),(0x348BA88,8))])
             for address, size in self.writes:
                 # The intentional original guard faults before a null write can
                 # commit. Unicorn records its attempted write as well.
@@ -368,8 +401,17 @@ def validate(library, component_library=None):
                 else:
                     need([self.int32(S33+i) for i in (8,12,16)]==[self.t+1]*3,'component33 count not inserted')
                     need(self.int64(self.side33+8*self.t)==self.record and self.map_value(S33+0x58,self.handle)==self.t,'component33 record/map mismatch')
-                    need(self.read(self.side33+0x50+0x50*self.t,0x50)==bytes(0x50),'component33 primary initialization')
-                    need(self.read(self.side33+0x40,8)==b'\xb6'*8 and self.read(self.side33+0x2D0,0x1C0)==b'\xb6'*0x1C0,'component33 byte/secondary changed')
+                    primary=b'\xff'*44+bytes(36) if self.initialize33 else bytes(0x50)
+                    need(self.read(self.side33+0x50+0x50*self.t,0x50)==primary,'component33 primary initialization')
+                    secondary=bytearray(b'\xb6'*0x1C0)
+                    if self.initialize33:
+                        secondary[self.t*56:(self.t+1)*56]=self.expected_secondary
+                        need(self.read(self.initialization.ALLOC,56)==self.expected_secondary,'creation property payload')
+                        need(self.int32(self.descriptor_count_pointer)==4,'creation descriptor count')
+                        descriptors=b''.join(struct.pack('<IIQ',h,t,self.initialization.ALLOC+off) for h,t,off in ((0xDFE49C6F,10,0),(0x64E318CE,10,24),(0xAE5166E8,10,32),(0xAA7E1B9E,1,52)))
+                        need(self.read(self.descriptor_base,64)==descriptors,'creation descriptors')
+                        need(self.read(self.game+0x3797960,0x800)==bytes(0x800) and self.read(self.game+0x3797550,0x400)==bytes(0x400) and self.read(self.game+0x348BA88,8)==bytes(8),'third callback global reset')
+                    need(self.read(self.side33+0x40,8)==b'\xb6'*8 and self.read(self.side33+0x2D0,0x1C0)==secondary,'component33 byte/secondary changed')
             if self.native33 and self.t==8:
                 pass
             elif self.with_components and self.t >= 4 and not self.literal8 and not self.native33:
@@ -413,7 +455,7 @@ def validate(library, component_library=None):
                     need(self.read(S33 + 0x1D8, 0x50) == bytes(0x50), 'fifth primary did not overwrite secondary')
                     need(self.int64(S33 + 0x90) == self.record, 'fifth pointer did not overwrite byte storage')
             return {'name': name, 'game_base': hex(self.game), 'initial_count': self.t,
-                    'original_roster': self.original, 'native_component33':self.native33, 'component_list': self.components,
+                    'original_roster': self.original, 'native_component33':self.native33, 'native_component33_initialization':self.initialize33, 'component_list': self.components,
                     'negative_literal8_control': self.literal8, 'resource_type': self.resource_type,
                     'outcome': self.outcome, 'instructions': len(self.trace), 'roster_counts': self.counts(),
                     'resource_record_registered': True, 'resource_cursor_after': self.int32(CONTEXT + 0xF32F14),
@@ -430,6 +472,8 @@ def validate(library, component_library=None):
         runs.append(Fixture(4, resource_type=0xFFFFFFFF, game=game).execute('missing_resource_type_keeps_insert'))
         if component_library:
             for count in range(9):runs.append(Fixture(count,components=True,native33=True,game=game).execute('native_component33_'+str(count)))
+            for count in range(9):runs.append(Fixture(count,components=True,native33=True,initialize33=True,game=game).execute('native_component33_initialized_'+str(count)))
+            runs.append(Fixture(7,components=True,native33=True,initialize33=True,resource_type=0xFFFFFFFF,game=game).execute('native_component33_initialized_missing_resource'))
     coverage = {}
     for name, f in lock['functions'].items():
         rows = list(p.decode(bytes.fromhex(f['body_hex']), f['start']))
@@ -438,13 +482,15 @@ def validate(library, component_library=None):
     return {'schema': 'hellforge_saved_player_creation_dispatch_validation_v1', 'passed': True,
             'lock_sha256': LOCK_SHA, 'source_sha256': {
                 **lock['source_sha256'], 'tools/validate_creation_dispatch.py': sha(Path(__file__).read_bytes()),
-                'native-creation-dispatch.lock.json': LOCK_SHA},
+                'native-creation-dispatch.lock.json': LOCK_SHA,
+                **({name:sha((ROOT/'hellforge_multiplayer'/name).read_bytes()) for name in ('tools/component33_initialization_fixture.py','native-component33.lock.json')} if component_library else {})},
             'library_sha256': sha(Path(library.path).read_bytes()),
             'component33_library_sha256':sha(component_library.path.read_bytes()) if component_library else None,
-            'component33_core_integration_runs':sum(r['native_component33'] for r in runs),
+            'component33_core_integration_runs':sum(r['native_component33'] and not r['native_component33_initialization'] for r in runs),
+            'component33_initialization_integration_runs':sum(r['native_component33_initialization'] for r in runs),
             'artifacts': {Path(library.path).name: {'bytes': Path(library.path).stat().st_size, 'sha256': sha(Path(library.path).read_bytes())},
                 **({component_library.path.name:{'bytes':component_library.path.stat().st_size,'sha256':sha(component_library.path.read_bytes())}} if component_library else {})},
-            'reference_validation_sha256':{'native-component33-validation.json':sha((ROOT/'hellforge_multiplayer/evidence/native-component33-validation.json').read_bytes())} if component_library else {},
+            'reference_validation_sha256':{name:sha((ROOT/'hellforge_multiplayer/evidence'/name).read_bytes()) for name in ('native-component33-validation.json','native-component33-initialize-validation.json')} if component_library else {},
             'runs': runs, 'run_count': len(runs),
             'instruction_coverage': coverage, 'runtime_verified': False, 'game_access_performed': False,
             'remaining_capture_calls': 0, 'game_access': False, 'multiplayer_verified': False,

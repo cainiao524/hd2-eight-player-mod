@@ -15,7 +15,7 @@ EpPropertyResult ep_component33_image_build(uint32_t kind,const EpComponent33Add
     if (!out) return EP_PROPERTY_ARGUMENT;
     if (input) a=*input;
     memset(out,0,sizeof(*out));
-    if (!input || kind<1 || kind>6) return EP_PROPERTY_ARGUMENT;
+    if (!input || kind<1 || kind>8) return EP_PROPERTY_ARGUMENT;
     if (!C33Pointer(a.game_base,0x3483c38,4096) || !C33Pointer(a.code_address,4096,16) ||
         !C33Pointer(a.component_address,0x2b8,8) || !C33Pointer(a.storage_address,0x490,16) ||
         a.storage_address<0x70 || !C33Pointer(a.move_code_address,4096,16) || !C33Pointer(a.reject_address,1,1)) return EP_PROPERTY_POINTER;
@@ -24,6 +24,7 @@ EpPropertyResult ep_component33_image_build(uint32_t kind,const EpComponent33Add
     unsigned count=6;
     if (kind!=EP_COMPONENT33_MOVER) { regions[count][0]=a.move_code_address;regions[count++][1]=4096; }
     for (const auto& source:ep_component33_sources) { regions[count][0]=a.game_base+source[0];regions[count++][1]=source[1]; }
+    for (const auto& source:ep_component33_extra_globals) { regions[count][0]=a.game_base+source[0];regions[count++][1]=source[1]; }
     for (unsigned i=0;i<count;i++) for (unsigned j=i+1;j<count;j++)
         if (regions[i][0]<regions[j][0]+regions[j][1] && regions[j][0]<regions[i][0]+regions[i][1]) return EP_PROPERTY_OVERLAP;
     const auto& t=ep_component33_templates[kind-1];

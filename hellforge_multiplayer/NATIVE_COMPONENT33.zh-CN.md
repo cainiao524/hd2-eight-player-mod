@@ -1,6 +1,6 @@
-# 元件 33：核心存储与分类的八槽离线实现
+# 元件 33：核心、分类与初始化的八槽离线实现
 
-更新：2026-10-26。C++ 已能生成搬移、普通插入、密集插入、移除、分类进入和分类退出六个映像，并把它们的数组访问迁到独立八槽区域。**这只是元件 33 的部分生命周期，剩余回调/读写者、生产发布与角色创建仍未完成。** 没有启动、检查、读取、修改或安装游戏。
+更新：2026-10-26。C++ 已能生成搬移、普通插入、密集插入、移除、分类进入、分类退出、属性生成和重置八个映像，并把它们的数组访问迁到独立八槽区域。**这只是元件 33 的部分生命周期，剩余读写者、生产发布与角色创建仍未完成。** 没有启动、检查、读取、修改或安装游戏。
 
 ## 文件与固定来源
 
@@ -11,6 +11,7 @@
 - [tools/validate_component33_images.py](tools/validate_component33_images.py)：执行 C++ 实际输出，比较原版行为、独立数据模型、拒绝路径和 Windows 回溯。
 - [evidence/native-component33-validation.json](evidence/native-component33-validation.json)：功能用例、定位拒绝、源码和产物指纹。
 - [tools/validate_component33_classify.py](tools/validate_component33_classify.py) 与[分类收据](evidence/native-component33-classify-validation.json)：执行保存的回调包装器和分类映像，检查数据交换、条件序言回溯以及分配失败反例。
+- [tools/validate_component33_initialize.py](tools/validate_component33_initialize.py)、[初始化夹具](tools/component33_initialization_fixture.py)与[初始化收据](evidence/native-component33-initialize-validation.json)：执行第二/第三回调，检查属性描述符、部分记录重置、GS 栈保护和分类后的连续操作。
 - [CREATION_DISPATCH.zh-CN.md](CREATION_DISPATCH.zh-CN.md)：与保存的创建分派及八槽名册相连的验证。
 
 来源仍是已保存的 build 25480438 capture 与 `component33_250_lifecycle_evidence_v2.json`。搬移 `665FE0`、普通插入 `51ABF0`、密集插入 `51AC70`、移除 `51AD30`，以及真实 map 插入 `172F790`、删除 `172F8A0` 的完整字节均与保存证据核对。此步骤没有重新读取游戏。
@@ -26,7 +27,7 @@
 | primary | `B+050` | `50` | `[050,2D0)` |
 | secondary | `B+2D0` | `38` | `[2D0,490)` |
 
-表中数字均为十六进制。`[048,050)` 是对齐空隙。旧 `S+70..S+2B8` 数组区域作为哨兵检查，候选六函数不再写入它。
+表中数字均为十六进制。`[048,050)` 是对齐空隙。旧 `S+70..S+2B8` 数组区域作为哨兵检查，候选八函数不再写入它。
 
 每条原数组指令前后用不改变标志位的地址装载切换基址，原指令本身保留。指针、primary、secondary 的地址偏置分别是 `B-70`、`B-48`、`B+F8`。非数组字段仍访问 `S`，调用的真实 map 函数也使用原 map 头。
 
@@ -42,7 +43,19 @@
 
 这两个原函数仅在需要交换时保存 R12、R15。条件序言中插入数组基址切换后，R15 保存结束偏移由 23 变为 43，因此同时重定位 PrologSize、每个 unwind CodeOffset 和片段链；原保存位置与操作保持不变。负对照重新装回旧的 23-byte 序言偏移，确认 Windows 会在尚未执行保存指令的中间位置恢复错误的 R15，修正记录通过同一上下文。
 
-临时对象的初始化、分配、两次清理使用明确的契约替身，测试会改写所有易失整数寄存器、XMM0–5 和 shadow space；实际游戏分配器尚未执行。四个空分配对照（原版/候选、进入/退出）均复现：指针已交换，第一次临时分配返回零后发生无效内存访问，尚未更新分类计数，也未清理。因此 **分配失败回滚仍未实现**，这六个函数不能独立发布到游戏。
+临时对象的初始化、分配、两次清理使用明确的契约替身，测试会改写所有易失整数寄存器、XMM0–5 和 shadow space；实际游戏分配器尚未执行。四个空分配对照（原版/候选、进入/退出）均复现：指针已交换，第一次临时分配返回零后发生无效内存访问，尚未更新分类计数，也未清理。因此 **分配失败回滚仍未实现**，这些函数不能独立发布到游戏。
+
+## 第二/第三阶段初始化
+
+第二张回调表的 `51ADB0` 包装器把五个回调参数转交给 `6661A0`。helper 接受 RDX=entity、R9=描述符数组、entry RSP+28=count 指针、entry RSP+30=list 指针；两个栈偏移为十六进制。它从全局输入对象读取十一项值，在五张保存结构对应的合成表中转换索引，生成 56 bytes secondary，同时申请并填充同样的 56-byte 临时数据，追加四个 16-byte 描述符。四个 hash 为 `DFE49C6F`、`64E318CE`、`AE5166E8`、`AA7E1B9E`，类型为 `10,10,10,1`，数据偏移为 `0,24,32,52`（后两列十进制）。未知键的零/FFFFFFFF 回退保留原行为。
+
+保存的 `581320` 调用者将描述符数组放在 `RBP+30`，cookie 位于 `RBP+830`，因此这条调用路径的空间是 `800` bytes，即 128 个描述符。候选要求初始 count ≤124；数组、count/list 指针和输入对象指针非零，并核对 map 身份及迁移后指针。该容量只依据这个固定调用者，不能作为其他调用者的通用约定。指针可读、list 有效及缓冲生命周期仍由调用方负责。
+
+第三张表的 `51ADE0` 包装器调用 `664430`，把目标 primary 的前 44 bytes 设为 FF，保留余下 36 bytes。它随后重置 `3797960` 的 128×16-byte 表、更新 `3798180` 头部、清零 `3797550` 的 1,024-byte 区域及 `348BA88`。验证执行整个保存包装器；这些全局操作没有被错误移入仅负责 primary 的 helper 映像。
+
+属性映像为 1,988 bytes、三条函数表记录；重置映像为 1,176 bytes、五条记录。属性保留 `EHANDLER|UHANDLER`、120-byte 栈帧和 frame+64 cookie，handler 通过本地跳板连接保存的 `21044A0 → 21044C0 → 2088770`。Windows 三种 unwind flag 均验证，真实保存 GS 处理器只在模拟内存执行；最后的 cookie 检查是显式契约替身。
+
+两次属性分配失败对照（原版/候选）证实：分配器返回零时，secondary 前 24 bytes 已更新，随后写地址零故障，描述符尚未追加。此路径也未实现回滚。helper 预检拒绝不写栈或数据；经过原包装器的拒绝已存在 64/48-byte 调用帧，但不改变数据，不能用普通布尔返回代替非返回拒绝路径。
 
 ## 接口边界与拒绝
 
@@ -66,11 +79,15 @@ Windows 验证只把候选字节放入 `PAGE_READWRITE`，注册临时函数表�
 
 创建分派另有 18 次联合执行：两个模拟基址、已有 0–8 项、参考九元件顺序。第一张表使用当前 C++ 元件 33 和 C++ 名册 239；第 1–8 项经过两个插入器，第九项先被元件 33 拒绝。其他元件及后续属性/资源接口仍是明确标注的替身。原外层在拒绝之前已经写入资源记录等数据，联合测试继续核对并保留这一未解决问题。
 
+初始化收据另外通过 **280 次执行**：50 次四槽原版、194 次八槽候选成功、36 次预检拒绝；覆盖零键、已知键、未知键、混合输入、count=124 边界以及五组分类→属性→重置连续操作。另有 10 组有效定位、94 组拒绝定位、**7,698 个不同 Windows 回溯上下文**、两个损坏元数据负对照、四次 GS 正常/坏 cookie 模拟、两次包装器数据不变拒绝和两次空分配反例。后四类单列，不重复计入 280 次。
+
+创建分派另新增 **20 次初始化整合执行**，保留上述 18 次核心场景：两个基址各执行已有 0–8 项及第八项无效资源类型。第 1–8 项实际经过元件33三张回调表，生成四个描述符并转交资源契约替身，完成第三阶段重置。无效资源仍留下 `7FFF` 序号；第九项仍在第一阶段拒绝且保留此前外层写入。创建总场景为 80 次，仍不是角色分配证明。
+
 ## 下一位接手者的顺序
 
 1. 读取上述核心收据、创建分派收据及 [status.json](status.json)，确认源码和构建指纹相符。
-2. 迁移元件 33 的第二/第三回调、byte/secondary 写入、owner 直接访问与 registry 访问。分类进入/退出已完成本文件所列离线验证，但临时分配失败补偿、调用方 flag/通知以及从旧四槽数据建立 `B` 的生命周期和所有权仍待实现。
-3. 完成这一族函数后，再提供 READY 准备、封存和统一发布接口；当前六个映像不得单独激活，不计入已存在的十七个共同入口。
+2. 继续覆盖元件 33 的其他 byte/secondary 写入、owner 直接访问与 registry 访问。分类和第二/第三回调已完成本文所列离线验证，但分类/属性分配失败补偿、调用方 flag/通知以及从旧四槽数据建立 `B` 的生命周期和所有权仍待实现。
+3. 完成这一族函数后，再提供 READY 准备、封存和统一发布接口；当前八个映像不得单独激活，不计入已存在的十七个共同入口。
 4. 对剩余固定四槽元件建立相同的读写闭合验证，并在 `FDC140` 写入前完成共同接纳或实现全部副作用补偿。保留资源类型无效时的 `7FFF` 残留反例。
 5. 继续完整生产身份、内存所有权、角色控制/复制和真实八账户任务验收。任何游戏访问都需要新的明确授权；本轮授权余额为零。
 
@@ -89,6 +106,10 @@ py -3.12 -B hellforge_multiplayer/tools/validate_component33_classify.py `
   --library hellforge_multiplayer/build/component33_image_test.dll `
   --zig work/hellforge_toolchain_20261025/zig-x86_64-windows-0.17.0/zig.exe `
   --out work/component33-classify-validation.json
+py -3.12 -B hellforge_multiplayer/tools/validate_component33_initialize.py `
+  --library hellforge_multiplayer/build/component33_image_test.dll `
+  --zig work/hellforge_toolchain_20261025/zig-x86_64-windows-0.17.0/zig.exe `
+  --out work/component33-initialize-validation.json
 ```
 
 该命令编译和运行自有回溯测试程序，读取仓库保存的代码。`installable`、`runtime_verified`、`multiplayer_verified`、`public_release_allowed` 继续为 false。

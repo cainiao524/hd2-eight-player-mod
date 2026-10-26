@@ -1,4 +1,4 @@
-"""Pinned component33 core and classification with four relocated arrays.
+"""Pinned component33 core, classification and initialization with four relocated arrays.
 
 Only numeric image generation. No live memory access, installation or hooks.
 """
@@ -15,10 +15,12 @@ import capstone
 from capstone.x86_const import X86_OP_MEM, X86_OP_IMM, X86_REG_RIP
 from inspect_capture import Image
 LOCK = PROJECT / 'native-component33.lock.json'
-LOCK_SHA = '68523ebac989e9a0d6d83b296478d157b9043a64a65cd93c188270adf3589fdf'
+LOCK_SHA = '10d58fef23fa9e41f19cb8fa0363494fc1c0891b9b2f4515b23e16ea971fd447'
 KINDS = ('mover', 'append', 'dense', 'remove')
 CLASSIFY_KINDS = ('enter','leave')
-ALL_KINDS = KINDS + CLASSIFY_KINDS
+INITIALIZE_KINDS = ('property','reset')
+ALL_KINDS = KINDS + CLASSIFY_KINDS + INITIALIZE_KINDS
+EXTRA_GLOBAL_REGIONS = ((0x347CDD8,8),(0x263C010,8),(0x32F6908,0xA0),(0x32E50D8,0xC8),(0x32EC0E8,0xA0),(0x32EB4F8,0x60),(0x32E5BC8,0x40))
 sha = lambda b: hashlib.sha256(b).hexdigest()
 
 def need(ok, message):
@@ -36,11 +38,23 @@ def profile():
         for fragment in f.get('fragments', []):
             need(im.containing(fragment['start']) == (fragment['start'], fragment['end'], fragment['unwind_rva']), 'fragment changed')
             raw = bytes.fromhex(fragment['unwind_hex'])
-            need(raw[0] in (1, 33) and raw[3] == 0 and im.read(fragment['unwind_rva'], len(raw)) == raw, 'unwind changed')
-    for callback in data['classification_callbacks'].values():
-        need(im.read(callback['entry'],8)==bytes.fromhex(callback['body_hex']),'classification wrapper changed')
+            need(raw[0] in (1, 33, 25) and raw[3] == 0 and im.read(fragment['unwind_rva'], len(raw)) == raw, 'unwind changed')
+    for callback in list(data['classification_callbacks'].values())+list(data['initialization_callbacks'].values()):
+        code=bytes.fromhex(callback['body_hex'])
+        need(im.read(callback['entry'],len(code))==code and ('sha256' not in callback or sha(code)==callback['sha256']),'component33 wrapper changed')
+        if 'unwind_hex' in callback:
+            raw=bytes.fromhex(callback['unwind_hex'])
+            need(im.read(callback['unwind_rva'],len(raw))==raw,'callback unwind changed')
         for i in callback['assignment']['instructions']:
             raw=bytes.fromhex(i['bytes']);need(im.read(int(i['rva'],16),len(raw))==raw and sha(raw)==i['sha256'],'classification registration changed')
+    contract=data['descriptor_contract']
+    need(tuple(contract[k] for k in ('capacity','maximum_count_before_append','appended_descriptors','buffer_bytes'))==(128,124,4,2048),'descriptor capacity changed')
+    need(sha((PROJECT/contract['caller_lock']).read_bytes())==contract['caller_lock_sha256'],'descriptor caller changed')
+    for row in contract['instructions']:
+        raw=bytes.fromhex(row['bytes']);need(im.read(row['rva'],len(raw))==raw,'descriptor bound changed')
+    for part in data['gs_handler'].values():
+        if isinstance(part,dict):
+            raw=bytes.fromhex(part['bytes_hex']);need(im.read(int(part['rva'],16),len(raw))==raw and sha(raw)==part['sha256'],'GS source changed')
     return data
 
 def decode(blob, address):
@@ -62,6 +76,7 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
     regions = [(code_address,4096),(component_address,0x2B8),(storage_address,0x490),(reject_address,1),(game_base+0x33267B8,8),(game_base+0x3483C34,4)]
     if kind != 'mover': regions.append((move_code_address,4096))
     regions += [(game_base+x['start'],x['end']-x['start']) for x in data['functions'].values()]
+    regions += [(game_base+a,size) for a,size in EXTRA_GLOBAL_REGIONS]
     need(all(a+n <= b or b+m <= a for k,(a,n) in enumerate(regions) for b,m in regions[k+1:]), 'overlapping image/data/source')
     out = bytearray(); labels = {}; fixes = []
     def emit(h): out.extend(bytes.fromhex(h) if isinstance(h,str) else h)
@@ -69,61 +84,95 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
     def branch(target,condition=None):
         emit(b'\xe9' if condition is None else bytes([0x0F,condition])); fixes.append((len(out),target)); emit(bytes(4))
     def label(name): labels[name] = len(out)
-    # All refusal paths precede any stack/data write. Original arguments survive.
-    if classification: emit('4889d1')  # helper ABI: entity RDX, RCX unused by original body
-    mov(0,game_base+0x33267B8); emit('488b00'); mov(10,component_address); emit('4c39d0'); branch('reject1',0x85)
-    if kind == 'mover': emit('4c39d1'); branch('reject1',0x85)
-    emit('458b5a08 4183fb08'); branch('reject2',0x83 if kind in ('append','dense') else 0x87)
-    emit('418b420c 4439d8'); branch('reject3',0x87)
-    emit('41394210'); branch('reject3',0x87)
-    if kind == 'dense': emit('4439d8'); branch('reject4',0x85)
-    mov(0,component_address+0x14); emit('49394258'); branch('reject5',0x85)
-    emit('41837a6008'); branch('reject5',0x85)
-    emit('41837a6400'); branch('reject5',0x85)
-    if kind == 'mover':
-        emit('83fa08'); branch('reject8',0x83); emit('4183f808'); branch('reject8',0x83)
-        emit('4439c2'); branch('body',0x84)
-        mov(0,storage_address); emit('4a8b04c0 4885c0'); branch('reject6',0x84)
-        emit('448b5008 4585d2'); branch('reject6',0x84)
-        mov(9,component_address+0x14); emit('4531db 31c9'); label('scan')
-        emit('438b04d9 4439d0'); branch('next',0x85)
-        emit('473944d904'); branch('reject8',0x85); emit('ffc1')
-        label('next'); emit('41ffc3 4183fb08'); branch('scan',0x82)
-        emit('83f901'); branch('reject7',0x85); mov(1,component_address)
+    if kind in INITIALIZE_KINDS:
+        # RDX is the entity; property additionally owns R9 and two stack args.
+        # R8 is unused by both original helpers and preserves the descriptor base.
+        emit('4d89c8');mov(10,component_address);mov(0,game_base+0x33267B8)
+        emit('4c3910');branch('reject1',0x85)
+        if kind=='reset':emit('4c39d1');branch('reject1',0x85)
+        emit('41837a0808');branch('reject2',0x87)
+        emit('418b4a0c 413b4a08');branch('reject3',0x87)
+        emit('413b4a10');branch('reject3',0x82)
+        mov(0,component_address+0x14);emit('49394258');branch('reject5',0x85)
+        emit('41837a6008');branch('reject5',0x85)
+        emit('41837a6400');branch('reject5',0x85)
+        emit('4885d2');branch('reject6',0x84)
+        emit('8b4208 85c0');branch('reject6',0x84)
+        mov(1,game_base+0x3483C34);emit('3b01');branch('reject6',0x84)
+        emit('41b9ffffffff 4531db')
+        for bucket in range(8):
+            off=0x14+8*bucket;emit(bytes.fromhex('413942')+bytes([off]));branch('init_nonmatch'+str(bucket),0x85)
+            emit('4183f9ff');branch('reject7',0x85)
+            emit(bytes.fromhex('458b4a')+bytes([off+4]));label('init_nonmatch'+str(bucket))
+            emit(bytes.fromhex('41837a')+bytes([off,0]));branch('init_nonempty'+str(bucket),0x85)
+            emit('41ffc3');label('init_nonempty'+str(bucket))
+        emit('418b4a08 4101cb 4183fb08');branch('reject9',0x85)
+        emit('4139c9');branch('reject8',0x83)
+        mov(0,storage_address);emit('4a3914c8');branch('reject6',0x85)
+        if kind=='property':
+            emit('4d85c0');branch('reject6',0x84)
+            emit('488b442428 4885c0');branch('reject6',0x84)
+            emit('83387c');branch('reject2',0x87)
+            emit('488b442430 4885c0');branch('reject6',0x84)
+            mov(0,game_base+0x347CDD8);emit('48833800');branch('reject6',0x84)
+        else:mov(1,component_address)
+        emit('4d89c1')
     else:
-        emit('4885c9'); branch('reject6',0x84)
-        if kind == 'dense': emit('4885d2'); branch('reject6',0x84)
-        emit('448b4108 4585c0'); branch('reject6',0x84)
-        mov(9,component_address+0x14); emit('4531d2 4531db')
-        if kind == 'remove' or classification: emit('baffffffff')
-        label('scan'); emit('438b04d9 4439c0')
-        if kind == 'remove' or classification:
-            branch('nonmatch',0x85); emit('83faff'); branch('reject7',0x85)
-            emit('43837cd90408'); branch('reject8',0x83)
-            emit('438b54d904'); label('nonmatch')
-        else: branch('reject7',0x84)
-        emit('85c0'); branch('next',0x85); emit('41ffc2')
-        label('next'); emit('41ffc3 4183fb08'); branch('scan',0x82)
-        mov(0,component_address); emit('8b4008 4101c2 4183fa08'); branch('reject9',0x85)
-        if kind == 'remove' or classification:
-            emit('39c2'); branch('reject8',0x83)
-            if not classification:
-                mov(11,component_address); emit('413b530c'); branch('remove_ready',0x83)
-                emit('413b430c'); branch('reject4',0x85); label('remove_ready')
-            mov(0,storage_address); emit('48390cd0'); branch('reject6',0x85)
-            if classification:
-                mov(11,game_base+0x3483C34);emit('453b03');branch('reject6',0x84)
-                mov(11,component_address);emit('413b530c');branch('reject8',0x83)
-                emit('458b4310 4439c2');branch('reject4',0x82 if kind=='enter' else 0x83)
-                if kind=='leave':emit('41ffc8')
-                mov(0,storage_address);emit('4a8b04c0 4885c0');branch('reject6',0x84)
-                emit('448b5008 4585d2');branch('reject6',0x84)
-                mov(11,game_base+0x3483C34);emit('453b13');branch('reject6',0x84)
-                mov(9,component_address+0x14);emit('4531db 31d2');label('boundary_scan')
-                emit('438b04d9 4439d0');branch('boundary_next',0x85)
-                emit('473944d904');branch('reject8',0x85);emit('ffc2')
-                label('boundary_next');emit('41ffc3 4183fb08');branch('boundary_scan',0x82)
-                emit('83fa01');branch('reject7',0x85);emit('4889ca')
+        # All refusal paths precede any stack/data write. Original arguments survive.
+        if classification: emit('4889d1')  # helper ABI: entity RDX, RCX unused by original body
+        mov(0,game_base+0x33267B8); emit('488b00'); mov(10,component_address); emit('4c39d0'); branch('reject1',0x85)
+        if kind == 'mover': emit('4c39d1'); branch('reject1',0x85)
+        emit('458b5a08 4183fb08'); branch('reject2',0x83 if kind in ('append','dense') else 0x87)
+        emit('418b420c 4439d8'); branch('reject3',0x87)
+        emit('41394210'); branch('reject3',0x87)
+        if kind == 'dense': emit('4439d8'); branch('reject4',0x85)
+        mov(0,component_address+0x14); emit('49394258'); branch('reject5',0x85)
+        emit('41837a6008'); branch('reject5',0x85)
+        emit('41837a6400'); branch('reject5',0x85)
+        if kind == 'mover':
+            emit('83fa08'); branch('reject8',0x83); emit('4183f808'); branch('reject8',0x83)
+            emit('4439c2'); branch('body',0x84)
+            mov(0,storage_address); emit('4a8b04c0 4885c0'); branch('reject6',0x84)
+            emit('448b5008 4585d2'); branch('reject6',0x84)
+            mov(9,component_address+0x14); emit('4531db 31c9'); label('scan')
+            emit('438b04d9 4439d0'); branch('next',0x85)
+            emit('473944d904'); branch('reject8',0x85); emit('ffc1')
+            label('next'); emit('41ffc3 4183fb08'); branch('scan',0x82)
+            emit('83f901'); branch('reject7',0x85); mov(1,component_address)
+        else:
+            emit('4885c9'); branch('reject6',0x84)
+            if kind == 'dense': emit('4885d2'); branch('reject6',0x84)
+            emit('448b4108 4585c0'); branch('reject6',0x84)
+            mov(9,component_address+0x14); emit('4531d2 4531db')
+            if kind == 'remove' or classification: emit('baffffffff')
+            label('scan'); emit('438b04d9 4439c0')
+            if kind == 'remove' or classification:
+                branch('nonmatch',0x85); emit('83faff'); branch('reject7',0x85)
+                emit('43837cd90408'); branch('reject8',0x83)
+                emit('438b54d904'); label('nonmatch')
+            else: branch('reject7',0x84)
+            emit('85c0'); branch('next',0x85); emit('41ffc2')
+            label('next'); emit('41ffc3 4183fb08'); branch('scan',0x82)
+            mov(0,component_address); emit('8b4008 4101c2 4183fa08'); branch('reject9',0x85)
+            if kind == 'remove' or classification:
+                emit('39c2'); branch('reject8',0x83)
+                if not classification:
+                    mov(11,component_address); emit('413b530c'); branch('remove_ready',0x83)
+                    emit('413b430c'); branch('reject4',0x85); label('remove_ready')
+                mov(0,storage_address); emit('48390cd0'); branch('reject6',0x85)
+                if classification:
+                    mov(11,game_base+0x3483C34);emit('453b03');branch('reject6',0x84)
+                    mov(11,component_address);emit('413b530c');branch('reject8',0x83)
+                    emit('458b4310 4439c2');branch('reject4',0x82 if kind=='enter' else 0x83)
+                    if kind=='leave':emit('41ffc8')
+                    mov(0,storage_address);emit('4a8b04c0 4885c0');branch('reject6',0x84)
+                    emit('448b5008 4585d2');branch('reject6',0x84)
+                    mov(11,game_base+0x3483C34);emit('453b13');branch('reject6',0x84)
+                    mov(9,component_address+0x14);emit('4531db 31d2');label('boundary_scan')
+                    emit('438b04d9 4439d0');branch('boundary_next',0x85)
+                    emit('473944d904');branch('reject8',0x85);emit('ffc2')
+                    label('boundary_next');emit('41ffc3 4183fb08');branch('boundary_scan',0x82)
+                    emit('83fa01');branch('reject7',0x85);emit('4889ca')
     branch('body')
     for reason in range(1,10):
         label('reject'+str(reason)); emit(b'\x41\xba'+struct.pack('<I',reason)); branch('external')
@@ -135,9 +184,14 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
     for i in decode(source,f['start']):
         mapping[i.address] = len(out); raw = bytearray(i.bytes)
         array = None
+        if kind=='property' and i.address in (0x666354,0x6664EC,0x6664F1,0x6664F6):
+            array=('r15',storage_address+0xF8,'secondary_derived' if i.address==0x666354 else 'secondary')
+        if kind=='reset' and 0x6644C1<=i.address<=0x6644FD:
+            array=('r10',storage_address-0x48,'primary')
         for operand in i.operands:
             if operand.type != X86_OP_MEM: continue
             m = operand.mem; base,index = i.reg_name(m.base),i.reg_name(m.index)
+            if kind in INITIALIZE_KINDS:continue
             bound = 'rbp' if classification else ('rcx' if i.address < 0x666076 else 'r11') if kind == 'mover' else 'rbx'
             if bound not in (base,index) or not (m.index or (classification and i.mnemonic=='lea' and m.disp==0x1D8)): continue
             if m.disp == 0x70: array=(bound,storage_address-0x70,'pointer')
@@ -163,11 +217,16 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
                     struct.pack_into('<i',raw,i.disp_offset,target-(code_address+len(out)+i.size))
             emit(raw)
     mapping[f['end']] = len(out)
-    need(len(patches)=={'mover':21,'append':6,'dense':6,'remove':1,'enter':35,'leave':37}[kind], 'array coverage changed')
+    need(len(patches)=={'mover':21,'append':6,'dense':6,'remove':1,'enter':35,'leave':37,'property':4,'reset':6}[kind], 'array coverage changed')
     for at,target in fixes:
         dest = reject_address if target=='external' else code_address+labels[target] if isinstance(target,str) else (
             code_address+mapping[target] if target in mapping else move_code_address if target==0x665FE0 else game_base+target)
         struct.pack_into('<i',out,at,dest-(code_address+at+4))
+    handler_offset=None
+    if kind=='property':
+        while len(out)%16:emit('90')
+        handler_offset=len(out);branch(0x21044A0)
+        at=fixes[-1][0];struct.pack_into('<i',out,at,game_base+0x21044A0-(code_address+at+4))
     code_bytes = len(out)
     while len(out)%4: emit('00')
     leaf = len(out); emit('01000000'); unwind_map = {}; unwind_offsets = []
@@ -185,13 +244,21 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
             while at<4+original[2]*2:
                 operation=original[at+1]&15;need(operation in (0,2,4),'unexpected classification unwind operation')
                 out[offset+at]=offset_for(original[at]);at+=4 if operation==4 else 2
+        elif kind=='property':
+            expected=bytearray(source[:prolog]);struct.pack_into('<i',expected,31,game_base+0x263C010-(code_address+body_offset+35))
+            need(out[mapping[start]:mapping[start]+prolog]==expected,'GS prologue changed')
         else:
             need(out[mapping[start]:mapping[start]+prolog] == source[start-f['start']:start-f['start']+prolog], 'prologue changed')
+        if original[0]==25:
+            need(kind=='property' and original.hex()=='192b0c001c6412001c5411001c3410001c9218f016e014d012c01070a044100240000000','unknown GS metadata')
+            struct.pack_into('<I',out,offset+28,handler_offset)
         if original[0] >> 3 & 4:
             chain=4+((original[2]+1)&~1)*2; begin,end,uw=struct.unpack_from('<III',original,chain)
             struct.pack_into('<III',out,offset+chain,mapping[begin],mapping[end],unwind_map[uw])
     table_offset=len(out); rows=[(0,body_offset,leaf)]+[(mapping[x['start']],mapping[x['end']],uw) for x,uw in zip(f['fragments'],unwind_offsets)]
+    if handler_offset is not None:
+        rows[-1]=(rows[-1][0],handler_offset,rows[-1][2]);rows.append((handler_offset,code_bytes,leaf))
     for row in rows: emit(struct.pack('<III',*row))
     need(len(out)<=4096, 'component image overflow')
     return {'image':bytes(out),'code_bytes':code_bytes,'body_offset':body_offset,'table_offset':table_offset,
-            'unwind_offset':leaf,'function_count':len(rows),'array_patches':patches,'instruction_map':mapping}
+            'unwind_offset':leaf,'function_count':len(rows),'array_patches':patches,'instruction_map':mapping,'handler_offset':handler_offset}
