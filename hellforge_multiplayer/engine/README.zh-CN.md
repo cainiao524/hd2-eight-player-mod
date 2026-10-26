@@ -69,7 +69,7 @@ py -3.12 -B hellforge_multiplayer/tools/build_engine_offline.py `
 
 入口继续构建和验证 [属性成组入口](../PROPERTY_GROUP.zh-CN.md)：355 次真实链/合成函数体检查，18 组实际入口分支、24 组错误位置拒绝，以及每幅两条函数表下的 7,169 个 Windows 回溯上下文。`property-gate-validation.json` 单独固定输入、产物与参考收据，`engine-roster-validation.json` 交叉记录其指纹，并记录成组测试 DLL/EXE。生产 guard 和激活后数据回滚均明确标为未实现，Mod 初始化没有绑定。
 
-同一入口另构建 [实体到网络索引 getter](../NATIVE_GETTER.zh-CN.md)，核对保存的单段原回溯资料，运行 7 个功能测试、4,550 个 Windows 回溯上下文和 25 项准备生命周期检查。八端接收后增加 64 次原生 getter 查询。单独收据 `native-getter-validation.json` 固定来源和产物，总引擎收据交叉记录其指纹；getter 已接入三入口成组开关，但没有游戏内发布。
+同一入口另构建 [实体到网络索引 getter](../NATIVE_GETTER.zh-CN.md)，核对保存的单段原回溯资料，运行 7 个功能测试、4,548 个 Windows 回溯上下文和 25 项准备生命周期检查。八端接收后增加 64 次原生 getter 查询。单独收据 `native-getter-validation.json` 固定来源和产物，总引擎收据交叉记录其指纹；getter 已接入三入口成组开关，但没有游戏内发布。
 
 同一入口继续构建 [四数组共用搬移器](../NATIVE_MOVER.zh-CN.md)：100 次功能执行、8,231 个 Windows 回溯上下文和 25 项准备生命周期检查，离线重放三段原元数据共 92 bytes。测试 DLL 先于存储夹具构建，三份存储映像与八端插入使用 C++ 搬移代码；独立收据为 `native-mover-validation.json`，总收据交叉固定指纹。搬移器尚未纳入生产共同开关。
 

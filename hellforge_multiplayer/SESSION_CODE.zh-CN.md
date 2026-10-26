@@ -45,6 +45,6 @@ SDK 报错并不足以证明代码从未暴露。任何一次 `hook_ex` 调用�
 
 生产接入仍缺：运行期版本/代码/异常表核对、其他候选的进程内生成与回溯资料、外部拒绝处理、共同激活 guard 和完整资源事务、真实名册写入排除与资源所有者，以及角色建立、复制和完整八人任务实测。成组模块的 355 次检查另记，不并入这里的 387 次所有者检查。
 
-离队独立映像新增 14 条函数表、缩放 16-bit ALLOC_LARGE 和非易失 SAVE_XMM128 支持，原同表较早 chain parent、独立 metadata 及截断/非法格式拒绝规则保留。新增 52 项生命周期检查与 4,250 个 Windows 回溯现场单列于 [离队移植](NATIVE_DEPARTURE.zh-CN.md)，不并入既有 387 项。
+离队独立映像新增 14 条函数表、缩放 16-bit ALLOC_LARGE 和非易失 SAVE_XMM128 支持，原同表较早 chain parent、独立 metadata 及截断/非法格式拒绝规则保留。新增 52 项生命周期检查与 4,248 个 Windows 回溯现场单列于 [离队移植](NATIVE_DEPARTURE.zh-CN.md)，不并入既有 387 项。
 
 [已有玩家状态更新](NATIVE_STATE_UPDATE.zh-CN.md) 另用 `seal_gs_table` 明确声明固定 GS 契约：只有指定函数表项可保留 EHANDLER/UHANDLER，必须匹配原 28-byte 回溯头与操作、96-byte cookie 偏移、独立 5-byte 跳板及声明的外部目标。普通 `seal_table` 继续拒绝 handler。新增 59 项准备/拒绝检查和 3,899 个 Windows 回溯现场单列，不计入基础所有者检查；代码槽增至 68 以容纳四组十七入口，65,536-byte 单映像上限与原 64 KiB 采样约束各自保持。

@@ -35,7 +35,11 @@ int main(int argc, char** argv) {
         check(size<4096 && code_size<size && table_offset<size && (size-table_offset)%sizeof(RUNTIME_FUNCTION)==0 && count<EP_CONTEXT_LIMIT, "invalid image bounds");
         uint32_t functions=(size-table_offset)/sizeof(RUNTIME_FUNCTION);
 #if defined(EP_REGISTRY)
+#if defined(EP_COMPONENT33)
+        check(functions>=2 && functions<=4,"invalid component33 function count");
+#else
         check(functions>=3 && functions<=5,"invalid registry function count");
+#endif
 #else
         check(functions>=1 && functions<=3,"invalid function count");
 #endif

@@ -80,7 +80,7 @@ def source():
     return lock, component
 
 
-def validate(library):
+def validate(library, component_library=None):
     lock, component33 = source()
     p = insertion.load_fixture()
     p.native.build = insertion.emitter(library)
@@ -89,8 +89,13 @@ def validate(library):
 
     class Fixture(p.Fixture):
         def __init__(self, count, *, original=False, components=False, literal8=False,
-                     resource_type=17, game=p.GAME):
+                     resource_type=17, game=p.GAME, native33=False):
             super().__init__('dense_registered', count, count, count, 1, original=original, game=game)
+            self.native33 = native33
+            self.side33 = 0x1840A000000
+            self.entry33 = game+0x10300000
+            self.move33 = game+0x10310000
+            self.reject33 = game+0x10320000
             self.events = []
             self.invalid = []
             self.external = {}
@@ -99,7 +104,7 @@ def validate(library):
             self.resource_type = resource_type
             self.record = CONTEXT + 0xF32F18 + count * 24
             self.components = COMPONENTS if components else [239]
-            self.member_count = min(count, 4)
+            self.member_count = count if native33 else min(count, 4)
             self.component_before = None
             self.handle = p.NEW_ID
             self.outer_initialized = False
@@ -169,7 +174,7 @@ def validate(library):
             for phase, table in enumerate((0xF0C110, 0xF0CB30, 0xF0D550), 1):
                 for component in self.components:
                     callback = (self.start if phase == 1 and component == 239 else
-                                game + 0x51AC70 if phase == 1 and component == 33 else
+                                (self.entry33 if native33 else game + 0x51AC70) if phase == 1 and component == 33 else
                                 self.stub(f'component_{phase}_{component}'))
                     self.write(OWNER + table + component * 8, u64(callback))
             if components:
@@ -180,7 +185,7 @@ def validate(library):
                 for i in range(self.member_count):
                     self.write(S33 + 0x14 + 8 * ((1 + i) & 7), u32(1 + 8 * i) + u32(i))
                 self.write(S33 + 0x70, b'\x68' * (0x2B8 - 0x70))
-                for i in range(self.member_count):
+                for i in range(min(self.member_count,4)):
                     self.write(S33 + 0x70 + 8 * i, u64(CONTEXT + 0xF32F18 + 24 * i))
                 self.component_before = self.read(S33, 0x400)
                 code = bytearray(component33)
@@ -189,6 +194,15 @@ def validate(library):
                     code[0x1B] = 8
                 self.map(game + 0x51AC70, len(code))
                 self.write(game + 0x51AC70, bytes(code))
+                if native33:
+                    need(component_library is not None and not literal8,'component33 library required')
+                    self.zero(self.side33-0x80,0x590);self.write(self.side33-0x80,b'\xb6'*0x590)
+                    for i in range(count):self.write(self.side33+i*8,u64(CONTEXT+0xF32F18+24*i))
+                    for kind,entry in (('dense',self.entry33),('mover',self.move33)):
+                        image=component_library.candidate(kind,game_base=game,code_address=entry,component_address=S33,
+                            storage_address=self.side33,move_code_address=self.move33,reject_address=self.reject33)['image']
+                        self.map(entry,len(image));self.write(entry,image)
+                    self.map(self.reject33,1);self.write(self.reject33,b'\xcc')
             self.uc.reg_write(p.reg('rcx'), CONTEXT)
             self.uc.reg_write(p.reg('rdx'), self.handle)
             self.uc.reg_write(p.reg('r8'), RESOURCE_HASH)
@@ -286,6 +300,10 @@ def validate(library):
         def on_code(self, uc, address, size, data):
             self.trace.append(address)
             visited.add(address - self.game)
+            if self.native33 and address==self.reject33:
+                self.outcome="component33_reject";uc.emu_stop();return
+            if self.native33 and address==self.entry33:
+                self.events.append({"role":"native_component33_insert","roster_counts":self.counts()})
             if address in (self.stop, self.reject, self.move_reject):
                 self.outcome = 'return' if address == self.stop else 'roster_reject'
                 uc.emu_stop()
@@ -318,6 +336,7 @@ def validate(library):
                        (META + 0x48, 16), (MAPS, 0x3000), (OWNER8, 0xC000), (LIST, 8)]
             if self.with_components:
                 allowed.append((S33, 0x400))
+                if self.native33:allowed.append((self.side33,0x490))
             for address, size in self.writes:
                 # The intentional original guard faults before a null write can
                 # commit. Unicorn records its attempted write as well.
@@ -339,7 +358,21 @@ def validate(library):
             if self.outcome != 'return':
                 need(self.int32(self.record + 0x10) == 0x11223344 and self.int32(OWNER8 + 0x18) == self.t + 3, 'unexpected work after refusal')
                 need(not any(e['role'] in ('scope_exit', 'create_resource', 'final_tag') for e in self.events), 'tail ran after refusal')
-            if self.with_components and self.t >= 4 and not self.literal8:
+            if self.native33:
+                need(self.read(S33+0x70,0x2B8-0x70)==self.component_before[0x70:0x2B8],'native33 changed original arrays')
+                need(self.read(self.side33-0x80,0x80)==b'\xb6'*0x80 and self.read(self.side33+0x490,0x80)==b'\xb6'*0x80,'native33 sidecar overrun')
+                if self.t==8:
+                    need(self.outcome=='component33_reject' and self.uc.reg_read(p.reg('r10'))==2,'component33 ninth admission')
+                    need(self.read(S33,0x400)==self.component_before and self.counts()==[8]*3,'component33 refusal wrote state')
+                    need(not any(e['role']=='native_roster_insert' for e in self.events),'roster reached after component33 refusal')
+                else:
+                    need([self.int32(S33+i) for i in (8,12,16)]==[self.t+1]*3,'component33 count not inserted')
+                    need(self.int64(self.side33+8*self.t)==self.record and self.map_value(S33+0x58,self.handle)==self.t,'component33 record/map mismatch')
+                    need(self.read(self.side33+0x50+0x50*self.t,0x50)==bytes(0x50),'component33 primary initialization')
+                    need(self.read(self.side33+0x40,8)==b'\xb6'*8 and self.read(self.side33+0x2D0,0x1C0)==b'\xb6'*0x1C0,'component33 byte/secondary changed')
+            if self.native33 and self.t==8:
+                pass
+            elif self.with_components and self.t >= 4 and not self.literal8 and not self.native33:
                 need(self.outcome == 'invalid_memory' and self.invalid == [{'access': unicorn.UC_MEM_WRITE_UNMAPPED, 'address': '0x0', 'size': 4, 'rva': '0x51ac8e'}], 'component33 four-slot boundary')
                 need(self.counts() == [self.t] * 3 and self.read(S33, 0x400) == self.component_before, 'rejected component changed')
                 need(not any(e['role'] == 'native_roster_insert' for e in self.events), 'roster reached after component33 refusal')
@@ -372,15 +405,15 @@ def validate(library):
                 phase2 = [e['role'] for e in self.events if e['role'].startswith('component_2_')]
                 phase3 = [e['role'] for e in self.events if e['role'].startswith('component_3_')]
                 need(phase2 == ['component_2_' + str(c) for c in self.components] and phase3 == ['component_3_' + str(c) for c in self.components], 'second/third dispatch order')
-                phase1 = [e['role'] for e in self.events if e['role'].startswith('component_1_') or e['role'] in ('native_roster_insert', 'original_component33_insert')]
-                expected = ['native_roster_insert' if c == 239 else 'original_component33_insert' if c == 33 else 'component_1_' + str(c) for c in self.components]
+                phase1 = [e['role'] for e in self.events if e['role'].startswith('component_1_') or e['role'] in ('native_roster_insert', 'original_component33_insert','native_component33_insert')]
+                expected = ['native_roster_insert' if c == 239 else ('native_component33_insert' if self.native33 else 'original_component33_insert') if c == 33 else 'component_1_' + str(c) for c in self.components]
                 need(phase1 == expected and self.events[-1]['role'] == 'scope_exit', 'first dispatch or tail order')
                 if self.literal8:
                     need(self.int32(S33 + 8) == 5, 'negative literal control did not reach fifth slot')
                     need(self.read(S33 + 0x1D8, 0x50) == bytes(0x50), 'fifth primary did not overwrite secondary')
                     need(self.int64(S33 + 0x90) == self.record, 'fifth pointer did not overwrite byte storage')
             return {'name': name, 'game_base': hex(self.game), 'initial_count': self.t,
-                    'original_roster': self.original, 'component_list': self.components,
+                    'original_roster': self.original, 'native_component33':self.native33, 'component_list': self.components,
                     'negative_literal8_control': self.literal8, 'resource_type': self.resource_type,
                     'outcome': self.outcome, 'instructions': len(self.trace), 'roster_counts': self.counts(),
                     'resource_record_registered': True, 'resource_cursor_after': self.int32(CONTEXT + 0xF32F14),
@@ -395,6 +428,8 @@ def validate(library):
             runs.append(Fixture(count, components=True, game=game).execute('real_component33_' + str(count)))
         runs.append(Fixture(4, components=True, literal8=True, game=game).execute('negative_literal8_overwrites'))
         runs.append(Fixture(4, resource_type=0xFFFFFFFF, game=game).execute('missing_resource_type_keeps_insert'))
+        if component_library:
+            for count in range(9):runs.append(Fixture(count,components=True,native33=True,game=game).execute('native_component33_'+str(count)))
     coverage = {}
     for name, f in lock['functions'].items():
         rows = list(p.decode(bytes.fromhex(f['body_hex']), f['start']))
@@ -405,7 +440,11 @@ def validate(library):
                 **lock['source_sha256'], 'tools/validate_creation_dispatch.py': sha(Path(__file__).read_bytes()),
                 'native-creation-dispatch.lock.json': LOCK_SHA},
             'library_sha256': sha(Path(library.path).read_bytes()),
-            'artifacts': {Path(library.path).name: {'bytes': Path(library.path).stat().st_size, 'sha256': sha(Path(library.path).read_bytes())}},
+            'component33_library_sha256':sha(component_library.path.read_bytes()) if component_library else None,
+            'component33_core_integration_runs':sum(r['native_component33'] for r in runs),
+            'artifacts': {Path(library.path).name: {'bytes': Path(library.path).stat().st_size, 'sha256': sha(Path(library.path).read_bytes())},
+                **({component_library.path.name:{'bytes':component_library.path.stat().st_size,'sha256':sha(component_library.path.read_bytes())}} if component_library else {})},
+            'reference_validation_sha256':{'native-component33-validation.json':sha((ROOT/'hellforge_multiplayer/evidence/native-component33-validation.json').read_bytes())} if component_library else {},
             'runs': runs, 'run_count': len(runs),
             'instruction_coverage': coverage, 'runtime_verified': False, 'game_access_performed': False,
             'remaining_capture_calls': 0, 'game_access': False, 'multiplayer_verified': False,
@@ -418,7 +457,8 @@ def validate(library):
                 'The literal8 run is a negative control confined to emulator RAM and demonstrates corrupting adjacent arrays.',
                 'The resource type absent case returns with an inserted roster and ordinal 0x7fff; this is not successful character creation.',
                 'Roster rejection does not roll back preceding dispatcher writes or unwind its callers.',
-                'No creation scope, component33 relocation, provider ABI implementation, gameplay or eight-player acceptance is claimed.'
+                'Optional C++ component33 dense/mover images run with synthetic sidecar and real map insertion; other component phases remain stubs. Full component33 lifecycle is not claimed.',
+                'No creation scope, production binding, provider ABI implementation, gameplay or eight-player acceptance is claimed.'
             ]}
 
 
@@ -426,10 +466,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--library', type=Path, required=True)
     parser.add_argument('--out', type=Path, required=True)
+    parser.add_argument('--component33-library',type=Path)
     args = parser.parse_args()
-    result = validate(Library(args.library))
+    from native_component33_library import Library as ComponentLibrary
+    result = validate(Library(args.library),ComponentLibrary(args.component33_library) if args.component33_library else None)
     args.out.write_bytes((json.dumps(result, indent=2) + '\n').encode())
-    print(json.dumps({'passed': True, 'runs': result['run_count'], 'coverage': {k: [v['reached'], v['total']] for k, v in result['instruction_coverage'].items()}, 'runtime_verified': False}))
+    print(json.dumps({'passed': True, 'runs': result['run_count'], 'component33_runs':result['component33_core_integration_runs'], 'coverage': {k: [v['reached'], v['total']] for k, v in result['instruction_coverage'].items()}, 'runtime_verified': False}))
 
 
 if __name__ == '__main__':

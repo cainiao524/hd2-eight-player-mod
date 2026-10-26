@@ -8,7 +8,8 @@
 
 | 内容 | 位置 | 当前作用 |
 |---|---|---|
-| 玩家资源创建分派 | [CREATION_DISPATCH.zh-CN.md](CREATION_DISPATCH.zh-CN.md) / `tools/validate_creation_dispatch.py` | 42 次保存指令模拟，接入 C++ 名册与原元件 33；复现拒绝前写入、相邻覆盖与无效资源残留，尚未实现创建事务 |
+| 元件 33 核心存储 | [NATIVE_COMPONENT33.zh-CN.md](NATIVE_COMPONENT33.zh-CN.md) / `mod/src/ep_component33_image.*` | C++ 四函数的八槽映像、原版对照及 Windows 回溯验证；尚未接入完整生命周期和生产发布 |
+| 玩家资源创建分派 | [CREATION_DISPATCH.zh-CN.md](CREATION_DISPATCH.zh-CN.md) / `tools/validate_creation_dispatch.py` | 60 次保存指令模拟，接入 C++ 名册与原版/新元件 33；复现拒绝前写入、相邻覆盖与无效资源残留，尚未实现创建事务 |
 | 已有玩家状态更新 | `mod/src/ep_arrival_image.*` / `NATIVE_STATE_UPDATE.zh-CN.md` | 八槽数组访问与原 GS 异常处理器迁移；第 17 个共同入口；该函数不创建新角色 |
 | HellForge 源码 Mod | `mod/` | SDK 入口、版本检查、会话身份和任务/生成/死亡事件观察 |
 | 原容量契约 | `mod/src/core/` | 从旧项目逐字节复用；未满足容量验证时拒绝八人请求 |
@@ -25,12 +26,12 @@
 | 会话代码所有权 | `mod/src/ep_session_code.*` / `SESSION_CODE.zh-CN.md` | 封存映像、注册回溯表、稳定下一跳变量和 SDK hook 链发布；387 次自有进程检查通过，未接入 Mod 初始化 |
 | 进程内属性生成 | `mod/src/ep_property_image.*`、`ep_property_code.*` / `PROPERTY_IMAGES.zh-CN.md` | C++ 生成和重定位发送/接收映像，按实际分配地址封存；538 组有效与 132 组拒绝输入匹配，50 项所有权检查通过 |
 | 属性成组入口 | `mod/src/ep_property_gate.*`、`ep_property_group.*` / `PROPERTY_GROUP.zh-CN.md` | 发送/接收/getter 三次发布成功后受 guard 约束共同启用；355 次链与生命周期检查，18 组入口分支和 7,169 个回溯上下文通过；生产 guard 仍缺失 |
-| 实体到网络索引查询 | `mod/src/ep_getter_image.*` / `NATIVE_GETTER.zh-CN.md` | 使用八槽 B 存储，完整 DWORD 查询；4,550 个回溯上下文、25 项准备生命周期及八端 64 次查询通过；已加入三入口共同开关，未在游戏发布 |
+| 实体到网络索引查询 | `mod/src/ep_getter_image.*` / `NATIVE_GETTER.zh-CN.md` | 使用八槽 B 存储，完整 DWORD 查询；4,548 个回溯上下文、25 项准备生命周期及八端 64 次查询通过；已加入三入口共同开关，未在游戏发布 |
 | 两个原生移除入口 | `mod/src/ep_remove_image.*` / `NATIVE_REMOVE.zh-CN.md` | C++ 生成及 READY 准备；2,293 次功能执行、4,670 组不同回溯状态、54 项准备检查通过；存储夹具执行移除后再加入，生产生命周期待接入 |
 | 两个原生分类入口 | `mod/src/ep_classify_image.*` / `NATIVE_CLASSIFY.zh-CN.md` | C++ 生成及 READY 准备；853 次功能执行、20,905 组不同回溯状态、54 项准备检查和 359 次分类存储读取断言通过；临时辅助函数是契约替身 |
 | 十七入口共同切换 | `mod/src/ep_roster_gate.*`、`ep_roster_group.*` / `ROSTER_GROUP.zh-CN.md` | 同一 S/B 和控制字、十七次发布后才允许提交；插入/移除绑定同组搬移主体；真实 guard 及数据事务未接入 |
 | 名册存储所有者 | `mod/src/ep_roster_owner.*` / `ROSTER_OWNER.zh-CN.md` | 受管读写互斥、revision/身份票据原子提交、关闭排空与异常隔离；641 次实际 DLL/loader 检查，生产写入覆盖和真实身份尚未绑定 |
-| 离队前资源清理 | `mod/src/ep_departure_image.*` / `NATIVE_DEPARTURE.zh-CN.md` | 独立映像及准备验证通过；4,250 个 Windows 上下文；已接入第 15 个共同入口及同组 getter，真实完整离队事务仍待完成 |
+| 离队前资源清理 | `mod/src/ep_departure_image.*` / `NATIVE_DEPARTURE.zh-CN.md` | 独立映像及准备验证通过；4,248 个 Windows 上下文；已接入第 15 个共同入口及同组 getter，真实完整离队事务仍待完成 |
 | 原生注册表与关联查询 | `mod/src/ep_registry_image.*` / `NATIVE_REGISTRY.zh-CN.md` | 两个入口、链式回溯、同组内部绑定；8 个测试、87 次执行、3,963 个 Windows 回溯上下文通过，尚未发布到游戏 |
 | 十七入口受管调用 | `mod/src/ep_roster_call.*` / `ROSTER_CALLS.zh-CN.md` | 旧/新路径整次调用进入 owner，保存六参数与返回状态；同 owner 嵌套、受管提交及异常隔离，显式选择且未接入初始化 |
 | 实体删除外层范围 | `mod/src/ep_roster_gate.*`、`ep_roster_call.*` / `ENTITY_REMOVE_SCOPE.zh-CN.md` | 第 16 个入口保留原 dispatcher，双阶段间隙继续持有 owner；原回调契约和完整游戏执行仍未验证 |

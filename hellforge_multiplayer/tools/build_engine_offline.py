@@ -123,8 +123,13 @@ def main():
     arrival_receipt=PROJECT/'evidence/native-arrival-validation.json'
     entity_remove_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_entity_remove.py','--library',property_dll]))
     entity_remove_receipt=PROJECT/'evidence/entity-remove-dispatch-validation.json'
+    component33_dll=build/'component33_image_test.dll'
+    run([zig,'c++','-std=c++17','-target','x86_64-windows-gnu','-shared','-O2','-Wall','-Wextra','-Werror',
+         PROJECT/'mod/src/ep_component33_image.cpp',PROJECT/'tests/component33_image_dll.cpp','-o',component33_dll])
+    component33_receipt=PROJECT/'evidence/native-component33-validation.json'
+    component33_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_component33_images.py','--library',component33_dll,'--zig',zig,'--out',component33_receipt]))
     creation_receipt=PROJECT/'evidence/creation-dispatch-validation.json'
-    creation_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_creation_dispatch.py','--library',property_dll,'--out',creation_receipt]))
+    creation_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_creation_dispatch.py','--library',property_dll,'--out',creation_receipt,'--component33-library',component33_dll]))
     classify_fixture=build/'native-classify-fixture.bin'
     classify_fixture_receipt=json.loads(run([sys.executable,'-B',PROJECT/'tools/native_classify_fixture.py','--output',classify_fixture,'--property-library',property_dll]))
     classify_test=build/'native_classify_roster_test.exe'
@@ -263,6 +268,7 @@ def main():
         'native_departure':{**departure_output,'validation_sha256':digest(departure_receipt)},
         'native_entity_remove_dispatch':{**entity_remove_output,'validation_sha256':digest(entity_remove_receipt)},
         'native_creation_dispatch':{**creation_output,'validation_sha256':digest(creation_receipt)},
+        'native_component33':{**component33_output,'validation_sha256':digest(component33_receipt)},
         'native_classify_storage':{'checks':int(classify_match[1]),**classify_fixture_receipt},
         'native_property_gates':{**gate_output,'validation_sha256':digest(gate_receipt)},
         'property_group':{'checks':int(group_match[1]),'entries':['producer','receiver','entity_network_getter'],'shared_storage_binding':True,'actual_hellforge_chains':True,
@@ -312,6 +318,9 @@ def main():
             'tests/roster_owner_dll.h','tests/roster_owner_dll.cpp','tests/roster_owner_test.c',
             'mod/src/ep_roster_call.h','mod/src/ep_roster_call.cpp','tools/verify_roster_call_abi.py','native-entity-remove.lock.json',
             'tools/validate_entity_remove.py','tools/validate_creation_dispatch.py','native-creation-dispatch.lock.json',
+            'tools/native_component33_image.py','tools/native_component33_library.py','tools/generate_component33_templates.py','tools/validate_component33_images.py',
+            'native-component33.lock.json','mod/src/ep_component33_image.h','mod/src/ep_component33_image.cpp','mod/src/ep_component33_templates.h',
+            'tests/component33_image_dll.cpp','tests/native_component33_unwind_test.c',
             'tests/roster_call_dll.h','tests/roster_call_dll.cpp','tests/roster_call_test.c',
             'tests/roster_call_abi.h','tools/roster_bridge_unwind.py',
             'native-getter.lock.json','tools/native_getter_image.py','tools/generate_getter_template.py','tools/validate_getter_image.py',
@@ -319,7 +328,7 @@ def main():
             'tests/backend/Program.cs', 'tests/backend/Backend.csproj',
             'mod/src/ep_native_roster.cpp', 'mod/src/ep_native_roster.h', 'mod/src/ep_roster_api.h',
             'native-storage.lock.json', 'tools/build_engine_offline.py', 'engine/patch.lock.json', 'upstream.lock.json')},
-        'artifacts': {p.name: {'bytes': p.stat().st_size, 'sha256': digest(p)} for p in (roster_bridge_fixture,roster_call_dll,roster_call_test,owner_dll,owner_test,roster_group_dll,roster_group_test,dll, test, native_test, code_test, code_dll, property_dll, group_dll, group_test, classify_test, classify_fixture, classify_fixture.with_suffix('.enter.bin'), classify_fixture.with_suffix('.leave.bin'), fixture, fixture.with_suffix('.removed.bin'), fixture.with_suffix('.rejoined.bin'), sync_test, sync_input, sync_routed, sync_received, *sync_images)},
+        'artifacts': {p.name: {'bytes': p.stat().st_size, 'sha256': digest(p)} for p in (component33_dll,roster_bridge_fixture,roster_call_dll,roster_call_test,owner_dll,owner_test,roster_group_dll,roster_group_test,dll, test, native_test, code_test, code_dll, property_dll, group_dll, group_test, classify_test, classify_fixture, classify_fixture.with_suffix('.enter.bin'), classify_fixture.with_suffix('.leave.bin'), fixture, fixture.with_suffix('.removed.bin'), fixture.with_suffix('.rejoined.bin'), sync_test, sync_input, sync_routed, sync_received, *sync_images)},
         'game_started': False, 'game_checked': False, 'game_read': False, 'installed': False,
         'native_game_storage_expanded': False, 'production_provider_bound': False,
         'runtime_verified': False, 'multiplayer_verified': False, 'public_release_allowed': False,
