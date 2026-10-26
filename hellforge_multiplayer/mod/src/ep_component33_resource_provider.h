@@ -56,7 +56,8 @@ int ep_component33_resource_drain_provider_call(const HfApi*,HfMod*,uint64_t sto
  * resolver table +40/+160 are read with the SDK under the exact owner scope.
  * Saved call-site bytes are checked and all needed targets frozen BEFORE
  * resource mutation. These reads share the provider's 64 KiB budget; target
- * function internals are not counted. Deferred release makes no engine calls.
+ * function internals are not counted. Ordinal-based deferred release makes
+ * no engine calls; DEFER by object still invokes the identity resolver.
  *
  * The Win64 argument mapping is derived from saved call sites, not verified
  * callee implementations: service(key,table), context(engine), then
@@ -74,6 +75,11 @@ int ep_component33_resource_release_native_call(const HfApi*,HfMod*,uint64_t sto
     uint64_t owner,uint32_t ordinal,uint32_t deferred,EpC33ResourceProviderResult*);
 int ep_component33_resource_drain_native_call(const HfApi*,HfMod*,uint64_t storage,
     uint64_t owner,EpC33ResourceProviderResult*);
+/* DEFER (665940) selects by resolved object, not ordinal; it invokes only
+ * context/resolver functions, then queues release without resource services
+ * or threshold reads. Same scope, source guards and total SDK read budget. */
+int ep_component33_resource_defer_native_call(const HfApi*,HfMod*,uint64_t storage,
+    uint64_t owner,uint64_t target_object,EpC33ResourceProviderResult*);
 #ifdef __cplusplus
 }
 #endif

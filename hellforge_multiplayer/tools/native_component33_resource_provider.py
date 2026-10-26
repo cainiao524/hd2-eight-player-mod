@@ -4,10 +4,11 @@ import native_component33_image as n
 import native_component33_resources as resources
 LOCK=n.PROJECT/'native-component33-resource-provider.lock.json'
 HEADER=n.PROJECT/'mod/src/ep_component33_resource_provider_template.h'
-NATIVE_CALLS=(('resolve',0x6656c0,0x665704,0x665724),('load',0x6656c0,0x665847,0x66585b),('dispose',0x6659e0,0x665ada,0x665aee))
+NATIVE_CALLS=(('resolve',0x6656c0,0x665704,0x665724),('load',0x6656c0,0x665847,0x66585b),('dispose',0x6659e0,0x665ada,0x665aee),('defer',0x665940,0x665985,0x6659a5))
 
 def native_call_sources():
     p=json.loads(resources.LOCK.read_bytes())
+    p['functions']['0x665940']=json.loads((n.PROJECT/'native-component33-consumers.lock.json').read_bytes())['functions']['defer']
     return [(name,start,bytes.fromhex(p['functions'][hex(root)]['body_hex'])[start-root:end-root]) for name,root,start,end in NATIVE_CALLS]
 
 def render_native_calls():

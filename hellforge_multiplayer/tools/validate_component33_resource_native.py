@@ -55,7 +55,7 @@ def saved_calls():
                         emu.reg_write(UC_X86_REG_RAX,context if label=='context' else 0)
             uc.hook_add(UC_HOOK_CODE,hook);uc.emu_start(game+start,game+start+len(raw),count=50)
             n.need(uc.reg_read(UC_X86_REG_RIP)==game+start+len(raw) and uc.reg_read(UC_X86_REG_RSP)==stack+2048,'call site did not return')
-            if name=='resolve':
+            if name in ('resolve','defer'):
                 n.need(len(calls)==2 and calls[0][:2]==('context',engine) and calls[1]==('resolve',context,handle),'saved resolver arguments')
             else:n.need(calls==[(name,key,table)],'saved service arguments')
             runs+=1

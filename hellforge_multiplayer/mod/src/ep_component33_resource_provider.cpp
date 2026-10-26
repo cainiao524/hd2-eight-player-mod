@@ -6,7 +6,7 @@ struct Provider {
     int (*read_code)(uintptr_t,void*,size_t);
     HfMod* mod;uint64_t owner,target;EpC33ResourceProviderOps ops;
     EpC33ResourceProviderResult result;
-    bool release_only;uint32_t ordinal,deferred;
+    bool release_only,by_object;uint32_t ordinal,deferred;
     bool native,bound;uint64_t engine,service_table,load,dispose,get_context,resolve;
 };
 static uint32_t D(const void* p) { uint32_t x;memcpy(&x,p,4);return x; }
@@ -34,21 +34,24 @@ static bool Link(Provider* p,uint64_t base,uint32_t offset,uint64_t* value)
     if (!Pointer(*value,1)) { p->result.source_status=EP_C33_PROVIDER_LAYOUT;return false; }
     return true;
 }
-static bool BindNative(Provider* p,const EpC33ResourceScopeView* v,bool resolver)
+static bool BindNative(Provider* p,const EpC33ResourceScopeView* v,unsigned needed)
 {
     uint8_t code[sizeof(ep_c33_native_resolve_source)];
-    const uint8_t* sources[]={ep_c33_native_dispose_source,ep_c33_native_load_source,ep_c33_native_resolve_source};
+    const uint8_t* sources[]={ep_c33_native_dispose_source,ep_c33_native_load_source,p->by_object ? ep_c33_native_defer_source : ep_c33_native_resolve_source};
     const uint32_t sizes[]={sizeof(ep_c33_native_dispose_source),sizeof(ep_c33_native_load_source),sizeof(ep_c33_native_resolve_source)};
-    const uint32_t rvas[]={0x665ada,0x665847,0x665704};
-    for (unsigned i=0;i<(resolver ? 3u : 1u);i++) {
+    static_assert(sizeof(ep_c33_native_defer_source)==sizeof(ep_c33_native_resolve_source),"resolver windows");
+    const uint32_t rvas[]={0x665ada,0x665847,p->by_object ? 0x665985u : 0x665704u};
+    for (unsigned i=0;i<3;i++) if (needed&(1u<<i)) {
         if (!Read(p,v->game+rvas[i],code,sizes[i],true)) return false;
         if (memcmp(code,sources[i],sizes[i])) { p->result.source_status=EP_C33_PROVIDER_CODE;return false; }
     }
-    if (!Link(p,v->game,0x3326308,&p->engine) || !Link(p,p->engine,0x10,&p->service_table) ||
-        !Link(p,p->service_table,0x300,&p->dispose)) return false;
-    if (resolver) {
+    if (!Link(p,v->game,0x3326308,&p->engine)) return false;
+    if ((needed&3) && !Link(p,p->engine,0x10,&p->service_table)) return false;
+    if ((needed&1) && !Link(p,p->service_table,0x300,&p->dispose)) return false;
+    if ((needed&2) && !Link(p,p->service_table,0x2f0,&p->load)) return false;
+    if (needed&4) {
         uint64_t contexts,objects;
-        if (!Link(p,p->service_table,0x2f0,&p->load) || !Link(p,p->engine,0x38,&contexts) ||
+        if (!Link(p,p->engine,0x38,&contexts) ||
             !Link(p,p->engine,0x40,&objects) || !Link(p,contexts,8,&p->get_context) || !Link(p,objects,0x160,&p->resolve)) return false;
     }
     p->bound=true;return true;
@@ -94,7 +97,7 @@ static bool Select(Provider* p,const EpC33ResourceScopeView* v,uint64_t* package
         while (probe<8 && D(header+0x14+at*8)!=id && D(header+0x14+at*8)) { at=(at+1)&7;++probe; }
         if (probe==8 || D(header+0x14+at*8)!=id || D(header+0x18+at*8)!=i) goto bad;
     }
-    if (p->release_only) {
+    if (p->release_only && !p->by_object) {
         if (p->ordinal<d) { *package_key=Q(records[p->ordinal]);*found=true; }
         return true;
     }
@@ -157,7 +160,8 @@ static int Collect(void* context,const EpC33ResourceScopeView* v,EpC33AcquireSna
     auto* p=(Provider*)context;EpC33AcquireSnapshot result={};uint64_t key=0,manager=0;bool found=false;
     if (!Pointer(v->game,0x3483c38)) { p->result.source_status=EP_C33_PROVIDER_LAYOUT;return 0; }
     if (!MatchCode(p,v->game)) return 0;
-    if (p->native && (!p->release_only || !p->deferred) && !BindNative(p,v,!p->release_only)) return 0;
+    unsigned needed=(p->deferred ? 0u : 1u)|(p->release_only ? 0u : 2u)|(!p->release_only || p->by_object ? 4u : 0u);
+    if (p->native && needed && !BindNative(p,v,needed)) return 0;
     if (!Select(p,v,&key,&found)) return 0;
     if (!found) { p->result.source_status=EP_C33_PROVIDER_NO_ENTITY;return 2; }
     if (!Package(p,v->game,key,result.package)) return 0;
@@ -180,20 +184,20 @@ static int Service(void* context,const EpC33ResourceScopeView* v,uint32_t op,uin
     return Ready(p);
 }
 static int ProviderCall(const HfApi* api,HfMod* mod,uint64_t storage,
-    uint64_t owner,uint64_t target,const EpC33ResourceProviderOps* input,EpC33ResourceProviderResult* out,bool release_only,uint32_t ordinal,uint32_t deferred,bool native=false)
+    uint64_t owner,uint64_t target,const EpC33ResourceProviderOps* input,EpC33ResourceProviderResult* out,bool release_only,uint32_t ordinal,uint32_t deferred,bool native=false,bool by_object=false)
 {
     EpC33ResourceProviderOps ops={};if (input) ops=*input;
     if (!out) return EP_C33_CALL_ARGUMENT;memset(out,0,sizeof(*out));
     if (!api || api->version<13 || api->size<offsetof(HfApi,read_code)+sizeof(api->read_code) ||
         !api->build_id || !api->read || !api->read_code || (!input && !native) ||
-        (release_only ? ordinal>=8 || deferred>1 || (!native && !deferred && !ops.service) : !Pointer(target,1) || (!native && (!ops.resolve || !ops.service)))) {
+        (release_only ? (by_object ? !Pointer(target,1) || (!native && !ops.resolve) : ordinal>=8) || deferred>1 || (!native && !deferred && !ops.service) : !Pointer(target,1) || (!native && (!ops.resolve || !ops.service)))) {
         out->source_status=EP_C33_PROVIDER_ARGUMENT;out->call.status=EP_C33_CALL_ARGUMENT;return out->call.status;
     }
     const char* build=api->build_id();if (!build || strcmp(build,"25480438")) {
         out->source_status=EP_C33_PROVIDER_CODE;out->call.status=EP_C33_CALL_ARGUMENT;return out->call.status;
     }
     Provider p={};p.read=api->read;p.read_code=api->read_code;p.mod=mod;p.owner=owner;p.target=target;p.ops=ops;
-    p.release_only=release_only;p.ordinal=ordinal;p.deferred=deferred;p.native=native;
+    p.release_only=release_only;p.ordinal=ordinal;p.deferred=deferred;p.native=native;p.by_object=by_object;
     EpC33ResourceServiceOps callbacks={&p,Collect,Service};
     int rc=release_only ? ep_component33_resource_release_services_call(mod,storage,owner,deferred,&callbacks,&p.result.call) :
         ep_component33_resource_acquire_services_call(mod,storage,owner,&callbacks,&p.result.call);
@@ -215,7 +219,7 @@ static int DrainEligible(void* context,const EpC33ResourceScopeView* v)
     if (!Pointer(manager,0x1910)) { p->result.source_status=EP_C33_PROVIDER_LAYOUT;return 0; }
     if (!Read(p,manager+0x190c,&blocked,4)) return 0;
     if (blocked) return 2;
-    return p->native && !BindNative(p,v,false) ? 0 : 1;
+    return p->native && !BindNative(p,v,1) ? 0 : 1;
 }
 static int DrainProviderCall(const HfApi* api,HfMod* mod,uint64_t storage,
     uint64_t owner,const EpC33ResourceProviderOps* input,EpC33ResourceProviderResult* out,bool native)
@@ -246,3 +250,6 @@ int ep_component33_resource_release_native_call(const HfApi* api,HfMod* mod,uint
 int ep_component33_resource_drain_native_call(const HfApi* api,HfMod* mod,uint64_t storage,
     uint64_t owner,EpC33ResourceProviderResult* out)
 { return DrainProviderCall(api,mod,storage,owner,nullptr,out,true); }
+int ep_component33_resource_defer_native_call(const HfApi* api,HfMod* mod,uint64_t storage,
+    uint64_t owner,uint64_t target,EpC33ResourceProviderResult* out)
+{ return ProviderCall(api,mod,storage,owner,target,nullptr,out,true,0,1,true,true); }
