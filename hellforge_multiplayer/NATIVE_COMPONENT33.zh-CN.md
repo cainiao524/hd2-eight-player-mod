@@ -212,7 +212,7 @@ Windows 对 1,095 个上下文完成回溯，包括从新 leaf 返回原 owner�
 
 另有两次 Unicorn 执行使用**实际准备映像和实际迁移结果的副本**，验证获取/释放对新资源区的行为。获取测试显式提供完整单键需求并调用预留；这只证明已知需求下的连接，不是需求收集器或真实服务实现。宿主中的原资源配置保持不变，生成的游戏代码未在宿主原生执行。收据为 [native-component33-resource-owner-validation.json](evidence/native-component33-resource-owner-validation.json)。
 
-后续资源调用接口已连接六组收集与共享 owner 范围。仍缺：全部生产入口的排空/独占及一致快照提供者、消费同一快照的服务执行器、原重置包装器清空时机或替代语义、嵌入资源的权威交接、服务失败补偿、剩余必需别名和生产共同发布。永久保留也没有实现会话复用或热卸载。此模式没有接入 Mod 初始化；第五人角色和原生 UI 仍须另行实现与验证。
+后续资源调用接口已连接六组收集与共享 owner 范围。仍缺：全部生产入口的排空/独占及一致快照提供者、内建冻结快照执行器的生产服务 ABI、原重置包装器清空时机或替代语义、嵌入资源的权威交接、服务失败补偿、剩余必需别名和生产共同发布。永久保留也没有实现会话复用或热卸载。此模式没有接入 Mod 初始化；第五人角色和原生 UI 仍须另行实现与验证。
 
 ## 完整资源需求与共享 owner 调用
 
@@ -225,12 +225,26 @@ Windows 对 1,095 个上下文完成回溯，包括从新 leaf 返回原 owner�
 1. 先按原准备／保留流程得到资源所有者，并用权威名册绑定创建 roster owner。所有游戏读写仍必须接入共同排空与作用域；本接口没有自动安装这些路径。
 2. `ep_component33_resource_acquire_call` 进入该 owner 的独占范围，再运行只读 `collect`。返回 1 表示完整一致快照；2 表示无匹配实体；0 表示暂时不可取得。后两项保持资源区与 revision 不变。package 与每组门槛必须属于同一次选择，且解析不得提前释放或载入资源。
 3. 在两份内部临时资源区中收集／预留完整需求；容量不足、引用数可能溢出时，不进入 `execute`，原区与 revision 不变。正引用和延后队列键继续保留。暂存由接口拥有，回调 SEH 后也释放。
-4. 接纳成功才进入同 owner 的写入嵌套，复制已接纳资源区，再让 `execute` 消费传入的确切快照与需求。原 acquire 在 RELEASE 后会重新解析 package／门槛，因此**不能直接回调原 acquire 并声称使用了预检快照**。生产提供者／执行器必须解决这一差异。
+4. 接纳成功才进入同 owner 的写入嵌套，复制已接纳资源区，再让 `execute` 消费传入的确切快照与需求。原 acquire 在 RELEASE 后会重新解析 package／门槛，因此**不能直接回调原 acquire 并声称使用了预检快照**。下文内建执行器已消除二次查询；生产提供者仍须证明一致性及辅助调用副作用契约。
 5. 成功后检查资源区结构，最外层只提交一次 revision。回调失败、SEH、资源调用重入、收集阶段改写资源区或执行后结构损坏都会隔离共享 owner；不回滚已经发生的服务副作用。等待者与关闭操作按既有 owner 排空语义处理。
 
 [验证器](tools/validate_component33_resource_call.py) 使用实际资源区、二十映像的准备／保留及真实 roster owner；自有回调检查全部 384 项预留，并直接验证等待发生在同一生产 owner。20 个新进程情境、4,302 项检查通过，涵盖前后阶段排他、关闭排空、同 owner 嵌套、容量拒绝、无匹配、快照不可用、配置失败、revision 耗尽、重入与 SEH、执行失败／损坏及旧绑定不能复用。三组 Unicorn 执行再将 C++ 收集结果与保存 acquire 指令在 `6657D0` 实际选出的键逐项对照，覆盖全 384 个独立键、无号边界／重复键与关闭组，并核对最终引用数。外部服务仍为替身；这三组模拟不是自有进程执行器与游戏指令的一次联合执行。
 
 证据为 [资源调用收据](evidence/native-component33-resource-call-validation.json)，已纳入完整引擎构建。仍未绑定游戏快照/资源服务、原入口 ABI 桥、全部读写者、重置生命周期或共同发布。每次调用暂配两份资源区大小的堆缓冲，未测量游戏性能；任何生产性能结论均待真实接入。`installable` 与实机、多人标记继续为 false。
+
+## 消费冻结快照的内建执行器
+
+`ep_component33_resource_acquire_services_call` 在上述真实资源所有者与共享 roster owner 内调用内建执行器；调用方只提供一次完整快照和 DISPOSE/LOAD 服务。底层 `ep_c33_resource_execute` 处理显式本地缓冲区，既不追踪绑定中的数字地址，也不查询 package。两个键序列在第一次服务前复制到固定本地数组，回调改变原输入不能改变后续操作。
+
+释放和取得使用不同序列。保存的 `6659E0` 会释放所有启用组的非零键，不使用门槛；`6656C0` 随后才按门槛取得。新实现先对完整释放序列逐项减少正引用，降到零即 DISPOSE；再按预留的取得序列处理，零引用且在延后队列中的键以末项交换移除，避免重复 LOAD，否则先 LOAD 再增加引用。重复键保留次数和顺序。不能用已经筛选的取得键替代释放键。
+
+所有取得键必须已预留，重复取得不能溢出；预检不抵扣后续释放，因此可能保守拒绝。键为零、未预留键、缓冲区重叠及超过 384 项均在第一次服务之前拒绝。每次外部服务前后复制/比较完整资源区，检测回调改写；也检查同 owner 的健康状态，防止回调忽略嵌套失败后继续操作。返回非 1、SEH、重入或嵌套 owner 故障立即停止后续服务并隔离 owner。已发生的副作用及引用变化保留，不声称事务回滚；再次调用被隔离的 owner 不会再查询快照或执行服务。
+
+[验证器](tools/validate_component33_resource_services.py) 和[收据](evidence/native-component33-resource-services-validation.json)覆盖 13 个实际自有内存情境、451 项检查，以及六次保存 acquire→release 指令对照。对照使用 128/512 桶与三个散列 seed，比较完整资源区字节和准确服务次序；包含未通过门槛的释放、重复引用、关闭组、无号边界及延后队列。原输入在第一次服务后被改写，后续操作仍消费冻结副本。实际所有者情境另验证 DISPOSE/LOAD 各自失败及 SEH、回调损坏、资源重入、被忽略的嵌套故障、容量拒绝、不可用/无匹配来源、LOAD 中的真实名册等待和失败后重试拒绝。
+
+两类测试分别执行：自有进程运行真实所有者和 C++ 执行器；Unicorn 运行保存的游戏函数。包、门槛和外部服务都是测试实现，没有把生成的游戏指令在宿主原生执行。保存的原实现会查询两次包，新实现有意只使用一次一致快照；实机提供者仍须证明这项替代的稳定性，以及提前解析门槛是否改变辅助函数副作用。实际服务对象、ABI、原入口路由、全部读写覆盖和安全重置均未绑定。
+
+整次调用继续拥有两份资源区大小的暂存；每次服务另进行一次完整区复制与比较，复用其中一份暂存。性能尚未在游戏测量。此检查点不改变 `installable=false`、`runtime_verified=false`、`multiplayer_verified=false`，也不表示第五名真人已能加入。
 
 ## 接口边界与拒绝
 
@@ -329,6 +343,11 @@ py -3.12 -B hellforge_multiplayer/tools/validate_component33_resource_call.py `
   --resources hellforge_multiplayer/build/component33_resources_test.dll `
   --core hellforge_multiplayer/build/component33_image_test.dll `
   --out work/component33-resource-call-validation.json
+py -3.12 -B hellforge_multiplayer/tools/validate_component33_resource_services.py `
+  --library hellforge_multiplayer/build/component33_resource_call_test.dll `
+  --resources hellforge_multiplayer/build/component33_resources_test.dll `
+  --core hellforge_multiplayer/build/component33_image_test.dll `
+  --out work/component33-resource-services-validation.json
 ```
 
 该命令编译和运行自有回溯测试程序，读取仓库保存的代码。`installable`、`runtime_verified`、`multiplayer_verified`、`public_release_allowed` 继续为 false。

@@ -87,3 +87,35 @@ int ep_component33_resource_acquire_call(HfMod* mod,uint64_t storage,uint64_t ow
     }
     *out=call.result;return out->status;
 }
+struct ServiceCall { EpC33ResourceServiceOps ops;ResourceCall* call; };
+static int ServiceCollect(void* p,const EpC33ResourceScopeView* v,EpC33AcquireSnapshot* out)
+{ auto* context=(ServiceCall*)p;return context->ops.collect(context->ops.context,v,out); }
+static int ServiceInvoke(void* p,uint32_t operation,uint64_t key)
+{
+    auto* context=(ServiceCall*)p;auto* call=context->call;
+    int ok=context->ops.service(context->ops.context,&call->view,operation,key);
+    return ok==1 && !call->reentered && ep_roster_owner_native_status(call->mod,call->owner)==EP_OWNER_OK;
+}
+static int ServiceExecute(void* p,const EpC33ResourceScopeView* v,const EpC33AcquireSnapshot* s,const EpC33AcquireDemand* d)
+{
+    auto* context=(ServiceCall*)p;auto* call=resourceCall;context->call=call;
+    uint64_t releases[EP_C33_ACQUIRE_KEYS];unsigned count=0;
+    static_assert(EP_C33_ACQUIRE_KEYS==EP_RESOURCE_BATCH_MAX,"complete resource batch");
+    for (unsigned g=0;g<EP_C33_ACQUIRE_GROUPS;g++) {
+        const uint8_t* block=s->package+0x808*g;if (!U32(block+0x800)) continue;
+        for (unsigned row=0;row<EP_C33_ACQUIRE_ROWS;row++) { uint64_t key=U64(block+row*0x20);if (key) releases[count++]=key; }
+    }
+    int result=ep_c33_resource_execute(&v->resources,(void*)(uintptr_t)v->resources.address,call->bytes,
+        releases,count,d->keys,d->count,call->memory,call->bytes,ServiceInvoke,context);
+    if (result!=EP_RESOURCE_OK) call->result.status=result==EP_RESOURCE_SERVICE ? EP_C33_CALL_SERVICE : EP_C33_CALL_RESOURCE_STATE;
+    return result==EP_RESOURCE_OK;
+}
+int ep_component33_resource_acquire_services_call(HfMod* mod,uint64_t storage,uint64_t owner,const EpC33ResourceServiceOps* input,EpC33ResourceCallResult* out)
+{
+    ServiceCall context={};if (input) context.ops=*input;
+    if (!input || !context.ops.collect || !context.ops.service) {
+        if (out) { memset(out,0,sizeof(*out));out->status=EP_C33_CALL_ARGUMENT; }return EP_C33_CALL_ARGUMENT;
+    }
+    EpC33ResourceAcquireOps ops={&context,ServiceCollect,ServiceExecute};
+    return ep_component33_resource_acquire_call(mod,storage,owner,&ops,out);
+}

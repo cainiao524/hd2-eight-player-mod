@@ -180,6 +180,12 @@ EpRosterOwnerResult ep_roster_owner_mutate(HfMod* mod, uint64_t id, uint64_t rev
     return result;
 }
 int ep_roster_owner_in_scope(void) {return epOwnerScope!=NULL;}
+EpRosterOwnerResult ep_roster_owner_native_status(HfMod* mod,uint64_t id)
+{
+    if (!mod || !id) return EP_OWNER_ARGUMENT;
+    if (!epOwnerScope || !epOwnerNativeDepth || epOwnerScope->mod!=mod || epOwnerScope->handle!=id) return EP_OWNER_REENTRANT;
+    return epOwnerScope->fault ? EP_OWNER_FAULTED : EP_OWNER_OK;
+}
 EpRosterOwnerResult ep_roster_owner_check_binding(HfMod* mod,uint64_t id,uintptr_t game,uintptr_t roster,uintptr_t storage)
 {
     if (!mod || !id) return EP_OWNER_ARGUMENT;

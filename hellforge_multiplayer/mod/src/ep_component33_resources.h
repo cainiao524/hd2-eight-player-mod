@@ -6,7 +6,8 @@ extern "C" {
 #endif
 enum { EP_C33_RESOURCE_MIN=128, EP_C33_RESOURCE_MAX=65536, EP_C33_RESOURCE_WINDOWS=48 };
 enum { EP_RESOURCE_OK=0, EP_RESOURCE_ARGUMENT, EP_RESOURCE_CAPACITY, EP_RESOURCE_STATE,
-       EP_RESOURCE_OVERLAP, EP_RESOURCE_REL32 };
+       EP_RESOURCE_OVERLAP, EP_RESOURCE_REL32, EP_RESOURCE_SERVICE, EP_RESOURCE_CALLBACK_STATE };
+enum { EP_RESOURCE_DISPOSE=1,EP_RESOURCE_LOAD=2,EP_RESOURCE_BATCH_MAX=384 };
 typedef struct EpC33ResourceBinding { uint64_t address;uint32_t capacity,reserved; } EpC33ResourceBinding;
 typedef struct EpC33ResourceEntry { uint64_t key,references; } EpC33ResourceEntry;
 typedef struct EpC33ResourceSnapshot {
@@ -30,6 +31,20 @@ uint32_t ep_c33_resource_bytes(uint32_t capacity);
 int ep_c33_resource_migrate(const EpC33ResourceBinding*,const EpC33ResourceSnapshot*,void*,uint32_t);
 int ep_c33_resource_validate(const EpC33ResourceBinding*,const void*,uint32_t);
 int ep_c33_resource_reserve(const EpC33ResourceBinding*,void*,uint32_t,const uint64_t*,uint32_t,void*,uint32_t);
+/* Executes an ALREADY ADMITTED acquisition: immediate release of every key
+ * in the first sequence, then acquisition of the second sequence. Repeated
+ * keys retain their order. A queued zero-reference key is removed by swap-last
+ * instead of LOAD; reaching zero during release calls DISPOSE, as flag=0 in
+ * the saved acquire -> release call. Services must not mutate this arena or
+ * reenter; 1 means completed, any other return stops the sequence. Scratch
+ * protects against service-side arena mutations. Refusal before execution is
+ * atomic; service failure after execution starts is NOT rollback. The owning
+ * shared scope must quarantine failures/SEH. Numeric binding is not followed;
+ * p and scratch are explicit owned buffers. No source/package lookup occurs. */
+typedef int (*EpC33ResourceService)(void*,uint32_t operation,uint64_t key);
+int ep_c33_resource_execute(const EpC33ResourceBinding*,void* p,uint32_t bytes,
+    const uint64_t* release_keys,uint32_t release_count,const uint64_t* acquire_keys,uint32_t acquire_count,
+    void* scratch,uint32_t scratch_bytes,EpC33ResourceService,void* context);
 /* Explicit opt-in emission. Every consumer, its RELEASE dependency, and all
  * returned original-code windows must share the same arena. Never publish
  * just a subset. The opt-in storage/family resource APIs own/bind this arena;

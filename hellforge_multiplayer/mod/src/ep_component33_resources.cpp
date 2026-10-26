@@ -82,6 +82,56 @@ int ep_c33_resource_reserve(const EpC33ResourceBinding* b,void* p,uint32_t bytes
     memcpy(Queue(scratch),Queue(p),(size_t)h.queued*8);
     memcpy(p,scratch,bytes);return EP_RESOURCE_OK;
 }
+int ep_c33_resource_execute(const EpC33ResourceBinding* binding,void* p,uint32_t bytes,
+    const uint64_t* release_keys,uint32_t releases,const uint64_t* acquire_keys,uint32_t acquisitions,
+    void* scratch,uint32_t scratch_bytes,EpC33ResourceService service,void* context)
+{
+    EpC33ResourceBinding b={};if (binding) b=*binding;
+    int result=ep_c33_resource_validate(&b,p,bytes);if (result) return result;
+    if (!service || !scratch || (uintptr_t)scratch%8 || bytes!=scratch_bytes ||
+        releases>EP_RESOURCE_BATCH_MAX || acquisitions>EP_RESOURCE_BATCH_MAX ||
+        (releases && !release_keys) || (acquisitions && !acquire_keys)) return EP_RESOURCE_ARGUMENT;
+    if (Overlap((uintptr_t)p,bytes,(uintptr_t)scratch,bytes)) return EP_RESOURCE_OVERLAP;
+    for (unsigned which=0;which<2;which++) {
+        const uint64_t* keys=which ? acquire_keys : release_keys;uint32_t count=which ? acquisitions : releases;
+        if (count && (Overlap((uintptr_t)keys,(uint64_t)count*8,(uintptr_t)p,bytes) ||
+            Overlap((uintptr_t)keys,(uint64_t)count*8,(uintptr_t)scratch,bytes))) return EP_RESOURCE_OVERLAP;
+    }
+    /* Own immutable copies across service calls. No callback can change the
+     * next operation by editing the caller's original sequence. */
+    uint64_t old_keys[EP_RESOURCE_BATCH_MAX],new_keys[EP_RESOURCE_BATCH_MAX];
+    if (releases) memcpy(old_keys,release_keys,(size_t)releases*8);
+    if (acquisitions) memcpy(new_keys,acquire_keys,(size_t)acquisitions*8);
+    auto* h=(Header*)p;auto* t=Table(p,b.capacity);auto* q=Queue(p);
+    for (uint32_t i=0;i<acquisitions;i++) {
+        if (!new_keys[i]) return EP_RESOURCE_ARGUMENT;
+        uint32_t at=Find(t,b.capacity,h->seed,new_keys[i]);
+        if (at==b.capacity || t[at].key!=new_keys[i]) return EP_RESOURCE_CAPACITY;
+        uint64_t additions=1;for (uint32_t j=0;j<i;j++) additions+=new_keys[j]==new_keys[i];
+        if (t[at].references>UINT64_MAX-additions) return EP_RESOURCE_CAPACITY;
+    }
+    for (uint32_t i=0;i<releases;i++) if (!old_keys[i]) return EP_RESOURCE_ARGUMENT;
+    auto invoke=[&](uint32_t operation,uint64_t key) {
+        memcpy(scratch,p,bytes);int completed=service(context,operation,key);
+        if (memcmp(scratch,p,bytes)) return EP_RESOURCE_CALLBACK_STATE;
+        return completed==1 ? EP_RESOURCE_OK : EP_RESOURCE_SERVICE;
+    };
+    for (uint32_t i=0;i<releases;i++) {
+        uint32_t at=Find(t,b.capacity,h->seed,old_keys[i]);
+        if (at==b.capacity || t[at].key!=old_keys[i] || !t[at].references) continue;
+        if (!--t[at].references) { result=invoke(EP_RESOURCE_DISPOSE,old_keys[i]);if (result) return result; }
+    }
+    for (uint32_t i=0;i<acquisitions;i++) {
+        uint32_t at=Find(t,b.capacity,h->seed,new_keys[i]);
+        if (!t[at].references) {
+            uint64_t queued=0;while (queued<h->queued && q[queued]!=new_keys[i]) queued++;
+            if (queued<h->queued) { q[queued]=q[h->queued-1];--h->queued; }
+            else { result=invoke(EP_RESOURCE_LOAD,new_keys[i]);if (result) return result; }
+        }
+        ++t[at].references;
+    }
+    return EP_RESOURCE_OK;
+}
 static uint64_t Target(const EpC33ResourceBinding& b,uint32_t rva)
 {
     if (rva>=0x3798180 && rva<0x379819c) return b.address+rva-0x3798180;

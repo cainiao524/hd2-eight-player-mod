@@ -166,6 +166,8 @@ def main():
     component33_resource_owner_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_component33_resource_owner.py','--library',build/'component33_storage_test.dll','--resources',component33_resources_dll,'--core',component33_dll,'--out',component33_resource_owner_receipt]))
     component33_resource_call_receipt=PROJECT/'evidence/native-component33-resource-call-validation.json'
     component33_resource_call_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_component33_resource_call.py','--zig',zig,'--upstream',upstream,'--resources',component33_resources_dll,'--core',component33_dll,'--out',component33_resource_call_receipt]))
+    component33_resource_services_receipt=PROJECT/'evidence/native-component33-resource-services-validation.json'
+    component33_resource_services_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_component33_resource_services.py','--library',build/'component33_resource_call_test.dll','--resources',component33_resources_dll,'--core',component33_dll,'--out',component33_resource_services_receipt]))
     creation_receipt=PROJECT/'evidence/creation-dispatch-validation.json'
     creation_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_creation_dispatch.py','--library',property_dll,'--out',creation_receipt,'--component33-library',component33_dll]))
     classify_fixture=build/'native-classify-fixture.bin'
@@ -320,6 +322,7 @@ def main():
         'native_component33_storage':{**component33_storage_output,'validation_sha256':digest(component33_storage_receipt)},
         'native_component33_resource_owner':{**component33_resource_owner_output,'validation_sha256':digest(component33_resource_owner_receipt)},
         'native_component33_resource_call':{**component33_resource_call_output,'validation_sha256':digest(component33_resource_call_receipt)},
+        'native_component33_resource_services':{**component33_resource_services_output,'validation_sha256':digest(component33_resource_services_receipt)},
         'native_classify_storage':{'checks':int(classify_match[1]),**classify_fixture_receipt},
         'native_property_gates':{**gate_output,'validation_sha256':digest(gate_receipt)},
         'property_group':{'checks':int(group_match[1]),'entries':['producer','receiver','entity_network_getter'],'shared_storage_binding':True,'actual_hellforge_chains':True,
@@ -387,6 +390,7 @@ def main():
             'mod/src/ep_component33_storage.h','mod/src/ep_component33_storage.cpp','tests/component33_storage_dll.cpp','tools/validate_component33_storage.py',
             'tools/validate_component33_resource_owner.py',
             'tools/validate_component33_resource_call.py','tests/component33_resource_call_dll.cpp','mod/src/ep_component33_resource_call.h','mod/src/ep_component33_resource_call.cpp',
+            'tools/validate_component33_resource_services.py',
             'native-component33-owner.lock.json','tools/native_component33_owner.py','tools/validate_component33_owner.py',
             'mod/src/ep_component33_owner_template.h','tests/native_component33_owner_unwind_test.c',
             'tests/roster_call_dll.h','tests/roster_call_dll.cpp','tests/roster_call_test.c',

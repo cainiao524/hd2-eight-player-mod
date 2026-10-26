@@ -20,7 +20,7 @@ int ep_component33_acquire_demand(const EpC33AcquireSnapshot*,EpC33AcquireDemand
 
 enum { EP_C33_CALL_OK=0,EP_C33_CALL_ARGUMENT,EP_C33_CALL_OWNER,EP_C33_CALL_STORAGE,
        EP_C33_CALL_MEMORY,EP_C33_CALL_SNAPSHOT,EP_C33_CALL_CAPACITY,EP_C33_CALL_RESOURCE_STATE,
-       EP_C33_CALL_REENTRANT,EP_C33_CALL_SOURCE_CHANGED };
+       EP_C33_CALL_REENTRANT,EP_C33_CALL_SOURCE_CHANGED,EP_C33_CALL_SERVICE };
 typedef struct EpC33ResourceCallResult {
     uint32_t status,owner_result,demand_count,executed;
 } EpC33ResourceCallResult;
@@ -47,6 +47,21 @@ typedef struct EpC33ResourceAcquireOps {
  * not authorize reuse of this storage. Native game instruction bodies are
  * never invoked by this module itself; execute is an explicit integration. */
 int ep_component33_resource_acquire_call(HfMod*,uint64_t storage,uint64_t roster_owner,const EpC33ResourceAcquireOps*,EpC33ResourceCallResult*);
+/* Built-in executor replaces the unrestricted execute callback with the
+ * captured release/acquire reference algorithm. collect supplies ONE package
+ * used for both phases; release visits all nonzero keys of enabled groups,
+ * acquisition uses the admitted threshold-filtered demand. No second lookup.
+ * service receives DISPOSE/LOAD and a key, returns 1 only after completion.
+ * It must not mutate the arena. A false return, SEH, reentry or nested owner
+ * fault stops further service calls and quarantines without compensation.
+ * Production collection/service ABI and original entry routing are explicit
+ * missing integrations, not provided by this API or automatically installed. */
+typedef struct EpC33ResourceServiceOps {
+    void* context;
+    int (*collect)(void*,const EpC33ResourceScopeView*,EpC33AcquireSnapshot*);
+    int (*service)(void*,const EpC33ResourceScopeView*,uint32_t operation,uint64_t key);
+} EpC33ResourceServiceOps;
+int ep_component33_resource_acquire_services_call(HfMod*,uint64_t storage,uint64_t roster_owner,const EpC33ResourceServiceOps*,EpC33ResourceCallResult*);
 #ifdef __cplusplus
 }
 #endif

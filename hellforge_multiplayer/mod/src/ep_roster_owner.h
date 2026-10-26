@@ -48,6 +48,10 @@ EpRosterOwnerResult ep_roster_owner_check_binding(HfMod*,uint64_t,uintptr_t game
 /* Nonblocking thread-local query for control operations that must not start
  * inside an in-flight native/read/write scope. */
 int ep_roster_owner_in_scope(void);
+/* Nonblocking health check for a callback continuation already in this exact
+ * owner's native scope. Lets executors stop after a nested fault even when an
+ * external callback swallowed its return code. Does not acquire/reenter. */
+EpRosterOwnerResult ep_roster_owner_native_status(HfMod*,uint64_t);
 EpNativeRosterStatus ep_roster_owner_snapshot(HfMod*, uint64_t, uintptr_t game, EpHfRosterSnapshot*);
 /* Stable numerical context, no pointer into reusable owner slots. Closing an
  * owner makes an already exported provider return unavailable, never a later
