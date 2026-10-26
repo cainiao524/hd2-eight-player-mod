@@ -82,3 +82,5 @@ py -3.12 -B hellforge_multiplayer/tools/build_engine_offline.py `
 新增 [原生注册表与关联查询](../NATIVE_REGISTRY.zh-CN.md)：RVA 0xB54E00 与 0x606520 已进入 C++ 生成、实际准备生命周期及十六入口共同所有者。8 个功能测试、87 次执行、63 项 API 检查、45 项准备检查和 3,963 个 Windows 回溯上下文通过；保存的四段原回溯资料重放 140 bytes。tag 73 直接调用同组关联主体，tag 69 使用外部 B 数组；其余 tag 回调仍为契约替身，晚期拒绝不承诺撤销此前副作用。单独证据为 `native-registry-validation.json`；生产自动绑定、游戏访问和八人实机验证仍未完成。
 
 [离队前清理移植](../NATIVE_DEPARTURE.zh-CN.md) 已纳入离线构建及独立 C++ 映像准备验证。它保留十三段来源回溯，新增完整栈和 XMM6 Windows 验证；已接入第 15 个共同入口及同组 getter，尾调用关闭/提交等待与嵌套删除故障另有自有程序验证。第 16 个外层入口已在自有双阶段测试中保护清理返回后的间隙；真实尾调用 ABI、原 dispatcher 全部执行和副作用恢复仍未证明，生产未启用。
+
+同一入口新增 [原实体删除集成执行](../ENTITY_REMOVE_SCOPE.zh-CN.md#原-dispatcher-集成执行)：完整保存的 `FDC820` 在 Unicorn 中真实查询两张回调表，连接 C++ 离队/getter/删除/搬移映像及原注册表删除 helper。19 个场景覆盖四槽对照与第五到第八项记录、分区压实和额外返回数反例；242/373 条原指令实际执行。返回 17 与 `0xFFFFFFFF` 的替身揭示原调用方没有局部数组上限检查，真实提供者的契约仍未核定。总收据 `native_entity_remove_dispatch` 固定独立 `entity-remove-dispatch-validation.json` 的哈希；模拟器与 Windows owner/SDK 链为两套测试，不能合并视为生产实测。

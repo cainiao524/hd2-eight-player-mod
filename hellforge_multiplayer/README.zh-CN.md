@@ -32,6 +32,7 @@
 | 原生注册表与关联查询 | `mod/src/ep_registry_image.*` / `NATIVE_REGISTRY.zh-CN.md` | 两个入口、链式回溯、同组内部绑定；8 个测试、87 次执行、3,963 个 Windows 回溯上下文通过，尚未发布到游戏 |
 | 十六入口受管调用 | `mod/src/ep_roster_call.*` / `ROSTER_CALLS.zh-CN.md` | 旧/新路径整次调用进入 owner，保存六参数与返回状态；同 owner 嵌套、受管提交及异常隔离，显式选择且未接入初始化 |
 | 实体删除外层范围 | `mod/src/ep_roster_gate.*`、`ep_roster_call.*` / `ENTITY_REMOVE_SCOPE.zh-CN.md` | 第 16 个入口保留原 dispatcher，双阶段间隙继续持有 owner；原回调契约和完整游戏执行仍未验证 |
+| 原实体删除集成执行 | `tools/validate_entity_remove.py` / `ENTITY_REMOVE_SCOPE.zh-CN.md` | 19 个离线场景实际执行原 dispatcher 的选定路径与 C++ 名册映像；242/373 条原指令覆盖；2 个超额返回反例，真实提供者契约仍未证明 |
 | 继续开发说明 | `HANDOFF.zh-CN.md` | 旧代码迁移关系、已知限制、下一步及授权范围 |
 | 四个原生插入入口 | `mod/src/ep_insert_image.*` / `NATIVE_INSERT.zh-CN.md` | C++ 生成及 READY 准备；515 次功能执行、660 组不同回溯状态和 108 项准备检查通过；已接入存储/同步夹具，生产共同切换待实现 |
 

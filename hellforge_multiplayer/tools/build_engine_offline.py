@@ -119,6 +119,8 @@ def main():
     registry_receipt=PROJECT/'evidence/native-registry-validation.json'
     departure_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_departure_images.py','--library',property_dll,'--zig',zig]))
     departure_receipt=PROJECT/'evidence/native-departure-validation.json'
+    entity_remove_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_entity_remove.py','--library',property_dll]))
+    entity_remove_receipt=PROJECT/'evidence/entity-remove-dispatch-validation.json'
     classify_fixture=build/'native-classify-fixture.bin'
     classify_fixture_receipt=json.loads(run([sys.executable,'-B',PROJECT/'tools/native_classify_fixture.py','--output',classify_fixture,'--property-library',property_dll]))
     classify_test=build/'native_classify_roster_test.exe'
@@ -254,6 +256,7 @@ def main():
         'native_classify':{**classify_output,'validation_sha256':digest(classify_receipt)},
         'native_registry':{**registry_output,'validation_sha256':digest(registry_receipt)},
         'native_departure':{**departure_output,'validation_sha256':digest(departure_receipt)},
+        'native_entity_remove_dispatch':{**entity_remove_output,'validation_sha256':digest(entity_remove_receipt)},
         'native_classify_storage':{'checks':int(classify_match[1]),**classify_fixture_receipt},
         'native_property_gates':{**gate_output,'validation_sha256':digest(gate_receipt)},
         'property_group':{'checks':int(group_match[1]),'entries':['producer','receiver','entity_network_getter'],'shared_storage_binding':True,'actual_hellforge_chains':True,
@@ -300,6 +303,7 @@ def main():
             'mod/src/ep_roster_owner.h','mod/src/ep_roster_owner.cpp',
             'tests/roster_owner_dll.h','tests/roster_owner_dll.cpp','tests/roster_owner_test.c',
             'mod/src/ep_roster_call.h','mod/src/ep_roster_call.cpp','tools/verify_roster_call_abi.py','native-entity-remove.lock.json',
+            'tools/validate_entity_remove.py',
             'tests/roster_call_dll.h','tests/roster_call_dll.cpp','tests/roster_call_test.c',
             'tests/roster_call_abi.h','tools/roster_bridge_unwind.py',
             'native-getter.lock.json','tools/native_getter_image.py','tools/generate_getter_template.py','tools/validate_getter_image.py',
