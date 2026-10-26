@@ -8,6 +8,7 @@
 
 | 内容 | 位置 | 当前作用 |
 |---|---|---|
+| 玩家资源创建分派 | [CREATION_DISPATCH.zh-CN.md](CREATION_DISPATCH.zh-CN.md) / `tools/validate_creation_dispatch.py` | 42 次保存指令模拟，接入 C++ 名册与原元件 33；复现拒绝前写入、相邻覆盖与无效资源残留，尚未实现创建事务 |
 | 已有玩家状态更新 | `mod/src/ep_arrival_image.*` / `NATIVE_STATE_UPDATE.zh-CN.md` | 八槽数组访问与原 GS 异常处理器迁移；第 17 个共同入口；该函数不创建新角色 |
 | HellForge 源码 Mod | `mod/` | SDK 入口、版本检查、会话身份和任务/生成/死亡事件观察 |
 | 原容量契约 | `mod/src/core/` | 从旧项目逐字节复用；未满足容量验证时拒绝八人请求 |
