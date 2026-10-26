@@ -41,6 +41,7 @@ static int RunRosterCall(void* opaque,const EpNativeRosterView* view)
 {
     EpRosterInvocation* call=(EpRosterInvocation*)opaque;EpRosterCallContext* c=call->context;
     if (view->game!=c->game || view->roster!=c->roster || view->storage!=c->storage) return 0;
+    if (c->switching && InterlockedCompareExchange((volatile LONG*)c->switching,0,0)) return 0;
     /* Own the original dispatcher across both callback tables, including the
      * interval after departure returns. Resolve next while ownership is held. */
     uintptr_t target=c->kind!=EP_ROSTER_ENTITY_REMOVE && InterlockedCompareExchange((volatile LONG*)c->active,0,0)==1 ? c->body :

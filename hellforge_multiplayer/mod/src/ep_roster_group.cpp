@@ -1,5 +1,6 @@
 /* C-compatible for tests against the actual HellForge loader. */
 #include "ep_roster_group.h"
+#include "ep_roster_group_transition.h"
 #include "ep_roster_gate.h"
 #include <windows.h>
 #include <string.h>
@@ -12,10 +13,13 @@ typedef struct EpRosterGroup {
     uint64_t code[EP_ROSTER_ENTRIES];
     uint64_t storage_owner;
     EpRosterCallContext calls[EP_ROSTER_ENTRIES];
+    volatile LONG switching;
+    uint64_t transition;
 } EpRosterGroup;
 static EpRosterGroup epGroups[EP_ROSTER_GROUP_SLOTS];
 static SRWLOCK epGroupLock=SRWLOCK_INIT;
 static uint64_t epGroupSequence;
+static uint64_t epTransitionSequence;
 static EpRosterGroup* EpGroupFind(HfMod* owner,uint64_t id)
 {
     if (owner && id) for (unsigned i=0;i<EP_ROSTER_GROUP_SLOTS;i++)
@@ -109,6 +113,7 @@ static int EpGroupPrepare(const HfApi* api,HfMod* owner,const EpRosterGroupBindi
             c->mod=owner;c->owner=storage_owner;c->game=bindings.game_base;c->roster=bindings.roster_address;c->storage=bindings.storage_address;
             c->active=(volatile int32_t*)&g->active;c->next_pointer=allocations[i].next_pointer;c->body=allocations[i].base+32;
             c->kind=i+1;c->policy=*policy;
+            c->switching=(volatile int32_t*)&g->switching;
             if (!ep_roster_call_prefix(c,image.data)) {ok=0;break;}
         }
         if (i+1==EP_ROSTER_STATE_UPDATE) {
@@ -201,4 +206,60 @@ int ep_roster_group_cancel(HfMod* owner,uint64_t id)
     int ok=0; AcquireSRWLockExclusive(&epGroupLock); EpRosterGroup* g=EpGroupFind(owner,id);
     if (g && (g->state==EP_GROUP_PREPARED || g->state==EP_GROUP_READY || g->state==EP_GROUP_FAILED || g->state==EP_GROUP_CANCELLED)) ok=EpGroupCancel(g);
     ReleaseSRWLockExclusive(&epGroupLock); return ok;
+}
+static EpRosterGroup* TransitionFind(HfMod* mod,const EpRosterGroupTransition* token)
+{
+    EpRosterGroup* g=token ? EpGroupFind(mod,token->group) : NULL;
+    return g && token->sequence && g->transition==token->sequence && g->storage_owner==token->storage_owner && g->state==EP_GROUP_COMMITTING ? g : NULL;
+}
+static int TransitionNextReady(EpRosterGroup* g)
+{
+    for (unsigned i=0;i<EP_ROSTER_ENTRIES;i++) {
+        EpSessionCodeInfo code;
+        if (!ep_session_code_info(g->owner,g->code[i],&code) || !code.pinned || !g->calls[i].next_pointer ||
+            !InterlockedCompareExchangePointer((void* volatile*)g->calls[i].next_pointer,NULL,NULL)) return 0;
+    }
+    return 1;
+}
+int ep_roster_group_transition_claim(HfMod* mod,uint64_t id,uint64_t owner,uint64_t game,EpRosterGroupTransition* out)
+{
+    if (!out) return 0;memset(out,0,sizeof(*out));if (!owner || ep_roster_owner_in_scope()) return 0;
+    AcquireSRWLockExclusive(&epGroupLock);EpRosterGroup* g=EpGroupFind(mod,id);
+    int ok=g && g->state==EP_GROUP_READY && g->storage_owner==owner && g->calls[0].game==game &&
+        !g->active && !g->switching && !g->transition && epTransitionSequence!=UINT64_MAX && TransitionNextReady(g);
+    if (ok) {
+        g->transition=++epTransitionSequence;g->state=EP_GROUP_COMMITTING;
+        out->group=id;out->sequence=g->transition;out->storage_owner=owner;
+    }
+    ReleaseSRWLockExclusive(&epGroupLock);return ok;
+}
+int ep_roster_group_transition_enter(HfMod* mod,const EpRosterGroupTransition* token)
+{
+    if (!token || ep_roster_owner_native_status(mod,token->storage_owner)!=EP_OWNER_OK) return 0;
+    AcquireSRWLockExclusive(&epGroupLock);EpRosterGroup* g=TransitionFind(mod,token);
+    int ok=g && !g->active && !g->switching && TransitionNextReady(g);
+    if (ok) InterlockedExchange(&g->switching,1);
+    ReleaseSRWLockExclusive(&epGroupLock);return ok;
+}
+int ep_roster_group_transition_activate(HfMod* mod,const EpRosterGroupTransition* token)
+{
+    if (!token || ep_roster_owner_native_status(mod,token->storage_owner)!=EP_OWNER_OK) return 0;
+    AcquireSRWLockExclusive(&epGroupLock);EpRosterGroup* g=TransitionFind(mod,token);
+    int ok=g && g->switching && !g->active;
+    if (ok) InterlockedExchange(&g->active,1);
+    ReleaseSRWLockExclusive(&epGroupLock);return ok;
+}
+int ep_roster_group_transition_finish(HfMod* mod,const EpRosterGroupTransition* token,uint32_t outcome)
+{
+    if (!token || outcome>EP_ROSTER_TRANSITION_UNSAFE) return 0;
+    AcquireSRWLockExclusive(&epGroupLock);EpRosterGroup* g=TransitionFind(mod,token);int ok=g!=NULL;
+    if (ok && outcome!=EP_ROSTER_TRANSITION_UNSAFE) {
+        if (g->switching && ep_roster_owner_native_status(mod,g->storage_owner)!=EP_OWNER_OK) ok=0;
+        if ((outcome==EP_ROSTER_TRANSITION_NEW)!=(g->active!=0)) ok=0;
+    }
+    if (ok) {
+        g->state=g->active ? EP_GROUP_ACTIVE : outcome==EP_ROSTER_TRANSITION_UNSAFE ? EP_GROUP_FAILED : EP_GROUP_READY;
+        InterlockedExchange(&g->switching,outcome==EP_ROSTER_TRANSITION_UNSAFE ? 1 : 0);g->transition=0;
+    }
+    ReleaseSRWLockExclusive(&epGroupLock);return ok;
 }

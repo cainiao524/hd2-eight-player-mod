@@ -26,6 +26,9 @@ typedef struct EpRosterCallContext {
     uintptr_t next_pointer,body;
     uint32_t kind;
     EpRosterCallPolicy policy;
+    /* Optional group staging barrier; checked AFTER acquiring the owner.
+     * Same-thread callbacks cannot enter either layout during a joint commit. */
+    volatile int32_t* switching;
 } EpRosterCallContext;
 /* Replaces only the existing 32-byte leaf prefix. Context remains immutable
  * after exposure except the separately atomic active/next variables. */

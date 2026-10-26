@@ -832,3 +832,11 @@ int ep_component33_resource_entries_commit_migrated(HfMod* mod,uint64_t id,const
     if (!out) return 0;*out={};CommitMigration migration={};
     int result=CommitEntries(mod,id,input,&migration);*out=migration.result;return result;
 }
+int ep_component33_resource_entries_transaction_binding(HfMod* mod,uint64_t id,uint64_t* owner,uint64_t* game)
+{
+    if (!owner || !game) return 0;*owner=*game=0;if (ep_roster_owner_in_scope()) return 0;
+    AcquireSRWLockShared(&entriesLock);auto* g=Find(mod,id);
+    int ok=g && g->routed && g->info.publication_state==EP_C33_PUBLISH_READY && !g->active;
+    if (ok) {*owner=g->bindings.roster_owner;*game=g->view.game;}
+    ReleaseSRWLockShared(&entriesLock);return ok;
+}

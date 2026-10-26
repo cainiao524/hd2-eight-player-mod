@@ -271,6 +271,9 @@ typedef struct EpC33MigrationCommitResult { uint32_t status,read_bytes,restored,
  * commit_outcome too. restored bits: 1=B, 2=arena, 0=no data restoration.
  * No automatic invocation: this API requires explicit runtime authorization. */
 int ep_component33_resource_entries_commit_migrated(HfMod*,uint64_t,const EpC33EntryCommitGuard*,EpC33MigrationCommitResult*);
+/* Owned metadata only, for a coordinator choosing a matching published group.
+ * Does not reserve it; commit still checks READY atomically when invoked. */
+int ep_component33_resource_entries_transaction_binding(HfMod*,uint64_t,uint64_t* owner,uint64_t* game);
 int ep_component33_resource_entries_info(HfMod*,uint64_t,EpC33ResourceEntriesInfo*);
 int ep_component33_resource_entries_retain(HfMod*,uint64_t);
 int ep_component33_resource_entries_cancel(HfMod*,uint64_t);

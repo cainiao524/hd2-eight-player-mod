@@ -17,7 +17,7 @@ typedef struct EpRosterGroupInfo {
     EpSessionCodeInfo code[EP_ROSTER_ENTRIES];
     uint64_t storage_owner;
 } EpRosterGroupInfo;
-/* Fourteen entries share one latch and storage binding. All reservations precede
+/* Seventeen entries share one latch and storage binding. All reservations precede
  * emission; insert/remove and registry calls use this group's mover and
  * association bodies respectively. Uses
  * EP_GROUP_* states and the same full-capacity guard contract. No production
