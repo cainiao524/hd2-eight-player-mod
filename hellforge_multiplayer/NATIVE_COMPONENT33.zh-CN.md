@@ -1,6 +1,6 @@
-# 元件 33：核心、分类与初始化的八槽离线实现
+# 元件 33：核心、分类、初始化与直接入口的八槽离线实现
 
-更新：2026-10-26。C++ 已能生成搬移、普通插入、密集插入、移除、分类进入、分类退出、属性生成和重置八个映像，并把它们的数组访问迁到独立八槽区域。**这只是元件 33 的部分生命周期，剩余读写者、生产发布与角色创建仍未完成。** 没有启动、检查、读取、修改或安装游戏。
+更新：2026-10-26。C++ 已能生成十三个映像：原有核心、分类、属性与单项重置八项，另有三个直接插入/移除入口和两个批次重置入口。它们的数组访问使用独立八槽区域。**这只是元件 33 的部分生命周期，剩余读写者、生产发布与角色创建仍未完成。** 没有启动、检查、读取、修改或安装游戏。
 
 ## 文件与固定来源
 
@@ -12,6 +12,7 @@
 - [evidence/native-component33-validation.json](evidence/native-component33-validation.json)：功能用例、定位拒绝、源码和产物指纹。
 - [tools/validate_component33_classify.py](tools/validate_component33_classify.py) 与[分类收据](evidence/native-component33-classify-validation.json)：执行保存的回调包装器和分类映像，检查数据交换、条件序言回溯以及分配失败反例。
 - [tools/validate_component33_initialize.py](tools/validate_component33_initialize.py)、[初始化夹具](tools/component33_initialization_fixture.py)与[初始化收据](evidence/native-component33-initialize-validation.json)：执行第二/第三回调，检查属性描述符、部分记录重置、GS 栈保护和分类后的连续操作。
+- [tools/validate_component33_direct.py](tools/validate_component33_direct.py) 与[直接入口收据](evidence/native-component33-direct-validation.json)：直接入口、批次重置、同 ID 生命周期和未迁移分区函数的原版反例。
 - [CREATION_DISPATCH.zh-CN.md](CREATION_DISPATCH.zh-CN.md)：与保存的创建分派及八槽名册相连的验证。
 
 来源仍是已保存的 build 25480438 capture 与 `component33_250_lifecycle_evidence_v2.json`。搬移 `665FE0`、普通插入 `51ABF0`、密集插入 `51AC70`、移除 `51AD30`，以及真实 map 插入 `172F790`、删除 `172F8A0` 的完整字节均与保存证据核对。此步骤没有重新读取游戏。
@@ -27,7 +28,7 @@
 | primary | `B+050` | `50` | `[050,2D0)` |
 | secondary | `B+2D0` | `38` | `[2D0,490)` |
 
-表中数字均为十六进制。`[048,050)` 是对齐空隙。旧 `S+70..S+2B8` 数组区域作为哨兵检查，候选八函数不再写入它。
+表中数字均为十六进制。`[048,050)` 是对齐空隙。旧 `S+70..S+2B8` 数组区域作为哨兵检查，候选十三函数不再写入它。
 
 每条原数组指令前后用不改变标志位的地址装载切换基址，原指令本身保留。指针、primary、secondary 的地址偏置分别是 `B-70`、`B-48`、`B+F8`。非数组字段仍访问 `S`，调用的真实 map 函数也使用原 map 头。
 
@@ -56,6 +57,32 @@
 属性映像为 1,988 bytes、三条函数表记录；重置映像为 1,176 bytes、五条记录。属性保留 `EHANDLER|UHANDLER`、120-byte 栈帧和 frame+64 cookie，handler 通过本地跳板连接保存的 `21044A0 → 21044C0 → 2088770`。Windows 三种 unwind flag 均验证，真实保存 GS 处理器只在模拟内存执行；最后的 cookie 检查是显式契约替身。
 
 两次属性分配失败对照（原版/候选）证实：分配器返回零时，secondary 前 24 bytes 已更新，随后写地址零故障，描述符尚未追加。此路径也未实现回滚。helper 预检拒绝不写栈或数据；经过原包装器的拒绝已存在 64/48-byte 调用帧，但不改变数据，不能用普通布尔返回代替非返回拒绝路径。
+
+## 直接入口与批次重置
+
+新增五个入口保留各自真实 ABI，不能把已登记 callback 的参数约定直接套上去：
+
+| 映像 | 原 RVA | 参数和效果 | 映像 bytes / 函数表记录 |
+|---|---|---|---:|
+| `direct_dense` | `666710` | RDX=entity，R8=flags；密集插入 | 712 / 2 |
+| `direct_append` | `6667D0` | RDX=entity；追加尾部 | 616 / 2 |
+| `direct_remove` | `666A00` | RDX=entity；返回 EAX=原 entity+10 的 DWORD | 640 / 2 |
+| `reset_control` | `6642C0` | DL 写 S+1；DL=0 时批次重置 dense primary | 1,164 / 7 |
+| `reset_dense` | `665EC0` | 批次重置 dense primary，最后 S[0]=1 | 984 / 5 |
+
+`reset_control` 的零标志路径将每个密集项 primary 的前 44 bytes 设为 FF、最后 32 bytes 归零，中间 4 bytes 保留；非零标志只改控制字节。`reset_dense` 只将前 44 bytes 设为 FF，余下 36 bytes 保留。其他三组数组和计数均不变，不能把两种重置合并成全记录清零。
+
+批次预检保留 DL，在任何栈/数据写入前核对所有 T 个有效指针、map 占用数和身份。查找使用保存函数的乘法散列、八桶线性探测与遇空停止规则，每次最多探测八桶；不是只扫描有没有这个 ID。测试保留了“ID 存在但 home bucket 已空”的反例，并验证另一种有效散列乘数。实体和 map 可读、外部同步仍由调用方保证。
+
+直接入口收据通过 **890 次执行**：150 次四槽原版、687 次八槽候选成功、53 次无写入拒绝。包含八组传递真实模拟状态的“移除→两种批次重置→同一 ID 密集重加入”，检查移除后的 map 序号和数据重排。另有 **3,736 个 Windows 回溯上下文**、五个损坏回溯负对照、13 个有效定位和 302 个拒绝定位。回溯检查使用三种 Windows unwind flag；候选仍仅在 Unicorn 执行。
+
+## 待加入分区的原版反例
+
+来源锁还固定了 **`666850`** 的完整代码和三段 unwind，供原版重播；它没有对应的新候选映像。在全部 35 种 `0≤P≤D≤T≤4` 的合成状态中，10 种 `P<D<T` 状态会丢失有效身份：原函数先将 P 行复制覆盖到 pending 行，再调用搬移器，最终出现重复指针，T/D/P 的更新本身却正常。其余 25 种状态保留身份。
+
+另已定位创建后的两个直接读者：`ADDD85`（root `ADDC10`）和 `B62400`（root `B62210`）仍从旧 `S+70` 指针数组取实体，再调用 `664430`。只改重置 helper 不能覆盖这两条调用者读取；必须一起迁移并验证整段调用作用域。`117D830` 的四处全局引用在已检查窗口内只读取 `S+1` 控制字节，这不构成该函数全路径的数组访问排除证明。
+
+该结果只证明保存函数在这些明确构造状态下的行为；尚未证明真实调用者允许全部状态。因此不能把“计数已经变成八”当成记录正确。下一步应追溯 `666850` 的调用条件及 owner `576CF0` 的同族搬移，确定合法的分区转换或实现保留所有身份的事务，再补 registry/其余直接读写覆盖。当前仍保留 pending-tail 拒绝，不能据此发布。
 
 ## 接口边界与拒绝
 
@@ -86,8 +113,8 @@ Windows 验证只把候选字节放入 `PAGE_READWRITE`，注册临时函数表�
 ## 下一位接手者的顺序
 
 1. 读取上述核心收据、创建分派收据及 [status.json](status.json)，确认源码和构建指纹相符。
-2. 继续覆盖元件 33 的其他 byte/secondary 写入、owner 直接访问与 registry 访问。分类和第二/第三回调已完成本文所列离线验证，但分类/属性分配失败补偿、调用方 flag/通知以及从旧四槽数据建立 `B` 的生命周期和所有权仍待实现。
-3. 完成这一族函数后，再提供 READY 准备、封存和统一发布接口；当前八个映像不得单独激活，不计入已存在的十七个共同入口。
+2. 优先核实 `666850` 的合法调用状态及 `576CF0` 的同族转换，再覆盖其他 byte/secondary 写入、owner 直接访问与 registry 访问。分类和第二/第三回调已完成本文所列离线验证，但分类/属性分配失败补偿、调用方 flag/通知以及从旧四槽数据建立 `B` 的生命周期和所有权仍待实现。
+3. 完成这一族函数后，再提供 READY 准备、封存和统一发布接口；当前十三个映像不得单独激活，不计入已存在的十七个共同入口。
 4. 对剩余固定四槽元件建立相同的读写闭合验证，并在 `FDC140` 写入前完成共同接纳或实现全部副作用补偿。保留资源类型无效时的 `7FFF` 残留反例。
 5. 继续完整生产身份、内存所有权、角色控制/复制和真实八账户任务验收。任何游戏访问都需要新的明确授权；本轮授权余额为零。
 
@@ -110,6 +137,10 @@ py -3.12 -B hellforge_multiplayer/tools/validate_component33_initialize.py `
   --library hellforge_multiplayer/build/component33_image_test.dll `
   --zig work/hellforge_toolchain_20261025/zig-x86_64-windows-0.17.0/zig.exe `
   --out work/component33-initialize-validation.json
+py -3.12 -B hellforge_multiplayer/tools/validate_component33_direct.py `
+  --library hellforge_multiplayer/build/component33_image_test.dll `
+  --zig work/hellforge_toolchain_20261025/zig-x86_64-windows-0.17.0/zig.exe `
+  --out work/component33-direct-validation.json
 ```
 
 该命令编译和运行自有回溯测试程序，读取仓库保存的代码。`installable`、`runtime_verified`、`multiplayer_verified`、`public_release_allowed` 继续为 false。

@@ -15,11 +15,13 @@ import capstone
 from capstone.x86_const import X86_OP_MEM, X86_OP_IMM, X86_REG_RIP
 from inspect_capture import Image
 LOCK = PROJECT / 'native-component33.lock.json'
-LOCK_SHA = '10d58fef23fa9e41f19cb8fa0363494fc1c0891b9b2f4515b23e16ea971fd447'
+LOCK_SHA = '5c1eecefbe237d069451c5018a18b3ade9b0e99da3c4dc21c2f43164070f8906'
 KINDS = ('mover', 'append', 'dense', 'remove')
 CLASSIFY_KINDS = ('enter','leave')
 INITIALIZE_KINDS = ('property','reset')
-ALL_KINDS = KINDS + CLASSIFY_KINDS + INITIALIZE_KINDS
+DIRECT_KINDS = {'direct_dense':'dense','direct_append':'append','direct_remove':'remove'}
+BATCH_KINDS = ('reset_control','reset_dense')
+ALL_KINDS = KINDS + CLASSIFY_KINDS + INITIALIZE_KINDS + tuple(DIRECT_KINDS) + BATCH_KINDS
 EXTRA_GLOBAL_REGIONS = ((0x347CDD8,8),(0x263C010,8),(0x32F6908,0xA0),(0x32E50D8,0xC8),(0x32EC0E8,0xA0),(0x32EB4F8,0x60),(0x32E5BC8,0x40))
 sha = lambda b: hashlib.sha256(b).hexdigest()
 
@@ -84,7 +86,32 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
     def branch(target,condition=None):
         emit(b'\xe9' if condition is None else bytes([0x0F,condition])); fixes.append((len(out),target)); emit(bytes(4))
     def label(name): labels[name] = len(out)
-    if kind in INITIALIZE_KINDS:
+    if kind in BATCH_KINDS:
+        # Validate every active row through the original bounded hash probe.
+        # RDX retains the control flag; no stack/nonvolatile register is touched.
+        mov(10,component_address);mov(0,game_base+0x33267B8)
+        emit('4c3910');branch('reject1',0x85)
+        emit('41837a0808');branch('reject2',0x87)
+        emit('418b4a0c 413b4a08');branch('reject3',0x87)
+        emit('413b4a10');branch('reject3',0x82)
+        mov(0,component_address+0x14);emit('49394258');branch('reject5',0x85)
+        emit('41837a6008');branch('reject5',0x85)
+        emit('41837a6400');branch('reject5',0x85)
+        emit('31c9 4531c0');label('occupied')
+        emit('41837cca1400');branch('empty',0x84)
+        emit('41ffc0');label('empty');emit('ffc1 83f908');branch('occupied',0x82)
+        emit('453b4208');branch('reject9',0x85)
+        mov(9,storage_address);emit('4531db 41837a0800');branch('batch_ready',0x84)
+        label('active');emit('4b8b04d9 4885c0');branch('reject6',0x84)
+        emit('8b4008 85c0');branch('reject6',0x84)
+        emit('3b05');fixes.append((len(out),0x3483C34));emit(bytes(4));branch('reject6',0x84)
+        emit('4189c0 450faf4268 4183e007 b908000000');label('probe')
+        emit('433b44c214');branch('found',0x84)
+        emit('43837cc21400');branch('reject7',0x84)
+        emit('41ffc0 4183e007 ffc9');branch('probe',0x85);branch('reject7')
+        label('found');emit('47395cc218');branch('reject8',0x85)
+        emit('41ffc3 453b5a08');branch('active',0x82);label('batch_ready')
+    elif kind in INITIALIZE_KINDS:
         # RDX is the entity; property additionally owns R9 and two stack args.
         # R8 is unused by both original helpers and preserves the descriptor base.
         emit('4d89c8');mov(10,component_address);mov(0,game_base+0x33267B8)
@@ -118,18 +145,20 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
         else:mov(1,component_address)
         emit('4d89c1')
     else:
+        preflight_kind=DIRECT_KINDS.get(kind,kind)
         # All refusal paths precede any stack/data write. Original arguments survive.
-        if classification: emit('4889d1')  # helper ABI: entity RDX, RCX unused by original body
+        if classification or kind in DIRECT_KINDS: emit('4889d1')
+        if kind=='direct_dense':emit('4c89c2')  # helper ABI: entity RDX, RCX unused by original body
         mov(0,game_base+0x33267B8); emit('488b00'); mov(10,component_address); emit('4c39d0'); branch('reject1',0x85)
-        if kind == 'mover': emit('4c39d1'); branch('reject1',0x85)
-        emit('458b5a08 4183fb08'); branch('reject2',0x83 if kind in ('append','dense') else 0x87)
+        if preflight_kind == 'mover': emit('4c39d1'); branch('reject1',0x85)
+        emit('458b5a08 4183fb08'); branch('reject2',0x83 if preflight_kind in ('append','dense') else 0x87)
         emit('418b420c 4439d8'); branch('reject3',0x87)
         emit('41394210'); branch('reject3',0x87)
-        if kind == 'dense': emit('4439d8'); branch('reject4',0x85)
+        if preflight_kind == 'dense': emit('4439d8'); branch('reject4',0x85)
         mov(0,component_address+0x14); emit('49394258'); branch('reject5',0x85)
         emit('41837a6008'); branch('reject5',0x85)
         emit('41837a6400'); branch('reject5',0x85)
-        if kind == 'mover':
+        if preflight_kind == 'mover':
             emit('83fa08'); branch('reject8',0x83); emit('4183f808'); branch('reject8',0x83)
             emit('4439c2'); branch('body',0x84)
             mov(0,storage_address); emit('4a8b04c0 4885c0'); branch('reject6',0x84)
@@ -141,12 +170,12 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
             emit('83f901'); branch('reject7',0x85); mov(1,component_address)
         else:
             emit('4885c9'); branch('reject6',0x84)
-            if kind == 'dense': emit('4885d2'); branch('reject6',0x84)
+            if preflight_kind == 'dense': emit('4885d2'); branch('reject6',0x84)
             emit('448b4108 4585c0'); branch('reject6',0x84)
             mov(9,component_address+0x14); emit('4531d2 4531db')
-            if kind == 'remove' or classification: emit('baffffffff')
+            if preflight_kind == 'remove' or classification: emit('baffffffff')
             label('scan'); emit('438b04d9 4439c0')
-            if kind == 'remove' or classification:
+            if preflight_kind == 'remove' or classification:
                 branch('nonmatch',0x85); emit('83faff'); branch('reject7',0x85)
                 emit('43837cd90408'); branch('reject8',0x83)
                 emit('438b54d904'); label('nonmatch')
@@ -154,7 +183,7 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
             emit('85c0'); branch('next',0x85); emit('41ffc2')
             label('next'); emit('41ffc3 4183fb08'); branch('scan',0x82)
             mov(0,component_address); emit('8b4008 4101c2 4183fa08'); branch('reject9',0x85)
-            if kind == 'remove' or classification:
+            if preflight_kind == 'remove' or classification:
                 emit('39c2'); branch('reject8',0x83)
                 if not classification:
                     mov(11,component_address); emit('413b530c'); branch('remove_ready',0x83)
@@ -163,8 +192,8 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
                 if classification:
                     mov(11,game_base+0x3483C34);emit('453b03');branch('reject6',0x84)
                     mov(11,component_address);emit('413b530c');branch('reject8',0x83)
-                    emit('458b4310 4439c2');branch('reject4',0x82 if kind=='enter' else 0x83)
-                    if kind=='leave':emit('41ffc8')
+                    emit('458b4310 4439c2');branch('reject4',0x82 if preflight_kind=='enter' else 0x83)
+                    if preflight_kind=='leave':emit('41ffc8')
                     mov(0,storage_address);emit('4a8b04c0 4885c0');branch('reject6',0x84)
                     emit('448b5008 4585d2');branch('reject6',0x84)
                     mov(11,game_base+0x3483C34);emit('453b13');branch('reject6',0x84)
@@ -173,6 +202,8 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
                     emit('473944d904');branch('reject8',0x85);emit('ffc2')
                     label('boundary_next');emit('41ffc3 4183fb08');branch('boundary_scan',0x82)
                     emit('83fa01');branch('reject7',0x85);emit('4889ca')
+        if kind=='direct_dense':emit('4989d0')
+        if kind in DIRECT_KINDS:emit('4889ca')
     branch('body')
     for reason in range(1,10):
         label('reject'+str(reason)); emit(b'\x41\xba'+struct.pack('<I',reason)); branch('external')
@@ -188,11 +219,14 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
             array=('r15',storage_address+0xF8,'secondary_derived' if i.address==0x666354 else 'secondary')
         if kind=='reset' and 0x6644C1<=i.address<=0x6644FD:
             array=('r10',storage_address-0x48,'primary')
+        if kind=='reset_control' and i.address==0x66431A:
+            array=('r9',storage_address-0x48,'primary_derived')
         for operand in i.operands:
             if operand.type != X86_OP_MEM: continue
             m = operand.mem; base,index = i.reg_name(m.base),i.reg_name(m.index)
             if kind in INITIALIZE_KINDS:continue
-            bound = 'rbp' if classification else ('rcx' if i.address < 0x666076 else 'r11') if kind == 'mover' else 'rbx'
+            bound = ('r9' if kind in BATCH_KINDS else 'rdi' if kind=='direct_remove' else
+                     'rbp' if classification else ('rcx' if i.address < 0x666076 else 'r11') if kind == 'mover' else 'rbx')
             if bound not in (base,index) or not (m.index or (classification and i.mnemonic=='lea' and m.disp==0x1D8)): continue
             if m.disp == 0x70: array=(bound,storage_address-0x70,'pointer')
             elif classification and m.disp == 0x90: array=(bound,storage_address+0x40-0x90,'byte')
@@ -203,7 +237,7 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
             need(i.reg_name(i.operands[0].reg) != name if i.operands[0].type != X86_OP_MEM else True, 'array overwrites its own base')
             mov(register_id[name],value); emit(raw); mov(register_id[name],component_address)
             patches.append({'rva':hex(i.address),'array':field,'base':name}); continue
-        if i.address in (0x51AC08,0x51AC89):
+        if i.address in (0x51AC08,0x51AC89,0x666729,0x6667E5):
             need(raw[-1] == 4 and i.mnemonic == 'cmp', 'capacity pin changed'); raw[-1] = 8
         if i.group(capstone.CS_GRP_JUMP) or i.group(capstone.CS_GRP_CALL):
             need(i.operands[0].type == X86_OP_IMM, 'unexpected indirect transfer')
@@ -217,7 +251,8 @@ def build(kind, *, game_base, code_address, component_address, storage_address, 
                     struct.pack_into('<i',raw,i.disp_offset,target-(code_address+len(out)+i.size))
             emit(raw)
     mapping[f['end']] = len(out)
-    need(len(patches)=={'mover':21,'append':6,'dense':6,'remove':1,'enter':35,'leave':37,'property':4,'reset':6}[kind], 'array coverage changed')
+    need(len(patches)=={'mover':21,'append':6,'dense':6,'remove':1,'enter':35,'leave':37,'property':4,'reset':6,
+                       'direct_dense':6,'direct_append':6,'direct_remove':1,'reset_control':8,'reset_dense':7}[kind], 'array coverage changed')
     for at,target in fixes:
         dest = reject_address if target=='external' else code_address+labels[target] if isinstance(target,str) else (
             code_address+mapping[target] if target in mapping else move_code_address if target==0x665FE0 else game_base+target)

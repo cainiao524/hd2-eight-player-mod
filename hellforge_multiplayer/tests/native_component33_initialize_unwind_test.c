@@ -32,7 +32,7 @@ int main(int argc, char** argv) {
         uint32_t size=u32(f), code_size=u32(f), table_offset=u32(f), count=u32(f);
         check(size<4096 && code_size<size && table_offset<size && (size-table_offset)%sizeof(RUNTIME_FUNCTION)==0 && count<EP_CONTEXT_LIMIT, "invalid image bounds");
         uint32_t functions=(size-table_offset)/sizeof(RUNTIME_FUNCTION);
-        check(functions>=2 && functions<=5,"invalid component33 function count");
+        check(functions>=2 && functions<=7,"invalid component33 function count");
         uint8_t* image=VirtualAlloc(NULL,size,MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE);
         check(image!=NULL,"allocation failed"); take(f,image,size);
         PRUNTIME_FUNCTION table=(PRUNTIME_FUNCTION)(image+table_offset);
