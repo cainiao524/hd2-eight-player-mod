@@ -4,6 +4,7 @@ Owned memory, real relocated countdown/lookup/reset bodies, ABI stubs for
 external resource/event services; one unwind snapshot and common preparation.
 No game access, receipts, fingerprints or old regression suites.
 """
+from validate_loadout_setup import resource_owner_source
 import argparse
 import ctypes as c
 import json
@@ -114,7 +115,7 @@ def main():
                  '-I',args.upstream.resolve()/'native/mod-sdk','-I',g.PROJECT/'mod/src','-shared']
         modules=('session_code','loadout_lifecycle','loadout_consumers','loadout_setup','loadout_group',
                  'loadout_interactions','loadout_refresh','loadout_records','loadout_frame','loadout_mode',
-                 'loadout_control','loadout_state','loadout_prompt','loadout_countdown','loadout_resources')
+                 'loadout_control','loadout_state','loadout_prompt','loadout_countdown','loadout_resources','loadout_resource_owner')
         command += [g.PROJECT/'mod/src'/('ep_'+n+'.cpp') for n in modules]
         command += [g.PROJECT/'tests'/('loadout_'+n+'_dll.cpp') for n in ('consumers','setup','records','frame','countdown')]
         command += ['-o',args.library.resolve()]
@@ -148,7 +149,7 @@ def main():
     g.need(f.read(MANAGER+0x11d18,4*0x4c)==b'\xa7'*(4*0x4c) and f.read(RESOURCES+8*0x4c,16)==b'\x7d'*16,'Resource storage boundary changed')
     setup=SetupAddresses();setup.common=binding;setup.common.lifecycle.code=SETUP
     for i in range(8):setup.placements[i]=Placement(i*3,111,0.5,0,0.5,0)
-    group=GroupAddresses(setup,CODE+0x40000,CODE,CODE+0x50000,CODE+0x60000,record_source(),SYNC,FRAME,CODE+0x90000,CODE+0xa0000,CODE+0xb0000,CODE+0xc0000,COUNTDOWN,SOURCE,CODE+0xe0000)
+    group=GroupAddresses(setup,CODE+0x40000,CODE,CODE+0x50000,CODE+0x60000,record_source(),SYNC,FRAME,CODE+0x90000,CODE+0xa0000,CODE+0xb0000,CODE+0xc0000,COUNTDOWN,SOURCE,CODE+0xe0000,CODE+0xf0000,resource_owner_source())
     status=dll.setup_group(c.byref(group));g.need(status==0,f'Common READY/discard failed: {status}')
     print(json.dumps(dict(passed=True,scope='one frame/countdown resource allocation and repeat lookup flow',game_access=False,runtime_verified=False)))
 

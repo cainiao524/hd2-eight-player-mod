@@ -3,7 +3,7 @@ EpPropertyResult ep_loadout_group_discard(HfMod* mod,EpLoadoutGroup* out)
 {
     if (!mod || !out) return EP_PROPERTY_ARGUMENT;
     EpLoadoutGroup remaining={};
-    for (unsigned i=13;i--;) if (out->code[i].handle && !ep_session_code_discard(mod,out->code[i].handle)) {
+    for (unsigned i=14;i--;) if (out->code[i].handle && !ep_session_code_discard(mod,out->code[i].handle)) {
         remaining.code[i]=out->code[i];remaining.state=EP_LOADOUT_GROUP_CLEANUP;
     }
     *out=remaining;return remaining.state ? EP_PROPERTY_CLEANUP : EP_PROPERTY_OK;
@@ -21,15 +21,17 @@ EpPropertyResult ep_loadout_group_prepare(const HfApi* api,HfMod* mod,const EpLo
     EpLoadoutConsumerAddresses mode_binding=a.setup.common;mode_binding.lifecycle.code=a.mode_code;
     EpLoadoutConsumerAddresses life_binding=a.setup.common;life_binding.lifecycle.code=l.code;
     EpPropertyResult result=ep_loadout_consumers_validate(&life_binding);if (result!=EP_PROPERTY_OK) return result;
-    const uint64_t bases[]={l.code,c.lifecycle.code,a.setup.common.lifecycle.code,a.interactions_code,a.refresh_code,a.records_code,a.frame_code,a.mode_code,a.control_code,a.state_code,a.prompt_code,a.countdown_code,a.resources_code};
-    const uint32_t spans[]={8192,8192,8192,8192,8192,8192,EP_LOADOUT_FRAME_BYTES,EP_LOADOUT_MODE_BYTES,EP_LOADOUT_CONTROL_BYTES,EP_LOADOUT_STATE_BYTES,EP_LOADOUT_PROMPT_BYTES,EP_LOADOUT_COUNTDOWN_BYTES,EP_LOADOUT_RESOURCES_BYTES};
+    const uint64_t bases[]={l.code,c.lifecycle.code,a.setup.common.lifecycle.code,a.interactions_code,a.refresh_code,a.records_code,a.frame_code,a.mode_code,a.control_code,a.state_code,a.prompt_code,a.countdown_code,a.resources_code,a.resource_owner_code};
+    const uint32_t spans[]={8192,8192,8192,8192,8192,8192,EP_LOADOUT_FRAME_BYTES,EP_LOADOUT_MODE_BYTES,EP_LOADOUT_CONTROL_BYTES,EP_LOADOUT_STATE_BYTES,EP_LOADOUT_PROMPT_BYTES,EP_LOADOUT_COUNTDOWN_BYTES,EP_LOADOUT_RESOURCES_BYTES,EP_LOADOUT_RESOURCE_OWNER_BYTES};
     EpLoadoutCountdownAddresses countdown_binding={records_binding,a.countdown_source,0,0};
-    for (unsigned i=0;i<13;i++) {
+    EpLoadoutResourceOwnerAddresses owner_binding={records_binding,a.countdown_source,a.resource_owner_source};
+    for (unsigned i=0;i<14;i++) {
         if (!bases[i] || bases[i]>=(UINT64_C(1)<<47)-spans[i]) return EP_PROPERTY_POINTER;
         for (unsigned j=0;j<i;j++) if (bases[i]<bases[j]+spans[j] && bases[j]<bases[i]+spans[i]) return EP_PROPERTY_OVERLAP;
         records_binding.common.lifecycle.code=bases[i];
         countdown_binding.records=records_binding;
-        result=ep_loadout_countdown_validate_span(&countdown_binding,spans[i]);if (result!=EP_PROPERTY_OK) return result;
+        owner_binding.records=records_binding;
+        result=ep_loadout_resource_owner_validate_span(&owner_binding,spans[i]);if (result!=EP_PROPERTY_OK) return result;
     }
     records_binding.common.lifecycle.code=a.records_code;
     EpLoadoutImage life={};EpLoadoutConsumerImage consumers={};EpLoadoutSetupImage setup={};
@@ -39,7 +41,7 @@ EpPropertyResult ep_loadout_group_prepare(const HfApi* api,HfMod* mod,const EpLo
     EpLoadoutFrameImage frame={};
     EpLoadoutModeImage mode={};
     EpLoadoutControlImage control={};
-    EpLoadoutStateImage state={};EpLoadoutPromptImage prompt={};EpLoadoutCountdownImage countdown={};EpLoadoutResourcesImage resources={};
+    EpLoadoutStateImage state={};EpLoadoutPromptImage prompt={};EpLoadoutCountdownImage countdown={};EpLoadoutResourcesImage resources={};EpLoadoutResourceOwnerImage resource_owner={};
     EpLoadoutConsumerAddresses prompt_binding=a.setup.common;prompt_binding.lifecycle.code=a.prompt_code;
     result=ep_loadout_prompt_build(&prompt_binding,&prompt);if (result!=EP_PROPERTY_OK) return result;
     result=ep_loadout_consumers_build(&c,a.prompt_code+prompt.ready_flag,&consumers);if (result!=EP_PROPERTY_OK) return result;
@@ -65,6 +67,8 @@ EpPropertyResult ep_loadout_group_prepare(const HfApi* api,HfMod* mod,const EpLo
     EpLoadoutResourcesAddresses resources_binding={records_binding,a.countdown_source,a.countdown_code+countdown.resource_lookup};
     resources_binding.records.common.lifecycle.code=a.resources_code;
     result=ep_loadout_resources_build(&resources_binding,&resources);if (result!=EP_PROPERTY_OK) return result;
+    owner_binding.records.common.lifecycle.code=a.resource_owner_code;
+    result=ep_loadout_resource_owner_build(&owner_binding,&resource_owner);if (result!=EP_PROPERTY_OK) return result;
     EpLoadoutFrameAddresses frame_binding={records_binding,a.records_code,c.lifecycle.code+consumers.update,c.lifecycle.code+consumers.lookup,a.mode_code+mode.open,a.control_code+control.leave,a.state_code+state.change,a.state_code+state.return_screen,a.prompt_code+prompt.update,a.prompt_code+prompt.ready_flag,a.prompt_code+prompt.blocked_flag,a.countdown_code+countdown.update};
     frame_binding.records.common.lifecycle.code=a.frame_code;
     result=ep_loadout_frame_build(&frame_binding,&frame);if (result!=EP_PROPERTY_OK) return result;
@@ -82,6 +86,7 @@ EpPropertyResult ep_loadout_group_prepare(const HfApi* api,HfMod* mod,const EpLo
     if (result==EP_PROPERTY_OK) result=ep_loadout_prompt_prepare(api,mod,&prompt_binding,&group.code[10]);
     if (result==EP_PROPERTY_OK) result=ep_loadout_countdown_prepare(api,mod,&countdown_binding,&group.code[11]);
     if (result==EP_PROPERTY_OK) result=ep_loadout_resources_prepare(api,mod,&resources_binding,&group.code[12]);
+    if (result==EP_PROPERTY_OK) result=ep_loadout_resource_owner_prepare(api,mod,&owner_binding,&group.code[13]);
     if (result!=EP_PROPERTY_OK) {
         if (ep_loadout_group_discard(mod,&group)!=EP_PROPERTY_OK) {*out=group;return EP_PROPERTY_CLEANUP;}
         return result==EP_PROPERTY_CLEANUP ? EP_PROPERTY_SEAL : result;
@@ -108,5 +113,7 @@ EpPropertyResult ep_loadout_group_prepare(const HfApi* api,HfMod* mod,const EpLo
     group.resource_write=group.code[12].base+resources.write;group.resource_ordinal=group.code[12].base+resources.ordinal;
     group.resource_transform=group.code[12].base+resources.transform;group.player_value=group.code[12].base+resources.player_value;
     group.assign_resources=group.code[12].base+resources.assign;
+    group.insert_resource_object=group.code[13].base+resource_owner.insert;group.enqueue_resource_object=group.code[13].base+resource_owner.enqueue;
+    group.move_resource_object=group.code[13].base+resource_owner.move;group.remove_resource_object=group.code[13].base+resource_owner.remove;
     group.capacity=l.capacity;group.state=EP_LOADOUT_GROUP_READY;*out=group;return EP_PROPERTY_OK;
 }
