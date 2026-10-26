@@ -102,6 +102,8 @@ def build():
             elif a in (0x146e68b,0x146e6b0,0x146e9a3):
                 need(ins.op_str.endswith(', 0x10'),'Changed derived record')
                 absolute(11,3,0,3);blob.extend(b'\x4c\x01\xda' if a==0x146e68b else b'\x4c\x01\xd9')
+            elif a==0x146dd04:
+                need(text=='call 0x146e9d0','Changed input refresh edge');fix(b'\xe8'+bytes(4),1,11,0)
             elif mem and 0x53a78<=mem.disp<0x72890 and ins.reg_name(mem.base) in ('rbx','rdi','rsi'):
                 if a==0x146f47d:capacity(b'\xbd') # after the four-choice cleanup
                 if start==0x146e0a0:

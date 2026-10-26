@@ -4,14 +4,14 @@
 struct EpLoadoutInteractionFixup {uint32_t offset,next,key,kind;int64_t add;};
 #include "ep_loadout_interactions_template.h"
 static_assert(EP_LOADOUT_INTERACTION_BYTES==EP_LOADOUT_CONSUMER_BYTES,"Shared binding span");
-EpPropertyResult ep_loadout_interactions_build(const EpLoadoutConsumerAddresses* input,EpLoadoutInteractionImage* out)
+EpPropertyResult ep_loadout_interactions_build(const EpLoadoutInteractionAddresses* input,EpLoadoutInteractionImage* out)
 {
     if (!out) return EP_PROPERTY_ARGUMENT;
-    EpLoadoutConsumerAddresses a={};if (input) a=*input;*out={};
-    EpPropertyResult status=ep_loadout_consumers_validate(input ? &a : nullptr);if (status!=EP_PROPERTY_OK) return status;
-    const auto& l=a.lifecycle;
+    EpLoadoutInteractionAddresses a={};if (input) a=*input;*out={};
+    EpPropertyResult status=ep_loadout_consumers_validate_link(input ? &a.common : nullptr,a.refresh_entry);if (status!=EP_PROPERTY_OK) return status;
+    const auto& b=a.common;const auto& l=b.lifecycle;
     const uint64_t values[]={l.game,l.code,l.screen,l.records,l.widgets,l.capacity,l.reject,
-                             a.forward_map,a.inverse_map,a.roster,a.roster_storage};
+                             b.forward_map,b.inverse_map,b.roster,b.roster_storage,a.refresh_entry};
     EpLoadoutInteractionImage image={};memcpy(image.data,ep_loadout_interactions_template,sizeof(ep_loadout_interactions_template));
     for (const auto& f:ep_loadout_interaction_fixups) {
         int64_t value=(int64_t)values[f.key]+f.add;
@@ -26,13 +26,13 @@ EpPropertyResult ep_loadout_interactions_build(const EpLoadoutConsumerAddresses*
     image.edit=ep_loadout_interaction_entries[1];image.close=ep_loadout_interaction_entries[2];*out=image;
     return EP_PROPERTY_OK;
 }
-EpPropertyResult ep_loadout_interactions_prepare(const HfApi* api,HfMod* mod,const EpLoadoutConsumerAddresses* input,EpSessionCodeInfo* out)
+EpPropertyResult ep_loadout_interactions_prepare(const HfApi* api,HfMod* mod,const EpLoadoutInteractionAddresses* input,EpSessionCodeInfo* out)
 {
     if (!out) return EP_PROPERTY_ARGUMENT;
-    EpLoadoutConsumerAddresses a={};if (input) a=*input;*out={};if (!input) return EP_PROPERTY_ARGUMENT;
+    EpLoadoutInteractionAddresses a={};if (input) a=*input;*out={};if (!input) return EP_PROPERTY_ARGUMENT;
     EpSessionCodeInfo code={};EpLoadoutInteractionImage image={};
-    if (!ep_session_code_reserve(api,mod,(uintptr_t)a.lifecycle.code,sizeof(ep_loadout_interactions_template),&code)) return EP_PROPERTY_RESERVE;
-    a.lifecycle.code=code.base;EpPropertyResult status=ep_loadout_interactions_build(&a,&image);
+    if (!ep_session_code_reserve(api,mod,(uintptr_t)a.common.lifecycle.code,sizeof(ep_loadout_interactions_template),&code)) return EP_PROPERTY_RESERVE;
+    a.common.lifecycle.code=code.base;EpPropertyResult status=ep_loadout_interactions_build(&a,&image);
     if (status==EP_PROPERTY_OK && !ep_session_code_seal_table(mod,code.handle,image.data,image.bytes,image.table_offset,image.function_count)) status=EP_PROPERTY_SEAL;
     if (status==EP_PROPERTY_OK) {
         if (ep_session_code_info(mod,code.handle,out)) return EP_PROPERTY_OK;

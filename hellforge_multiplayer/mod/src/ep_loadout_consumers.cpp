@@ -9,11 +9,11 @@ int ep_loadout_maps_initialize(EpLoadoutMaps* out,uint32_t capacity,uint32_t loc
     EpLoadoutMaps maps;memset(&maps,0xff,sizeof maps);
     maps.network_to_slot[local]=0;maps.slot_to_network[0]=local;*out=maps;return 1;
 }
-EpPropertyResult ep_loadout_consumers_validate(const EpLoadoutConsumerAddresses* input)
+static EpPropertyResult EpLoadoutValidate(const EpLoadoutConsumerAddresses* input,uint32_t code_bytes)
 {
     EpLoadoutConsumerAddresses a={};if (input) a=*input;const auto& l=a.lifecycle;
     if (!input || l.reserved || !l.capacity || l.capacity>EP_LOADOUT_LIFECYCLE_LIMIT) return EP_PROPERTY_ARGUMENT;
-    const uint64_t ranges[][3]={{l.game,0x4000000,4096},{l.code,EP_LOADOUT_CONSUMER_BYTES,16},
+    const uint64_t ranges[][3]={{l.game,0x4000000,4096},{l.code,code_bytes,16},
         {l.screen,EP_LOADOUT_SCREEN_BYTES,8},{l.records,uint64_t(l.capacity)*EP_LOADOUT_RECORD_BYTES,16},
         {l.widgets,uint64_t(l.capacity)*EP_LOADOUT_WIDGET_BYTES,8},{l.reject,1,1},
         {a.forward_map,32,4},{a.inverse_map,32,4},{a.roster,0xe8,8},{a.roster_storage,0x680,16}};
@@ -23,6 +23,16 @@ EpPropertyResult ep_loadout_consumers_validate(const EpLoadoutConsumerAddresses*
         for (unsigned j=0;j<i;j++) if (r[0]<ranges[j][0]+ranges[j][1] && ranges[j][0]<r[0]+r[1]) return EP_PROPERTY_OVERLAP;
     }
     return EP_PROPERTY_OK;
+}
+EpPropertyResult ep_loadout_consumers_validate(const EpLoadoutConsumerAddresses* input)
+{return EpLoadoutValidate(input,EP_LOADOUT_CONSUMER_BYTES);}
+EpPropertyResult ep_loadout_consumers_validate_link(const EpLoadoutConsumerAddresses* input,uint64_t entry)
+{
+    EpPropertyResult status=ep_loadout_consumers_validate(input);if (status!=EP_PROPERTY_OK) return status;
+    const auto& l=input->lifecycle;
+    if (entry>=l.code && entry<l.code+EP_LOADOUT_CONSUMER_BYTES) return EP_PROPERTY_OVERLAP;
+    EpLoadoutConsumerAddresses target=*input;target.lifecycle.code=entry;
+    return EpLoadoutValidate(&target,1);
 }
 EpPropertyResult ep_loadout_consumers_build(const EpLoadoutConsumerAddresses* input,EpLoadoutConsumerImage* out)
 {

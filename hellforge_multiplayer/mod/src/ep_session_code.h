@@ -62,6 +62,10 @@ int ep_session_code_seal_loadout_transition(HfMod*, uint64_t handle, const void*
  * unwind, EH/UH cookie +0x130 and owned handler thunk. */
 int ep_session_code_seal_loadout_setup(HfMod*, uint64_t handle, const void* image,
     uint32_t bytes, uint32_t table_offset, const EpSessionGsCheck*);
+/* 146E9D0 refresh only: guard + GS root + two owned chains + handler thunk.
+ * Exact root prologue/cookie +0x70; both chains must name that root row. */
+int ep_session_code_seal_loadout_refresh(HfMod*, uint64_t handle, const void* image,
+    uint32_t bytes, uint32_t table_offset, const EpSessionGsCheck*);
 int ep_session_code_info(HfMod*, uint64_t handle, EpSessionCodeInfo*);
 /* Before calling hook_ex, permanently pin this module and the image. Even a
  * reported hook failure can have exposed code: keep it for process lifetime.

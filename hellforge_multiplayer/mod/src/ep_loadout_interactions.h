@@ -5,6 +5,10 @@
 extern "C" {
 #endif
 #define EP_LOADOUT_INTERACTION_BYTES 8192u
+typedef struct EpLoadoutInteractionAddresses {
+    EpLoadoutConsumerAddresses common;
+    uint64_t refresh_entry;
+} EpLoadoutInteractionAddresses;
 typedef struct EpLoadoutInteractionImage {
     uint32_t bytes,code_bytes,unwind_offset,table_offset,function_count;
     uint32_t input,edit,close;
@@ -20,10 +24,11 @@ typedef struct EpLoadoutInteractionImage {
  * Input selection is still a UI slot. The caller must preserve identity while
  * maps change, hold the same owner/exclusion across native callbacks, and
  * validate all original targets before a future publication.
- * In particular the separate 146E9D0 refresh, packet/other map writers and
- * layout still need routing. This group is preparation, not an enabled UI. */
-EpPropertyResult ep_loadout_interactions_build(const EpLoadoutConsumerAddresses*,EpLoadoutInteractionImage*);
-EpPropertyResult ep_loadout_interactions_prepare(const HfApi*,HfMod*,const EpLoadoutConsumerAddresses*,EpSessionCodeInfo*);
+ * 146E9D0 calls use the sibling refresh_entry from the same prepared group.
+ * Packet/other map writers and layout still need routing. This group is
+ * preparation, not an enabled UI. Never call while a sibling is discarded. */
+EpPropertyResult ep_loadout_interactions_build(const EpLoadoutInteractionAddresses*,EpLoadoutInteractionImage*);
+EpPropertyResult ep_loadout_interactions_prepare(const HfApi*,HfMod*,const EpLoadoutInteractionAddresses*,EpSessionCodeInfo*);
 #ifdef __cplusplus
 }
 #endif

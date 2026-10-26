@@ -17,6 +17,9 @@ from validate_loadout_setup import SetupAddresses,Placement,GroupAddresses,SETUP
 from capstone.x86_const import X86_OP_IMM,X86_OP_MEM,X86_REG_RIP
 
 INTERACTIONS=CODE+0x50000
+REFRESH=CODE+0x60000
+class InteractionAddresses(c.Structure):
+    _fields_=[('common',Binding),('refresh_entry',c.c_uint64)]
 class Image(c.Structure):
     _fields_=[(n,c.c_uint32) for n in ('bytes','code_bytes','unwind_offset','table_offset','function_count','input','edit','close')]+[('data',c.c_ubyte*g.MAX_IMAGE)]
 
@@ -78,17 +81,18 @@ def main():
         g.need(args.upstream is not None,'--upstream required');args.library.parent.mkdir(exist_ok=True,parents=True)
         command=[args.zig.resolve(),'c++','-std=c++17','-target','x86_64-windows-gnu','-O2','-Wall','-Wextra','-Werror',
                  '-I',args.upstream.resolve()/'native/mod-sdk','-I',g.PROJECT/'mod/src','-shared']
-        command += [g.PROJECT/'mod/src'/n for n in ('ep_session_code.cpp','ep_loadout_lifecycle.cpp','ep_loadout_consumers.cpp','ep_loadout_setup.cpp','ep_loadout_group.cpp','ep_loadout_interactions.cpp')]
+        command += [g.PROJECT/'mod/src'/n for n in ('ep_session_code.cpp','ep_loadout_lifecycle.cpp','ep_loadout_consumers.cpp','ep_loadout_setup.cpp','ep_loadout_group.cpp','ep_loadout_interactions.cpp','ep_loadout_refresh.cpp')]
         command += [g.PROJECT/'tests'/n for n in ('loadout_consumers_dll.cpp','loadout_setup_dll.cpp','loadout_interactions_dll.cpp')]
         command += ['-o',args.library.resolve()]
         result=subprocess.run(list(map(str,command)),capture_output=True,text=True);g.need(result.returncode==0,result.stdout+result.stderr)
     dll=c.CDLL(str(args.library.resolve()))
     dll.ui_build.argtypes=[c.POINTER(Binding),c.POINTER(ConsumerImage)];dll.ui_maps.argtypes=[c.POINTER(c.c_uint32)]
-    dll.interaction_build.argtypes=[c.POINTER(Binding),c.POINTER(Image)];dll.setup_group.argtypes=[c.POINTER(GroupAddresses)]
+    dll.interaction_build.argtypes=[c.POINTER(InteractionAddresses),c.POINTER(Image)];dll.setup_group.argtypes=[c.POINTER(GroupAddresses)]
     dll.ui_unwind.argtypes=[c.POINTER(ConsumerImage),c.c_uint32,c.c_int32,c.POINTER(c.c_uint64),c.POINTER(c.c_ubyte),c.c_uint64]
     binding=Binding(Addresses(GAME,CODE,SCREEN,RECORDS,WIDGETS,REJECT,5,0),MAPS,MAPS+32,ROSTER,STORAGE)
     consumer=ConsumerImage();g.need(dll.ui_build(c.byref(binding),c.byref(consumer))==0,'Consumer binding failed')
-    binding.lifecycle.code=INTERACTIONS;image=Image();g.need(dll.interaction_build(c.byref(binding),c.byref(image))==0,'Interaction binding failed')
+    binding.lifecycle.code=INTERACTIONS;linked=InteractionAddresses(binding,REFRESH)
+    image=Image();g.need(dll.interaction_build(c.byref(linked),c.byref(image))==0,'Interaction binding failed')
     f=InteractionsFlow(dll,consumer,g.build(),image)
     for action,expected in ((8,4),(8,0),(7,4)):
         f.input_action=action;f.operation(image.input)
@@ -109,7 +113,7 @@ def main():
     g.need(f.unwound,'Input unwind point missed')
     setup=SetupAddresses();setup.common=binding;setup.common.lifecycle.code=SETUP
     for i in range(5):setup.placements[i]=Placement(i*3,111,0.5,0,0.5,0)
-    group=GroupAddresses(setup,CODE+0x40000,CODE,INTERACTIONS)
+    group=GroupAddresses(setup,CODE+0x40000,CODE,INTERACTIONS,REFRESH)
     status=dll.setup_group(c.byref(group));g.need(status==0,f'Common READY/discard failed: {status}')
     print(json.dumps(dict(passed=True,scope='one five-slot navigation/edit/close flow and common preparation',game_access=False,runtime_verified=False)))
 
