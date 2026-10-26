@@ -26,11 +26,11 @@ typedef struct EpSessionCodeInfo {
 int ep_session_code_reserve(const HfApi*, HfMod*, uintptr_t desired_base,
                             uint32_t bytes, EpSessionCodeInfo*);
 /* Single function at offset 0; flags=0, no frame register; only PUSH_NONVOL,
- * ALLOC_SMALL and SAVE_NONVOL are accepted. Layout matches the two current
- * property emitters. This checks structure, not instruction equivalence. */
+ * ALLOC_SMALL, scaled ALLOC_LARGE, SAVE_NONVOL and SAVE_XMM128 are accepted.
+ * This checks metadata structure, not instruction equivalence. */
 int ep_session_code_seal(HfMod*, uint64_t handle, const void* image,
                          uint32_t bytes, uint32_t table_offset);
-/* One to five sorted, nonoverlapping functions with distinct metadata after
+/* One to fifteen sorted, nonoverlapping functions with distinct metadata after
  * all code and before the final table. Handler-free chains must reference an
  * exact earlier owned row. Used by gate + candidate images. */
 int ep_session_code_seal_table(HfMod*, uint64_t handle, const void* image,

@@ -23,7 +23,7 @@
 
 registry 的原始條件式保存使用 chained unwind。移植保留完整三段來源覆蓋，並為拒絕尾段建立相應的已保存暫存器狀態。拒絕原因先寫入 R10D，再還原非易失暫存器和堆疊，讓 `ADD RSP / POP / JMP` 保持 Windows 可辨識的尾段。association 的入口 guard 與末端拒絕各使用獨立的 leaf metadata，原函式主體使用自己的還原資料。
 
-共同入口增加 32 bytes 時，同時調整函式表及 metadata 內的 chain parent 三個 RVA。程式碼所有者接受最多五段，每段維持獨立的 metadata，重複引用仍拒絕；chain parent 必須完全等於同表中較早的一筆。拒絕循環、向後續紀錄引用、表外 parent、語言 handler 和不支援的 flags。這只適用目前有來源及測試的格式。
+共同入口增加 32 bytes 時，同時調整函式表及 metadata 內的 chain parent 三個 RVA。程式碼所有者目前因離隊獨立映像擴展而接受最多十五段；這裡的 registry 共同入口仍使用五段，每段維持獨立的 metadata，重複引用仍拒絕；chain parent 必須完全等於同表中較早的一筆。拒絕循環、向後續紀錄引用、表外 parent、語言 handler 和不支援的 flags。這只適用目前有來源及測試的格式。
 
 ## 驗證與邊界
 

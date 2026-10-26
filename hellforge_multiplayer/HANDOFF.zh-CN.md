@@ -8,7 +8,9 @@
 
 本轮整组发布验证为 29 个场景、10,965 次检查；受管调用为 36 个场景、7,406 次检查。所有数字来自自有测试程序和保存的指令，不是游戏客户端人数。先读 [调用与失败契约](ROSTER_CALLS.zh-CN.md)、[十四入口布局](ROSTER_GROUP.zh-CN.md)及[新增注册表移植](NATIVE_REGISTRY.zh-CN.md)。
 
-接下来仍需补齐其他读写者/离队路径、实际 caller/helper ABI 与锁顺序、生产排空、权威身份及完整容量事务，随后接通角色建立、控制、复制和任务全流程。`installable`、`runtime_verified`、`multiplayer_verified` 继续为 false。
+新增 [离队前清理函数](NATIVE_DEPARTURE.zh-CN.md) 的 C++ 独立映像与准备生命周期：13 段原始链式回溯、14 条候选函数表、144-byte 栈帧和 XMM6 保存通过 4,248 个 Windows 上下文验证。7 个功能方法、43 次执行及 52 项准备检查通过；它尚未加入上述十四入口组。
+
+接下来先接入离队函数的共同 getter/owner 和实际删除范围，再补齐其他读写者、实际 caller/helper ABI 与锁顺序、生产排空、权威身份及完整容量事务，随后接通角色建立、控制、复制和任务全流程。`installable`、`runtime_verified`、`multiplayer_verified` 继续为 false。
 
 ## 这次迁移改变了什么
 

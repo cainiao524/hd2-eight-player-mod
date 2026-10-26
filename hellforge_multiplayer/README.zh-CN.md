@@ -1,6 +1,6 @@
 # HD2 八人项目：HellForge 适配主线
 
-2026-10-25，Asia/Taipei。当前开发目标转向 **HellForge 0.2.0-beta / SDK 13 / 游戏 build 25480438**。完整目标仍是八名真人、八个独立账号同任务；第五人是中间验收点。
+2026-10-26，Asia/Taipei。当前开发目标转向 **HellForge 0.2.0-beta / SDK 13 / 游戏 build 25480438**。完整目标仍是八名真人、八个独立账号同任务；第五人是中间验收点。
 
 当前完成的是可编译的 SDK 接入层、真实后端源码的离线验证，以及原生玩家读取扩展和八槽存储连接，**尚未实现可玩的五人或八人 Mod**。源码包名称中的 Research 有意保留；启用它不会增加玩家槽位。
 
@@ -28,6 +28,7 @@
 | 两个原生分类入口 | `mod/src/ep_classify_image.*` / `NATIVE_CLASSIFY.zh-CN.md` | C++ 生成及 READY 准备；853 次功能执行、20,905 组不同回溯状态、54 项准备检查和 359 次分类存储读取断言通过；临时辅助函数是契约替身 |
 | 十四入口共同切换 | `mod/src/ep_roster_gate.*`、`ep_roster_group.*` / `ROSTER_GROUP.zh-CN.md` | 同一 S/B 和控制字、十四次发布后才允许提交；插入/移除绑定同组搬移主体；真实 guard 及数据事务未接入 |
 | 名册存储所有者 | `mod/src/ep_roster_owner.*` / `ROSTER_OWNER.zh-CN.md` | 受管读写互斥、revision/身份票据原子提交、关闭排空与异常隔离；641 次实际 DLL/loader 检查，生产写入覆盖和真实身份尚未绑定 |
+| 离队前资源清理 | `mod/src/ep_departure_image.*` / `NATIVE_DEPARTURE.zh-CN.md` | 独立映像及准备验证通过；4,248 个 Windows 上下文，尚未加入十四入口组 |
 | 原生注册表与关联查询 | `mod/src/ep_registry_image.*` / `NATIVE_REGISTRY.zh-CN.md` | 两个入口、链式回溯、同组内部绑定；8 个测试、87 次执行、3,963 个 Windows 回溯上下文通过，尚未发布到游戏 |
 | 十四入口受管调用 | `mod/src/ep_roster_call.*` / `ROSTER_CALLS.zh-CN.md` | 旧/新路径整次调用进入 owner，保存六参数与返回状态；同 owner 嵌套、受管提交及异常隔离，显式选择且未接入初始化 |
 | 继续开发说明 | `HANDOFF.zh-CN.md` | 旧代码迁移关系、已知限制、下一步及授权范围 |

@@ -102,7 +102,7 @@ def main():
     property_dll=build/'property_image_test.dll'
     run([zig,'c++','-std=c++17','-target','x86_64-windows-gnu','-shared','-O1','-Wall','-Werror','-Wno-unused-parameter',
          '-I',source/'native/mod-sdk',PROJECT/'mod/src/ep_property_image.cpp',PROJECT/'mod/src/ep_property_code.cpp',PROJECT/'mod/src/ep_property_gate.cpp',PROJECT/'mod/src/ep_getter_image.cpp',PROJECT/'mod/src/ep_mover_image.cpp',PROJECT/'mod/src/ep_insert_image.cpp',
-         PROJECT/'mod/src/ep_remove_image.cpp',PROJECT/'mod/src/ep_classify_image.cpp',PROJECT/'mod/src/ep_registry_image.cpp',PROJECT/'mod/src/ep_roster_gate.cpp',PROJECT/'tests/property_image_dll.cpp','-o',property_dll])
+         PROJECT/'mod/src/ep_remove_image.cpp',PROJECT/'mod/src/ep_classify_image.cpp',PROJECT/'mod/src/ep_registry_image.cpp',PROJECT/'mod/src/ep_departure_image.cpp',PROJECT/'mod/src/ep_roster_gate.cpp',PROJECT/'tests/departure_image_dll.cpp','-o',property_dll])
     property_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_property_images.py','--library',property_dll]))
     property_receipt=PROJECT/'evidence/property-image-validation.json'
     getter_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_getter_image.py','--library',property_dll,'--zig',zig]))
@@ -117,6 +117,8 @@ def main():
     classify_receipt=PROJECT/'evidence/native-classify-validation.json'
     registry_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_registry_images.py','--library',property_dll,'--zig',zig]))
     registry_receipt=PROJECT/'evidence/native-registry-validation.json'
+    departure_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_departure_images.py','--library',property_dll,'--zig',zig]))
+    departure_receipt=PROJECT/'evidence/native-departure-validation.json'
     classify_fixture=build/'native-classify-fixture.bin'
     classify_fixture_receipt=json.loads(run([sys.executable,'-B',PROJECT/'tools/native_classify_fixture.py','--output',classify_fixture,'--property-library',property_dll]))
     classify_test=build/'native_classify_roster_test.exe'
@@ -247,6 +249,7 @@ def main():
         'roster_gates':{**roster_gate_output,'validation_sha256':digest(roster_gate_receipt)},
         'native_classify':{**classify_output,'validation_sha256':digest(classify_receipt)},
         'native_registry':{**registry_output,'validation_sha256':digest(registry_receipt)},
+        'native_departure':{**departure_output,'validation_sha256':digest(departure_receipt)},
         'native_classify_storage':{'checks':int(classify_match[1]),**classify_fixture_receipt},
         'native_property_gates':{**gate_output,'validation_sha256':digest(gate_receipt)},
         'property_group':{'checks':int(group_match[1]),'entries':['producer','receiver','entity_network_getter'],'shared_storage_binding':True,'actual_hellforge_chains':True,
@@ -281,6 +284,8 @@ def main():
             'mod/src/ep_insert_image.h','mod/src/ep_insert_image.cpp','mod/src/ep_insert_templates.h',
             'native-remove.lock.json','tools/native_remove_image.py','tools/generate_remove_templates.py','tools/validate_remove_images.py',
             'mod/src/ep_remove_image.h','mod/src/ep_remove_image.cpp','mod/src/ep_remove_templates.h',
+            'native-departure.lock.json','tools/native_departure_image.py','tools/generate_departure_template.py','tools/validate_departure_images.py','tools/native_departure_library.py',
+            'mod/src/ep_departure_image.h','mod/src/ep_departure_image.cpp','mod/src/ep_departure_templates.h','tests/departure_image_dll.cpp','tests/native_departure_unwind_test.c',
             'native-registry.lock.json','tools/native_registry_image.py','tools/generate_registry_templates.py','tools/validate_registry_images.py',
             'mod/src/ep_registry_image.h','mod/src/ep_registry_image.cpp','mod/src/ep_registry_templates.h',
             'native-classify.lock.json','tools/native_classify_image.py','tools/generate_classify_templates.py','tools/validate_classify_images.py',
@@ -304,7 +309,7 @@ def main():
         'runtime_verified': False, 'multiplayer_verified': False, 'public_release_allowed': False,
     }
     (PROJECT / 'evidence/engine-roster-validation.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
-    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'native_storage_checks': receipt['native_storage_checks'], 'session_code_checks': int(code_match[1]), 'property_images':property_output,'property_gates':gate_output,'property_group_checks':int(group_match[1]),'getter':getter_output,'mover':mover_output,'insert':insert_output,'remove':remove_output,'classify':classify_output,'registry':registry_output,'classify_storage_checks':int(classify_match[1]),'roster_gates':roster_gate_output,'roster_group_checks':roster_group_result['checks'],'roster_owner_checks':owner_result['checks'],'native_getter_queries':sync_receipt['native_getter_queries'], 'sync_consumer_checks': sync_receipt['consumer_checks'], 'native_receivers': sync_receipt['native_receivers'], 'patch_replayed': True, 'game_access': False}))
+    print(json.dumps({'passed': True, 'checks': receipt['checks'], 'native_storage_checks': receipt['native_storage_checks'], 'session_code_checks': int(code_match[1]), 'property_images':property_output,'property_gates':gate_output,'property_group_checks':int(group_match[1]),'getter':getter_output,'mover':mover_output,'insert':insert_output,'remove':remove_output,'classify':classify_output,'registry':registry_output,'departure':departure_output,'classify_storage_checks':int(classify_match[1]),'roster_gates':roster_gate_output,'roster_group_checks':roster_group_result['checks'],'roster_owner_checks':owner_result['checks'],'native_getter_queries':sync_receipt['native_getter_queries'], 'sync_consumer_checks': sync_receipt['consumer_checks'], 'native_receivers': sync_receipt['native_receivers'], 'patch_replayed': True, 'game_access': False}))
 
 
 if __name__ == '__main__':

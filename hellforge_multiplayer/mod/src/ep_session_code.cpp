@@ -77,8 +77,8 @@ static int EpCodeNonvolatile(unsigned reg)
 { return reg==3 || reg==5 || reg==6 || reg==7 || (reg>=12 && reg<=15); }
 static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_t count)
 {
-    RUNTIME_FUNCTION functions[5];
-    if (!count || count>5 || (at&3) || at>bytes || bytes-at!=count*sizeof(RUNTIME_FUNCTION)) return 0;
+    RUNTIME_FUNCTION functions[15];
+    if (!count || count>15 || (at&3) || at>bytes || bytes-at!=count*sizeof(RUNTIME_FUNCTION)) return 0;
     memcpy(functions,p+at,count*sizeof(RUNTIME_FUNCTION));
     if (functions[0].BeginAddress) return 0;
     for (uint32_t f=0;f<count;f++) {
@@ -111,6 +111,12 @@ static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_
         if (offset>prior) return 0;
         prior=offset;
         if (op==0) { if (!EpCodeNonvolatile(info)) return 0; }
+        else if (op==1) { /* ALLOC_LARGE: bounded 16-bit scaled form only. */
+            if (info || ++i>=u[2] || !(u[4+2*i] || u[5+2*i])) return 0;
+        }
+        else if (op==8) { /* SAVE_XMM128; volatile XMM0..5 are not unwind saves. */
+            if (info<6 || ++i>=u[2]) return 0;
+        }
         else if (op==2) { /* ALLOC_SMALL, size encoded in info */ }
         else if (op==4) { if (!EpCodeNonvolatile(info) || ++i>=u[2]) return 0; }
         else return 0;

@@ -80,3 +80,5 @@ py -3.12 -B hellforge_multiplayer/tools/build_engine_offline.py `
 完整入口继续执行 [十四入口受管调用](../ROSTER_CALLS.zh-CN.md)：实际 owner、ABI 桥、SDK/MinHook 链连接自有目标，覆盖六参数、高位整数、浮点/向量返回、全部非易失 GPR/XMM、同 owner 嵌套、真实锁排空和故障隔离。两个静态桥的 76 个指令边界通过实际 PE 表执行 Windows 回溯；原十四函数直接堆叠访问另从固定证据核对。36 个新进程场景包括八种正常/故障模式和十四处 SDK 前/后失败，总收据 `roster_calls` 保存结果、源码及 DLL/EXE/回溯夹具指纹。`roster-call-abi-validation.json` 的 SHA-256 交叉写入总收据；外部辅助函数和实际调用端 ABI、生产 guard、权威身份及真实游戏绑定仍未证明。
 
 新增 [原生注册表与关联查询](../NATIVE_REGISTRY.zh-CN.md)：RVA 0xB54E00 与 0x606520 已进入 C++ 生成、实际准备生命周期及十四入口共同所有者。8 个功能测试、87 次执行、63 项 API 检查、45 项准备检查和 3,963 个 Windows 回溯上下文通过；保存的四段原回溯资料重放 140 bytes。tag 73 直接调用同组关联主体，tag 69 使用外部 B 数组；其余 tag 回调仍为契约替身，晚期拒绝不承诺撤销此前副作用。单独证据为 `native-registry-validation.json`；生产自动绑定、游戏访问和八人实机验证仍未完成。
+
+[离队前清理移植](../NATIVE_DEPARTURE.zh-CN.md) 已纳入离线构建及独立 C++ 映像准备验证。它保留十三段来源回溯，新增完整栈和 XMM6 Windows 验证；当前共同入口组仍为十四项，离队映像未接入生产或共同调用保护。
