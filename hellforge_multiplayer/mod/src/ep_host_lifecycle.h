@@ -1,6 +1,7 @@
 #ifndef EP_HOST_LIFECYCLE_H
 #define EP_HOST_LIFECYCLE_H
 #include "ep_client_disconnect.h"
+#include "ep_host_task_layout.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -16,7 +17,8 @@ typedef struct EpHostLifecycleImage {
 /* Saved 1088A30 start, 1088D80 resume, 108B520 slot lookup. The original host
  * remains embedded at client-918h, with its owner backpointer unchanged.
  * Separate banks hold capacity x 38h host records, capacity byte flags,
- * capacity x 1C0h large records, capacity x 40h pending records. Confirmed
+ * capacity x EP_HOST_TASK_STRIDE task records and capacity x
+ * EP_HOST_PENDING_STRIDE pending records (ep_host_task_layout.h). Confirmed
  * client peers use their existing capacity x 20h shared bank and client+C8
  * count. Host records and confirmed records are different layouts/identities.
  *

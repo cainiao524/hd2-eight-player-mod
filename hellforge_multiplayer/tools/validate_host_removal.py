@@ -13,6 +13,7 @@ from collections import deque
 from pathlib import Path
 from generate_host_removal import SOURCES
 from generate_loadout_lifecycle import Capture,PROJECT,need
+from host_task_layout import TASK_STRIDE,SECONDARY_COUNT,SECONDARY_START,PENDING_STRIDE
 from validate_host_lifecycle import Addresses
 sys.path.insert(0,str(PROJECT.parent/'eight_player_candidate_20260927/.native-test-deps'))
 from unicorn import Uc,UcError,UC_ARCH_X86,UC_MODE_64,UC_HOOK_CODE
@@ -21,14 +22,14 @@ from capstone.x86_const import X86_OP_MEM,X86_REG_RIP
 
 
 class Image(C.Structure):
-    _fields_=[('bytes',C.c_uint32),('table_offset',C.c_uint32),('function_count',C.c_uint32),('entry',C.c_uint32*3),('data',C.c_uint8*4096)]
+    _fields_=[('bytes',C.c_uint32),('table_offset',C.c_uint32),('function_count',C.c_uint32),('entry',C.c_uint32*6),('data',C.c_uint8*4096)]
 
 
 def removed_large(source,peer):
     """Native swap-removal model; retain stale tail bytes and opaque fields."""
     out=bytearray(source)
-    for base in range(0,len(out),448):
-        for count_at,items,stride in ((8,16,8),(56,64,32)):
+    for base in range(0,len(out),TASK_STRIDE):
+        for count_at,items,stride in ((8,16,8),(SECONDARY_COUNT,SECONDARY_START,32)):
             count=struct.unpack_from('<I',out,base+count_at)[0];index=0
             while index<count:
                 at=base+items+index*stride
@@ -36,7 +37,7 @@ def removed_large(source,peer):
                     count-=1;struct.pack_into('<I',out,base+count_at,count)
                     last=base+items+count*stride;out[at:at+stride]=out[last:last+stride]
                 else:index+=1
-        if struct.unpack_from('<I',out,base+8)[0]==0:out[base:base+448]=bytes(448)
+        if struct.unpack_from('<I',out,base+8)[0]==0:out[base:base+TASK_STRIDE]=bytes(TASK_STRIDE)
     return bytes(out)
 
 
@@ -51,11 +52,11 @@ def flow(dll,capacity):
         for page in range(address&~4095,(address+size+4095)&~4095,4096):
             if page not in pages:u.mem_map(page,4096);pages.add(page)
     for address,size in ((a.code,4096),(owner,0x30000),(stack,0x5000),(stop,4096),(stub,4096),(a.reject,4096),
-                         (a.confirmed,4096),(a.peers,4096),(a.flags,4096),(a.large,8192),(a.pending,4096)):
+                         (a.confirmed,4096),(a.peers,4096),(a.flags,4096),(a.large,8*TASK_STRIDE+4096),(a.pending,4096)):
         map_region(address,size)
     u.mem_write(a.code,bytes(out.data));u.mem_write(host,struct.pack('<Q',owner));u.mem_write(host+0x20,b'\xa5'*(0x918-0x20))
     u.mem_write(owner+0xb390,struct.pack('<QQQQ',0x111,0x500,0x222,0x500));u.mem_write(a.client+0xc8,struct.pack('<I',capacity))
-    u.mem_write(a.confirmed,b'\xc4'*(capacity*32));u.mem_write(a.pending,b'\xd4'*(capacity*64))
+    u.mem_write(a.confirmed,b'\xc4'*(capacity*32));u.mem_write(a.pending,b'\xd4'*(capacity*PENDING_STRIDE))
     u.mem_write(a.flags,b'\1'*capacity+b'\xfa'*8)
     original_peers=bytearray()
     for i in range(capacity):
@@ -65,14 +66,14 @@ def flow(dll,capacity):
     u.mem_write(a.peers,bytes(original_peers))
     original_large=bytearray()
     for i in range(capacity):
-        row=bytearray(b'\xcc'*448);struct.pack_into('<Q',row,0,0x700+i)
+        row=bytearray(b'\xcc'*TASK_STRIDE);struct.pack_into('<Q',row,0,0x700+i)
         ids=[peer,0x777,peer,0x778,peer] if i==0 else [] if i==2 else [peer] if i==capacity-1 else [0x777,peer]
         struct.pack_into('<I',row,8,len(ids))
         for j,p in enumerate(ids):struct.pack_into('<Q',row,16+8*j,p)
-        count=12 if i==1 else 3;struct.pack_into('<I',row,56,count)
+        count=12 if i==1 else 3;struct.pack_into('<I',row,SECONDARY_COUNT,count)
         for j in range(count):
             item=bytearray(bytes((0x20+j,))*32);struct.pack_into('<Q',item,0,peer if j%3==1 else 0x800+j)
-            row[64+32*j:96+32*j]=item
+            row[SECONDARY_START+32*j:SECONDARY_START+32*(j+1)]=item
         original_large+=row
     u.mem_write(a.large,bytes(original_large)+b'\xfb'*16)
     capture=Capture();globals_={}
@@ -100,8 +101,8 @@ def flow(dll,capacity):
         if address-a.game not in service_rvas:return
         rva=address-a.game;rcx=cpu.reg_read(x.UC_X86_REG_RCX);rdx=cpu.reg_read(x.UC_X86_REG_RDX);r8=cpu.reg_read(x.UC_X86_REG_R8)
         if rva==0x208aaa0:
-            need(stack<=rcx and rcx+448<=stack+0x5000 and rdx==0 and r8==448,'Native temporary clear')
-            cpu.mem_write(rcx,bytes(448));returned(rcx);return
+            need(a.large<=rcx and rcx+TASK_STRIDE<=a.large+capacity*TASK_STRIDE and rdx==0 and r8==TASK_STRIDE,'Bound task clear')
+            cpu.mem_write(rcx,bytes(TASK_STRIDE));returned(rcx);return
         if rva==0xbde430:
             need(rcx==0x1acfcdf1 and cpu.reg_read(x.UC_X86_REG_R9)==2,'Removal RPC identity')
             first=struct.unpack('<IIQ',cpu.mem_read(r8,16));second=struct.unpack('<IIQ',cpu.mem_read(r8+16,16))
@@ -124,18 +125,18 @@ def flow(dll,capacity):
     need(call(0,peer)==a.large and call(0,0x999)==0,'Large record lookup')
     call(2,peer)
     need(len(private_calls)==1,'Dispatcher did not use its private removal body')
-    need(u.mem_read(a.large,capacity*448+16)==removed_large(original_large,peer)+b'\xfb'*16,'Full-bank native swap removal')
+    need(u.mem_read(a.large,capacity*TASK_STRIDE+16)==removed_large(original_large,peer)+b'\xfb'*16,'Full-bank native swap removal')
     expected=bytearray(original_peers);at=(capacity-1)*56
     struct.pack_into('<Q',expected,at,0);struct.pack_into('<I',expected,at+0x20,0);struct.pack_into('<I',expected,at+0x18,0)
     flags=bytearray(b'\1'*capacity);flags[1]=0
     need(u.mem_read(a.peers,capacity*56)==expected and u.mem_read(a.flags,capacity+8)==bytes(flags)+b'\xfa'*8,'Host record/network flag removal')
     need(sent==[0x500+i for i in range(1,capacity-1)] and events==[0x500+i for i in range(1,capacity-1) if i!=2] and local==[(0x500,peer,2)],'Native remaining-member notifications')
     need(call(0,peer)==0,'Removed peer still in a large record')
-    need(u.mem_read(host+0x20,0x918-0x20)==b'\xa5'*(0x918-0x20) and u.mem_read(a.pending,capacity*64)==b'\xd4'*(capacity*64)
+    need(u.mem_read(host+0x20,0x918-0x20)==b'\xa5'*(0x918-0x20) and u.mem_read(a.pending,capacity*PENDING_STRIDE)==b'\xd4'*(capacity*PENDING_STRIDE)
          and u.mem_read(a.confirmed,capacity*32)==b'\xc4'*(capacity*32),'Unrelated/native banks changed')
     # Lookup has only caller home space: reject without a misaligned call or
     # losing its saved nonvolatile registers when an inner count exceeds room.
-    u.mem_write(a.large+8,struct.pack('<I',6));u.reg_write(x.UC_X86_REG_RCX,host);u.reg_write(x.UC_X86_REG_RDX,peer)
+    u.mem_write(a.large+8,struct.pack('<I',capacity+1));u.reg_write(x.UC_X86_REG_RCX,host);u.reg_write(x.UC_X86_REG_RDX,peer)
     u.reg_write(x.UC_X86_REG_RSP,stack+0x2008)
     for reg,value in ((x.UC_X86_REG_RBX,0x33),(x.UC_X86_REG_RBP,0x55),(x.UC_X86_REG_RSI,0x66),(x.UC_X86_REG_RDI,0x77)):u.reg_write(reg,value)
     u.emu_start(a.code+out.entry[0],stop,count=500)

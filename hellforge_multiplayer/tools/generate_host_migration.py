@@ -7,6 +7,7 @@ import argparse
 import struct
 from capstone.x86_const import X86_OP_IMM,X86_OP_MEM,X86_REG_RIP
 from generate_loadout_lifecycle import Capture,PROJECT,need
+from host_task_layout import TASK_STRIDE
 
 START,CODE_END,END=0x1089720,0x108a325,0x108a34a
 HEADER=PROJECT/'mod/src/ep_host_migration_template.h'
@@ -65,7 +66,7 @@ def build():
             blob+=bytes.fromhex('0f57d231d24889550ff20f104d0f');number('41b9')
             loop=len(blob);blob+=bytes.fromhex('0f11100f1150100f115020f20f1148304883c03841ffc9')
             blob+=b'\x75'+struct.pack('b',loop-len(blob)-2);continue
-        if i.address==0x108983f:number('41b8',8,448);continue
+        if i.address==0x108983f:number('41b8',8,TASK_STRIDE);continue
         if i.address==0x108984c:
             need(i.op_str=='dword ptr [r13 + 0x100], ecx','Changed flag reset')
             absolute('49ba',5);number('41bb');loop=len(blob);blob+=bytes.fromhex('41880a49ffc241ffcb')

@@ -1,4 +1,4 @@
-"""One eight-member migration flow, only in allocated test memory.
+"""One eight-member migration/task lifecycle flow in allocated test memory.
 
 Execute the complete saved migration caller, private lookup and removal bodies.
 Game services are explicit fixtures recording their ABI; network, metadata
@@ -13,8 +13,9 @@ from collections import deque
 from pathlib import Path
 from generate_host_migration import START,CODE_END
 from generate_loadout_lifecycle import Capture,PROJECT,need
+from host_task_layout import TASK_STRIDE,SECONDARY_COUNT,SECONDARY_START,PENDING_STRIDE
 from validate_host_lifecycle import Addresses,Image as LookupImage
-from validate_host_removal import Image as RemovalImage
+from validate_host_removal import Image as RemovalImage,removed_large
 from unicorn import Uc,UcError,UC_ARCH_X86,UC_MODE_64,UC_HOOK_CODE
 from unicorn import x86_const as x
 from capstone.x86_const import X86_OP_MEM,X86_REG_RIP
@@ -55,7 +56,7 @@ def flow(dll):
     for address,size in ((h.code,8192),(a.lookup,4096),(removal_base,4096),(owner,0x30000),
                          (stack,0x8000),(stop,4096),(stub,0x4000),(engine,0xad000),(h.reject,4096)):
         map_region(address,size)
-    for address in (h.confirmed,h.peers,h.flags,h.large,h.pending,a.ids,a.pairs,a.history,a.timers):map_region(address,8192)
+    for address in (h.confirmed,h.peers,h.flags,h.large,h.pending,a.ids,a.pairs,a.history,a.timers):map_region(address,8*TASK_STRIDE+4096)
     u.mem_write(h.code,bytes(image.data));u.mem_write(a.lookup,bytes(lookup.data));u.mem_write(removal_base,bytes(removal.data))
     u.mem_write(host+0x20,b'\xa5'*(0x918-0x20));putq(host,owner);putq(host+8,engine)
     for off,length in ((0x18,32),(0x40,64),(0x88,64),(0xd0,128),(0x190,64)):u.mem_write(h.client+off,b'\xa6'*length)
@@ -63,8 +64,8 @@ def flow(dll):
     for i,p in enumerate(confirmed_ids):
         u.mem_write(h.confirmed+i*32,b'\xc4'*32);putq(h.confirmed+i*32,p);putd(h.confirmed+i*32+20,(i+2)%8)
     u.mem_write(h.peers,b'\xc5'*(8*56));u.mem_write(h.flags,b'\xc6'*8)
-    u.mem_write(h.large,b'\xc7'*(8*448));u.mem_write(h.pending,b'\xc8'*(8*64))
-    for address,length in ((h.peers,8*56),(h.flags,8),(h.large,8*448),(h.pending,8*64)):
+    u.mem_write(h.large,b'\xc7'*(8*TASK_STRIDE));u.mem_write(h.pending,b'\xc8'*(8*PENDING_STRIDE))
+    for address,length in ((h.peers,8*56),(h.flags,8),(h.large,8*TASK_STRIDE),(h.pending,8*PENDING_STRIDE)):
         u.mem_write(address+length,b'\xfa'*16)
     ids_bytes=struct.pack('<8Q',*all_ids);u.mem_write(a.ids,ids_bytes)
     pair_head=struct.pack('<QQ',0x501,0xfedcba9876);u.mem_write(a.pairs,pair_head+b'\xd5'*(7*16))
@@ -74,7 +75,7 @@ def flow(dll):
     putq(owner+0xb390,0x111);putq(owner+0xb398,self_id);putq(owner+0xb3a0,0x600);putq(owner+0xb3a8,old_host)
     putd(owner+0x164ac,0x1234)
     capture=Capture();instructions=[];globals_={};globals_by_instruction={}
-    for begin,end in ((START,CODE_END),(0x108d190,0x108d3b0)):
+    for begin,end in ((START,CODE_END),(0x108d190,0x108d3b0),(0x108d3b0,0x108d6cb)):
         instructions+=list(capture.md.disasm(capture.read(begin,end-begin),begin))
     owner_global=next(i.address+i.size+i.disp for i in instructions if i.address==0x1089753)
     for i in instructions:
@@ -85,19 +86,20 @@ def flow(dll):
                     pointer=owner if target==h.game+owner_global else 0x280000000+len(globals_)*0x400000
                     globals_[target]=pointer;map_region(pointer,0x200000 if pointer!=owner else 0x30000);putq(target,pointer)
                 globals_by_instruction[i.address]=globals_[target]
-    api=globals_by_instruction[0x1089bfc];putq(api+0x40,stub+0x1000);putq(api+0x10,stub+0x2000)
+    api=globals_by_instruction[0x1089bfc];putq(api+0x40,stub+0x1000);putq(api+0x10,stub+0x2000);putq(api+0x38,stub+0x3000)
     callbacks={0x10:'old_host',0x38:'provider_update',0x8:'known',0x68:'remote_state',0xf8:'provider_remove'}
     addresses={}
     for index,(offset,name) in enumerate(callbacks.items()):
         at=stub+0x100+index*16;putq(stub+0x1000+offset,at);addresses[at]=name;u.mem_write(at,b'\xc3')
     for offset,name in ((0x290,'time'),(0x480,'owner_event')):
         at=stub+0x300+len(addresses)*16;putq(stub+0x2000+offset,at);addresses[at]=name;u.mem_write(at,b'\xc3')
+    addresses[stub+0x500]='task_ready';putq(stub+0x3000+0x78,stub+0x500);u.mem_write(stub+0x500,b'\xc3')
     u.mem_write(globals_by_instruction[0x108d22a]+0x28,b'\1')
     putq(globals_by_instruction[0x1089c60]+0x1f8078,self_id)
     services=(0x1738300,0x17384c0,0x208aaa0,0x13ecfd0,0x12e72e0,0xbde430,0x13ed0f0,0xb942a0,0x1089400,
-              0xbe4910,0xb90940,0xb92b50,0x10926a0,0xb5f320,0x1092ac0,0x1346f70,0xb90eb0,0x1360380)
+              0xbe4910,0xb90940,0xb92b50,0x10926a0,0xb5f320,0x1092ac0,0x1346f70,0xb90eb0,0x1360380,0x1360970,0xbecf70,0x17383e0)
     for rva in services:map_region(h.game+rva,16);u.mem_write(h.game+rva,b'\xc3')
-    u.mem_write(h.reject,b'\xcc');recent=deque(maxlen=8);rejected=[];seen_lookup=[];seen_remove=[];sync=[];history=[];relations=[];rpc=[]
+    u.mem_write(h.reject,b'\xcc');recent=deque(maxlen=8);rejected=[];seen_lookup=[];seen_remove=[];sync=[];history=[];relations=[];rpc=[];task_sent=[]
     def returned(value=0):
         sp=u.reg_read(x.UC_X86_REG_RSP);target=qword(sp);u.reg_write(x.UC_X86_REG_RSP,sp+8)
         u.reg_write(x.UC_X86_REG_RAX,value);u.reg_write(x.UC_X86_REG_RIP,target)
@@ -109,13 +111,14 @@ def flow(dll):
         rcx=cpu.reg_read(x.UC_X86_REG_RCX);rdx=cpu.reg_read(x.UC_X86_REG_RDX);r8=cpu.reg_read(x.UC_X86_REG_R8);r9=cpu.reg_read(x.UC_X86_REG_R9)
         if address in addresses:
             name=addresses[address]
-            returned(old_host if name=='old_host' else 1 if name=='known' else int(rdx!=self_id) if name=='remote_state' else 0x900 if name=='time' else 0);return
+            returned(old_host if name=='old_host' else 1 if name in ('known','task_ready') else int(rdx!=self_id) if name=='remote_state' else 0x900 if name=='time' else 0);return
         rva=address-h.game
         if rva not in services:return
         if rva==0x208aaa0:cpu.mem_write(rcx,bytes((rdx&255,))*r8);returned(rcx);return
         if rva==0xbe4910:sync.append((rcx,rdx,r8,r9,dword(cpu.reg_read(x.UC_X86_REG_RSP)+0x28)))
         if rva==0xb90940:relations.append((rcx,rdx))
         if rva==0xb92b50:history.append((rcx,rdx,r8))
+        if rva==0xbecf70:task_sent.append((rcx,rdx,r8,dword(cpu.reg_read(x.UC_X86_REG_RSP)+0x28)))
         if rva==0xbde430:
             fields=[]
             for i in range(r9):
@@ -132,7 +135,7 @@ def flow(dll):
         at=h.peers+i*56;ordinal=confirmed_ids.index(p)
         need(qword(at)==p and dword(at+20)==(ordinal+2)%8 and dword(at+24)==timers[p],'Peer identity/index/timer mismatch')
         need(dword(at+32)==(9 if p==self_id else 7),'Native peer-state rebuild')
-    need(u.mem_read(h.flags,8)==b'\1'*8 and u.mem_read(h.large,8*448)==bytes(8*448),'Expanded migration reset')
+    need(u.mem_read(h.flags,8)==b'\1'*8 and u.mem_read(h.large,8*TASK_STRIDE)==bytes(8*TASK_STRIDE),'Expanded migration reset')
     need(u.mem_read(a.pairs,7*16)==pair_head+b''.join(struct.pack('<QQ',p,0) for p in all_ids[2:]),'Native pair append did not use bound bank')
     need(u.mem_read(a.ids,64)==ids_bytes and u.mem_read(a.history,128)==history_bytes and u.mem_read(a.timers,128)==timer_bytes,'Auxiliary source changed')
     need(len(sync)==56 and {row[0] for row in sync}==set(all_ids[1:]) and {row[1] for row in sync}==set(all_ids),'Eight-member state fanout')
@@ -144,9 +147,38 @@ def flow(dll):
     need(u.mem_read(host+0x20,0x918-0x20)==b'\xa5'*(0x918-0x20),'Original host slots changed')
     for off,length in ((0x18,32),(0x40,64),(0x88,64),(0xd0,128),(0x190,64)):
         need(u.mem_read(h.client+off,length)==b'\xa6'*length,'Original auxiliary slots changed')
-    need(u.mem_read(h.pending,8*64)==b'\xc8'*(8*64),'Pending records changed')
-    for address,length in ((h.peers,8*56),(h.flags,8),(h.large,8*448),(h.pending,8*64)):
+    need(u.mem_read(h.pending,8*PENDING_STRIDE)==b'\xc8'*(8*PENDING_STRIDE),'Pending records changed')
+    for address,length in ((h.peers,8*56),(h.flags,8),(h.large,8*TASK_STRIDE),(h.pending,8*PENDING_STRIDE)):
         need(u.mem_read(address+length,16)==b'\xfa'*16,'Bank tail overwritten')
+    # Continue the same rebuilt owner through native task registration, all
+    # 8*7 ordered pair records, duplicate sequence update, ACK and removal.
+    task=h.large+7*TASK_STRIDE;task_id=0x900f
+    for i in range(7):putq(h.large+i*TASK_STRIDE,0x9000+i)
+    def invoke(entry,rdx=0,r8=0,r9=0,reject=False):
+        putq(sp,stop);u.reg_write(x.UC_X86_REG_RSP,sp);u.reg_write(x.UC_X86_REG_RCX,host)
+        u.reg_write(x.UC_X86_REG_RDX,rdx);u.reg_write(x.UC_X86_REG_R8,r8);u.reg_write(x.UC_X86_REG_R9,r9)
+        try:u.emu_start(removal_base+removal.entry[entry],stop,count=100000)
+        except UcError as error:raise RuntimeError(f'{error}; recent={list(recent)}') from error
+        need(bool(rejected)==reject and (reject or u.reg_read(x.UC_X86_REG_RIP)==stop),'Task lifecycle return/rejection: '+str(list(recent)))
+    for p in all_ids:invoke(3,p,task_id,9)
+    need(qword(task)==task_id and dword(task+8)==8 and u.mem_read(task+16,64)==ids_bytes,'Eight primary members')
+    for p in all_ids:invoke(4,p)
+    need(dword(task+SECONDARY_COUNT)==56 and len(task_sent)==56,'Complete ordered pair capacity')
+    pairs=[struct.unpack('<QQIIII',u.mem_read(task+SECONDARY_START+i*32,32)) for i in range(56)]
+    need({row[:2] for row in pairs}=={(p,q) for p in all_ids for q in all_ids if p!=q}
+         and all(row[2:]==(2,1,0,0) for row in pairs),'Pair identities/state/opaque sequence')
+    invoke(4,self_id)
+    need(dword(task+SECONDARY_COUNT)==56 and len(task_sent)==63 and all(row[3]==1 for row in task_sent[-7:]),'Duplicate pair update when full')
+    invoke(5,all_ids[-1],self_id,1)
+    ack=next(i for i,row in enumerate(pairs) if row[:2]==(all_ids[-1],self_id))
+    need(dword(task+SECONDARY_START+ack*32+16)==3,'Native pair acknowledgment')
+    before=bytes(u.mem_read(h.large,8*TASK_STRIDE));removed=all_ids[3]
+    invoke(2,removed,3)
+    need(u.mem_read(h.large,8*TASK_STRIDE)==removed_large(before,removed),'Expanded native task removal/compaction')
+    need(u.mem_read(h.large+8*TASK_STRIDE,16)==b'\xfa'*16 and u.mem_read(host+0x20,0x918-0x20)==b'\xa5'*(0x918-0x20),'Task bank boundary/native host preservation')
+    # Terminal negative input in test memory, not a retry of a rejected owner.
+    u.mem_write(h.large,before);invoke(3,0x777,task_id,reject=True)
+    need(u.mem_read(h.large,8*TASK_STRIDE)==before and u.reg_read(x.UC_X86_REG_RSP)==sp,'Ninth task member wrote past its bound')
 
 
 def main():
@@ -158,8 +190,8 @@ def main():
     result=subprocess.run(list(map(str,cmd)),capture_output=True,text=True);need(result.returncode==0,result.stdout+result.stderr)
     dll=C.CDLL(str(library));prepare=dll.migration_prepare_flow;prepare.argtypes=[];prepare.restype=C.c_int
     need((rc:=prepare())==0,f'Migration preparation/unwind line {rc}');flow(dll)
-    print('PASS one eight-member migration flow: saved caller with private lookup/removal, identity/index/timers, '
-          'auxiliary append/history, full state notifications, preserved RPC widths, bank tails and Windows unwind. '
+    print('PASS one eight-member migration/task flow: private registration, all 56 ordered pairs, duplicate sequence update, '
+          'ACK, full-record removal, ninth-member rejection, migration banks and Windows unwind. '
           'game_access=false, hooks=0; native services are fixtures; real migration/UI/multiplayer unverified.')
 
 

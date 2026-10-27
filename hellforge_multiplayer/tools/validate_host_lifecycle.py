@@ -13,6 +13,7 @@ import sys
 from pathlib import Path
 from generate_host_lifecycle import build,SOURCES
 from generate_loadout_lifecycle import Capture,PROJECT,need
+from host_task_layout import TASK_STRIDE,SECONDARY_COUNT,SECONDARY_START,PENDING_STRIDE
 sys.path.insert(0,str(PROJECT.parent/'eight_player_candidate_20260927/.native-test-deps'))
 from unicorn import Uc,UC_ARCH_X86,UC_MODE_64,UC_HOOK_CODE
 from unicorn import x86_const as x
@@ -37,7 +38,7 @@ def flow(dll,plans,capacity):
             if page not in pages:u.mem_map(page,4096);pages.add(page)
     owner=a.client-0x162c8;host=a.client-0x918;stack=0x230000000;stop=0x240000000
     for address,size in ((owner,0x30000),(stack,0x4000),(stop,4096),(a.reject,4096),
-                         (a.confirmed,4096),(a.peers,4096),(a.flags,4096),(a.large,8192),(a.pending,4096)):
+                         (a.confirmed,4096),(a.peers,4096),(a.flags,4096),(a.large,8*TASK_STRIDE+4096),(a.pending,4096)):
         map_region(address,size)
     code_bases=[]
     for kind in (1,2,3):
@@ -60,7 +61,7 @@ def flow(dll,plans,capacity):
         u.mem_write(a.peers+56*i,bytes(row))
         row=bytearray(bytes((0xe0+i,))*32);struct.pack_into('<Q',row,0,0xaaa if i==1 else 0x100+i)
         struct.pack_into('<I',row,0x14,capacity-1 if i==1 else 1 if i==capacity-1 else i);u.mem_write(a.confirmed+32*i,bytes(row))
-    u.mem_write(a.flags,b'\x7e'*(capacity+8));u.mem_write(a.large,b'\x5a'*(capacity*448+16));u.mem_write(a.pending,b'\x42'*(capacity*64+16))
+    u.mem_write(a.flags,b'\x7e'*(capacity+8));u.mem_write(a.large,b'\x5a'*(capacity*TASK_STRIDE+16));u.mem_write(a.pending,b'\x42'*(capacity*PENDING_STRIDE+16))
     rejected=[];services=[]
     def returned(cpu):
         sp=cpu.reg_read(x.UC_X86_REG_RSP);target=struct.unpack('<Q',cpu.mem_read(sp,8))[0]
@@ -71,8 +72,8 @@ def flow(dll,plans,capacity):
             need(cpu.reg_read(x.UC_X86_REG_RCX)==owner+0xb400,'Timer receiver');services.append('timer')
             cpu.reg_write(x.UC_X86_REG_XMM0,struct.unpack('<I',struct.pack('<f',1.25))[0]);returned(cpu)
         elif address==a.game+0x208aaa0:
-            need(cpu.reg_read(x.UC_X86_REG_RCX)==a.large and cpu.reg_read(x.UC_X86_REG_RDX)==0 and cpu.reg_read(x.UC_X86_REG_R8)==capacity*448,'Large reset extent')
-            services.append('memset');cpu.mem_write(a.large,bytes(capacity*448));cpu.reg_write(x.UC_X86_REG_RAX,a.large);returned(cpu)
+            need(cpu.reg_read(x.UC_X86_REG_RCX)==a.large and cpu.reg_read(x.UC_X86_REG_RDX)==0 and cpu.reg_read(x.UC_X86_REG_R8)==capacity*TASK_STRIDE,'Large reset extent')
+            services.append('memset');cpu.mem_write(a.large,bytes(capacity*TASK_STRIDE));cpu.reg_write(x.UC_X86_REG_RAX,a.large);returned(cpu)
     u.hook_add(UC_HOOK_CODE,hook)
     def run(begin,finish):
         u.reg_write(x.UC_X86_REG_RSP,stack+0x1800);u.reg_write(x.UC_X86_REG_RBX,host);u.reg_write(x.UC_X86_REG_RDI,host)
@@ -100,8 +101,8 @@ def flow(dll,plans,capacity):
     expected=bytearray(capacity*56);struct.pack_into('<QQII',expected,0,0xaaa,0xbbb,0x42,0)
     struct.pack_into('<f',expected,0x18,1.25);struct.pack_into('<I',expected,0x20,9)
     need(u.mem_read(a.peers,capacity*56)==expected and u.mem_read(a.flags,capacity+8)==b'\1'+bytes(capacity-1)+b'\x7e'*8,'Start host records/flags')
-    need(u.mem_read(a.large,capacity*448+16)==bytes(capacity*448)+b'\x5a'*16 and services==['timer','memset'],'Large reset and service order')
-    need(u.mem_read(a.pending,capacity*64+16)==b'\x42'*(capacity*64+16),'Pending unexpectedly reset')
+    need(u.mem_read(a.large,capacity*TASK_STRIDE+16)==bytes(capacity*TASK_STRIDE)+b'\x5a'*16 and services==['timer','memset'],'Large reset and service order')
+    need(u.mem_read(a.pending,capacity*PENDING_STRIDE+16)==b'\x42'*(capacity*PENDING_STRIDE+16),'Pending unexpectedly reset')
     need(u.mem_read(a.client+0xc8,4)==struct.pack('<I',1) and u.mem_read(a.confirmed,8)==struct.pack('<Q',0xaaa) and u.mem_read(a.confirmed+0x14,4)==bytes(4),'Shared confirmed self reset')
     need(u.mem_read(a.client+0xd0,128)==b'\xd5'*128 and u.mem_read(host+0x20,0x918-0x20)==b'\xa5'*(0x918-0x20),'Native banks/tail/sibling overwritten')
     # A malformed network index rejects before indexing the external flag bank.

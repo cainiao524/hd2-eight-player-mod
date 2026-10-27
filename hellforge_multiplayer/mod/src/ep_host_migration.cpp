@@ -11,7 +11,7 @@ EpPropertyResult ep_host_migration_build(const EpHostMigrationAddresses* input,E
     if (h.client<0x262c8) return EP_PROPERTY_POINTER;
     const uint64_t regions[][3]={{h.game,74727424,4096},{h.code,8192,16},{h.client-0x162c8,0x20100,8},
         {h.confirmed,32ull*h.capacity,16},{h.reject,1,1},{h.peers,56ull*h.capacity,16},
-        {h.flags,h.capacity,8},{h.large,448ull*h.capacity,16},{h.pending,64ull*h.capacity,16},
+        {h.flags,h.capacity,8},{h.large,uint64_t(EP_HOST_TASK_STRIDE)*h.capacity,16},{h.pending,uint64_t(EP_HOST_PENDING_STRIDE)*h.capacity,16},
         {a.ids,8ull*h.capacity,8},{a.pairs,16ull*h.capacity,16},{a.history,16ull*h.capacity,16},{a.timers,16ull*h.capacity,16},
         {a.lookup,1,1},{a.remove_dispatch,1,1}};
     for (unsigned i=0;i<15;i++) {

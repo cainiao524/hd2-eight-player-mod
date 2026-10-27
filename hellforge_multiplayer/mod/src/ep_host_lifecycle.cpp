@@ -14,7 +14,7 @@ EpPropertyResult ep_host_lifecycle_build(uint32_t kind,const EpHostLifecycleAddr
     if (a.client<0x262c8) return EP_PROPERTY_POINTER;
     const uint64_t regions[][3]={{a.game,74727424,4096},{a.code,4096,16},{a.client-0x162c8,0x20100,8},
         {a.confirmed,32ull*a.capacity,16},{a.reject,1,1},{a.peers,56ull*a.capacity,16},
-        {a.flags,a.capacity,8},{a.large,448ull*a.capacity,16},{a.pending,64ull*a.capacity,16}};
+        {a.flags,a.capacity,8},{a.large,uint64_t(EP_HOST_TASK_STRIDE)*a.capacity,16},{a.pending,uint64_t(EP_HOST_PENDING_STRIDE)*a.capacity,16}};
     for (unsigned i=0;i<9;i++) {
         auto p=regions[i][0],n=regions[i][1];
         if (p<0x10000 || p>(UINT64_C(1)<<47)-n || p%regions[i][2]) return EP_PROPERTY_POINTER;

@@ -7,6 +7,7 @@ import argparse
 import struct
 from capstone.x86_const import X86_OP_IMM,X86_OP_MEM,X86_REG_RIP
 from generate_loadout_lifecycle import Capture,PROJECT,need
+from host_task_layout import TASK_STRIDE
 
 SOURCES=((0x1088a30,0x1088d75),(0x1088d80,0x1088efd),(0x108b520,0x108b551))
 GS=bytes.fromhex('192f09001d648f021d548e021d348d021d018a0210700000')
@@ -86,7 +87,7 @@ def build(kind):
             need(i.mnemonic=='mov' and '0x100' in i.op_str,'Changed indexed flag')
             number('3d',8);check(0x72);absolute('48b9',5);blob+=bytes.fromhex('c6040101');continue
         if i.address==0x1088bc5:
-            need(i.op_str=='r8d, 0x700','Changed large clear length');number('41b8',8,0x1c0);continue
+            need(i.op_str=='r8d, 0x700','Changed large clear length');number('41b8',8,TASK_STRIDE);continue
         if i.address==0x1088be6:
             need(i.op_str=='rcx, [rdi + 0x108]','Changed large clear base');absolute('48b9',6);continue
         if i.address==0x1088e54:

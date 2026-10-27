@@ -4,14 +4,16 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-enum {EP_HOST_LARGE_LOOKUP_ENTRY=0,EP_HOST_REMOVE_DATA_ENTRY=1,EP_HOST_REMOVE_DISPATCH_ENTRY=2};
+enum {EP_HOST_LARGE_LOOKUP_ENTRY=0,EP_HOST_REMOVE_DATA_ENTRY=1,EP_HOST_REMOVE_DISPATCH_ENTRY=2,
+      EP_HOST_TASK_ADD_ENTRY=3,EP_HOST_TASK_CONNECT_ENTRY=4,EP_HOST_TASK_ACK_ENTRY=5};
 typedef struct EpHostRemovalImage {
-    uint32_t bytes,table_offset,function_count,entry[3];
+    uint32_t bytes,table_offset,function_count,entry[6];
     uint8_t data[4096];
 } EpHostRemovalImage;
-/* One immutable image: native 108B560 large-record lookup, 108B6B0 removal,
- * 108D190 removal dispatch. The dispatcher calls this image's own guarded
- * removal body, not the old four-record helper. All use the exact same banks.
+/* One immutable image: native 108B560 task lookup, 108B6B0 removal,
+ * 108D190 removal dispatch, 108A350 member registration, 108D3B0 pair creation
+ * and 108D5E0 pair acknowledgment. Calls between these bodies stay inside this
+ * image's guarded entries. All use the exact same banks and task layout.
  * Host+0/metadata stay in place. Whole calls and returned pointers require
  * the same owner lease and lifetime as the other host lifecycle candidates.
  *
@@ -22,15 +24,15 @@ typedef struct EpHostRemovalImage {
  * Both dispatch loops cover capacity; serialized reason size remains FOUR
  * bytes, independently of loop count. Native callbacks/services are retained.
  *
- * Current 1C0h per-task records still have only physical room for five primary
- * QWORDs before +38h and twelve secondary 20h entries after +40h. Bounds checks
- * prevent crossing those fields; these are NOT negotiated protocol limits or
- * evidence that eight-recipient task payloads fit. Task/protocol expansion,
- * remaining migration/pending consumers and coordinated bank import/activation
- * are still required. This candidate does not claim complete host migration.
+ * Private task records hold capacity primary IDs and capacity*(capacity-1)
+ * ordered pairs, preserving full 32-byte entries and acknowledgment sequence.
+ * Duplicate pair updates work even when the pair list is full. New members or
+ * pairs reject before their out-of-bounds store; empty-record clear writes to
+ * the actual bank, never through the old small stack temporary. Other pending/
+ * protocol consumers and coordinated import/activation still need conversion.
  *
  * Numeric build/prepare only: no game reads, data import, hooks or activation.
- * Retain this shared image before exposing any of its three entry gates.
+ * Retain this shared image before exposing any of its six entry gates.
  * Reject must not return; effects before late failure require quarantine.
  */
 EpPropertyResult ep_host_removal_build(const EpHostLifecycleAddresses*,EpHostRemovalImage*);

@@ -10,20 +10,20 @@ EpPropertyResult ep_host_removal_build(const EpHostLifecycleAddresses* input,EpH
     if (a.client<0x262c8) return EP_PROPERTY_POINTER;
     const uint64_t regions[][3]={{a.game,74727424,4096},{a.code,4096,16},{a.client-0x162c8,0x20100,8},
         {a.confirmed,32ull*a.capacity,16},{a.reject,1,1},{a.peers,56ull*a.capacity,16},
-        {a.flags,a.capacity,8},{a.large,448ull*a.capacity,16},{a.pending,64ull*a.capacity,16}};
+        {a.flags,a.capacity,8},{a.large,uint64_t(EP_HOST_TASK_STRIDE)*a.capacity,16},{a.pending,uint64_t(EP_HOST_PENDING_STRIDE)*a.capacity,16}};
     for (unsigned i=0;i<9;i++) {
         auto p=regions[i][0],n=regions[i][1];
         if (p<0x10000 || p>(UINT64_C(1)<<47)-n || p%regions[i][2]) return EP_PROPERTY_POINTER;
         for (unsigned j=0;j<i;j++) if (p<regions[j][0]+regions[j][1] && regions[j][0]<p+n) return EP_PROPERTY_OVERLAP;
     }
     EpHostRemovalImage image={};memcpy(image.data,ep_host_removal_template,sizeof(ep_host_removal_template));
-    const uint64_t values[]={a.game,a.client-0x918,a.client-0x162c8,a.confirmed,a.peers,a.flags,a.large,a.pending,a.capacity,a.reject};
+    const uint64_t values[]={a.game,a.client-0x918,a.client-0x162c8,a.confirmed,a.peers,a.flags,a.large,a.pending,a.capacity,a.reject,uint64_t(a.capacity)*(a.capacity-1)};
     for (const auto& f:ep_host_removal_fixups) {
         int64_t value=(int64_t)(values[f.key]*f.multiplier)+f.add;
         if (!f.kind) {value-=(int64_t)(a.code+f.next);if (value<INT32_MIN || value>INT32_MAX) return EP_PROPERTY_REL32;}
         for (unsigned i=0;i<(f.kind==1 ? 8u : 4u);i++) image.data[f.offset+i]=(uint8_t)((uint64_t)value>>(i*8));
     }
-    image.bytes=sizeof(ep_host_removal_template);image.table_offset=ep_host_removal_table;image.function_count=9;
+    image.bytes=sizeof(ep_host_removal_template);image.table_offset=ep_host_removal_table;image.function_count=17;
     memcpy(image.entry,ep_host_removal_entries,sizeof(image.entry));*out=image;return EP_PROPERTY_OK;
 }
 EpPropertyResult ep_host_removal_prepare(const HfApi* api,HfMod* mod,const EpHostLifecycleAddresses* input,EpSessionCodeInfo* out)
