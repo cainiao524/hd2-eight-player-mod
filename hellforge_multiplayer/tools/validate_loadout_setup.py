@@ -2,6 +2,7 @@
 
 ABI stubs do not render UI or verify layout. One setup unwind snapshot and
 one all-image READY/discard cycle; no full regression or game access.
+--attach-only instead runs one construct -> isolated attachment flow.
 """
 from validate_loadout_consumers import READY,BLOCKED
 import argparse
@@ -11,6 +12,8 @@ import struct
 import subprocess
 from pathlib import Path
 import generate_loadout_setup as g
+import generate_loadout_lifecycle as lifecycle
+from validate_loadout_lifecycle import Image as LifeImage,STATE_STUB
 import generate_loadout_consumers as consumers
 from validate_loadout_consumers import (Binding,Image as ConsumerImage,Flow,MAPS,ROSTER,STORAGE,PEER,
     Addresses,GAME,CODE,SCREEN,RECORDS,WIDGETS,REJECT,ENGINE,SP,NAMES,R,U64,U32,STOP)
@@ -22,7 +25,7 @@ class Placement(c.Structure):
 class SetupAddresses(c.Structure):
     _fields_=[('common',Binding),('placements',Placement*8)]
 class SetupImage(c.Structure):
-    _fields_=[(n,c.c_uint32) for n in ('bytes','code_bytes','unwind_offset','table_offset','handler_offset','placements_offset')]+[('data',c.c_ubyte*g.MAX_IMAGE)]
+    _fields_=[(n,c.c_uint32) for n in ('bytes','code_bytes','unwind_offset','table_offset','handler_offset','placements_offset','attach_widgets')]+[('data',c.c_ubyte*g.MAX_IMAGE)]
 class RecordSource(c.Structure):
     _fields_=[(n,c.c_uint64) for n in ('manager','actors','equipment','status')]
 
@@ -45,7 +48,7 @@ class SetupFlow(Flow):
     def __init__(self,artifact,dll,image,setup_artifact,setup_image):
         super().__init__(artifact,dll,image)
         self.points=set();self.setup_image=setup_image;self.setup_point=SETUP+setup_artifact['mapping'][0x1466af0]
-        self.setup_unwound=False;self.setup_calls=[];self.attachments=[];self.cookie=0x6745ab23901f
+        self.setup_unwound=False;self.setup_calls=[];self.attachments=[];self.constructed=[];self.cookie=0x6745ab23901f
         capture=g.Capture()
         for ins in capture.md.disasm(setup_artifact['source'],g.START):
             if (ins.mnemonic=='call' or ins.mnemonic.startswith('j')) and ins.operands[0].type==X86_OP_IMM:
@@ -69,6 +72,7 @@ class SetupFlow(Flow):
         self.write(MAPS,b'\xa5'*64)
 
     def step(self,uc,address,size,user):
+        if address==GAME+0x14aa5c0:self.constructed.append(self.value('rcx'))
         if address==self.setup_point and not self.setup_unwound:
             xmm=self.value('xmm6');values=(c.c_uint64*10)(*(self.value(n) for n in NAMES),xmm&((1<<64)-1),xmm>>64)
             stack=(c.c_ubyte*1024).from_buffer_copy(self.read(SP-512,1024))
@@ -83,25 +87,74 @@ class SetupFlow(Flow):
                 self.attachments.append(rdx)
         super().step(uc,address,size,user)
 
-    def setup(self):
+    def setup(self,address=SETUP):
         self.standalone_lookup=False;self.stop=None
         self.uc.reg_write(R('rsp'),SP);self.write(SP,U64(STOP))
         for i,n in enumerate(NAMES):self.uc.reg_write(R(n),0x11110000+i*0x101)
         for i in range(6,9):self.uc.reg_write(R(f'xmm{i}'),(0x66660000+i)|((0xaaaa0000+i)<<64))
-        self.uc.reg_write(R('rcx'),SCREEN);self.uc.emu_start(SETUP,0,count=20000)
+        self.uc.reg_write(R('rcx'),SCREEN);self.uc.emu_start(address,0,count=100000)
         g.need(self.stop==STOP and self.value('rsp')==SP+8,'Setup did not return normally')
         for i,n in enumerate(NAMES):g.need(self.value(n)==0x11110000+i*0x101,'Setup corrupted nonvolatile register')
 
 
+def construct_and_attach(f,dll,setup_artifact):
+    # Use the actual isolated bank constructor and saved per-widget body in
+    # this SAME emulator and buffers, followed by isolated setup. Resource
+    # services and hierarchy-attachment service itself remain ABI stubs.
+    dll.loadout_build.argtypes=[c.POINTER(Addresses),c.c_uint64,c.POINTER(LifeImage)]
+    code=CODE+0x40000;binding=Addresses(GAME,code,SCREEN,RECORDS,WIDGETS,REJECT,8,0)
+    image=LifeImage();g.need(dll.loadout_build(c.byref(binding),STATE_STUB,c.byref(image))==0,'Constructor image rejected')
+    f.map(code,image.bytes);f.write(code,bytes(image.data[:image.bytes]))
+    capture=g.Capture();widget=capture.read(0x14aa5c0,0x26f)
+    f.map(GAME+0x14aa5c0,len(widget));f.write(GAME+0x14aa5c0,widget)
+    source=lifecycle.build()['sources'][0]
+    for base,data in ((source['start'],source['data']),(0x14aa5c0,widget)):
+        for ins in capture.md.disasm(data,base):
+            if (ins.mnemonic=='call' or ins.mnemonic.startswith('j')) and ins.operands[0].type==X86_OP_IMM:
+                target=ins.operands[0].imm
+                if not (base<=target<base+len(data) or 0x14aa5c0<=target<0x14aa82f):
+                    f.external.add(GAME+target);f.map(GAME+target,1);f.write(GAME+target,b'\xc3')
+            for operand in ins.operands:
+                if operand.type==X86_OP_MEM and operand.mem.base==X86_REG_RIP:
+                    target=ins.address+ins.size+ins.disp;f.map(GAME+target,max(16,operand.size))
+                    value=U64(f.cookie) if target==0x263c010 else capture.read(target,operand.size) if target<0x3000000 else U64(ENGINE) if operand.size==8 else U32(0xffffffff)
+                    f.write(GAME+target,value)
+    # A ready parent with an existing ancestor chain, but no old widgets still
+    # attached. Identity maps are caller-owned state and must not be reset.
+    maps=(c.c_uint32*16)();g.need(dll.ui_maps(maps)==1,'Map seed rejected');f.write(MAPS,bytes(maps))
+    parent=SCREEN+0x2820;ancestor=ENGINE+0x50000
+    f.write(parent,U32(0x12340002));f.write(parent+0xe0,U64(ancestor))
+    f.write(ancestor,U32(0x10000000));f.write(ancestor+0xe8,U64(ancestor+0x100))
+    f.write(ancestor+0x100,U32(0x80000000))
+    f.write(SCREEN+0x2739a4,b'\x53'*16)
+    f.write(RECORDS,bytes(8*0x9f0));f.write(WIDGETS,bytes(8*0x1ee18))
+    screen_before=f.read(SCREEN,0x2739d0);maps_before=f.read(MAPS,64)
+    f.setup(code+image.construct_banks)
+    g.need(f.constructed==[WIDGETS+i*0x1ee18 for i in range(8)] and f.value('rax')==SCREEN,'Native construction sequence changed')
+    g.need(f.read(SCREEN,len(screen_before))==screen_before,'Construction changed the existing screen')
+    g.need(not f.attachments,'Construction attached widgets before setup')
+    f.setup_calls.clear()
+    records_before=f.read(RECORDS,8*0x9f0)
+    f.setup_point=SETUP+setup_artifact['attach_mapping'][0x1466af0]
+    f.setup(SETUP+f.setup_image.attach_widgets)
+    # Only the native parent hierarchy flag changes directly in the screen.
+    expected=bytearray(screen_before);struct.pack_into('<I',expected,0x2820,0x12344002)
+    g.need(f.read(SCREEN,len(expected))==bytes(expected),'Attachment reset unrelated screen state')
+    g.need(f.read(MAPS,64)==maps_before and f.read(RECORDS,len(records_before))==records_before,'Attachment changed identity maps or records')
+    g.need(all(f.read(WIDGETS+i*0x1ee18+0x1ee12,1)==b'\1' for i in range(8)),'Native per-widget setup flags missing')
+    g.need(f.read(RECORDS+8*0x9f0,16)==b'\x6b'*16 and f.read(WIDGETS+8*0x1ee18,16)==b'\x7c'*16,'Construct/attach exceeded owned banks')
+
+
 def main():
     p=argparse.ArgumentParser();p.add_argument('--zig',type=Path);p.add_argument('--upstream',type=Path)
+    p.add_argument('--attach-only',action='store_true',help='Only the construct/isolated attachment flow')
     p.add_argument('--library',type=Path,default=g.PROJECT/'build/loadout_setup_test.dll');args=p.parse_args()
     if args.zig:
         g.need(args.upstream is not None,'--upstream required');args.library.parent.mkdir(exist_ok=True,parents=True)
         command=[args.zig.resolve(),'c++','-std=c++17','-target','x86_64-windows-gnu','-O2','-Wall','-Wextra','-Werror',
                  '-I',args.upstream.resolve()/'native/mod-sdk','-I',g.PROJECT/'mod/src','-shared']
         command += [g.PROJECT/'mod/src'/n for n in ('ep_session_code.cpp','ep_loadout_lifecycle.cpp','ep_loadout_consumers.cpp','ep_loadout_setup.cpp','ep_loadout_group.cpp','ep_loadout_interactions.cpp','ep_loadout_refresh.cpp','ep_loadout_records.cpp','ep_loadout_frame.cpp','ep_loadout_mode.cpp','ep_loadout_control.cpp','ep_loadout_state.cpp','ep_loadout_prompt.cpp','ep_loadout_countdown.cpp','ep_loadout_resources.cpp','ep_loadout_resource_owner.cpp','ep_loadout_resource_tick.cpp','ep_loadout_resource_events.cpp','ep_loadout_resource_ownership.cpp','ep_loadout_resource_sync.cpp','ep_loadout_resource_signals.cpp','ep_loadout_resource_actions.cpp','ep_loadout_resource_main.cpp','ep_loadout_resource_update.cpp')]
-        command += [g.PROJECT/'tests/loadout_consumers_dll.cpp',g.PROJECT/'tests/loadout_setup_dll.cpp','-o',args.library.resolve()]
+        command += [g.PROJECT/'tests/loadout_consumers_dll.cpp',g.PROJECT/'tests/loadout_setup_dll.cpp',g.PROJECT/'tests/loadout_lifecycle_dll.cpp','-o',args.library.resolve()]
         result=subprocess.run(list(map(str,command)),capture_output=True,text=True);g.need(result.returncode==0,result.stdout+result.stderr)
     dll=c.CDLL(str(args.library.resolve()))
     dll.ui_build.argtypes=[c.POINTER(Binding),c.POINTER(ConsumerImage),c.c_uint64];dll.ui_maps.argtypes=[c.POINTER(c.c_uint32)]
@@ -113,21 +166,25 @@ def main():
     for i in range(8):setup.placements[i]=Placement(i*3,111+i*5,0.138+(i%4)*0.241,0.5*(i//4),0.5,0)
     image=ConsumerImage();g.need(dll.ui_build(c.byref(binding),c.byref(image),READY)==0,'Consumer image rejected')
     si=SetupImage();g.need(dll.setup_build(c.byref(setup),c.byref(si))==0,'Setup image rejected')
-    f=SetupFlow(consumers.build(),dll,image,g.build(),si);f.setup()
+    artifact=g.build();f=SetupFlow(consumers.build(),dll,image,artifact,si)
+    if args.attach_only:construct_and_attach(f,dll,artifact)
+    else:f.setup()
     expected=[]
     for i,placement in enumerate(setup.placements):
         pairs=struct.unpack('<3Q',bytes(placement));expected.extend([(0x189ae00,i,10)]+[(target,i,value) for target,value in zip((0x14476a0,0x144f160,0x144f0d0),pairs)])
     g.need(f.setup_calls==expected and f.attachments==[WIDGETS+i*0x1ee18 for i in range(8)],'Setup omitted/repositioned the wrong native widget')
-    forward=list(struct.unpack('<8I',f.read(MAPS,32)));inverse=list(struct.unpack('<8I',f.read(MAPS+32,32)))
-    g.need(forward==[0xffffffff]*3+[0]+[0xffffffff]*4 and inverse==[3]+[0xffffffff]*7,'Native setup did not reset/bind all map slots')
-    f.invoke(image.update);f.invoke(image.action,PEER+7,0x35)
-    g.need(list(struct.unpack('<8I',f.read(MAPS+32,32)))==f.order and f.calls[-1]==(0x1893d40,WIDGETS+7*0x1ee18+0xe670,0x35),'Setup/update/action storage diverged')
+    if not args.attach_only:
+        forward=list(struct.unpack('<8I',f.read(MAPS,32)));inverse=list(struct.unpack('<8I',f.read(MAPS+32,32)))
+        g.need(forward==[0xffffffff]*3+[0]+[0xffffffff]*4 and inverse==[3]+[0xffffffff]*7,'Native setup did not reset/bind all map slots')
+        f.invoke(image.update);f.invoke(image.action,PEER+7,0x35)
+        g.need(list(struct.unpack('<8I',f.read(MAPS+32,32)))==f.order and f.calls[-1]==(0x1893d40,WIDGETS+7*0x1ee18+0xe670,0x35),'Setup/update/action storage diverged')
     for begin,end in ((0x10,0x27d0),(0x27d8,0x27f8),(0x53a78,0xcf2d8)):
         g.need(f.read(SCREEN+begin,end-begin)==f.inline[begin:end],'Setup or consumer touched old arrays/maps')
     g.need(f.setup_unwound,'Setup unwind point was missed')
     group=GroupAddresses(setup,CODE+0x40000,CODE,CODE+0x50000,CODE+0x60000,record_source(),CODE+0x70000,CODE+0x80000,CODE+0x90000,CODE+0xa0000,CODE+0xb0000,CODE+0xc0000,CODE+0xd0000,countdown_source(),CODE+0xe0000,CODE+0xf0000,resource_owner_source(),CODE+0x110000,CODE+0x120000,CODE+0x130000,CODE+0x140000,CODE+0x150000,CODE+0x160000,CODE+0x170000,CODE+0x180000)
     g.need(dll.setup_group(c.byref(group))==0,'Shared READY/discard failed')
-    print(json.dumps(dict(passed=True,scope='one setup/update/action flow and shared READY group',game_access=False,layout_verified=False,runtime_verified=False)))
+    scope='one construct/isolated attachment flow' if args.attach_only else 'one setup/update/action flow and shared READY group'
+    print(json.dumps(dict(passed=True,scope=scope,game_access=False,layout_verified=False,runtime_verified=False)))
 
 
 if __name__=='__main__':main()

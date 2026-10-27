@@ -86,19 +86,52 @@ def build():
     need(seen==set(expected) and layout_fix is not None,'Missing setup replacement')
     for offset,nxt,target in branches:
         need(target in mapping,'Invalid branch boundary');fixes.append((offset,nxt,1,0,mapping[target]))
-    body_end=len(blob);blob.extend(b'\xcc'*(-len(blob)%16));handler=len(blob)
+    body_end=len(blob)
+    # Configure already constructed, not-yet-attached player widgets without
+    # running full screen setup a second time. Keep the original GS prologue,
+    # RDI/screen + zero-XMM6 + R15/parent definitions, the complete player loop,
+    # and cookie/epilogue. All nonplayer setup, local-user/map reset and final
+    # screen refresh are omitted. The existing parent must be ready already.
+    pieces=((0,mapping[0x14661a5]),(mapping[0x14661c3],mapping[0x14661c9]),
+            (mapping[0x14661df],mapping[0x14661e6]),
+            (mapping[0x1466ad4],mapping[0x1466c57]),(mapping[0x14672f3],body_end))
+    blob.extend(b'\xcc'*(-len(blob)%16));attach=len(blob);clones=[]
+    for lo,hi in pieces:
+        need(lo<hi,'Empty player attachment segment')
+        dest=len(blob);clones.append((lo,hi,dest));blob.extend(blob[lo:hi])
+    def cloned_offset(old):
+        matches=[dest+old-lo for lo,hi,dest in clones if lo<=old<hi]
+        need(len(matches)==1,'Attachment branches into omitted screen setup')
+        return matches[0]
+    layout_fixes=[layout_fix];layout_operand=fixes[layout_fix][0]
+    for offset,nxt,key,kind,add in list(fixes):
+        for lo,hi,dest in clones:
+            if not lo<=offset<hi:continue
+            need(offset+(8 if kind==1 else 4)<=hi and lo<=nxt<=hi,'Split attachment relocation')
+            need(key!=1 or kind==0 or offset==layout_operand,'Unexpected attachment code pointer')
+            if offset==layout_operand:layout_fixes.append(len(fixes))
+            fixes.append((dest+offset-lo,dest+nxt-lo,key,kind,
+                          cloned_offset(add) if key==1 and kind==0 else add))
+    attach_body=attach+body;attach_end=len(blob)
+    attach_mapping={rva:cloned_offset(off) for rva,off in mapping.items()
+                    if any(lo<=off<hi for lo,hi,dest in clones)}
+    blob.extend(b'\xcc'*(-len(blob)%16));handler=len(blob)
     fix(b'\xe9'+bytes(4),1,0,0,GS_HANDLER);code_bytes=len(blob)
     blob.extend(bytes(-len(blob)%8));placements=len(blob);blob.extend(bytes(8*24))
-    f=fixes[layout_fix];fixes[layout_fix]=f[:-1]+(placements,)
+    for at in layout_fixes:
+        f=fixes[at];fixes[at]=f[:-1]+(placements,)
     unwind_offset=len(blob);functions=[]
-    for begin,end,uw in ((0,body,b'\x01\0\0\0'),(body,body_end,UNWIND+struct.pack('<II',handler,COOKIE)),(handler,code_bytes,b'\x01\0\0\0')):
+    gs=UNWIND+struct.pack('<II',handler,COOKIE)
+    for begin,end,uw in ((0,body,b'\x01\0\0\0'),(body,body_end,gs),
+                         (attach,attach_body,b'\x01\0\0\0'),(attach_body,attach_end,gs),
+                         (handler,code_bytes,b'\x01\0\0\0')):
         functions.append((begin,end,len(blob)));blob.extend(uw)
     table_offset=len(blob)
     for row in functions:blob.extend(struct.pack('<III',*row))
     need(len(blob)<=MAX_IMAGE,'Setup image exceeds storage')
     return dict(blob=bytes(blob),fixes=fixes,mapping=mapping,source=source,functions=functions,
                 code_bytes=code_bytes,unwind_offset=unwind_offset,table_offset=table_offset,
-                handler_offset=handler,placements_offset=placements)
+                handler_offset=handler,placements_offset=placements,attach_widgets=attach,attach_mapping=attach_mapping)
 
 
 def render(a):
@@ -107,7 +140,7 @@ def render(a):
     lines+=['    '+','.join(f'0x{x:02x}' for x in a['blob'][i:i+16])+',' for i in range(0,len(a['blob']),16)]
     lines+=['};','static const EpLoadoutSetupFixup ep_loadout_setup_fixups[] = {']
     lines+=['    {'+','.join(map(str,f))+'},' for f in a['fixes']];lines+=['};']
-    for key in ('code_bytes','unwind_offset','table_offset','handler_offset','placements_offset'):
+    for key in ('code_bytes','unwind_offset','table_offset','handler_offset','placements_offset','attach_widgets'):
         lines.append(f'static const uint32_t ep_loadout_setup_{key} = {a[key]};')
     return '\n'.join(lines)+'\n'
 

@@ -26,6 +26,7 @@ EpPropertyResult ep_loadout_setup_build(const EpLoadoutSetupAddresses* input,EpL
     image.bytes=sizeof(ep_loadout_setup_template);image.code_bytes=ep_loadout_setup_code_bytes;
     image.unwind_offset=ep_loadout_setup_unwind_offset;image.table_offset=ep_loadout_setup_table_offset;
     image.handler_offset=ep_loadout_setup_handler_offset;image.placements_offset=ep_loadout_setup_placements_offset;
+    image.attach_widgets=ep_loadout_setup_attach_widgets;
     *out=image;return EP_PROPERTY_OK;
 }
 EpPropertyResult ep_loadout_setup_prepare(const HfApi* api,HfMod* mod,const EpLoadoutSetupAddresses* input,EpSessionCodeInfo* out)
