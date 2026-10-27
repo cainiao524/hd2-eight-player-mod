@@ -96,6 +96,10 @@ int ep_session_code_seal_loadout_resource_main(HfMod*, uint64_t handle, const vo
  * checked-create tail thunk at 8, GS thunk at 9; no publication. */
 int ep_session_code_seal_player_join(HfMod*, uint64_t handle, const void* image,
     uint32_t bytes, uint32_t table_offset, const EpSessionGsCheck*);
+/* Shared peer-bank join: original ten rows plus three GP-only lookup islands
+ * chained to row 3. In particular the index gate must not restore unsaved XMMs. */
+int ep_session_code_seal_player_join_peers(HfMod*, uint64_t handle, const void* image,
+    uint32_t bytes, uint32_t table_offset, const EpSessionGsCheck*);
 /* 10845B0 disconnect: guard, eight original fragments, bounded peer-lookup
  * island (parent row 6), GS thunk. Exact root cookie +150h; no publication. */
 int ep_session_code_seal_client_disconnect(HfMod*, uint64_t handle, const void* image,

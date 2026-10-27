@@ -37,6 +37,9 @@ typedef struct EpRosterCallContext {
     /* Zero-initialize. Only the dispatcher changes this under the owner lock;
      * it orders NEW join notices even when post-call delivery is reordered. */
     uint64_t join_sequence;
+    /* Required for NEW PLAYER_JOIN. Zero blocks NEW before native effects;
+     * OLD still follows the SDK chain. Must name the bound peer-bank client. */
+    uint64_t join_client;
 } EpRosterCallContext;
 /* Replaces only the existing 32-byte leaf prefix. Context remains immutable
  * after exposure except join_sequence and the separately atomic active/next variables. */

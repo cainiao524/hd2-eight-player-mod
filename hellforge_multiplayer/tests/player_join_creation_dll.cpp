@@ -129,6 +129,7 @@ extern "C" __declspec(dllexport) int player_join_creation_flow()
     volatile int32_t active=0;uintptr_t next=(uintptr_t)OldJoin;
     call.call.active=&active;call.call.next_pointer=(uintptr_t)&next;call.call.body=(uintptr_t)NativeJoin;
     call.call.kind=EP_ROSTER_PLAYER_JOIN;call.call.policy={Failure,nullptr,Notice};
+    call.call.join_client=client_arg;
     Invoke(&call);NEED(old_calls==1 && !notices && call.frame.rax==return_value);
     active=1;skip=true;Invoke(&call);
     NEED(notices==1 && latest.status==EP_JOIN_NOT_ATTEMPTED && latest.outcome==EP_JOIN_OUTCOME_NOT_ATTEMPTED);

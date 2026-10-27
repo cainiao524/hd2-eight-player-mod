@@ -55,6 +55,7 @@ static int RunRosterCall(void* opaque,const EpNativeRosterView* view)
     if (c->kind==EP_ROSTER_PLAYER_JOIN && target==c->body) {
         call->checked_join=1;
         call->frame->padding=EP_JOIN_NOT_ATTEMPTED;call->frame->reserved=0;
+        if (!c->join_client || call->frame->rcx!=c->join_client) return 0;
         if (c->join_sequence==UINT64_MAX) return 0;
         call->join.sequence=++c->join_sequence;
         return ep_player_join_invoke(c,call->frame,view,target);

@@ -16,6 +16,7 @@ typedef struct EpRosterGroup {
     EpRosterCallContext calls[EP_ROSTER_ENTRIES];
     volatile LONG switching;
     uint64_t transition;
+    EpPlayerJoinPeers peers;
 } EpRosterGroup;
 static EpRosterGroup epGroups[EP_ROSTER_GROUP_SLOTS];
 static SRWLOCK epGroupLock=SRWLOCK_INIT;
@@ -58,12 +59,16 @@ static int EpGroupCancel(EpRosterGroup* g)
     return ok;
 }
 static int EpGroupPrepare(const HfApi* api,HfMod* owner,const EpRosterGroupBindings* input,uint64_t storage_owner,
-    const EpRosterCallPolicy* policy,EpRosterGroupInfo* out)
+    const EpRosterCallPolicy* policy,const EpPlayerJoinPeers* peer_input,EpRosterGroupInfo* out)
 {
     EpRosterGroupBindings bindings; EpRosterGroup* g=NULL; int ok=1;
+    EpPlayerJoinPeers peers={};if (peer_input) peers=*peer_input;
     if (!out) return 0;
     if (input) bindings=*input;
     memset(out,0,sizeof(*out)); if (!input || !owner) return 0;
+    if (peer_input && (!storage_owner || peers.reserved || peers.capacity<4 || peers.capacity>8 ||
+        peers.client<0x10000+0x162c8 || peers.client>(UINT64_C(1)<<47)-0x528 || peers.client%8 ||
+        peers.bank<0x10000 || peers.bank>(UINT64_C(1)<<47)-peers.capacity*32ull || peers.bank%16)) return 0;
     if (storage_owner && (!policy || !policy->failure || ep_roster_owner_check_binding(owner,storage_owner,
         bindings.game_base,bindings.roster_address,bindings.storage_address)!=EP_OWNER_OK)) return 0;
     if (!bindings.storage_address || (bindings.storage_address&15) || bindings.storage_address>(UINT64_C(1)<<47)-0x680) return 0;
@@ -76,13 +81,14 @@ static int EpGroupPrepare(const HfApi* api,HfMod* owner,const EpRosterGroupBindi
     AcquireSRWLockExclusive(&epGroupLock);
     if (epGroupSequence!=UINT64_MAX) for (unsigned i=0;i<EP_ROSTER_GROUP_SLOTS;i++) if (!epGroups[i].handle) {
         g=&epGroups[i]; g->owner=owner; g->handle=++epGroupSequence; g->state=EP_GROUP_PREPARING;
-        g->storage_owner=storage_owner;break;
+        g->storage_owner=storage_owner;g->peers=peers;break;
     }
     ReleaseSRWLockExclusive(&epGroupLock); if (!g) return 0;
     EpSessionCodeInfo allocations[EP_ROSTER_ENTRIES]={{0}};
     /* Allocate every entry before binding its internal mover, association or getter body. */
     for (unsigned i=0;i<EP_ROSTER_ENTRIES;i++) {
         EpRosterGateLayout layout; ep_roster_gate_layout(i+1,&layout);
+        if (peer_input && i+1==EP_ROSTER_PLAYER_JOIN) layout.image_bytes=EP_PLAYER_JOIN_PEER_GATE_BYTES;
         if (!ep_session_code_reserve(api,owner,bindings.desired_code[i],layout.image_bytes,&allocations[i])) { ok=0; break; }
         AcquireSRWLockExclusive(&epGroupLock); g->code[i]=allocations[i].handle; ReleaseSRWLockExclusive(&epGroupLock);
     }
@@ -99,6 +105,16 @@ static int EpGroupPrepare(const HfApi* api,HfMod* owner,const EpRosterGroupBindi
                 (bindings.roster_address<base+bytes && base<bindings.roster_address+0x428) ||
                 (bindings.storage_address<base+bytes && base<bindings.storage_address+0x680) ||
                 (allocations[i].base<next+8 && next<allocations[i].base+allocations[i].bytes)) ok=0;
+            if (peer_input) {
+                const uint64_t ranges[][2]={{peers.client-0x162c8,0x162c8+0x528},{peers.bank,peers.capacity*32ull}};
+                for (const auto& range:ranges) {
+                    auto p=range[0],n=range[1];
+                    if ((p<base+bytes && base<p+n) || (p<next+8 && next<p+n) ||
+                        (p<groups_end && groups<p+n) || (bindings.reject[i]>=p && bindings.reject[i]<p+n) ||
+                        (p<bindings.roster_address+0x428 && bindings.roster_address<p+n) ||
+                        (p<bindings.storage_address+0x680 && bindings.storage_address<p+n)) ok=0;
+                }
+            }
         }
         if (bindings.reject[i]>=(uintptr_t)&g->active && bindings.reject[i]<(uintptr_t)&g->active+4) ok=0;
     }
@@ -108,7 +124,13 @@ static int EpGroupPrepare(const HfApi* api,HfMod* owner,const EpRosterGroupBindi
             allocations[EP_ROSTER_MOVER-1].base+32,bindings.reject[i]};
         if (i+1==EP_ROSTER_REGISTRY_UPDATE) a.move_code_address=allocations[EP_ROSTER_ASSOCIATION-1].base+32;
         if (i+1==EP_ROSTER_DEPARTURE) a.move_code_address=allocations[EP_ROSTER_GETTER-1].base+32;
-        if (ep_roster_gate_build(i+1,&a,(uintptr_t)&g->active,allocations[i].next_pointer,&image)!=EP_PROPERTY_OK) {ok=0;break;}
+        if (peer_input && i+1==EP_ROSTER_PLAYER_JOIN) {
+            EpPlayerJoinImage joined={};
+            if (ep_player_join_peer_gate_build(bindings.game_base,allocations[i].base,(uintptr_t)&g->active,
+                allocations[i].next_pointer,bindings.reject[i],&peers,&joined)!=EP_PROPERTY_OK) {ok=0;break;}
+            image={};image.bytes=joined.bytes;image.table_offset=joined.table_offset;image.function_count=joined.function_count;
+            memcpy(image.data,joined.data,joined.bytes);
+        } else if (ep_roster_gate_build(i+1,&a,(uintptr_t)&g->active,allocations[i].next_pointer,&image)!=EP_PROPERTY_OK) {ok=0;break;}
         if (i+1==EP_ROSTER_PLAYER_JOIN) {
             uint32_t thunk;memcpy(&thunk,image.data+image.table_offset+8*12,4);
             uintptr_t checked=ep_player_join_creation_entry();memcpy(image.data+thunk+2,&checked,8);
@@ -118,13 +140,15 @@ static int EpGroupPrepare(const HfApi* api,HfMod* owner,const EpRosterGroupBindi
             c->mod=owner;c->owner=storage_owner;c->game=bindings.game_base;c->roster=bindings.roster_address;c->storage=bindings.storage_address;
             c->active=(volatile int32_t*)&g->active;c->next_pointer=allocations[i].next_pointer;c->body=allocations[i].base+32;
             c->kind=i+1;c->policy=*policy;
+            if (i+1==EP_ROSTER_PLAYER_JOIN) c->join_client=peers.client;
             c->switching=(volatile int32_t*)&g->switching;
             if (!ep_roster_call_prefix(c,image.data)) {ok=0;break;}
         }
         if (i+1==EP_ROSTER_PLAYER_JOIN) {
             uint32_t handler;memcpy(&handler,image.data+image.table_offset+9*12,4);
             const EpSessionGsCheck gs={1,handler,(uintptr_t)bindings.game_base+0x21044a0};
-            if (!ep_session_code_seal_player_join(owner,g->code[i],image.data,image.bytes,image.table_offset,&gs)) ok=0;
+            if (!(peer_input ? ep_session_code_seal_player_join_peers(owner,g->code[i],image.data,image.bytes,image.table_offset,&gs) :
+                  ep_session_code_seal_player_join(owner,g->code[i],image.data,image.bytes,image.table_offset,&gs))) ok=0;
         } else if (i+1==EP_ROSTER_STATE_UPDATE) {
             const EpSessionGsCheck gs={2,1952,(uintptr_t)bindings.game_base+0x21044a0};
             if (!ep_session_code_seal_gs_table(owner,g->code[i],image.data,image.bytes,image.table_offset,image.function_count,&gs)) ok=0;
@@ -142,12 +166,24 @@ static int EpGroupPrepare(const HfApi* api,HfMod* owner,const EpRosterGroupBindi
     ReleaseSRWLockExclusive(&epGroupLock); return ok;
 }
 int ep_roster_group_prepare(const HfApi* api,HfMod* mod,const EpRosterGroupBindings* b,EpRosterGroupInfo* out)
-{return EpGroupPrepare(api,mod,b,0,NULL,out);}
+{return EpGroupPrepare(api,mod,b,0,NULL,NULL,out);}
 int ep_roster_group_prepare_owned(const HfApi* api,HfMod* mod,const EpRosterGroupBindings* b,uint64_t storage_owner,
     const EpRosterCallPolicy* policy,EpRosterGroupInfo* out)
 {
     if (!storage_owner) {if(out) memset(out,0,sizeof(*out));return 0;}
-    return EpGroupPrepare(api,mod,b,storage_owner,policy,out);
+    return EpGroupPrepare(api,mod,b,storage_owner,policy,NULL,out);
+}
+int ep_roster_group_prepare_owned_peers(const HfApi* api,HfMod* mod,const EpRosterGroupBindings* b,uint64_t storage_owner,
+    const EpRosterCallPolicy* policy,const EpPlayerJoinPeers* peers,EpRosterGroupInfo* out)
+{
+    if (!storage_owner || !peers) {if(out) memset(out,0,sizeof(*out));return 0;}
+    return EpGroupPrepare(api,mod,b,storage_owner,policy,peers,out);
+}
+int ep_roster_group_peer_binding(HfMod* mod,uint64_t id,EpPlayerJoinPeers* out)
+{
+    if (!out) return 0;*out={};AcquireSRWLockShared(&epGroupLock);auto* g=EpGroupFind(mod,id);
+    int ok=g && g->peers.client && g->state!=EP_GROUP_PREPARING && g->state!=EP_GROUP_FAILED && g->state!=EP_GROUP_CANCELLED;
+    if (ok) *out=g->peers;ReleaseSRWLockShared(&epGroupLock);return ok;
 }
 int ep_roster_group_publish(HfMod* owner,uint64_t id,int32_t priority)
 {

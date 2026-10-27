@@ -5,6 +5,11 @@
 extern "C" {
 #endif
 enum {EP_PLAYER_JOIN_MAX_BYTES=4096};
+enum {EP_PLAYER_JOIN_PEER_GATE_BYTES=3740};
+typedef struct EpPlayerJoinPeers {
+    uint64_t client,bank;
+    uint32_t capacity,reserved;
+} EpPlayerJoinPeers;
 typedef struct EpPlayerJoinImage {
     uint32_t bytes,table_offset,function_count,handler_offset,creation_target_offset;
     uint8_t data[EP_PLAYER_JOIN_MAX_BYTES];
@@ -32,6 +37,20 @@ EpPropertyResult ep_player_join_image_build(uint64_t game,uint64_t code,uint32_t
  * This alone is not an activation API. */
 EpPropertyResult ep_player_join_gate_build(uint64_t game,uint64_t code,uint64_t control,uint64_t next,
     uint32_t capacity,EpPlayerJoinImage*);
+/* Shared confirmed-peer bank variant. Checks the saved global owner against
+ * client-162C8, bounds count and each lookup, and reads the NETWORK INDEX from
+ * bank+ordinal*32+14. Does not derive the index from the ordinal. Invalid index
+ * keeps the native fallback; foreign owner/excess count calls nonreturning
+ * reject under the original frame. Creation/ready behavior stays unchanged.
+ *
+ * All writers/readers, client lifetime, migration and whole-call exclusion must
+ * use the same bank/capacity before activation. In particular these numeric
+ * bindings do not allocate or migrate data. Original inline data is not read
+ * by this local-peer lookup. The older emitter is an inline-layout research
+ * image; increasing its capacity alone never redirects confirmed-peer storage.
+ */
+EpPropertyResult ep_player_join_peer_gate_build(uint64_t game,uint64_t code,uint64_t control,uint64_t next,
+    uint64_t reject,const EpPlayerJoinPeers*,EpPlayerJoinImage*);
 #ifdef __cplusplus
 }
 #endif
