@@ -111,6 +111,8 @@ static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_
     }
     if (handler_kind==11 && (!gs || count!=11 || gs->function_index!=1 ||
         functions[10].BeginAddress!=gs->handler_offset || functions[10].EndAddress!=gs->handler_offset+5)) return 0;
+    if (handler_kind==12 && (!gs || count!=8 || gs->function_index!=1 ||
+        functions[7].BeginAddress!=gs->handler_offset || functions[7].EndAddress!=gs->handler_offset+5)) return 0;
     if (gs && (gs->function_index>=count || gs->handler_target<0x10000 ||
         gs->handler_target>=((uint64_t)1<<47) || gs->handler_offset>at || at-gs->handler_offset<5 ||
         (gs->handler_target>=(uintptr_t)p && gs->handler_target<(uintptr_t)p+bytes))) return 0;
@@ -144,6 +146,7 @@ static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_
     if (handler_kind==9 && ((f==2 || f==3) ? u[0]!=33 : f!=1 && u[0]!=1)) return 0;
     if (handler_kind==10 && ((f>=2 && f<=7) ? u[0]!=33 : f!=1 && u[0]!=1)) return 0;
     if (handler_kind==11 && ((f>=2 && f<=9) ? u[0]!=33 : f!=1 && u[0]!=1)) return 0;
+    if (handler_kind==12 && ((f>=2 && f<=6) ? u[0]!=33 : f!=1 && u[0]!=1)) return 0;
     if (has_gs) {
         /* Exact original fixed-frame contract. No alignment extensions,
          * chained handler, invented cookie offset or scope-table interpretation. */
@@ -166,11 +169,12 @@ static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_
         const uint8_t resource_main[40]={0x19,0x41,0x11,0x0,0x33,0xc8,0x13,0x0,0x2b,0x68,0x19,0x0,0x26,0x74,0x3d,0x0,0x26,0x64,0x3c,0x0,0x26,0x34,0x3b,0x0,0x26,0x1,0x34,0x0,0x18,0xf0,0x16,0xe0,0x14,0xd0,0x12,0xc0,0x10,0x50,0x0,0x0};
         const uint8_t player_join[16]={0x19,0x2b,5,0,0x1a,1,0x60,5,5,0xf0,3,0x30,2,0x50,0,0};
         const uint8_t disconnect[12]={0x19,0x1f,4,0,0x0d,1,0x31,0,6,0xc0,4,0x70};
-        const uint8_t* expected_unwind=handler_kind==11 ? disconnect : handler_kind==10 ? player_join : handler_kind==9 ? resource_main : handler_kind==8 ? state : handler_kind==7 ? mode : handler_kind==6 ? frame_update : handler_kind==5 ? records : handler_kind==4 ? refresh : handler_kind==3 ? setup : handler_kind==2 ? loadout : handler_kind==1 ? property : expected;
-        const uint32_t expected_bytes=handler_kind==11 ? 12u : handler_kind==10 ? 16u : handler_kind==9 ? 40u : handler_kind==8 ? 24u : handler_kind==7 ? 20u : handler_kind==6 ? 36u : handler_kind>=4 ? 12u : handler_kind==3 ? 36u : handler_kind==2 ? 32u : 28u;
+        const uint8_t peer_reset[12]={0x19,0x24,4,0,0x13,1,0x49,1,4,0xf0,2,0x50};
+        const uint8_t* expected_unwind=handler_kind==12 ? peer_reset : handler_kind==11 ? disconnect : handler_kind==10 ? player_join : handler_kind==9 ? resource_main : handler_kind==8 ? state : handler_kind==7 ? mode : handler_kind==6 ? frame_update : handler_kind==5 ? records : handler_kind==4 ? refresh : handler_kind==3 ? setup : handler_kind==2 ? loadout : handler_kind==1 ? property : expected;
+        const uint32_t expected_bytes=(handler_kind==12 || handler_kind==11) ? 12u : handler_kind==10 ? 16u : handler_kind==9 ? 40u : handler_kind==8 ? 24u : handler_kind==7 ? 20u : handler_kind==6 ? 36u : handler_kind>=4 ? 12u : handler_kind==3 ? 36u : handler_kind==2 ? 32u : 28u;
         if (body!=expected_bytes || memcmp(u,expected_unwind,expected_bytes)) return 0;
         memcpy(&handler,u+body,4);memcpy(&cookie,u+body+4,4);
-        if (handler!=gs->handler_offset || cookie!=(handler_kind==11 ? 0x150u : handler_kind==10 ? 0x2aa0u : handler_kind==9 ? 0x128u : handler_kind==8 ? 0x60u : handler_kind==7 ? 0xd0u : handler_kind==6 ? 0x3f0u : handler_kind==5 ? 0x1460u : handler_kind==4 ? 112u : handler_kind==3 ? 304u : handler_kind==2 ? 80u : handler_kind==1 ? 64u : 96u) || p[handler]!=0xe9) return 0;
+        if (handler!=gs->handler_offset || cookie!=(handler_kind==12 ? 0xa20u : handler_kind==11 ? 0x150u : handler_kind==10 ? 0x2aa0u : handler_kind==9 ? 0x128u : handler_kind==8 ? 0x60u : handler_kind==7 ? 0xd0u : handler_kind==6 ? 0x3f0u : handler_kind==5 ? 0x1460u : handler_kind==4 ? 112u : handler_kind==3 ? 304u : handler_kind==2 ? 80u : handler_kind==1 ? 64u : 96u) || p[handler]!=0xe9) return 0;
         memcpy(&delta,p+handler+1,4);
         if ((int64_t)(uintptr_t)p+handler+5+delta!=(int64_t)gs->handler_target) return 0;
         for (uint32_t j=0;j<count;j++) if (j!=f && functions[j].BeginAddress==handler &&
@@ -190,6 +194,10 @@ static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_
         if (handler_kind==10 && memcmp(u+body,&functions[f==7 ? 6 : (f==3 || f==4) ? 2 : 1],sizeof(RUNTIME_FUNCTION))) return 0;
         if (handler_kind==11) {
             const unsigned parents[11]={0,0,1,2,3,3,2,1,1,6,0};
+            if (memcmp(u+body,&functions[parents[f]],sizeof(RUNTIME_FUNCTION))) return 0;
+        }
+        if (handler_kind==12) {
+            const unsigned parents[8]={0,0,1,2,2,1,3,0};
             if (memcmp(u+body,&functions[parents[f]],sizeof(RUNTIME_FUNCTION))) return 0;
         }
         if (handler_kind==8) {
@@ -273,6 +281,8 @@ int ep_session_code_seal_player_join(HfMod* owner,uint64_t handle,const void* im
 { return EpCodeSeal(owner,handle,image,bytes,at,10,gs,10); }
 int ep_session_code_seal_client_disconnect(HfMod* owner,uint64_t handle,const void* image,uint32_t bytes,uint32_t at,const EpSessionGsCheck* gs)
 { return EpCodeSeal(owner,handle,image,bytes,at,11,gs,11); }
+int ep_session_code_seal_client_peer_reset(HfMod* owner,uint64_t handle,const void* image,uint32_t bytes,uint32_t at,const EpSessionGsCheck* gs)
+{ return EpCodeSeal(owner,handle,image,bytes,at,8,gs,12); }
 int ep_session_code_retain_set(HfMod* owner,const uint64_t* input,uint32_t count)
 {
     uint64_t ids[EP_SESSION_CODE_SLOTS];EpCodeSlot* slots[EP_SESSION_CODE_SLOTS];HMODULE module=NULL;int ok=0;
