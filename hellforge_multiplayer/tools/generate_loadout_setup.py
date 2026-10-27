@@ -118,8 +118,9 @@ def build():
     # Replace the FOUR original inline roots only. 144C9F0(parent,child,false)
     # unlinks one root without running the destructive 144DD70 branch. Native
     # render invalidation and descendant activation flags still change.
-    # Keep one complete GS frame around detach -> attach. No screen reset,
-    # object destruction, ownership copying or map publication occurs here.
+    # Keep one complete GS frame around record/map migration -> detach ->
+    # attach. The native record-sync itself value-copies 9F0-byte records;
+    # copying those values does not clone or transfer pointed-to ownership.
     original_fixes=list(fixes)
     def copy_segment(lo,hi):
         dest=len(blob);blob.extend(blob[lo:hi])
@@ -137,6 +138,24 @@ def build():
     def local(op,label):
         fix(op+bytes(4),len(op),1,0);jumps.append((len(fixes)-1,label))
     def reject(op=b'\x0f\x85'):fix(op+bytes(4),len(op),6,0)
+    # Retain existing UI slots, including holes. Validate BOTH directions:
+    # FF is unmapped, otherwise only four native slots/indices are legal.
+    for source_map,reverse in ((0x27d8,0x27e8),(0x27e8,0x27d8)):
+        for slot in range(4):
+            label=f'map_{source_map:x}_{slot}'
+            blob.extend(b'\x8b\x81'+struct.pack('<I',source_map+4*slot)+b'\x83\xf8\xff')
+            local(b'\x0f\x84',label)
+            blob.extend(b'\x83\xf8\x03');reject(b'\x0f\x87')
+            blob.extend(b'\x83\xbc\x81'+struct.pack('<I',reverse)+bytes((slot,)));reject()
+            labels[label]=len(blob)
+    # +27D4 is the local network index; +27D0 is a cached record index that
+    # can be FF before the first synchronization. Neither is a UI ordinal.
+    blob.extend(b'\x8b\x81'+struct.pack('<I',0x27d0)+b'\x83\xf8\xff')
+    local(b'\x0f\x84','cached_local')
+    blob.extend(b'\x83\xf8\x03');reject(b'\x0f\x87')
+    labels['cached_local']=len(blob)
+    blob.extend(b'\x8b\x81'+struct.pack('<I',0x27d4)+b'\x83\xf8\x03');reject(b'\x0f\x87')
+    blob.extend(b'\x83\xbc\x81'+struct.pack('<I',0x27d8)+b'\0');reject()
     blob.extend(b'\x4c\x8d\x99'+struct.pack('<I',0x2820)) # r11 = parent
     blob.extend(b'\x49\x8b\x83'+struct.pack('<I',0xe0))   # rax = first child
     blob.extend(b'\x45\x31\xc9\x41\xba'+struct.pack('<I',4096))
@@ -166,6 +185,19 @@ def build():
     copy_segment(mapping[0x14661c3],mapping[0x14661c9])
     copy_segment(mapping[0x14661df],mapping[0x14661e6])
     replace_point=len(blob)
+    # The constructor already initialized the destination. Preserve its new
+    # rows while importing every byte of the four old network-indexed records,
+    # including currently inactive opaque values. Source inline records/maps
+    # stay intact. The original screen's local/cache fields also stay intact.
+    absolute(6,2,0x10);absolute(7,3)
+    blob.extend(b'\xb9'+struct.pack('<I',4*0x9f0//8)+b'\xfc\xf3\x48\xa5')
+    absolute(7,2) # restore RDI/screen for native detach and attachment
+    for key,source_map in ((7,0x27d8),(8,0x27e8)):
+        absolute(11,key)
+        for offset in (0,8):
+            blob.extend(b'\x48\x8b\x87'+struct.pack('<I',source_map+offset))
+            blob.extend(b'\x49\x89\x43'+bytes((offset,)))
+        for offset in (16,24):blob.extend(b'\x49\xc7\x43'+bytes((offset,))+b'\xff'*4)
     for slot in range(4):
         blob.extend(b'\x4c\x89\xf9\x48\x8d\x97'+struct.pack('<I',0x53a78+slot*0x1ee18))
         blob.extend(b'\x45\x31\xc0');fix(b'\xe8'+bytes(4),1,0,0,0x144c9f0)

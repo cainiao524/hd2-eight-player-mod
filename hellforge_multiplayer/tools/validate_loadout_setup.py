@@ -3,7 +3,7 @@
 ABI stubs do not render UI or verify layout. One setup unwind snapshot and
 one all-image READY/discard cycle; no full regression or game access.
 --attach-only instead runs one construct -> isolated attachment flow.
---replace-only runs construct -> native detach/attach -> reject repeated switch.
+--replace-only runs construct -> map preflight/migration/native detach/attach.
 """
 from validate_loadout_consumers import READY,BLOCKED
 import argparse
@@ -153,9 +153,18 @@ def construct_and_attach(f,dll,setup_artifact,replace=False):
         for i,node in enumerate(old):
             descendant=child+i*0x100;f.write(descendant,bytes(0x100));f.write(descendant,U32(0x1000))
             f.write(node+0xe0,U64(descendant));f.write(descendant+0xf0,U64(node))
+        # The local player is network 2 in slot zero; network 1 has no UI slot,
+        # but its inactive opaque record must still survive value migration.
+        forward=[1,0xffffffff,0,2];inverse=[2,0,3,0xffffffff]
+        f.write(SCREEN+0x27d0,U32(0xffffffff)+U32(2))
+        f.write(SCREEN+0x27d8,struct.pack('<8I',*(forward+inverse)))
+        for network in range(4):
+            f.write(SCREEN+0x10+network*0x9f0,bytes([0x30+network])*0x9f0)
+            f.write(SCREEN+0x10+network*0x9f0+0x9e8,U64(PEER+network))
     f.write(SCREEN+0x2739a4,b'\x53'*16)
     f.write(RECORDS,bytes(8*0x9f0));f.write(WIDGETS,bytes(8*0x1ee18))
     screen_before=f.read(SCREEN,0x2739d0);maps_before=f.read(MAPS,64)
+    if replace:f.inline=screen_before
     f.setup(code+image.construct_banks)
     g.need(f.constructed==[WIDGETS+i*0x1ee18 for i in range(8)] and f.value('rax')==SCREEN,'Native construction sequence changed')
     g.need(f.read(SCREEN,len(screen_before))==screen_before,'Construction changed the existing screen')
@@ -164,8 +173,18 @@ def construct_and_attach(f,dll,setup_artifact,replace=False):
     records_before=f.read(RECORDS,8*0x9f0)
     f.setup_point=SETUP+(setup_artifact['replace_point'] if replace else setup_artifact['attach_mapping'][0x1466af0])
     f.replacing=replace
+    if replace:
+        # A mismatched reverse mapping must fail before migration or detach.
+        f.write(SCREEN+0x27ec,U32(3))
+        invalid_screen=f.read(SCREEN,0x2739d0);unattached=f.read(WIDGETS,8*0x1ee18)
+        f.setup(SETUP+f.setup_image.replace_widgets,REJECT)
+        g.need(f.read(SCREEN,0x2739d0)==invalid_screen and f.read(MAPS,64)==maps_before and
+               f.read(RECORDS,len(records_before))==records_before and f.read(WIDGETS,len(unattached))==unattached and
+               not f.detachments and not f.attachments,'Invalid maps caused partial migration')
+        f.write(SCREEN+0x27ec,U32(0))
     f.setup(SETUP+(f.setup_image.replace_widgets if replace else f.setup_image.attach_widgets))
-    # Only the native parent hierarchy flag changes directly in the screen.
+    # Expected screen changes are limited to the native hierarchy fields;
+    # inline record values, maps and unrelated controls must remain intact.
     expected=bytearray(screen_before);struct.pack_into('<I',expected,0x2820,0x12344006 if replace else 0x12344002)
     if replace:
         g.need(f.detachments==[(parent,node,0) for node in old],'Wrong removal roots/cleanup mode')
@@ -179,20 +198,25 @@ def construct_and_attach(f,dll,setup_artifact,replace=False):
         for i,node in enumerate(old):
             g.need(f.read(child+i*0x100,4)==U32(0) and f.read(child+i*0x100+0xf0,8)==U64(node),'Detached subtree was lost or left active')
     g.need(f.read(SCREEN,len(expected))==bytes(expected),'Attachment reset unrelated screen state')
-    g.need(f.read(MAPS,64)==maps_before and f.read(RECORDS,len(records_before))==records_before,'Attachment changed identity maps or records')
+    if replace:
+        expected_maps=struct.pack('<16I',*(forward+[0xffffffff]*4+inverse+[0xffffffff]*4))
+        expected_records=screen_before[0x10:0x27d0]+records_before[4*0x9f0:]
+        g.need(f.read(MAPS,64)==expected_maps,'Migration lost local identity, reverse mapping, holes or new-slot sentinels')
+        g.need(f.read(RECORDS,len(expected_records))==expected_records,'Migration reordered old records or overwrote initialized new rows')
+    else:g.need(f.read(MAPS,64)==maps_before and f.read(RECORDS,len(records_before))==records_before,'Attachment changed identity maps or records')
     g.need(all(f.read(WIDGETS+i*0x1ee18+0x1ee12,1)==b'\1' for i in range(8)),'Native per-widget setup flags missing')
     g.need(f.read(RECORDS+8*0x9f0,16)==b'\x6b'*16 and f.read(WIDGETS+8*0x1ee18,16)==b'\x7c'*16,'Construct/attach exceeded owned banks')
     if replace:
-        before=(f.read(SCREEN,0x2739d0),f.read(WIDGETS,8*0x1ee18),len(f.detachments),len(f.attachments))
+        before=(f.read(SCREEN,0x2739d0),f.read(WIDGETS,8*0x1ee18),f.read(RECORDS,8*0x9f0),f.read(MAPS,64),len(f.detachments),len(f.attachments))
         f.setup(SETUP+f.setup_image.replace_widgets,REJECT)
-        g.need(before==(f.read(SCREEN,0x2739d0),f.read(WIDGETS,8*0x1ee18),len(f.detachments),len(f.attachments)),'Repeated switch mutated the hierarchy')
+        g.need(before==(f.read(SCREEN,0x2739d0),f.read(WIDGETS,8*0x1ee18),f.read(RECORDS,8*0x9f0),f.read(MAPS,64),len(f.detachments),len(f.attachments)),'Repeated switch mutated data or hierarchy')
 
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--zig',type=Path);p.add_argument('--upstream',type=Path)
     mode=p.add_mutually_exclusive_group()
     mode.add_argument('--attach-only',action='store_true',help='Only the construct/isolated attachment flow')
-    mode.add_argument('--replace-only',action='store_true',help='Only construct/native hierarchy replacement/repeated-call rejection')
+    mode.add_argument('--replace-only',action='store_true',help='Only construct/migration/native hierarchy replacement and preflight rejection')
     p.add_argument('--library',type=Path,default=g.PROJECT/'build/loadout_setup_test.dll');args=p.parse_args()
     if args.zig:
         g.need(args.upstream is not None,'--upstream required');args.library.parent.mkdir(exist_ok=True,parents=True)
@@ -229,7 +253,7 @@ def main():
     g.need(f.setup_unwound,'Setup unwind point was missed')
     group=GroupAddresses(setup,CODE+0x40000,CODE,CODE+0x50000,CODE+0x60000,record_source(),CODE+0x70000,CODE+0x80000,CODE+0x90000,CODE+0xa0000,CODE+0xb0000,CODE+0xc0000,CODE+0xd0000,countdown_source(),CODE+0xe0000,CODE+0xf0000,resource_owner_source(),CODE+0x110000,CODE+0x120000,CODE+0x130000,CODE+0x140000,CODE+0x150000,CODE+0x160000,CODE+0x170000,CODE+0x180000)
     g.need(dll.setup_group(c.byref(group))==0,'Shared READY/discard failed')
-    scope='one construct/native hierarchy replacement flow' if args.replace_only else 'one construct/isolated attachment flow' if args.attach_only else 'one setup/update/action flow and shared READY group'
+    scope='one construct/map preflight/migration/native hierarchy replacement flow' if args.replace_only else 'one construct/isolated attachment flow' if args.attach_only else 'one setup/update/action flow and shared READY group'
     print(json.dumps(dict(passed=True,scope=scope,game_access=False,layout_verified=False,runtime_verified=False)))
 
 

@@ -48,23 +48,35 @@ EpPropertyResult ep_loadout_setup_build(const EpLoadoutSetupAddresses*,EpLoadout
  * This entry alone does not transfer old ownership or activate multiplayer. */
 /* replace_widgets is void(screen), for the FIRST four-inline -> expanded-bank
  * replacement, capacity 4..8. Under the same exclusion/lifetime requirements:
- * first check the complete ordered parent child-list (up to 4096 nodes), its
+ * first check both native four-entry maps (FF or mutually matching indices),
+ * local network -> slot zero, and valid/FF cached record index. Also check
+ * the complete ordered parent child-list (up to 4096 nodes), its
  * backpointers, membership of all four old roots, and zero sibling/parent links
  * on every new root. Failure reaches reject before any write/call/frame save.
  * Readable valid source pointers remain a caller precondition, not guaranteed
  * by those numerical/list checks. Fresh construction itself is not detected.
  *
- * Calls native 144C9F0(parent,old,false) for each original inline widget, then
+ * After successful preflight, value-copy all four inline 9F0-byte records to
+ * the fresh network-indexed bank; retain the constructor's rows 4..capacity-1.
+ * Copy the four original forward/inverse map entries, including holes, and
+ * initialize entries 4..7 to FF. Never reorder records by UI slot or change
+ * the source records/maps or screen's local/cache fields. These are opaque
+ * native value copies, NOT deep copies: every referenced descriptor/resource
+ * must retain its original lifetime; external references are not retargeted.
+ * Caller must already have run construct_banks under the same exclusion;
+ * running it after this migration would overwrite imported record fields.
+ *
+ * Then calls native 144C9F0(parent,old,false) for each original inline widget,
  * recomputes the parent child flag and invokes this image's attach_widgets.
  * Other parent children stay attached. Native detach invalidates rendering
  * and clears activation flags down detached subtrees; it does not execute
  * the destructive cleanup branch. Preserve old widgets/children/resources;
  * detachment is NOT release, cloning, ownership transfer or cancellation.
- * Any fault after the first native call can leave a partial switch: quarantine
+ * Any fault after preflight can leave a partial data/hierarchy switch: quarantine
  * with ALL backing retained, never retry or free automatically. Repeated calls
  * after a successful replacement reject because the old roots are absent.
- * Maps/records, external references, refresh, source producer hooks and final
- * publication still require coordinated activation. No automatic invocation. */
+ * External references, pointed-to ownership, refresh, source producer hooks
+ * and final publication still require coordinated activation. No automatic invocation. */
 /* Cancellable READY image, including owned positions and handler thunk. */
 EpPropertyResult ep_loadout_setup_prepare(const HfApi*,HfMod*,const EpLoadoutSetupAddresses*,EpSessionCodeInfo*);
 #ifdef __cplusplus
