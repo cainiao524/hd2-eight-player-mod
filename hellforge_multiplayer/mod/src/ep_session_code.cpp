@@ -100,8 +100,15 @@ static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_
         functions[14].BeginAddress!=gs->handler_offset || functions[14].EndAddress!=gs->handler_offset+5)) return 0;
     if (handler_kind==9 && (!gs || count!=7 || gs->function_index!=1 ||
         functions[6].BeginAddress!=gs->handler_offset || functions[6].EndAddress!=gs->handler_offset+5)) return 0;
-    if (handler_kind==10 && (!gs || count!=8 || gs->function_index!=1 ||
-        functions[7].BeginAddress!=gs->handler_offset || functions[7].EndAddress!=gs->handler_offset+5)) return 0;
+    if (handler_kind==10) {
+        if (!gs || count!=10 || gs->function_index!=1 || functions[9].BeginAddress!=gs->handler_offset ||
+            functions[9].EndAddress!=gs->handler_offset+5 || functions[8].EndAddress<=functions[8].BeginAddress ||
+            functions[8].EndAddress-functions[8].BeginAddress!=12 ||
+            functions[8].EndAddress>at) return 0;
+        const uint8_t* call=p+functions[8].BeginAddress;uint64_t target;memcpy(&target,call+2,8);
+        if (call[0]!=0x48 || call[1]!=0xb8 || call[10]!=0xff || call[11]!=0xe0 ||
+            target<0x10000 || target>=(UINT64_C(1)<<47)) return 0;
+    }
     if (gs && (gs->function_index>=count || gs->handler_target<0x10000 ||
         gs->handler_target>=((uint64_t)1<<47) || gs->handler_offset>at || at-gs->handler_offset<5 ||
         (gs->handler_target>=(uintptr_t)p && gs->handler_target<(uintptr_t)p+bytes))) return 0;
@@ -133,7 +140,7 @@ static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_
     if (handler_kind==7 && ((f>=2 && f<=4) ? u[0]!=33 : f!=1 && u[0]!=1)) return 0;
     if (handler_kind==8 && ((f==2 || f==3 || (f>=6 && f<=9)) ? u[0]!=33 : f!=5 && u[0]!=1)) return 0;
     if (handler_kind==9 && ((f==2 || f==3) ? u[0]!=33 : f!=1 && u[0]!=1)) return 0;
-    if (handler_kind==10 && ((f>=2 && f<=6) ? u[0]!=33 : f!=1 && u[0]!=1)) return 0;
+    if (handler_kind==10 && ((f>=2 && f<=7) ? u[0]!=33 : f!=1 && u[0]!=1)) return 0;
     if (has_gs) {
         /* Exact original fixed-frame contract. No alignment extensions,
          * chained handler, invented cookie offset or scope-table interpretation. */
@@ -176,7 +183,7 @@ static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_
         if (handler_kind==5 && memcmp(u+body,&functions[(f==3 || f==4) ? 2 : 1],sizeof(RUNTIME_FUNCTION))) return 0;
         if (handler_kind==7 && memcmp(u+body,&functions[f==3 ? 2 : 1],sizeof(RUNTIME_FUNCTION))) return 0;
         if (handler_kind==9 && memcmp(u+body,&functions[1],sizeof(RUNTIME_FUNCTION))) return 0;
-        if (handler_kind==10 && memcmp(u+body,&functions[(f==3 || f==4) ? 2 : 1],sizeof(RUNTIME_FUNCTION))) return 0;
+        if (handler_kind==10 && memcmp(u+body,&functions[f==7 ? 6 : (f==3 || f==4) ? 2 : 1],sizeof(RUNTIME_FUNCTION))) return 0;
         if (handler_kind==8) {
             const unsigned parents[15]={0,0,1,1,0,0,5,6,6,5,0,0,0,0,0};
             if (memcmp(u+body,&functions[parents[f]],sizeof(RUNTIME_FUNCTION))) return 0;
@@ -255,7 +262,7 @@ int ep_session_code_seal_loadout_state(HfMod* owner,uint64_t handle,const void* 
 int ep_session_code_seal_loadout_resource_main(HfMod* owner,uint64_t handle,const void* image,uint32_t bytes,uint32_t at,const EpSessionGsCheck* gs)
 { return EpCodeSeal(owner,handle,image,bytes,at,7,gs,9); }
 int ep_session_code_seal_player_join(HfMod* owner,uint64_t handle,const void* image,uint32_t bytes,uint32_t at,const EpSessionGsCheck* gs)
-{ return EpCodeSeal(owner,handle,image,bytes,at,8,gs,10); }
+{ return EpCodeSeal(owner,handle,image,bytes,at,10,gs,10); }
 int ep_session_code_retain_set(HfMod* owner,const uint64_t* input,uint32_t count)
 {
     uint64_t ids[EP_SESSION_CODE_SLOTS];EpCodeSlot* slots[EP_SESSION_CODE_SLOTS];HMODULE module=NULL;int ok=0;

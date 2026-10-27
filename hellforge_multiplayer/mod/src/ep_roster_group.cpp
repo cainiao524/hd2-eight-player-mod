@@ -1,5 +1,6 @@
 /* C-compatible for tests against the actual HellForge loader. */
 #include "ep_roster_group.h"
+#include "ep_player_join_call.h"
 #include "ep_roster_group_transition.h"
 #include "ep_roster_gate.h"
 #include <windows.h>
@@ -108,6 +109,10 @@ static int EpGroupPrepare(const HfApi* api,HfMod* owner,const EpRosterGroupBindi
         if (i+1==EP_ROSTER_REGISTRY_UPDATE) a.move_code_address=allocations[EP_ROSTER_ASSOCIATION-1].base+32;
         if (i+1==EP_ROSTER_DEPARTURE) a.move_code_address=allocations[EP_ROSTER_GETTER-1].base+32;
         if (ep_roster_gate_build(i+1,&a,(uintptr_t)&g->active,allocations[i].next_pointer,&image)!=EP_PROPERTY_OK) {ok=0;break;}
+        if (i+1==EP_ROSTER_PLAYER_JOIN) {
+            uint32_t thunk;memcpy(&thunk,image.data+image.table_offset+8*12,4);
+            uintptr_t checked=ep_player_join_creation_entry();memcpy(image.data+thunk+2,&checked,8);
+        }
         if (storage_owner) {
             EpRosterCallContext* c=&g->calls[i];
             c->mod=owner;c->owner=storage_owner;c->game=bindings.game_base;c->roster=bindings.roster_address;c->storage=bindings.storage_address;
@@ -117,7 +122,7 @@ static int EpGroupPrepare(const HfApi* api,HfMod* owner,const EpRosterGroupBindi
             if (!ep_roster_call_prefix(c,image.data)) {ok=0;break;}
         }
         if (i+1==EP_ROSTER_PLAYER_JOIN) {
-            uint32_t handler;memcpy(&handler,image.data+image.table_offset+7*12,4);
+            uint32_t handler;memcpy(&handler,image.data+image.table_offset+9*12,4);
             const EpSessionGsCheck gs={1,handler,(uintptr_t)bindings.game_base+0x21044a0};
             if (!ep_session_code_seal_player_join(owner,g->code[i],image.data,image.bytes,image.table_offset,&gs)) ok=0;
         } else if (i+1==EP_ROSTER_STATE_UPDATE) {

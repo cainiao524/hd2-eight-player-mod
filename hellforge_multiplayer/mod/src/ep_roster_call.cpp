@@ -1,4 +1,5 @@
 #include "ep_roster_call.h"
+#include "ep_player_join_call.h"
 #include <windows.h>
 #include <string.h>
 static_assert(sizeof(EpRosterCallFrame)==176 && offsetof(EpRosterCallFrame,xmm)==64 &&
@@ -47,6 +48,8 @@ static int RunRosterCall(void* opaque,const EpNativeRosterView* view)
     uintptr_t target=c->kind!=EP_ROSTER_ENTITY_REMOVE && InterlockedCompareExchange((volatile LONG*)c->active,0,0)==1 ? c->body :
         (uintptr_t)InterlockedCompareExchangePointer((void* volatile*)c->next_pointer,NULL,NULL);
     if (!target) return 0;
+    if (c->kind==EP_ROSTER_PLAYER_JOIN && target==c->body)
+        return ep_player_join_invoke(c,call->frame,view,target);
     EpRosterCallTarget(call->frame,target,c->kind==EP_ROSTER_SEND ? 2 : 0);return 1;
 }
 extern "C" void EpRosterCallDispatch(EpRosterCallContext* c,EpRosterCallFrame* frame)

@@ -19,7 +19,8 @@ EpPropertyResult ep_player_join_image_build(uint64_t game,uint64_t code,uint32_t
         const auto relative=(int32_t)value;memcpy(image.data+f.offset,&relative,4);
     }
     image.bytes=sizeof(ep_player_join_template);image.table_offset=ep_player_join_table;
-    image.function_count=7;image.handler_offset=ep_player_join_handler;*out=image;return EP_PROPERTY_OK;
+    image.function_count=9;image.handler_offset=ep_player_join_handler;
+    image.creation_target_offset=ep_player_join_creation_pointer;*out=image;return EP_PROPERTY_OK;
 }
 EpPropertyResult ep_player_join_gate_build(uint64_t game,uint64_t code,uint64_t control,uint64_t next,
     uint32_t capacity,EpPlayerJoinImage* out)
@@ -41,9 +42,9 @@ EpPropertyResult ep_player_join_gate_build(uint64_t game,uint64_t code,uint64_t 
         0xe9,12,0,0,0,0x48,0xb8,0,0,0,0,0,0,0,0,0xff,0x20};
     memcpy(gate.data,prefix,32);memcpy(gate.data+2,&control,8);memcpy(gate.data+22,&next,8);
     memcpy(gate.data+32,body.data,body.table_offset);
-    uint32_t rows[24]={0,32,body.table_offset+32};gate.data[rows[2]]=1;
-    memcpy(rows+3,body.data+body.table_offset,84);
-    for (unsigned f=0;f<7;f++) {
+    uint32_t rows[30]={0,32,body.table_offset+32};gate.data[rows[2]]=1;
+    memcpy(rows+3,body.data+body.table_offset,108);
+    for (unsigned f=0;f<9;f++) {
         const uint32_t uw=rows[5+3*f];
         const uint32_t tail=uw+4+((body.data[uw+2]+1u)&~1u)*2u;
         const unsigned fields=body.data[uw]==33 ? 3 : body.data[uw]==25 ? 1 : 0;
@@ -52,8 +53,9 @@ EpPropertyResult ep_player_join_gate_build(uint64_t game,uint64_t code,uint64_t 
             memcpy(gate.data+32+tail+4*j,&value,4);
         }
     }
-    for (unsigned i=3;i<24;i++) rows[i]+=32;
+    for (unsigned i=3;i<30;i++) rows[i]+=32;
     gate.table_offset=body.table_offset+36;gate.bytes=body.bytes+48;
-    gate.function_count=8;gate.handler_offset=body.handler_offset+32;
+    gate.function_count=10;gate.handler_offset=body.handler_offset+32;
+    gate.creation_target_offset=body.creation_target_offset+32;
     memcpy(gate.data+gate.table_offset,rows,sizeof(rows));*out=gate;return EP_PROPERTY_OK;
 }

@@ -30,7 +30,7 @@ def main():
             command += [PROJECT/'mod/src'/('ep_'+name+'.cpp') for name in ('session_code','loadout_group')]
         command += [PROJECT/'mod/src'/('ep_'+name+'.cpp') for name in ('roster_owner','native_roster')]
         if args.call_only or args.routes_only or args.rebuild_only or args.screen_only:
-            command += [PROJECT/'mod/src'/('ep_'+name+'.cpp') for name in ('loadout_call','roster_call','session_code')]
+            command += [PROJECT/'mod/src'/('ep_'+name+'.cpp') for name in ('loadout_call','roster_call','player_join_call','session_code')]
         else:
             command += [PROJECT/'mod/src'/'ep_loadout_storage.cpp']
         if args.screen_only:

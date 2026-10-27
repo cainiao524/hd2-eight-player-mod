@@ -31,8 +31,10 @@ int ep_roster_group_prepare(const HfApi*,HfMod*,const EpRosterGroupBindings*,EpR
  * in validate and rollback/resume in end, under the owner call scope.
  * PLAYER_JOIN now owns the entire original ClientSynchronizer join body,
  * including native FDC140 creation and callbacks, with the eight-slot ceiling.
- * This does not supply resource preflight/compensation or prove avatar creation;
- * those remain mandatory integration gates before enabling runtime. */
+ * Checked creation supplies bounded preflight and complete-normal-failure
+ * cleanup (ep_player_join_call.h). Partial exceptions still quarantine, and
+ * the unowned legacy prepare API cannot execute the NEW join body. Full
+ * resource/control/UI and runtime acceptance remain integration obligations. */
 int ep_roster_group_prepare_owned(const HfApi*,HfMod*,const EpRosterGroupBindings*,uint64_t storage_owner,
     const EpRosterCallPolicy*,EpRosterGroupInfo*);
 int ep_roster_group_info(HfMod*,uint64_t,EpRosterGroupInfo*);

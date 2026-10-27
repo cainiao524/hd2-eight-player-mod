@@ -91,8 +91,9 @@ int ep_session_code_seal_loadout_state(HfMod*, uint64_t handle, const void* imag
  * both main fragments chain to that root; other profiles stay unchanged. */
 int ep_session_code_seal_loadout_resource_main(HfMod*, uint64_t handle, const void* image,
     uint32_t bytes, uint32_t table_offset, const EpSessionGsCheck*);
-/* Candidate 1085D70 local-player join gate: eight rows, GS root at row 1,
- * exact cookie +2AA0h and five original chained fragments; no publication. */
+/* 1085D70 local-player join gate: ten rows, GS root at row 1, exact cookie
+ * +2AA0h, original chains, full-frame continuation at 7 (parent 6), bound
+ * checked-create tail thunk at 8, GS thunk at 9; no publication. */
 int ep_session_code_seal_player_join(HfMod*, uint64_t handle, const void* image,
     uint32_t bytes, uint32_t table_offset, const EpSessionGsCheck*);
 int ep_session_code_info(HfMod*, uint64_t handle, EpSessionCodeInfo*);

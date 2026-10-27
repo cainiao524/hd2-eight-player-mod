@@ -1,7 +1,7 @@
 """Relocate the saved local-player join body; no game access or receipts.
 
-Keep every instruction's original length and every internal edge. Only the
-unsigned network-index ceiling and external rel32/RIP operands change.
+Keep the original frame and internal edges. A checked creation result takes
+an appended success continuation or a register-restoring failure exit.
 """
 import argparse
 import json
@@ -20,6 +20,7 @@ def build():
     starts={i.address for i in ins}
     for i in ins:
         at=i.address-START
+        if i.address in (0x10868d7,0x10868dc,0x10868e3):continue
         if i.address==0x1086460:
             need(i.mnemonic=='cmp' and i.op_str=='dword ptr [rdx + r8 + 0x163ac], 4','Changed network-index gate')
             need(i.imm_size==1 and i.imm_offset==8,'Changed capacity operand')
@@ -37,8 +38,30 @@ def build():
             fixes.append((at+i.disp_offset,at+i.size,i.address+i.size+i.disp))
     need(source[capacity]==4,'Missing capacity')
     need(c.read(0x1086469,6)==bytes.fromhex('0f83defdffff'),'Changed unsigned fallback')
-    # No prefix is inserted into the native body; original prologue offsets,
-    # delayed saves and short branch displacements remain exact.
+    need(c.read(0x10868d7,5)==bytes.fromhex('e86458f5ff'),'Changed creation call')
+    tail=[i for i in ins if 0x10868dc<=i.address<0x10868e8]
+    need(len(tail)==2 and tail[0].mnemonic=='mov' and tail[1].mnemonic=='call' and
+         tail[1].operands[0].imm==0x13822e0,'Changed success continuation')
+    blob.extend(b'\xcc'*(-len(blob)%16));continuation=len(blob)
+    blob.extend(b'\x85\xc0\x0f\x84'+bytes(4)) # test eax,eax; jz failure
+    for i in tail:
+        at=len(blob);blob.extend(i.bytes)
+        if i.mnemonic=='call':fixes.append((at+1,len(blob),i.operands[0].imm))
+        else:fixes.append((at+i.disp_offset,len(blob),i.address+i.size+i.disp))
+    blob.extend(b'\xe9'+struct.pack('<i',0x10868e8-START-(len(blob)+5)))
+    failure=len(blob);struct.pack_into('<i',blob,continuation+4,failure-continuation-8)
+    # Only entered after FDC140's full saved-register state. Restore it before
+    # jumping directly to the native cookie check/epilogue, bypassing both
+    # 608B60 and 1086B70 as well as the other-peer notification loop.
+    blob.extend(c.read(0x10868f6,0x22)) # XMM9..6
+    blob.extend(c.read(0x10863b3,8)) # RSI
+    blob.extend(c.read(0x1086417,0x20)) # R12,R14,R13,RDI
+    blob.extend(b'\xe9'+struct.pack('<i',0x1086441-START-(len(blob)+5)))
+    continuation_end=len(blob)
+    blob.extend(b'\xcc'*(-len(blob)%16));thunk=len(blob)
+    blob.extend(b'\x48\xb8'+bytes(8)+b'\xff\xe0');creation_pointer=thunk+2
+    at=0x10868d7-START;blob[at:at+5]=b'\xe8'+struct.pack('<i',thunk-at-5)
+    at=0x10868dc-START;blob[at:at+12]=b'\xe9'+struct.pack('<i',continuation-at-5)+b'\x90'*7
     blob.extend(b'\xcc'*(-len(blob)%16));handler=len(blob);blob.extend(b'\xe9'+bytes(4))
     fixes.append((handler+1,handler+5,0x21044a0));code_bytes=len(blob)
     blob.extend(bytes(-len(blob)%4));rows=[];original={};parents=[]
@@ -55,11 +78,15 @@ def build():
             parent=struct.unpack('<III',c.read(u+n,12));need(parent in original,'Forward or external unwind chain')
             blob.extend(struct.pack('<III',*original[parent]));parents.append(functions.index(parent))
     need(parents==[None,0,1,1,0,0],'Changed join saved-register topology')
+    rows.append((continuation,continuation_end,len(blob)))
+    blob.extend(bytes((33,0,0,0))+struct.pack('<III',*rows[5]))
+    rows.append((thunk,thunk+12,len(blob)));blob.extend(bytes((1,0,0,0)))
     rows.append((handler,handler+5,len(blob)));blob.extend(bytes((1,0,0,0)))
     table=len(blob)
     for row in rows:blob.extend(struct.pack('<III',*row))
     need(len(blob)<=4096,'Join image too large')
-    return dict(blob=bytes(blob),fixes=fixes,capacity=capacity,handler=handler,table=table,rows=rows,code_bytes=code_bytes)
+    return dict(blob=bytes(blob),fixes=fixes,capacity=capacity,handler=handler,table=table,rows=rows,
+                code_bytes=code_bytes,creation_pointer=creation_pointer,continuation=continuation,failure=failure)
 
 
 def render(a):
@@ -68,7 +95,7 @@ def render(a):
     lines+=['    '+','.join(f'0x{x:02x}' for x in a['blob'][i:i+16])+',' for i in range(0,len(a['blob']),16)]
     lines+=['};','static const EpPlayerJoinFixup ep_player_join_fixups[] = {']
     lines+=['    {'+','.join(map(str,f))+'},' for f in a['fixes']];lines+=['};']
-    for k in ('capacity','handler','table','code_bytes'):
+    for k in ('capacity','handler','table','code_bytes','creation_pointer'):
         lines.append(f'static const uint32_t ep_player_join_{k} = {a[k]};')
     return '\n'.join(lines)+'\n'
 
