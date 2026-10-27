@@ -1,5 +1,5 @@
 // Saved build 25480438 entry catalog; one canonical entry per native RVA.
-// The full constructor still requires a separate screen-generation protocol.
+// The final two routes coordinate retained-screen parking and reconstruction.
 // Cleanup bodies are reusable resource operations; preserve their native order.
 // Incoming stack operands reviewed in saved capture, including RSP/RBP aliases:
 // 66BE2F reads entry RSP+30h; 66BE44 reads entry RSP+28h (arguments six/five).
@@ -70,3 +70,5 @@ EP_LOADOUT_CALL(setup,0x1465820,0,1)
 // +50..78 stores are outgoing scratch/home saves, not incoming arguments.
 EP_LOADOUT_CALL(commit_selection,0x1467790,0,0)
 EP_LOADOUT_CALL(exit_screen,0x1467B90,0,0)
+EP_LOADOUT_CALL(constructor,0x14984E0,0,2)
+EP_LOADOUT_CALL(constructor,0x14AC340,0,3)

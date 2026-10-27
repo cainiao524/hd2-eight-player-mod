@@ -2,7 +2,7 @@
 #include <windows.h>
 #include <string.h>
 namespace {
-struct Entry {uint32_t rva,stack_arguments,original_chain;size_t member;};
+struct Entry {uint32_t rva,stack_arguments,route;size_t member;};
 #define EP_LOADOUT_CALL(member,rva,stack,chain) {rva,stack,chain,offsetof(EpLoadoutGroup,member)},
 const Entry entries[]={
 #include "ep_loadout_call_entries.inc"
@@ -46,6 +46,7 @@ int target(void* opaque,const EpNativeRosterView*)
 int invoke(void* opaque,const EpNativeRosterView* view)
 {
     auto& call=*(Invocation*)opaque;auto& c=*call.context;EpLoadoutStorageInfo info={};
+    bool is_new=false;
     bool valid=!call.recursive && view->game==c.game && view->roster==c.roster && view->storage==c.storage &&
         !InterlockedCompareExchange((volatile LONG*)&c.control->switching,0,0) &&
         ep_loadout_storage_info(c.mod,c.loadout,&info);
@@ -54,12 +55,25 @@ int invoke(void* opaque,const EpNativeRosterView* view)
         if (!active && info.state==EP_LOADOUT_STORAGE_RETAINED)
             call.target=(uintptr_t)InterlockedCompareExchangePointer((void* volatile*)c.next_pointer,nullptr,nullptr);
         else if (active==1 && info.state==EP_LOADOUT_STORAGE_UI_MIGRATED && info.initialization_owner==c.owner &&
-                 body(info,*entry(c.rva))==c.body)
-            call.target=c.original_chain ?
-                (uintptr_t)InterlockedCompareExchangePointer((void* volatile*)c.next_pointer,nullptr,nullptr) : c.body;
+                 body(info,*entry(c.rva))==c.body) {
+            is_new=true;
+            if (c.route>=EP_LOADOUT_ROUTE_CREATE && (uint32_t)call.frame->rdx==11) {
+                const auto result=ep_loadout_storage_screen_in_scope(c.mod,c.loadout,c.owner,c.rva,call.frame->rcx);
+                if (result==EP_LOADOUT_STORAGE_OK && !call.recursive) {
+                    if (c.route==EP_LOADOUT_ROUTE_CREATE) call.frame->rax=info.binding.setup.common.lifecycle.screen;
+                    return 1;
+                }
+            } else if (c.rva<0x1460000 || c.rva>=0x1480000 ||
+                       info.screen_phase==EP_LOADOUT_SCREEN_LIVE || info.screen_phase==EP_LOADOUT_SCREEN_CLEANED)
+                call.target=c.route ?
+                    (uintptr_t)InterlockedCompareExchangePointer((void* volatile*)c.next_pointer,nullptr,nullptr) : c.body;
+        }
         valid=call.target!=0;
     }
-    if (valid && ep_roster_owner_call(c.mod,c.owner,1,target,&call)==EP_OWNER_OK) return 1;
+    if (valid && ep_roster_owner_call(c.mod,c.owner,1,target,&call)==EP_OWNER_OK && !call.recursive) {
+        if (!is_new || (c.rva!=0x1466170 && c.rva!=0x1467b90) ||
+            ep_loadout_storage_screen_return_in_scope(c.mod,c.loadout,c.owner,c.rva)) return 1;
+    }
     // Still inside the outer owner, including after nested SEH. An initialized
     // generation cannot remain apparently callable after its owner has faulted.
     ep_loadout_storage_quarantine_in_scope(c.mod,c.loadout,c.owner);return 0;
@@ -82,7 +96,7 @@ extern "C" void EpLoadoutCallDispatch(EpLoadoutCallContext* context,EpRosterCall
 int ep_loadout_call_layout(uint32_t index,EpLoadoutCallLayout* out)
 {
     if (!out) return 0;*out={};if (index>=EP_LOADOUT_CALL_COUNT) return 0;
-    *out={entries[index].rva,entries[index].stack_arguments,entries[index].original_chain};return 1;
+    *out={entries[index].rva,entries[index].stack_arguments,entries[index].route};return 1;
 }
 int ep_loadout_call_prepare(const HfApi* api,HfMod* mod,uint64_t loadout,uint64_t owner,uint32_t rva,
     EpLoadoutCallControl* control,const EpRosterCallPolicy* policy,uintptr_t desired,
@@ -99,7 +113,7 @@ int ep_loadout_call_prepare(const HfApi* api,HfMod* mod,uint64_t loadout,uint64_
     if (ep_roster_owner_check_binding(mod,owner,b.lifecycle.game,b.roster,b.roster_storage)!=EP_OWNER_OK) return 0;
     if (!ep_session_code_reserve(api,mod,desired,48,code)) return 0;
     *context={mod,owner,loadout,b.lifecycle.game,b.roster,b.roster_storage,body(info,*e),
-        (uintptr_t)b.lifecycle.game+rva,code->next_pointer,rva,e->stack_arguments,e->original_chain,control,saved};
+        (uintptr_t)b.lifecycle.game+rva,code->next_pointer,rva,e->stack_arguments,e->route,control,saved};
     uint8_t image[48]={};memset(image,0x90,32);
     image[0]=0x49;image[1]=0xba;uintptr_t address=(uintptr_t)context;memcpy(image+2,&address,8);
     image[10]=0x49;image[11]=0xbb;address=(uintptr_t)&EpLoadoutCallEntry;memcpy(image+12,&address,8);

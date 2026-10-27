@@ -20,6 +20,8 @@ enum {EP_LOADOUT_STORAGE_PREPARING=1,EP_LOADOUT_STORAGE_PREPARED,
       EP_LOADOUT_STORAGE_QUARANTINED};
 enum {EP_LOADOUT_INIT_NONE,EP_LOADOUT_INIT_CHECKING,EP_LOADOUT_INIT_RETAINING,
       EP_LOADOUT_INIT_CONSTRUCTING,EP_LOADOUT_INIT_REPLACING,EP_LOADOUT_INIT_DONE};
+enum {EP_LOADOUT_SCREEN_NONE,EP_LOADOUT_SCREEN_LIVE,EP_LOADOUT_SCREEN_CLEANED,
+      EP_LOADOUT_SCREEN_PARKED,EP_LOADOUT_SCREEN_REBUILDING};
 
 typedef struct EpLoadoutStorageBindings {
     EpLoadoutGroupAddresses group;
@@ -33,6 +35,8 @@ typedef struct EpLoadoutStorageInfo {
     uint32_t initialization_step,owner_result;
     EpLoadoutGroupAddresses binding;
     EpLoadoutGroup group;
+    uint64_t screen_manager;
+    uint32_t screen_phase;
 } EpLoadoutStorageInfo;
 
 enum {EP_LOADOUT_NATIVE_CAPACITY=4,EP_LOADOUT_RECORD_SOURCE_OFFSET=0x948,
@@ -61,8 +65,8 @@ typedef struct EpLoadoutSourceSnapshot {
  * source banks; it does not construct widgets or clone game resources.
  * Existing state must be coherently imported and native widgets
  * constructed before use. External screen/managers/hash backing/roster B and
- * their ownership remain caller obligations. One binding generation per game
- * is allowed; recreating/rebinding a screen is not implemented by this API.
+ * their ownership remain caller obligations. One fixed screen address per game
+ * is allowed; the coordinated screen routes below retain and reuse it.
  *
  * Internal code handles belong exclusively to this storage owner. Do not cancel,
  * publish, retain or invoke them independently. PREPARED is not callable game
@@ -138,6 +142,31 @@ EpLoadoutStorageResult ep_loadout_storage_initialize_in_scope(HfMod*,uint64_t ha
  * entries, retains all backing and never releases the external exclusion.
  * Idempotent for the same owner; no standalone/out-of-scope recovery API. */
 int ep_loadout_storage_quarantine_in_scope(HfMod*,uint64_t handle,uint64_t roster_owner);
+
+/* Successful NEW setup/exit return only, while the call bridge still holds the
+ * exact owner. Resource release/reset alone never authorizes screen reuse. */
+int ep_loadout_storage_screen_return_in_scope(HfMod*,uint64_t handle,uint64_t roster_owner,uint32_t native_rva);
+/* Selected screen kind 11 only. Saved 25480438 dispatch evidence:
+ * 14984E0 -> 1498AE1 allocates/zeros 2739D0, calls 14A17E0, stores manager+B0;
+ * 14966E0 -> 1496AFB calls 1467B90; 14AC340 -> 14AC4E9 frees then clears B0.
+ * 14971C0 only hides a stacked screen; it is NOT this deallocation boundary.
+ *
+ * NEW 14AC340 retains the exact cleaned screen allocation instead of freeing
+ * it, clears B0, and parks it. NEW 14984E0 requires that same manager's B0==0;
+ * zeroes the retained screen and its four UI banks, runs the full relocated
+ * constructor once, then publishes B0. All eight shared source banks and all
+ * sealed code remain allocated and bound at the same addresses. Both maps
+ * start FF; subsequent normal setup assigns the CURRENT local player.
+ *
+ * Requires all 62 routes, the common owner and complete external engine
+ * exclusion/lifetime coverage. No independent call may free this allocation,
+ * and no rebinding to another screen/manager is supported. No re-import, extra
+ * widget attachment, allocator hook or code rewriting occurs. Native failures
+ * or recursive requests quarantine the owner; partial construction is never
+ * published or retried. The retained screen is released only at process exit.
+ * Explicit native invocation only; never auto-called by Mod init. */
+EpLoadoutStorageResult ep_loadout_storage_screen_in_scope(HfMod*,uint64_t handle,uint64_t roster_owner,
+    uint32_t native_rva,uint64_t screen_manager);
 
 #ifdef __cplusplus
 }

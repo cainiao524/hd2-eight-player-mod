@@ -58,6 +58,10 @@ static int Hook(HfMod* at_mod,uintptr_t at,void*,void** next,int32_t)
 }
 int ep_loadout_storage_info(HfMod* at_mod,uint64_t handle,EpLoadoutStorageInfo* out)
 {NEED(at_mod==mod && handle==storage.handle);*out=storage;return 1;}
+// Screen lifecycle is outside this older focused fixture.
+int ep_loadout_storage_screen_return_in_scope(HfMod*,uint64_t,uint64_t,uint32_t) {return 1;}
+EpLoadoutStorageResult ep_loadout_storage_screen_in_scope(HfMod*,uint64_t,uint64_t,uint32_t,uint64_t)
+{NEED(false);return EP_LOADOUT_STORAGE_STATE;}
 int ep_loadout_storage_quarantine_in_scope(HfMod* at_mod,uint64_t handle,uint64_t at_owner)
 {
     NEED(at_mod==mod && handle==storage.handle && at_owner==owner && storage.initialization_owner==owner);
@@ -68,7 +72,7 @@ static void Failure(void*,uint32_t rva,EpRosterOwnerResult result,EpRosterCallFr
 {NEED((rva==0x1467330 || rva==0x1465820) && result!=EP_OWNER_OK && frame->status==result);policies++;}
 static int Activate(void*,const EpNativeRosterView*)
 {
-    Held(screen);storage.state=EP_LOADOUT_STORAGE_UI_MIGRATED;storage.initialization_owner=owner;
+    Held(screen);storage.state=EP_LOADOUT_STORAGE_UI_MIGRATED;storage.screen_phase=EP_LOADOUT_SCREEN_LIVE;storage.initialization_owner=owner;
     InterlockedExchange((volatile LONG*)&control.active,1);return 1;
 }
 static int Queued(void*,const EpNativeRosterView*)
@@ -94,7 +98,7 @@ int main()
     const uint32_t rvas[]={0x1467330,0x1467720,0x1466170,0x1465820};EpRosterCallPolicy policy={Failure,nullptr};
     for (unsigned i=0;i<4;i++) {
         NEED(ep_loadout_call_prepare(&api,mod,storage.handle,owner,rvas[i],&control,&policy,0,&contexts[i],&gates[i]));
-        NEED(contexts[i].original_chain==(i==3));
+        NEED(contexts[i].route==(i==3));
     }
     // Exact saved 1465820..146583B and its unwind bytes from the workspace
     // capture. Only rel32 operands change; no target calls game memory.

@@ -342,7 +342,9 @@ EpLoadoutStorageResult ep_loadout_storage_initialize_in_scope(HfMod* mod,uint64_
     slot->info.owner_result=owner_result;
     if (owner_result!=EP_OWNER_OK) {
         slot->info.state=EP_LOADOUT_STORAGE_QUARANTINED;call.result=EP_LOADOUT_STORAGE_NATIVE_FAILED;
-    } else if (call.result==EP_LOADOUT_STORAGE_OK) slot->info.state=EP_LOADOUT_STORAGE_UI_MIGRATED;
+    } else if (call.result==EP_LOADOUT_STORAGE_OK) {
+        slot->info.state=EP_LOADOUT_STORAGE_UI_MIGRATED;slot->info.screen_phase=EP_LOADOUT_SCREEN_LIVE;
+    }
     else slot->info.state=call.original_state;
     ReleaseSRWLockExclusive(&storage_lock);return call.result;
 }
@@ -363,4 +365,75 @@ int ep_loadout_storage_quarantine_in_scope(HfMod* mod,uint64_t handle,uint64_t o
     ReleaseSRWLockExclusive(&storage_lock);
     if (status==EP_OWNER_OK) ep_roster_owner_call(mod,owner,0,quarantine_owner,nullptr);
     return 1;
+}
+
+int ep_loadout_storage_screen_return_in_scope(HfMod* mod,uint64_t handle,uint64_t owner,uint32_t rva)
+{
+    if ((rva!=0x1466170 && rva!=0x1467b90) || ep_roster_owner_native_status(mod,owner)!=EP_OWNER_OK) return 0;
+    AcquireSRWLockExclusive(&storage_lock);auto* slot=find(mod,handle);
+    const bool valid=slot && slot->info.state==EP_LOADOUT_STORAGE_UI_MIGRATED &&
+        slot->info.initialization_owner==owner && (slot->info.screen_phase==EP_LOADOUT_SCREEN_LIVE ||
+        slot->info.screen_phase==EP_LOADOUT_SCREEN_CLEANED);
+    if (valid) slot->info.screen_phase=rva==0x1467b90 ? EP_LOADOUT_SCREEN_CLEANED : EP_LOADOUT_SCREEN_LIVE;
+    ReleaseSRWLockExclusive(&storage_lock);return valid;
+}
+namespace {
+struct ScreenChange {Storage* slot;uint64_t owner,manager;uint32_t rva;EpLoadoutStorageResult result;bool recursive;};
+thread_local ScreenChange* changing_screen;
+int change_screen(void* opaque,const EpNativeRosterView* view)
+{
+    auto& call=*(ScreenChange*)opaque;auto& slot=*call.slot;const auto& a=slot.info.binding;
+    const auto& b=a.setup.common;const auto& l=b.lifecycle;
+    if (view->game!=slot.game || view->roster!=b.roster || view->storage!=b.roster_storage) {
+        call.result=EP_LOADOUT_STORAGE_SOURCE;return 1;
+    }
+    // These are explicit native accesses, protected by the nested owner SEH
+    // frame. Never hold storage_lock across a pointer access or native call.
+    auto* field=(uint64_t*)(uintptr_t)(call.manager+0xb0);
+    if (call.rva==0x14ac340) {
+        if (*field!=slot.screen) {call.result=EP_LOADOUT_STORAGE_STALE;return 1;}
+        *field=0;
+        AcquireSRWLockExclusive(&storage_lock);
+        slot.info.screen_manager=call.manager;slot.info.screen_phase=EP_LOADOUT_SCREEN_PARKED;
+        ReleaseSRWLockExclusive(&storage_lock);
+    } else {
+        if (*field) {call.result=EP_LOADOUT_STORAGE_STALE;return 1;}
+        AcquireSRWLockExclusive(&storage_lock);slot.info.screen_phase=EP_LOADOUT_SCREEN_REBUILDING;
+        ReleaseSRWLockExclusive(&storage_lock);
+        memset((void*)(uintptr_t)slot.screen,0,EP_LOADOUT_SCREEN_BYTES);
+        memset((void*)(uintptr_t)l.records,0,slot.info.capacity*EP_LOADOUT_RECORD_BYTES);
+        memset((void*)(uintptr_t)l.widgets,0,slot.info.capacity*EP_LOADOUT_WIDGET_BYTES);
+        memset((void*)(uintptr_t)b.forward_map,0xff,32);memset((void*)(uintptr_t)b.inverse_map,0xff,32);
+        const auto construct=(void*(*)(void*))(uintptr_t)slot.info.group.constructor;
+        if (construct((void*)(uintptr_t)slot.screen)!=(void*)(uintptr_t)slot.screen || call.recursive ||
+            ep_roster_owner_native_status(slot.mod,call.owner)!=EP_OWNER_OK || *field) return 0;
+        *field=slot.screen;
+        AcquireSRWLockExclusive(&storage_lock);slot.info.screen_phase=EP_LOADOUT_SCREEN_LIVE;
+        ReleaseSRWLockExclusive(&storage_lock);
+    }
+    call.result=EP_LOADOUT_STORAGE_OK;return 1;
+}
+}
+EpLoadoutStorageResult ep_loadout_storage_screen_in_scope(HfMod* mod,uint64_t handle,uint64_t owner,
+    uint32_t rva,uint64_t manager)
+{
+    if (changing_screen) {changing_screen->recursive=true;return EP_LOADOUT_STORAGE_STATE;}
+    if (!mod || !handle || !owner || (rva!=0x14984e0 && rva!=0x14ac340)) return EP_LOADOUT_STORAGE_ARGUMENT;
+    if (!pointer(manager,0xb8,8)) return EP_LOADOUT_STORAGE_POINTER;
+    if (ep_roster_owner_native_status(mod,owner)!=EP_OWNER_OK) return EP_LOADOUT_STORAGE_SCOPE;
+    AcquireSRWLockExclusive(&storage_lock);auto* slot=find(mod,handle);
+    const bool valid=slot && slot->info.state==EP_LOADOUT_STORAGE_UI_MIGRATED &&
+        slot->info.initialization_owner==owner && slot->info.group.constructor &&
+        !overlap(manager,0xb8,slot->screen,EP_LOADOUT_SCREEN_BYTES) &&
+        !overlap(manager,0xb8,slot->info.arena,slot->info.bytes) &&
+        (!slot->info.screen_manager || slot->info.screen_manager==manager) &&
+        slot->info.screen_phase==(rva==0x14ac340 ? EP_LOADOUT_SCREEN_CLEANED : EP_LOADOUT_SCREEN_PARKED);
+    ReleaseSRWLockExclusive(&storage_lock);
+    if (!valid) return EP_LOADOUT_STORAGE_STATE;
+    ScreenChange call={slot,owner,manager,rva,EP_LOADOUT_STORAGE_NATIVE_FAILED,false};changing_screen=&call;
+    const auto result=ep_roster_owner_call(mod,owner,1,change_screen,&call);changing_screen=nullptr;
+    if (result!=EP_OWNER_OK || call.recursive) {
+        ep_loadout_storage_quarantine_in_scope(mod,handle,owner);return EP_LOADOUT_STORAGE_NATIVE_FAILED;
+    }
+    return call.result;
 }

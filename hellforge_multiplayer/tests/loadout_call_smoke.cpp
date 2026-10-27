@@ -51,6 +51,10 @@ static int Hook(HfMod* at_mod,uintptr_t at,void* detour,void** next,int32_t)
 }
 int ep_loadout_storage_info(HfMod* at_mod,uint64_t handle,EpLoadoutStorageInfo* out)
 {NEED(at_mod==mod && handle==storage.handle && out);*out=storage;return 1;}
+// Screen lifecycle is outside this older focused fixture.
+int ep_loadout_storage_screen_return_in_scope(HfMod*,uint64_t,uint64_t,uint32_t) {return 1;}
+EpLoadoutStorageResult ep_loadout_storage_screen_in_scope(HfMod*,uint64_t,uint64_t,uint32_t,uint64_t)
+{NEED(false);return EP_LOADOUT_STORAGE_STATE;}
 int ep_loadout_storage_quarantine_in_scope(HfMod* at_mod,uint64_t handle,uint64_t at_owner)
 {
     NEED(at_mod==mod && handle==storage.handle && at_owner==owner && storage.initialization_owner==owner);
@@ -64,7 +68,7 @@ static int Activate(void*,const EpNativeRosterView*)
     Held();InterlockedExchange((volatile LONG*)&control.switching,1);
     // Only the route's required state is simulated. Real widget/core migration
     // is outside this one-flow bridge test and cannot be inferred from it.
-    storage.state=EP_LOADOUT_STORAGE_UI_MIGRATED;storage.initialization_owner=owner;
+    storage.state=EP_LOADOUT_STORAGE_UI_MIGRATED;storage.screen_phase=EP_LOADOUT_SCREEN_LIVE;storage.initialization_owner=owner;
     InterlockedExchange((volatile LONG*)&control.active,1);
     InterlockedExchange((volatile LONG*)&control.switching,0);return 1;
 }

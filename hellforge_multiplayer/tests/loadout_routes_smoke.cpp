@@ -49,8 +49,12 @@ EpLoadoutStorageResult ep_loadout_storage_initialize_in_scope(HfMod* at_mod,uint
     NEED(at_mod==mod && handle==f->storage.handle && owner==f->owner && current->game==f->storage.binding.setup.common.lifecycle.game);
     const auto r=Routes();NEED(r.switching && !r.active && r.published==EP_LOADOUT_CALL_COUNT);
     NEED(f->lease && f->roster_barrier && f->roster_active && f->component_active && !f->initializes);
-    f->initializes++;f->storage.state=EP_LOADOUT_STORAGE_UI_MIGRATED;f->storage.initialization_owner=owner;return EP_LOADOUT_STORAGE_OK;
+    f->initializes++;f->storage.state=EP_LOADOUT_STORAGE_UI_MIGRATED;f->storage.screen_phase=EP_LOADOUT_SCREEN_LIVE;f->storage.initialization_owner=owner;return EP_LOADOUT_STORAGE_OK;
 }
+// Screen lifecycle is outside this older focused fixture.
+int ep_loadout_storage_screen_return_in_scope(HfMod*,uint64_t,uint64_t,uint32_t) {return 1;}
+EpLoadoutStorageResult ep_loadout_storage_screen_in_scope(HfMod*,uint64_t,uint64_t,uint32_t,uint64_t)
+{NEED(false);return EP_LOADOUT_STORAGE_STATE;}
 int ep_loadout_storage_quarantine_in_scope(HfMod* at_mod,uint64_t handle,uint64_t owner)
 {
     NEED(at_mod==mod && handle==f->storage.handle && owner==f->owner);

@@ -5,21 +5,22 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-enum {EP_LOADOUT_CALL_COUNT=60};
-typedef struct EpLoadoutCallLayout {uint32_t rva,stack_arguments,original_chain;} EpLoadoutCallLayout;
+enum {EP_LOADOUT_CALL_COUNT=62};
+enum {EP_LOADOUT_ROUTE_BODY,EP_LOADOUT_ROUTE_CHAIN,EP_LOADOUT_ROUTE_CREATE,EP_LOADOUT_ROUTE_PARK};
+typedef struct EpLoadoutCallLayout {uint32_t rva,stack_arguments,route;} EpLoadoutCallLayout;
 typedef struct EpLoadoutCallControl {volatile int32_t active,switching;} EpLoadoutCallControl;
 typedef struct EpLoadoutCallContext {
     HfMod* mod;
     uint64_t owner,loadout,game,roster,storage;
     uintptr_t body,target,next_pointer;
-    uint32_t rva,stack_arguments,original_chain;
+    uint32_t rva,stack_arguments,route;
     EpLoadoutCallControl* control;
     EpRosterCallPolicy policy; /* failure's kind argument is the native RVA */
 } EpLoadoutCallContext;
 int ep_loadout_call_layout(uint32_t index,EpLoadoutCallLayout*);
 /* Prepare one SDK-publishable leaf gate for the named saved-build entry.
  * Derives its native target and relocated body from the retained loadout owner;
- * callers cannot provide an arbitrary body/argument count. The 60-entry catalog
+ * callers cannot provide an arbitrary body/argument count. The 62-entry catalog
  * includes both resource cleanup bodies and 1465820's cleanup -> setup wrapper.
  * That scope-only wrapper follows SDK's original chain in BOTH modes, owning the
  * entire call/return through its two separately routed children. Its body field
@@ -27,8 +28,9 @@ int ep_loadout_call_layout(uint32_t index,EpLoadoutCallLayout*);
  * Activate it only with both child gates published using this same control and
  * owner; ep_loadout_routes_commit publishes the complete catalog together.
  * Preserve native cleanup conditions/order; these are not terminal generation
- * transitions. Actual screen allocation/destruction/rebinding remains separate,
- * and the full constructor is still excluded. 66BDA0 forwards two incoming stack slots;
+ * transitions. Factory 14984E0 and deallocator 14AC340 route screen kind 11
+ * through the retained-screen storage protocol; other kinds follow SDK next.
+ * The raw constructor itself is never hooked. 66BDA0 forwards two incoming stack slots;
  * the others use register arguments. Same native XMM/integer return frame as
  * the roster bridge, with registered Windows unwind metadata throughout.
  *
