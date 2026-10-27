@@ -144,3 +144,30 @@ EpPropertyResult ep_player_join_peer_gate_build(uint64_t game,uint64_t code,uint
     if (body.bytes+48!=EP_PLAYER_JOIN_PEER_GATE_BYTES) return EP_PROPERTY_ARGUMENT;
     return EpJoinGate(game,code,control,next,body,out);
 }
+EpPropertyResult ep_player_join_ready_gate_build(uint64_t game,uint64_t code,uint64_t control,uint64_t next,
+    uint64_t reject,const EpPlayerJoinPeers* input,const EpPlayerJoinReadiness* binding,EpPlayerJoinImage* out)
+{
+    if (!out) return EP_PROPERTY_ARGUMENT;EpPlayerJoinPeers peers={};EpPlayerJoinReadiness ready={};
+    if (input) peers=*input;if (binding) ready=*binding;*out={};
+    if (!input || !binding || ready.reserved || ready.client!=peers.client || ready.capacity!=peers.capacity)
+        return EP_PROPERTY_ARGUMENT;
+    EpPlayerJoinImage image={};auto rc=ep_player_join_peer_gate_build(game,code,control,next,reject,&peers,&image);
+    if (rc!=EP_PROPERTY_OK) return rc;
+    const uint64_t spans[][3]={{game,74727424,4096},{code,4096,16},{peers.client-0x162c8,0x20100,8},
+        {peers.bank,32ull*peers.capacity,16},{ready.bank,16ull*ready.capacity,16},
+        {control,4,4},{next,8,8},{reject,1,1},{ready.lookup,1,1},{ready.finish,1,1}};
+    for (unsigned i=0;i<10;i++) {
+        auto p=spans[i][0],n=spans[i][1];if (!JoinPeerPointer(p,n,spans[i][2])) return EP_PROPERTY_POINTER;
+        for (unsigned j=0;j<i;j++) if (p<spans[j][0]+spans[j][1] && spans[j][0]<p+n) return EP_PROPERTY_OVERLAP;
+    }
+    const uint32_t sites[]={32+0x1086401-0x1085d70,32+0x108643c-0x1085d70};
+    const uint64_t original[]={game+0x1086920,game+0x1086b70},targets[]={ready.lookup,ready.finish};
+    for (unsigned i=0;i<2;i++) {
+        auto site=sites[i];int32_t old;memcpy(&old,image.data+site+1,4);
+        if (image.data[site]!=0xe8 || (int64_t)(code+site+5)+old!=(int64_t)original[i]) return EP_PROPERTY_ARGUMENT;
+        int64_t delta=(int64_t)targets[i]-(int64_t)(code+site+5);
+        if (delta<INT32_MIN || delta>INT32_MAX) return EP_PROPERTY_REL32;
+        const int32_t relative=(int32_t)delta;memcpy(image.data+site+1,&relative,4);
+    }
+    *out=image;return EP_PROPERTY_OK;
+}

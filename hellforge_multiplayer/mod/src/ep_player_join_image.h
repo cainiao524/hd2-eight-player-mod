@@ -51,6 +51,19 @@ EpPropertyResult ep_player_join_gate_build(uint64_t game,uint64_t code,uint64_t 
  */
 EpPropertyResult ep_player_join_peer_gate_build(uint64_t game,uint64_t code,uint64_t control,uint64_t next,
     uint64_t reject,const EpPlayerJoinPeers*,EpPlayerJoinImage*);
+typedef struct EpPlayerJoinReadiness {
+    uint64_t client,bank,lookup,finish;
+    uint32_t capacity,reserved;
+} EpPlayerJoinReadiness;
+/* Same checked-creation gate and exact unwind layout, with its two native
+ * readiness calls bound to retained ep_client_metadata LOOKUP/FINISH entries.
+ * The bank/client/capacity must match both those helpers and confirmed peers.
+ * Failure creation still bypasses readiness. This is numeric construction;
+ * it does not retain helpers or replace the roster group's older preparation
+ * path. The owning coordinator must retain and bind the whole cohort before
+ * exposure; raw original helpers are rejected, not accepted as a fallback. */
+EpPropertyResult ep_player_join_ready_gate_build(uint64_t game,uint64_t code,uint64_t control,uint64_t next,
+    uint64_t reject,const EpPlayerJoinPeers*,const EpPlayerJoinReadiness*,EpPlayerJoinImage*);
 #ifdef __cplusplus
 }
 #endif

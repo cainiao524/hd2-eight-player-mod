@@ -45,6 +45,9 @@ typedef struct EpClientPeerFamily {
  * bound the exact count used in their search. Returned pointers require the
  * common lifetime/exclusion lease through the caller's last access; compaction
  * can move a record. They do not cover other inlined engine/UI lookups.
+ * REMOVE here is the older confirmed-only research image. For expanded
+ * auxiliary lists use ep_client_departure, bound to all shared client banks
+ * and ep_client_metadata's finish entry; family_prepare does not yet select it.
  */
 EpPropertyResult ep_client_peer_build(uint32_t kind,const EpClientDisconnectAddresses*,EpClientPeerImage*);
 /* Prepares all nine functions, including disconnect and client update, against ONE bank/client/

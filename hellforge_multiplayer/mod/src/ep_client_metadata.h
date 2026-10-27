@@ -37,8 +37,9 @@ typedef struct EpClientMetadataImage {
  *
  * Numeric generation/preparation only, no game discovery or activation. Bind
  * all producers/consumers to retained same-owner images and banks before any
- * publication. Player-join, removal, reset/update and other readiness readers
- * still need common-bank routing. Hold the owner lease throughout whole calls,
+ * publication. Bind ep_player_join_ready_gate_build and ep_client_departure to
+ * this same bank and retained lookup/finish entries. Reset/update and other
+ * readiness readers still need common-bank routing. Hold the lease for calls,
  * service callbacks and returned-pointer use. Reject never returns; failures
  * after native effects require quarantine, not replay or partial rollback.
  */
