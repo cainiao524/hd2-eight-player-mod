@@ -104,7 +104,7 @@ def main():
         command=[args.zig.resolve(),'c++','-std=c++17','-target','x86_64-windows-gnu','-O2','-Wall','-Wextra','-Werror',
                  '-I',args.upstream.resolve()/'native/mod-sdk','-I',g.PROJECT/'mod/src','-shared']
         modules=('session_code','loadout_lifecycle','loadout_consumers','loadout_setup','loadout_group','loadout_interactions','loadout_refresh',
-                 'loadout_records','loadout_frame','loadout_mode','loadout_control','loadout_state','loadout_prompt','loadout_countdown','loadout_resources','loadout_resource_owner','loadout_resource_tick','loadout_resource_events','loadout_resource_ownership','loadout_resource_sync','loadout_resource_signals')
+                 'loadout_records','loadout_frame','loadout_mode','loadout_control','loadout_state','loadout_prompt','loadout_countdown','loadout_resources','loadout_resource_owner','loadout_resource_tick','loadout_resource_events','loadout_resource_ownership','loadout_resource_sync','loadout_resource_signals','loadout_resource_actions')
         command += [g.PROJECT/'mod/src'/('ep_'+n+'.cpp') for n in modules]
         command += [g.PROJECT/'tests'/('loadout_'+n+'_dll.cpp') for n in ('consumers','setup','resource_owner','resource_ownership')]
         command += ['-o',args.library.resolve()]
@@ -136,7 +136,7 @@ def main():
     g.need(f.promotion_unwound and f.sizes==[20,4]*3+[12,20,4] and f.releases==18 and not f.scratch_size,'Native scratch swap/unwind sequence changed')
     setup=SetupAddresses();setup.common=binding;setup.common.lifecycle.code=CODE+0x30000
     for i in range(8):setup.placements[i]=Placement(i*3,111,0.5,0,0.5,0)
-    group=GroupAddresses(setup,CODE+0x40000,CODE,CODE+0x50000,CODE+0x60000,record_source(),CODE+0x70000,CODE+0x80000,CODE+0x90000,CODE+0xa0000,CODE+0xb0000,CODE+0xc0000,CODE+0xd0000,countdown_source(),CODE+0xe0000,OWNER_CODE,SOURCE,CODE+0x110000,CODE+0x120000,OWNERSHIP_CODE,CODE+0x140000,CODE+0x150000)
+    group=GroupAddresses(setup,CODE+0x40000,CODE,CODE+0x50000,CODE+0x60000,record_source(),CODE+0x70000,CODE+0x80000,CODE+0x90000,CODE+0xa0000,CODE+0xb0000,CODE+0xc0000,CODE+0xd0000,countdown_source(),CODE+0xe0000,OWNER_CODE,SOURCE,CODE+0x110000,CODE+0x120000,OWNERSHIP_CODE,CODE+0x140000,CODE+0x150000,CODE+0x160000)
     status=dll.setup_group(c.byref(group));g.need(status==0,f'Common READY/discard failed: {status}')
     print(json.dumps(dict(passed=True,scope='one mixed-ownership pending-settlement/promote/demote flow',game_access=False,runtime_verified=False)))
 
