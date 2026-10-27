@@ -48,10 +48,11 @@ typedef struct EpLoadoutGroup {
     uint64_t activate_resource,reset_resource_phases,complete_resource,resource_main_update,query_resource_object,update_resource_states;
     uint64_t construct_banks; /* isolated record/widget initialization; never auto-invoked */
     uint64_t attach_widgets; /* constructed widgets -> existing parent; never auto-invoked */
+    uint64_t replace_widgets; /* detach four inline roots, then attach fresh banks */
     uint32_t capacity,state;
 } EpLoadoutGroup;
 /* Prepare fifty-eight distinct native entries, one compatibility alias and an
- * isolated record/widget initializer and attachment entry from ONE screen/storage/map/capacity
+ * isolated record/widget initializer, attachment and replacement entries from ONE screen/storage/map/capacity
  * binding. The twenty-two desired code bases must be explicit and nonoverlapping.
  * The independent record-source banks must be disjoint from every image.
  * Input -> refresh -> close, control -> mode/navigation/edit/return, lifecycle -> state and
@@ -77,8 +78,9 @@ typedef struct EpLoadoutGroup {
  * Only owned code allocations are made; data still belongs to the caller.
  * ep_loadout_storage_prepare wraps this group with owned fresh data banks and
  * coordinated cancellation/retention. Its import_sources stages eight source
- * banks separately; construct_banks and attach_widgets perform no old-widget
- * detachment, complete screen migration or publication.
+ * banks separately. replace_widgets detaches the four original roots before
+ * attachment, preserving their allocations; it does not migrate maps/records,
+ * transfer ownership or publish a complete screen migration.
  * All images must reach READY before callable addresses are returned. Partial
  * preparation discards in reverse order; failed cleanup retains only handles
  * and exposes no callable entries. Retry group_discard for CLEANUP.

@@ -22,7 +22,8 @@ static int group_snapshot(const EpLoadoutGroupAddresses* a,uint8_t* images,uint3
     }
     if (group.resource_tick!=group.update_resource_states) failure=6;
     if (group.construct_banks<codes[0].base || group.construct_banks>=codes[0].base+codes[0].bytes ||
-        group.attach_widgets<codes[2].base || group.attach_widgets>=codes[2].base+codes[2].bytes) failure=3;
+        group.attach_widgets<codes[2].base || group.attach_widgets>=codes[2].base+codes[2].bytes ||
+        group.replace_widgets<codes[2].base || group.replace_widgets>=codes[2].base+codes[2].bytes) failure=3;
     if (images && sizes && routes) {
         for (unsigned i=0;i<EP_LOADOUT_GROUP_CODE_COUNT;i++) {
             if (codes[i].bytes>stride) {failure=7;break;}
@@ -49,7 +50,8 @@ extern "C" __declspec(dllexport) int setup_unwind(const EpLoadoutSetupImage* ima
 {
     alignas(16) uint8_t code[EP_LOADOUT_SETUP_BYTES],stack[1040];
     memcpy(code,image->data,image->bytes);memcpy(stack+8,stack_data,1024);
-    const auto* row=(const RUNTIME_FUNCTION*)(code+image->table_offset)+(offset>=image->attach_widgets ? 3 : 1);
+    const auto* row=(const RUNTIME_FUNCTION*)(code+image->table_offset)+
+        (offset>=image->replace_widgets ? 5 : offset>=image->attach_widgets ? 3 : 1);
     if (offset<row->BeginAddress || offset>=row->EndAddress || delta!=-0x178) return 1;
     CONTEXT c={};c.ContextFlags=CONTEXT_ALL;c.Rip=(DWORD64)code+offset;c.Rsp=(DWORD64)(stack+520)+delta;
     c.Rbx=registers[0];c.Rbp=registers[1];c.Rsi=registers[2];c.Rdi=registers[3];

@@ -86,8 +86,8 @@ static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_
         functions[2].BeginAddress!=gs->handler_offset || functions[2].EndAddress!=gs->handler_offset+5)) return 0;
     if (handler_kind==2 && (!gs || count!=11 || gs->function_index!=7 ||
         functions[10].BeginAddress!=gs->handler_offset || functions[10].EndAddress!=gs->handler_offset+5)) return 0;
-    if (handler_kind==3 && (!gs || count!=5 || gs->function_index!=1 ||
-        functions[4].BeginAddress!=gs->handler_offset || functions[4].EndAddress!=gs->handler_offset+5)) return 0;
+    if (handler_kind==3 && (!gs || count!=7 || gs->function_index!=1 ||
+        functions[6].BeginAddress!=gs->handler_offset || functions[6].EndAddress!=gs->handler_offset+5)) return 0;
     if (handler_kind==4 && (!gs || count!=5 || gs->function_index!=1 ||
         functions[4].BeginAddress!=gs->handler_offset || functions[4].EndAddress!=gs->handler_offset+5)) return 0;
     if (handler_kind==5 && (!gs || count!=7 || gs->function_index!=1 ||
@@ -118,13 +118,13 @@ static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_
     }
     const uint8_t* u=p+rf.UnwindData;
     const uint32_t body=4u+((u[2]+1u)&~1u)*2u;
-    // The isolated setup loop has its own complete native prologue/cookie,
-    // so it must be validated as a second GS root, never as a handler-free row
+    // Isolated attachment and replacement each have a complete prologue/cookie,
+    // so they must be validated as separate GS roots, never as handler-free rows
     // or a synthetic chain to a frame established by a different entry.
-    const int has_gs=gs && (f==gs->function_index || (handler_kind==3 && f==3));
+    const int has_gs=gs && (f==gs->function_index || (handler_kind==3 && (f==3 || f==5)));
     if ((has_gs ? u[0]!=25 : (u[0]!=1 && u[0]!=33)) || u[3] || u[1]>rf.EndAddress-rf.BeginAddress ||
         body+(u[0]==33?12u:has_gs?8u:0u)!=end-rf.UnwindData) return 0;
-    if (handler_kind==3 && f!=1 && f!=3 && (u[0]!=1 || u[1] || u[2])) return 0;
+    if (handler_kind==3 && f!=1 && f!=3 && f!=5 && (u[0]!=1 || u[1] || u[2])) return 0;
     if (handler_kind==4 && ((f==2 || f==3) ? u[0]!=33 : f!=1 && u[0]!=1)) return 0;
     if (handler_kind==5 && ((f>=2 && f<=5) ? u[0]!=33 : f!=1 && u[0]!=1)) return 0;
     if (handler_kind==6 && ((f==2 || (f>=5 && f<=10)) ? u[0]!=33 : f!=1 && u[0]!=1)) return 0;
@@ -236,7 +236,7 @@ int ep_session_code_seal_component33_property(HfMod* owner,uint64_t handle,const
 int ep_session_code_seal_loadout_transition(HfMod* owner,uint64_t handle,const void* image,uint32_t bytes,uint32_t at,const EpSessionGsCheck* gs)
 { return EpCodeSeal(owner,handle,image,bytes,at,11,gs,2); }
 int ep_session_code_seal_loadout_setup(HfMod* owner,uint64_t handle,const void* image,uint32_t bytes,uint32_t at,const EpSessionGsCheck* gs)
-{ return EpCodeSeal(owner,handle,image,bytes,at,5,gs,3); }
+{ return EpCodeSeal(owner,handle,image,bytes,at,7,gs,3); }
 int ep_session_code_seal_loadout_refresh(HfMod* owner,uint64_t handle,const void* image,uint32_t bytes,uint32_t at,const EpSessionGsCheck* gs)
 { return EpCodeSeal(owner,handle,image,bytes,at,5,gs,4); }
 int ep_session_code_seal_loadout_records(HfMod* owner,uint64_t handle,const void* image,uint32_t bytes,uint32_t at,const EpSessionGsCheck* gs)

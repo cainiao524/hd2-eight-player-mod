@@ -115,6 +115,63 @@ def build():
     attach_body=attach+body;attach_end=len(blob)
     attach_mapping={rva:cloned_offset(off) for rva,off in mapping.items()
                     if any(lo<=off<hi for lo,hi,dest in clones)}
+    # Replace the FOUR original inline roots only. 144C9F0(parent,child,false)
+    # unlinks one root without running the destructive 144DD70 branch. Native
+    # render invalidation and descendant activation flags still change.
+    # Keep one complete GS frame around detach -> attach. No screen reset,
+    # object destruction, ownership copying or map publication occurs here.
+    original_fixes=list(fixes)
+    def copy_segment(lo,hi):
+        dest=len(blob);blob.extend(blob[lo:hi])
+        for offset,nxt,key,kind,add in original_fixes:
+            if lo<=offset<hi:
+                need(key!=1 and offset+(8 if kind==1 else 4)<=hi and lo<=nxt<=hi,
+                     'Unsupported replacement frame relocation')
+                fixes.append((dest+offset-lo,dest+nxt-lo,key,kind,add))
+    blob.extend(b'\xcc'*(-len(blob)%16));replace=len(blob)
+    copy_segment(0,body)
+    # All preflight is leaf code, before stack saves and before any writes.
+    # Check complete, sorted parent child-list membership/backpointers within
+    # 4096 nodes. This rejects missing/repeated old roots and malformed chains.
+    labels={};jumps=[]
+    def local(op,label):
+        fix(op+bytes(4),len(op),1,0);jumps.append((len(fixes)-1,label))
+    def reject(op=b'\x0f\x85'):fix(op+bytes(4),len(op),6,0)
+    blob.extend(b'\x4c\x8d\x99'+struct.pack('<I',0x2820)) # r11 = parent
+    blob.extend(b'\x49\x8b\x83'+struct.pack('<I',0xe0))   # rax = first child
+    blob.extend(b'\x45\x31\xc9\x41\xba'+struct.pack('<I',4096))
+    labels['children']=len(blob)
+    blob.extend(b'\x48\x85\xc0');reject(b'\x0f\x84')
+    blob.extend(b'\x4c\x39\x98'+struct.pack('<I',0xf0));reject()
+    for slot in range(4):
+        blob.extend(b'\x48\x8d\x91'+struct.pack('<I',0x53a78+slot*0x1ee18))
+        blob.extend(b'\x48\x39\xd0\x75\x05\x41\x0f\xba\xe9'+bytes((slot,)))
+    blob.extend(b'\x4c\x8b\x80'+struct.pack('<I',0xe8)+b'\x4d\x85\xc0')
+    local(b'\x0f\x84','end_children')
+    blob.extend(b'\x49\x39\xc0');reject(b'\x0f\x86') # next must be > current
+    blob.extend(b'\x4c\x89\xc0\x41\xff\xca');local(b'\x0f\x85','children')
+    reject(b'\xe9')
+    labels['end_children']=len(blob)
+    blob.extend(b'\x41\x83\xf9\x0f');reject()
+    absolute(10,4);fix(b'\x41\xb9'+bytes(4),2,5,2)
+    blob.extend(b'\x41\x83\xf9\x04');reject(b'\x0f\x82')
+    labels['fresh']=len(blob)
+    for offset in (0xe8,0xf0):
+        blob.extend(b'\x49\x83\xba'+struct.pack('<I',offset)+b'\0');reject()
+    blob.extend(b'\x49\x81\xc2'+struct.pack('<I',0x1ee18)+b'\x41\xff\xc9')
+    local(b'\x0f\x85','fresh')
+    for index,label in jumps:fixes[index]=fixes[index][:-1]+(labels[label],)
+    replace_body=len(blob)
+    copy_segment(body,mapping[0x14661a5])
+    copy_segment(mapping[0x14661c3],mapping[0x14661c9])
+    copy_segment(mapping[0x14661df],mapping[0x14661e6])
+    replace_point=len(blob)
+    for slot in range(4):
+        blob.extend(b'\x4c\x89\xf9\x48\x8d\x97'+struct.pack('<I',0x53a78+slot*0x1ee18))
+        blob.extend(b'\x45\x31\xc0');fix(b'\xe8'+bytes(4),1,0,0,0x144c9f0)
+    blob.extend(b'\x4c\x89\xf9');fix(b'\xe8'+bytes(4),1,0,0,0x144c2c0)
+    blob.extend(b'\x48\x89\xf9');fix(b'\xe8'+bytes(4),1,1,0,attach)
+    copy_segment(mapping[0x14672f3],body_end);replace_end=len(blob)
     blob.extend(b'\xcc'*(-len(blob)%16));handler=len(blob)
     fix(b'\xe9'+bytes(4),1,0,0,GS_HANDLER);code_bytes=len(blob)
     blob.extend(bytes(-len(blob)%8));placements=len(blob);blob.extend(bytes(8*24))
@@ -124,6 +181,7 @@ def build():
     gs=UNWIND+struct.pack('<II',handler,COOKIE)
     for begin,end,uw in ((0,body,b'\x01\0\0\0'),(body,body_end,gs),
                          (attach,attach_body,b'\x01\0\0\0'),(attach_body,attach_end,gs),
+                         (replace,replace_body,b'\x01\0\0\0'),(replace_body,replace_end,gs),
                          (handler,code_bytes,b'\x01\0\0\0')):
         functions.append((begin,end,len(blob)));blob.extend(uw)
     table_offset=len(blob)
@@ -131,7 +189,8 @@ def build():
     need(len(blob)<=MAX_IMAGE,'Setup image exceeds storage')
     return dict(blob=bytes(blob),fixes=fixes,mapping=mapping,source=source,functions=functions,
                 code_bytes=code_bytes,unwind_offset=unwind_offset,table_offset=table_offset,
-                handler_offset=handler,placements_offset=placements,attach_widgets=attach,attach_mapping=attach_mapping)
+                handler_offset=handler,placements_offset=placements,attach_widgets=attach,attach_mapping=attach_mapping,
+                replace_widgets=replace,replace_point=replace_point)
 
 
 def render(a):
@@ -140,7 +199,7 @@ def render(a):
     lines+=['    '+','.join(f'0x{x:02x}' for x in a['blob'][i:i+16])+',' for i in range(0,len(a['blob']),16)]
     lines+=['};','static const EpLoadoutSetupFixup ep_loadout_setup_fixups[] = {']
     lines+=['    {'+','.join(map(str,f))+'},' for f in a['fixes']];lines+=['};']
-    for key in ('code_bytes','unwind_offset','table_offset','handler_offset','placements_offset','attach_widgets'):
+    for key in ('code_bytes','unwind_offset','table_offset','handler_offset','placements_offset','attach_widgets','replace_widgets'):
         lines.append(f'static const uint32_t ep_loadout_setup_{key} = {a[key]};')
     return '\n'.join(lines)+'\n'
 

@@ -59,9 +59,9 @@ int ep_session_code_seal_component33_property(HfMod*, uint64_t handle, const voi
  * Does not admit these handlers through the ordinary or other GS sealers. */
 int ep_session_code_seal_loadout_transition(HfMod*, uint64_t handle, const void* image,
     uint32_t bytes, uint32_t table_offset, const EpSessionGsCheck*);
-/* Separate 1466170 setup profile: five rows, full setup and isolated attachment
- * GS roots at rows 1/3, both with the exact original fixed-frame unwind and
- * EH/UH cookie +0x130; leaf guards at 0/2, shared owned handler thunk at 4. */
+/* Separate 1466170 setup profile: seven rows, full setup, attachment and
+ * replacement GS roots at rows 1/3/5, each with the exact original fixed-frame
+ * unwind and EH/UH cookie +0x130; leaf guards at 0/2/4, handler thunk at 6. */
 int ep_session_code_seal_loadout_setup(HfMod*, uint64_t handle, const void* image,
     uint32_t bytes, uint32_t table_offset, const EpSessionGsCheck*);
 /* 146E9D0 refresh only: guard + GS root + two owned chains + handler thunk.

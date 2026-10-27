@@ -13,7 +13,7 @@ typedef struct EpLoadoutSetupAddresses {
     EpLoadoutPlacement placements[EP_LOADOUT_LIFECYCLE_LIMIT];
 } EpLoadoutSetupAddresses;
 typedef struct EpLoadoutSetupImage {
-    uint32_t bytes,code_bytes,unwind_offset,table_offset,handler_offset,placements_offset,attach_widgets;
+    uint32_t bytes,code_bytes,unwind_offset,table_offset,handler_offset,placements_offset,attach_widgets,replace_widgets;
     uint8_t data[EP_LOADOUT_SETUP_BYTES];
 } EpLoadoutSetupImage;
 /* Full saved 1466170 setup: original controls, hierarchy, local-user lookup,
@@ -32,20 +32,39 @@ typedef struct EpLoadoutSetupImage {
 EpPropertyResult ep_loadout_setup_build(const EpLoadoutSetupAddresses*,EpLoadoutSetupImage*);
 /* attach_widgets is an isolated void(screen) entry for newly CONSTRUCTED,
  * unattached banks. It keeps the original player loop (including nested flags,
- * parent ancestry walk and attachment), copied per-slot placements, GS frame
+ * parent child-list walk and attachment), copied per-slot placements, GS frame
  * and cookie checks. It does NOT reset maps, resolve the local player, rebuild
  * nonplayer controls or run the full screen setup/refresh. It intentionally
  * updates the ready parent's hierarchy flag at screen+2820 and invokes native
  * attachment services; it is not a side-effect-free layout operation.
  *
  * The parent at screen+2820 must already be constructed/configured. Caller must
- * exclude all old/new UI calls, retain all backing and validate parent/ancestor
+ * exclude all old/new UI calls, retain all backing and validate parent/child
  * lifetime. Remove any legacy widgets from this parent first, preserving their
  * lifetimes until no references remain. Never attach twice or to a live mixture
  * of old/new children. Construction, detachment, maps/data migration, setup,
  * refresh and publication must form one guarded activation. Faults can leave
  * partial hierarchy changes: quarantine and keep backing; no automatic retry.
  * This entry alone does not transfer old ownership or activate multiplayer. */
+/* replace_widgets is void(screen), for the FIRST four-inline -> expanded-bank
+ * replacement, capacity 4..8. Under the same exclusion/lifetime requirements:
+ * first check the complete ordered parent child-list (up to 4096 nodes), its
+ * backpointers, membership of all four old roots, and zero sibling/parent links
+ * on every new root. Failure reaches reject before any write/call/frame save.
+ * Readable valid source pointers remain a caller precondition, not guaranteed
+ * by those numerical/list checks. Fresh construction itself is not detected.
+ *
+ * Calls native 144C9F0(parent,old,false) for each original inline widget, then
+ * recomputes the parent child flag and invokes this image's attach_widgets.
+ * Other parent children stay attached. Native detach invalidates rendering
+ * and clears activation flags down detached subtrees; it does not execute
+ * the destructive cleanup branch. Preserve old widgets/children/resources;
+ * detachment is NOT release, cloning, ownership transfer or cancellation.
+ * Any fault after the first native call can leave a partial switch: quarantine
+ * with ALL backing retained, never retry or free automatically. Repeated calls
+ * after a successful replacement reject because the old roots are absent.
+ * Maps/records, external references, refresh, source producer hooks and final
+ * publication still require coordinated activation. No automatic invocation. */
 /* Cancellable READY image, including owned positions and handler thunk. */
 EpPropertyResult ep_loadout_setup_prepare(const HfApi*,HfMod*,const EpLoadoutSetupAddresses*,EpSessionCodeInfo*);
 #ifdef __cplusplus
