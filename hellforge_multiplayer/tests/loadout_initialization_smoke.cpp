@@ -17,6 +17,7 @@ struct Fixture {
     EpLoadoutStorageResult result;
     unsigned mode,constructed,replaced,retains;
     bool reject_retain,retained;
+    void (*check_construct)();
 };
 static Fixture* active;
 static uint64_t next_code;
@@ -24,6 +25,7 @@ static int ReadForbidden(void*,uintptr_t,void*,size_t) {NEED(false);return 0;}
 static void* Construct(void* screen)
 {
     auto& f=*active;NEED((uintptr_t)screen==f.screen && f.retained && !f.constructed && !f.replaced);
+    if (f.check_construct) f.check_construct();
     f.constructed++;
     EpLoadoutStorageInfo info={};NEED(ep_loadout_storage_info(f.mod,f.storage,&info));
     NEED(info.state==EP_LOADOUT_STORAGE_INITIALIZING && info.initialization_step==EP_LOADOUT_INIT_CONSTRUCTING);
@@ -70,9 +72,9 @@ static int Initialize(void* context,const EpNativeRosterView*)
     f.result=ep_loadout_storage_initialize_in_scope(f.mod,f.storage,f.owner,&f.source);
     return 1; // Failed nested owner health must propagate even if ignored here.
 }
-static void Run(unsigned mode)
+static void Setup(Fixture& f,unsigned mode)
 {
-    Fixture f={};active=&f;f.mode=mode;f.mod=(HfMod*)(uintptr_t)0x9183;
+    active=&f;f.mode=mode;f.mod=(HfMod*)(uintptr_t)0x9183;
     const uint64_t shift=(uint64_t)mode*0x100000000;
     EpLoadoutStorageBindings input={};auto& a=input.group;auto& l=a.setup.common.lifecycle;
     l={0x180000000+shift,0,0x220000000+shift,0,0,0x191000000+shift,8,0};f.screen=l.screen;
@@ -93,6 +95,10 @@ static void Run(unsigned mode)
     EpNativeRosterView view={};view.game=l.game;view.roster=a.setup.common.roster;view.storage=a.setup.common.roster_storage;
     view.epoch=1;view.build=25480438;EpRosterMemory memory={nullptr,ReadForbidden};
     NEED(ep_roster_owner_create(f.mod,&view,&memory,&f.owner)==EP_OWNER_OK);
+}
+static void Run(unsigned mode)
+{
+    Fixture f={};Setup(f,mode);EpLoadoutStorageInfo info={};
     NEED(ep_loadout_storage_initialize_in_scope(f.mod,f.storage,f.owner,&f.source)==EP_LOADOUT_STORAGE_SCOPE);
     if (!mode) {
         f.source.record_window[1]=7;
@@ -127,4 +133,5 @@ int main()
 {
     Run(0);Run(1);Run(2);
     puts("{\"passed\":true,\"scope\":\"owned initialization order, SEH and reentry\",\"native_bodies\":\"test doubles\",\"game_access\":false,\"runtime_verified\":false}");
+    return 0;
 }

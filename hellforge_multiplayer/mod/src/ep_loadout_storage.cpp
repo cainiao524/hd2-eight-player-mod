@@ -331,6 +331,7 @@ EpLoadoutStorageResult ep_loadout_storage_initialize_in_scope(HfMod* mod,uint64_
     }
     if (!slot->info.sources_imported) {ReleaseSRWLockExclusive(&storage_lock);return EP_LOADOUT_STORAGE_SOURCE;}
     Initialization call={slot,owner,current,EP_LOADOUT_STORAGE_NATIVE_FAILED,slot->info.state,false};
+    slot->info.initialization_owner=owner;
     slot->info.state=EP_LOADOUT_STORAGE_INITIALIZING;
     slot->info.initialization_step=EP_LOADOUT_INIT_CHECKING;slot->info.owner_result=EP_OWNER_OK;
     ReleaseSRWLockExclusive(&storage_lock);
@@ -344,4 +345,22 @@ EpLoadoutStorageResult ep_loadout_storage_initialize_in_scope(HfMod* mod,uint64_
     } else if (call.result==EP_LOADOUT_STORAGE_OK) slot->info.state=EP_LOADOUT_STORAGE_UI_MIGRATED;
     else slot->info.state=call.original_state;
     ReleaseSRWLockExclusive(&storage_lock);return call.result;
+}
+
+static int quarantine_owner(void*,const EpNativeRosterView*) {return 0;}
+int ep_loadout_storage_quarantine_in_scope(HfMod* mod,uint64_t handle,uint64_t owner)
+{
+    const auto status=ep_roster_owner_native_status(mod,owner);
+    if (status!=EP_OWNER_OK && status!=EP_OWNER_FAULTED) return 0;
+    AcquireSRWLockExclusive(&storage_lock);auto* slot=find(mod,handle);
+    if (!slot || slot->info.initialization_owner!=owner ||
+        (slot->info.state!=EP_LOADOUT_STORAGE_PREPARED && slot->info.state!=EP_LOADOUT_STORAGE_RETAINED &&
+         slot->info.state!=EP_LOADOUT_STORAGE_UI_MIGRATED && slot->info.state!=EP_LOADOUT_STORAGE_QUARANTINED)) {
+        ReleaseSRWLockExclusive(&storage_lock);return 0;
+    }
+    slot->info.state=EP_LOADOUT_STORAGE_QUARANTINED;
+    if (!slot->info.owner_result) slot->info.owner_result=EP_OWNER_CALLBACK_FAILED;
+    ReleaseSRWLockExclusive(&storage_lock);
+    if (status==EP_OWNER_OK) ep_roster_owner_call(mod,owner,0,quarantine_owner,nullptr);
+    return 1;
 }

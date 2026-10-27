@@ -28,7 +28,7 @@ typedef struct EpLoadoutStorageBindings {
 } EpLoadoutStorageBindings;
 
 typedef struct EpLoadoutStorageInfo {
-    uint64_t handle,arena;
+    uint64_t handle,arena,initialization_owner;
     uint32_t bytes,capacity,state,group_result,sources_imported;
     uint32_t initialization_step,owner_result;
     EpLoadoutGroupAddresses binding;
@@ -128,10 +128,16 @@ EpLoadoutStorageResult ep_loadout_storage_retain_sources(HfMod*,uint64_t,const E
  * cancellation, automatic release or rollback. The caller must retain exclusion
  * on failure and must NOT report an OLD rollback after partial UI mutation.
  * C++ exceptions and longjmp are unsupported. No discovery, sampling or hooks.
- * This API is not wired into the multiplayer commit, which still needs a
- * coordinated UI publication/failure policy before calling it. */
+ * ep_multiplayer_loadout_commit coordinates these calls with the existing
+ * roster/component commit; external UI routing remains a caller obligation. */
 EpLoadoutStorageResult ep_loadout_storage_initialize_in_scope(HfMod*,uint64_t handle,
     uint64_t roster_owner,const EpLoadoutSourceSnapshot* current);
+/* Coordinator failure AFTER an initialization attempt, including a later
+ * end(NEW) fault. Requires the exact recorded owner's still-held native scope
+ * (healthy or faulted). Quarantines that owner and this generation, hides
+ * entries, retains all backing and never releases the external exclusion.
+ * Idempotent for the same owner; no standalone/out-of-scope recovery API. */
+int ep_loadout_storage_quarantine_in_scope(HfMod*,uint64_t handle,uint64_t roster_owner);
 
 #ifdef __cplusplus
 }
