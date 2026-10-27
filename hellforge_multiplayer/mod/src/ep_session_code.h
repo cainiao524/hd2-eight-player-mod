@@ -96,6 +96,10 @@ int ep_session_code_seal_loadout_resource_main(HfMod*, uint64_t handle, const vo
  * checked-create tail thunk at 8, GS thunk at 9; no publication. */
 int ep_session_code_seal_player_join(HfMod*, uint64_t handle, const void* image,
     uint32_t bytes, uint32_t table_offset, const EpSessionGsCheck*);
+/* 10845B0 disconnect: guard, eight original fragments, bounded peer-lookup
+ * island (parent row 6), GS thunk. Exact root cookie +150h; no publication. */
+int ep_session_code_seal_client_disconnect(HfMod*, uint64_t handle, const void* image,
+    uint32_t bytes, uint32_t table_offset, const EpSessionGsCheck*);
 int ep_session_code_info(HfMod*, uint64_t handle, EpSessionCodeInfo*);
 /* Before calling hook_ex, permanently pin this module and the image. Even a
  * reported hook failure can have exposed code: keep it for process lifetime.
