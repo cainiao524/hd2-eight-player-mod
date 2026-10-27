@@ -1,5 +1,6 @@
 #include "ep_roster_migration.h"
 #include <string.h>
+extern "C" int EpOwnerInvoke(int (*)(void*),void*,int*);
 static uint32_t RosterD(const void* p) {uint32_t v;memcpy(&v,p,4);return v;}
 static uint64_t RosterQ(const void* p) {uint64_t v;memcpy(&v,p,8);return v;}
 static bool RosterRange(uint64_t a,uint64_t n,unsigned alignment=1) {return a>=0x10000 && a<=(UINT64_C(1)<<47)-n && !(a%alignment);}
@@ -14,6 +15,33 @@ static bool RosterRead(EpRosterMigrationStage* s,uint64_t a,void* p,uint32_t n)
 }
 static int RosterCurrent(void* p,const EpNativeRosterView* view)
 {((EpRosterMigrationStage*)p)->view=*view;return 1;}
+static bool RosterLayout(EpRosterMigrationStage* s)
+{
+    auto* v=&s->view;auto* c=&s->component;s->result.status=EP_ROSTER_MIGRATION_LAYOUT;
+    if (!RosterRange(v->roster,sizeof(s->source.source),8) || !RosterRange(v->storage,sizeof(s->after),16) || v->game!=c->game ||
+        RosterOverlap(v->roster,sizeof(s->source.source),v->storage,sizeof(s->after)) ||
+        RosterOverlap(v->storage,sizeof(s->after),c->component,EP_C33_SOURCE_BYTES) ||
+        RosterOverlap(v->storage,sizeof(s->after),c->storage,EP_COMPONENT33_STORAGE_BYTES) ||
+        RosterOverlap(v->storage,sizeof(s->after),c->resources.address,ep_c33_resource_bytes(c->resources.capacity))) return false;
+    auto* p=&s->peers;if (!p->client) return !p->bank && !p->capacity && !p->reserved;
+    if (p->reserved || p->capacity<4 || p->capacity>8 || p->client<0x10000+0x162c8 ||
+        !RosterRange(p->client-0x162c8,0x162c8+0x528,8) || !RosterRange(p->bank,p->capacity*32,16)) return false;
+    const uint64_t peers[][2]={{p->client-0x162c8,0x162c8+0x528},{p->bank,p->capacity*32ull}};
+    const uint64_t other[][2]={{v->game,74727424},{v->roster,sizeof(s->source.source)},{v->storage,sizeof(s->after)},
+        {c->component,EP_C33_SOURCE_BYTES},{c->storage,EP_COMPONENT33_STORAGE_BYTES},
+        {c->resources.address,ep_c33_resource_bytes(c->resources.capacity)}};
+    if (RosterOverlap(peers[0][0],peers[0][1],peers[1][0],peers[1][1])) return false;
+    for (const auto& bank:peers) for (const auto& region:other)
+        if (RosterOverlap(bank[0],bank[1],region[0],region[1])) return false;
+    return true;
+}
+bool ep_roster_migration_prepare(EpRosterMigrationStage* s)
+{
+    if (ep_roster_owner_call(s->mod,s->owner,0,RosterCurrent,s)!=EP_OWNER_OK) return false;
+    return RosterLayout(s);
+}
+static bool RosterPeerAlias(EpRosterMigrationStage* s,uint64_t a,uint64_t n)
+{return s->peers.client && RosterOverlap(a,n,s->peers.bank,s->peers.capacity*32);}
 static bool RosterCollect(EpRosterMigrationStage* s,EpRosterMigrationSnapshot* out)
 {
     *out={};auto* v=&s->view;s->result.status=EP_ROSTER_MIGRATION_LAYOUT;
@@ -24,14 +52,24 @@ static bool RosterCollect(EpRosterMigrationStage* s,EpRosterMigrationSnapshot* o
     uint64_t map=RosterQ(p+0xd0);
     if (t>4 || t!=d || prefix>d || RosterD(p+0xd8)!=8 || !RosterRange(map,64,8) ||
         (RosterOverlap(map,64,v->roster,sizeof(out->source)) && map!=v->roster+0x90) ||
-        RosterOverlap(map,64,v->storage,EP_NATIVE_ROSTER_BYTES)) return false;
+        RosterOverlap(map,64,v->storage,EP_NATIVE_ROSTER_BYTES) || RosterPeerAlias(s,map,64)) return false;
     if (map==v->roster+0x90) memcpy(out->map,p+0x90,64);
     else if (!RosterRead(s,map,out->map,64)) return false;
     for (unsigned i=0;i<t;i++) {
         auto* e=&out->entities[i];e->address=RosterQ(p+0xe8+i*8);
         if (!RosterRange(e->address,24) || RosterOverlap(e->address,24,v->roster,sizeof(out->source)) ||
-            RosterOverlap(e->address,24,v->storage,EP_NATIVE_ROSTER_BYTES) || RosterOverlap(e->address,24,map,64)) return false;
+            RosterOverlap(e->address,24,v->storage,EP_NATIVE_ROSTER_BYTES) || RosterOverlap(e->address,24,map,64) ||
+            RosterPeerAlias(s,e->address,24)) return false;
         if (!RosterRead(s,e->address+8,&e->id,4) || !RosterRead(s,e->address+20,&e->flags,4)) return false;
+    }
+    if (s->peers.client) {
+        auto* peers=&out->peers;
+        if (!RosterRead(s,v->game+0x347cef0,&peers->global,8)) return false;
+        if (peers->global!=s->peers.client-0x162c8) return false;
+        if (!RosterRead(s,s->peers.client+0xc8,&peers->count,4)) return false;
+        // OLD still owns exactly four records, irrespective of NEW capacity.
+        if (peers->count>4) return false;
+        if (!RosterRead(s,s->peers.client+0xd0,peers->records,sizeof(peers->records))) return false;
     }
     return true;
 }
@@ -69,6 +107,23 @@ static bool RosterBuild(EpRosterMigrationStage* s)
         }
         if (!found) return false;
     }
+    if (s->peers.client) {
+        const auto& peers=snap->peers;if (peers.count!=t) return false;
+        unsigned matched=0;
+        for (unsigned i=0;i<peers.count;i++) {
+            const auto* record=peers.records+i*32;uint64_t peer=RosterQ(record);uint32_t index=RosterD(record+0x14);
+            if (!peer || index>=4) return false;
+            bool found=false;
+            for (unsigned j=0;j<v->ticket_count;j++) if (v->tickets[j].peer==peer && v->tickets[j].network_index==index) {
+                if (matched&(1u<<j)) return false;matched|=1u<<j;found=true;break;
+            }
+            if (!found) return false;
+        }
+        // Preserve opaque records, including inactive old slots. Ordinal and
+        // network index are independent; never sort or renumber.
+        memset(s->peer_after,0,sizeof(s->peer_after));memcpy(s->peer_after,peers.records,sizeof(peers.records));
+        s->result.peer_count=peers.count;
+    }
     // Preserve opaque bytes and inactive old slots; new slots start clear.
     memset(s->after,0,sizeof(s->after));memcpy(s->after,p+0xe8,32);
     memcpy(s->after+0x40,p+0x108,4*0x70);memcpy(s->after+0x3c0,p+0x2c8,4*0x38);memcpy(s->after+0x580,p+0x3a8,4*0x20);
@@ -77,22 +132,24 @@ static bool RosterBuild(EpRosterMigrationStage* s)
 bool ep_roster_migration_stage(EpRosterMigrationStage* s)
 {
     if (ep_roster_owner_call(s->mod,s->owner,0,RosterCurrent,s)!=EP_OWNER_OK) return false;
-    auto* v=&s->view;auto* c=&s->component;s->result.status=EP_ROSTER_MIGRATION_LAYOUT;
-    if (!RosterRange(v->roster,sizeof(s->source.source),8) || !RosterRange(v->storage,sizeof(s->after),16) || v->game!=c->game ||
-        RosterOverlap(v->roster,sizeof(s->source.source),v->storage,sizeof(s->after)) ||
-        RosterOverlap(v->storage,sizeof(s->after),c->component,EP_C33_SOURCE_BYTES) ||
-        RosterOverlap(v->storage,sizeof(s->after),c->storage,EP_COMPONENT33_STORAGE_BYTES) ||
-        RosterOverlap(v->storage,sizeof(s->after),c->resources.address,ep_c33_resource_bytes(c->resources.capacity))) return false;
+    auto* v=&s->view;if (!RosterLayout(s)) return false;
     EpRosterMigrationSnapshot again={};
     if (!RosterCollect(s,&s->source) || !RosterCollect(s,&again)) return false;
     if (memcmp(&s->source,&again,sizeof(again))) {s->result.status=EP_ROSTER_MIGRATION_CHANGED;return false;}
     if (!RosterBuild(s)) return false;
     memcpy(s->before,(void*)v->storage,sizeof(s->before));s->dirty=true;
-    memcpy((void*)v->storage,s->after,sizeof(s->after));return true;
+    memcpy((void*)v->storage,s->after,sizeof(s->after));
+    if (s->peers.client) {
+        unsigned bytes=s->peers.capacity*32;
+        memcpy(s->peer_before,(void*)s->peers.bank,bytes);s->peer_dirty=true;
+        memcpy((void*)s->peers.bank,s->peer_after,bytes);s->result.peer_staged=1;
+    }
+    return true;
 }
 bool ep_roster_migration_intact(EpRosterMigrationStage* s)
 {
-    if (!s->dirty || !memcmp((void*)s->view.storage,s->after,sizeof(s->after))) return true;
+    if ((!s->dirty || !memcmp((void*)s->view.storage,s->after,sizeof(s->after))) &&
+        (!s->peer_dirty || !memcmp((void*)s->peers.bank,s->peer_after,s->peers.capacity*32))) return true;
     s->result.status=EP_ROSTER_MIGRATION_CHANGED;return false;
 }
 bool ep_roster_migration_check(EpRosterMigrationStage* s)
@@ -101,11 +158,24 @@ bool ep_roster_migration_check(EpRosterMigrationStage* s)
     if (memcmp(&s->source,&again,sizeof(again))) {s->result.status=EP_ROSTER_MIGRATION_CHANGED;return false;}
     s->result.status=EP_ROSTER_MIGRATION_OK;return true;
 }
-int ep_roster_migration_restore(void* p)
+static int RosterRestoreBank(void* p)
 {
     auto* s=(EpRosterMigrationStage*)p;if (!s->dirty) return 1;
-    uint32_t previous=s->result.status;s->result.status=EP_ROSTER_MIGRATION_RESTORE;
     memcpy((void*)s->view.storage,s->before,sizeof(s->before));
     if (memcmp((void*)s->view.storage,s->before,sizeof(s->before))) return 0;
-    s->result.restored=1;s->result.status=previous;return 1;
+    s->result.restored=1;return 1;
+}
+static int RosterRestorePeers(void* p)
+{
+    auto* s=(EpRosterMigrationStage*)p;if (!s->peer_dirty) return 1;
+    memcpy((void*)s->peers.bank,s->peer_before,s->peers.capacity*32);
+    if (memcmp((void*)s->peers.bank,s->peer_before,s->peers.capacity*32)) return 0;
+    s->result.peer_restored=1;return 1;
+}
+int ep_roster_migration_restore(void* p)
+{
+    auto* s=(EpRosterMigrationStage*)p;uint32_t previous=s->result.status;s->result.status=EP_ROSTER_MIGRATION_RESTORE;
+    int fault=0,ok=EpOwnerInvoke(RosterRestorePeers,s,&fault);ok=ok && !fault;
+    fault=0;int roster=EpOwnerInvoke(RosterRestoreBank,s,&fault);
+    if (!ok || !roster || fault) return 0;s->result.status=previous;return 1;
 }

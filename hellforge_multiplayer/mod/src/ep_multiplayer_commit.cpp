@@ -61,6 +61,15 @@ static int JointCommitRun(const HfApi* api,HfMod* mod,uint64_t roster,uint64_t c
     }
     JointCommit c={mod,{},*guard,nullptr,EP_C33_COMMIT_OLD,false,api ? &migration : nullptr};
     if (!ep_roster_group_transition_claim(mod,roster,owner,game,&c.roster)) return 0;
+    if (api) {
+        // Query after claim: the bound group cannot be cancelled/replaced.
+        ep_roster_group_peer_binding(mod,roster,&migration.peers);
+        if (!ep_roster_migration_prepare(&migration)) {
+            out->roster_claimed=1;out->roster_migration=migration.result;
+            if (!ep_roster_group_transition_finish(mod,&c.roster,EP_ROSTER_TRANSITION_OLD)) out->outcome=EP_C33_COMMIT_UNSAFE;
+            return 0;
+        }
+    }
     out->roster_claimed=1;EpC33EntryCommitGuard wrapped={&c,JointBegin,JointValidate,JointEnd};
     int ok=ep_component33_resource_entries_commit_budgeted(mod,component,&wrapped,&budget,&out->component_migration);
     if (!c.ended && !ep_roster_group_transition_finish(mod,&c.roster,EP_ROSTER_TRANSITION_OLD)) c.outcome=EP_C33_COMMIT_UNSAFE;
