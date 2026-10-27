@@ -24,7 +24,7 @@ class UpdateAddresses(C.Structure):
     _fields_=[('host',Addresses)]+[(name,C.c_uint64) for name in ('ids','remove_data','remove_dispatch','begin_peer','accept_peer','complete_peer','advance_phase')]
 
 
-def consume(dll,f):
+def consume(dll,f,after_consumption=None):
     u=f['u'];u.hook_del(f['hook_handle']);h=Addresses.from_buffer_copy(f['h']);h.code=0x180010000
     a=UpdateAddresses(h,0x220050000,*[0x180020000+i*0x10000 for i in range(6)]);image=Image()
     emit=dll.update_emit;emit.argtypes=[C.POINTER(UpdateAddresses),C.POINTER(Image)];emit.restype=C.c_int
@@ -101,7 +101,7 @@ def consume(dll,f):
         elif rva==0x12d59d0:need(r8==0xffffffff,'Release mode');released.append(rdx)
         elif rva not in (0x1738300,0xfdc780):raise RuntimeError('Unexpected native service '+hex(rva))
         returned()
-    u.hook_add(UC_HOOK_CODE,hook)
+    hook_handle=u.hook_add(UC_HOOK_CODE,hook)
     def tick():
         putq(sp,stop);u.reg_write(x.UC_X86_REG_RSP,sp);u.reg_write(x.UC_X86_REG_RCX,host)
         for reg,value in f['nonvolatile']:u.reg_write(reg,value)
@@ -126,6 +126,7 @@ def consume(dll,f):
     need(u.mem_read(host+0x20,0x918-0x20)==b'\xa5'*(0x918-0x20),'Native inline host touched')
     for bank,size in ((h.peers,8*56),(h.flags,8),(h.large,8*TASK_STRIDE),(h.pending,8*PENDING_STRIDE),(a.ids,64)):
         need(u.mem_read(bank+size,16)==b'\xfa'*16,'Host update bank tail')
+    if after_consumption:after_consumption(locals())
 
 
 def main():

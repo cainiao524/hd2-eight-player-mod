@@ -31,6 +31,8 @@ typedef struct EpHostUpdateImage {
  * They MUST be retained same-owner expanded implementations before exposure,
  * not raw original four-slot functions or a generic success stub. Several
  * helper conversions and packet decoding are still required for activation.
+ * Bind complete_peer and advance_phase to the corresponding ep_host_phase
+ * entries, retaining that image and its same-owner task lookup together.
  * Every call requires one exclusive owner lease covering helpers and banks.
  * Reject is nonreturning; late failures quarantine, with no partial replay.
  * Numeric build/prepare only: no game reads, installs, hooks or activation.
