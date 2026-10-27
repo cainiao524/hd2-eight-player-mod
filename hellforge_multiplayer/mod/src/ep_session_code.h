@@ -102,6 +102,7 @@ int ep_session_code_seal_player_join_peers(HfMod*, uint64_t handle, const void* 
     uint32_t bytes, uint32_t table_offset, const EpSessionGsCheck*);
 /* 10845B0 disconnect: guard, eight original fragments, bounded peer-lookup
  * island (parent row 6), GS thunk. Exact root cookie +150h; no publication. */
+int ep_session_code_seal_client_update(HfMod*, uint64_t, const void*, uint32_t, uint32_t, const EpSessionGsCheck*);
 int ep_session_code_seal_client_disconnect(HfMod*, uint64_t handle, const void* image,
     uint32_t bytes, uint32_t table_offset, const EpSessionGsCheck*);
 /* 1087010 peer reset: leaf guard, five original fragments, bounded lookup

@@ -1,4 +1,5 @@
 #include "ep_client_peers.h"
+#include "ep_client_update.h"
 #include <limits.h>
 #include <string.h>
 struct EpClientPeerFixup {uint32_t offset,next,key,kind,multiplier;int64_t add;};
@@ -62,7 +63,7 @@ EpPropertyResult ep_client_peer_family_prepare(const HfApi* api,HfMod* owner,con
     if (!input || a.reserved || a.capacity<4 || a.capacity>8) return EP_PROPERTY_ARGUMENT;
     for (unsigned i=0;i<EP_CLIENT_PEER_FAMILY_COUNT;i++) {
         const EpClientDisconnectAddresses at={a.game,a.code[i],a.client,a.peers,a.reject,a.capacity,0};
-        auto rc=i==4 ? ep_client_disconnect_prepare(api,owner,&at,&out->code[i]) :
+        auto rc=i==8 ? ep_client_update_prepare(api,owner,&at,&out->code[i]) : i==4 ? ep_client_disconnect_prepare(api,owner,&at,&out->code[i]) :
             EpPeerPrepare(api,owner,i<4 ? i+1 : i,at,&out->code[i]);
         if (rc!=EP_PROPERTY_OK) return ep_client_peer_family_discard(owner,out) ? rc : EP_PROPERTY_CLEANUP;
     }

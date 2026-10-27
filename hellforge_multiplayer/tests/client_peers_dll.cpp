@@ -19,7 +19,7 @@ extern "C" __declspec(dllexport) int client_peer_reader_fixture()
     for (const auto& code:family.code) if (code.handle) {ep_client_peer_family_discard(mod,&family);return 2;}
     if (ep_client_peer_family_prepare(&api,mod,&a,&family)!=EP_PROPERTY_OK) return 3;
     int result=0;
-    for (unsigned i=5;i<EP_CLIENT_PEER_FAMILY_COUNT && !result;i++) {
+    for (unsigned i=5;i<=EP_CLIENT_PEER_SET_FLAG && !result;i++) {
         const auto& code=family.code[i];EpClientPeerImage image={};
         const EpClientDisconnectAddresses at={a.game,code.base,a.client,a.peers,a.reject,8,0};
         if (code.state!=EP_CODE_READY || ep_client_peer_build(i,&at,&image)!=EP_PROPERTY_OK || image.function_count!=1) {result=4;break;}

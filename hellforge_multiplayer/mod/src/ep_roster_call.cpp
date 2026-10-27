@@ -103,7 +103,7 @@ extern "C" void EpRosterCallDispatch(EpRosterCallContext* c,EpRosterCallFrame* f
 int ep_roster_call_prefix(EpRosterCallContext* context,uint8_t prefix[32])
 {
     if (!context || !prefix || !context->mod || !context->owner || !context->active || !context->next_pointer ||
-        !context->body || !context->kind || context->kind>EP_ROSTER_CALL_PEER_SET_FLAG || !context->policy.failure) return 0;
+        !context->body || !context->kind || context->kind>EP_ROSTER_CALL_CLIENT_UPDATE || !context->policy.failure) return 0;
     memset(prefix,0x90,32);uintptr_t c=(uintptr_t)context,entry=(uintptr_t)EpRosterCallEntry;
     prefix[0]=0x49;prefix[1]=0xBA;memcpy(prefix+2,&c,8);
     prefix[10]=0x49;prefix[11]=0xBB;memcpy(prefix+12,&entry,8);

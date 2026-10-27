@@ -216,7 +216,7 @@ def main():
     roster_gate_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_roster_gates.py','--library',property_dll,'--zig',zig]))
     roster_gate_receipt=PROJECT/'evidence/roster-gate-validation.json'
     roster_group_dll,roster_group_test=build/'roster_group_test.dll',build/'roster_group_test.exe'
-    roster_emitters=[PROJECT/'mod/src'/('ep_'+n+'.cpp') for n in ('property_image','property_gate','getter_image','mover_image','insert_image','remove_image','classify_image','registry_image','departure_image','arrival_image','player_join_image','player_join_call','roster_gate','client_peers','client_disconnect')]
+    roster_emitters=[PROJECT/'mod/src'/('ep_'+n+'.cpp') for n in ('property_image','property_gate','getter_image','mover_image','insert_image','remove_image','classify_image','registry_image','departure_image','arrival_image','player_join_image','player_join_call','roster_gate','client_peers','client_update','client_disconnect')]
     run([zig,'c++','-std=c++17','-target','x86_64-windows-gnu','-shared','-O1','-Wall','-Werror','-Wno-unused-parameter',
          '-I',source/'native/mod-sdk',*roster_emitters,PROJECT/'mod/src/ep_roster_call.cpp',PROJECT/'mod/src/ep_roster_owner.cpp',PROJECT/'mod/src/ep_native_roster.cpp',PROJECT/'tests/roster_group_dll.cpp','-o',roster_group_dll])
     run([*common,'-O1',PROJECT/'tests/roster_group_test.c',*deps,'-o',roster_group_test])

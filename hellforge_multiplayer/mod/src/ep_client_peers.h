@@ -6,7 +6,7 @@ extern "C" {
 #endif
 enum { EP_CLIENT_PEER_INSERT=1, EP_CLIENT_PEER_REGISTERED_INSERT=2,
        EP_CLIENT_PEER_REMOVE=3, EP_CLIENT_PEER_RESET=4, EP_CLIENT_PEER_LOOKUP=5,
-       EP_CLIENT_PEER_CONTAINS=6, EP_CLIENT_PEER_SET_FLAG=7, EP_CLIENT_PEER_FAMILY_COUNT=8 };
+       EP_CLIENT_PEER_CONTAINS=6, EP_CLIENT_PEER_SET_FLAG=7, EP_CLIENT_PEER_FAMILY_COUNT=9 };
 typedef struct EpClientPeerImage {
     uint32_t bytes,table_offset,function_count,handler_offset,body_offset,source_rva;
     uint8_t data[4096];
@@ -17,7 +17,8 @@ typedef struct EpClientPeerFamilyAddresses {
 } EpClientPeerFamilyAddresses;
 typedef struct EpClientPeerFamily {
     /* direct insert, registered insert, remove, reset, disconnect,
-     * record lookup, contains, record +19 flag setter */
+     * record lookup, contains, record +19 flag setter, whole client update.
+     * This unreleased family layout now has nine code entries; rebuild callers. */
     EpSessionCodeInfo code[EP_CLIENT_PEER_FAMILY_COUNT];
 } EpClientPeerFamily;
 /* Saved 10872C0 / B90B20 / 1087540 / 1087010. Preserve the original ABI,
@@ -46,7 +47,7 @@ typedef struct EpClientPeerFamily {
  * can move a record. They do not cover other inlined engine/UI lookups.
  */
 EpPropertyResult ep_client_peer_build(uint32_t kind,const EpClientDisconnectAddresses*,EpClientPeerImage*);
-/* Prepares all eight functions, including disconnect, against ONE bank/client/
+/* Prepares all nine functions, including disconnect and client update, against ONE bank/client/
  * capacity/reject contract. Never publishes. Failure cancels unexposed images;
  * if cancellation fails, CLEANUP returns every retained handle for retry.
  * Desired code bases may be zero (allocator chosen); rel32 validation remains.

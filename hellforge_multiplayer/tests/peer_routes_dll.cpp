@@ -4,12 +4,13 @@
 #include "ep_roster_group.h"
 #include "ep_roster_group_transition.h"
 #include "ep_player_join_call.h"
+#include "ep_client_update.h"
 #include <windows.h>
 #include <string.h>
 #define REQUIRE(x) do {if (!(x)) return __LINE__;} while (0)
 static HfMod* mod=(HfMod*)0x9192;
 static uint64_t owner,client=0x2100162c8,bank=0x220000000;
-static unsigned hooks,old_insert,old_registered,failures,bad;
+static unsigned hooks,old_insert,old_registered,old_update,failures,bad;
 static uint32_t failed_kind;
 static EpRosterPeerRoutesInfo routes;
 static EpRosterGroupInfo group;
@@ -17,6 +18,13 @@ static EpRosterGroupTransition token;
 static const char* Build() {return "25480438";}
 static int Read(void*,uintptr_t,void*,size_t) {++bad;return 0;}
 static uint64_t Old() {return 0xabcdef;}
+static uint64_t Update(uint64_t c)
+{
+    if (c!=client || ep_roster_owner_native_status(mod,owner)!=EP_OWNER_OK) ++bad;
+    ++old_update;return 0x314159;
+}
+extern "C" __declspec(dllexport) int client_update_emit(const EpClientDisconnectAddresses* a,EpClientUpdateImage* out)
+{return ep_client_update_build(a,out);}
 static uint64_t Insert(uint64_t a,uint64_t b,uint64_t c,uint64_t d,uint64_t e,uint64_t f,uint64_t g)
 {
     if (ep_roster_owner_native_status(mod,owner)!=EP_OWNER_OK ||
@@ -34,8 +42,9 @@ static int Hook(HfMod*,uintptr_t target,void*,void** next,int32_t)
     // All images must already be retained when even the first roster hook is exposed.
     EpRosterPeerRoutesInfo retained={};
     if (!ep_roster_group_peer_routes_info(mod,group.handle,&retained) || !retained.retained) ++bad;
-    for (unsigned i=0;i<8;i++) if (!retained.body[i].pinned || !retained.gate[i].pinned) ++bad;
-    ++hooks;*next=target==0x1410872c0 ? (void*)Insert : target==0x140b90b20 ? (void*)Registered : (void*)Old;return 0;
+    for (unsigned i=0;i<EP_CLIENT_PEER_FAMILY_COUNT;i++) if (!retained.body[i].pinned || !retained.gate[i].pinned) ++bad;
+    ++hooks;*next=target==0x1410872c0 ? (void*)Insert : target==0x140b90b20 ? (void*)Registered :
+        target==0x141083150 ? (void*)Update : (void*)Old;return 0;
 }
 static void Failure(void*,uint32_t kind,EpRosterOwnerResult,EpRosterCallFrame* frame)
 {++failures;failed_kind=kind;frame->rax=0xbadc0de;}
@@ -65,31 +74,49 @@ extern "C" __declspec(dllexport) int peer_routes_flow()
     EpRosterGroupBindings bindings={};bindings.game_base=0x140000000;bindings.roster_address=0x240000000;bindings.storage_address=0x240010000;
     for (unsigned i=0;i<EP_ROSTER_ENTRIES;i++) {bindings.desired_code[i]=0x180000000+0x10000ull*i;bindings.reject[i]=0x1c0000000;}
     EpClientPeerFamilyAddresses family={};family.game=bindings.game_base;family.client=client;family.peers=bank;family.reject=0x1c0000000;family.capacity=8;
-    for (unsigned i=0;i<8;i++) family.code[i]=0x182000000+0x10000ull*i;
+    for (unsigned i=0;i<EP_CLIENT_PEER_FAMILY_COUNT;i++) family.code[i]=0x182000000+0x10000ull*i;
     EpNativeRosterView view={};view.game=bindings.game_base;view.roster=bindings.roster_address;view.storage=bindings.storage_address;view.build=25480438;view.epoch=1;
     EpRosterMemory memory={nullptr,Read};EpRosterCallPolicy policy={Failure,nullptr,nullptr};
     REQUIRE(ep_roster_owner_create(mod,&view,&memory,&owner)==EP_OWNER_OK);
     REQUIRE(ep_roster_group_prepare_owned_peer_family(&api,mod,&bindings,owner,&policy,&family,&group));
-    REQUIRE(ep_roster_group_peer_routes_info(mod,group.handle,&routes) && routes.count==8 && !routes.retained && !hooks);
+    REQUIRE(ep_roster_group_peer_routes_info(mod,group.handle,&routes) && routes.count==EP_CLIENT_PEER_FAMILY_COUNT && !routes.retained && !hooks);
     auto saved=routes;
     REQUIRE(ep_roster_group_cancel(mod,group.handle));
-    for (unsigned i=0;i<8;i++) {
+    for (unsigned i=0;i<EP_CLIENT_PEER_FAMILY_COUNT;i++) {
         EpSessionCodeInfo info={};REQUIRE(!ep_session_code_info(mod,saved.body[i].handle,&info));
         REQUIRE(!ep_session_code_info(mod,saved.gate[i].handle,&info));
     }
     REQUIRE(ep_roster_group_prepare_owned_peer_family(&api,mod,&bindings,owner,&policy,&family,&group));
     REQUIRE(ep_roster_group_peer_routes_info(mod,group.handle,&routes));
+    // Actual Windows unwind of update's second fragment, including its root
+    // chain. Stack/register values belong solely to this fixture.
+    EpClientUpdateImage update={};const auto& update_code=routes.body[8];
+    const EpClientDisconnectAddresses ua={family.game,update_code.base,client,bank,family.reject,8,0};
+    REQUIRE(ep_client_update_build(&ua,&update)==EP_PROPERTY_OK);
+    uint32_t fragment;memcpy(&fragment,update.data+update.table_offset+2*12,4);
+    alignas(16) uint64_t stack[64]={};auto sp=(uintptr_t)stack;
+    *(uint64_t*)(sp+0xc8)=0x12345678;*(uint64_t*)(sp+0xe8)=0x33;
+    *(uint64_t*)(sp+0xc0)=0x55;*(uint64_t*)(sp+0xb8)=0x66;*(uint64_t*)(sp+0xb0)=0x77;
+    *(uint64_t*)(sp+0xa8)=0xee;*(uint64_t*)(sp+0xa0)=0xff;
+    *(uint64_t*)(sp+0xd8)=0xcc;*(uint64_t*)(sp+0xe0)=0xdd;
+    CONTEXT context={};context.ContextFlags=CONTEXT_FULL;context.Rsp=sp;context.Rip=update_code.base+fragment+0x10;
+    DWORD64 image_base=0,establisher=0;void* handler_data=nullptr;
+    auto function=RtlLookupFunctionEntry(context.Rip,&image_base,nullptr);REQUIRE(function && image_base==update_code.base);
+    RtlVirtualUnwind(UNW_FLAG_NHANDLER,image_base,context.Rip,function,&context,&handler_data,&establisher,nullptr);
+    REQUIRE(context.Rip==0x12345678 && context.Rsp==sp+0xd0 && context.Rbx==0x33 && context.Rbp==0x55 &&
+        context.Rsi==0x66 && context.Rdi==0x77 && context.R14==0xee && context.R15==0xff && context.R12==0xcc && context.R13==0xdd);
     EpRosterCallContext* roster_call=nullptr;memcpy(&roster_call,(const void*)(group.code[0].base+2),8);
-    for (unsigned i=0;i<8;i++) {
+    for (unsigned i=0;i<EP_CLIENT_PEER_FAMILY_COUNT;i++) {
         EpRosterCallContext* call=nullptr;memcpy(&call,(const void*)(routes.gate[i].base+2),8);
         REQUIRE(call->active==roster_call->active && call->switching==roster_call->switching && call->owner==owner);
         REQUIRE(call->body==routes.body[i].base && call->join_client==client && call->kind==EP_ROSTER_CALL_PEER_INSERT+i);
     }
-    REQUIRE(ep_roster_group_publish(mod,group.handle,0) && hooks==26 && !bad);
+    REQUIRE(ep_roster_group_publish(mod,group.handle,0) && hooks==EP_ROSTER_ENTRIES+EP_CLIENT_PEER_FAMILY_COUNT && !bad);
     auto insert=(uint64_t(*)(uint64_t,uint64_t,uint64_t,uint64_t,uint64_t,uint64_t,uint64_t))routes.gate[0].base;
     auto registered=(uint64_t(*)(uint64_t,uint64_t,uint64_t,uint64_t,uint64_t,uint64_t))routes.gate[1].base;
     REQUIRE(insert(client,0x11,0x22,0x33,0x44,0x55,0x66)==0x123456789);
     REQUIRE(registered(0x77,0x88,0x99,0xaa,0xbb,0xcc)==0x987654321 && old_insert==1 && old_registered==1 && !bad);
+    REQUIRE(((uint64_t(*)(uint64_t))routes.gate[8].base)(client)==0x314159 && old_update==1 && !bad);
     REQUIRE(VirtualAlloc((void*)(client-0x162c8),0x17000,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE)==(void*)(client-0x162c8));
     REQUIRE(VirtualAlloc((void*)bank,4096,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE)==(void*)bank);
     *(uint32_t*)(client+0xc8)=8;memset((void*)(client+0xd0),0xa5,128);

@@ -73,7 +73,7 @@ static int EpGroupCancel(EpRosterGroup* g)
     return ok;
 }
 static const uint32_t EpPeerRvas[EP_CLIENT_PEER_FAMILY_COUNT]={
-    0x10872c0,0xb90b20,0x1087540,0x1087010,0x10845b0,0x1084fd0,0x1085010,0x1085090};
+    0x10872c0,0xb90b20,0x1087540,0x1087010,0x10845b0,0x1084fd0,0x1085010,0x1085090,0x1083150};
 static int EpGroupPreparePeers(const HfApi* api,EpRosterGroup* g,const EpRosterGroupBindings* b,
     const EpRosterCallPolicy* policy,const EpClientPeerFamilyAddresses* family,const EpSessionCodeInfo* roster)
 {

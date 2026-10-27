@@ -57,7 +57,9 @@ typedef struct EpRosterPeerRoutesInfo {
     uint32_t count,retained;
     EpSessionCodeInfo body[EP_CLIENT_PEER_FAMILY_COUNT],gate[EP_CLIENT_PEER_FAMILY_COUNT];
 } EpRosterPeerRoutesInfo;
-/* Prepare all eight confirmed-peer routes with the eighteen roster routes.
+/* Prepare all nine confirmed-peer/update routes with the eighteen roster routes.
+ * Update owns both native lookup calls through their last pointer access; the
+ * independent host four-slot state still needs migration (ep_client_update.h).
  * Family game/client/bank/capacity are the local-join binding too. All gates use
  * the SAME owner, latch, staging barrier and policy. Family code[] supplies
  * native body addresses within rel32 reach; bridge gates use absolute jumps.

@@ -23,7 +23,7 @@ class Image(c.Structure):
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--zig',type=Path,required=True);p.add_argument('--upstream',type=Path,required=True)
     a=p.parse_args();library=(PROJECT/'build/client_peers_test.dll').resolve();library.parent.mkdir(exist_ok=True)
-    sources=[PROJECT/'mod/src'/name for name in ('ep_client_peers.cpp','ep_client_disconnect.cpp','ep_session_code.cpp')]+[PROJECT/'tests/client_peers_dll.cpp']
+    sources=[PROJECT/'mod/src'/name for name in ('ep_client_peers.cpp','ep_client_update.cpp','ep_client_disconnect.cpp','ep_session_code.cpp')]+[PROJECT/'tests/client_peers_dll.cpp']
     cmd=[a.zig.resolve(),'c++','-std=c++17','-target','x86_64-windows-gnu','-O2','-Wall','-Wextra','-Werror',
          '-Wno-missing-field-initializers','-I',a.upstream.resolve()/'native/mod-sdk','-I',PROJECT/'mod/src','-shared',*sources,'-o',library]
     result=subprocess.run(list(map(str,cmd)),capture_output=True,text=True);need(result.returncode==0,result.stdout+result.stderr)
