@@ -46,9 +46,11 @@ typedef struct EpLoadoutGroup {
     uint64_t settle_resource_objects,promote_resource_object,demote_resource_object;
     uint64_t emit_initial_resource_state,receive_resource_state,finish_resource,reset_resource_effect;
     uint64_t activate_resource,reset_resource_phases,complete_resource,resource_main_update,query_resource_object,update_resource_states;
+    uint64_t construct_banks; /* isolated record/widget initialization; never auto-invoked */
     uint32_t capacity,state;
 } EpLoadoutGroup;
-/* Prepare fifty-eight distinct native entries and one compatibility alias from ONE screen/storage/map/capacity
+/* Prepare fifty-eight distinct native entries, one compatibility alias and an
+ * isolated record/widget initializer from ONE screen/storage/map/capacity
  * binding. The twenty-two desired code bases must be explicit and nonoverlapping.
  * The independent record-source banks must be disjoint from every image.
  * Input -> refresh -> close, control -> mode/navigation/edit/return, lifecycle -> state and
@@ -73,7 +75,8 @@ typedef struct EpLoadoutGroup {
  * these cyclic links are prepared together and must share lifetime.
  * Only owned code allocations are made; data still belongs to the caller.
  * ep_loadout_storage_prepare wraps this group with owned fresh data banks and
- * coordinated cancellation/retention; it does not perform state migration.
+ * coordinated cancellation/retention. Its import_sources stages eight source
+ * banks separately; construct_banks performs no screen migration or publication.
  * All images must reach READY before callable addresses are returned. Partial
  * preparation discards in reverse order; failed cleanup retains only handles
  * and exposes no callable entries. Retry group_discard for CLEANUP.

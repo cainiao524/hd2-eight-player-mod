@@ -84,8 +84,8 @@ static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_
     if (handler_kind==1 && (!gs || count!=3 || gs->function_index!=1 ||
         functions[0].UnwindData!=functions[2].UnwindData ||
         functions[2].BeginAddress!=gs->handler_offset || functions[2].EndAddress!=gs->handler_offset+5)) return 0;
-    if (handler_kind==2 && (!gs || count!=9 || gs->function_index!=7 ||
-        functions[8].BeginAddress!=gs->handler_offset || functions[8].EndAddress!=gs->handler_offset+5)) return 0;
+    if (handler_kind==2 && (!gs || count!=11 || gs->function_index!=7 ||
+        functions[10].BeginAddress!=gs->handler_offset || functions[10].EndAddress!=gs->handler_offset+5)) return 0;
     if (handler_kind==3 && (!gs || count!=3 || gs->function_index!=1 ||
         functions[2].BeginAddress!=gs->handler_offset || functions[2].EndAddress!=gs->handler_offset+5)) return 0;
     if (handler_kind==4 && (!gs || count!=5 || gs->function_index!=1 ||
@@ -230,7 +230,7 @@ int ep_session_code_seal_gs_table(HfMod* owner,uint64_t handle,const void* image
 int ep_session_code_seal_component33_property(HfMod* owner,uint64_t handle,const void* image,uint32_t bytes,uint32_t at,const EpSessionGsCheck* gs)
 { return EpCodeSeal(owner,handle,image,bytes,at,3,gs,1); }
 int ep_session_code_seal_loadout_transition(HfMod* owner,uint64_t handle,const void* image,uint32_t bytes,uint32_t at,const EpSessionGsCheck* gs)
-{ return EpCodeSeal(owner,handle,image,bytes,at,9,gs,2); }
+{ return EpCodeSeal(owner,handle,image,bytes,at,11,gs,2); }
 int ep_session_code_seal_loadout_setup(HfMod* owner,uint64_t handle,const void* image,uint32_t bytes,uint32_t at,const EpSessionGsCheck* gs)
 { return EpCodeSeal(owner,handle,image,bytes,at,3,gs,3); }
 int ep_session_code_seal_loadout_refresh(HfMod* owner,uint64_t handle,const void* image,uint32_t bytes,uint32_t at,const EpSessionGsCheck* gs)

@@ -1,4 +1,4 @@
-"""Relocate four saved native loadout lifecycle bodies; never accesses a game.
+"""Relocate four saved lifecycle bodies and an isolated bank initializer.
 
 The constructor's player records/widgets move together. Nested widget fields,
 including the four choices at 189D050, retain their original layout. No hashes,
@@ -134,6 +134,35 @@ def build():
     for offset, nxt, target in branches:
         need(target in mapping, 'Branch is not an instruction boundary')
         fixes.append((offset, nxt, 1, 0, mapping[target]))
+    # A retained screen must NOT go through the full constructor again. Reuse
+    # only its bound-screen guard, original prologue + record initialization,
+    # native per-widget construction loop, and epilogue. In particular, omit
+    # ALL unrelated inline-screen member initialization and helper calls.
+    # Clone relocated bytes, rebasing both operand locations and local branches;
+    # original entry offsets/branches remain unchanged for existing callers.
+    pieces=((entries[0],mapping[0x14a1912]),
+            (mapping[0x14a1943],mapping[0x14a1965]),
+            (mapping[0x14a1b29],functions[1][1]))
+    blob += b'\xcc' * (-len(blob)%16)
+    bank_entry=len(blob);clones=[]
+    for lo,hi in pieces:
+        need(lo<hi,'Empty bank-constructor segment')
+        dest=len(blob);clones.append((lo,hi,dest));blob.extend(blob[lo:hi])
+    def cloned_offset(old):
+        selected=[dest+old-lo for lo,hi,dest in clones if lo<=old<hi]
+        need(len(selected)==1,'Bank constructor branches into omitted screen initialization')
+        return selected[0]
+    for offset,nxt,key,kind,add in list(fixes):
+        for lo,hi,dest in clones:
+            if not lo<=offset<hi:continue
+            need(offset+(8 if kind==1 else 4)<=hi,'Split constructor relocation')
+            if nxt:need(lo<=nxt<=hi,'Split constructor instruction')
+            fixes.append((dest+offset-lo,dest+nxt-lo if nxt else 0,key,kind,
+                          cloned_offset(add) if key==1 else add))
+    bank_body=bank_entry+sources[0]['body']-sources[0]['entry']
+    functions.extend(((bank_entry,bank_body,b'\x01\0\0\0'),(bank_body,len(blob),functions[1][2])))
+    bank_mapping={rva:cloned_offset(off) for rva,off in mapping.items()
+                  if any(lo<=off<hi for lo,hi,dest in clones)}
     # Preserve EH/UH flags, the RSP+80 cookie, and an owned GS-handler thunk.
     blob += b'\xcc' * (-len(blob) % 16)
     handler_offset = len(blob)
@@ -154,7 +183,7 @@ def build():
     need(len(blob) <= 4096, 'Lifecycle image exceeds bounded storage')
     return dict(blob=bytes(blob), fixes=fixes, code_bytes=code_bytes, unwind_offset=unwind_offset,
                 table_offset=table_offset, entries=entries, functions=metadata, sources=sources, mapping=mapping,
-                handler_offset=handler_offset)
+                handler_offset=handler_offset,bank_initializer=dict(entry=bank_entry,body=bank_body,mapping=bank_mapping))
 
 
 def render(artifact):
@@ -169,6 +198,8 @@ def render(artifact):
     lines += ['};']
     for name in ('code_bytes', 'unwind_offset', 'table_offset','handler_offset'):
         lines.append(f'static const uint32_t ep_loadout_{name} = {artifact[name]};')
+    lines.append(f'static const uint32_t ep_loadout_construct_banks = {artifact["bank_initializer"]["entry"]};')
+    lines.append(f'static const uint32_t ep_loadout_function_count = {len(artifact["functions"])};')
     lines += ['static const uint32_t ep_loadout_entries[] = {'+','.join(map(str, artifact['entries']))+'};', '']
     return '\n'.join(lines)
 
@@ -180,4 +211,4 @@ if __name__ == '__main__':
     artifact = build()
     if args.write:
         HEADER.write_text(render(artifact), encoding='utf-8', newline='\n')
-    print(json.dumps(dict(image_bytes=len(artifact['blob']), lifecycle_entries=4, game_access=False)))
+    print(json.dumps(dict(image_bytes=len(artifact['blob']),lifecycle_entries=4,bank_initializer=True,game_access=False)))

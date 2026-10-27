@@ -174,6 +174,7 @@ EpPropertyResult ep_loadout_group_prepare(const HfApi* api,HfMod* mod,const EpLo
         return result==EP_PROPERTY_CLEANUP ? EP_PROPERTY_SEAL : result;
     }
     group.constructor=group.code[0].base+life.constructor;group.release=group.code[0].base+life.release;
+    group.construct_banks=group.code[0].base+life.construct_banks;
     group.alternate_release=group.code[0].base+life.alternate_release;group.transition=group.code[0].base+life.transition;
     group.update=group.code[1].base+consumers.update;group.lookup=group.code[1].base+consumers.lookup;
     group.action=group.code[1].base+consumers.action;group.setup=group.code[2].base;

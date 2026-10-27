@@ -2,7 +2,8 @@
 
 Default: one eight-slot transition smoke check against the saved four-slot
 body, READY preparation and two Windows unwind points. --full explicitly adds
-the previous lifecycle regression. Resource services remain test stubs.
+the previous lifecycle regression. --banks-only runs only the isolated bank
+constructor flow. Resource services remain test stubs.
 No receipts, hashes, archives, installation or game access.
 """
 import argparse
@@ -33,7 +34,7 @@ class Addresses(c.Structure):
 
 
 class Image(c.Structure):
-    _fields_=[(name,c.c_uint32) for name in ('bytes','code_bytes','unwind_offset','table_offset','constructor','release','alternate_release','function_count','transition','handler_offset')]+[('data',c.c_ubyte*4096)]
+    _fields_=[(name,c.c_uint32) for name in ('bytes','code_bytes','unwind_offset','table_offset','constructor','release','alternate_release','function_count','transition','handler_offset','construct_banks')]+[('data',c.c_ubyte*4096)]
 
 
 def addresses(capacity=8):
@@ -225,9 +226,36 @@ def transition_smoke(artifact,dll):
     return dict(passed=True,scope='eight-slot transition smoke',game_access=False,runtime_verified=False)
 
 
+def bank_constructor_smoke(artifact,dll):
+    image=Image();g.need(dll.loadout_build(c.byref(addresses(8)),STATE_STUB,c.byref(image))==0,'Bank image rejected')
+    # Independent reference: run the untouched saved FOUR-slot constructor,
+    # including its real per-widget body. Only nested resource services are stubs.
+    old=Fixture(artifact,dll,image,4,0,0,original=True,unwind_points=set()).run()
+    bank=artifact['bank_initializer'];g.need(image.construct_banks==bank['entry'],'Initializer entry mismatch')
+    points={bank['mapping'][0x14a1810],bank['mapping'][0x14a1b29]}
+    new=Fixture(artifact,dll,image,8,0,0,unwind_points=points)
+    new.start=CODE+image.construct_banks
+    new.before_screen=b'\x6e'*0x2739d0;new.write(SCREEN,new.before_screen)
+    new.run()
+    old_widgets,_=old.groups();new_widgets,_=new.groups()
+    g.need(new.value('rax')==SCREEN,'Bank initializer lost the constructor return ABI')
+    g.need(new.read(SCREEN,len(new.before_screen))==new.before_screen,'Bank initializer changed the existing screen')
+    constructors=[rcx for target,rcx,rdx in new.calls if target==0x14aa5c0]
+    g.need(constructors==[WIDGETS+i*0x1ee18 for i in range(8)],'A native widget was skipped or constructed twice')
+    for i in range(8):
+        g.need(new_widgets[i]==old_widgets[i%4],'Per-widget native callback ordering changed')
+        g.need(new.read(RECORDS+i*0x9f0,0x9f0)==old.read(old.records+(i%4)*0x9f0,0x9f0),'Native record initialization changed')
+        g.need(new.read(WIDGETS+i*0x1ee18,0x1ee18)==old.read(old.widgets+(i%4)*0x1ee18,0x1ee18),'Native widget initialization changed')
+    g.need(not points and new.unwinds==2,'Initializer Windows unwind checks not reached')
+    g.need(dll.loadout_prepare_test(c.byref(addresses(8)),STATE_STUB)==0,'Expanded lifecycle image sealing/cleanup failed')
+    return dict(passed=True,scope='one eight-slot isolated bank constructor flow',game_access=False,runtime_verified=False)
+
+
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--zig',type=Path);parser.add_argument('--upstream',type=Path)
-    parser.add_argument('--full',action='store_true',help='Explicitly run the existing lifecycle regression as well')
+    mode=parser.add_mutually_exclusive_group()
+    mode.add_argument('--full',action='store_true',help='Explicitly run the existing lifecycle regression as well')
+    mode.add_argument('--banks-only',action='store_true',help='Run only the isolated bank constructor flow')
     parser.add_argument('--library',type=Path,default=g.PROJECT/'build/loadout_lifecycle_test.dll');args=parser.parse_args()
     if args.zig:
         g.need(args.upstream is not None,'--upstream required')
@@ -240,7 +268,9 @@ def main():
     dll.loadout_build.argtypes=[c.POINTER(Addresses),c.c_uint64,c.POINTER(Image)];dll.loadout_build.restype=c.c_int
     dll.loadout_prepare_test.argtypes=[c.POINTER(Addresses),c.c_uint64];dll.loadout_prepare_test.restype=c.c_int
     dll.loadout_unwind.argtypes=[c.POINTER(Image),c.c_uint32,c.c_int32,c.POINTER(c.c_uint64),c.POINTER(c.c_ubyte),c.c_uint64];dll.loadout_unwind.restype=c.c_int
-    artifact=g.build();smoke=transition_smoke(artifact,dll)
+    artifact=g.build()
+    if args.banks_only:print(json.dumps(bank_constructor_smoke(artifact,dll)));return
+    smoke=transition_smoke(artifact,dll)
     if not args.full:print(json.dumps(smoke));return
     scenarios=unwinds=0
     for kind in range(3):

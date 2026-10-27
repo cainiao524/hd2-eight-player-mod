@@ -26,9 +26,10 @@ EpPropertyResult ep_loadout_lifecycle_build(const EpLoadoutAddresses* input,uint
         for (unsigned i=0;i<width;i++) image.data[f.offset+i]=(uint8_t)((uint64_t)value>>(8*i));
     }
     image.bytes=sizeof(ep_loadout_lifecycle_template);image.code_bytes=ep_loadout_code_bytes;
-    image.unwind_offset=ep_loadout_unwind_offset;image.table_offset=ep_loadout_table_offset;image.function_count=9;
+    image.unwind_offset=ep_loadout_unwind_offset;image.table_offset=ep_loadout_table_offset;image.function_count=ep_loadout_function_count;
     image.constructor=ep_loadout_entries[0];image.release=ep_loadout_entries[1];image.alternate_release=ep_loadout_entries[2];
     image.transition=ep_loadout_entries[3];image.handler_offset=ep_loadout_handler_offset;
+    image.construct_banks=ep_loadout_construct_banks;
     *out=image;return EP_PROPERTY_OK;
 }
 EpPropertyResult ep_loadout_lifecycle_prepare(const HfApi* api,HfMod* mod,const EpLoadoutAddresses* input,uint64_t state_change,EpSessionCodeInfo* out)

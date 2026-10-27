@@ -53,7 +53,8 @@ int ep_session_code_seal_gs_table(HfMod*, uint64_t handle, const void* image,
  * Does not relax the existing handler-free or 6054F0 contracts. */
 int ep_session_code_seal_component33_property(HfMod*, uint64_t handle, const void* image,
     uint32_t bytes, uint32_t table_offset, const EpSessionGsCheck*);
-/* Loadout lifecycle opt-in: nine rows, transition at row 7, handler at row 8,
+/* Loadout lifecycle opt-in: eleven rows, transition at row 7, bank initializer
+ * guard/body at rows 8/9, handler at row 10,
  * exact 1470A40 fixed-frame unwind including XMM6..8, EH/UH cookie +80.
  * Does not admit these handlers through the ordinary or other GS sealers. */
 int ep_session_code_seal_loadout_transition(HfMod*, uint64_t handle, const void* image,

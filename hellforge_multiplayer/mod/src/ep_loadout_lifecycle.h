@@ -16,7 +16,7 @@ typedef struct EpLoadoutAddresses {
 typedef struct EpLoadoutImage {
     uint32_t bytes,code_bytes,unwind_offset,table_offset;
     uint32_t constructor,release,alternate_release,function_count;
-    uint32_t transition,handler_offset;
+    uint32_t transition,handler_offset,construct_banks;
     uint8_t data[4096];
 } EpLoadoutImage;
 /* Saved build 25480438: 14A17E0 constructor, 1467330/1467720 releases,
@@ -38,10 +38,22 @@ typedef struct EpLoadoutImage {
  * No game discovery, allocation of screen/data, activation or Mod-init binding.
  * The limit is this adapter's implemented capacity, not verified player count.
  */
+/* construct_banks is a separate entry for FRESH unexposed record/widget banks.
+ * RCX must be the bound screen; RAX returns it. It runs the original record
+ * initializer and 14AA5C0 once per configured widget, preserving the native
+ * frame/inner widget resource loops. It omits every unrelated inline screen
+ * write/call from the full constructor. It does NOT copy old widget ownership,
+ * run setup, migrate records/maps, redirect external references, or publish UI.
+ * Caller owes module/code/data retention, source validation and whole-call
+ * exclusion before invocation. Never call twice or on live/constructed banks.
+ * A partial native constructor fault is not rollback: keep all backing pinned
+ * and quarantine the generation; do not call release or retry blindly.
+ * Native helper side effects/lifetime remain part of the caller's engine gate.
+ * Exposing this entry does not invoke it or authorize live game access. */
 /* The transition must use the same group's guarded state-change entry.
  * This extra link is numeric only and must remain alive with this image. */
 EpPropertyResult ep_loadout_lifecycle_build(const EpLoadoutAddresses*,uint64_t state_change,EpLoadoutImage*);
-/* One cancellable READY image holds four entries and nine unwind rows. The
+/* One cancellable READY image holds five entries and eleven unwind rows. The
  * transition keeps EH/UH __GSHandlerCheck at game+21044A0, with cookie +80
  * and an owned handler thunk. Caller must validate both native GS targets.
  * CLEANUP returns a retained handle; caller must retry discard. Does not
