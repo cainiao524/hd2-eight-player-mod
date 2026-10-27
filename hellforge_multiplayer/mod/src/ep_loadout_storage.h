@@ -10,11 +10,16 @@ typedef enum EpLoadoutStorageResult {
     EP_LOADOUT_STORAGE_OK,EP_LOADOUT_STORAGE_ARGUMENT,EP_LOADOUT_STORAGE_POINTER,
     EP_LOADOUT_STORAGE_CONFLICT,EP_LOADOUT_STORAGE_RESERVE,EP_LOADOUT_STORAGE_GROUP,
     EP_LOADOUT_STORAGE_STATE,EP_LOADOUT_STORAGE_RETAIN_FAILED,EP_LOADOUT_STORAGE_CLEANUP,
-    EP_LOADOUT_STORAGE_SOURCE,EP_LOADOUT_STORAGE_COUNTS,EP_LOADOUT_STORAGE_STALE
+    EP_LOADOUT_STORAGE_SOURCE,EP_LOADOUT_STORAGE_COUNTS,EP_LOADOUT_STORAGE_STALE,
+    EP_LOADOUT_STORAGE_SCOPE,EP_LOADOUT_STORAGE_NATIVE_FAILED
 } EpLoadoutStorageResult;
 enum {EP_LOADOUT_STORAGE_PREPARING=1,EP_LOADOUT_STORAGE_PREPARED,
       EP_LOADOUT_STORAGE_RETAINING,EP_LOADOUT_STORAGE_RETAINED,
-      EP_LOADOUT_STORAGE_CLEANING,EP_LOADOUT_STORAGE_CLEANUP_REQUIRED};
+      EP_LOADOUT_STORAGE_CLEANING,EP_LOADOUT_STORAGE_CLEANUP_REQUIRED,
+      EP_LOADOUT_STORAGE_INITIALIZING,EP_LOADOUT_STORAGE_UI_MIGRATED,
+      EP_LOADOUT_STORAGE_QUARANTINED};
+enum {EP_LOADOUT_INIT_NONE,EP_LOADOUT_INIT_CHECKING,EP_LOADOUT_INIT_RETAINING,
+      EP_LOADOUT_INIT_CONSTRUCTING,EP_LOADOUT_INIT_REPLACING,EP_LOADOUT_INIT_DONE};
 
 typedef struct EpLoadoutStorageBindings {
     EpLoadoutGroupAddresses group;
@@ -25,6 +30,7 @@ typedef struct EpLoadoutStorageBindings {
 typedef struct EpLoadoutStorageInfo {
     uint64_t handle,arena;
     uint32_t bytes,capacity,state,group_result,sources_imported;
+    uint32_t initialization_step,owner_result;
     EpLoadoutGroupAddresses binding;
     EpLoadoutGroup group;
 } EpLoadoutStorageInfo;
@@ -102,6 +108,30 @@ EpLoadoutStorageResult ep_loadout_storage_retain(HfMod*,uint64_t);
  * a future activation path must close those additional freshness/lifetime gates.
  * Mismatch remains PREPARED, cancellable and eligible for a fresh import. */
 EpLoadoutStorageResult ep_loadout_storage_retain_sources(HfMod*,uint64_t,const EpLoadoutSourceSnapshot* current);
+
+/* EXPLICIT native invocation, never called by Mod init/prepare/import/retain.
+ * Requires an ALREADY ACTIVE native call scope of roster_owner with the same
+ * game/roster/B binding. Caller must additionally exclude/drain every old/new
+ * and unhooked engine call, retain screen/managers/pointees, validate native
+ * targets and rejection policy, and supply the current coherent owned snapshot.
+ * The roster lock alone does not establish those engine guarantees.
+ *
+ * From PREPARED or RETAINED, check source/target freshness, retain all 22 images,
+ * construct fresh record/widget banks, then migrate records/maps and replace
+ * four inline roots. Calls occur without the storage lock. UI_MIGRATED means
+ * these two calls returned; it is NOT activation, refresh or source redirection.
+ * Keep engine exclusion until the caller completes every publication gate.
+ *
+ * Source/binding/retention rejection before native work preserves the original
+ * state for correction. Any native exception, nested owner failure, or recursive
+ * initialization quarantines both owners and keeps all backing; no retry,
+ * cancellation, automatic release or rollback. The caller must retain exclusion
+ * on failure and must NOT report an OLD rollback after partial UI mutation.
+ * C++ exceptions and longjmp are unsupported. No discovery, sampling or hooks.
+ * This API is not wired into the multiplayer commit, which still needs a
+ * coordinated UI publication/failure policy before calling it. */
+EpLoadoutStorageResult ep_loadout_storage_initialize_in_scope(HfMod*,uint64_t handle,
+    uint64_t roster_owner,const EpLoadoutSourceSnapshot* current);
 
 #ifdef __cplusplus
 }

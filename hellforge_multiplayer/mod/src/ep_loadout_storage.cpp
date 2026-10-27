@@ -1,4 +1,5 @@
 #include "ep_loadout_storage.h"
+#include "ep_roster_owner.h"
 #include <windows.h>
 #include <string.h>
 
@@ -13,6 +14,8 @@ struct Storage {
 Storage slots[EP_LOADOUT_STORAGE_SLOTS];
 SRWLOCK storage_lock=SRWLOCK_INIT;
 uint64_t sequence;
+struct Initialization;
+thread_local Initialization* initializing;
 bool pointer(uint64_t at,uint64_t bytes,uint64_t alignment=1)
 {return at>=0x10000 && at<(UINT64_C(1)<<47) && bytes<=(UINT64_C(1)<<47)-at && !(at%alignment);}
 bool overlap(uint64_t a,uint64_t n,uint64_t b,uint64_t m)
@@ -25,7 +28,8 @@ Storage* find(HfMod* mod,uint64_t handle)
 void info(const Storage& slot,EpLoadoutStorageInfo* out)
 {
     *out=slot.info;
-    if (out->state!=EP_LOADOUT_STORAGE_PREPARED && out->state!=EP_LOADOUT_STORAGE_RETAINED) {
+    if (out->state!=EP_LOADOUT_STORAGE_PREPARED && out->state!=EP_LOADOUT_STORAGE_RETAINED &&
+        out->state!=EP_LOADOUT_STORAGE_UI_MIGRATED) {
         out->binding={};out->group={};
     }
 }
@@ -124,6 +128,57 @@ bool target_equal(const Storage& slot)
         }
     }
     return true;
+}
+struct Initialization {
+    Storage* slot;
+    uint64_t owner;
+    const EpLoadoutSourceSnapshot* current;
+    EpLoadoutStorageResult result;
+    uint32_t original_state;
+    bool reentered;
+};
+void initialization_step(Storage& slot,uint32_t step)
+{
+    AcquireSRWLockExclusive(&storage_lock);slot.info.initialization_step=step;
+    ReleaseSRWLockExclusive(&storage_lock);
+}
+bool initialization_healthy(const Initialization& call)
+{return !call.reentered && ep_roster_owner_native_status(call.slot->mod,call.owner)==EP_OWNER_OK;}
+int initialize_owned(void* context,const EpNativeRosterView* view)
+{
+    auto& call=*(Initialization*)context;auto& slot=*call.slot;
+    const auto& binding=slot.info.binding.setup.common;
+    if (view->game!=slot.game || view->roster!=binding.roster || view->storage!=binding.roster_storage) {
+        call.result=EP_LOADOUT_STORAGE_SOURCE;return 1;
+    }
+    // The caller's snapshot and our owned banks are read under the nested
+    // owner's SEH boundary, with no storage lock that an exception could strand.
+    const auto current=*call.current;
+    if (!source_equal(current,slot.source) || !target_equal(slot)) {
+        call.result=EP_LOADOUT_STORAGE_STALE;return 1;
+    }
+    if (call.original_state==EP_LOADOUT_STORAGE_PREPARED) {
+        initialization_step(slot,EP_LOADOUT_INIT_RETAINING);
+        uint64_t handles[EP_LOADOUT_GROUP_CODE_COUNT];
+        for (unsigned i=0;i<EP_LOADOUT_GROUP_CODE_COUNT;i++) handles[i]=slot.info.group.code[i].handle;
+        if (!ep_session_code_retain_set(slot.mod,handles,EP_LOADOUT_GROUP_CODE_COUNT)) {
+            call.result=EP_LOADOUT_STORAGE_RETAIN_FAILED;return 1;
+        }
+        AcquireSRWLockExclusive(&storage_lock);
+        for (auto& code:slot.info.group.code) {code.state=EP_CODE_RETAINED;code.pinned=1;}
+        ReleaseSRWLockExclusive(&storage_lock);
+    }
+    call.result=EP_LOADOUT_STORAGE_NATIVE_FAILED;
+    if (!initialization_healthy(call)) return 0;
+    initialization_step(slot,EP_LOADOUT_INIT_CONSTRUCTING);
+    auto construct=(void*(*)(void*))(uintptr_t)slot.info.group.construct_banks;
+    if (construct((void*)(uintptr_t)slot.screen)!=(void*)(uintptr_t)slot.screen || !initialization_healthy(call)) return 0;
+    initialization_step(slot,EP_LOADOUT_INIT_REPLACING);
+    auto replace=(void(*)(void*))(uintptr_t)slot.info.group.replace_widgets;
+    replace((void*)(uintptr_t)slot.screen);
+    if (!initialization_healthy(call)) return 0;
+    initialization_step(slot,EP_LOADOUT_INIT_DONE);
+    call.result=EP_LOADOUT_STORAGE_OK;return 1;
 }
 }
 
@@ -262,3 +317,31 @@ EpLoadoutStorageResult ep_loadout_storage_retain(HfMod* mod,uint64_t handle)
 {return retain(mod,handle,nullptr);}
 EpLoadoutStorageResult ep_loadout_storage_retain_sources(HfMod* mod,uint64_t handle,const EpLoadoutSourceSnapshot* current)
 {return current ? retain(mod,handle,current) : EP_LOADOUT_STORAGE_ARGUMENT;}
+
+EpLoadoutStorageResult ep_loadout_storage_initialize_in_scope(HfMod* mod,uint64_t handle,
+    uint64_t owner,const EpLoadoutSourceSnapshot* current)
+{
+    // Even a swallowed recursive request must stop the outer native sequence.
+    if (initializing) {initializing->reentered=true;return EP_LOADOUT_STORAGE_STATE;}
+    if (!mod || !handle || !owner || !current) return EP_LOADOUT_STORAGE_ARGUMENT;
+    if (ep_roster_owner_native_status(mod,owner)!=EP_OWNER_OK) return EP_LOADOUT_STORAGE_SCOPE;
+    AcquireSRWLockExclusive(&storage_lock);auto* slot=find(mod,handle);
+    if (!slot || (slot->info.state!=EP_LOADOUT_STORAGE_PREPARED && slot->info.state!=EP_LOADOUT_STORAGE_RETAINED)) {
+        ReleaseSRWLockExclusive(&storage_lock);return EP_LOADOUT_STORAGE_STATE;
+    }
+    if (!slot->info.sources_imported) {ReleaseSRWLockExclusive(&storage_lock);return EP_LOADOUT_STORAGE_SOURCE;}
+    Initialization call={slot,owner,current,EP_LOADOUT_STORAGE_NATIVE_FAILED,slot->info.state,false};
+    slot->info.state=EP_LOADOUT_STORAGE_INITIALIZING;
+    slot->info.initialization_step=EP_LOADOUT_INIT_CHECKING;slot->info.owner_result=EP_OWNER_OK;
+    ReleaseSRWLockExclusive(&storage_lock);
+    initializing=&call;
+    const auto owner_result=ep_roster_owner_call(mod,owner,1,initialize_owned,&call);
+    initializing=nullptr;
+    AcquireSRWLockExclusive(&storage_lock);
+    slot->info.owner_result=owner_result;
+    if (owner_result!=EP_OWNER_OK) {
+        slot->info.state=EP_LOADOUT_STORAGE_QUARANTINED;call.result=EP_LOADOUT_STORAGE_NATIVE_FAILED;
+    } else if (call.result==EP_LOADOUT_STORAGE_OK) slot->info.state=EP_LOADOUT_STORAGE_UI_MIGRATED;
+    else slot->info.state=call.original_state;
+    ReleaseSRWLockExclusive(&storage_lock);return call.result;
+}
