@@ -1,0 +1,43 @@
+/* Only our allocations/unwind tables; no game services or hook publication. */
+#include "ep_host_lifecycle.h"
+#include <windows.h>
+#include <string.h>
+#define REQUIRE(x) do {if (!(x)) {result=__LINE__;goto cleanup;}} while (0)
+static unsigned hooks;
+static const char* Build() {return "25480438";}
+static int Hook(HfMod*,uintptr_t,void*,void**,int32_t) {++hooks;return -1;}
+extern "C" __declspec(dllexport) int host_emit(uint32_t kind,const EpHostLifecycleAddresses* a,EpHostLifecycleImage* out)
+{return ep_host_lifecycle_build(kind,a,out);}
+extern "C" __declspec(dllexport) int host_prepare_flow()
+{
+    HfMod* mod=(HfMod*)0x9193;HfApi api={};api.size=sizeof(api);api.version=13;api.build_id=Build;api.hook_ex=Hook;
+    EpHostLifecycleAddresses a={0x140000000,0x180000000,0x2100162c8,0x220000000,0x1c0000000,
+        0x220010000,0x220020000,0x220030000,0x220040000,8,0};
+    EpSessionCodeInfo codes[3]={};EpHostLifecycleImage image={};int result=0;
+    for (unsigned i=0;i<3;i++) {
+        a.code=0x180000000+0x10000ull*i;
+        REQUIRE(ep_host_lifecycle_prepare(&api,mod,i+1,&a,&codes[i])==EP_PROPERTY_OK && codes[i].state==EP_CODE_READY);
+    }
+    a.code=codes[0].base;
+    REQUIRE(ep_host_lifecycle_build(EP_HOST_START,&a,&image)==EP_PROPERTY_OK);
+    {
+        alignas(16) uint8_t stack[0x1500]={};auto sp=(uintptr_t)stack;
+        *(uint64_t*)(sp+0x1458)=0x12345678;*(uint64_t*)(sp+0x1468)=0x33;
+        *(uint64_t*)(sp+0x1470)=0x55;*(uint64_t*)(sp+0x1478)=0x66;*(uint64_t*)(sp+0x1450)=0x77;
+        CONTEXT context={};context.ContextFlags=CONTEXT_FULL;context.Rsp=sp;context.Rip=a.code+image.body_offset+0x2f;
+        DWORD64 base=0,establisher=0;void* handler=nullptr;auto function=RtlLookupFunctionEntry(context.Rip,&base,nullptr);
+        REQUIRE(function && base==a.code);
+        RtlVirtualUnwind(UNW_FLAG_NHANDLER,base,context.Rip,function,&context,&handler,&establisher,nullptr);
+        REQUIRE(context.Rsp==sp+0x1460 && context.Rip==0x12345678 && context.Rbx==0x33 && context.Rbp==0x55 && context.Rsi==0x66 && context.Rdi==0x77);
+    }
+    {
+        auto bad=a;bad.peers=a.client+8;
+        REQUIRE(ep_host_lifecycle_build(EP_HOST_START,&bad,&image)==EP_PROPERTY_OVERLAP);
+        bad=a;bad.capacity=9;REQUIRE(ep_host_lifecycle_build(EP_HOST_START,&bad,&image)==EP_PROPERTY_ARGUMENT);
+        bad=a;bad.pending=a.large;REQUIRE(ep_host_lifecycle_build(EP_HOST_RESUME,&bad,&image)==EP_PROPERTY_OVERLAP);
+    }
+    REQUIRE(!hooks);
+cleanup:
+    for (const auto& code:codes) if (code.handle && !ep_session_code_discard(mod,code.handle)) result=__LINE__;
+    return result;
+}
