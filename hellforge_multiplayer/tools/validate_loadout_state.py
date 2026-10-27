@@ -114,7 +114,7 @@ def main():
     g.need(dll.interaction_build(c.byref(ib),c.byref(interaction_image))==0,'Interaction binding failed')
     binding.lifecycle.code=STATE;a=StateAddresses(binding,MODE+mode_image.open,CONTROL);image=Image()
     g.need(dll.state_build(c.byref(a),c.byref(image))==0,'State binding failed')
-    binding.lifecycle.code=CONTROL;cb=ControlAddresses(binding,MODE+mode_image.mode,INTERACTIONS+interaction_image.input,INTERACTIONS+interaction_image.edit,STATE+image.return_screen,READY,BLOCKED)
+    binding.lifecycle.code=CONTROL;cb=ControlAddresses(binding,MODE+mode_image.mode,INTERACTIONS+interaction_image.input,INTERACTIONS+interaction_image.edit,STATE+image.return_screen,READY,BLOCKED,record_source())
     control_image=ControlImage();g.need(dll.control_build(c.byref(cb),c.byref(control_image))==0,'Control binding failed')
     binding.lifecycle.code=LIFECYCLE;life_image=LifecycleImage()
     g.need(dll.loadout_build(c.byref(binding.lifecycle),STATE+image.change,c.byref(life_image))==0,'Lifecycle binding failed')

@@ -5,7 +5,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-enum {EP_LOADOUT_CALL_COUNT=58};
+enum {EP_LOADOUT_CALL_COUNT=60};
 typedef struct EpLoadoutCallLayout {uint32_t rva,stack_arguments,original_chain;} EpLoadoutCallLayout;
 typedef struct EpLoadoutCallControl {volatile int32_t active,switching;} EpLoadoutCallControl;
 typedef struct EpLoadoutCallContext {
@@ -19,7 +19,7 @@ typedef struct EpLoadoutCallContext {
 int ep_loadout_call_layout(uint32_t index,EpLoadoutCallLayout*);
 /* Prepare one SDK-publishable leaf gate for the named saved-build entry.
  * Derives its native target and relocated body from the retained loadout owner;
- * callers cannot provide an arbitrary body/argument count. The 58-entry catalog
+ * callers cannot provide an arbitrary body/argument count. The 60-entry catalog
  * includes both resource cleanup bodies and 1465820's cleanup -> setup wrapper.
  * That scope-only wrapper follows SDK's original chain in BOTH modes, owning the
  * entire call/return through its two separately routed children. Its body field

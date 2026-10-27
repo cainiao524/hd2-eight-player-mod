@@ -77,8 +77,8 @@ static int EpCodeNonvolatile(unsigned reg)
 { return reg==3 || reg==5 || reg==6 || reg==7 || (reg>=12 && reg<=15); }
 static int EpCodeMetadata(const uint8_t* p, uint32_t bytes, uint32_t at, uint32_t count, const EpSessionGsCheck* gs, int handler_kind)
 {
-    RUNTIME_FUNCTION functions[15];
-    if (!count || count>15 || (at&3) || at>bytes || bytes-at!=count*sizeof(RUNTIME_FUNCTION)) return 0;
+    RUNTIME_FUNCTION functions[EP_SESSION_CODE_MAX_FUNCTIONS];
+    if (!count || count>EP_SESSION_CODE_MAX_FUNCTIONS || (at&3) || at>bytes || bytes-at!=count*sizeof(RUNTIME_FUNCTION)) return 0;
     memcpy(functions,p+at,count*sizeof(RUNTIME_FUNCTION));
     if (functions[0].BeginAddress) return 0;
     if (handler_kind==1 && (!gs || count!=3 || gs->function_index!=1 ||

@@ -49,9 +49,10 @@ typedef struct EpLoadoutGroup {
     uint64_t construct_banks; /* isolated record/widget initialization; never auto-invoked */
     uint64_t attach_widgets; /* constructed widgets -> existing parent; never auto-invoked */
     uint64_t replace_widgets; /* migrate records/maps, detach four roots, attach fresh banks */
+    uint64_t commit_selection,exit_screen;
     uint32_t capacity,state;
 } EpLoadoutGroup;
-/* Prepare fifty-eight distinct native entries, one compatibility alias and an
+/* Prepare sixty distinct native entries, one compatibility alias and an
  * isolated record/widget initializer, attachment and replacement entries from ONE screen/storage/map/capacity
  * binding. The twenty-two desired code bases must be explicit and nonoverlapping.
  * The independent record-source banks must be disjoint from every image.

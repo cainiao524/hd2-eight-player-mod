@@ -16,6 +16,7 @@ import generate_loadout_control as g
 import generate_loadout_mode as mode
 import generate_loadout_interactions as interaction
 import generate_loadout_consumers as consumers
+from validate_loadout_setup import RecordSource
 from validate_loadout_mode import (ModeFlow,Image as ModeImage,MODE,ConsumerImage,Binding,Addresses,
     GAME,CODE,SCREEN,RECORDS,WIDGETS,REJECT,ENGINE,MAPS,ROSTER,STORAGE,PEER,SP,STOP,NAMES,R,U32,U64,
     SetupAddresses,Placement,GroupAddresses,SETUP,record_source)
@@ -26,9 +27,9 @@ from capstone.x86_const import X86_OP_IMM,X86_OP_MEM,X86_REG_RIP
 CONTROL=CODE+0xa0000
 INPUT=ENGINE+0x800000
 class ControlAddresses(c.Structure):
-    _fields_=[('common',Binding)]+[(n,c.c_uint64) for n in ('mode','input','edit','return_screen','ready_flag','blocked_flag')]
+    _fields_=[('common',Binding)]+[(n,c.c_uint64) for n in ('mode','input','edit','return_screen','ready_flag','blocked_flag')]+[('source',RecordSource)]
 class Image(c.Structure):
-    _fields_=[(n,c.c_uint32) for n in ('bytes','code_bytes','unwind_offset','table_offset','function_count','leave','screen_input','reset_selection')]+[('data',c.c_ubyte*g.MAX_IMAGE)]
+    _fields_=[(n,c.c_uint32) for n in ('bytes','code_bytes','unwind_offset','table_offset','function_count','leave','screen_input','reset_selection','commit_selection','exit_screen')]+[('data',c.c_ubyte*g.MAX_IMAGE)]
 
 
 class ControlFlow(ModeFlow):
@@ -119,7 +120,7 @@ def main():
     binding.lifecycle.code=MODE;mode_image=ModeImage();g.need(dll.mode_build(c.byref(binding),c.byref(mode_image))==0,'Mode binding failed')
     binding.lifecycle.code=INTERACTIONS;interaction_binding=InteractionAddresses(binding,REFRESH);interaction_image=InteractionImage()
     g.need(dll.interaction_build(c.byref(interaction_binding),c.byref(interaction_image))==0,'Interaction binding failed')
-    binding.lifecycle.code=CONTROL;a=ControlAddresses(binding,MODE+mode_image.mode,INTERACTIONS+interaction_image.input,INTERACTIONS+interaction_image.edit,CODE+0xb0000,READY,BLOCKED)
+    binding.lifecycle.code=CONTROL;a=ControlAddresses(binding,MODE+mode_image.mode,INTERACTIONS+interaction_image.input,INTERACTIONS+interaction_image.edit,CODE+0xb0000,READY,BLOCKED,record_source())
     image=Image();g.need(dll.control_build(c.byref(a),c.byref(image))==0,'Control binding failed')
     f=ControlFlow(dll,consumer,mode_image,mode.build(),image,g.build(),interaction_image,interaction.build())
     f.operation(image.screen_input)

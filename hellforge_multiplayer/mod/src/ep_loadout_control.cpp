@@ -8,15 +8,21 @@ EpPropertyResult ep_loadout_control_build(const EpLoadoutControlAddresses* input
 {
     if (!out) return EP_PROPERTY_ARGUMENT;
     EpLoadoutControlAddresses a={};if (input) a=*input;*out={};
-    EpPropertyResult status=ep_loadout_consumers_validate(input ? &a.common : nullptr);
+    const EpLoadoutRecordsAddresses records={a.common,a.source};
+    EpPropertyResult status=ep_loadout_records_validate(input ? &records : nullptr);
     if (status!=EP_PROPERTY_OK) return status;
     const uint64_t entries[]={a.mode,a.input,a.edit,a.return_screen,a.ready_flag,a.blocked_flag};
     for (uint64_t entry:entries) {
         status=ep_loadout_consumers_validate_link(&a.common,entry);if (status!=EP_PROPERTY_OK) return status;
+        const uint64_t n=a.common.lifecycle.capacity;
+        const uint64_t banks[][2]={{a.source.manager,0x948},{a.source.actors,n*8},
+            {a.source.equipment,n*0x40},{a.source.status,n*0x44}};
+        for (const auto& bank:banks) if (entry>=bank[0] && entry-bank[0]<bank[1]) return EP_PROPERTY_OVERLAP;
     }
     const auto& b=a.common;const auto& l=b.lifecycle;
     const uint64_t values[]={l.game,l.code,l.screen,l.records,l.widgets,l.capacity,l.reject,
-                             b.forward_map,b.inverse_map,b.roster,b.roster_storage,a.mode,a.input,a.edit,a.return_screen,a.ready_flag,a.blocked_flag};
+                             b.forward_map,b.inverse_map,b.roster,b.roster_storage,a.mode,a.input,a.edit,a.return_screen,a.ready_flag,a.blocked_flag,
+                             a.source.manager,a.source.actors,a.source.equipment,a.source.status};
     EpLoadoutControlImage image={};memcpy(image.data,ep_loadout_control_template,sizeof(ep_loadout_control_template));
     for (const auto& f:ep_loadout_control_fixups) {
         int64_t value=(int64_t)values[f.key]+f.add;
@@ -28,7 +34,8 @@ EpPropertyResult ep_loadout_control_build(const EpLoadoutControlAddresses* input
     image.bytes=sizeof(ep_loadout_control_template);image.code_bytes=ep_loadout_control_code_bytes;
     image.unwind_offset=ep_loadout_control_unwind_offset;image.table_offset=ep_loadout_control_table_offset;
     image.function_count=ep_loadout_control_functions;image.leave=ep_loadout_control_entries[0];
-    image.screen_input=ep_loadout_control_entries[1];image.reset_selection=ep_loadout_control_entries[2];*out=image;
+    image.screen_input=ep_loadout_control_entries[1];image.reset_selection=ep_loadout_control_entries[2];
+    image.commit_selection=ep_loadout_control_entries[3];image.exit_screen=ep_loadout_control_entries[4];*out=image;
     return EP_PROPERTY_OK;
 }
 EpPropertyResult ep_loadout_control_prepare(const HfApi* api,HfMod* mod,const EpLoadoutControlAddresses* input,EpSessionCodeInfo* out)

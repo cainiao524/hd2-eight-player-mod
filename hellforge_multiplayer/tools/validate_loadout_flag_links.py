@@ -102,7 +102,7 @@ def main():
                      CONTROL,CODE+0xb0000+state.build()['entries'][1],CODE+0xb0000,PROMPT+image.update,READY,BLOCKED,CODE+0xd0000)
     fb.records.common.lifecycle.code=FRAME;frame_image=FrameImage()
     g.need(dll.frame_build(c.byref(fb),c.byref(frame_image))==0,'Frame binding failed')
-    binding.lifecycle.code=CONTROL;cb=ControlAddresses(binding,CODE+0x90000,CODE+0x50000,CODE+0x50010,CODE+0xb0000,READY,BLOCKED)
+    binding.lifecycle.code=CONTROL;cb=ControlAddresses(binding,CODE+0x90000,CODE+0x50000,CODE+0x50010,CODE+0xb0000,READY,BLOCKED,record_source())
     control_image=ControlImage();g.need(dll.control_build(c.byref(cb),c.byref(control_image))==0,'Input binding failed')
     f=FlagFlow(dll,consumer,record_image,frame_image,image,control_image)
     f.operation(FRAME,frame_image.frame)

@@ -111,7 +111,7 @@ EpPropertyResult ep_loadout_group_prepare(const HfApi* api,HfMod* mod,const EpLo
     state_binding.common.lifecycle.code=a.state_code;
     result=ep_loadout_state_build(&state_binding,&state);if (result!=EP_PROPERTY_OK) return result;
     EpLoadoutControlAddresses control_binding={a.setup.common,a.mode_code+mode.mode,
-        a.interactions_code+interactions.input,a.interactions_code+interactions.edit,a.state_code+state.return_screen,a.prompt_code+prompt.ready_flag,a.prompt_code+prompt.blocked_flag};
+        a.interactions_code+interactions.input,a.interactions_code+interactions.edit,a.state_code+state.return_screen,a.prompt_code+prompt.ready_flag,a.prompt_code+prompt.blocked_flag,a.record_source};
     control_binding.common.lifecycle.code=a.control_code;
     result=ep_loadout_control_build(&control_binding,&control);if (result!=EP_PROPERTY_OK) return result;
     // Both cycle anchors are first guarded entries, verified before prepare.
@@ -188,6 +188,8 @@ EpPropertyResult ep_loadout_group_prepare(const HfApi* api,HfMod* mod,const EpLo
     group.mode=group.code[7].base+mode.mode;group.open_mode=group.code[7].base+mode.open;
     group.leave=group.code[8].base+control.leave;group.screen_input=group.code[8].base+control.screen_input;
     group.reset_selection=group.code[8].base+control.reset_selection;
+    group.commit_selection=group.code[8].base+control.commit_selection;
+    group.exit_screen=group.code[8].base+control.exit_screen;
     group.state_change=group.code[9].base+state.change;group.return_screen=group.code[9].base+state.return_screen;
     group.context_action=group.code[9].base+state.context_action;group.state_tick=group.code[9].base+state.tick;
     group.prompt=group.code[10].base+prompt.update;group.selection_prompt=group.code[10].base+prompt.selection;

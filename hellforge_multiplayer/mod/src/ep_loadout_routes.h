@@ -11,7 +11,7 @@ typedef struct EpLoadoutRoutesInfo {
     uint64_t handle,loadout,roster_owner;
     uint32_t state,prepared,publish_attempts,published,retained,active,switching;
 } EpLoadoutRoutesInfo;
-/* Own all 58 gate contexts, code handles and one shared control in stable module
+/* Own all 60 gate contexts, code handles and one shared control in stable module
  * storage. Requires one imported RETAINED eight-slot loadout and its exact common
  * owner. Refuses a second group for the same game. No game access/publication.
  * Caller exclusively manages the loadout and retains policy.context throughout

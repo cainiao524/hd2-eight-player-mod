@@ -66,3 +66,7 @@ EP_LOADOUT_CALL(alternate_release,0x1467720,0,0)
 // Run its SDK original chain in both modes, with the common owner held across
 // both child gates. setup is only its same-generation readiness binding.
 EP_LOADOUT_CALL(setup,0x1465820,0,1)
+// Both complete unwind families take only the screen in RCX. Their stack
+// +50..78 stores are outgoing scratch/home saves, not incoming arguments.
+EP_LOADOUT_CALL(commit_selection,0x1467790,0,0)
+EP_LOADOUT_CALL(exit_screen,0x1467B90,0,0)

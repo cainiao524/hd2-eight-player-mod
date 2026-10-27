@@ -9,6 +9,8 @@ extern "C" {
  * Keep a bounded pool; unrelated retained generations may still exhaust it. */
 #define EP_SESSION_CODE_SLOTS 256u
 #define EP_SESSION_CODE_MAX_BYTES 65536u
+/* Control/exit uses 26 rows, including a split delayed-save chain. */
+#define EP_SESSION_CODE_MAX_FUNCTIONS 32u
 typedef enum EpSessionCodeState {
     EP_CODE_EMPTY, EP_CODE_RESERVED, EP_CODE_READY, EP_CODE_FAILED,
     EP_CODE_PUBLISHING, EP_CODE_PUBLISHED, EP_CODE_PUBLISH_FAILED, EP_CODE_RETAINED
@@ -33,7 +35,7 @@ int ep_session_code_reserve(const HfApi*, HfMod*, uintptr_t desired_base,
  * This checks metadata structure, not instruction equivalence. */
 int ep_session_code_seal(HfMod*, uint64_t handle, const void* image,
                          uint32_t bytes, uint32_t table_offset);
-/* One to fifteen sorted, nonoverlapping functions with distinct metadata after
+/* One to EP_SESSION_CODE_MAX_FUNCTIONS sorted, nonoverlapping functions with distinct metadata after
  * all code and before the final table. Handler-free chains must reference an
  * exact earlier owned row. Used by gate + candidate images. */
 int ep_session_code_seal_table(HfMod*, uint64_t handle, const void* image,
