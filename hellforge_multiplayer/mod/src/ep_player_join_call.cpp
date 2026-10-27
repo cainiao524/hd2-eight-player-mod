@@ -82,7 +82,7 @@ uint32_t Reject(FreeHandle release,uint32_t handle,uint32_t status)
 uint32_t CheckedCreate(uintptr_t context,uint32_t handle,uint64_t resource,uintptr_t metadata)
 {
     if (!current || current->entered) Fault(EP_JOIN_BINDING);
-    current->entered=true;Healthy();auto game=current->view->game,roster=current->view->roster;
+    current->entered=true;current->status=EP_JOIN_OK;Healthy();auto game=current->view->game,roster=current->view->roster;
     if (!Pointer(context,0xf3f830) || resource!=UINT64_C(0xcdc1f82ce3337a82) ||
         !handle || Get<uint8_t>(metadata)!=1 || Get<uintptr_t>(game+0x3326468)!=roster ||
         Get<uintptr_t>(game+0x33267b8)!=context+0x3ce0) Fault(EP_JOIN_BINDING);
@@ -146,11 +146,13 @@ uintptr_t ep_player_join_creation_entry(void) {return (uintptr_t)CheckedCreate;}
 int ep_player_join_invoke(EpRosterCallContext* call,EpRosterCallFrame* frame,const EpNativeRosterView* view,uintptr_t body)
 {
     if (!frame) return 0;
+    frame->reserved=0;frame->padding=EP_JOIN_NOT_ATTEMPTED;
     if (!call || !view || !body || current || view->game!=call->game || view->roster!=call->roster ||
         view->storage!=call->storage || ep_roster_owner_native_status(call->mod,call->owner)!=EP_OWNER_OK)
         {frame->padding=EP_JOIN_BINDING;return 0;}
-    Join j={call,frame,view,body,0,EP_JOIN_OK,false};current=&j;int fault=0;
+    Join j={call,frame,view,body,0,EP_JOIN_NOT_ATTEMPTED,false};current=&j;int fault=0;
     int ok=EpOwnerInvoke(Run,&j,&fault);current=nullptr;
-    frame->reserved=j.reads;frame->padding=fault && j.status==EP_JOIN_OK ? EP_JOIN_FAULT : j.status;
+    frame->reserved=j.reads;
+    frame->padding=fault && (j.status==EP_JOIN_OK || j.status==EP_JOIN_NOT_ATTEMPTED) ? EP_JOIN_FAULT : j.status;
     return ok && !fault;
 }

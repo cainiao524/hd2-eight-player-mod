@@ -37,10 +37,14 @@ __asm__(
     "movdqu %xmm0,64(%rbx)\nmovdqu %xmm1,80(%rbx)\nmovdqu %xmm2,96(%rbx)\n"
     "movdqu %xmm3,112(%rbx)\nmovdqu %xmm4,128(%rbx)\nmovdqu %xmm5,144(%rbx)\n"
     "addq $48,%rsp\npopq %rbx\nret\n.seh_endproc\n");
-typedef struct EpRosterInvocation {EpRosterCallContext* context;EpRosterCallFrame* frame;} EpRosterInvocation;
+typedef struct EpRosterInvocation {
+    EpRosterCallContext* context;EpRosterCallFrame* frame;
+    EpPlayerJoinResult join;int checked_join;
+} EpRosterInvocation;
 static int RunRosterCall(void* opaque,const EpNativeRosterView* view)
 {
     EpRosterInvocation* call=(EpRosterInvocation*)opaque;EpRosterCallContext* c=call->context;
+    call->join.epoch=view->epoch;
     if (view->game!=c->game || view->roster!=c->roster || view->storage!=c->storage) return 0;
     if (c->switching && InterlockedCompareExchange((volatile LONG*)c->switching,0,0)) return 0;
     /* Own the original dispatcher across both callback tables, including the
@@ -48,15 +52,39 @@ static int RunRosterCall(void* opaque,const EpNativeRosterView* view)
     uintptr_t target=c->kind!=EP_ROSTER_ENTITY_REMOVE && InterlockedCompareExchange((volatile LONG*)c->active,0,0)==1 ? c->body :
         (uintptr_t)InterlockedCompareExchangePointer((void* volatile*)c->next_pointer,NULL,NULL);
     if (!target) return 0;
-    if (c->kind==EP_ROSTER_PLAYER_JOIN && target==c->body)
+    if (c->kind==EP_ROSTER_PLAYER_JOIN && target==c->body) {
+        call->checked_join=1;
+        call->frame->padding=EP_JOIN_NOT_ATTEMPTED;call->frame->reserved=0;
+        if (c->join_sequence==UINT64_MAX) return 0;
+        call->join.sequence=++c->join_sequence;
         return ep_player_join_invoke(c,call->frame,view,target);
+    }
     EpRosterCallTarget(call->frame,target,c->kind==EP_ROSTER_SEND ? 2 : 0);return 1;
 }
 extern "C" void EpRosterCallDispatch(EpRosterCallContext* c,EpRosterCallFrame* frame)
 {
-    EpRosterInvocation call={c,frame};
+    EpRosterInvocation call={};call.context=c;call.frame=frame;
+    call.join.owner=c->owner;call.join.route=(uintptr_t)c;
+    call.join.client=frame->rcx;call.join.request_peer=frame->rdx;
+    call.join.flags=ep_roster_owner_in_scope() ? EP_JOIN_RESULT_ENCLOSING_SCOPE : 0;
     EpRosterOwnerResult result=ep_roster_owner_call(c->mod,c->owner,c->kind!=EP_ROSTER_GETTER && c->kind!=EP_ROSTER_ASSOCIATION,RunRosterCall,&call);
     frame->status=(uint32_t)result;
+    if (c->kind==EP_ROSTER_PLAYER_JOIN && c->policy.join_result && (call.checked_join || result!=EP_OWNER_OK)) {
+        auto* report=&call.join;report->owner_status=(uint32_t)result;
+        report->status=call.checked_join ? frame->padding : EP_JOIN_NOT_ATTEMPTED;
+        report->read_bytes=call.checked_join ? (uint32_t)frame->reserved : 0;
+        // Native join has effects before checked creation. A clean resource
+        // rejection is not permission to replay the full ClientSynchronizer.
+        report->outcome=EP_JOIN_OUTCOME_UNSAFE;
+        if (result==EP_OWNER_OK) switch (report->status) {
+            case EP_JOIN_OK:report->outcome=EP_JOIN_OUTCOME_CREATED;break;
+            case EP_JOIN_NOT_ATTEMPTED:report->outcome=EP_JOIN_OUTCOME_NOT_ATTEMPTED;break;
+            case EP_JOIN_CAPACITY:case EP_JOIN_RESOURCE:case EP_JOIN_RECORD_BUSY:case EP_JOIN_MAP_FULL:
+            case EP_JOIN_OWNER_FULL:case EP_JOIN_CLEANED:case EP_JOIN_READ_LIMIT:
+                report->outcome=EP_JOIN_OUTCOME_RECOVERY_REQUIRED;break;
+        }
+        c->policy.join_result(c->policy.context,report);
+    }
     if (result!=EP_OWNER_OK) c->policy.failure(c->policy.context,c->kind,result,frame);
 }
 int ep_roster_call_prefix(EpRosterCallContext* context,uint8_t prefix[32])

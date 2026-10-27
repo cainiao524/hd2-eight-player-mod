@@ -253,7 +253,7 @@ int main(int argc,char** argv)
     guard=(EpPropertyCommitGuard){NULL,Begin,Validate,End};EpRosterGroupBindings b=Targets();Routes(0,0);
     view.game=b.game_base;view.roster=b.roster_address;view.storage=b.storage_address;view.epoch=7;view.build=25480438;
     EpRosterMemory memory={NULL,Memory};CHECK(test->create(mod,&view,&memory,&storage)==EP_OWNER_OK);
-    EpRosterCallPolicy policy={Failure,NULL};EpRosterGroupInfo group;EpRosterOwnerInfo info,before;
+    EpRosterCallPolicy policy={Failure,NULL,NULL};EpRosterGroupInfo group;EpRosterOwnerInfo info,before;
     CHECK(!test->prepare(&api,mod,&b,storage,NULL,&group));EpRosterGroupBindings wrong=b;wrong.storage_address+=0x1000;
     CHECK(!test->prepare(&api,mod,&wrong,storage,&policy,&group));CHECK(!hooks);
     CHECK(test->prepare(&api,mod,&b,storage,&policy,&group) && group.storage_owner==storage);current=group.handle;

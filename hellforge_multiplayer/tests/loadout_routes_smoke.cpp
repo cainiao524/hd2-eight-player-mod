@@ -136,7 +136,7 @@ static void Run(bool fail_publish)
     EpNativeRosterView view={};view.game=b.lifecycle.game;view.roster=b.roster;view.storage=b.roster_storage;view.epoch=1;view.build=25480438;
     EpRosterMemory memory={nullptr,ReadForbidden};NEED(ep_roster_owner_create(mod,&view,&memory,&f->owner)==EP_OWNER_OK);
     HfApi api={};api.size=sizeof(api);api.version=13;api.build_id=Build;api.hook_ex=Hook;api.read=SdkReadForbidden;
-    EpRosterCallPolicy policy={Failure,nullptr};EpLoadoutRoutesInfo routes={};
+    EpRosterCallPolicy policy={Failure,nullptr,nullptr};EpLoadoutRoutesInfo routes={};
     NEED(ep_loadout_routes_prepare(&api,mod,s.handle,f->owner,&policy,&routes));f->routes=routes.handle;
     NEED(routes.prepared==EP_LOADOUT_CALL_COUNT && routes.state==EP_LOADOUT_ROUTES_READY && !routes.retained && !f->hooks);
     EpLoadoutSourceSnapshot current={};EpC33EntryCommitGuard guard={&current,Begin,Validate,End};EpMultiplayerLoadoutCommitResult result={};

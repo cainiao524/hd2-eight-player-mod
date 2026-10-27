@@ -108,7 +108,7 @@ static void JointFixtureSetup(JointTest* test,unsigned mode)
     roster.game_base=view.game;roster.roster_address=view.roster;roster.storage_address=view.storage;
     // Keep the original roster/storage RIP-relative references within 2 GiB.
     for (unsigned i=0;i<EP_ROSTER_ENTRIES;i++) {roster.desired_code[i]=0x1c4000000+uint64_t(mode==18)*0x10000000+i*0x10000;roster.reject[i]=0x1e4000000+i*0x10000;}
-    EpRosterCallPolicy policy={JointRosterFailure,&t};
+    EpRosterCallPolicy policy={JointRosterFailure,&t,nullptr};
     Check(mode==17 ? ep_roster_group_prepare(&n->api,s->mod,&roster,&t.roster) :
         ep_roster_group_prepare_owned(&n->api,s->mod,&roster,other ? other : s->owner,&policy,&t.roster),"joint roster prepare");
     t.group=EpGroupFind(s->mod,t.roster.handle);

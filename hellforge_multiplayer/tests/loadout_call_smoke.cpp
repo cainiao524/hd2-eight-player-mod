@@ -88,7 +88,7 @@ int main()
     // before component33. All new gates must coexist past the old limit 68.
     EpSessionCodeInfo occupied[22+17]={};
     for (auto& code:occupied) NEED(ep_session_code_reserve(&api,mod,0,48,&code));
-    EpRosterCallPolicy policy={Failure,nullptr};
+    EpRosterCallPolicy policy={Failure,nullptr,nullptr};
     for (unsigned i=0;i<EP_LOADOUT_CALL_COUNT;i++) {
         EpLoadoutCallLayout layout={};NEED(ep_loadout_call_layout(i,&layout));
         NEED(ep_loadout_call_prepare(&api,mod,storage.handle,owner,layout.rva,&control,&policy,0,&contexts[i],&gates[i]));

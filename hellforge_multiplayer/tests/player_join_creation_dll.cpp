@@ -1,18 +1,22 @@
-/* One reject -> completed-native-failure cleanup -> successful retry flow.
+/* One dispatch/notice -> reject -> cleaned creation failure -> success -> fault flow.
  * Real checked creation, call bridge, owner and SEH boundary. Engine functions
- * and their side effects are explicit fixtures, all memory test-owned. */
+ * and their side effects are explicit fixtures, all memory test-owned. This
+ * does not establish native ClientSynchronizer recovery or replay safety. */
 #include "ep_player_join_call.h"
 #include <windows.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <initializer_list>
+extern "C" void EpRosterCallDispatch(EpRosterCallContext*,EpRosterCallFrame*);
 #define NEED(x) do {if (!(x)) {fprintf(stderr,"join flow line %d: %s\n",__LINE__,#x);abort();}} while (0)
 namespace {
 constexpr uintptr_t game=0x140000000;constexpr uint64_t resource=0xcdc1f82ce3337a82;
 uintptr_t context,resourceOwner,descriptor,roster,storage,owner8,metadata;
 uint64_t owner;HfMod* mod=(HfMod*)0x9189;
 unsigned freed,created,removed,ordinal_removed,notified;bool allocate;uint32_t handle=0x1357;
+bool skip,throw_join;unsigned notices,failures,old_calls;EpPlayerJoinResult latest;
+constexpr uint64_t client_arg=0xa1100,peer_arg=0xb2200,return_value=0xcafe;
 struct Record {uint64_t resource;uint32_t handle,network,ordinal,flags;};
 template<class T> T& Ref(uintptr_t address) {return *(T*)address;}
 uintptr_t Alloc(size_t n) {auto p=(uintptr_t)VirtualAlloc(nullptr,n,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE);NEED(p);return p;}
@@ -60,13 +64,37 @@ void RemoveOrdinal(uintptr_t o,uint32_t key)
 {CheckOwner();NEED(o==owner8 && key==0x7fff);++ordinal_removed;Erase(o+0xb020,key);--Ref<uint32_t>(o+0x18);}
 void Jump(uintptr_t at,uintptr_t target)
 {uint8_t code[]={0x48,0xb8,0,0,0,0,0,0,0,0,0xff,0xe0};memcpy(code+2,&target,8);memcpy((void*)at,code,12);}
-void NativeJoin()
-{CheckOwner();using F=uint32_t (*)(uintptr_t,uint32_t,uint64_t,uintptr_t);
- if (((F)ep_player_join_creation_entry())(context,handle,resource,metadata)) ++notified;}
+uint64_t NativeJoin(uint64_t client,uint64_t peer)
+{
+    CheckOwner();NEED(client==client_arg && peer==peer_arg);
+    if (throw_join) RaiseException(0xe045504b,EXCEPTION_NONCONTINUABLE,0,nullptr);
+    if (!skip) {using F=uint32_t (*)(uintptr_t,uint32_t,uint64_t,uintptr_t);
+        if (((F)ep_player_join_creation_entry())(context,handle,resource,metadata)) ++notified;}
+    return return_value;
+}
+uint64_t OldJoin() {CheckOwner();++old_calls;return return_value;}
+void Notice(void*,const EpPlayerJoinResult* report)
+{
+    NEED(report->owner==owner && report->client==client_arg && report->request_peer==peer_arg);
+    NEED(report->read_bytes<=65536);
+    NEED(report->route && (!report->sequence || report->sequence==notices+1));
+    NEED(bool(report->flags&EP_JOIN_RESULT_ENCLOSING_SCOPE)==bool(ep_roster_owner_in_scope()));
+    latest=*report;++notices;
+}
+void Failure(void*,uint32_t kind,EpRosterOwnerResult result,EpRosterCallFrame* frame)
+{
+    NEED(kind==EP_ROSTER_PLAYER_JOIN && result!=EP_OWNER_OK);
+    NEED(latest.outcome==EP_JOIN_OUTCOME_UNSAFE && latest.owner_status==(uint32_t)result);
+    ++failures;frame->rax=0xdead;
+}
 int Read(void*,uintptr_t at,void* out,size_t n) {memcpy(out,(void*)at,n);return 1;}
 struct Invocation {EpRosterCallContext call;EpRosterCallFrame frame;};
-int Invoke(void* p,const EpNativeRosterView* view)
-{auto* i=(Invocation*)p;return ep_player_join_invoke(&i->call,&i->frame,view,(uintptr_t)NativeJoin);}
+void Invoke(Invocation* i)
+{
+    i->frame={};i->frame.rcx=client_arg;i->frame.rdx=peer_arg;
+    EpRosterCallDispatch(&i->call,&i->frame);
+}
+int NestedInvoke(void* p,const EpNativeRosterView*) {Invoke((Invocation*)p);return 1;}
 }
 extern "C" __declspec(dllexport) int player_join_creation_flow()
 {
@@ -98,16 +126,34 @@ extern "C" __declspec(dllexport) int player_join_creation_flow()
     EpRosterMemory memory={nullptr,Read};NEED(ep_roster_owner_create(mod,&view,&memory,&owner)==EP_OWNER_OK);
     Invocation call={};call.call.mod=mod;call.call.owner=owner;
     call.call.game=game;call.call.roster=roster;call.call.storage=storage;
-    NEED(ep_roster_owner_call(mod,owner,1,Invoke,&call)==EP_OWNER_OK);
+    volatile int32_t active=0;uintptr_t next=(uintptr_t)OldJoin;
+    call.call.active=&active;call.call.next_pointer=(uintptr_t)&next;call.call.body=(uintptr_t)NativeJoin;
+    call.call.kind=EP_ROSTER_PLAYER_JOIN;call.call.policy={Failure,nullptr,Notice};
+    Invoke(&call);NEED(old_calls==1 && !notices && call.frame.rax==return_value);
+    active=1;skip=true;Invoke(&call);
+    NEED(notices==1 && latest.status==EP_JOIN_NOT_ATTEMPTED && latest.outcome==EP_JOIN_OUTCOME_NOT_ATTEMPTED);
+    NEED(latest.epoch==1 && !latest.flags && !latest.read_bytes && call.frame.rax==return_value);
+    skip=false;NEED(ep_roster_owner_call(mod,owner,1,NestedInvoke,&call)==EP_OWNER_OK);
     NEED(call.frame.padding==EP_JOIN_RESOURCE && freed==1 && !created && !notified && Ref<uint32_t>(context+0xf32f14)==4);
+    NEED(notices==2 && latest.status==EP_JOIN_RESOURCE && latest.outcome==EP_JOIN_OUTCOME_RECOVERY_REQUIRED);
+    NEED(latest.flags==EP_JOIN_RESULT_ENCLOSING_SCOPE && latest.owner_status==EP_OWNER_OK);
     Ref<uint32_t>(descriptor+24)=17;++handle;
-    NEED(ep_roster_owner_call(mod,owner,1,Invoke,&call)==EP_OWNER_OK);
+    Invoke(&call);NEED(call.frame.status==EP_OWNER_OK);
     NEED(call.frame.padding==EP_JOIN_CLEANED && freed==2 && created==1 && removed==1 && ordinal_removed==1 && !notified);
+    NEED(notices==3 && latest.status==EP_JOIN_CLEANED && latest.outcome==EP_JOIN_OUTCOME_RECOVERY_REQUIRED && !latest.flags);
     NEED(Ref<uint32_t>(owner8+0x18)==4 && Ref<uint32_t>(roster+0x80)==4 && call.frame.reserved<=65536);
     allocate=true;++handle;
-    NEED(ep_roster_owner_call(mod,owner,1,Invoke,&call)==EP_OWNER_OK);
+    Invoke(&call);NEED(call.frame.status==EP_OWNER_OK);
     NEED(call.frame.padding==EP_JOIN_OK && created==2 && notified==1 && freed==2 && Ref<uint32_t>(owner8+0x18)==5);
+    NEED(notices==4 && latest.status==EP_JOIN_OK && latest.outcome==EP_JOIN_OUTCOME_CREATED && !latest.flags);
+    NEED(call.frame.rax==return_value && !failures);
     NEED(call.frame.reserved<=65536 && !ep_roster_owner_in_scope());
+    throw_join=true;Invoke(&call);
+    NEED(notices==5 && failures==1 && call.frame.rax==0xdead && latest.status==EP_JOIN_FAULT);
+    NEED(latest.outcome==EP_JOIN_OUTCOME_UNSAFE && latest.epoch==1 && !latest.read_bytes);
+    Invoke(&call);
+    NEED(notices==6 && failures==2 && latest.outcome==EP_JOIN_OUTCOME_UNSAFE && latest.owner_status==EP_OWNER_FAULTED);
+    NEED(!latest.epoch && latest.status==EP_JOIN_NOT_ATTEMPTED && !latest.read_bytes && created==2 && notified==1);
     NEED(ep_roster_owner_close(mod,owner)==EP_OWNER_OK);
     return 0; // disposable worker owns allocations; no persisted game/process effects
 }

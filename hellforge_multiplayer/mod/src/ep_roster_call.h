@@ -2,6 +2,7 @@
 #define EP_ROSTER_CALL_H
 #include "ep_roster_owner.h"
 #include "ep_roster_gate.h"
+#include "ep_player_join_result.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -18,7 +19,11 @@ typedef struct EpRosterCallFrame {
  * Set frame return values as required by the original caller ABI. No throw or
  * owner reentry. Context/code must survive every published hook. Not rollback. */
 typedef void (*EpRosterCallFailure)(void*,uint32_t kind,EpRosterOwnerResult,EpRosterCallFrame*);
-typedef struct EpRosterCallPolicy {EpRosterCallFailure failure;void* context;} EpRosterCallPolicy;
+/* Initialize all fields. Optional join_result shares context; it only reports
+ * join outcomes, never replaces the mandatory owner failure policy. */
+typedef struct EpRosterCallPolicy {
+    EpRosterCallFailure failure;void* context;EpPlayerJoinNotice join_result;
+} EpRosterCallPolicy;
 typedef struct EpRosterCallContext {
     HfMod* mod;
     uint64_t owner,game,roster,storage;
@@ -29,9 +34,12 @@ typedef struct EpRosterCallContext {
     /* Optional group staging barrier; checked AFTER acquiring the owner.
      * Same-thread callbacks cannot enter either layout during a joint commit. */
     volatile int32_t* switching;
+    /* Zero-initialize. Only the dispatcher changes this under the owner lock;
+     * it orders NEW join notices even when post-call delivery is reordered. */
+    uint64_t join_sequence;
 } EpRosterCallContext;
 /* Replaces only the existing 32-byte leaf prefix. Context remains immutable
- * after exposure except the separately atomic active/next variables. */
+ * after exposure except join_sequence and the separately atomic active/next variables. */
 int ep_roster_call_prefix(EpRosterCallContext*,uint8_t prefix[32]);
 #ifdef __cplusplus
 }

@@ -1,4 +1,4 @@
-"""One focused join selection/unwind flow. No game access or receipts."""
+"""Focused join flow; --result-only skips emission/unwind checks. No game access or receipts."""
 import argparse
 import ctypes as c
 import struct
@@ -18,19 +18,27 @@ class Image(c.Structure):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--zig',type=Path);p.add_argument('--upstream',type=Path)
-    p.add_argument('--library',type=Path);p.add_argument('--creation-only',action='store_true')
-    a=p.parse_args();library=(a.library or PROJECT/'build/player_join_test.dll').resolve()
+    p.add_argument('--library',type=Path);mode=p.add_mutually_exclusive_group()
+    mode.add_argument('--creation-only',action='store_true');mode.add_argument('--result-only',action='store_true')
+    a=p.parse_args();library=(a.library or PROJECT/('build/player_join_result_test.dll' if a.result_only else 'build/player_join_test.dll')).resolve()
     if a.zig:
         need(a.upstream is not None,'--upstream required');library.parent.mkdir(parents=True,exist_ok=True)
         cmd=[a.zig.resolve(),'c++','-std=c++17','-target','x86_64-windows-gnu','-O2','-Wall','-Wextra','-Werror',
-             '-Wno-missing-field-initializers','-I',a.upstream.resolve()/'native/mod-sdk','-I',PROJECT/'mod/src','-shared',
-             PROJECT/'mod/src/ep_player_join_image.cpp',PROJECT/'mod/src/ep_session_code.cpp',PROJECT/'tests/player_join_dll.cpp']
-        if a.creation_only:
+             '-Wno-missing-field-initializers','-I',a.upstream.resolve()/'native/mod-sdk','-I',PROJECT/'mod/src','-shared']
+        if not a.result_only:
+            cmd += [PROJECT/'mod/src/ep_player_join_image.cpp',PROJECT/'mod/src/ep_session_code.cpp',PROJECT/'tests/player_join_dll.cpp']
+        if a.creation_only or a.result_only:
             cmd += [PROJECT/'mod/src'/('ep_'+s+'.cpp') for s in ('player_join_call','roster_call','roster_owner','native_roster')]
             cmd += [PROJECT/'tests/player_join_creation_dll.cpp']
         cmd += ['-o',library]
         done=subprocess.run(list(map(str,cmd)),capture_output=True,text=True);need(done.returncode==0,done.stdout+done.stderr)
-    dll=c.CDLL(str(library));emit=dll.player_join_emit;emit.restype=c.c_int
+    dll=c.CDLL(str(library))
+    if a.result_only:
+        flow=dll.player_join_creation_flow;flow.argtypes=[];flow.restype=c.c_int
+        need(flow()==0,'Owned join outcome delivery')
+        print('PASS one focused join-result flow: OLD bypass, skipped creation, nested preflight rejection, cleaned failure, creation, fault and quarantined follow-up; sequenced notices and preserved caller return. Engine services are fixtures; native session recovery/UI/multiplayer unverified. No game access.')
+        return
+    emit=dll.player_join_emit;emit.restype=c.c_int
     emit.argtypes=[c.c_uint64]*4+[c.c_uint32,c.POINTER(Image)]
     native=dll.player_join_unwind;native.restype=c.c_int;native.argtypes=[]
     saved=build();need(HEADER.read_text(encoding='utf-8')==render(saved),'Generated template changed')
@@ -71,7 +79,7 @@ def main():
         need(native()==0,'New continuation Windows unwind/GS rejection')
         flow=dll.player_join_creation_flow;flow.argtypes=[];flow.restype=c.c_int
         need(flow()==0,'Owned creation lifecycle')
-        print('PASS one focused creation flow: preflight rejection, native-failure cleanup including owner8 sentinel, successful retry; emitted success/failure continuation and Windows unwind. Engine services are fixtures; no game access, complete runtime unverified.')
+        print('PASS one focused creation/result flow: rejection, native-failure cleanup, creation and fault reporting; emitted continuation and Windows unwind. Engine services are fixtures; no game access, native session recovery/UI/multiplayer unverified.')
         return
     accepted,fallback=(code+32+x-START for x in (0x108646f,0x108624d))
     def stop(uc,address,size,unused):

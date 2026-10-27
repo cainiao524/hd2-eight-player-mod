@@ -127,7 +127,7 @@ int main()
     EpNativeRosterView view={};view.game=l.game;view.roster=a.setup.common.roster;view.storage=a.setup.common.roster_storage;
     view.epoch=1;view.build=25480438;EpRosterMemory memory={nullptr,ReadForbidden};
     NEED(ep_roster_owner_create(mod,&view,&memory,&owner)==EP_OWNER_OK);
-    const uint32_t rvas[]={0x1467b90,0x1466170,0x14984e0,0x14ac340};EpRosterCallPolicy policy={Failure,nullptr};
+    const uint32_t rvas[]={0x1467b90,0x1466170,0x14984e0,0x14ac340};EpRosterCallPolicy policy={Failure,nullptr,nullptr};
     for (unsigned i=0;i<4;i++) {
         NEED(ep_loadout_call_prepare(&api,mod,storage,owner,rvas[i],&control,&policy,0,&contexts[i],&gates[i]));
         NEED(ep_session_code_publish(mod,gates[i].handle,contexts[i].target,0));

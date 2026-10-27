@@ -95,7 +95,7 @@ int main()
     EpRosterMemory memory={nullptr,ReadForbidden};NEED(ep_roster_owner_create(mod,&view,&memory,&owner)==EP_OWNER_OK);
     storage.group.release=(uintptr_t)&NewRelease;storage.group.alternate_release=(uintptr_t)&Alternate;
     storage.group.setup=(uintptr_t)&NewSetup;
-    const uint32_t rvas[]={0x1467330,0x1467720,0x1466170,0x1465820};EpRosterCallPolicy policy={Failure,nullptr};
+    const uint32_t rvas[]={0x1467330,0x1467720,0x1466170,0x1465820};EpRosterCallPolicy policy={Failure,nullptr,nullptr};
     for (unsigned i=0;i<4;i++) {
         NEED(ep_loadout_call_prepare(&api,mod,storage.handle,owner,rvas[i],&control,&policy,0,&contexts[i],&gates[i]));
         NEED(contexts[i].route==(i==3));
