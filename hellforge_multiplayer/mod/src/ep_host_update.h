@@ -33,6 +33,8 @@ typedef struct EpHostUpdateImage {
  * helper conversions and packet decoding are still required for activation.
  * Bind complete_peer and advance_phase to the corresponding ep_host_phase
  * entries, retaining that image and its same-owner task lookup together.
+ * Bind accept_peer to ep_host_accept entry 0, retaining its metadata bank and
+ * registered-insert helper against this exact client's confirmed-peer bank.
  * Every call requires one exclusive owner lease covering helpers and banks.
  * Reject is nonreturning; late failures quarantine, with no partial replay.
  * Numeric build/prepare only: no game reads, installs, hooks or activation.
