@@ -35,7 +35,9 @@ typedef struct EpMultiplayerLoadoutCommitResult {
  * end(UNSAFE) exactly once. Never roll back partially constructed UI. A fault
  * or swallowed nested failure in end(NEW) also quarantines loadout, without
  * calling end a second time. End must not throw or resume execution before its
- * obligations are complete. No UI hooks/provider/freeze implementation here;
+ * obligations are complete. ep_loadout_routes_commit owns the 55 UI gates and
+ * supplies their grouped publication/activation around this lower-level API.
+ * This API alone supplies no UI hooks/provider/freeze implementation;
  * fifth-player gameplay, native UI and full multiplayer remain unverified. */
 int ep_multiplayer_loadout_commit(const HfApi*,HfMod*,uint64_t roster_group,
     uint64_t component_entries,uint64_t loadout,const EpLoadoutSourceSnapshot* current,
