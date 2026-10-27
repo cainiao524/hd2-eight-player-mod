@@ -27,6 +27,11 @@ typedef struct EpLoadoutImage {
  * Constructor initializes the original record fields and calls real 14AA5C0
  * once per widget. Releases preserve distinct +4548/+1FA8 nested members and
  * original callback ordering/conditions. All other screen members stay inline.
+ * Saved 1465820 calls 1467330 then tail-calls 1466170 setup on the SAME screen:
+ * resource cleanup is also part of normal screen reset, not proof of terminal
+ * destruction. 1467720 performs conditional nested-resource cleanup separately.
+ * The owned call catalog routes both and owns the complete 1465820 wrapper;
+ * it never frees/reconstructs banks merely because a cleanup body returned.
  * 189D050's four entries are INSIDE each widget (stride 12A8), not the outer
  * player widget array (stride 1EE18); those limits are deliberately preserved.
  * Pure numeric generation. Caller supplies correctly sized/aligned, retained

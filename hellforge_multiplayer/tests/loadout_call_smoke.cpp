@@ -76,12 +76,12 @@ int main()
     auto& b=storage.binding.setup.common;b.lifecycle.game=0x180000000;b.roster=0x260000000;b.roster_storage=0x260010000;
     EpNativeRosterView view={};view.game=b.lifecycle.game;view.roster=b.roster;view.storage=b.roster_storage;view.epoch=1;view.build=25480438;
     const EpRosterMemory memory={nullptr,ReadForbidden};NEED(ep_roster_owner_create(mod,&view,&memory,&owner)==EP_OWNER_OK);
-#define EP_LOADOUT_CALL(member,rva,stack) storage.group.member=(uintptr_t)&UnexpectedBody;
+#define EP_LOADOUT_CALL(member,rva,stack,chain) storage.group.member=(uintptr_t)&UnexpectedBody;
 #include "ep_loadout_call_entries.inc"
 #undef EP_LOADOUT_CALL
     storage.group.frame=(uintptr_t)&NewFrame;storage.group.emit_initial_resource_state=(uintptr_t)&NewEmit;
     // A loadout's 22 bodies and a roster's 17 bodies already consume 39 slots,
-    // before component33. The 55 new gates must coexist past the old limit 68.
+    // before component33. All new gates must coexist past the old limit 68.
     EpSessionCodeInfo occupied[22+17]={};
     for (auto& code:occupied) NEED(ep_session_code_reserve(&api,mod,0,48,&code));
     EpRosterCallPolicy policy={Failure,nullptr};

@@ -5,23 +5,30 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-enum {EP_LOADOUT_CALL_COUNT=55};
-typedef struct EpLoadoutCallLayout {uint32_t rva,stack_arguments;} EpLoadoutCallLayout;
+enum {EP_LOADOUT_CALL_COUNT=58};
+typedef struct EpLoadoutCallLayout {uint32_t rva,stack_arguments,original_chain;} EpLoadoutCallLayout;
 typedef struct EpLoadoutCallControl {volatile int32_t active,switching;} EpLoadoutCallControl;
 typedef struct EpLoadoutCallContext {
     HfMod* mod;
     uint64_t owner,loadout,game,roster,storage;
     uintptr_t body,target,next_pointer;
-    uint32_t rva,stack_arguments;
+    uint32_t rva,stack_arguments,original_chain;
     EpLoadoutCallControl* control;
     EpRosterCallPolicy policy; /* failure's kind argument is the native RVA */
 } EpLoadoutCallContext;
 int ep_loadout_call_layout(uint32_t index,EpLoadoutCallLayout*);
 /* Prepare one SDK-publishable leaf gate for the named saved-build entry.
  * Derives its native target and relocated body from the retained loadout owner;
- * callers cannot provide an arbitrary body/argument count. The 55-entry catalog
- * excludes constructor and both release bodies: generation reuse/destruction
- * needs a separate lifetime protocol. 66BDA0 forwards two incoming stack slots;
+ * callers cannot provide an arbitrary body/argument count. The 58-entry catalog
+ * includes both resource cleanup bodies and 1465820's cleanup -> setup wrapper.
+ * That scope-only wrapper follows SDK's original chain in BOTH modes, owning the
+ * entire call/return through its two separately routed children. Its body field
+ * anchors the retained setup entry, not an alternative wrapper implementation.
+ * Activate it only with both child gates published using this same control and
+ * owner; ep_loadout_routes_commit publishes the complete catalog together.
+ * Preserve native cleanup conditions/order; these are not terminal generation
+ * transitions. Actual screen allocation/destruction/rebinding remains separate,
+ * and the full constructor is still excluded. 66BDA0 forwards two incoming stack slots;
  * the others use register arguments. Same native XMM/integer return frame as
  * the roster bridge, with registered Windows unwind metadata throughout.
  *
@@ -43,7 +50,7 @@ int ep_loadout_call_layout(uint32_t index,EpLoadoutCallLayout*);
  *
  * This prepares/seals code only: no SDK hook, game read or native game call.
  * Publish with ep_session_code_publish at context.target only after all native
- * ABI/target/lifetime/exclusion gates. All 55 external paths, remaining direct
+ * ABI/target/lifetime/exclusion gates. All external paths, remaining direct
  * writers, lifecycle and coordinated publication still need closure. On prepare
  * failure, a nonzero code.handle means cleanup failed; keep context and retry
  * discard. Never expose, move or edit context after preparation/publication. */

@@ -107,10 +107,10 @@ static void End(void*,void* lease,uint32_t outcome)
 {
     NEED(lease==f && f->lease);f->ends++;f->end_outcome=outcome;const auto r=Routes();NEED(r.switching);
     if (outcome==EP_C33_COMMIT_NEW) {
-        NEED(r.active && r.published==55 && f->initializes==1 && f->roster_active && f->component_active);
+        NEED(r.active && r.published==EP_LOADOUT_CALL_COUNT && f->initializes==1 && f->roster_active && f->component_active);
         NEED(f->storage.state==EP_LOADOUT_STORAGE_UI_MIGRATED);f->lease=false;
     } else if (outcome==EP_C33_COMMIT_OLD) {
-        NEED(!r.active && r.published==55 && !f->initializes && !f->roster_active && !f->component_active && f->roster_data==4);
+        NEED(!r.active && r.published==EP_LOADOUT_CALL_COUNT && !f->initializes && !f->roster_active && !f->component_active && f->roster_data==4);
         f->lease=false;
     } else {
         NEED(outcome==EP_C33_COMMIT_UNSAFE && !r.active && r.state==EP_LOADOUT_ROUTES_QUARANTINED);
@@ -125,7 +125,7 @@ static void Run(bool fail_publish)
     auto& s=f->storage;auto& b=s.binding.setup.common;
     s.handle=1+fail_publish;s.capacity=8;s.sources_imported=1;s.state=EP_LOADOUT_STORAGE_RETAINED;
     b.lifecycle.game=0x180000000+shift;b.roster=0x260000000+shift;b.roster_storage=0x260010000+shift;
-#define EP_LOADOUT_CALL(member,rva,stack) s.group.member=(uintptr_t)&UnexpectedBody;
+#define EP_LOADOUT_CALL(member,rva,stack,chain) s.group.member=(uintptr_t)&UnexpectedBody;
 #include "ep_loadout_call_entries.inc"
 #undef EP_LOADOUT_CALL
     s.group.frame=(uintptr_t)&NewFrame;
@@ -134,13 +134,13 @@ static void Run(bool fail_publish)
     HfApi api={};api.size=sizeof(api);api.version=13;api.build_id=Build;api.hook_ex=Hook;api.read=SdkReadForbidden;
     EpRosterCallPolicy policy={Failure,nullptr};EpLoadoutRoutesInfo routes={};
     NEED(ep_loadout_routes_prepare(&api,mod,s.handle,f->owner,&policy,&routes));f->routes=routes.handle;
-    NEED(routes.prepared==55 && routes.state==EP_LOADOUT_ROUTES_READY && !routes.retained && !f->hooks);
+    NEED(routes.prepared==EP_LOADOUT_CALL_COUNT && routes.state==EP_LOADOUT_ROUTES_READY && !routes.retained && !f->hooks);
     EpLoadoutSourceSnapshot current={};EpC33EntryCommitGuard guard={&current,Begin,Validate,End};EpMultiplayerLoadoutCommitResult result={};
     if (!fail_publish) {
         f->reject_after_validate=true;
         NEED(!ep_loadout_routes_commit(&api,mod,f->routes,17,22,&current,&guard,7,&result));
-        routes=Routes();NEED(routes.state==EP_LOADOUT_ROUTES_READY && !routes.switching && routes.retained && routes.published==55);
-        NEED(!f->lease && f->ends==1 && f->end_outcome==EP_C33_COMMIT_OLD && f->hooks==55 && !f->initializes);
+        routes=Routes();NEED(routes.state==EP_LOADOUT_ROUTES_READY && !routes.switching && routes.retained && routes.published==EP_LOADOUT_CALL_COUNT);
+        NEED(!f->lease && f->ends==1 && f->end_outcome==EP_C33_COMMIT_OLD && f->hooks==EP_LOADOUT_CALL_COUNT && !f->initializes);
         NEED(f->frame(11.25)==11.25 && f->old_calls==1 && !f->new_calls);
         f->reject_after_validate=false;f->ends=0;
     }
@@ -153,7 +153,7 @@ static void Run(bool fail_publish)
         NEED(f->lease && owner.fault && !f->initializes && !f->roster_active && !f->component_active && f->roster_data==4);
     } else {
         NEED(result.multiplayer.outcome==EP_C33_COMMIT_NEW && routes.state==EP_LOADOUT_ROUTES_ACTIVE && routes.active && !routes.switching);
-        NEED(!f->lease && !owner.fault && f->hooks==55 && f->roster_data==8 && f->component_data==8);
+        NEED(!f->lease && !owner.fault && f->hooks==EP_LOADOUT_CALL_COUNT && f->roster_data==8 && f->component_data==8);
         NEED(f->frame(11.25)==111.25 && f->old_calls==1 && f->new_calls==1);
     }
 }
