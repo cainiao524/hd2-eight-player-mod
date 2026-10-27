@@ -21,7 +21,7 @@ typedef struct EpHostPendingImage {
  *
  * R9 must point to an immutable DECODED count/reserved/IDs span of at least
  * 8+8*capacity bytes. Count is bounded before any member read. The transport's
- * decoder, pending consumer and serializer still need conversion; never call
+ * decoder and shared activation still need conversion; never call
  * this gate on a four-member decoder allocation containing a larger count.
  * Stack arguments and protocol field widths retain their original ABI.
  *

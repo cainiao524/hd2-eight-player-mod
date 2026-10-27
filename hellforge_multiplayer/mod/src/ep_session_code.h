@@ -100,6 +100,8 @@ int ep_session_code_seal_player_join(HfMod*, uint64_t handle, const void* image,
  * chained to row 3. In particular the index gate must not restore unsaved XMMs. */
 int ep_session_code_seal_player_join_peers(HfMod*, uint64_t handle, const void* image,
     uint32_t bytes, uint32_t table_offset, const EpSessionGsCheck*);
+/* 108A440 host update: expanded 558h frame, cookie +538h, five fragments. */
+int ep_session_code_seal_host_update(HfMod*, uint64_t, const void*, uint32_t, uint32_t, const EpSessionGsCheck*);
 /* 108BC70 request admission: guard, six saved fragments, cookie +98h, handler. */
 int ep_session_code_seal_host_pending(HfMod*, uint64_t, const void*, uint32_t, uint32_t, const EpSessionGsCheck*);
 /* 1088A30 start-hosting: leaf guard, original GS root/cookie +1440h, handler. */

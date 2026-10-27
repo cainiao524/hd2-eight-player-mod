@@ -27,7 +27,7 @@ class Image(C.Structure):
     _fields_=[(n,C.c_uint32) for n in ('bytes','table_offset','function_count','handler_offset','body_offset')]+[('data',C.c_uint8*8192)]
 
 
-def flow(dll):
+def flow(dll,after_admission=None):
     h=Addresses(0x140000000,0x180000000,0x2100162c8,0x220000000,0x1c0000000,
                 0x220010000,0x220020000,0x220030000,0x220040000,8,0)
     a=PendingAddresses(h,0x180020000);image=Image();emit=dll.pending_emit
@@ -36,8 +36,14 @@ def flow(dll):
     u=Uc(UC_ARCH_X86,UC_MODE_64);pages=set();owner=h.client-0x162c8;host=h.client-0x918
     stack,stop,stub,payload=0x230000000,0x240000000,0x260000000,0x270000000
     def map_region(address,size):
-        for page in range(address&~4095,(address+size+4095)&~4095,4096):
-            if page not in pages:u.mem_map(page,4096);pages.add(page)
+        # Preserve mapped pages while avoiding thousands of separate regions
+        # that make Unicorn allocation and teardown needlessly slow.
+        page=address&~4095;end=(address+size+4095)&~4095
+        while page<end:
+            if page in pages:page+=4096;continue
+            first=page
+            while page<end and page not in pages:page+=4096
+            u.mem_map(first,page-first);pages.update(range(first,page,4096))
     def qword(p):return struct.unpack('<Q',u.mem_read(p,8))[0]
     def dword(p):return struct.unpack('<I',u.mem_read(p,4))[0]
     def putq(p,v):u.mem_write(p,struct.pack('<Q',v))
@@ -84,7 +90,7 @@ def flow(dll):
         elif rva==0xbe3cf0:replies.append((rcx,rdx,r8,r9))
         elif rva not in (0x13eff30,0x1738300,0x17383e0):raise RuntimeError('Unexpected native service '+hex(rva))
         returned()
-    u.hook_add(UC_HOOK_CODE,hook);sp=stack+0x4008
+    hook_handle=u.hook_add(UC_HOOK_CODE,hook);sp=stack+0x4008
     nonvolatile=((x.UC_X86_REG_RBX,0x33),(x.UC_X86_REG_RBP,0x55),(x.UC_X86_REG_RSI,0x66),(x.UC_X86_REG_RDI,0x77),
                  (x.UC_X86_REG_R12,0xcc),(x.UC_X86_REG_R13,0xdd),(x.UC_X86_REG_R14,0xee),(x.UC_X86_REG_R15,0xff))
     def invoke(sender,task,reject=False):
@@ -104,6 +110,8 @@ def flow(dll):
     row=bytearray(PENDING_STRIDE);struct.pack_into('<QII7Q',row,0,0x900f,7,reserved,*incoming);struct.pack_into('<Q',row,PENDING_KEY,opaque)
     need(u.mem_read(h.pending,8*PENDING_STRIDE)==b'\xab'*(7*PENDING_STRIDE)+row,'Last pending row/counted copy/key')
     need(u.mem_read(h.flags,8)==b'\1'*8 and qword(owner+0x248)==opaque and dword(owner+0x348)==1,'Flags/key ring')
+    if after_admission:
+        after_admission(locals());return
     def banks():return tuple(bytes(u.mem_read(bank,size)) for bank,size in ((h.peers,8*56),(h.flags,8),(h.pending,8*PENDING_STRIDE)))
     before=banks();u.mem_write(payload,struct.pack('<II8Q',1,reserved,0x600,*([0]*7)))
     invoke(0x600,0x9010)
