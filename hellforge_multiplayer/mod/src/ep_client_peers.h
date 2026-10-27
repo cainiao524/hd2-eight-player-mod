@@ -5,7 +5,8 @@
 extern "C" {
 #endif
 enum { EP_CLIENT_PEER_INSERT=1, EP_CLIENT_PEER_REGISTERED_INSERT=2,
-       EP_CLIENT_PEER_REMOVE=3, EP_CLIENT_PEER_RESET=4, EP_CLIENT_PEER_FAMILY_COUNT=5 };
+       EP_CLIENT_PEER_REMOVE=3, EP_CLIENT_PEER_RESET=4, EP_CLIENT_PEER_LOOKUP=5,
+       EP_CLIENT_PEER_CONTAINS=6, EP_CLIENT_PEER_SET_FLAG=7, EP_CLIENT_PEER_FAMILY_COUNT=8 };
 typedef struct EpClientPeerImage {
     uint32_t bytes,table_offset,function_count,handler_offset,body_offset,source_rva;
     uint8_t data[4096];
@@ -15,7 +16,8 @@ typedef struct EpClientPeerFamilyAddresses {
     uint32_t capacity,reserved;
 } EpClientPeerFamilyAddresses;
 typedef struct EpClientPeerFamily {
-    /* direct insert, registered insert, remove, reset, disconnect */
+    /* direct insert, registered insert, remove, reset, disconnect,
+     * record lookup, contains, record +19 flag setter */
     EpSessionCodeInfo code[EP_CLIENT_PEER_FAMILY_COUNT];
 } EpClientPeerFamily;
 /* Saved 10872C0 / B90B20 / 1087540 / 1087010. Preserve the original ABI,
@@ -34,9 +36,17 @@ typedef struct EpClientPeerFamily {
  * require capacity adaptations. This family alone is NOT safe to activate or
  * evidence of playable fifth/eighth players. Rejection never returns; late
  * faults follow native effects and require quarantine, never blind replay.
+ *
+ * Leaf 1084FD0 returns the actual shared-bank record pointer or NULL; 1085010
+ * returns the original boolean. 1085090 preserves the original host/bypass
+ * predicate and sets only the matching record's +19 byte. No new meaning is
+ * assigned to that opaque flag. All three check client before dereference and
+ * bound the exact count used in their search. Returned pointers require the
+ * common lifetime/exclusion lease through the caller's last access; compaction
+ * can move a record. They do not cover other inlined engine/UI lookups.
  */
 EpPropertyResult ep_client_peer_build(uint32_t kind,const EpClientDisconnectAddresses*,EpClientPeerImage*);
-/* Prepares all five functions, including disconnect, against ONE bank/client/
+/* Prepares all eight functions, including disconnect, against ONE bank/client/
  * capacity/reject contract. Never publishes. Failure cancels unexposed images;
  * if cancellation fails, CLEANUP returns every retained handle for retry.
  * Desired code bases may be zero (allocator chosen); rel32 validation remains.

@@ -9,11 +9,36 @@ extern "C" __declspec(dllexport) int client_peer_emit(uint32_t kind,const EpClie
 {return ep_client_peer_build(kind,a,out);}
 extern "C" __declspec(dllexport) int client_peer_disconnect_emit(const EpClientDisconnectAddresses* a,EpClientDisconnectImage* out)
 {return ep_client_disconnect_build(a,out);}
+extern "C" __declspec(dllexport) int client_peer_reader_fixture()
+{
+    HfMod* mod=(HfMod*)0x918d;HfApi api={};api.version=13;api.size=sizeof(api);api.build_id=Build;api.hook_ex=Hook;
+    EpClientPeerFamilyAddresses a={};a.game=0x140000000;a.client=0x200000000;a.peers=0x200010010;a.reject=0x1c0000000;a.capacity=8;
+    for (unsigned i=0;i<EP_CLIENT_PEER_FAMILY_COUNT;i++) a.code[i]=0x180000000+0x10000ull*i;
+    auto bad=a;bad.code[7]=UINT64_C(1)<<47;EpClientPeerFamily family={};
+    if (ep_client_peer_family_prepare(&api,mod,&bad,&family)==EP_PROPERTY_OK) return 1;
+    for (const auto& code:family.code) if (code.handle) {ep_client_peer_family_discard(mod,&family);return 2;}
+    if (ep_client_peer_family_prepare(&api,mod,&a,&family)!=EP_PROPERTY_OK) return 3;
+    int result=0;
+    for (unsigned i=5;i<EP_CLIENT_PEER_FAMILY_COUNT && !result;i++) {
+        const auto& code=family.code[i];EpClientPeerImage image={};
+        const EpClientDisconnectAddresses at={a.game,code.base,a.client,a.peers,a.reject,8,0};
+        if (code.state!=EP_CODE_READY || ep_client_peer_build(i,&at,&image)!=EP_PROPERTY_OK || image.function_count!=1) {result=4;break;}
+        uint64_t stack[4]={0x9090,0,0,0};CONTEXT context={};context.ContextFlags=CONTEXT_FULL;
+        context.Rsp=(uintptr_t)stack;context.Rip=code.base+2;context.Rbx=0x3333;context.Rsi=0x6666;context.Rdi=0x7777;
+        DWORD64 base=0,frame=0;void* data=nullptr;auto* fn=RtlLookupFunctionEntry(context.Rip,&base,nullptr);
+        if (!fn || base!=code.base) {result=5;break;}
+        RtlVirtualUnwind(UNW_FLAG_NHANDLER,base,context.Rip,fn,&context,&data,&frame,nullptr);
+        if (context.Rsp!=(uintptr_t)(stack+1) || context.Rip!=0x9090 || context.Rbx!=0x3333 || context.Rsi!=0x6666 || context.Rdi!=0x7777) result=6;
+    }
+    if (!ep_client_peer_family_discard(mod,&family)) result=7;
+    if (hooks) result=8;
+    return result;
+}
 extern "C" __declspec(dllexport) int client_peer_family_fixture()
 {
     HfMod* mod=(HfMod*)0x918b;HfApi api={};api.version=13;api.size=sizeof(api);api.build_id=Build;api.hook_ex=Hook;
     EpClientPeerFamilyAddresses a={};a.game=0x140000000;a.client=0x200000000;a.peers=0x200010010;a.reject=0x1c0000000;a.capacity=8;
-    for (unsigned i=0;i<5;i++) a.code[i]=0x180000000+0x10000ull*i;
+    for (unsigned i=0;i<EP_CLIENT_PEER_FAMILY_COUNT;i++) a.code[i]=0x180000000+0x10000ull*i;
     EpClientPeerFamily family={};auto bad=a;bad.code[4]=UINT64_C(1)<<47;
     if (ep_client_peer_family_prepare(&api,mod,&bad,&family)==EP_PROPERTY_OK) return 1;
     for (const auto& code:family.code) if (code.handle) {ep_client_peer_family_discard(mod,&family);return 2;}

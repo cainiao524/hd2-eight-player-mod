@@ -10,7 +10,7 @@ struct EpClientPeerTemplate {
 EpPropertyResult ep_client_peer_build(uint32_t kind,const EpClientDisconnectAddresses* input,EpClientPeerImage* out)
 {
     if (!out) return EP_PROPERTY_ARGUMENT;EpClientDisconnectAddresses a={};if (input) a=*input;*out={};
-    if (!input || kind<1 || kind>4 || a.reserved || a.capacity<4 || a.capacity>8) return EP_PROPERTY_ARGUMENT;
+    if (!input || kind<1 || kind>EP_CLIENT_PEER_SET_FLAG || a.reserved || a.capacity<4 || a.capacity>8) return EP_PROPERTY_ARGUMENT;
     const uint64_t regions[][3]={{a.game,74727424,4096},{a.code,4096,16},{a.client,0x528,8},
         {a.peers,32ull*a.capacity,16},{a.reject,1,1}};
     for (unsigned i=0;i<5;i++) {
@@ -62,7 +62,8 @@ EpPropertyResult ep_client_peer_family_prepare(const HfApi* api,HfMod* owner,con
     if (!input || a.reserved || a.capacity<4 || a.capacity>8) return EP_PROPERTY_ARGUMENT;
     for (unsigned i=0;i<EP_CLIENT_PEER_FAMILY_COUNT;i++) {
         const EpClientDisconnectAddresses at={a.game,a.code[i],a.client,a.peers,a.reject,a.capacity,0};
-        auto rc=i==4 ? ep_client_disconnect_prepare(api,owner,&at,&out->code[i]) : EpPeerPrepare(api,owner,i+1,at,&out->code[i]);
+        auto rc=i==4 ? ep_client_disconnect_prepare(api,owner,&at,&out->code[i]) :
+            EpPeerPrepare(api,owner,i<4 ? i+1 : i,at,&out->code[i]);
         if (rc!=EP_PROPERTY_OK) return ep_client_peer_family_discard(owner,out) ? rc : EP_PROPERTY_CLEANUP;
     }
     return EP_PROPERTY_OK;

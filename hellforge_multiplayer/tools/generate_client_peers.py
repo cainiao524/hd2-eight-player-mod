@@ -1,4 +1,4 @@
-"""Relocate saved confirmed-peer producers/removal/reset into one external bank.
+"""Relocate saved confirmed-peer lifecycle and lookup functions into one bank.
 
 Preserves native bodies, calls, stack arguments and unwind fragments. The
 generated code changes only peer addresses, clear length and bounded guards.
@@ -12,10 +12,12 @@ from capstone.x86_const import X86_OP_IMM, X86_OP_MEM, X86_REG_RIP
 HEADER=PROJECT/'mod/src/ep_client_peers_template.h'
 SOURCES=((0x10872c0,0x1087534),(0xb90b20,0xb90eab),
          (0x1087540,0x10877f8),(0x1087010,0x10872ba))
+LEAVES=((0x1084fd0,0x1085006),(0x1085010,0x108505c),(0x1085090,0x10850e5))
 RESET_GS=bytes.fromhex('192404001301490104f00250')
 
 
 def build(kind):
+    if kind>=5:return build_leaf(kind)
     c=Capture();start,end=SOURCES[kind-1];source=c.read(start,end-start)
     ins=list(c.md.disasm(source,start));starts={i.address for i in ins}
     need(sum(i.size for i in ins)==len(source),'Incomplete native peer body')
@@ -148,6 +150,55 @@ def build(kind):
     return dict(blob=bytes(blob),fixes=fixes,rows=rows,table=table,handler=handler,source=start,body=body,islands=islands)
 
 
+def build_leaf(kind):
+    c=Capture();start,end=LEAVES[kind-5];ins=list(c.md.disasm(c.read(start,end-start),start))
+    need(sum(i.size for i in ins)==end-start,'Incomplete peer leaf')
+    need(not any(b<end and start<e for b,e,_ in c.functions),'Peer leaf acquired unwind frame')
+    need(all(i.mnemonic!='call' and not any(r in i.op_str for r in ('rsp','rbp','rbx','rsi','rdi','r11','r12','r13','r14','r15')) for i in ins),
+         'Peer leaf now uses a frame or nonvolatile/scratch register')
+    blob=bytearray(bytes.fromhex('49bb')+bytes(8)+bytes.fromhex('4c39d90f85')+bytes(4))
+    fixes=[(2,0,1,1,1,0)];branches=[(15,19,'reject')];mapping={};seen=set();blob+=b'\x90'*(64-len(blob))
+    patches={
+        0x1084fde:('lea r8, [rcx + 0xd0]',bytes.fromhex('49b8')+bytes(8),2),
+        0x1084ffc:('add rax, 0xd0',b'',None),
+        0x1085002:('add rax, rcx',bytes.fromhex('49bb')+bytes(8)+bytes.fromhex('4c01d8'),2),
+        0x1085022:('lea r8, [rcx + 0xd0]',bytes.fromhex('49b8')+bytes(8),2),
+        0x108504b:('lea r10, [rcx + 0xd0]',bytes.fromhex('49ba')+bytes(8),2),
+        0x10850b4:('add rcx, 0xd0',bytes.fromhex('48b9')+bytes(8),2),
+        0x10850d4:('lea rcx, [r9 + 0xd0]',bytes.fromhex('48b9')+bytes(8),2),
+    }
+    count_site=(0x1084fd0,0x1085010,0x10850a8)[kind-5]
+    for i in ins:
+        at=len(blob);mapping[i.address]=at
+        if i.address in patches:
+            expected,raw,offset=patches[i.address];need(i.mnemonic+' '+i.op_str==expected,'Changed peer leaf operand')
+            blob+=raw;seen.add(i.address)
+            if offset is not None:fixes.append((at+offset,0,2,1,1,0))
+        elif i.mnemonic.startswith('j'):
+            need(i.operands[0].type==X86_OP_IMM and start<=i.operands[0].imm<end,'External peer leaf branch')
+            raw=bytes(i.bytes);op=b'\xe9' if i.mnemonic=='jmp' else bytes((0x0f,raw[0]+0x10))
+            need(raw[0]==0xeb or 0x70<=raw[0]<=0x7f,'Unexpected peer leaf branch encoding')
+            blob+=op+bytes(4);branches.append((at+len(op),len(blob),i.operands[0].imm))
+        else:
+            need(not any(o.type==X86_OP_MEM and o.mem.base==X86_REG_RIP for o in i.operands),'Unexpected peer leaf global')
+            blob+=i.bytes
+        if i.address==count_site:
+            expected='mov edx, dword ptr [rcx + 0xc8]' if kind==7 else 'mov r9d, dword ptr [rcx + 0xc8]'
+            need(i.mnemonic+' '+i.op_str==expected,'Changed peer count')
+            # Check the count actually used by this loop, after the native
+            # load. No second count load can invalidate the entry guard.
+            blob+=bytes.fromhex('81fa' if kind==7 else '4181f9');fixes.append((len(blob),0,3,2,1,0));blob+=bytes(4)
+            blob+=b'\x0f\x87'+bytes(4);branches.append((len(blob)-4,len(blob),'reject'))
+    need(seen=={a for a in patches if start<=a<end},'Missing peer leaf replacement')
+    mapping['reject']=len(blob);blob+=bytes.fromhex('49bb')+bytes(8)+bytes.fromhex('41ffe3')
+    fixes.append((mapping['reject']+2,0,4,1,1,0))
+    for at,nxt,target in branches:
+        need(target in mapping,'Peer leaf branch misses boundary');struct.pack_into('<i',blob,at,mapping[target]-nxt)
+    code_bytes=len(blob);blob+=bytes(-len(blob)%4);rows=[(0,code_bytes,len(blob))];blob+=bytes((1,0,0,0))
+    table=len(blob);blob+=struct.pack('<III',*rows[0])
+    return dict(blob=bytes(blob),fixes=fixes,rows=rows,table=table,handler=0xffffffff,source=start,body=64,islands=[])
+
+
 def render(images):
     lines=['// Generated from saved build 25480438 by generate_client_peers.py.']
     for k,a in enumerate(images,1):
@@ -164,6 +215,6 @@ def render(images):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--write',action='store_true');args=p.parse_args()
-    images=[build(k) for k in range(1,5)]
+    images=[build(k) for k in range(1,8)]
     if args.write:HEADER.write_text(render(images),encoding='utf-8',newline='\n')
-    print('Peer producer/removal/reset image bytes:',*[len(a['blob']) for a in images])
+    print('Peer lifecycle/lookup image bytes:',*[len(a['blob']) for a in images])
