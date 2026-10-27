@@ -91,6 +91,11 @@ typedef struct EpLoadoutGroup {
  * layout/navigation and source/owner validation are
  * prerequisites to a future common publication; READY is not that gate. */
 EpPropertyResult ep_loadout_group_prepare(const HfApi*,HfMod*,const EpLoadoutGroupAddresses*,EpLoadoutGroup*);
+/* Opt-in update/action confirmed-peer binding, with matching group-local call
+ * relocations. The caller retains/excludes the SAME roster peer bank. Remaining
+ * UI families and the owned-storage activation route still need that binding;
+ * this preparation entry does not make a group safe to activate. */
+EpPropertyResult ep_loadout_group_prepare_peers(const HfApi*,HfMod*,const EpLoadoutGroupAddresses*,const EpPlayerJoinPeers*,EpLoadoutGroup*);
 EpPropertyResult ep_loadout_group_discard(HfMod*,EpLoadoutGroup*);
 #ifdef __cplusplus
 }

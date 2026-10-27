@@ -64,7 +64,7 @@ EpPropertyResult ep_loadout_group_discard(HfMod* mod,EpLoadoutGroup* out)
     }
     *out=remaining;return remaining.state ? EP_PROPERTY_CLEANUP : EP_PROPERTY_OK;
 }
-EpPropertyResult ep_loadout_group_prepare(const HfApi* api,HfMod* mod,const EpLoadoutGroupAddresses* input,EpLoadoutGroup* out)
+static EpPropertyResult prepare(const HfApi* api,HfMod* mod,const EpLoadoutGroupAddresses* input,const EpPlayerJoinPeers* peers,EpLoadoutGroup* out)
 {
     if (!out) return EP_PROPERTY_ARGUMENT;
     EpLoadoutGroupAddresses a={};if (input) a=*input;*out={};
@@ -89,6 +89,19 @@ EpPropertyResult ep_loadout_group_prepare(const HfApi* api,HfMod* mod,const EpLo
         owner_binding.records=records_binding;
         result=ep_loadout_resource_owner_validate_span(&owner_binding,spans[i]);if (result!=EP_PROPERTY_OK) return result;
     }
+    if (peers) {
+        if (peers->capacity!=l.capacity) return EP_PROPERTY_ARGUMENT;
+        for (unsigned i=0;i<EP_LOADOUT_GROUP_CODE_COUNT;i++) {
+            result=ep_loadout_consumers_peer_span(peers,bases[i],spans[i]);if (result!=EP_PROPERTY_OK) return result;
+        }
+        const auto& r=a.record_source;const auto& o=a.resource_owner_source;const uint32_t n=l.capacity;
+        const uint64_t extra[][2]={{r.manager,0xb7c},{r.actors,n*8},{r.equipment,n*0x40},{r.status,n*0x44},
+            {a.countdown_source.manager,0x13000},{a.countdown_source.resources,n*0x4c},
+            {o.owner,0x118},{o.objects,n*8},{o.phases,n*12},{o.rows,n*20},{o.states,n*4}};
+        for (const auto& range:extra) {
+            result=ep_loadout_consumers_peer_span(peers,range[0],(uint32_t)range[1]);if (result!=EP_PROPERTY_OK) return result;
+        }
+    }
     records_binding.common.lifecycle.code=a.records_code;
     EpLoadoutImage life={};EpLoadoutConsumerImage consumers={};EpLoadoutSetupImage setup={};
     EpLoadoutInteractionImage interactions={};
@@ -100,7 +113,7 @@ EpPropertyResult ep_loadout_group_prepare(const HfApi* api,HfMod* mod,const EpLo
     EpLoadoutStateImage state={};EpLoadoutPromptImage prompt={};EpLoadoutCountdownImage countdown={};EpLoadoutResourcesImage resources={};EpLoadoutResourceOwnerImage resource_owner={};EpLoadoutResourceTickImage resource_tick={};EpLoadoutResourceEventsImage resource_events={};EpLoadoutResourceOwnershipImage resource_ownership={};EpLoadoutResourceSyncImage resource_sync={};EpLoadoutResourceSignalsImage resource_signals={};EpLoadoutResourceActionsImage resource_actions={};EpLoadoutResourceMainImage resource_main={};EpLoadoutResourceUpdateImage resource_update={};
     EpLoadoutConsumerAddresses prompt_binding=a.setup.common;prompt_binding.lifecycle.code=a.prompt_code;
     result=ep_loadout_prompt_build(&prompt_binding,&prompt);if (result!=EP_PROPERTY_OK) return result;
-    result=ep_loadout_consumers_build(&c,a.prompt_code+prompt.ready_flag,&consumers);if (result!=EP_PROPERTY_OK) return result;
+    result=peers ? ep_loadout_consumers_build_peers(&c,a.prompt_code+prompt.ready_flag,peers,&consumers) : ep_loadout_consumers_build(&c,a.prompt_code+prompt.ready_flag,&consumers);if (result!=EP_PROPERTY_OK) return result;
     result=ep_loadout_setup_build(&a.setup,&setup);if (result!=EP_PROPERTY_OK) return result;
     result=ep_loadout_interactions_build(&interaction_binding,&interactions);if (result!=EP_PROPERTY_OK) return result;
     refresh_binding.close_entry=a.interactions_code+interactions.close;
@@ -214,4 +227,12 @@ EpPropertyResult ep_loadout_group_prepare(const HfApi* api,HfMod* mod,const EpLo
     group.resource_main_update=group.code[20].base+resource_main.update;group.query_resource_object=group.code[20].base+resource_main.query;
     group.update_resource_states=group.code[21].base+resource_update.update;
     group.capacity=l.capacity;group.state=EP_LOADOUT_GROUP_READY;*out=group;return EP_PROPERTY_OK;
+}
+
+EpPropertyResult ep_loadout_group_prepare(const HfApi* api,HfMod* mod,const EpLoadoutGroupAddresses* a,EpLoadoutGroup* out)
+{return prepare(api,mod,a,nullptr,out);}
+EpPropertyResult ep_loadout_group_prepare_peers(const HfApi* api,HfMod* mod,const EpLoadoutGroupAddresses* a,const EpPlayerJoinPeers* peers,EpLoadoutGroup* out)
+{
+    if (!peers) {if (out) *out={};return EP_PROPERTY_ARGUMENT;}
+    const auto binding=*peers;return prepare(api,mod,a,&binding,out);
 }

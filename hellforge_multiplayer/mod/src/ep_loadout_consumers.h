@@ -1,6 +1,7 @@
 #ifndef EP_LOADOUT_CONSUMERS_H
 #define EP_LOADOUT_CONSUMERS_H
 #include "ep_loadout_lifecycle.h"
+#include "ep_player_join_image.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -43,6 +44,15 @@ int ep_loadout_maps_initialize(EpLoadoutMaps*,uint32_t capacity,uint32_t local_n
  * authoritative identity/lifetime binding and common activation. This is
  * not an installable or runtime-verified UI package. */
 EpPropertyResult ep_loadout_consumers_build(const EpLoadoutConsumerAddresses*,uint64_t ready_flag,EpLoadoutConsumerImage*);
+/* Opt-in shared confirmed-peer bank for update/action only. The binding MUST
+ * equal the retained roster join/producer binding; its lifetime and exclusion
+ * extend through the complete native call. Global owner identity and each
+ * consumed count are checked before bank access. Invalid state rejects via the
+ * caller's non-returning target. Other UI families still require conversion.
+ * No migration, retention, publication or native execution is performed here. */
+EpPropertyResult ep_loadout_consumers_build_peers(const EpLoadoutConsumerAddresses*,uint64_t ready_flag,const EpPlayerJoinPeers*,EpLoadoutConsumerImage*);
+/* Numerical peer binding/alias check, shared by group preparation. */
+EpPropertyResult ep_loadout_consumers_peer_span(const EpPlayerJoinPeers*,uint64_t base,uint32_t bytes);
 /* Shared numerical binding validation; does not dereference any address. */
 EpPropertyResult ep_loadout_consumers_validate(const EpLoadoutConsumerAddresses*);
 EpPropertyResult ep_loadout_consumers_validate_span(const EpLoadoutConsumerAddresses*,uint32_t code_bytes);
@@ -53,6 +63,7 @@ EpPropertyResult ep_loadout_consumers_validate_link(const EpLoadoutConsumerAddre
 /* Cancellable READY allocation only; does not execute any candidate entry.
  * CLEANUP retains the returned handle for discard retry. */
 EpPropertyResult ep_loadout_consumers_prepare(const HfApi*,HfMod*,const EpLoadoutConsumerAddresses*,uint64_t ready_flag,EpSessionCodeInfo*);
+EpPropertyResult ep_loadout_consumers_prepare_peers(const HfApi*,HfMod*,const EpLoadoutConsumerAddresses*,uint64_t ready_flag,const EpPlayerJoinPeers*,EpSessionCodeInfo*);
 #ifdef __cplusplus
 }
 #endif

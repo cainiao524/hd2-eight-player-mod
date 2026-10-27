@@ -1,4 +1,4 @@
-"""One eight-slot update -> native record lookup -> player action smoke flow.
+"""One shared-peer eight-slot update -> lookup -> action/compaction flow.
 
 Owned emulator RAM and ABI stubs only. Three selected Windows unwind points,
 one cancellable READY allocation. No regression matrix or game access.
@@ -20,12 +20,14 @@ PROMPT=CODE+0xc0000
 READY,BLOCKED=(PROMPT+x for x in prompt.build()['entries'][3:])
 class Binding(c.Structure):
     _fields_=[('lifecycle',Addresses)]+[(x,c.c_uint64) for x in ('forward_map','inverse_map','roster','roster_storage')]
+class Peers(c.Structure):
+    _fields_=[('client',c.c_uint64),('bank',c.c_uint64),('capacity',c.c_uint32),('reserved',c.c_uint32)]
 class Image(c.Structure):
     _fields_=[(x,c.c_uint32) for x in ('bytes','code_bytes','unwind_offset','table_offset','function_count','update','lookup','action')]+[('data',c.c_ubyte*g.MAX_IMAGE)]
 
 
 class Flow(Fixture):
-    def __init__(self,artifact,dll,image):
+    def __init__(self,artifact,dll,image,peers=None):
         self.uc=u.Uc(u.UC_ARCH_X86,u.UC_MODE_64);self.pages=set();self.external=set();self.calls=[]
         self.dll=dll;self.image=image;self.points={artifact['mapping'][0x146c3d1],artifact['mapping'][0x1471ae3]}
         self.lookup_point=artifact['mapping'][0x14706b6];self.lookup_checked=False
@@ -54,11 +56,18 @@ class Flow(Fixture):
         maps=(c.c_uint32*16)();g.need(dll.ui_maps(maps)==1,'Map initialization failed');self.write(MAPS,bytes(maps))
         self.write(ROSTER+0x80,U32(8)+U32(8)+U32(1))
         self.write(ENGINE+0x16390,U32(8));self.write(ENGINE+0x42b0,U32(1));self.write(ENGINE+0x429c,U32(14))
+        if peers:
+            self.map(peers.bank-16,288);self.write(peers.bank-16,bytes([0x6c])*288)
+            self.write(ENGINE+0x16398,bytes([0xa5])*256)
+            def old_bank_read(uc,access,address,size,value,user):
+                g.need(False,'Consumer read the obsolete inline peer bank')
+            self.uc.hook_add(u.UC_HOOK_MEM_READ,old_bank_read,begin=ENGINE+0x16398,end=ENGINE+0x16497)
         self.order=[3,7,0,6,1,5,2,4]
         for i,network in enumerate(self.order):
             self.write(STORAGE+i*8,U64(DESCS+i*32));self.write(DESCS+i*32+8,U32(0x1000+i));self.write(DESCS+i*32+16,U32(100+i))
             self.write(STORAGE+0x580+i*32,U32(100+i));self.write(STORAGE+0x3c0+i*0x38,U64(PEER+i))
-            self.write(ENGINE+0x16398+i*32,U64(PEER+i));self.write(ENGINE+0x163ac+i*32,U32(network))
+            bank=peers.bank if peers else ENGINE+0x16398
+            self.write(bank+i*32,U64(PEER+i));self.write(bank+i*32+0x14,U32(network))
             self.write(ENGINE+0x40000+i*0xc0,U64(PEER+i))
             self.write(RECORDS+i*0x9f0+0x9e8,U64(PEER+i));self.write(WIDGETS+i*0x1ee18+0x1edf0,U64(1))
         self.write(ENGINE+0x38,U64(ENGINE+0x20000));self.write(ENGINE+0x40,U64(ENGINE+0x21000))
@@ -94,13 +103,15 @@ class Flow(Fixture):
             uc.reg_write(R('rax'),rax)
             if address in (READY,BLOCKED):uc.reg_write(R('rdx'),rdx) # captured private ABI
 
-    def invoke(self,entry,rdx=0,r9=0):
+    def invoke(self,entry,rdx=0,r9=0,rejected=False):
         self.standalone_lookup=entry==self.image.lookup;self.stop=None
         self.uc.reg_write(R('rsp'),SP);self.write(SP,U64(STOP))
         for i,n in enumerate(NAMES):self.uc.reg_write(R(n),0x11110000+i*0x101)
         for i in range(6,9):self.uc.reg_write(R(f'xmm{i}'),(0x66660000+i)|((0xaaaa0000+i)<<64))
         for n,v in (('rcx',SCREEN),('rdx',rdx),('r9',r9)):self.uc.reg_write(R(n),v)
         self.uc.emu_start(CODE+entry,0,count=30000)
+        if rejected:
+            g.need(self.stop==REJECT,'Invalid confirmed-peer binding was accepted');return
         g.need(self.stop==STOP and self.value('rsp')==SP+8,'Consumer did not return normally')
         for i,n in enumerate(NAMES):g.need(self.value(n)==0x11110000+i*0x101,'Consumer corrupted nonvolatile register')
 
@@ -115,13 +126,21 @@ def main():
                  g.PROJECT/'mod/src/ep_session_code.cpp',g.PROJECT/'mod/src/ep_loadout_consumers.cpp',
                  g.PROJECT/'tests/loadout_consumers_dll.cpp','-o',args.library.resolve()]
         result=subprocess.run(list(map(str,command)),capture_output=True,text=True);g.need(result.returncode==0,result.stdout+result.stderr)
+        # Compile only the changed group caller; no whole-mod build or suite.
+        group_command=command[:command.index('-shared')]+['-c',g.PROJECT/'mod/src/ep_loadout_group.cpp',
+                                                          '-o',args.library.with_suffix('.group.o').resolve()]
+        result=subprocess.run(list(map(str,group_command)),capture_output=True,text=True);g.need(result.returncode==0,result.stdout+result.stderr)
     dll=c.CDLL(str(args.library.resolve()))
     dll.ui_build.argtypes=[c.POINTER(Binding),c.POINTER(Image),c.c_uint64];dll.ui_prepare.argtypes=[c.POINTER(Binding),c.c_uint64]
+    dll.ui_build_peers.argtypes=dll.ui_build.argtypes+[c.POINTER(Peers)]
+    dll.ui_prepare_peers.argtypes=dll.ui_prepare.argtypes+[c.POINTER(Peers)]
     dll.ui_maps.argtypes=[c.POINTER(c.c_uint32)]
     dll.ui_unwind.argtypes=[c.POINTER(Image),c.c_uint32,c.c_int32,c.POINTER(c.c_uint64),c.POINTER(c.c_ubyte),c.c_uint64]
     binding=Binding(Addresses(GAME,CODE,SCREEN,RECORDS,WIDGETS,REJECT,8,0),MAPS,MAPS+32,ROSTER,STORAGE)
-    artifact=g.build();image=Image();g.need(dll.ui_build(c.byref(binding),c.byref(image),READY)==0,'Consumer image rejected')
-    f=Flow(artifact,dll,image);f.invoke(image.update)
+    peers=Peers(ENGINE+0x162c8,0x280000000,8,0)
+    artifact=g.build(True);image=Image()
+    g.need(dll.ui_build_peers(c.byref(binding),c.byref(image),READY,c.byref(peers))==0,'Consumer image rejected')
+    f=Flow(artifact,dll,image,peers);f.invoke(image.update)
     inverse=list(struct.unpack('<8I',f.read(MAPS+32,32)));forward=list(struct.unpack('<8I',f.read(MAPS,32)))
     g.need(inverse==f.order and all(forward[n]==i for i,n in enumerate(inverse)),'Native update lost identity/slot mapping')
     expected=[(0x189ca20,WIDGETS+i*0x1ee18,RECORDS+i*0x9f0) for i in range(1,8)]
@@ -133,8 +152,20 @@ def main():
         g.need(f.read(SCREEN+begin,end-begin)==f.inline[begin:end],'Consumer touched old inline arrays/maps')
     g.need(f.read(RECORDS+8*0x9f0,16)==bytes([0x6b])*16 and f.read(WIDGETS+8*0x1ee18,16)==bytes([0x7c])*16,'Storage boundary crossed')
     g.need(not f.points and f.lookup_checked,'Selected unwind point was not reached')
-    g.need(dll.ui_prepare(c.byref(binding),READY)==0,'Consumer READY prepare/discard failed')
-    print(json.dumps(dict(passed=True,scope='one eight-slot update/lookup/action flow',game_access=False,runtime_verified=False)))
+    # Native removal compacts full records. UI actions must follow the stored
+    # network index, not the new physical ordinal, even with existing maps.
+    f.write(peers.bank,f.read(peers.bank+7*32,32));f.write(ENGINE+0x16390,U32(7))
+    f.invoke(image.action,PEER+7,0x36)
+    g.need(f.calls[-1]==(0x1893d40,WIDGETS+7*0x1ee18+0xe670,0x36),'Compaction changed the action target')
+    calls=len(f.calls);f.write(ENGINE+0x16390,U32(9));f.invoke(image.action,PEER+7,0x37,rejected=True)
+    f.write(ENGINE+0x16390,U32(7));f.write(GAME+0x347cef0,U64(ENGINE+0x10000))
+    f.invoke(image.action,PEER+7,0x38,rejected=True)
+    g.need(len(f.calls)==calls,'Rejected peer state still called a widget')
+    g.need(f.read(ENGINE+0x16398,256)==bytes([0xa5])*256 and
+           f.read(peers.bank-16,16)==bytes([0x6c])*16 and f.read(peers.bank+256,16)==bytes([0x6c])*16,
+           'Peer bank boundary or obsolete records changed')
+    g.need(dll.ui_prepare_peers(c.byref(binding),READY,c.byref(peers))==0,'Consumer READY prepare/discard failed')
+    print(json.dumps(dict(passed=True,scope='one shared-peer UI flow with compaction/guards',game_access=False,runtime_verified=False)))
 
 
 if __name__=='__main__':main()

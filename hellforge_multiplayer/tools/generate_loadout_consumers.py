@@ -16,7 +16,7 @@ REG = {'rax':0,'rcx':1,'rdx':2,'rbx':3,'rsp':4,'rbp':5,'rsi':6,'rdi':7,
        'r8':8,'r9':9,'r10':10,'r11':11,'r12':12,'r13':13,'r14':14,'r15':15}
 
 
-def build():
+def build(peers=False):
     capture=Capture();blob=bytearray();fixes=[];branches=[];mapping={};ends={};entries=[];rows=[];sources=[]
     def fix(code, operand, key, kind=1, add=0):
         at=len(blob);blob.extend(code);fixes.append((at+operand,len(blob),key,kind,add))
@@ -27,6 +27,16 @@ def build():
     def reject(op=b'\x0f\x83'):
         fix(op+bytes(4),len(op),6,0)
     def capacity(code):fix(code+bytes(4),len(code),5,2)
+    def peer_count(owner, count, instruction, rebase=True):
+        # Compare before dereferencing the captured global. The count register
+        # is dead here and will immediately receive the original native count.
+        absolute(count,12,-0x162c8)
+        blob.extend(bytes((0x48+4*(count>=8)+(owner>=8),0x39,
+                           0xc0+((count&7)<<3)+(owner&7))))
+        reject(b'\x0f\x85');blob.extend(instruction)
+        capacity((b'\x41' if count>=8 else b'')+b'\x81'+bytes((0xf8+(count&7),)))
+        reject(b'\x0f\x87')
+        if rebase:absolute(owner,13,-0x16398)
     def relocate_memory(ins,key,origin):
         mem=next(o.mem for o in ins.operands if o.type==X86_OP_MEM)
         base=REG[ins.reg_name(mem.base)]
@@ -63,7 +73,15 @@ def build():
             a=ins.address;mapping[a]=len(blob)
             text=ins.mnemonic+' '+ins.op_str
             mem=next((o.mem for o in ins.operands if o.type==X86_OP_MEM),None)
-            if a in (0x146c474,0x146cc08,0x146d29b,0x1471ac3):
+            if peers and a in (0x146c424,0x146cbd9,0x1471a46):
+                owner,count={0x146c424:(9,0),0x146cbd9:(8,2),0x1471a46:(3,10)}[a]
+                peer_count(owner,count,ins.bytes)
+            elif peers and a in (0x146c6ff,0x146cfc4):
+                peer_count(1,2,b'\x8b\x91\x90\x63\x01\0',False)
+                blob.extend(b'\x39\xc2' if a==0x146c6ff else b'\x39\xd0')
+            elif peers and a==0x146c71d:
+                absolute(14,13);blob.extend(b'\x4d\x8b\x34\x06')
+            elif a in (0x146c474,0x146cc08,0x146d29b,0x1471ac3):
                 # Validate the network index BEFORE indexing either map.
                 capacity({0x146c474:b'\x41\x81\xfd',0x146cc08:b'\x81\xf9',
                           0x146d29b:b'\x3d',0x1471ac3:b'\x3d'}[a])
@@ -157,7 +175,7 @@ def build():
                 table_offset=table_offset,entries=entries,functions=functions,sources=sources,mapping=mapping)
 
 
-def render(a):
+def render(a,peers=False):
     lines=['// Generated from saved build 25480438 by generate_loadout_consumers.py.',
            'static const uint8_t ep_loadout_consumers_template[] = {']
     lines += ['    '+','.join(f'0x{x:02x}' for x in a['blob'][i:i+16])+',' for i in range(0,len(a['blob']),16)]
@@ -168,10 +186,13 @@ def render(a):
         lines.append(f'static const uint32_t ep_loadout_consumer_{key} = {a[key]};')
     lines.append('static const uint32_t ep_loadout_consumer_entries[] = {'+','.join(map(str,a['entries']))+'};')
     lines.append(f'static const uint32_t ep_loadout_consumer_functions = {len(a["functions"])};')
-    return '\n'.join(lines)+'\n'
+    text='\n'.join(lines)+'\n'
+    return text.replace('ep_loadout_consumers_','ep_loadout_peer_consumers_').replace('ep_loadout_consumer_','ep_loadout_peer_consumer_') if peers else text
 
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--write',action='store_true');args=p.parse_args();a=build()
-    if args.write:HEADER.write_text(render(a),encoding='utf-8',newline='\n')
+    if args.write:
+        HEADER.write_text(render(a),encoding='utf-8',newline='\n')
+        HEADER.with_name('ep_loadout_peer_consumers_template.h').write_text(render(build(True),True),encoding='utf-8',newline='\n')
     print(json.dumps(dict(image_bytes=len(a['blob']),entries=len(a['entries']),game_access=False)))
