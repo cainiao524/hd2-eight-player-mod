@@ -23,7 +23,8 @@ typedef struct EpLoadoutResourcesImage {
  * following ordinal lookup. The owned fifteen-case transform switch keeps
  * native categories/default transforms (not player counts). Assignment calls
  * the group's countdown lookup. Engine callbacks, lifecycle/registration,
- * 66B090's inline writer and remaining readers/writers still need routing.
+ * The resource-update image replaces 66B090's inline writer. Original entry
+ * routing and remaining readers/writers still require integration.
  * Native catalogs, transforms outside the resource bank and actor services
  * retain their ABI/retention/exclusion prerequisites. No game access, hooks,
  * publication or implicit initialization; READY is not runtime verification. */
