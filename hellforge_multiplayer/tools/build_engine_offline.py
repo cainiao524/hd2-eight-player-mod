@@ -102,7 +102,7 @@ def main():
     property_dll=build/'property_image_test.dll'
     run([zig,'c++','-std=c++17','-target','x86_64-windows-gnu','-shared','-O1','-Wall','-Werror','-Wno-unused-parameter',
          '-I',source/'native/mod-sdk',PROJECT/'mod/src/ep_property_image.cpp',PROJECT/'mod/src/ep_property_code.cpp',PROJECT/'mod/src/ep_property_gate.cpp',PROJECT/'mod/src/ep_getter_image.cpp',PROJECT/'mod/src/ep_mover_image.cpp',PROJECT/'mod/src/ep_insert_image.cpp',
-         PROJECT/'mod/src/ep_remove_image.cpp',PROJECT/'mod/src/ep_classify_image.cpp',PROJECT/'mod/src/ep_registry_image.cpp',PROJECT/'mod/src/ep_departure_image.cpp',PROJECT/'mod/src/ep_arrival_image.cpp',PROJECT/'mod/src/ep_roster_gate.cpp',PROJECT/'tests/arrival_image_dll.cpp','-o',property_dll])
+         PROJECT/'mod/src/ep_remove_image.cpp',PROJECT/'mod/src/ep_classify_image.cpp',PROJECT/'mod/src/ep_registry_image.cpp',PROJECT/'mod/src/ep_departure_image.cpp',PROJECT/'mod/src/ep_arrival_image.cpp',PROJECT/'mod/src/ep_player_join_image.cpp',PROJECT/'mod/src/ep_roster_gate.cpp',PROJECT/'tests/arrival_image_dll.cpp','-o',property_dll])
     property_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_property_images.py','--library',property_dll]))
     property_receipt=PROJECT/'evidence/property-image-validation.json'
     getter_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_getter_image.py','--library',property_dll,'--zig',zig]))
@@ -216,12 +216,12 @@ def main():
     roster_gate_output=json.loads(run([sys.executable,'-B',PROJECT/'tools/validate_roster_gates.py','--library',property_dll,'--zig',zig]))
     roster_gate_receipt=PROJECT/'evidence/roster-gate-validation.json'
     roster_group_dll,roster_group_test=build/'roster_group_test.dll',build/'roster_group_test.exe'
-    roster_emitters=[PROJECT/'mod/src'/('ep_'+n+'.cpp') for n in ('property_image','property_gate','getter_image','mover_image','insert_image','remove_image','classify_image','registry_image','departure_image','arrival_image','roster_gate')]
+    roster_emitters=[PROJECT/'mod/src'/('ep_'+n+'.cpp') for n in ('property_image','property_gate','getter_image','mover_image','insert_image','remove_image','classify_image','registry_image','departure_image','arrival_image','player_join_image','roster_gate')]
     run([zig,'c++','-std=c++17','-target','x86_64-windows-gnu','-shared','-O1','-Wall','-Werror','-Wno-unused-parameter',
          '-I',source/'native/mod-sdk',*roster_emitters,PROJECT/'mod/src/ep_roster_call.cpp',PROJECT/'mod/src/ep_roster_owner.cpp',PROJECT/'mod/src/ep_native_roster.cpp',PROJECT/'tests/roster_group_dll.cpp','-o',roster_group_dll])
     run([*common,'-O1',PROJECT/'tests/roster_group_test.c',*deps,'-o',roster_group_test])
     roster_scenarios=[]
-    for index,after in [(0,0)]+[(i,j) for i in range(1,18) for j in (0,1)]:
+    for index,after in [(0,0)]+[(i,j) for i in range(1,19) for j in (0,1)]:
         arguments=[] if not index else [index,after]
         result=run([roster_group_test,roster_group_dll,*arguments]).decode('utf-8').strip()
         found=re.fullmatch(r'roster group: (\d+) checks passed; scenario (\d+) (\d+)',result)
@@ -240,7 +240,7 @@ def main():
     roster_bridge_fixture=build/'roster_call_test.unwind.bin'
     roster_bridge_unwind=json.loads(run([sys.executable,'-B',PROJECT/'tools/roster_bridge_unwind.py','--library',roster_call_dll,'--output',roster_bridge_fixture]))
     call_scenarios=[]
-    for arguments in [['normal'],['nestedfault'],['depth'],['close'],['validatefault'],['endfault'],['exhausted'],['unavailable'],['departurefault'],['departureclose'],['departurerace'],['scopecommit'],['scopeclose'],['scopesnapshot'],['scopefault'],['scopechain']]+[[i,j] for i in range(1,18) for j in (0,1)]:
+    for arguments in [['normal'],['nestedfault'],['depth'],['close'],['validatefault'],['endfault'],['exhausted'],['unavailable'],['departurefault'],['departureclose'],['departurerace'],['scopecommit'],['scopeclose'],['scopesnapshot'],['scopefault'],['scopechain']]+[[i,j] for i in range(1,19) for j in (0,1)]:
         result=run([roster_call_test,roster_call_dll,*arguments]).decode('utf-8').strip()
         found=re.fullmatch(r'roster calls: (\d+) checks passed; (?:mode \w+|scenario \d+ \d+)',result)
         if not found:raise RuntimeError('Missing owned roster call result: '+result)

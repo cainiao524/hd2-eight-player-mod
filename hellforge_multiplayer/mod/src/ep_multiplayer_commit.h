@@ -11,7 +11,7 @@ typedef struct EpMultiplayerCommitResult {
     EpRosterMigrationResult roster_migration;
     uint32_t total_read_bytes;
 } EpMultiplayerCommitResult;
-/* Joint activation of the 17 roster and 25 component33 entries. Both groups
+/* Joint activation of the 18 roster and 25 component33 entries. Both groups
  * must already be fully published on OLD and bound to the exact same owner
  * and game. Reserves roster management, drains external execution once, and
  * bars same-thread roster entry throughout staging/end as well as component33.

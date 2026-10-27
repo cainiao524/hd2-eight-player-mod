@@ -113,7 +113,7 @@ EXPORT unsigned roster_migration_commit_test(unsigned mode)
         Check(j->result.roster_migration.status==EP_ROSTER_MIGRATION_OK && !j->result.roster_migration.restored,"roster success diagnostics");
         EpHfRosterSnapshot roster={};Check(ep_roster_owner_snapshot(s->mod,s->owner,s->roster.game,&roster)==EP_NATIVE_OK && roster.count==count,"actual migrated B through native provider");
         for (unsigned i=0;i<count;i++) Check(roster.players[i].peer==100+i && roster.players[i].player==1+8*i && roster.players[i].network_index==(i+1)%4 && roster.players[i].generation==10+i && bool(roster.players[i].local)==(i==0),"migrated identities/provider mapping");
-        for (unsigned i=0;i<17;i++) JointRosterRun(i,true);
+        for (unsigned i=0;i<EP_ROSTER_ENTRIES;i++) JointRosterRun(i,true);
     } else {
         if (mode!=126 && mode!=127 && mode!=132) Check(!memcmp((void*)s->roster.storage,t.before,sizeof(t.before)),"roster final restoration");
         Check(ep_roster_owner_info(s->mod,s->owner,&owner)==0 && bool(owner.fault)==unsafe,"roster owner quarantine");

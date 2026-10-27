@@ -17,7 +17,7 @@ typedef struct EpRosterGroupInfo {
     EpSessionCodeInfo code[EP_ROSTER_ENTRIES];
     uint64_t storage_owner;
 } EpRosterGroupInfo;
-/* Seventeen entries share one latch and storage binding. All reservations precede
+/* Eighteen entries share one latch and storage binding. All reservations precede
  * emission; insert/remove and registry calls use this group's mover and
  * association bodies respectively. Uses
  * EP_GROUP_* states and the same full-capacity guard contract. No production
@@ -28,7 +28,11 @@ int ep_roster_group_prepare(const HfApi*,HfMod*,const EpRosterGroupBindings*,EpR
  * The supplied owner's binding must exactly match. Every OLD and NEW call is
  * serialized before selecting the latch. Requires an explicit failure policy.
  * For owned commit, begin only excludes/drains external execution; staging is
- * in validate and rollback/resume in end, under the owner call scope. */
+ * in validate and rollback/resume in end, under the owner call scope.
+ * PLAYER_JOIN now owns the entire original ClientSynchronizer join body,
+ * including native FDC140 creation and callbacks, with the eight-slot ceiling.
+ * This does not supply resource preflight/compensation or prove avatar creation;
+ * those remain mandatory integration gates before enabling runtime. */
 int ep_roster_group_prepare_owned(const HfApi*,HfMod*,const EpRosterGroupBindings*,uint64_t storage_owner,
     const EpRosterCallPolicy*,EpRosterGroupInfo*);
 int ep_roster_group_info(HfMod*,uint64_t,EpRosterGroupInfo*);

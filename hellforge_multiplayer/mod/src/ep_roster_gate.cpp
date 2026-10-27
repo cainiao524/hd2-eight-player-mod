@@ -6,13 +6,14 @@
 #include "ep_registry_image.h"
 #include "ep_departure_image.h"
 #include "ep_arrival_image.h"
+#include "ep_player_join_image.h"
 #include <string.h>
 static const EpRosterGateLayout layouts[EP_ROSTER_ENTRIES]={
     {0x60C640,578,756,2},{0x60C890,303,484,2},{0x606AD0,165,436,2},{0x60C410,430,660,3},
     {0x60CA80,287,688,3},{0x60CBA0,203,588,3},{0x540850,206,592,3},{0x540920,286,684,3},
     {0x60CEA0,172,824,3},{0x540A40,160,808,3},{0x60CF50,934,2344,3},{0x60D300,1120,2816,3},
     {0xB54E00,873,1884,5},{0x606520,271,536,4},{0x605950,1503,2760,15},{0xFDC820,1503,80,2},
-    {0x6054F0,1111,2072,4}
+    {0x6054F0,1111,2072,4},{0x1085D70,2989,3296,8}
 };
 int ep_roster_gate_layout(uint32_t kind,EpRosterGateLayout* out)
 {
@@ -50,7 +51,13 @@ EpPropertyResult ep_roster_gate_build(uint32_t kind,const EpInsertAddresses* inp
             if (RosterOverlap(resources[i][0],resources[i][1],a.game_base+other[j][0],other[j][1])) return EP_PROPERTY_OVERLAP;
     }
     EpPropertyResult rc;EpGetterAddresses basic={a.game_base,a.code_address,a.roster_address,a.storage_address,a.reject_address};
-    if (kind==EP_ROSTER_ENTITY_REMOVE) {
+    if (kind==EP_ROSTER_PLAYER_JOIN) {
+        EpPlayerJoinImage image;
+        rc=ep_player_join_gate_build(a.game_base,a.code_address,control,next,8,&image);
+        if (rc!=EP_PROPERTY_OK) return rc;
+        result.bytes=image.bytes;result.table_offset=image.table_offset;result.function_count=image.function_count;
+        memcpy(result.data,image.data,image.bytes);
+    } else if (kind==EP_ROSTER_ENTITY_REMOVE) {
         /* Keep the complete original entity lifecycle and later SDK hooks.
          * This leaf forwarding body also supports the unowned group API. */
         const uint8_t gate[32]={0x48,0xB8,0,0,0,0,0,0,0,0,0x83,0x38,1,0x75,5,

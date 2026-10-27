@@ -4,7 +4,7 @@ from pathlib import Path
 import validate_component33_migration_commit as migration
 MODES=list(range(30))
 EMITTERS=['ep_property_image','ep_property_gate','ep_getter_image','ep_mover_image','ep_insert_image','ep_remove_image',
-          'ep_classify_image','ep_registry_image','ep_departure_image','ep_arrival_image','ep_roster_gate']
+          'ep_classify_image','ep_registry_image','ep_departure_image','ep_arrival_image','ep_player_join_image','ep_roster_gate']
 def main():
     ap=argparse.ArgumentParser()
     for name in ('zig','upstream','library'):ap.add_argument('--'+name,type=Path)

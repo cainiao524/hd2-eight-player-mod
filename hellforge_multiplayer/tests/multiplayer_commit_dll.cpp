@@ -44,7 +44,7 @@ static void JointRosterRun(unsigned index,bool next,bool failure=false)
 static int JointRosterHook(HfMod* mod,uintptr_t target,void* detour,void** original,int32_t priority)
 {
     auto* t=joint;unsigned i=t->hooks++;
-    Check(i<17 && mod==t->group->owner && target==t->group->targets[i] && detour==(void*)t->roster.code[i].base &&
+    Check(i<EP_ROSTER_ENTRIES && mod==t->group->owner && target==t->group->targets[i] && detour==(void*)t->roster.code[i].base &&
         original==(void**)t->roster.code[i].next_pointer && priority==17,"joint roster publication binding");
     if (t->mode==16 && i==8) return 1;
     InterlockedExchangePointer(original,(void*)JointRosterOld);
@@ -107,7 +107,7 @@ static void JointFixtureSetup(JointTest* test,unsigned mode)
         Check(ep_roster_owner_create(s->mod,&view,&memory,&other)==0,"separate owner fixture");}
     roster.game_base=view.game;roster.roster_address=view.roster;roster.storage_address=view.storage;
     // Keep the original roster/storage RIP-relative references within 2 GiB.
-    for (unsigned i=0;i<17;i++) {roster.desired_code[i]=0x1c4000000+uint64_t(mode==18)*0x10000000+i*0x10000;roster.reject[i]=0x1e4000000+i*0x10000;}
+    for (unsigned i=0;i<EP_ROSTER_ENTRIES;i++) {roster.desired_code[i]=0x1c4000000+uint64_t(mode==18)*0x10000000+i*0x10000;roster.reject[i]=0x1e4000000+i*0x10000;}
     EpRosterCallPolicy policy={JointRosterFailure,&t};
     Check(mode==17 ? ep_roster_group_prepare(&n->api,s->mod,&roster,&t.roster) :
         ep_roster_group_prepare_owned(&n->api,s->mod,&roster,other ? other : s->owner,&policy,&t.roster),"joint roster prepare");
@@ -167,11 +167,11 @@ EXPORT unsigned multiplayer_commit_test(unsigned mode)
         Check(!p->lease,"joint lease not released");
         if (!success) {
             Check(t.roster.state==EP_GROUP_READY && e->entries.publication_state==EP_C33_PUBLISH_READY,"joint safe retry state");
-            for (unsigned i=0;i<17;i++) JointRosterRun(i,false);
+            for (unsigned i=0;i<EP_ROSTER_ENTRIES;i++) JointRosterRun(i,false);
             m->mode=p->mode=0;m->requested=m->data_calls=m->global_calls=0;m->checked_stage=false;p->reads=p->writes=p->restored=0;t.mode=0;
             Check(ep_multiplayer_commit(s->mod,t.roster.handle,e->entries.handle,&t.guard,&t.result),"joint safe retry");
         }
-        for (unsigned i=0;i<17;i++) JointRosterRun(i,true);
+        for (unsigned i=0;i<EP_ROSTER_ENTRIES;i++) JointRosterRun(i,true);
         for (unsigned i=8;i<22;i++) {PubCall call={p,i,true};PubRun(&call);}
         if (mode==26) {EpRosterOwnerInfo before={},after={};Check(ep_roster_owner_info(s->mod,s->owner,&before)==0,"joint nested before");
             t.nest=true;JointRosterRun(0,true);t.nest=false;Check(ep_roster_owner_info(s->mod,s->owner,&after)==0 && after.revision==before.revision+1,"joint nested one revision");}

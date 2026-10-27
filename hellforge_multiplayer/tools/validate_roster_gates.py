@@ -11,7 +11,7 @@ from build_receiver_unwind_offline import load as receiver_fixture
 from validate_property_gates import gate_paths,CONTROL
 PROJECT=reference.PROJECT
 class Gate(c.Structure):
-    _fields_=[(n,c.c_uint32) for n in ('bytes','table_offset','function_count')]+[('data',c.c_ubyte*2816)]
+    _fields_=[(n,c.c_uint32) for n in ('bytes','table_offset','function_count')]+[('data',c.c_ubyte*4096)]
 def validate(path,zig):
     library=Library(path);emit=library.dll.roster_gate_test_build
     emit.argtypes=[c.c_uint32,c.POINTER(InsertAddresses),c.c_uint64,c.c_uint64,c.POINTER(Gate)];emit.restype=c.c_int

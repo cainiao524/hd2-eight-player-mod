@@ -116,7 +116,11 @@ static int EpGroupPrepare(const HfApi* api,HfMod* owner,const EpRosterGroupBindi
             c->switching=(volatile int32_t*)&g->switching;
             if (!ep_roster_call_prefix(c,image.data)) {ok=0;break;}
         }
-        if (i+1==EP_ROSTER_STATE_UPDATE) {
+        if (i+1==EP_ROSTER_PLAYER_JOIN) {
+            uint32_t handler;memcpy(&handler,image.data+image.table_offset+7*12,4);
+            const EpSessionGsCheck gs={1,handler,(uintptr_t)bindings.game_base+0x21044a0};
+            if (!ep_session_code_seal_player_join(owner,g->code[i],image.data,image.bytes,image.table_offset,&gs)) ok=0;
+        } else if (i+1==EP_ROSTER_STATE_UPDATE) {
             const EpSessionGsCheck gs={2,1952,(uintptr_t)bindings.game_base+0x21044a0};
             if (!ep_session_code_seal_gs_table(owner,g->code[i],image.data,image.bytes,image.table_offset,image.function_count,&gs)) ok=0;
         } else if (!ep_session_code_seal_table(owner,g->code[i],image.data,image.bytes,image.table_offset,image.function_count)) ok=0;
