@@ -13,6 +13,8 @@ static bool free_region(uint64_t address)
 {MEMORY_BASIC_INFORMATION memory={};return VirtualQuery((void*)(uintptr_t)address,&memory,sizeof(memory)) && memory.State==MEM_FREE;}
 static uint32_t word(uint64_t address)
 {uint32_t value;memcpy(&value,(const void*)(uintptr_t)address,4);return value;}
+static bool zero(uint64_t address,unsigned bytes)
+{for (unsigned i=0;i<bytes;i++) if (*(const uint8_t*)(uintptr_t)(address+i)) return false;return true;}
 
 int main()
 {
@@ -67,14 +69,66 @@ int main()
     NEED(ep_loadout_storage_prepare(&api,mod,&input,&retained)==EP_LOADOUT_STORAGE_OK && retained.handle!=first.handle,"Retry reused a stale owner handle");
     NEED(*last_widget==0,"Retry exposed the cancelled widget contents");
     NEED(ep_loadout_storage_cancel(mod,first.handle)==EP_LOADOUT_STORAGE_STATE,"Stale cancellation affected the new owner");
-    NEED(ep_loadout_storage_retain(mod,retained.handle)==EP_LOADOUT_STORAGE_OK,"Whole-group retention failed");
+    EpLoadoutSourceSnapshot snapshot={};snapshot.game=l.game;
+    snapshot.record_manager=snapshot.global_record_manager=a.record_source.manager;
+    snapshot.countdown_manager=snapshot.global_countdown_manager=a.countdown_source.manager;
+    snapshot.resource_owner=snapshot.global_resource_owner=a.resource_owner_source.owner;
+    for (unsigned i=0;i<sizeof(snapshot.record_window);i++) snapshot.record_window[i]=(uint8_t)(i*29+3);
+    for (unsigned i=0;i<sizeof(snapshot.resources);i++) snapshot.resources[i]=(uint8_t)(i*17+5);
+    for (unsigned i=0x10;i<sizeof(snapshot.owner);i++) snapshot.owner[i]=(uint8_t)(i*13+7);
+    // Four registered, three published, two prefix rows. +0 may be less than
+    // published after pending publication; it is not a dense count bound.
+    const uint32_t counts[]={1,4,3,2};memcpy(snapshot.owner,counts,sizeof(counts));
+    const auto original=snapshot;auto invalid=snapshot;invalid.global_record_manager+=8;
+    NEED(ep_loadout_storage_import_sources(mod,retained.handle,&invalid)==EP_LOADOUT_STORAGE_SOURCE &&
+         zero(retained.binding.record_source.actors,8*8),"Foreign source identity changed target data");
+    NEED(ep_loadout_storage_import_sources(mod,retained.handle,&snapshot)==EP_LOADOUT_STORAGE_OK,"Source staging failed");
+    NEED(ep_loadout_storage_info(mod,retained.handle,&retained) && retained.sources_imported,"Missing import state");
+    const auto& imported=retained.binding;const auto& owner=imported.resource_owner_source;
+    const struct {uint64_t target;const uint8_t* source;unsigned stride;} imported_banks[]={
+        {imported.record_source.actors,snapshot.record_window,8},
+        {imported.record_source.equipment,snapshot.record_window+0x134,0x40},
+        {imported.record_source.status,snapshot.record_window+0x4c,0x44},
+        {imported.countdown_source.resources,snapshot.resources,0x4c},
+        {owner.objects,snapshot.owner+0x68,8},{owner.phases,snapshot.owner+0x88,12},
+        {owner.rows,snapshot.owner+0xb8,20},{owner.states,snapshot.owner+0x108,4}};
+    for (const auto& bank:imported_banks) {
+        NEED(!memcmp((const void*)(uintptr_t)bank.target,bank.source,4*bank.stride),"Legacy source ordinal or opaque data changed");
+        for (unsigned i=4;i<8;i++) {
+            if (bank.target==imported.countdown_source.resources)
+                NEED(word(bank.target+i*bank.stride)==input.invalid_resource_id && zero(bank.target+i*bank.stride+4,bank.stride-4),"New resource row was not initialized");
+            else NEED(zero(bank.target+i*bank.stride,bank.stride),"New source row inherited old data");
+        }
+    }
+    NEED(!memcmp(snapshot.record_window,original.record_window,sizeof(snapshot.record_window)) &&
+         !memcmp(snapshot.resources,original.resources,sizeof(snapshot.resources)) &&
+         !memcmp(snapshot.owner,original.owner,sizeof(snapshot.owner)),"Import mutated its source copies");
+    NEED(zero(imported.setup.common.lifecycle.records,8*EP_LOADOUT_RECORD_BYTES) &&
+         zero(imported.setup.common.lifecycle.widgets,8*EP_LOADOUT_WIDGET_BYTES) &&
+         word(imported.setup.common.inverse_map)==7,"Source import fabricated native UI state");
+    invalid=snapshot;const uint32_t too_many=5;memcpy(invalid.owner+4,&too_many,4);
+    NEED(ep_loadout_storage_import_sources(mod,retained.handle,&invalid)==EP_LOADOUT_STORAGE_COUNTS &&
+         !memcmp((const void*)(uintptr_t)owner.objects,snapshot.owner+0x68,32),"Rejected import corrupted the previous baseline");
+    NEED(ep_loadout_storage_retain(mod,retained.handle)==EP_LOADOUT_STORAGE_SOURCE,"Legacy retain bypassed imported-source checking");
+    invalid=snapshot;invalid.resources[0]^=1;
+    NEED(ep_loadout_storage_retain_sources(mod,retained.handle,&invalid)==EP_LOADOUT_STORAGE_STALE,"Changed source was retained");
+    auto* tail=(uint8_t*)(uintptr_t)(owner.rows+7*20);*tail=0x51;
+    NEED(ep_loadout_storage_retain_sources(mod,retained.handle,&snapshot)==EP_LOADOUT_STORAGE_STALE,"Changed target was retained");
+    NEED(ep_loadout_storage_import_sources(foreign,retained.handle,&snapshot)==EP_LOADOUT_STORAGE_STATE && *tail==0x51,"Foreign importer wrote the arena");
+    // Refresh replaces the eight banks together; it also repairs an unexposed
+    // modified tail. The new source baseline must be used by retention.
+    snapshot.resources[0]^=1;
+    NEED(ep_loadout_storage_import_sources(mod,retained.handle,&snapshot)==EP_LOADOUT_STORAGE_OK && !*tail,"Fresh import did not replace the entire baseline");
+    NEED(ep_loadout_storage_retain_sources(mod,retained.handle,&original)==EP_LOADOUT_STORAGE_STALE,"Old import baseline was retained after refresh");
+    NEED(ep_loadout_storage_retain_sources(mod,retained.handle,&snapshot)==EP_LOADOUT_STORAGE_OK,"Whole-group source-aware retention failed");
     NEED(ep_loadout_storage_info(mod,retained.handle,&retained) && retained.state==EP_LOADOUT_STORAGE_RETAINED,"Retained owner state missing");
     for (const auto& image:retained.group.code) {
         EpSessionCodeInfo actual={};
         NEED(ep_session_code_info(mod,image.handle,&actual) && actual.pinned && actual.state==EP_CODE_RETAINED,"A linked image remained cancellable");
     }
     NEED(ep_loadout_storage_cancel(mod,retained.handle)==EP_LOADOUT_STORAGE_STATE && !free_region(retained.arena),"Retained backing was released");
+    NEED(ep_loadout_storage_import_sources(mod,retained.handle,&snapshot)==EP_LOADOUT_STORAGE_STATE,"Retained source banks remained mutable through import API");
     NEED(word(retained.binding.setup.common.inverse_map)==7 && !hooks,"Retention changed data or installed a hook");
-    puts("{\"passed\":true,\"scope\":\"one owned loadout prepare/cancel/retry/retain flow\",\"game_access\":false,\"runtime_verified\":false}");
+    puts("{\"passed\":true,\"scope\":\"one owned loadout source import/refresh/retain flow\",\"game_access\":false,\"runtime_verified\":false}");
     return 0;
 }

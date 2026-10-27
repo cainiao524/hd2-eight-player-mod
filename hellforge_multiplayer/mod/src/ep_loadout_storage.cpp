@@ -7,6 +7,8 @@ struct Storage {
     HfMod* mod;
     uint64_t game,screen;
     EpLoadoutStorageInfo info;
+    uint32_t invalid_resource_id;
+    EpLoadoutSourceSnapshot source;
 };
 Storage slots[EP_LOADOUT_STORAGE_SLOTS];
 SRWLOCK storage_lock=SRWLOCK_INIT;
@@ -50,7 +52,7 @@ bool arena_disjoint(const EpLoadoutGroupAddresses& a,uint64_t arena,uint32_t byt
 {
     const auto& c=a.setup.common;const auto& l=c.lifecycle;
     const uint64_t external[][2]={{l.game,0x4000000},{l.screen,EP_LOADOUT_SCREEN_BYTES},{l.reject,1},
-        {c.roster,0xe8},{c.roster_storage,0x680},{a.record_source.manager,0x948},
+        {c.roster,0xe8},{c.roster_storage,0x680},{a.record_source.manager,0xb7c},
         {a.countdown_source.manager,0x13000},{a.resource_owner_source.owner,0x118}};
     for (const auto& range:external) if (!pointer(range[0],range[1]) || overlap(arena,bytes,range[0],range[1])) return false;
     const uint64_t code[]={a.lifecycle_code,a.consumers_code,l.code,a.interactions_code,a.refresh_code,
@@ -70,6 +72,58 @@ void initialize(const EpLoadoutStorageBindings& b,const EpLoadoutGroupAddresses&
     memcpy((void*)(uintptr_t)a.setup.common.inverse_map,maps.slot_to_network,32);
     for (uint32_t i=0;i<a.setup.common.lifecycle.capacity;i++)
         memcpy((void*)(uintptr_t)(a.countdown_source.resources+i*0x4c),&b.invalid_resource_id,4);
+}
+uint32_t u32(const uint8_t* bytes) {uint32_t v;memcpy(&v,bytes,4);return v;}
+EpLoadoutStorageResult validate_source(const Storage& slot,const EpLoadoutSourceSnapshot& s)
+{
+    const auto& b=slot.info.binding;
+    if (slot.info.capacity<EP_LOADOUT_NATIVE_CAPACITY || s.game!=slot.game ||
+        s.record_manager!=b.record_source.manager || s.global_record_manager!=s.record_manager ||
+        s.countdown_manager!=b.countdown_source.manager || s.global_countdown_manager!=s.countdown_manager ||
+        s.resource_owner!=b.resource_owner_source.owner || s.global_resource_owner!=s.resource_owner)
+        return EP_LOADOUT_STORAGE_SOURCE;
+    const auto auxiliary=u32(s.owner),total=u32(s.owner+4),published=u32(s.owner+8),prefix=u32(s.owner+12);
+    // 66C100 publishes pending registrations without updating +0; do not
+    // incorrectly require that auxiliary counter to bound published/total.
+    if (auxiliary>4 || total>4 || published>total || prefix>published)
+        return EP_LOADOUT_STORAGE_COUNTS;
+    return EP_LOADOUT_STORAGE_OK;
+}
+struct SourceBank {uint64_t target;const uint8_t* source;uint32_t stride;bool resource;};
+void source_banks(const Storage& slot,const EpLoadoutSourceSnapshot& s,SourceBank (&banks)[8])
+{
+    const auto& a=slot.info.binding;const auto& r=a.resource_owner_source;
+    banks[0]={a.record_source.actors,s.record_window,8,false};
+    banks[1]={a.record_source.equipment,s.record_window+(0xa7c-EP_LOADOUT_RECORD_SOURCE_OFFSET),0x40,false};
+    banks[2]={a.record_source.status,s.record_window+(0x994-EP_LOADOUT_RECORD_SOURCE_OFFSET),0x44,false};
+    banks[3]={a.countdown_source.resources,s.resources,0x4c,true};
+    banks[4]={r.objects,s.owner+0x68,8,false};banks[5]={r.phases,s.owner+0x88,12,false};
+    banks[6]={r.rows,s.owner+0xb8,20,false};banks[7]={r.states,s.owner+0x108,4,false};
+}
+bool source_equal(const EpLoadoutSourceSnapshot& a,const EpLoadoutSourceSnapshot& b)
+{
+    // Compare captured fields, never ABI padding or addresses of the copies.
+    return a.game==b.game && a.record_manager==b.record_manager && a.global_record_manager==b.global_record_manager &&
+        a.countdown_manager==b.countdown_manager && a.global_countdown_manager==b.global_countdown_manager &&
+        a.resource_owner==b.resource_owner && a.global_resource_owner==b.global_resource_owner &&
+        !memcmp(a.record_window,b.record_window,sizeof(a.record_window)) &&
+        !memcmp(a.resources,b.resources,sizeof(a.resources)) && !memcmp(a.owner,b.owner,sizeof(a.owner));
+}
+bool target_equal(const Storage& slot)
+{
+    SourceBank banks[8];source_banks(slot,slot.source,banks);
+    const uint8_t zero[0x4c]={};
+    for (const auto& bank:banks) {
+        const auto* target=(const uint8_t*)(uintptr_t)bank.target;
+        if (memcmp(target,bank.source,4*bank.stride)) return false;
+        for (unsigned row=4;row<slot.info.capacity;row++) {
+            const auto* p=target+row*bank.stride;
+            if (bank.resource) {
+                if (u32(p)!=slot.invalid_resource_id || memcmp(p+4,zero,bank.stride-4)) return false;
+            } else if (memcmp(p,zero,bank.stride)) return false;
+        }
+    }
+    return true;
 }
 }
 
@@ -99,7 +153,7 @@ EpLoadoutStorageResult ep_loadout_storage_prepare(const HfApi* api,HfMod* mod,co
         ReleaseSRWLockExclusive(&storage_lock);return EP_LOADOUT_STORAGE_CONFLICT;
     }
     if (sequence!=UINT64_MAX) for (auto& candidate:slots) if (!candidate.info.handle) {
-        slot=&candidate;slot->mod=mod;slot->game=l.game;slot->screen=l.screen;
+        slot=&candidate;slot->mod=mod;slot->game=l.game;slot->screen=l.screen;slot->invalid_resource_id=b.invalid_resource_id;
         slot->info.handle=++sequence;slot->info.state=EP_LOADOUT_STORAGE_PREPARING;slot->info.capacity=l.capacity;break;
     }
     ReleaseSRWLockExclusive(&storage_lock);
@@ -133,6 +187,33 @@ EpLoadoutStorageResult ep_loadout_storage_prepare(const HfApi* api,HfMod* mod,co
     ReleaseSRWLockExclusive(&storage_lock);return result;
 }
 
+EpLoadoutStorageResult ep_loadout_storage_import_sources(HfMod* mod,uint64_t handle,const EpLoadoutSourceSnapshot* input)
+{
+    if (!input) return EP_LOADOUT_STORAGE_ARGUMENT;
+    // Caller owns a stable readable snapshot. Copy before writing any target,
+    // including when that owned snapshot happens to alias the unexposed arena.
+    const auto source=*input;
+    AcquireSRWLockExclusive(&storage_lock);auto* slot=find(mod,handle);
+    if (!slot || slot->info.state!=EP_LOADOUT_STORAGE_PREPARED) {
+        ReleaseSRWLockExclusive(&storage_lock);return EP_LOADOUT_STORAGE_STATE;
+    }
+    const auto result=validate_source(*slot,source);
+    if (result==EP_LOADOUT_STORAGE_OK) {
+        SourceBank banks[8];source_banks(*slot,source,banks);
+        // All validation precedes the first write. No callbacks/publication or
+        // allocation can fail between the eight writes and baseline assignment.
+        for (const auto& bank:banks) {
+            auto* target=(uint8_t*)(uintptr_t)bank.target;
+            memcpy(target,bank.source,4*bank.stride);
+            memset(target+4*bank.stride,0,(slot->info.capacity-4)*bank.stride);
+            if (bank.resource) for (unsigned row=4;row<slot->info.capacity;row++)
+                memcpy(target+row*bank.stride,&slot->invalid_resource_id,4);
+        }
+        slot->source=source;slot->info.sources_imported=1;
+    }
+    ReleaseSRWLockExclusive(&storage_lock);return result;
+}
+
 EpLoadoutStorageResult ep_loadout_storage_cancel(HfMod* mod,uint64_t handle)
 {
     AcquireSRWLockExclusive(&storage_lock);auto* slot=find(mod,handle);
@@ -150,11 +231,20 @@ EpLoadoutStorageResult ep_loadout_storage_cancel(HfMod* mod,uint64_t handle)
     return removed ? EP_LOADOUT_STORAGE_OK : EP_LOADOUT_STORAGE_CLEANUP;
 }
 
-EpLoadoutStorageResult ep_loadout_storage_retain(HfMod* mod,uint64_t handle)
+static EpLoadoutStorageResult retain(HfMod* mod,uint64_t handle,const EpLoadoutSourceSnapshot* current)
 {
     AcquireSRWLockExclusive(&storage_lock);auto* slot=find(mod,handle);
     if (!slot || slot->info.state!=EP_LOADOUT_STORAGE_PREPARED) {
         ReleaseSRWLockExclusive(&storage_lock);return EP_LOADOUT_STORAGE_STATE;
+    }
+    if (bool(current)!=bool(slot->info.sources_imported)) {
+        ReleaseSRWLockExclusive(&storage_lock);return EP_LOADOUT_STORAGE_SOURCE;
+    }
+    if (current) {
+        const auto source=*current;
+        if (!source_equal(source,slot->source) || !target_equal(*slot)) {
+            ReleaseSRWLockExclusive(&storage_lock);return EP_LOADOUT_STORAGE_STALE;
+        }
     }
     uint64_t handles[EP_LOADOUT_GROUP_CODE_COUNT];
     for (unsigned i=0;i<EP_LOADOUT_GROUP_CODE_COUNT;i++) handles[i]=slot->info.group.code[i].handle;
@@ -167,3 +257,8 @@ EpLoadoutStorageResult ep_loadout_storage_retain(HfMod* mod,uint64_t handle)
     ReleaseSRWLockExclusive(&storage_lock);
     return retained ? EP_LOADOUT_STORAGE_OK : EP_LOADOUT_STORAGE_RETAIN_FAILED;
 }
+
+EpLoadoutStorageResult ep_loadout_storage_retain(HfMod* mod,uint64_t handle)
+{return retain(mod,handle,nullptr);}
+EpLoadoutStorageResult ep_loadout_storage_retain_sources(HfMod* mod,uint64_t handle,const EpLoadoutSourceSnapshot* current)
+{return current ? retain(mod,handle,current) : EP_LOADOUT_STORAGE_ARGUMENT;}
