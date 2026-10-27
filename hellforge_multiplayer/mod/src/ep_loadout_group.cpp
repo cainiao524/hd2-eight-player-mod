@@ -3,7 +3,7 @@ EpPropertyResult ep_loadout_group_discard(HfMod* mod,EpLoadoutGroup* out)
 {
     if (!mod || !out) return EP_PROPERTY_ARGUMENT;
     EpLoadoutGroup remaining={};
-    for (unsigned i=16;i--;) if (out->code[i].handle && !ep_session_code_discard(mod,out->code[i].handle)) {
+    for (unsigned i=17;i--;) if (out->code[i].handle && !ep_session_code_discard(mod,out->code[i].handle)) {
         remaining.code[i]=out->code[i];remaining.state=EP_LOADOUT_GROUP_CLEANUP;
     }
     *out=remaining;return remaining.state ? EP_PROPERTY_CLEANUP : EP_PROPERTY_OK;
@@ -21,11 +21,11 @@ EpPropertyResult ep_loadout_group_prepare(const HfApi* api,HfMod* mod,const EpLo
     EpLoadoutConsumerAddresses mode_binding=a.setup.common;mode_binding.lifecycle.code=a.mode_code;
     EpLoadoutConsumerAddresses life_binding=a.setup.common;life_binding.lifecycle.code=l.code;
     EpPropertyResult result=ep_loadout_consumers_validate(&life_binding);if (result!=EP_PROPERTY_OK) return result;
-    const uint64_t bases[]={l.code,c.lifecycle.code,a.setup.common.lifecycle.code,a.interactions_code,a.refresh_code,a.records_code,a.frame_code,a.mode_code,a.control_code,a.state_code,a.prompt_code,a.countdown_code,a.resources_code,a.resource_owner_code,a.resource_tick_code,a.resource_events_code};
-    const uint32_t spans[]={8192,8192,8192,8192,8192,8192,EP_LOADOUT_FRAME_BYTES,EP_LOADOUT_MODE_BYTES,EP_LOADOUT_CONTROL_BYTES,EP_LOADOUT_STATE_BYTES,EP_LOADOUT_PROMPT_BYTES,EP_LOADOUT_COUNTDOWN_BYTES,EP_LOADOUT_RESOURCES_BYTES,EP_LOADOUT_RESOURCE_OWNER_BYTES,EP_LOADOUT_RESOURCE_TICK_BYTES,EP_LOADOUT_RESOURCE_EVENTS_BYTES};
+    const uint64_t bases[]={l.code,c.lifecycle.code,a.setup.common.lifecycle.code,a.interactions_code,a.refresh_code,a.records_code,a.frame_code,a.mode_code,a.control_code,a.state_code,a.prompt_code,a.countdown_code,a.resources_code,a.resource_owner_code,a.resource_tick_code,a.resource_events_code,a.resource_ownership_code};
+    const uint32_t spans[]={8192,8192,8192,8192,8192,8192,EP_LOADOUT_FRAME_BYTES,EP_LOADOUT_MODE_BYTES,EP_LOADOUT_CONTROL_BYTES,EP_LOADOUT_STATE_BYTES,EP_LOADOUT_PROMPT_BYTES,EP_LOADOUT_COUNTDOWN_BYTES,EP_LOADOUT_RESOURCES_BYTES,EP_LOADOUT_RESOURCE_OWNER_BYTES,EP_LOADOUT_RESOURCE_TICK_BYTES,EP_LOADOUT_RESOURCE_EVENTS_BYTES,EP_LOADOUT_RESOURCE_OWNERSHIP_BYTES};
     EpLoadoutCountdownAddresses countdown_binding={records_binding,a.countdown_source,0,0};
     EpLoadoutResourceOwnerAddresses owner_binding={records_binding,a.countdown_source,a.resource_owner_source};
-    for (unsigned i=0;i<16;i++) {
+    for (unsigned i=0;i<17;i++) {
         if (!bases[i] || bases[i]>=(UINT64_C(1)<<47)-spans[i]) return EP_PROPERTY_POINTER;
         for (unsigned j=0;j<i;j++) if (bases[i]<bases[j]+spans[j] && bases[j]<bases[i]+spans[i]) return EP_PROPERTY_OVERLAP;
         records_binding.common.lifecycle.code=bases[i];
@@ -41,7 +41,7 @@ EpPropertyResult ep_loadout_group_prepare(const HfApi* api,HfMod* mod,const EpLo
     EpLoadoutFrameImage frame={};
     EpLoadoutModeImage mode={};
     EpLoadoutControlImage control={};
-    EpLoadoutStateImage state={};EpLoadoutPromptImage prompt={};EpLoadoutCountdownImage countdown={};EpLoadoutResourcesImage resources={};EpLoadoutResourceOwnerImage resource_owner={};EpLoadoutResourceTickImage resource_tick={};EpLoadoutResourceEventsImage resource_events={};
+    EpLoadoutStateImage state={};EpLoadoutPromptImage prompt={};EpLoadoutCountdownImage countdown={};EpLoadoutResourcesImage resources={};EpLoadoutResourceOwnerImage resource_owner={};EpLoadoutResourceTickImage resource_tick={};EpLoadoutResourceEventsImage resource_events={};EpLoadoutResourceOwnershipImage resource_ownership={};
     EpLoadoutConsumerAddresses prompt_binding=a.setup.common;prompt_binding.lifecycle.code=a.prompt_code;
     result=ep_loadout_prompt_build(&prompt_binding,&prompt);if (result!=EP_PROPERTY_OK) return result;
     result=ep_loadout_consumers_build(&c,a.prompt_code+prompt.ready_flag,&consumers);if (result!=EP_PROPERTY_OK) return result;
@@ -73,6 +73,8 @@ EpPropertyResult ep_loadout_group_prepare(const HfApi* api,HfMod* mod,const EpLo
     result=ep_loadout_resource_tick_build(&tick_binding,&resource_tick);if (result!=EP_PROPERTY_OK) return result;
     EpLoadoutResourceEventsAddresses events_binding=owner_binding;events_binding.records.common.lifecycle.code=a.resource_events_code;
     result=ep_loadout_resource_events_build(&events_binding,&resource_events);if (result!=EP_PROPERTY_OK) return result;
+    EpLoadoutResourceOwnershipAddresses ownership_binding=owner_binding;ownership_binding.records.common.lifecycle.code=a.resource_ownership_code;
+    result=ep_loadout_resource_ownership_build(&ownership_binding,&resource_ownership);if (result!=EP_PROPERTY_OK) return result;
     EpLoadoutFrameAddresses frame_binding={records_binding,a.records_code,c.lifecycle.code+consumers.update,c.lifecycle.code+consumers.lookup,a.mode_code+mode.open,a.control_code+control.leave,a.state_code+state.change,a.state_code+state.return_screen,a.prompt_code+prompt.update,a.prompt_code+prompt.ready_flag,a.prompt_code+prompt.blocked_flag,a.countdown_code+countdown.update};
     frame_binding.records.common.lifecycle.code=a.frame_code;
     result=ep_loadout_frame_build(&frame_binding,&frame);if (result!=EP_PROPERTY_OK) return result;
@@ -93,6 +95,7 @@ EpPropertyResult ep_loadout_group_prepare(const HfApi* api,HfMod* mod,const EpLo
     if (result==EP_PROPERTY_OK) result=ep_loadout_resource_owner_prepare(api,mod,&owner_binding,&group.code[13]);
     if (result==EP_PROPERTY_OK) result=ep_loadout_resource_tick_prepare(api,mod,&tick_binding,&group.code[14]);
     if (result==EP_PROPERTY_OK) result=ep_loadout_resource_events_prepare(api,mod,&events_binding,&group.code[15]);
+    if (result==EP_PROPERTY_OK) result=ep_loadout_resource_ownership_prepare(api,mod,&ownership_binding,&group.code[16]);
     if (result!=EP_PROPERTY_OK) {
         if (ep_loadout_group_discard(mod,&group)!=EP_PROPERTY_OK) {*out=group;return EP_PROPERTY_CLEANUP;}
         return result==EP_PROPERTY_CLEANUP ? EP_PROPERTY_SEAL : result;
@@ -124,5 +127,7 @@ EpPropertyResult ep_loadout_group_prepare(const HfApi* api,HfMod* mod,const EpLo
     group.resource_tick=group.code[14].base+resource_tick.update;group.any_resource_ready=group.code[14].base+resource_tick.any_ready;
     group.resource_slot_ready=group.code[14].base+resource_tick.slot_ready;
     group.initialize_resource=group.code[15].base+resource_events.initialize;group.publish_resource=group.code[15].base+resource_events.publish;
+    group.settle_resource_objects=group.code[16].base+resource_ownership.settle;group.promote_resource_object=group.code[16].base+resource_ownership.promote;
+    group.demote_resource_object=group.code[16].base+resource_ownership.demote;
     group.capacity=l.capacity;group.state=EP_LOADOUT_GROUP_READY;*out=group;return EP_PROPERTY_OK;
 }
