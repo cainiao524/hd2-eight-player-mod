@@ -1,4 +1,60 @@
 #include "ep_loadout_group.h"
+#include <limits.h>
+#include <string.h>
+namespace {
+using SealGs=int (*)(HfMod*,uint64_t,const void*,uint32_t,uint32_t,const EpSessionGsCheck*);
+struct PreparedImage {
+    uint8_t* data;
+    uint32_t bytes,code_bytes,table,count,handler,gs_index;
+    SealGs seal_gs;
+};
+template<class T> PreparedImage image_view(T& image)
+{return {image.data,image.bytes,image.code_bytes,image.table_offset,(image.bytes-image.table_offset)/12,0,0,nullptr};}
+template<class T> PreparedImage image_view(T& image,SealGs seal,uint32_t index=1)
+{
+    PreparedImage view=image_view(image);view.handler=image.handler_offset;view.gs_index=index;view.seal_gs=seal;return view;
+}
+struct EpLoadoutLocalLink {uint32_t source,target,offset,next,rva,entry;};
+#include "ep_loadout_links_template.h"
+bool function_entry(const PreparedImage& image,uint32_t entry)
+{
+    for (uint32_t i=0;i<image.count;i++) {
+        uint32_t begin=0;memcpy(&begin,image.data+image.table+i*12,4);
+        if (begin==entry) return true;
+    }
+    return false;
+}
+EpPropertyResult link_images(PreparedImage* images,const uint64_t* bases,uint64_t game,
+                             uint32_t old_update,uint32_t update)
+{
+    for (const auto& link:ep_loadout_local_links) {
+        if (link.source>=EP_LOADOUT_GROUP_CODE_COUNT || link.target>=EP_LOADOUT_GROUP_CODE_COUNT) return EP_PROPERTY_ARGUMENT;
+        auto& from=images[link.source];const auto& to=images[link.target];
+        if (!link.offset || link.next!=link.offset+4 || link.next>from.code_bytes || from.data[link.offset-1]!=0xe8 ||
+            link.entry>=to.code_bytes || !function_entry(to,link.entry)) return EP_PROPERTY_ARGUMENT;
+        int32_t old=0;memcpy(&old,from.data+link.offset,4);
+        if ((int64_t)bases[link.source]+link.next+old!=(int64_t)game+link.rva) return EP_PROPERTY_ARGUMENT;
+        int64_t delta=(int64_t)bases[link.target]+link.entry-((int64_t)bases[link.source]+link.next);
+        if (delta<INT32_MIN || delta>INT32_MAX) return EP_PROPERTY_REL32;
+        int32_t relative=(int32_t)delta;memcpy(from.data+link.offset,&relative,4);
+    }
+    // Keep the legacy tick address callable, but use ONE state-update body.
+    // A frame-free tail jump fits inside its existing leaf guard/unwind row.
+    auto& tick=images[14];const auto& canonical=images[21];
+    if (old_update>tick.code_bytes || tick.code_bytes-old_update<5 ||
+        !function_entry(tick,old_update) || !function_entry(canonical,update) ||
+        tick.data[old_update]!=0x49 || tick.data[old_update+1]!=0xbb) return EP_PROPERTY_ARGUMENT;
+    uint32_t guard_end=0,unwind=0;
+    memcpy(&guard_end,tick.data+tick.table+4,4);memcpy(&unwind,tick.data+tick.table+8,4);
+    const uint8_t leaf[]={1,0,0,0};
+    if (old_update || guard_end<5 || unwind>tick.table || tick.table-unwind<4 ||
+        memcmp(tick.data+unwind,leaf,sizeof(leaf))) return EP_PROPERTY_ARGUMENT;
+    int64_t delta=(int64_t)bases[21]+update-((int64_t)bases[14]+old_update+5);
+    if (delta<INT32_MIN || delta>INT32_MAX) return EP_PROPERTY_REL32;
+    int32_t relative=(int32_t)delta;tick.data[old_update]=0xe9;memcpy(tick.data+old_update+1,&relative,4);
+    return EP_PROPERTY_OK;
+}
+}
 EpPropertyResult ep_loadout_group_discard(HfMod* mod,EpLoadoutGroup* out)
 {
     if (!mod || !out) return EP_PROPERTY_ARGUMENT;
@@ -89,29 +145,30 @@ EpPropertyResult ep_loadout_group_prepare(const HfApi* api,HfMod* mod,const EpLo
     EpLoadoutFrameAddresses frame_binding={records_binding,a.records_code,c.lifecycle.code+consumers.update,c.lifecycle.code+consumers.lookup,a.mode_code+mode.open,a.control_code+control.leave,a.state_code+state.change,a.state_code+state.return_screen,a.prompt_code+prompt.update,a.prompt_code+prompt.ready_flag,a.prompt_code+prompt.blocked_flag,a.countdown_code+countdown.update};
     frame_binding.records.common.lifecycle.code=a.frame_code;
     result=ep_loadout_frame_build(&frame_binding,&frame);if (result!=EP_PROPERTY_OK) return result;
+    PreparedImage images[]={image_view(life,ep_session_code_seal_loadout_transition,7),image_view(consumers),
+        image_view(setup,ep_session_code_seal_loadout_setup),image_view(interactions),
+        image_view(refresh,ep_session_code_seal_loadout_refresh),image_view(records,ep_session_code_seal_loadout_records),
+        image_view(frame,ep_session_code_seal_loadout_frame),image_view(mode,ep_session_code_seal_loadout_mode),
+        image_view(control),image_view(state,ep_session_code_seal_loadout_state,5),image_view(prompt),image_view(countdown),
+        image_view(resources),image_view(resource_owner),image_view(resource_tick),image_view(resource_events),
+        image_view(resource_ownership),image_view(resource_sync),image_view(resource_signals),image_view(resource_actions),
+        image_view(resource_main,ep_session_code_seal_loadout_resource_main),image_view(resource_update)};
+    static_assert(sizeof(images)/sizeof(*images)==EP_LOADOUT_GROUP_CODE_COUNT,"Complete group binding");
+    result=link_images(images,bases,l.game,resource_tick.update,resource_update.update);
+    if (result!=EP_PROPERTY_OK) return result;
+    // Seal the linked images themselves. Rebuilding them in per-image prepare
+    // would discard these links and silently restore original four-slot calls.
     EpLoadoutGroup group={};
-    result=ep_loadout_lifecycle_prepare(api,mod,&l,a.state_code+state.change,&group.code[0]);
-    if (result==EP_PROPERTY_OK) result=ep_loadout_consumers_prepare(api,mod,&c,a.prompt_code+prompt.ready_flag,&group.code[1]);
-    if (result==EP_PROPERTY_OK) result=ep_loadout_setup_prepare(api,mod,&a.setup,&group.code[2]);
-    if (result==EP_PROPERTY_OK) result=ep_loadout_interactions_prepare(api,mod,&interaction_binding,&group.code[3]);
-    if (result==EP_PROPERTY_OK) result=ep_loadout_refresh_prepare(api,mod,&refresh_binding,&group.code[4]);
-    if (result==EP_PROPERTY_OK) result=ep_loadout_records_prepare(api,mod,&records_binding,&group.code[5]);
-    if (result==EP_PROPERTY_OK) result=ep_loadout_frame_prepare(api,mod,&frame_binding,&group.code[6]);
-    if (result==EP_PROPERTY_OK) result=ep_loadout_mode_prepare(api,mod,&mode_binding,&group.code[7]);
-    if (result==EP_PROPERTY_OK) result=ep_loadout_control_prepare(api,mod,&control_binding,&group.code[8]);
-    if (result==EP_PROPERTY_OK) result=ep_loadout_state_prepare(api,mod,&state_binding,&group.code[9]);
-    if (result==EP_PROPERTY_OK) result=ep_loadout_prompt_prepare(api,mod,&prompt_binding,&group.code[10]);
-    if (result==EP_PROPERTY_OK) result=ep_loadout_countdown_prepare(api,mod,&countdown_binding,&group.code[11]);
-    if (result==EP_PROPERTY_OK) result=ep_loadout_resources_prepare(api,mod,&resources_binding,&group.code[12]);
-    if (result==EP_PROPERTY_OK) result=ep_loadout_resource_owner_prepare(api,mod,&owner_binding,&group.code[13]);
-    if (result==EP_PROPERTY_OK) result=ep_loadout_resource_tick_prepare(api,mod,&tick_binding,&group.code[14]);
-    if (result==EP_PROPERTY_OK) result=ep_loadout_resource_events_prepare(api,mod,&events_binding,&group.code[15]);
-    if (result==EP_PROPERTY_OK) result=ep_loadout_resource_ownership_prepare(api,mod,&ownership_binding,&group.code[16]);
-    if (result==EP_PROPERTY_OK) result=ep_loadout_resource_sync_prepare(api,mod,&sync_binding,&group.code[17]);
-    if (result==EP_PROPERTY_OK) result=ep_loadout_resource_signals_prepare(api,mod,&signals_binding,&group.code[18]);
-    if (result==EP_PROPERTY_OK) result=ep_loadout_resource_actions_prepare(api,mod,&actions_binding,&group.code[19]);
-    if (result==EP_PROPERTY_OK) result=ep_loadout_resource_main_prepare(api,mod,&main_binding,&group.code[20]);
-    if (result==EP_PROPERTY_OK) result=ep_loadout_resource_update_prepare(api,mod,&update_binding,&group.code[21]);
+    for (unsigned i=0;i<EP_LOADOUT_GROUP_CODE_COUNT && result==EP_PROPERTY_OK;i++) {
+        const auto& image=images[i];auto& code=group.code[i];
+        if (!ep_session_code_reserve(api,mod,(uintptr_t)bases[i],image.bytes,&code)) {result=EP_PROPERTY_RESERVE;break;}
+        const EpSessionGsCheck gs={image.gs_index,image.handler,l.game+0x21044a0};
+        int sealed=image.seal_gs ? image.seal_gs(mod,code.handle,image.data,image.bytes,image.table,&gs) :
+            ep_session_code_seal_table(mod,code.handle,image.data,image.bytes,image.table,image.count);
+        EpSessionCodeInfo ready={};
+        if (!sealed || !ep_session_code_info(mod,code.handle,&ready)) result=EP_PROPERTY_SEAL;
+        else code=ready; // retain the reserved handle if querying READY fails
+    }
     if (result!=EP_PROPERTY_OK) {
         if (ep_loadout_group_discard(mod,&group)!=EP_PROPERTY_OK) {*out=group;return EP_PROPERTY_CLEANUP;}
         return result==EP_PROPERTY_CLEANUP ? EP_PROPERTY_SEAL : result;
@@ -140,7 +197,7 @@ EpPropertyResult ep_loadout_group_prepare(const HfApi* api,HfMod* mod,const EpLo
     group.assign_resources=group.code[12].base+resources.assign;
     group.insert_resource_object=group.code[13].base+resource_owner.insert;group.enqueue_resource_object=group.code[13].base+resource_owner.enqueue;
     group.move_resource_object=group.code[13].base+resource_owner.move;group.remove_resource_object=group.code[13].base+resource_owner.remove;
-    group.resource_tick=group.code[14].base+resource_tick.update;group.any_resource_ready=group.code[14].base+resource_tick.any_ready;
+    group.resource_tick=group.code[21].base+resource_update.update;group.any_resource_ready=group.code[14].base+resource_tick.any_ready;
     group.resource_slot_ready=group.code[14].base+resource_tick.slot_ready;
     group.initialize_resource=group.code[15].base+resource_events.initialize;group.publish_resource=group.code[15].base+resource_events.publish;
     group.settle_resource_objects=group.code[16].base+resource_ownership.settle;group.promote_resource_object=group.code[16].base+resource_ownership.promote;

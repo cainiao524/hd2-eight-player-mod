@@ -48,7 +48,7 @@ typedef struct EpLoadoutGroup {
     uint64_t activate_resource,reset_resource_phases,complete_resource,resource_main_update,query_resource_object,update_resource_states;
     uint32_t capacity,state;
 } EpLoadoutGroup;
-/* Prepare all fifty-nine native entries from ONE screen/storage/map/capacity
+/* Prepare fifty-eight distinct native entries and one compatibility alias from ONE screen/storage/map/capacity
  * binding. The twenty-two desired code bases must be explicit and nonoverlapping.
  * The independent record-source banks must be disjoint from every image.
  * Input -> refresh -> close, control -> mode/navigation/edit/return, lifecycle -> state and
@@ -59,6 +59,11 @@ typedef struct EpLoadoutGroup {
  * Initial state emission, reception and completion/effect callbacks share those banks.
  * Resource activation, phase reset, main update and published-object queries share storage.
  * Resource state progression and published transform writes use those same banks.
+ * resource_tick and update_resource_states expose the same canonical updater;
+ * the legacy tick image entry tail-calls it without introducing another frame.
+ * Group-local direct calls (including transition -> close, mode -> player_value
+ * and state -> resource_lookup) are linked before the actual images are sealed.
+ * No group-local direct call falls back to its original four-slot entry.
  * Main update calls the owned phase reset; its 16 KiB image keeps one inline native
  * controller and independently expands the resource scan to player capacity.
  * Pending settlement and ownership switches also share these banks and hash ordinals.
@@ -71,7 +76,7 @@ typedef struct EpLoadoutGroup {
  * preparation discards in reverse order; failed cleanup retains only handles
  * and exposes no callable entries. Retry group_discard for CLEANUP.
  * No initialization, original writes, retention/pinning, hooks or activation.
- * Complete routing of remaining native callees and record_source producers,
+ * Routing from original/indirect callers and record_source producers,
  * layout/navigation and source/owner validation are
  * prerequisites to a future common publication; READY is not that gate. */
 EpPropertyResult ep_loadout_group_prepare(const HfApi*,HfMod*,const EpLoadoutGroupAddresses*,EpLoadoutGroup*);

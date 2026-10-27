@@ -12,6 +12,9 @@ typedef struct EpLoadoutResourceTickImage {
     uint8_t data[EP_LOADOUT_RESOURCE_TICK_BYTES];
 } EpLoadoutResourceTickImage;
 /* Complete saved 66B090 update, 663240 any-ready and 663310 slot-ready.
+ * Standalone update is the older compatibility body. Group preparation routes
+ * its entry to resource_update and exposes that same canonical updater through
+ * both public update names; use the group for common publication.
  * These entries share the registered owner object/phase/row/state sidecars
  * and countdown resource bank. All four owner counts and queried ordinals
  * are bounded. Missing hash entries return false/skip; corrupt dense indexes

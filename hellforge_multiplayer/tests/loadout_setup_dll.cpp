@@ -6,7 +6,7 @@ extern "C" __declspec(dllexport) int setup_build(const EpLoadoutSetupAddresses* 
 static unsigned hooks;
 static const char* Build() {return "25480438";}
 static int Hook(HfMod*,uintptr_t,void*,void**,int32_t) {++hooks;return 1;}
-extern "C" __declspec(dllexport) int setup_group(const EpLoadoutGroupAddresses* a)
+static int group_snapshot(const EpLoadoutGroupAddresses* a,uint8_t* images,uint32_t stride,uint32_t* sizes,uint64_t* routes)
 {
     HfApi api={};api.size=sizeof(api);api.version=13;api.build_id=Build;api.hook_ex=Hook;hooks=0;
     HfMod* owner=(HfMod*)(uintptr_t)0x9183;EpLoadoutGroup group={};
@@ -17,12 +17,28 @@ extern "C" __declspec(dllexport) int setup_group(const EpLoadoutGroupAddresses* 
     const uint64_t entries[]={group.constructor,group.release,group.alternate_release,group.transition,
                               group.update,group.lookup,group.action,group.setup,group.input,group.edit,group.close,group.refresh,group.sync_records,group.frame,group.local_update,group.mode,group.open_mode,group.leave,group.screen_input,group.reset_selection,group.state_change,group.return_screen,group.context_action,group.state_tick,group.prompt,group.selection_prompt,group.active_prompt,group.ready_flag,group.blocked_flag,group.countdown,group.resource_lookup,group.reset_timers,group.resource_write,group.resource_ordinal,group.resource_transform,group.player_value,group.assign_resources,group.insert_resource_object,group.enqueue_resource_object,group.move_resource_object,group.remove_resource_object,group.resource_tick,group.any_resource_ready,group.resource_slot_ready,group.initialize_resource,group.publish_resource,group.settle_resource_objects,group.promote_resource_object,group.demote_resource_object,group.emit_initial_resource_state,group.receive_resource_state,group.finish_resource,group.reset_resource_effect,group.activate_resource,group.reset_resource_phases,group.complete_resource,group.resource_main_update,group.query_resource_object,group.update_resource_states};
     for (unsigned i=0;i<sizeof(entries)/sizeof(*entries);i++) {
-        const auto& code=codes[i<4 ? 0 : i<7 ? 1 : i==7 ? 2 : i<11 ? 3 : i==11 ? 4 : i==12 ? 5 : i<15 ? 6 : i<17 ? 7 : i<20 ? 8 : i<24 ? 9 : i<29 ? 10 : i<32 ? 11 : i<37 ? 12 : i<41 ? 13 : i<44 ? 14 : i<46 ? 15 : i<49 ? 16 : i<51 ? 17 : i<53 ? 18 : i<56 ? 19 : i<58 ? 20 : 21];
+        const auto& code=codes[i==41 ? 21 : i<4 ? 0 : i<7 ? 1 : i==7 ? 2 : i<11 ? 3 : i==11 ? 4 : i==12 ? 5 : i<15 ? 6 : i<17 ? 7 : i<20 ? 8 : i<24 ? 9 : i<29 ? 10 : i<32 ? 11 : i<37 ? 12 : i<41 ? 13 : i<44 ? 14 : i<46 ? 15 : i<49 ? 16 : i<51 ? 17 : i<53 ? 18 : i<56 ? 19 : i<58 ? 20 : 21];
         if (entries[i]<code.base || entries[i]>=code.base+code.bytes) failure=3;
+    }
+    if (group.resource_tick!=group.update_resource_states) failure=6;
+    if (images && sizes && routes) {
+        for (unsigned i=0;i<EP_LOADOUT_GROUP_CODE_COUNT;i++) {
+            if (codes[i].bytes>stride) {failure=7;break;}
+            memcpy(images+i*stride,(const void*)codes[i].base,codes[i].bytes);sizes[i]=codes[i].bytes;
+        }
+        routes[0]=group.close;routes[1]=group.player_value;routes[2]=group.resource_lookup;
+        routes[3]=group.resource_tick;routes[4]=group.update_resource_states;
     }
     if (ep_loadout_group_discard(owner,&group)!=EP_PROPERTY_OK || group.state!=EP_LOADOUT_GROUP_EMPTY) return 4;
     for (const auto& code:codes) {EpSessionCodeInfo after={};if (ep_session_code_info(owner,code.handle,&after)) failure=5;}
     return failure;
+}
+extern "C" __declspec(dllexport) int setup_group(const EpLoadoutGroupAddresses* a)
+{return group_snapshot(a,nullptr,0,nullptr,nullptr);}
+extern "C" __declspec(dllexport) int setup_group_snapshot(const EpLoadoutGroupAddresses* a,uint8_t* images,uint32_t stride,uint32_t* sizes,uint64_t* routes)
+{
+    if (!images || !sizes || !routes) return 8;
+    return group_snapshot(a,images,stride,sizes,routes);
 }
 /* One setup-body snapshot, with a local stack large enough for the native
  * 0x178-byte frame. Windows only unwinds owned memory; it calls no game code. */
