@@ -3,6 +3,7 @@
 #include <string.h>
 struct EpLoadoutRecordsFixup {uint32_t offset,next,key,kind;int64_t add;};
 #include "ep_loadout_records_template.h"
+#include "ep_loadout_peer_records_template.h"
 static_assert(EP_LOADOUT_RECORDS_BYTES==EP_LOADOUT_CONSUMER_BYTES,"Shared binding span");
 EpPropertyResult ep_loadout_records_validate(const EpLoadoutRecordsAddresses* a)
 {return ep_loadout_records_validate_span(a,EP_LOADOUT_RECORDS_BYTES);}
@@ -22,24 +23,42 @@ EpPropertyResult ep_loadout_records_validate_span(const EpLoadoutRecordsAddresse
     }
     return EP_PROPERTY_OK;
 }
-EpPropertyResult ep_loadout_records_build(const EpLoadoutRecordsAddresses* input,EpLoadoutRecordsImage* out)
+static EpPropertyResult build(const EpLoadoutRecordsAddresses* input,const EpPlayerJoinPeers* peers,EpLoadoutRecordsImage* out)
 {
     if (!out) return EP_PROPERTY_ARGUMENT;
     EpLoadoutRecordsAddresses a={};if (input) a=*input;*out={};
     EpPropertyResult result=ep_loadout_records_validate(input ? &a : nullptr);if (result!=EP_PROPERTY_OK) return result;
     const auto& b=a.common;const auto& l=b.lifecycle;const auto& s=a.source;
+    if (peers) {
+        auto peer_result=ep_loadout_consumer_peers_validate(&b,peers,EP_LOADOUT_RECORDS_BYTES);
+        if (peer_result!=EP_PROPERTY_OK) return peer_result;
+        const uint64_t extra[][2]={{s.manager,0xb7c},{s.actors,l.capacity*8},{s.equipment,l.capacity*0x40},{s.status,l.capacity*0x44}};
+        for (const auto& range:extra) {
+            peer_result=ep_loadout_consumers_peer_span(peers,range[0],(uint32_t)range[1]);if (peer_result!=EP_PROPERTY_OK) return peer_result;
+        }
+    }
     const uint64_t values[]={l.game,l.code,l.screen,l.records,l.widgets,l.capacity,l.reject,
-        b.forward_map,b.inverse_map,b.roster,b.roster_storage,s.manager,s.actors,s.equipment,s.status};
-    EpLoadoutRecordsImage image={};memcpy(image.data,ep_loadout_records_template,sizeof(ep_loadout_records_template));
-    for (const auto& f:ep_loadout_records_fixups) {
+        b.forward_map,b.inverse_map,b.roster,b.roster_storage,s.manager,s.actors,s.equipment,s.status,peers ? peers->client : 0,peers ? peers->bank : 0};
+    const uint32_t bytes=peers ? sizeof(ep_loadout_peer_records_template) : sizeof(ep_loadout_records_template);
+    EpLoadoutRecordsImage image={};memcpy(image.data,peers ? ep_loadout_peer_records_template : ep_loadout_records_template,bytes);
+    const auto* fixes=peers ? ep_loadout_peer_records_fixups : ep_loadout_records_fixups;
+    const unsigned count=peers ? sizeof(ep_loadout_peer_records_fixups)/sizeof(*fixes) : sizeof(ep_loadout_records_fixups)/sizeof(*fixes);
+    for (unsigned index=0;index<count;index++) {const auto& f=fixes[index];
         int64_t value=(int64_t)values[f.key]+f.add;
         if (!f.kind) {value-=(int64_t)l.code+f.next;if (value<INT32_MIN || value>INT32_MAX) return EP_PROPERTY_REL32;}
         if (f.kind==3) value-=(int64_t)l.screen;
         for (unsigned i=0;i<(f.kind==1 || f.kind==3 ? 8u : 4u);i++) image.data[f.offset+i]=(uint8_t)((uint64_t)value>>(8*i));
     }
-    image.bytes=sizeof(ep_loadout_records_template);image.code_bytes=ep_loadout_records_code_bytes;
-    image.unwind_offset=ep_loadout_records_unwind_offset;image.table_offset=ep_loadout_records_table_offset;
-    image.handler_offset=ep_loadout_records_handler_offset;*out=image;return EP_PROPERTY_OK;
+    image.bytes=bytes;image.code_bytes=(peers ? ep_loadout_peer_records_code_bytes : ep_loadout_records_code_bytes);
+    image.unwind_offset=(peers ? ep_loadout_peer_records_unwind_offset : ep_loadout_records_unwind_offset);image.table_offset=(peers ? ep_loadout_peer_records_table_offset : ep_loadout_records_table_offset);
+    image.handler_offset=(peers ? ep_loadout_peer_records_handler_offset : ep_loadout_records_handler_offset);*out=image;return EP_PROPERTY_OK;
+}
+EpPropertyResult ep_loadout_records_build(const EpLoadoutRecordsAddresses* a,EpLoadoutRecordsImage* out)
+{return build(a,nullptr,out);}
+EpPropertyResult ep_loadout_records_build_peers(const EpLoadoutRecordsAddresses* a,const EpPlayerJoinPeers* peers,EpLoadoutRecordsImage* out)
+{
+    if (!peers) {if (out) *out={};return EP_PROPERTY_ARGUMENT;}
+    const auto binding=*peers;return build(a,&binding,out);
 }
 EpPropertyResult ep_loadout_records_prepare(const HfApi* api,HfMod* mod,const EpLoadoutRecordsAddresses* input,EpSessionCodeInfo* out)
 {

@@ -4,6 +4,7 @@ Network index, UI slot and equipment-source ordinal stay distinct. Eight
 activity bytes occupy unused stack +38..3F, without enlarging the GS frame.
 Only saved workspace evidence is read; no game discovery or access.
 """
+from generate_loadout_peers import count_guard
 import argparse
 import json
 import struct
@@ -17,7 +18,7 @@ MAX_IMAGE=8192
 HEADER=PROJECT/'mod/src/ep_loadout_records_template.h'
 
 
-def build():
+def build(peers=False):
     capture=Capture();blob=bytearray();fixes=[];branches=[];mapping={};ends={};rows=[]
     fragments=[f for f in capture.functions if START<=f[0]<END]
     need(len(fragments)==5 and fragments[0][0]==START and fragments[-1][1]==END and
@@ -45,7 +46,10 @@ def build():
     for ins in insns:
         a=ins.address;at=len(blob);mapping[a]=at;text=ins.mnemonic+' '+ins.op_str
         mem=next((o.mem for o in ins.operands if o.type==X86_OP_MEM),None)
-        if a==0x146fc7e:
+        if peers and a==0x146fd9f:
+            need(text=='mov edx, dword ptr [r8 + 0x16390]','Changed record peer count')
+            count_guard(blob,fix,ins.bytes,8,2,15);absolute(8,16,-0x16398)
+        elif a==0x146fc7e:
             need(text=='mov dword ptr [rsp + 0x4c], eax','Changed activity initialization');blob.extend(b'\x48\x89\x44\x24\x38')
         elif a==0x146fc9a:
             need(text=='add rsi, 0x3ac','Changed roster flags');absolute(6,10,0x584)
@@ -150,7 +154,7 @@ def build():
                 table_offset=table_offset,handler_offset=handler_offset,functions=functions,source=source,mapping=mapping)
 
 
-def render(a):
+def render(a,peers=False):
     lines=['// Generated from saved build 25480438 by generate_loadout_records.py.',
            'static const uint8_t ep_loadout_records_template[] = {']
     lines+=['    '+','.join(f'0x{x:02x}' for x in a['blob'][i:i+16])+',' for i in range(0,len(a['blob']),16)]
@@ -158,10 +162,13 @@ def render(a):
     lines+=['    {'+','.join(map(str,f))+'},' for f in a['fixes']];lines+=['};']
     for key in ('code_bytes','unwind_offset','table_offset','handler_offset'):
         lines.append(f'static const uint32_t ep_loadout_records_{key} = {a[key]};')
-    return '\n'.join(lines)+'\n'
+    text='\n'.join(lines)+'\n'
+    return text.replace('ep_loadout_records_','ep_loadout_peer_records_') if peers else text
 
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--write',action='store_true');args=p.parse_args();a=build()
-    if args.write:HEADER.write_text(render(a),encoding='utf-8',newline='\n')
+    if args.write:
+        HEADER.write_text(render(a),encoding='utf-8',newline='\n')
+        HEADER.with_name('ep_loadout_peer_records_template.h').write_text(render(build(True),True),encoding='utf-8',newline='\n')
     print(json.dumps(dict(image_bytes=len(a['blob']),game_access=False)))

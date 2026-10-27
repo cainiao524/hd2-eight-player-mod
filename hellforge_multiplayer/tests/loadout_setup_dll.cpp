@@ -6,11 +6,12 @@ extern "C" __declspec(dllexport) int setup_build(const EpLoadoutSetupAddresses* 
 static unsigned hooks;
 static const char* Build() {return "25480438";}
 static int Hook(HfMod*,uintptr_t,void*,void**,int32_t) {++hooks;return 1;}
-static int group_snapshot(const EpLoadoutGroupAddresses* a,uint8_t* images,uint32_t stride,uint32_t* sizes,uint64_t* routes)
+static int group_snapshot(const EpLoadoutGroupAddresses* a,uint8_t* images,uint32_t stride,uint32_t* sizes,uint64_t* routes,const EpPlayerJoinPeers* peers=nullptr)
 {
     HfApi api={};api.size=sizeof(api);api.version=13;api.build_id=Build;api.hook_ex=Hook;hooks=0;
     HfMod* owner=(HfMod*)(uintptr_t)0x9183;EpLoadoutGroup group={};
-    if (ep_loadout_group_prepare(&api,owner,a,&group)!=EP_PROPERTY_OK) return 1;
+    const auto prepared=peers ? ep_loadout_group_prepare_peers(&api,owner,a,peers,&group) : ep_loadout_group_prepare(&api,owner,a,&group);
+    if (prepared!=EP_PROPERTY_OK) return peers ? 100+prepared : 1;
     int failure=group.state!=EP_LOADOUT_GROUP_READY || group.capacity!=a->setup.common.lifecycle.capacity || hooks;
     EpSessionCodeInfo codes[EP_LOADOUT_GROUP_CODE_COUNT];memcpy(codes,group.code,sizeof(codes));
     for (const auto& code:codes) if (code.state!=EP_CODE_READY || !code.registered || code.pinned) failure=2;
@@ -42,6 +43,12 @@ extern "C" __declspec(dllexport) int setup_group_snapshot(const EpLoadoutGroupAd
 {
     if (!images || !sizes || !routes) return 8;
     return group_snapshot(a,images,stride,sizes,routes);
+}
+extern "C" __declspec(dllexport) int setup_group_peer_snapshot(const EpLoadoutGroupAddresses* a,const EpPlayerJoinPeers* peers,
+    uint8_t* images,uint32_t stride,uint32_t* sizes,uint64_t* routes)
+{
+    if (!peers || !images || !sizes || !routes) return 8;
+    return group_snapshot(a,images,stride,sizes,routes,peers);
 }
 /* One setup-body snapshot, with a local stack large enough for the native
  * 0x178-byte frame. Windows only unwinds owned memory; it calls no game code. */

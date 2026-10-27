@@ -3,6 +3,7 @@
 #include <string.h>
 struct EpLoadoutCountdownFixup {uint32_t offset,next,key,kind;int64_t add;};
 #include "ep_loadout_countdown_template.h"
+#include "ep_loadout_peer_countdown_template.h"
 static_assert(EP_LOADOUT_COUNTDOWN_BYTES==EP_LOADOUT_CONSUMER_BYTES,"Shared binding span");
 EpPropertyResult ep_loadout_countdown_validate_span(const EpLoadoutCountdownAddresses* a,uint32_t code_bytes)
 {
@@ -23,12 +24,22 @@ EpPropertyResult ep_loadout_countdown_validate_span(const EpLoadoutCountdownAddr
     }
     return EP_PROPERTY_OK;
 }
-EpPropertyResult ep_loadout_countdown_build(const EpLoadoutCountdownAddresses* input,EpLoadoutCountdownImage* out)
+static EpPropertyResult build(const EpLoadoutCountdownAddresses* input,const EpPlayerJoinPeers* peers,EpLoadoutCountdownImage* out)
 {
     if (!out) return EP_PROPERTY_ARGUMENT;
     EpLoadoutCountdownAddresses a={};if (input) a=*input;*out={};
     EpPropertyResult status=ep_loadout_countdown_validate_span(input ? &a : nullptr,EP_LOADOUT_COUNTDOWN_BYTES);if (status!=EP_PROPERTY_OK) return status;
     const auto& b=a.records.common;const auto& l=b.lifecycle;
+    if (peers) {
+        auto peer_result=ep_loadout_consumer_peers_validate(&b,peers,EP_LOADOUT_COUNTDOWN_BYTES);
+        if (peer_result!=EP_PROPERTY_OK) return peer_result;
+        const auto& s=a.records.source;
+        const uint64_t extra[][2]={{s.manager,0xb7c},{s.actors,l.capacity*8},{s.equipment,l.capacity*0x40},{s.status,l.capacity*0x44},
+            {a.source.manager,0x13000},{a.source.resources,l.capacity*0x4c},{a.context_action,1},{a.transition,1}};
+        for (const auto& range:extra) {
+            peer_result=ep_loadout_consumers_peer_span(peers,range[0],(uint32_t)range[1]);if (peer_result!=EP_PROPERTY_OK) return peer_result;
+        }
+    }
     const uint64_t entries[]={a.context_action,a.transition};
     for (uint64_t entry:entries) {
         if (entry>=l.code && entry<l.code+EP_LOADOUT_COUNTDOWN_BYTES) return EP_PROPERTY_OVERLAP;
@@ -36,20 +47,30 @@ EpPropertyResult ep_loadout_countdown_build(const EpLoadoutCountdownAddresses* i
         status=ep_loadout_countdown_validate_span(&target,1);if (status!=EP_PROPERTY_OK) return status;
     }
     const uint64_t values[]={l.game,l.code,l.screen,l.records,l.widgets,l.capacity,l.reject,
-                             b.forward_map,b.inverse_map,b.roster,b.roster_storage,a.source.manager,a.source.resources,a.context_action,a.transition};
-    EpLoadoutCountdownImage image={};memcpy(image.data,ep_loadout_countdown_template,sizeof(ep_loadout_countdown_template));
-    for (const auto& f:ep_loadout_countdown_fixups) {
+                             b.forward_map,b.inverse_map,b.roster,b.roster_storage,a.source.manager,a.source.resources,a.context_action,a.transition,peers ? peers->client : 0,peers ? peers->bank : 0};
+    const uint32_t bytes=peers ? sizeof(ep_loadout_peer_countdown_template) : sizeof(ep_loadout_countdown_template);
+    EpLoadoutCountdownImage image={};memcpy(image.data,peers ? ep_loadout_peer_countdown_template : ep_loadout_countdown_template,bytes);
+    const auto* fixes=peers ? ep_loadout_peer_countdown_fixups : ep_loadout_countdown_fixups;
+    const unsigned count=peers ? sizeof(ep_loadout_peer_countdown_fixups)/sizeof(*fixes) : sizeof(ep_loadout_countdown_fixups)/sizeof(*fixes);
+    for (unsigned index=0;index<count;index++) {const auto& f=fixes[index];
         int64_t value=(int64_t)values[f.key]+f.add;
         if (!f.kind) {value-=(int64_t)l.code+f.next;if (value<INT32_MIN || value>INT32_MAX) return EP_PROPERTY_REL32;}
         if (f.kind==3) value-=(int64_t)l.screen;
         const unsigned width=f.kind==1 || f.kind==3 ? 8 : 4;
         for (unsigned i=0;i<width;i++) image.data[f.offset+i]=(uint8_t)((uint64_t)value>>(8*i));
     }
-    image.bytes=sizeof(ep_loadout_countdown_template);image.code_bytes=ep_loadout_countdown_code_bytes;
-    image.unwind_offset=ep_loadout_countdown_unwind_offset;image.table_offset=ep_loadout_countdown_table_offset;
-    image.function_count=ep_loadout_countdown_functions;image.update=ep_loadout_countdown_entries[0];
-    image.resource_lookup=ep_loadout_countdown_entries[1];image.reset_timers=ep_loadout_countdown_entries[2];*out=image;
+    image.bytes=bytes;image.code_bytes=(peers ? ep_loadout_peer_countdown_code_bytes : ep_loadout_countdown_code_bytes);
+    image.unwind_offset=(peers ? ep_loadout_peer_countdown_unwind_offset : ep_loadout_countdown_unwind_offset);image.table_offset=(peers ? ep_loadout_peer_countdown_table_offset : ep_loadout_countdown_table_offset);
+    image.function_count=(peers ? ep_loadout_peer_countdown_functions : ep_loadout_countdown_functions);image.update=(peers ? ep_loadout_peer_countdown_entries : ep_loadout_countdown_entries)[0];
+    image.resource_lookup=(peers ? ep_loadout_peer_countdown_entries : ep_loadout_countdown_entries)[1];image.reset_timers=(peers ? ep_loadout_peer_countdown_entries : ep_loadout_countdown_entries)[2];*out=image;
     return EP_PROPERTY_OK;
+}
+EpPropertyResult ep_loadout_countdown_build(const EpLoadoutCountdownAddresses* a,EpLoadoutCountdownImage* out)
+{return build(a,nullptr,out);}
+EpPropertyResult ep_loadout_countdown_build_peers(const EpLoadoutCountdownAddresses* a,const EpPlayerJoinPeers* peers,EpLoadoutCountdownImage* out)
+{
+    if (!peers) {if (out) *out={};return EP_PROPERTY_ARGUMENT;}
+    const auto binding=*peers;return build(a,&binding,out);
 }
 EpPropertyResult ep_loadout_countdown_prepare(const HfApi* api,HfMod* mod,const EpLoadoutCountdownAddresses* input,EpSessionCodeInfo* out)
 {

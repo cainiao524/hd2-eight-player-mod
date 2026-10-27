@@ -3,6 +3,7 @@
 Network/UI slots and widget loops use shared storage/capacity. Event argument
 type 4 at 1471820 remains four; EDI becomes capacity only at the widget loop.
 """
+from generate_loadout_peers import count_guard
 import argparse
 import json
 import struct
@@ -17,7 +18,7 @@ MAX_IMAGE=8192
 HEADER=PROJECT/'mod/src/ep_loadout_mode_template.h'
 
 
-def build():
+def build(peers=False):
     capture=Capture();blob=bytearray();fixes=[];branches=[];mapping={};ends={};rows=[];entries=[];sources=[]
     def fix(raw,offset,key,kind=1,add=0):
         at=len(blob);blob.extend(raw);fixes.append((at+offset,len(blob),key,kind,add))
@@ -55,7 +56,10 @@ def build():
         for ins in insns:
             a=ins.address;at=len(blob);mapping[a]=at;text=ins.mnemonic+' '+ins.op_str
             mem=next((o.mem for o in ins.operands if o.type==X86_OP_MEM),None)
-            if a in (0x1471134,0x14711f1,0x14714bc):
+            if peers and a==0x14710ce:
+                need(text=='mov r8d, dword ptr [r10 + 0x16390]','Changed mode peer count')
+                count_guard(blob,fix,ins.bytes,10,8,11);absolute(10,12,-0x16398)
+            elif a in (0x1471134,0x14711f1,0x14714bc):
                 expected,prefix={0x1471134:('cmp r15d, 4',b'\x41\x81\xff'),0x14711f1:('cmp r12d, 4',b'\x41\x81\xfc'),0x14714bc:('cmp r14d, 4',b'\x41\x81\xfe')}[a]
                 need(text==expected,'Changed mode player bound');capacity(prefix)
             elif a==0x14716b6:
@@ -114,7 +118,7 @@ def build():
                 table_offset=table_offset,handler_offset=handler_offset,functions=functions,entries=entries,sources=sources,mapping=mapping)
 
 
-def render(a):
+def render(a,peers=False):
     lines=['// Generated from saved build 25480438 by generate_loadout_mode.py.',
            'static const uint8_t ep_loadout_mode_template[] = {']
     lines+=['    '+','.join(f'0x{x:02x}' for x in a['blob'][i:i+16])+',' for i in range(0,len(a['blob']),16)]
@@ -123,10 +127,13 @@ def render(a):
     for key in ('code_bytes','unwind_offset','table_offset','handler_offset'):
         lines.append(f'static const uint32_t ep_loadout_mode_{key} = {a[key]};')
     lines.append('static const uint32_t ep_loadout_mode_entries[] = {'+','.join(map(str,a['entries']))+'};')
-    return '\n'.join(lines)+'\n'
+    text='\n'.join(lines)+'\n'
+    return text.replace('ep_loadout_mode_','ep_loadout_peer_mode_') if peers else text
 
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--write',action='store_true');args=p.parse_args();a=build()
-    if args.write:HEADER.write_text(render(a),encoding='utf-8',newline='\n')
+    if args.write:
+        HEADER.write_text(render(a),encoding='utf-8',newline='\n')
+        HEADER.with_name('ep_loadout_peer_mode_template.h').write_text(render(build(True),True),encoding='utf-8',newline='\n')
     print(json.dumps(dict(image_bytes=len(a['blob']),game_access=False)))

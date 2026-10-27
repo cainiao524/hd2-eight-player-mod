@@ -30,6 +30,9 @@ typedef struct EpLoadoutSetupImage {
  * identity/ownership, source/target validation and complete publication.
  * No target discovery, game access, installation or automatic entry calls. */
 EpPropertyResult ep_loadout_setup_build(const EpLoadoutSetupAddresses*,EpLoadoutSetupImage*);
+/* Shared confirmed-peer variant; use the same retained bank and exclusion as
+ * the roster and all sibling UI families. Group preparation binds these calls. */
+EpPropertyResult ep_loadout_setup_build_peers(const EpLoadoutSetupAddresses*,const EpPlayerJoinPeers*,EpLoadoutSetupImage*);
 /* attach_widgets is an isolated void(screen) entry for newly CONSTRUCTED,
  * unattached banks. It keeps the original player loop (including nested flags,
  * parent child-list walk and attachment), copied per-slot placements, GS frame

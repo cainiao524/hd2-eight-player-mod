@@ -25,9 +25,11 @@ bool function_entry(const PreparedImage& image,uint32_t entry)
     return false;
 }
 EpPropertyResult link_images(PreparedImage* images,const uint64_t* bases,uint64_t game,
-                             uint32_t old_update,uint32_t update)
+                             uint32_t old_update,uint32_t update,bool peers)
 {
-    for (const auto& link:ep_loadout_local_links) {
+    const auto* links=peers ? ep_loadout_peer_local_links : ep_loadout_local_links;
+    const unsigned count=peers ? sizeof(ep_loadout_peer_local_links)/sizeof(*links) : sizeof(ep_loadout_local_links)/sizeof(*links);
+    for (unsigned i=0;i<count;i++) {const auto& link=links[i];
         if (link.source>=EP_LOADOUT_GROUP_CODE_COUNT || link.target>=EP_LOADOUT_GROUP_CODE_COUNT) return EP_PROPERTY_ARGUMENT;
         auto& from=images[link.source];const auto& to=images[link.target];
         if (!link.offset || link.next!=link.offset+4 || link.next>from.code_bytes || from.data[link.offset-1]!=0xe8 ||
@@ -114,12 +116,12 @@ static EpPropertyResult prepare(const HfApi* api,HfMod* mod,const EpLoadoutGroup
     EpLoadoutConsumerAddresses prompt_binding=a.setup.common;prompt_binding.lifecycle.code=a.prompt_code;
     result=ep_loadout_prompt_build(&prompt_binding,&prompt);if (result!=EP_PROPERTY_OK) return result;
     result=peers ? ep_loadout_consumers_build_peers(&c,a.prompt_code+prompt.ready_flag,peers,&consumers) : ep_loadout_consumers_build(&c,a.prompt_code+prompt.ready_flag,&consumers);if (result!=EP_PROPERTY_OK) return result;
-    result=ep_loadout_setup_build(&a.setup,&setup);if (result!=EP_PROPERTY_OK) return result;
+    result=peers ? ep_loadout_setup_build_peers(&a.setup,peers,&setup) : ep_loadout_setup_build(&a.setup,&setup);if (result!=EP_PROPERTY_OK) return result;
     result=ep_loadout_interactions_build(&interaction_binding,&interactions);if (result!=EP_PROPERTY_OK) return result;
     refresh_binding.close_entry=a.interactions_code+interactions.close;
     result=ep_loadout_refresh_build(&refresh_binding,&refresh);if (result!=EP_PROPERTY_OK) return result;
-    result=ep_loadout_records_build(&records_binding,&records);if (result!=EP_PROPERTY_OK) return result;
-    result=ep_loadout_mode_build(&mode_binding,&mode);if (result!=EP_PROPERTY_OK) return result;
+    result=peers ? ep_loadout_records_build_peers(&records_binding,peers,&records) : ep_loadout_records_build(&records_binding,&records);if (result!=EP_PROPERTY_OK) return result;
+    result=peers ? ep_loadout_mode_build_peers(&mode_binding,peers,&mode) : ep_loadout_mode_build(&mode_binding,&mode);if (result!=EP_PROPERTY_OK) return result;
     EpLoadoutStateAddresses state_binding={a.setup.common,a.mode_code+mode.open,a.control_code};
     state_binding.common.lifecycle.code=a.state_code;
     result=ep_loadout_state_build(&state_binding,&state);if (result!=EP_PROPERTY_OK) return result;
@@ -132,7 +134,7 @@ static EpPropertyResult prepare(const HfApi* api,HfMod* mod,const EpLoadoutGroup
     result=ep_loadout_lifecycle_build(&l,a.state_code+state.change,&life);if (result!=EP_PROPERTY_OK) return result;
     countdown_binding.records=records_binding;countdown_binding.records.common.lifecycle.code=a.countdown_code;
     countdown_binding.context_action=a.state_code+state.context_action;countdown_binding.transition=l.code+life.transition;
-    result=ep_loadout_countdown_build(&countdown_binding,&countdown);if (result!=EP_PROPERTY_OK) return result;
+    result=peers ? ep_loadout_countdown_build_peers(&countdown_binding,peers,&countdown) : ep_loadout_countdown_build(&countdown_binding,&countdown);if (result!=EP_PROPERTY_OK) return result;
     EpLoadoutResourcesAddresses resources_binding={records_binding,a.countdown_source,a.countdown_code+countdown.resource_lookup};
     resources_binding.records.common.lifecycle.code=a.resources_code;
     result=ep_loadout_resources_build(&resources_binding,&resources);if (result!=EP_PROPERTY_OK) return result;
@@ -167,7 +169,7 @@ static EpPropertyResult prepare(const HfApi* api,HfMod* mod,const EpLoadoutGroup
         image_view(resource_ownership),image_view(resource_sync),image_view(resource_signals),image_view(resource_actions),
         image_view(resource_main,ep_session_code_seal_loadout_resource_main),image_view(resource_update)};
     static_assert(sizeof(images)/sizeof(*images)==EP_LOADOUT_GROUP_CODE_COUNT,"Complete group binding");
-    result=link_images(images,bases,l.game,resource_tick.update,resource_update.update);
+    result=link_images(images,bases,l.game,resource_tick.update,resource_update.update,peers!=nullptr);
     if (result!=EP_PROPERTY_OK) return result;
     // Seal the linked images themselves. Rebuilding them in per-image prepare
     // would discard these links and silently restore original four-slot calls.

@@ -32,6 +32,9 @@ typedef struct EpLoadoutCountdownImage {
  * No hooks, game access, initialization, publication or runtime claims. */
 EpPropertyResult ep_loadout_countdown_validate_span(const EpLoadoutCountdownAddresses*,uint32_t code_bytes);
 EpPropertyResult ep_loadout_countdown_build(const EpLoadoutCountdownAddresses*,EpLoadoutCountdownImage*);
+/* Shared confirmed-peer variant; use the same retained bank and exclusion as
+ * the roster and all sibling UI families. Group preparation binds these calls. */
+EpPropertyResult ep_loadout_countdown_build_peers(const EpLoadoutCountdownAddresses*,const EpPlayerJoinPeers*,EpLoadoutCountdownImage*);
 EpPropertyResult ep_loadout_countdown_prepare(const HfApi*,HfMod*,const EpLoadoutCountdownAddresses*,EpSessionCodeInfo*);
 #ifdef __cplusplus
 }

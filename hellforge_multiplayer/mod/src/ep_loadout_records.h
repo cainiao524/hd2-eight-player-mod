@@ -32,6 +32,9 @@ typedef struct EpLoadoutRecordsImage {
  * The frame group routes caller 1469A9F. Other source writers, exclusion and common
  * activation remain required. READY does not enable a working game UI. */
 EpPropertyResult ep_loadout_records_build(const EpLoadoutRecordsAddresses*,EpLoadoutRecordsImage*);
+/* Shared confirmed-peer variant; use the same retained bank and exclusion as
+ * the roster and all sibling UI families. Group preparation binds these calls. */
+EpPropertyResult ep_loadout_records_build_peers(const EpLoadoutRecordsAddresses*,const EpPlayerJoinPeers*,EpLoadoutRecordsImage*);
 /* Numerical range validation only; never dereferences supplied addresses. */
 EpPropertyResult ep_loadout_records_validate(const EpLoadoutRecordsAddresses*);
 EpPropertyResult ep_loadout_records_validate_span(const EpLoadoutRecordsAddresses*,uint32_t code_bytes);

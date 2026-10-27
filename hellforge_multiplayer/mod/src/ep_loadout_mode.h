@@ -20,6 +20,9 @@ typedef struct EpLoadoutModeImage {
  * remain prerequisites. This only builds/prepares owned code, never calls it
  * or discovers, reads, installs, hooks or starts a game. */
 EpPropertyResult ep_loadout_mode_build(const EpLoadoutConsumerAddresses*,EpLoadoutModeImage*);
+/* Shared confirmed-peer variant; use the same retained bank and exclusion as
+ * the roster and all sibling UI families. Group preparation binds these calls. */
+EpPropertyResult ep_loadout_mode_build_peers(const EpLoadoutConsumerAddresses*,const EpPlayerJoinPeers*,EpLoadoutModeImage*);
 EpPropertyResult ep_loadout_mode_prepare(const HfApi*,HfMod*,const EpLoadoutConsumerAddresses*,EpSessionCodeInfo*);
 #ifdef __cplusplus
 }

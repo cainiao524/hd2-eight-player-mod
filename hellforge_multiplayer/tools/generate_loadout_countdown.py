@@ -3,6 +3,7 @@
 Resource rows and player roster scans expand together. Native actor/timer
 containers, two-bucket effect lookup and event argument type 4 stay native.
 """
+from generate_loadout_peers import count_guard
 import argparse
 import json
 import struct
@@ -14,7 +15,7 @@ MAX_IMAGE=8192
 HEADER=PROJECT/'mod/src/ep_loadout_countdown_template.h'
 
 
-def build():
+def build(peers=False):
     capture=Capture();blob=bytearray();fixes=[];branches=[];mapping={};ends={};rows=[];entries=[];sources=[]
     def fix(raw,offset,key,kind=1,add=0):
         at=len(blob);blob.extend(raw);fixes.append((at+offset,len(blob),key,kind,add))
@@ -41,7 +42,12 @@ def build():
         for ins in insns:
             a=ins.address;at=len(blob);mapping[a]=at;text=ins.mnemonic+' '+ins.op_str
             mem=next((o.mem for o in ins.operands if o.type==X86_OP_MEM),None)
-            if a==0x146a687:
+            if peers and a==0x146aa0f:
+                need(text=='mov esi, dword ptr [r11 + 0x16390]','Changed countdown peer count')
+                count_guard(blob,fix,ins.bytes,11,6,15)
+            elif peers and a==0x146aa20:
+                absolute(11,16)
+            elif a==0x146a687:
                 need(text=='lea r14, [r13 + 0x11d18]','Changed resource row base');absolute(14,12)
             elif a==0x146a691:
                 need(text=='lea r15d, [rsi + 4]','Changed resource scan count');capacity(b'\x41\xbf')
@@ -74,7 +80,7 @@ def build():
             else:
                 blob.extend(ins.bytes)
                 if mem and mem.base==X86_REG_RIP:fixes.append((at+ins.disp_offset,len(blob),0,0,a+ins.size+ins.disp))
-            if a in (0x146a5d9,0x146aa34,0x146aa0f):
+            if a in (0x146a5d9,0x146aa34,0x146aa0f) and not (peers and a==0x146aa0f):
                 capacity({0x146a5d9:b'\x3d',0x146aa34:b'\x41\x81\xf9',0x146aa0f:b'\x81\xfe'}[a]);reject(b'\x0f\x87')
             ends[a+ins.size]=len(blob)
         for b,e,u in fragments:
@@ -104,7 +110,7 @@ def build():
                 table_offset=table_offset,functions=functions,entries=entries,sources=sources,mapping=mapping)
 
 
-def render(a):
+def render(a,peers=False):
     lines=['// Generated from saved build 25480438 by generate_loadout_countdown.py.',
            'static const uint8_t ep_loadout_countdown_template[] = {']
     lines+=['    '+','.join(f'0x{x:02x}' for x in a['blob'][i:i+16])+',' for i in range(0,len(a['blob']),16)]
@@ -114,10 +120,13 @@ def render(a):
         lines.append(f'static const uint32_t ep_loadout_countdown_{key} = {a[key]};')
     lines.append(f'static const uint32_t ep_loadout_countdown_functions = {len(a["functions"])};')
     lines.append('static const uint32_t ep_loadout_countdown_entries[] = {'+','.join(map(str,a['entries']))+'};')
-    return '\n'.join(lines)+'\n'
+    text='\n'.join(lines)+'\n'
+    return text.replace('ep_loadout_countdown_','ep_loadout_peer_countdown_') if peers else text
 
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--write',action='store_true');args=p.parse_args();a=build()
-    if args.write:HEADER.write_text(render(a),encoding='utf-8',newline='\n')
+    if args.write:
+        HEADER.write_text(render(a),encoding='utf-8',newline='\n')
+        HEADER.with_name('ep_loadout_peer_countdown_template.h').write_text(render(build(True),True),encoding='utf-8',newline='\n')
     print(json.dumps(dict(image_bytes=len(a['blob']),game_access=False)))

@@ -66,6 +66,20 @@ static inline EpPropertyResult ep_loadout_consumers_peer_span(const EpPlayerJoin
 /* Binding identity only; no pointer access or inferred ownership. */
 static inline int ep_loadout_peers_equal(const EpPlayerJoinPeers* a,const EpPlayerJoinPeers* b)
 {return a && b && a->client==b->client && a->bank==b->bank && a->capacity==b->capacity && a->reserved==b->reserved;}
+/* Used after the family's normal binding validation; no address dereference. */
+static inline EpPropertyResult ep_loadout_consumer_peers_validate(const EpLoadoutConsumerAddresses* a,const EpPlayerJoinPeers* peers,uint32_t code_bytes)
+{
+    if (!a || !peers || peers->capacity!=a->lifecycle.capacity) return EP_PROPERTY_ARGUMENT;
+    const EpLoadoutAddresses* l=&a->lifecycle;
+    const uint64_t ranges[][2]={{l->game,0x4000000},{l->code,code_bytes},{l->screen,EP_LOADOUT_SCREEN_BYTES},
+        {l->records,l->capacity*EP_LOADOUT_RECORD_BYTES},{l->widgets,l->capacity*EP_LOADOUT_WIDGET_BYTES},
+        {l->reject,1},{a->forward_map,32},{a->inverse_map,32},{a->roster,0xe8},{a->roster_storage,0x680}};
+    for (unsigned i=0;i<sizeof(ranges)/sizeof(ranges[0]);i++) {
+        EpPropertyResult status=ep_loadout_consumers_peer_span(peers,ranges[i][0],(uint32_t)ranges[i][1]);
+        if (status!=EP_PROPERTY_OK) return status;
+    }
+    return EP_PROPERTY_OK;
+}
 /* Shared numerical binding validation; does not dereference any address. */
 EpPropertyResult ep_loadout_consumers_validate(const EpLoadoutConsumerAddresses*);
 EpPropertyResult ep_loadout_consumers_validate_span(const EpLoadoutConsumerAddresses*,uint32_t code_bytes);

@@ -3,6 +3,7 @@
 The original controls/parent attachment stay native. Player widget positions
 come from an immutable per-slot table, not a read past the four-float table.
 """
+from generate_loadout_peers import count_guard
 import argparse
 import json
 import struct
@@ -16,7 +17,7 @@ MAX_IMAGE=8192
 HEADER=PROJECT/'mod/src/ep_loadout_setup_template.h'
 
 
-def build():
+def build(peers=False):
     capture=Capture();b,e,at=next(f for f in capture.functions if f[0]==START)
     need(e==END and capture.read(at,len(UNWIND)+8)==UNWIND+struct.pack('<II',GS_HANDLER,COOKIE),'Changed setup unwind/GS contract')
     blob=bytearray();fixes=[];branches=[];mapping={}
@@ -44,7 +45,16 @@ def build():
         a=ins.address;mapping[a]=len(blob);start=len(blob)
         if a in expected:
             need(ins.mnemonic+' '+ins.op_str==expected[a],'Changed setup operand');seen.add(a)
-        if a==0x1466ad4:
+        if peers and a==0x1466f5d:
+            need(ins.mnemonic+' '+ins.op_str=='mov r9d, dword ptr [r8 + 0x16390]','Changed setup peer count')
+            count_guard(blob,fix,ins.bytes,8,9,11)
+        elif peers and a==0x1466f88:
+            # R8 still owns the native session pointer at +162C8. R11 is dead
+            # in this lookup window; do not rebase R8 before the local-ID read.
+            absolute(11,12);blob.extend(b'\x4d\x39\x14\x03')
+        elif peers and a==0x14670b0:
+            absolute(1,12);blob.extend(b'\x8b\x4c\x11\x14')
+        elif a==0x1466ad4:
             absolute(12,1);layout_fix=len(fixes)-1
         elif a==0x1466adb:absolute(3,4,0x2881)
         elif a==0x1466ae2:
@@ -225,7 +235,7 @@ def build():
                 replace_widgets=replace,replace_point=replace_point)
 
 
-def render(a):
+def render(a,peers=False):
     lines=['// Generated from saved build 25480438 by generate_loadout_setup.py.',
            'static const uint8_t ep_loadout_setup_template[] = {']
     lines+=['    '+','.join(f'0x{x:02x}' for x in a['blob'][i:i+16])+',' for i in range(0,len(a['blob']),16)]
@@ -233,10 +243,13 @@ def render(a):
     lines+=['    {'+','.join(map(str,f))+'},' for f in a['fixes']];lines+=['};']
     for key in ('code_bytes','unwind_offset','table_offset','handler_offset','placements_offset','attach_widgets','replace_widgets'):
         lines.append(f'static const uint32_t ep_loadout_setup_{key} = {a[key]};')
-    return '\n'.join(lines)+'\n'
+    text='\n'.join(lines)+'\n'
+    return text.replace('ep_loadout_setup_','ep_loadout_peer_setup_') if peers else text
 
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--write',action='store_true');args=p.parse_args();a=build()
-    if args.write:HEADER.write_text(render(a),encoding='utf-8',newline='\n')
+    if args.write:
+        HEADER.write_text(render(a),encoding='utf-8',newline='\n')
+        HEADER.with_name('ep_loadout_peer_setup_template.h').write_text(render(build(True),True),encoding='utf-8',newline='\n')
     print(json.dumps(dict(image_bytes=len(a['blob']),game_access=False)))
