@@ -10,6 +10,7 @@ struct Storage {
     EpLoadoutStorageInfo info;
     uint32_t invalid_resource_id;
     EpLoadoutSourceSnapshot source;
+    EpPlayerJoinPeers peers;
 };
 Storage slots[EP_LOADOUT_STORAGE_SLOTS];
 SRWLOCK storage_lock=SRWLOCK_INIT;
@@ -52,13 +53,17 @@ bool empty_banks(const EpLoadoutGroupAddresses& a)
     return !(l.records || l.widgets || a.setup.common.forward_map || a.setup.common.inverse_map ||
         s.actors || s.equipment || s.status || a.countdown_source.resources || r.objects || r.phases || r.rows || r.states);
 }
-bool arena_disjoint(const EpLoadoutGroupAddresses& a,uint64_t arena,uint32_t bytes)
+bool arena_disjoint(const EpLoadoutGroupAddresses& a,uint64_t arena,uint32_t bytes,const EpPlayerJoinPeers* peers)
 {
     const auto& c=a.setup.common;const auto& l=c.lifecycle;
     const uint64_t external[][2]={{l.game,0x4000000},{l.screen,EP_LOADOUT_SCREEN_BYTES},{l.reject,1},
         {c.roster,0xe8},{c.roster_storage,0x680},{a.record_source.manager,0xb7c},
         {a.countdown_source.manager,0x13000},{a.resource_owner_source.owner,0x118}};
-    for (const auto& range:external) if (!pointer(range[0],range[1]) || overlap(arena,bytes,range[0],range[1])) return false;
+    if (peers && ep_loadout_consumers_peer_span(peers,arena,bytes)!=EP_PROPERTY_OK) return false;
+    for (const auto& range:external) {
+        if (!pointer(range[0],range[1]) || overlap(arena,bytes,range[0],range[1]) ||
+            (peers && ep_loadout_consumers_peer_span(peers,range[0],(uint32_t)range[1])!=EP_PROPERTY_OK)) return false;
+    }
     const uint64_t code[]={a.lifecycle_code,a.consumers_code,l.code,a.interactions_code,a.refresh_code,
         a.records_code,a.frame_code,a.mode_code,a.control_code,a.state_code,a.prompt_code,a.countdown_code,
         a.resources_code,a.resource_owner_code,a.resource_tick_code,a.resource_events_code,a.resource_ownership_code,
@@ -66,7 +71,8 @@ bool arena_disjoint(const EpLoadoutGroupAddresses& a,uint64_t arena,uint32_t byt
     static_assert(sizeof(code)/sizeof(*code)==EP_LOADOUT_GROUP_CODE_COUNT,"Complete code intervals");
     // Exact code reservations start on Windows allocation-granularity boundaries.
     // Keep the complete 64 KiB reservation window clear, including page padding.
-    for (auto base:code) if (!pointer(base,EP_SESSION_CODE_MAX_BYTES) || overlap(arena,bytes,base,EP_SESSION_CODE_MAX_BYTES)) return false;
+    for (auto base:code) if (!pointer(base,EP_SESSION_CODE_MAX_BYTES) || overlap(arena,bytes,base,EP_SESSION_CODE_MAX_BYTES) ||
+        (peers && ep_loadout_consumers_peer_span(peers,base,EP_SESSION_CODE_MAX_BYTES)!=EP_PROPERTY_OK)) return false;
     return true;
 }
 void initialize(const EpLoadoutStorageBindings& b,const EpLoadoutGroupAddresses& a)
@@ -190,17 +196,19 @@ int ep_loadout_storage_info(HfMod* mod,uint64_t handle,EpLoadoutStorageInfo* out
     ReleaseSRWLockShared(&storage_lock);return slot!=nullptr;
 }
 
-EpLoadoutStorageResult ep_loadout_storage_prepare(const HfApi* api,HfMod* mod,const EpLoadoutStorageBindings* input,EpLoadoutStorageInfo* out)
+static EpLoadoutStorageResult prepare(const HfApi* api,HfMod* mod,const EpLoadoutStorageBindings* input,const EpPlayerJoinPeers* peers,EpLoadoutStorageInfo* out)
 {
     if (!out) return EP_LOADOUT_STORAGE_ARGUMENT;
     EpLoadoutStorageBindings b={};if (input) b=*input;*out={};
     auto a=b.group;const auto& l=a.setup.common.lifecycle;
     if (!input || !api || !mod || !empty_banks(a) || l.reserved || !l.capacity ||
         l.capacity>EP_LOADOUT_LIFECYCLE_LIMIT || b.local_network_index>=l.capacity) return EP_LOADOUT_STORAGE_ARGUMENT;
+    if (peers && (peers->capacity!=l.capacity ||
+        ep_loadout_consumers_peer_span(peers,l.game,0x4000000)!=EP_PROPERTY_OK)) return EP_LOADOUT_STORAGE_ARGUMENT;
     SYSTEM_INFO system;GetSystemInfo(&system);
     uint32_t bytes=bind_banks(a,0);bytes=(bytes+system.dwPageSize-1)/system.dwPageSize*system.dwPageSize;
     if (!pointer(l.game,0x4000000,4096) || !pointer(l.screen,EP_LOADOUT_SCREEN_BYTES,8) ||
-        (b.desired_arena && (!pointer(b.desired_arena,bytes,system.dwAllocationGranularity) || !arena_disjoint(a,b.desired_arena,bytes))))
+        (b.desired_arena && (!pointer(b.desired_arena,bytes,system.dwAllocationGranularity) || !arena_disjoint(a,b.desired_arena,bytes,peers))))
         return EP_LOADOUT_STORAGE_POINTER;
     Storage* slot=nullptr;
     AcquireSRWLockExclusive(&storage_lock);
@@ -209,6 +217,7 @@ EpLoadoutStorageResult ep_loadout_storage_prepare(const HfApi* api,HfMod* mod,co
     }
     if (sequence!=UINT64_MAX) for (auto& candidate:slots) if (!candidate.info.handle) {
         slot=&candidate;slot->mod=mod;slot->game=l.game;slot->screen=l.screen;slot->invalid_resource_id=b.invalid_resource_id;
+        if (peers) slot->peers=*peers;
         slot->info.handle=++sequence;slot->info.state=EP_LOADOUT_STORAGE_PREPARING;slot->info.capacity=l.capacity;break;
     }
     ReleaseSRWLockExclusive(&storage_lock);
@@ -221,11 +230,11 @@ EpLoadoutStorageResult ep_loadout_storage_prepare(const HfApi* api,HfMod* mod,co
     if (!arena) result=EP_LOADOUT_STORAGE_RESERVE;
     else {
         prepared.arena=(uintptr_t)arena;prepared.bytes=bytes;
-        if (!pointer(prepared.arena,bytes,16) || (b.desired_arena && prepared.arena!=b.desired_arena) || !arena_disjoint(a,prepared.arena,bytes))
+        if (!pointer(prepared.arena,bytes,16) || (b.desired_arena && prepared.arena!=b.desired_arena) || !arena_disjoint(a,prepared.arena,bytes,peers))
             result=EP_LOADOUT_STORAGE_POINTER;
         else {
             bind_banks(a,prepared.arena);initialize(b,a);
-            prepared.group_result=ep_loadout_group_prepare(api,mod,&a,&prepared.group);
+            prepared.group_result=peers ? ep_loadout_group_prepare_peers(api,mod,&a,peers,&prepared.group) : ep_loadout_group_prepare(api,mod,&a,&prepared.group);
             if (prepared.group_result!=EP_PROPERTY_OK) result=EP_LOADOUT_STORAGE_GROUP;
             else {prepared.binding=a;prepared.state=EP_LOADOUT_STORAGE_PREPARED;}
         }
@@ -240,6 +249,23 @@ EpLoadoutStorageResult ep_loadout_storage_prepare(const HfApi* api,HfMod* mod,co
     if (result==EP_LOADOUT_STORAGE_OK || result==EP_LOADOUT_STORAGE_CLEANUP) {slot->info=prepared;info(*slot,out);}
     else *slot={};
     ReleaseSRWLockExclusive(&storage_lock);return result;
+}
+
+EpLoadoutStorageResult ep_loadout_storage_prepare(const HfApi* api,HfMod* mod,const EpLoadoutStorageBindings* input,EpLoadoutStorageInfo* out)
+{return prepare(api,mod,input,nullptr,out);}
+EpLoadoutStorageResult ep_loadout_storage_prepare_peers(const HfApi* api,HfMod* mod,const EpLoadoutStorageBindings* input,const EpPlayerJoinPeers* peers,EpLoadoutStorageInfo* out)
+{
+    if (!peers) {if (out) *out={};return EP_LOADOUT_STORAGE_ARGUMENT;}
+    const auto binding=*peers;return prepare(api,mod,input,&binding,out);
+}
+int ep_loadout_storage_peer_binding(HfMod* mod,uint64_t handle,EpPlayerJoinPeers* out)
+{
+    if (!out) return 0;*out={};
+    AcquireSRWLockShared(&storage_lock);const auto* slot=find(mod,handle);
+    const bool valid=slot && (slot->info.state==EP_LOADOUT_STORAGE_PREPARED ||
+        slot->info.state==EP_LOADOUT_STORAGE_RETAINED || slot->info.state==EP_LOADOUT_STORAGE_UI_MIGRATED);
+    if (valid) *out=slot->peers;
+    ReleaseSRWLockShared(&storage_lock);return valid;
 }
 
 EpLoadoutStorageResult ep_loadout_storage_import_sources(HfMod* mod,uint64_t handle,const EpLoadoutSourceSnapshot* input)
@@ -318,8 +344,8 @@ EpLoadoutStorageResult ep_loadout_storage_retain(HfMod* mod,uint64_t handle)
 EpLoadoutStorageResult ep_loadout_storage_retain_sources(HfMod* mod,uint64_t handle,const EpLoadoutSourceSnapshot* current)
 {return current ? retain(mod,handle,current) : EP_LOADOUT_STORAGE_ARGUMENT;}
 
-EpLoadoutStorageResult ep_loadout_storage_initialize_in_scope(HfMod* mod,uint64_t handle,
-    uint64_t owner,const EpLoadoutSourceSnapshot* current)
+static EpLoadoutStorageResult initialize_in_scope(HfMod* mod,uint64_t handle,
+    uint64_t owner,const EpLoadoutSourceSnapshot* current,const EpPlayerJoinPeers* expected)
 {
     // Even a swallowed recursive request must stop the outer native sequence.
     if (initializing) {initializing->reentered=true;return EP_LOADOUT_STORAGE_STATE;}
@@ -329,7 +355,10 @@ EpLoadoutStorageResult ep_loadout_storage_initialize_in_scope(HfMod* mod,uint64_
     if (!slot || (slot->info.state!=EP_LOADOUT_STORAGE_PREPARED && slot->info.state!=EP_LOADOUT_STORAGE_RETAINED)) {
         ReleaseSRWLockExclusive(&storage_lock);return EP_LOADOUT_STORAGE_STATE;
     }
-    if (!slot->info.sources_imported) {ReleaseSRWLockExclusive(&storage_lock);return EP_LOADOUT_STORAGE_SOURCE;}
+    const EpPlayerJoinPeers unbound={};
+    if (!slot->info.sources_imported || !ep_loadout_peers_equal(&slot->peers,expected ? expected : &unbound)) {
+        ReleaseSRWLockExclusive(&storage_lock);return EP_LOADOUT_STORAGE_SOURCE;
+    }
     Initialization call={slot,owner,current,EP_LOADOUT_STORAGE_NATIVE_FAILED,slot->info.state,false};
     slot->info.initialization_owner=owner;
     slot->info.state=EP_LOADOUT_STORAGE_INITIALIZING;
@@ -347,6 +376,14 @@ EpLoadoutStorageResult ep_loadout_storage_initialize_in_scope(HfMod* mod,uint64_
     }
     else slot->info.state=call.original_state;
     ReleaseSRWLockExclusive(&storage_lock);return call.result;
+}
+
+EpLoadoutStorageResult ep_loadout_storage_initialize_in_scope(HfMod* mod,uint64_t handle,uint64_t owner,const EpLoadoutSourceSnapshot* current)
+{return initialize_in_scope(mod,handle,owner,current,nullptr);}
+EpLoadoutStorageResult ep_loadout_storage_initialize_peers_in_scope(HfMod* mod,uint64_t handle,uint64_t owner,const EpLoadoutSourceSnapshot* current,const EpPlayerJoinPeers* expected)
+{
+    if (!expected) return EP_LOADOUT_STORAGE_ARGUMENT;
+    const auto binding=*expected;return initialize_in_scope(mod,handle,owner,current,&binding);
 }
 
 static int quarantine_owner(void*,const EpNativeRosterView*) {return 0;}

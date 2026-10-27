@@ -10,6 +10,7 @@ def main():
     p.add_argument('--zig',type=Path);p.add_argument('--upstream',type=Path)
     mode=p.add_mutually_exclusive_group()
     mode.add_argument('--initialize-only',action='store_true',help='Owner/order/SEH flow with test-owned native entries; skip generated images')
+    mode.add_argument('--peers-only',action='store_true',help='One bound UI storage/joint commit flow; no other cases or native image builds')
     mode.add_argument('--commit-only',action='store_true',help='Joint coordinator/loadout flow; skip native image generation and other flows')
     mode.add_argument('--call-only',action='store_true',help='External gate ABI/owner/SEH flow with storage and native body fixtures only')
     mode.add_argument('--routes-only',action='store_true',help='Grouped UI publication/joint commit flow with SDK, storage and migration fixtures')
@@ -17,7 +18,7 @@ def main():
     mode.add_argument('--screen-only',action='store_true',help='One retained screen exit/reopen/failure flow with owned memory and native service fixtures')
     p.add_argument('--executable',type=Path)
     args=p.parse_args()
-    test='loadout_screen_smoke' if args.screen_only else 'loadout_rebuild_smoke' if args.rebuild_only else 'loadout_routes_smoke' if args.routes_only else 'loadout_call_smoke' if args.call_only else 'multiplayer_loadout_commit_smoke' if args.commit_only else 'loadout_initialization_smoke' if args.initialize_only else 'loadout_storage_smoke'
+    test='loadout_screen_smoke' if args.screen_only else 'loadout_rebuild_smoke' if args.rebuild_only else 'loadout_routes_smoke' if args.routes_only else 'loadout_call_smoke' if args.call_only else 'multiplayer_loadout_commit_smoke' if (args.commit_only or args.peers_only) else 'loadout_initialization_smoke' if args.initialize_only else 'loadout_storage_smoke'
     args.executable=args.executable or PROJECT/'build'/(test+'.exe')
     if args.zig:
         if args.upstream is None:raise ValueError('--upstream required')
@@ -25,7 +26,7 @@ def main():
         command=[args.zig.resolve(),'c++','-std=c++17','-target','x86_64-windows-gnu','-O2','-Wall','-Wextra','-Werror',
                  '-Wno-missing-field-initializers', # C-compatible roster module uses {0}.
                  '-I',args.upstream.resolve()/'native/mod-sdk','-I',PROJECT/'mod/src']
-        if not (args.initialize_only or args.commit_only or args.call_only or args.routes_only or args.rebuild_only or args.screen_only):
+        if not (args.initialize_only or args.commit_only or args.peers_only or args.call_only or args.routes_only or args.rebuild_only or args.screen_only):
             command += [PROJECT/'mod/src'/('ep_loadout_'+name+'.cpp') for name in MODULES]
             command += [PROJECT/'mod/src'/('ep_'+name+'.cpp') for name in ('session_code','loadout_group')]
         command += [PROJECT/'mod/src'/('ep_'+name+'.cpp') for name in ('roster_owner','native_roster')]
@@ -37,12 +38,12 @@ def main():
             command += [PROJECT/'mod/src'/'ep_loadout_storage.cpp']
         if args.routes_only:
             command += [PROJECT/'mod/src'/'ep_loadout_routes.cpp']
-        if args.commit_only or args.routes_only:
+        if args.commit_only or args.peers_only or args.routes_only:
             command += [PROJECT/'mod/src'/('ep_'+name+'.cpp') for name in ('multiplayer_commit','multiplayer_loadout_commit')]
         command += [PROJECT/'tests'/(test+'.cpp'),'-o',args.executable.resolve()]
         result=subprocess.run(list(map(str,command)),capture_output=True,text=True)
         if result.returncode:raise RuntimeError(result.stdout+result.stderr)
-    result=subprocess.run([str(args.executable.resolve())],capture_output=True,text=True)
+    result=subprocess.run([str(args.executable.resolve())]+(['--peers-only'] if args.peers_only else []),capture_output=True,text=True)
     if result.returncode:raise RuntimeError(result.stdout+result.stderr)
     print(result.stdout.strip())
 

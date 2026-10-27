@@ -1,4 +1,5 @@
 #include "ep_multiplayer_loadout_commit.h"
+#include "ep_roster_group.h"
 #include <windows.h>
 extern "C" int EpOwnerInvoke(int (*)(void*),void*,int*);
 namespace {
@@ -7,6 +8,7 @@ struct LoadoutCommit {
     const EpLoadoutSourceSnapshot* current;
     EpC33EntryCommitGuard guard;EpMultiplayerLoadoutCommitResult* result;
     void* lease;uint32_t outcome;bool unsafe;
+    EpPlayerJoinPeers peers;
 };
 int begin(void* context,void** lease)
 {auto& c=*(LoadoutCommit*)context;return c.guard.begin(c.guard.context,lease);}
@@ -15,7 +17,7 @@ int validate(void* context,void* lease)
 int initialize(void* context)
 {
     auto& c=*(LoadoutCommit*)context;c.result->loadout_attempted=1;
-    c.result->loadout_result=ep_loadout_storage_initialize_in_scope(c.mod,c.loadout,c.owner,c.current);
+    c.result->loadout_result=ep_loadout_storage_initialize_peers_in_scope(c.mod,c.loadout,c.owner,c.current,&c.peers);
     return c.result->loadout_result==EP_LOADOUT_STORAGE_OK;
 }
 int external_end(void* context)
@@ -56,7 +58,13 @@ int ep_multiplayer_loadout_commit(const HfApi* api,HfMod* mod,uint64_t roster,
         !ep_component33_resource_entries_transaction_binding(mod,component,&owner,&game)) return 0;
     const auto& b=info.binding.setup.common;
     if (b.lifecycle.game!=game || ep_roster_owner_check_binding(mod,owner,game,b.roster,b.roster_storage)!=EP_OWNER_OK) return 0;
-    LoadoutCommit c={mod,loadout,owner,current,*guard,out,nullptr,EP_C33_COMMIT_OLD,false};
+    EpPlayerJoinPeers ui_peers={},roster_peers={};
+    if (!ep_loadout_storage_peer_binding(mod,loadout,&ui_peers)) return 0;
+    ep_roster_group_peer_binding(mod,roster,&roster_peers);
+    if (!ep_loadout_peers_equal(&ui_peers,&roster_peers)) {
+        out->loadout_result=EP_LOADOUT_STORAGE_SOURCE;return 0;
+    }
+    LoadoutCommit c={mod,loadout,owner,current,*guard,out,nullptr,EP_C33_COMMIT_OLD,false,roster_peers};
     EpC33EntryCommitGuard wrapped={&c,begin,validate,end};
     const int ok=ep_multiplayer_commit_migrated(api,mod,roster,component,&wrapped,&out->multiplayer);
     if (ep_loadout_storage_info(mod,loadout,&info)) {

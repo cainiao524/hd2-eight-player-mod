@@ -83,6 +83,8 @@ EpPropertyResult ep_loadout_group_prepare(const HfApi* api,HfMod* at_mod,const E
     return EP_PROPERTY_OK;
 }
 EpPropertyResult ep_loadout_group_discard(HfMod*,EpLoadoutGroup*) {NEED(false);return EP_PROPERTY_OK;}
+EpPropertyResult ep_loadout_group_prepare_peers(const HfApi*,HfMod*,const EpLoadoutGroupAddresses*,const EpPlayerJoinPeers*,EpLoadoutGroup*)
+{NEED(false);return EP_PROPERTY_ARGUMENT;} // This fixture exercises legacy screen routing only.
 int ep_loadout_maps_initialize(EpLoadoutMaps* out,uint32_t capacity,uint32_t local)
 {NEED(capacity==8 && local==0);memset(out,0xff,sizeof(*out));out->network_to_slot[0]=0;out->slot_to_network[0]=0;return 1;}
 static int Activate(void*,const EpNativeRosterView*)

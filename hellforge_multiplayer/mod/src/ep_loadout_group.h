@@ -93,7 +93,8 @@ typedef struct EpLoadoutGroup {
 EpPropertyResult ep_loadout_group_prepare(const HfApi*,HfMod*,const EpLoadoutGroupAddresses*,EpLoadoutGroup*);
 /* Opt-in update/action confirmed-peer binding, with matching group-local call
  * relocations. The caller retains/excludes the SAME roster peer bank. Remaining
- * UI families and the owned-storage activation route still need that binding;
+ * UI families still need conversion. ep_loadout_storage_prepare_peers retains
+ * this binding and the joint coordinator compares it with the roster group;
  * this preparation entry does not make a group safe to activate. */
 EpPropertyResult ep_loadout_group_prepare_peers(const HfApi*,HfMod*,const EpLoadoutGroupAddresses*,const EpPlayerJoinPeers*,EpLoadoutGroup*);
 EpPropertyResult ep_loadout_group_discard(HfMod*,EpLoadoutGroup*);

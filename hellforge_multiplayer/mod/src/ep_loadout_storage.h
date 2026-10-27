@@ -74,6 +74,16 @@ typedef struct EpLoadoutSourceSnapshot {
  * separate source/exclusion/initialization/publication gates are satisfied.
  * No game discovery, reads, source writes, hooks, installation or activation. */
 EpLoadoutStorageResult ep_loadout_storage_prepare(const HfApi*,HfMod*,const EpLoadoutStorageBindings*,EpLoadoutStorageInfo*);
+/* Same owned UI allocation with update/action bound to the roster's exact
+ * confirmed-peer bank. Copies the binding, never copies/allocates/frees the
+ * bank. Its native owner and records must be retained and all writers excluded
+ * by the same session owner. Rejects aliases with the whole UI arena, external
+ * sources and code reservation windows before writing initialization bytes.
+ * Other UI families still require conversion before real activation. */
+EpLoadoutStorageResult ep_loadout_storage_prepare_peers(const HfApi*,HfMod*,const EpLoadoutStorageBindings*,const EpPlayerJoinPeers*,EpLoadoutStorageInfo*);
+/* Stable PREPARED/RETAINED/UI_MIGRATED metadata only. A legacy allocation
+ * returns success with all-zero fields; stale/foreign/transient handles fail. */
+int ep_loadout_storage_peer_binding(HfMod*,uint64_t,EpPlayerJoinPeers*);
 int ep_loadout_storage_info(HfMod*,uint64_t,EpLoadoutStorageInfo*);
 /* PREPARED and capacity >=4 only: validate the captured global identities and
  * resource-owner 0<=prefix<=published<=total<=4 and auxiliary count <=4.
@@ -136,6 +146,13 @@ EpLoadoutStorageResult ep_loadout_storage_retain_sources(HfMod*,uint64_t,const E
  * roster/component commit; external UI routing remains a caller obligation. */
 EpLoadoutStorageResult ep_loadout_storage_initialize_in_scope(HfMod*,uint64_t handle,
     uint64_t roster_owner,const EpLoadoutSourceSnapshot* current);
+/* Bound storage requires the coordinator's current roster peer binding;
+ * legacy initialization refuses a bound bank. Mismatch is SOURCE before any
+ * retention, constructor, replacement or storage state change. The expected
+ * value comes from the claimed roster group under the common exclusion, not
+ * from UI metadata alone. An all-zero expected value is the legacy binding. */
+EpLoadoutStorageResult ep_loadout_storage_initialize_peers_in_scope(HfMod*,uint64_t handle,
+    uint64_t roster_owner,const EpLoadoutSourceSnapshot* current,const EpPlayerJoinPeers* expected);
 /* Coordinator failure AFTER an initialization attempt, including a later
  * end(NEW) fault. Requires the exact recorded owner's still-held native scope
  * (healthy or faulted). Quarantines that owner and this generation, hides

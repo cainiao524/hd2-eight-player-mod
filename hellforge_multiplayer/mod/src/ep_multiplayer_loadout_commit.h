@@ -14,6 +14,10 @@ typedef struct EpMultiplayerLoadoutCommitResult {
  * RETAINED loadout bound to the SAME game/roster/B owner. No automatic invocation,
  * game discovery, installation or sampling. Management is caller-exclusive:
  * never cancel/reimport/initialize/share this loadout during the transaction.
+ * Shared-peer UI storage and the roster group must bind the exact same client,
+ * bank and capacity. A missing/mismatched binding refuses before guard.begin
+ * and core staging. The coordinator carries that immutable binding into owned
+ * initialization; a bound roster cannot silently use legacy inline UI readers.
  *
  * guard.begin/validate have the normal full-engine exclusion requirements.
  * validate must fill/refresh the caller-owned current snapshot under that

@@ -12,8 +12,13 @@ struct JointFixture {
     bool lease,roster_barrier,roster_active,component_active,reject_validate;
     unsigned mode,ends,ended_outcome,roster_data,component_data,roster_restores;
     EpLoadoutSourceSnapshot current;
+    EpPlayerJoinPeers peers;
 };
 static JointFixture* joint;
+int ep_roster_group_peer_binding(HfMod* mod,uint64_t group,EpPlayerJoinPeers* out)
+{NEED(mod==active->mod && group==17);*out=joint->peers;return out->client!=0;}
+bool ep_roster_migration_prepare(EpRosterMigrationStage* stage)
+{NEED(ep_loadout_peers_equal(&stage->peers,&joint->peers));return true;}
 static void ConstructOrder()
 {NEED(joint->lease && joint->roster_barrier && joint->roster_active && joint->component_active && !joint->ends);}
 int ep_component33_resource_entries_transaction_binding(HfMod* mod,uint64_t component,uint64_t* owner,uint64_t* game)
@@ -117,8 +122,34 @@ static void RunJoint(unsigned mode)
     }
     NEED(ep_loadout_storage_cancel(fixture.mod,fixture.storage)==EP_LOADOUT_STORAGE_STATE);
 }
-int main()
+static void RunPeers()
 {
+    EpPlayerJoinPeers binding={0x3000162c8,0x310000000,8,0};Fixture fixture={};Setup(fixture,0,&binding);
+    JointFixture j={};joint=&j;j.roster_data=j.component_data=4;fixture.check_construct=ConstructOrder;
+    EpPlayerJoinPeers stored={};
+    NEED(ep_loadout_storage_peer_binding(fixture.mod,fixture.storage,&stored) && ep_loadout_peers_equal(&stored,&binding));
+    binding.bank+=0x10000; // Caller mutation cannot retarget prepared UI code.
+    NEED(ep_loadout_storage_peer_binding(fixture.mod,fixture.storage,&stored) && ep_loadout_peers_equal(&stored,&fixture.peers));
+    NEED(!ep_loadout_storage_peer_binding(fixture.mod,fixture.storage+1,&stored) && !stored.client && !stored.bank);
+    NEED(ep_roster_owner_call(fixture.mod,fixture.owner,0,Initialize,&fixture)==EP_OWNER_OK);
+    NEED(fixture.result==EP_LOADOUT_STORAGE_SOURCE && !fixture.retains && !fixture.constructed && !fixture.replaced);
+    HfApi api={};api.size=sizeof(api);api.version=13;api.read=SdkReadForbidden;
+    EpC33EntryCommitGuard guard={nullptr,Begin,Validate,End};EpMultiplayerLoadoutCommitResult result={};
+    j.peers=binding;
+    NEED(!ep_multiplayer_loadout_commit(&api,fixture.mod,17,22,fixture.storage,&j.current,&guard,&result));
+    NEED(result.loadout_result==EP_LOADOUT_STORAGE_SOURCE && !result.loadout_attempted &&
+         !result.multiplayer.roster_claimed && !j.lease && !j.ends && !fixture.retains);
+    j.peers=fixture.peers;
+    NEED(ep_multiplayer_loadout_commit(&api,fixture.mod,17,22,fixture.storage,&j.current,&guard,&result));
+    NEED(result.loadout_result==EP_LOADOUT_STORAGE_OK && result.loadout_state==EP_LOADOUT_STORAGE_UI_MIGRATED &&
+         result.multiplayer.outcome==EP_C33_COMMIT_NEW && !result.multiplayer.total_read_bytes);
+    NEED(j.ends==1 && !j.lease && !j.roster_barrier && fixture.constructed==1 && fixture.replaced==1);
+    NEED(ep_loadout_storage_peer_binding(fixture.mod,fixture.storage,&stored) && ep_loadout_peers_equal(&stored,&j.peers));
+    puts("{\"passed\":true,\"scope\":\"one retained peer-binding and joint UI commit flow\",\"group_and_migration_and_native_bodies\":\"test doubles\",\"game_access\":false,\"runtime_verified\":false}");
+}
+int main(int argc,char** argv)
+{
+    if (argc==2 && !strcmp(argv[1],"--peers-only")) {RunPeers();return 0;}
     RunJoint(0);RunJoint(1);RunJoint(2);
     puts("{\"passed\":true,\"scope\":\"joint loadout ordering and late-failure quarantine\",\"core_migration_and_native_bodies\":\"test doubles\",\"game_access\":false,\"runtime_verified\":false}");
 }

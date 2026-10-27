@@ -37,17 +37,6 @@ EpPropertyResult ep_loadout_consumers_validate_link(const EpLoadoutConsumerAddre
     EpLoadoutConsumerAddresses target=*input;target.lifecycle.code=entry;
     return EpLoadoutValidate(&target,1);
 }
-EpPropertyResult ep_loadout_consumers_peer_span(const EpPlayerJoinPeers* p,uint64_t at,uint32_t bytes)
-{
-    if (!p || p->reserved || p->capacity<4 || p->capacity>8 || !bytes) return EP_PROPERTY_ARGUMENT;
-    if (p->client<0x262c8 || p->client%8 || p->client>=(UINT64_C(1)<<47)-0x528 ||
-        p->bank<0x10000 || p->bank%16 || p->bank>=(UINT64_C(1)<<47)-p->capacity*32 ||
-        at<0x10000 || at>=(UINT64_C(1)<<47)-bytes) return EP_PROPERTY_POINTER;
-    const uint64_t owner=p->client-0x162c8,end=p->client+0x528;
-    if ((p->bank<end && owner<p->bank+p->capacity*32) ||
-        (at<end && owner<at+bytes) || (at<p->bank+p->capacity*32 && p->bank<at+bytes)) return EP_PROPERTY_OVERLAP;
-    return EP_PROPERTY_OK;
-}
 static EpPropertyResult build(const EpLoadoutConsumerAddresses* input,uint64_t ready_flag,const EpPlayerJoinPeers* peers,EpLoadoutConsumerImage* out)
 {
     if (!out) return EP_PROPERTY_ARGUMENT;

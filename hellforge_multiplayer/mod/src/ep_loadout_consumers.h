@@ -52,7 +52,20 @@ EpPropertyResult ep_loadout_consumers_build(const EpLoadoutConsumerAddresses*,ui
  * No migration, retention, publication or native execution is performed here. */
 EpPropertyResult ep_loadout_consumers_build_peers(const EpLoadoutConsumerAddresses*,uint64_t ready_flag,const EpPlayerJoinPeers*,EpLoadoutConsumerImage*);
 /* Numerical peer binding/alias check, shared by group preparation. */
-EpPropertyResult ep_loadout_consumers_peer_span(const EpPlayerJoinPeers*,uint64_t base,uint32_t bytes);
+static inline EpPropertyResult ep_loadout_consumers_peer_span(const EpPlayerJoinPeers* p,uint64_t at,uint32_t bytes)
+{
+    if (!p || p->reserved || p->capacity<4 || p->capacity>8 || !bytes) return EP_PROPERTY_ARGUMENT;
+    if (p->client<0x262c8 || p->client%8 || p->client>=(UINT64_C(1)<<47)-0x528 ||
+        p->bank<0x10000 || p->bank%16 || p->bank>=(UINT64_C(1)<<47)-p->capacity*32 ||
+        at<0x10000 || at>=(UINT64_C(1)<<47)-bytes) return EP_PROPERTY_POINTER;
+    const uint64_t owner=p->client-0x162c8,end=p->client+0x528;
+    if ((p->bank<end && owner<p->bank+p->capacity*32) ||
+        (at<end && owner<at+bytes) || (at<p->bank+p->capacity*32 && p->bank<at+bytes)) return EP_PROPERTY_OVERLAP;
+    return EP_PROPERTY_OK;
+}
+/* Binding identity only; no pointer access or inferred ownership. */
+static inline int ep_loadout_peers_equal(const EpPlayerJoinPeers* a,const EpPlayerJoinPeers* b)
+{return a && b && a->client==b->client && a->bank==b->bank && a->capacity==b->capacity && a->reserved==b->reserved;}
 /* Shared numerical binding validation; does not dereference any address. */
 EpPropertyResult ep_loadout_consumers_validate(const EpLoadoutConsumerAddresses*);
 EpPropertyResult ep_loadout_consumers_validate_span(const EpLoadoutConsumerAddresses*,uint32_t code_bytes);

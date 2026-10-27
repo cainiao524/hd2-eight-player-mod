@@ -44,6 +44,12 @@ static int Hook(HfMod* at_mod,uintptr_t at,void* detour,void** next,int32_t prio
 }
 int ep_loadout_storage_info(HfMod* at_mod,uint64_t handle,EpLoadoutStorageInfo* out)
 {NEED(at_mod==mod && handle==f->storage.handle);*out=f->storage;return 1;}
+int ep_loadout_storage_peer_binding(HfMod* at_mod,uint64_t handle,EpPlayerJoinPeers* out)
+{NEED(at_mod==mod && handle==f->storage.handle);*out={};return 1;}
+int ep_roster_group_peer_binding(HfMod* at_mod,uint64_t group,EpPlayerJoinPeers* out)
+{NEED(at_mod==mod && group==17);*out={};return 0;}
+bool ep_roster_migration_prepare(EpRosterMigrationStage* stage)
+{NEED(!stage->peers.client);return true;}
 EpLoadoutStorageResult ep_loadout_storage_initialize_in_scope(HfMod* at_mod,uint64_t handle,uint64_t owner,const EpLoadoutSourceSnapshot* current)
 {
     NEED(at_mod==mod && handle==f->storage.handle && owner==f->owner && current->game==f->storage.binding.setup.common.lifecycle.game);
@@ -52,6 +58,11 @@ EpLoadoutStorageResult ep_loadout_storage_initialize_in_scope(HfMod* at_mod,uint
     f->initializes++;f->storage.state=EP_LOADOUT_STORAGE_UI_MIGRATED;f->storage.screen_phase=EP_LOADOUT_SCREEN_LIVE;f->storage.initialization_owner=owner;return EP_LOADOUT_STORAGE_OK;
 }
 // Screen lifecycle is outside this older focused fixture.
+EpLoadoutStorageResult ep_loadout_storage_initialize_peers_in_scope(HfMod* at_mod,uint64_t handle,uint64_t owner,const EpLoadoutSourceSnapshot* current,const EpPlayerJoinPeers* peers)
+{
+    const EpPlayerJoinPeers unbound={};NEED(ep_loadout_peers_equal(peers,&unbound));
+    return ep_loadout_storage_initialize_in_scope(at_mod,handle,owner,current);
+}
 int ep_loadout_storage_screen_return_in_scope(HfMod*,uint64_t,uint64_t,uint32_t) {return 1;}
 EpLoadoutStorageResult ep_loadout_storage_screen_in_scope(HfMod*,uint64_t,uint64_t,uint32_t,uint64_t)
 {NEED(false);return EP_LOADOUT_STORAGE_STATE;}

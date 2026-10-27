@@ -18,6 +18,7 @@ struct Fixture {
     unsigned mode,constructed,replaced,retains;
     bool reject_retain,retained;
     void (*check_construct)();
+    EpPlayerJoinPeers peers;
 };
 static Fixture* active;
 static uint64_t next_code;
@@ -53,6 +54,11 @@ EpPropertyResult ep_loadout_group_prepare(const HfApi*,HfMod*,const EpLoadoutGro
     return EP_PROPERTY_OK;
 }
 EpPropertyResult ep_loadout_group_discard(HfMod*,EpLoadoutGroup*) {NEED(false);return EP_PROPERTY_OK;}
+EpPropertyResult ep_loadout_group_prepare_peers(const HfApi* api,HfMod* mod,const EpLoadoutGroupAddresses* a,const EpPlayerJoinPeers* peers,EpLoadoutGroup* out)
+{
+    NEED(active->peers.client && ep_loadout_peers_equal(peers,&active->peers));
+    return ep_loadout_group_prepare(api,mod,a,out);
+}
 int ep_session_code_retain_set(HfMod* mod,const uint64_t* ids,uint32_t count)
 {
     auto& f=*active;NEED(mod==f.mod && count==EP_LOADOUT_GROUP_CODE_COUNT && !f.retained && !f.constructed);
@@ -72,9 +78,9 @@ static int Initialize(void* context,const EpNativeRosterView*)
     f.result=ep_loadout_storage_initialize_in_scope(f.mod,f.storage,f.owner,&f.source);
     return 1; // Failed nested owner health must propagate even if ignored here.
 }
-static void Setup(Fixture& f,unsigned mode)
+static void Setup(Fixture& f,unsigned mode,const EpPlayerJoinPeers* peers=nullptr)
 {
-    active=&f;f.mode=mode;f.mod=(HfMod*)(uintptr_t)0x9183;
+    active=&f;f.mode=mode;f.mod=(HfMod*)(uintptr_t)0x9183;if (peers) f.peers=*peers;
     const uint64_t shift=(uint64_t)mode*0x100000000;
     EpLoadoutStorageBindings input={};auto& a=input.group;auto& l=a.setup.common.lifecycle;
     l={0x180000000+shift,0,0x220000000+shift,0,0,0x191000000+shift,8,0};f.screen=l.screen;
@@ -87,7 +93,14 @@ static void Setup(Fixture& f,unsigned mode)
         &a.resource_sync_code,&a.resource_signals_code,&a.resource_actions_code,&a.resource_main_code,&a.resource_update_code};
     for (unsigned i=0;i<EP_LOADOUT_GROUP_CODE_COUNT;i++) *fields[i]=0x190000000+shift+i*0x10000;
     HfApi api={};EpLoadoutStorageInfo info={};
-    NEED(ep_loadout_storage_prepare(&api,f.mod,&input,&info)==EP_LOADOUT_STORAGE_OK);f.storage=info.handle;
+    if (peers) {
+        // Refuse a peer bank inside code reservation padding before the group
+        // allocator or any owned-bank initializer runs.
+        auto bad=*peers;bad.bank=a.consumers_code+0xf000;
+        NEED(ep_loadout_storage_prepare_peers(&api,f.mod,&input,&bad,&info)==EP_LOADOUT_STORAGE_POINTER && !info.handle);
+    }
+    NEED((peers ? ep_loadout_storage_prepare_peers(&api,f.mod,&input,peers,&info) :
+                  ep_loadout_storage_prepare(&api,f.mod,&input,&info))==EP_LOADOUT_STORAGE_OK);f.storage=info.handle;
     f.source.game=l.game;f.source.record_manager=f.source.global_record_manager=a.record_source.manager;
     f.source.countdown_manager=f.source.global_countdown_manager=a.countdown_source.manager;
     f.source.resource_owner=f.source.global_resource_owner=a.resource_owner_source.owner;
