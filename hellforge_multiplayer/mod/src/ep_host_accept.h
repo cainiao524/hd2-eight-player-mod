@@ -28,8 +28,10 @@ typedef struct EpHostAcceptImage {
  *
  * Numeric preparation only: no game reads, hooks, imports or activation.
  * Import/initialize all metadata records before exposing any of these entries.
- * Constructor and other metadata readers/reset paths still require conversion;
- * packet decoding, other helpers and coordinated activation are separate.
+ * Bind constructor/send to ep_client_metadata with this exact metadata bank;
+ * retain its readiness helpers and storage for the whole client lifetime.
+ * Other readiness readers/reset paths, packet decoding and coordinated
+ * activation are separate prerequisites before exposure.
  * Hold one exclusive owner lease for whole calls and helper lifetimes. Reject
  * is nonreturning; late effects require quarantine, never partial replay.
  */
