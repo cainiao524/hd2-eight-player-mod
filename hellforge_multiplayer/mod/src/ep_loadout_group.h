@@ -72,6 +72,8 @@ typedef struct EpLoadoutGroup {
  * The state timer calls control.leave and context action calls mode.open;
  * these cyclic links are prepared together and must share lifetime.
  * Only owned code allocations are made; data still belongs to the caller.
+ * ep_loadout_storage_prepare wraps this group with owned fresh data banks and
+ * coordinated cancellation/retention; it does not perform state migration.
  * All images must reach READY before callable addresses are returned. Partial
  * preparation discards in reverse order; failed cleanup retains only handles
  * and exposes no callable entries. Retry group_discard for CLEANUP.
