@@ -17,6 +17,10 @@ typedef struct EpRosterGroup {
     volatile LONG switching;
     uint64_t transition;
     EpPlayerJoinPeers peers;
+    uint32_t peer_count,peer_retained;
+    EpClientPeerFamily peer_bodies;
+    EpSessionCodeInfo peer_gates[EP_CLIENT_PEER_FAMILY_COUNT];
+    EpRosterCallContext peer_calls[EP_CLIENT_PEER_FAMILY_COUNT];
 } EpRosterGroup;
 static EpRosterGroup epGroups[EP_ROSTER_GROUP_SLOTS];
 static SRWLOCK epGroupLock=SRWLOCK_INIT;
@@ -54,12 +58,73 @@ static int EpGroupCancel(EpRosterGroup* g)
             else ok=0;
         }
     }
-    if (ok && !g->attempts) memset(g,0,sizeof(*g));
+    for (unsigned i=0;i<EP_CLIENT_PEER_FAMILY_COUNT;i++) {
+        EpSessionCodeInfo* pair[]={&g->peer_gates[i],&g->peer_bodies.code[i]};
+        for (auto* code:pair) if (code->handle) {
+            EpSessionCodeInfo current={};
+            if (!ep_session_code_info(g->owner,code->handle,&current)) {ok=0;continue;}
+            if (!current.pinned) {
+                if (ep_session_code_discard(g->owner,code->handle)) *code={};else ok=0;
+            }
+        }
+    }
+    if (ok && !g->attempts && !g->peer_retained) memset(g,0,sizeof(*g));
     else g->state=ok ? EP_GROUP_CANCELLED : EP_GROUP_FAILED;
     return ok;
 }
+static const uint32_t EpPeerRvas[EP_CLIENT_PEER_FAMILY_COUNT]={
+    0x10872c0,0xb90b20,0x1087540,0x1087010,0x10845b0,0x1084fd0,0x1085010,0x1085090};
+static int EpGroupPreparePeers(const HfApi* api,EpRosterGroup* g,const EpRosterGroupBindings* b,
+    const EpRosterCallPolicy* policy,const EpClientPeerFamilyAddresses* family,const EpSessionCodeInfo* roster)
+{
+    if (ep_client_peer_family_prepare(api,g->owner,family,&g->peer_bodies)!=EP_PROPERTY_OK) return 0;
+    for (unsigned i=0;i<EP_CLIENT_PEER_FAMILY_COUNT;i++)
+        if (!ep_session_code_reserve(api,g->owner,0,48,&g->peer_gates[i])) return 0;
+    // Exclude complete reservation windows and mutable next slots before gates
+    // become executable. Numeric ranges only; neither bank is dereferenced.
+    const uint64_t ranges[][2]={{g->peers.client-0x162c8,0x162c8+0x528},{g->peers.bank,g->peers.capacity*32ull},
+        {b->roster_address,0x428},{b->storage_address,0x680},{family->reject,1},
+        {(uintptr_t)epGroups,sizeof(epGroups)},{b->game_base,74727424}};
+    for (unsigned i=0;i<sizeof(ranges)/sizeof(*ranges);i++) {
+        const auto& r=ranges[i];
+        for (unsigned j=0;j<i;j++) if (r[0]<ranges[j][0]+ranges[j][1] && ranges[j][0]<r[0]+r[1]) return 0;
+        for (unsigned j=0;j<EP_ROSTER_ENTRIES+2*EP_CLIENT_PEER_FAMILY_COUNT;j++) {
+            const auto& code=j<EP_ROSTER_ENTRIES ? roster[j] : j<EP_ROSTER_ENTRIES+EP_CLIENT_PEER_FAMILY_COUNT ?
+                g->peer_bodies.code[j-EP_ROSTER_ENTRIES] : g->peer_gates[j-EP_ROSTER_ENTRIES-EP_CLIENT_PEER_FAMILY_COUNT];
+            if ((r[0]<code.base+65536 && code.base<r[0]+r[1]) ||
+                (r[0]<code.next_pointer+8 && code.next_pointer<r[0]+r[1])) return 0;
+            for (unsigned k=0;k<EP_ROSTER_ENTRIES;k++)
+                if ((b->reject[k]>=code.base && b->reject[k]<code.base+65536) ||
+                    (b->reject[k]>=code.next_pointer && b->reject[k]<code.next_pointer+8)) return 0;
+        }
+    }
+    for (unsigned i=0;i<EP_CLIENT_PEER_FAMILY_COUNT;i++) {
+        auto& c=g->peer_calls[i];const auto& gate=g->peer_gates[i];
+        c.mod=g->owner;c.owner=g->storage_owner;c.game=b->game_base;c.roster=b->roster_address;c.storage=b->storage_address;
+        c.active=(volatile int32_t*)&g->active;c.switching=(volatile int32_t*)&g->switching;
+        c.next_pointer=gate.next_pointer;c.body=g->peer_bodies.code[i].base;
+        c.kind=EP_ROSTER_CALL_PEER_INSERT+i;c.policy=*policy;c.join_client=g->peers.client;
+        uint8_t image[48]={};if (!ep_roster_call_prefix(&c,image)) return 0;
+        image[32]=1;const uint32_t row[]={0,32,32};memcpy(image+36,row,sizeof(row));
+        if (!ep_session_code_seal_table(g->owner,gate.handle,image,sizeof(image),36,1)) return 0;
+    }
+    g->peer_count=EP_CLIENT_PEER_FAMILY_COUNT;return 1;
+}
+int ep_roster_group_peer_routes_info(HfMod* mod,uint64_t id,EpRosterPeerRoutesInfo* out)
+{
+    if (!out) return 0;*out={};AcquireSRWLockShared(&epGroupLock);auto* g=EpGroupFind(mod,id);
+    const int ok=g && g->state!=EP_GROUP_PREPARING && g->peer_count==EP_CLIENT_PEER_FAMILY_COUNT;
+    if (ok) {
+        out->group=id;out->count=g->peer_count;out->retained=g->peer_retained;
+        for (unsigned i=0;i<g->peer_count;i++) {
+            ep_session_code_info(mod,g->peer_bodies.code[i].handle,&out->body[i]);
+            ep_session_code_info(mod,g->peer_gates[i].handle,&out->gate[i]);
+        }
+    }
+    ReleaseSRWLockShared(&epGroupLock);return ok;
+}
 static int EpGroupPrepare(const HfApi* api,HfMod* owner,const EpRosterGroupBindings* input,uint64_t storage_owner,
-    const EpRosterCallPolicy* policy,const EpPlayerJoinPeers* peer_input,EpRosterGroupInfo* out)
+    const EpRosterCallPolicy* policy,const EpPlayerJoinPeers* peer_input,const EpClientPeerFamilyAddresses* family,EpRosterGroupInfo* out)
 {
     EpRosterGroupBindings bindings; EpRosterGroup* g=NULL; int ok=1;
     EpPlayerJoinPeers peers={};if (peer_input) peers=*peer_input;
@@ -154,6 +219,7 @@ static int EpGroupPrepare(const HfApi* api,HfMod* owner,const EpRosterGroupBindi
             if (!ep_session_code_seal_gs_table(owner,g->code[i],image.data,image.bytes,image.table_offset,image.function_count,&gs)) ok=0;
         } else if (!ep_session_code_seal_table(owner,g->code[i],image.data,image.bytes,image.table_offset,image.function_count)) ok=0;
     }
+    if (ok && family) ok=EpGroupPreparePeers(api,g,&bindings,policy,family,allocations);
     AcquireSRWLockExclusive(&epGroupLock);
     if (ok) {
         for (unsigned i=0;i<EP_ROSTER_ENTRIES;i++) {
@@ -166,18 +232,25 @@ static int EpGroupPrepare(const HfApi* api,HfMod* owner,const EpRosterGroupBindi
     ReleaseSRWLockExclusive(&epGroupLock); return ok;
 }
 int ep_roster_group_prepare(const HfApi* api,HfMod* mod,const EpRosterGroupBindings* b,EpRosterGroupInfo* out)
-{return EpGroupPrepare(api,mod,b,0,NULL,NULL,out);}
+{return EpGroupPrepare(api,mod,b,0,NULL,NULL,NULL,out);}
 int ep_roster_group_prepare_owned(const HfApi* api,HfMod* mod,const EpRosterGroupBindings* b,uint64_t storage_owner,
     const EpRosterCallPolicy* policy,EpRosterGroupInfo* out)
 {
     if (!storage_owner) {if(out) memset(out,0,sizeof(*out));return 0;}
-    return EpGroupPrepare(api,mod,b,storage_owner,policy,NULL,out);
+    return EpGroupPrepare(api,mod,b,storage_owner,policy,NULL,NULL,out);
 }
 int ep_roster_group_prepare_owned_peers(const HfApi* api,HfMod* mod,const EpRosterGroupBindings* b,uint64_t storage_owner,
     const EpRosterCallPolicy* policy,const EpPlayerJoinPeers* peers,EpRosterGroupInfo* out)
 {
     if (!storage_owner || !peers) {if(out) memset(out,0,sizeof(*out));return 0;}
-    return EpGroupPrepare(api,mod,b,storage_owner,policy,peers,out);
+    return EpGroupPrepare(api,mod,b,storage_owner,policy,peers,NULL,out);
+}
+int ep_roster_group_prepare_owned_peer_family(const HfApi* api,HfMod* mod,const EpRosterGroupBindings* b,uint64_t owner,
+    const EpRosterCallPolicy* policy,const EpClientPeerFamilyAddresses* input,EpRosterGroupInfo* out)
+{
+    if (!out) return 0;*out={};if (!b || !owner || !input || input->game!=b->game_base) return 0;
+    const auto family=*input;const EpPlayerJoinPeers peers={family.client,family.peers,family.capacity,family.reserved};
+    return EpGroupPrepare(api,mod,b,owner,policy,&peers,&family,out);
 }
 int ep_roster_group_peer_binding(HfMod* mod,uint64_t id,EpPlayerJoinPeers* out)
 {
@@ -191,7 +264,13 @@ int ep_roster_group_publish(HfMod* owner,uint64_t id,int32_t priority)
     AcquireSRWLockExclusive(&epGroupLock); EpRosterGroup* g=EpGroupFind(owner,id);
     if (!g || g->state!=EP_GROUP_PREPARED) { ReleaseSRWLockExclusive(&epGroupLock); return 0; }
     g->state=EP_GROUP_PUBLISHING; ReleaseSRWLockExclusive(&epGroupLock);
-    for (unsigned i=0;i<EP_ROSTER_ENTRIES;i++) {
+    if (g->peer_count) {
+        uint64_t ids[2*EP_CLIENT_PEER_FAMILY_COUNT];
+        for (unsigned i=0;i<g->peer_count;i++) {ids[i]=g->peer_bodies.code[i].handle;ids[g->peer_count+i]=g->peer_gates[i].handle;}
+        ok=ep_session_code_retain_set(owner,ids,2*g->peer_count);
+        AcquireSRWLockExclusive(&epGroupLock);g->peer_retained=ok;ReleaseSRWLockExclusive(&epGroupLock);
+    }
+    for (unsigned i=0;ok && i<EP_ROSTER_ENTRIES;i++) {
         int published=ep_session_code_publish(owner,g->code[i],g->targets[i],priority);
         EpSessionCodeInfo info;
         AcquireSRWLockExclusive(&epGroupLock);
@@ -199,9 +278,17 @@ int ep_roster_group_publish(HfMod* owner,uint64_t id,int32_t priority)
         ReleaseSRWLockExclusive(&epGroupLock);
         if (!published) { ok=0; break; }
     }
+    for (unsigned i=0;ok && i<g->peer_count;i++) {
+        const int published=ep_session_code_publish(owner,g->peer_gates[i].handle,g->calls[0].game+EpPeerRvas[i],priority);
+        EpSessionCodeInfo info={};AcquireSRWLockExclusive(&epGroupLock);
+        if (ep_session_code_info(owner,g->peer_gates[i].handle,&info) && info.pinned) g->attempts++;
+        ReleaseSRWLockExclusive(&epGroupLock);
+        if (!published || !InterlockedCompareExchangePointer((void* volatile*)g->peer_calls[i].next_pointer,NULL,NULL)) ok=0;
+    }
     AcquireSRWLockExclusive(&epGroupLock); g->state=ok ? EP_GROUP_READY : EP_GROUP_FAILED;
     ReleaseSRWLockExclusive(&epGroupLock); return ok;
 }
+static int TransitionNextReady(EpRosterGroup*);
 typedef struct EpOwnedCommit {EpRosterGroup* group;EpPropertyCommitGuard guard;void* lease;int committed,ended;} EpOwnedCommit;
 static int EpValidateUnderOwner(void* context,const EpNativeRosterView* view)
 {
@@ -224,7 +311,7 @@ int ep_roster_group_commit(HfMod* owner,uint64_t id,const EpPropertyCommitGuard*
     if (!guard || !guard->begin || !guard->validate || !guard->end) return 0;
     copy=*guard;
     AcquireSRWLockExclusive(&epGroupLock); EpRosterGroup* g=EpGroupFind(owner,id);
-    if (!g || g->state!=EP_GROUP_READY || (g->storage_owner && ep_roster_owner_in_scope())) { ReleaseSRWLockExclusive(&epGroupLock); return 0; }
+    if (!g || g->state!=EP_GROUP_READY || (g->storage_owner && (ep_roster_owner_in_scope() || !TransitionNextReady(g)))) { ReleaseSRWLockExclusive(&epGroupLock); return 0; }
     g->state=EP_GROUP_COMMITTING; ReleaseSRWLockExclusive(&epGroupLock);
     entered=copy.begin(copy.context,&lease);
     if (g->storage_owner) {
@@ -263,6 +350,15 @@ static int TransitionNextReady(EpRosterGroup* g)
         EpSessionCodeInfo code;
         if (!ep_session_code_info(g->owner,g->code[i],&code) || !code.pinned || !g->calls[i].next_pointer ||
             !InterlockedCompareExchangePointer((void* volatile*)g->calls[i].next_pointer,NULL,NULL)) return 0;
+    }
+    if (g->peers.client) {
+        if (g->peer_count!=EP_CLIENT_PEER_FAMILY_COUNT || !g->peer_retained) return 0;
+        for (unsigned i=0;i<g->peer_count;i++) {
+            EpSessionCodeInfo gate={},body={};
+            if (!ep_session_code_info(g->owner,g->peer_gates[i].handle,&gate) || !gate.pinned || gate.state!=EP_CODE_PUBLISHED ||
+                !ep_session_code_info(g->owner,g->peer_bodies.code[i].handle,&body) || !body.pinned ||
+                !g->peer_calls[i].next_pointer || !InterlockedCompareExchangePointer((void* volatile*)g->peer_calls[i].next_pointer,NULL,NULL)) return 0;
+        }
     }
     return 1;
 }

@@ -24,6 +24,14 @@ typedef void (*EpRosterCallFailure)(void*,uint32_t kind,EpRosterOwnerResult,EpRo
 typedef struct EpRosterCallPolicy {
     EpRosterCallFailure failure;void* context;EpPlayerJoinNotice join_result;
 } EpRosterCallPolicy;
+/* Additional owned routes; do not change the eighteen-entry roster image ABI.
+ * Family order: insert, registered insert, remove, reset, disconnect, lookup,
+ * contains, set flag. Only insert/registered insert consume stack arguments. */
+enum {EP_ROSTER_CALL_PEER_INSERT=EP_ROSTER_ENTRIES+1,
+      EP_ROSTER_CALL_PEER_REGISTERED,EP_ROSTER_CALL_PEER_REMOVE,
+      EP_ROSTER_CALL_PEER_RESET,EP_ROSTER_CALL_PEER_DISCONNECT,
+      EP_ROSTER_CALL_PEER_LOOKUP,EP_ROSTER_CALL_PEER_CONTAINS,
+      EP_ROSTER_CALL_PEER_SET_FLAG};
 typedef struct EpRosterCallContext {
     HfMod* mod;
     uint64_t owner,game,roster,storage;
@@ -37,8 +45,11 @@ typedef struct EpRosterCallContext {
     /* Zero-initialize. Only the dispatcher changes this under the owner lock;
      * it orders NEW join notices even when post-call delivery is reordered. */
     uint64_t join_sequence;
-    /* Required for NEW PLAYER_JOIN. Zero blocks NEW before native effects;
-     * OLD still follows the SDK chain. Must name the bound peer-bank client. */
+    /* Required for NEW PLAYER_JOIN and peer routes. Zero blocks NEW before
+     * native effects; OLD still follows the SDK chain. Names the bound client.
+     * Registered insert resolves its client inside the guarded native body.
+     * NEW pointer-returning peer lookup additionally requires an enclosing
+     * same-owner scope lasting through the caller's last use of that pointer. */
     uint64_t join_client;
 } EpRosterCallContext;
 /* Replaces only the existing 32-byte leaf prefix. Context remains immutable

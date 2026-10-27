@@ -4,6 +4,7 @@
 #include "ep_roster_gate.h"
 #include "ep_roster_call.h"
 #include "ep_player_join_image.h"
+#include "ep_client_peers.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -44,11 +45,37 @@ int ep_roster_group_prepare_owned(const HfApi*,HfMod*,const EpRosterGroupBinding
  * Sources must be migrated and retained, all family/inline readers redirected,
  * and writers excluded together before the existing commit guard permits NEW.
  * No bank allocation, migration, reader audit or publication is implied here.
+ * This join-only preparation cannot commit NEW: use the peer-family API below
+ * to prepare the remaining routes with the same switch.
  * Full lookup windows have original GP-only unwind, independent of the later
  * checked-creation frame. Group data, bank and native owner live for the session.
  */
 int ep_roster_group_prepare_owned_peers(const HfApi*,HfMod*,const EpRosterGroupBindings*,uint64_t storage_owner,
     const EpRosterCallPolicy*,const EpPlayerJoinPeers*,EpRosterGroupInfo*);
+typedef struct EpRosterPeerRoutesInfo {
+    uint64_t group;
+    uint32_t count,retained;
+    EpSessionCodeInfo body[EP_CLIENT_PEER_FAMILY_COUNT],gate[EP_CLIENT_PEER_FAMILY_COUNT];
+} EpRosterPeerRoutesInfo;
+/* Prepare all eight confirmed-peer routes with the eighteen roster routes.
+ * Family game/client/bank/capacity are the local-join binding too. All gates use
+ * the SAME owner, latch, staging barrier and policy. Family code[] supplies
+ * native body addresses within rel32 reach; bridge gates use absolute jumps.
+ * Preparation is cancellable and does not publish/read any game state.
+ *
+ * Publication permanently retains all peer bodies/gates before the first hook.
+ * Commit requires all twenty-six SDK next pointers and keeps OLD until the
+ * existing whole-engine guard has migrated both banks and all other readers.
+ * The older join-only prepare_owned_peers cannot commit NEW without this family.
+ * A returned lookup pointer is only usable within an enclosing same-owner call;
+ * an unowned NEW lookup quarantines rather than letting a movable pointer escape.
+ * Other inline consumers, external writers, identities and lifetime remain the
+ * caller's integration obligations. This API neither installs automatically nor
+ * establishes complete lifecycle coverage or real multiplayer acceptance.
+ */
+int ep_roster_group_prepare_owned_peer_family(const HfApi*,HfMod*,const EpRosterGroupBindings*,uint64_t storage_owner,
+    const EpRosterCallPolicy*,const EpClientPeerFamilyAddresses*,EpRosterGroupInfo*);
+int ep_roster_group_peer_routes_info(HfMod*,uint64_t,EpRosterPeerRoutesInfo*);
 int ep_roster_group_peer_binding(HfMod*,uint64_t,EpPlayerJoinPeers*);
 int ep_roster_group_info(HfMod*,uint64_t,EpRosterGroupInfo*);
 int ep_roster_group_publish(HfMod*,uint64_t,int32_t);
