@@ -11,9 +11,10 @@ def main():
     mode=p.add_mutually_exclusive_group()
     mode.add_argument('--initialize-only',action='store_true',help='Owner/order/SEH flow with test-owned native entries; skip generated images')
     mode.add_argument('--commit-only',action='store_true',help='Joint coordinator/loadout flow; skip native image generation and other flows')
+    mode.add_argument('--call-only',action='store_true',help='External gate ABI/owner/SEH flow with storage and native body fixtures only')
     p.add_argument('--executable',type=Path)
     args=p.parse_args()
-    test='multiplayer_loadout_commit_smoke' if args.commit_only else 'loadout_initialization_smoke' if args.initialize_only else 'loadout_storage_smoke'
+    test='loadout_call_smoke' if args.call_only else 'multiplayer_loadout_commit_smoke' if args.commit_only else 'loadout_initialization_smoke' if args.initialize_only else 'loadout_storage_smoke'
     args.executable=args.executable or PROJECT/'build'/(test+'.exe')
     if args.zig:
         if args.upstream is None:raise ValueError('--upstream required')
@@ -21,10 +22,14 @@ def main():
         command=[args.zig.resolve(),'c++','-std=c++17','-target','x86_64-windows-gnu','-O2','-Wall','-Wextra','-Werror',
                  '-Wno-missing-field-initializers', # C-compatible roster module uses {0}.
                  '-I',args.upstream.resolve()/'native/mod-sdk','-I',PROJECT/'mod/src']
-        if not (args.initialize_only or args.commit_only):
+        if not (args.initialize_only or args.commit_only or args.call_only):
             command += [PROJECT/'mod/src'/('ep_loadout_'+name+'.cpp') for name in MODULES]
             command += [PROJECT/'mod/src'/('ep_'+name+'.cpp') for name in ('session_code','loadout_group')]
-        command += [PROJECT/'mod/src'/('ep_'+name+'.cpp') for name in ('loadout_storage','roster_owner','native_roster')]
+        command += [PROJECT/'mod/src'/('ep_'+name+'.cpp') for name in ('roster_owner','native_roster')]
+        if args.call_only:
+            command += [PROJECT/'mod/src'/('ep_'+name+'.cpp') for name in ('loadout_call','roster_call','session_code')]
+        else:
+            command += [PROJECT/'mod/src'/'ep_loadout_storage.cpp']
         if args.commit_only:
             command += [PROJECT/'mod/src'/('ep_'+name+'.cpp') for name in ('multiplayer_commit','multiplayer_loadout_commit')]
         command += [PROJECT/'tests'/(test+'.cpp'),'-o',args.executable.resolve()]

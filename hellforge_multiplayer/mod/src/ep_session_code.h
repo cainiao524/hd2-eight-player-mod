@@ -4,9 +4,10 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Four complete 17-entry roster groups; unrelated prepared images share this
- * bounded pool and can still cause clean reservation refusal. */
-#define EP_SESSION_CODE_SLOTS 68u
+/* Shared by roster, component33 and loadout bodies AND their external gates.
+ * The previous roster-only 68 slots cannot hold one complete combined cohort.
+ * Keep a bounded pool; unrelated retained generations may still exhaust it. */
+#define EP_SESSION_CODE_SLOTS 256u
 #define EP_SESSION_CODE_MAX_BYTES 65536u
 typedef enum EpSessionCodeState {
     EP_CODE_EMPTY, EP_CODE_RESERVED, EP_CODE_READY, EP_CODE_FAILED,
